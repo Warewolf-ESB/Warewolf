@@ -97,5 +97,38 @@ namespace Dev2.Infrastructure.Tests.Providers.Events
             publisher.Publish(memo);
             Assert.IsTrue(true);
         }
+
+
+        [TestMethod]
+        [TestCategory("EventPublisherPublish_RemoveEvent")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void EventPublisherPublish_RemoveEvent_RegisteredObjectType_Removed()
+        // ReSharper restore InconsistentNaming
+        {
+            var publisher = new EventPublisher();
+            var subscription = publisher.GetEvent<DesignValidationMemo>();
+            Assert.AreEqual(1, publisher.Count);
+
+            var result = publisher.RemoveEvent<DesignValidationMemo>();
+            Assert.AreEqual(0, publisher.Count);
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [TestCategory("EventPublisherPublish_RemoveEvent")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void EventPublisherPublish_RemoveEvent_UnregisteredObjectType_NotRemoved()
+        // ReSharper restore InconsistentNaming
+        {
+            var publisher = new EventPublisher();
+            var subscription = publisher.GetEvent<DesignValidationMemo>();
+            Assert.AreEqual(1, publisher.Count);
+
+            var result = publisher.RemoveEvent<Memo>();
+            Assert.AreEqual(1, publisher.Count);
+            Assert.IsFalse(result);
+        }
     }
 }

@@ -5,10 +5,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using Caliburn.Micro;
-using Dev2.Composition;
 using Dev2.Diagnostics;
 using Dev2.Services.Events;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Diagnostics;
@@ -51,33 +49,35 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
     public class DebugStateTreeViewItemViewModel : DebugTreeViewItemViewModel
     {
-        #region Class Members
-
         readonly IDebugState _content;
         readonly IEventAggregator _eventPublisher;
+        readonly List<object> _inputs;
+        readonly List<object> _outputs;
 
-        #endregion Class Members
-
-        #region Constructor
-
-        public DebugStateTreeViewItemViewModel(IEnvironmentRepository environmentRepository, IDebugState content, DebugTreeViewItemViewModel parent = null, bool isExpanded = false, bool isSelected = false, bool addedAsParent = false)
-            : this(EventPublishers.Aggregator, environmentRepository, content, parent, isExpanded, isSelected, addedAsParent)
+        public DebugStateTreeViewItemViewModel(IEnvironmentRepository environmentRepository, IDebugState content, DebugTreeViewItemViewModel parent = null, bool addedAsParent = false)
+            : this(EventPublishers.Aggregator, environmentRepository, content, parent, addedAsParent)
         {
         }
 
-        public DebugStateTreeViewItemViewModel(IEventAggregator eventPublisher, IEnvironmentRepository environmentRepository, IDebugState content, DebugTreeViewItemViewModel parent = null, bool isExpanded = false, bool isSelected = false, bool addedAsParent = false)
+        public DebugStateTreeViewItemViewModel(IEventAggregator eventPublisher, IEnvironmentRepository environmentRepository, IDebugState content, DebugTreeViewItemViewModel parent = null, bool addedAsParent = false)
             : base(parent)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            _eventPublisher = eventPublisher;           
+            _eventPublisher = eventPublisher;
 
             Content = content;
-            _eventPublisher = eventPublisher;
-            IsExpanded = isExpanded;
-            IsSelected = isSelected;
+
+            // Multiple when creating - so that we show the path of the execution when debugging
+            SelectionType = ActivitySelectionType.Add;
+
+            IsSelected = content != null && content.ActivityType != ActivityType.Workflow;
+
+            //// Thereafter user selection is single until further notice
+            //SelectionType = ActivitySelectionType.Single;
+
             AddedAsParent = addedAsParent;
-            Inputs = new List<object>();
-            Outputs = new List<object>();
+            _inputs = new List<object>();
+            _outputs = new List<object>();
 
             if(environmentRepository != null && content != null)
             {
@@ -94,9 +94,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     serverID = content.ServerID;
                 }
 
-                var env = environmentRepository.All().FirstOrDefault(e => e.ID == serverID) ?? EnvironmentRepository.Instance.Source;
+                var env = environmentRepository.All().FirstOrDefault(e => e.ID == serverID) ?? environmentRepository.Source;
 
-                if(Equals(env, EnvironmentRepository.Instance.Source) && isRemote)
+                if(Equals(env, environmentRepository.Source) && isRemote)
                 {
                     // We have an unknown remote server ;)
                     content.Server = "Unknown Remote Server";
@@ -129,21 +129,17 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        #endregion Constructor
-
-        #region Properties
+        public ActivitySelectionType SelectionType { get; set; }
 
         public IDebugState Content
         {
-            get; private set;
+            get;
+            private set;
         }
 
-        public List<object> Inputs { get; set; }
-        public List<object> Outputs { get; set; }
+        public List<object> Inputs { get { return _inputs; } }
 
-        #endregion Properties
-
-        #region Public Methods
+        public List<object> Outputs { get { return _outputs; } }
 
         public void AppendError(string errorMessage)
         {
@@ -161,21 +157,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             HasError = true;
         }
 
-        #endregion Public Methods
-
-        #region Private Methods
-
-        /// <summary>
-        ///     Builds the bindable list from debug items.
-        /// </summary>
-        /// <param name="debugItems">The debug items.</param>
-        /// <param name="destinationList">The destination list.</param>
-        void BuildBindableListFromDebugItems(IEnumerable<IDebugItem> debugItems, ICollection<object> destinationList)
+        static void BuildBindableListFromDebugItems(IEnumerable<IDebugItem> debugItems, ICollection<object> destinationList)
         {
             //
             // Build destinationList
             //
             destinationList.Clear();
+
             if(debugItems == null)
             {
                 return;
@@ -219,25 +207,25 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        #endregion Private Methods
-
         protected override void OnPropertyChanged(string propertyName)
         {
             base.OnPropertyChanged(propertyName);
             switch(propertyName)
             {
                 case "IsSelected":
-                    if(IsSelected)
-                    {
-                        SelectActivity();
-                    }
+                    NotifySelectionChanged();
                     break;
             }
         }
 
-        protected virtual void SelectActivity()
+        void NotifySelectionChanged()
         {
-            EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = Content });
+            if(IsSelected)
+            {
+                EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = Content, SelectionType = SelectionType });
+            }
+
+            SelectionType = ActivitySelectionType.Single;
         }
     }
 

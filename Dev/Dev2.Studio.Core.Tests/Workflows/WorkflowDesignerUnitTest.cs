@@ -21,6 +21,7 @@ using Dev2.Diagnostics;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.DataList;
@@ -54,7 +55,7 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void MyTestInitialize()
         {
-           // Monitor.Enter(_testGuard);
+            // Monitor.Enter(_testGuard);
 
             //ImportService.CurrentContext = CompositionInitializer.PopUpProviderForTestsWithMockMainViewModel();
         }
@@ -76,7 +77,7 @@ namespace Dev2.Core.Tests
         public void RemoveAllUnusedDataListObjectsWithItemsNotUsedExpectedItemsRemoved()
         {
             var eventAggregator = new EventAggregator();
-            
+
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
 
@@ -96,10 +97,10 @@ namespace Dev2.Core.Tests
 
             dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
             dataListViewModel.RecsetCollection.Clear();
-            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object,null,false);
+            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
             dataListViewModel.RemoveUnusedDataListItems();
-            Assert.AreEqual(0,dataListViewModel.ScalarCollection.Count);
+            Assert.AreEqual(0, dataListViewModel.ScalarCollection.Count);
 
         }
 
@@ -115,7 +116,7 @@ namespace Dev2.Core.Tests
 
             var mockDataListViewModel = new Mock<IDataListViewModel>();
             mockDataListViewModel.Setup(model => model.ScalarCollection).Returns(new OptomizedObservableCollection<IDataListItemModel>());
-            mockDataListViewModel.Setup(model => model.UpdateDataListItems(It.IsAny<IResourceModel>(),It.IsAny<IList<IDataListVerifyPart>>())).Verifiable();
+            mockDataListViewModel.Setup(model => model.UpdateDataListItems(It.IsAny<IResourceModel>(), It.IsAny<IList<IDataListVerifyPart>>())).Verifiable();
             var dataListViewModel = mockDataListViewModel.Object;
             var dataListItems = new OptomizedObservableCollection<IDataListItemModel>();
             DataListSingleton.SetDataList(dataListViewModel);
@@ -125,7 +126,7 @@ namespace Dev2.Core.Tests
 
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
 
-            mockDataListViewModel.Verify(model => model.UpdateDataListItems(It.IsAny<IResourceModel>(), It.IsAny<IList<IDataListVerifyPart>>()),Times.Once());
+            mockDataListViewModel.Verify(model => model.UpdateDataListItems(It.IsAny<IResourceModel>(), It.IsAny<IList<IDataListVerifyPart>>()), Times.Once());
 
         }
 
@@ -161,12 +162,12 @@ namespace Dev2.Core.Tests
             dataListViewModel.ScalarCollection.Clear();
             dataListViewModel.RecsetCollection.Clear();
             dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
-            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object,null,false);
+            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
             workflowDesigner.PopUp = mockPopUp.Object;
 
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
-            Assert.AreEqual(2,dataListViewModel.ScalarCollection.Count);
-            Assert.AreEqual(0,dataListViewModel.RecsetCollection.Count);
+            Assert.AreEqual(2, dataListViewModel.ScalarCollection.Count);
+            Assert.AreEqual(0, dataListViewModel.RecsetCollection.Count);
         }
 
         //2013.06.24: Ashley Lewis for bug 9698 - test for get decision elements
@@ -191,7 +192,7 @@ namespace Dev2.Core.Tests
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.ResourceModel;
             var eventAggregator = new EventAggregator();
 
-            
+
             var model = CreateWorkflowDesignerViewModel(eventAggregator, resourceModel.Object, null, false);
             var dataListViewModel = new DataListViewModel();
 
@@ -199,7 +200,7 @@ namespace Dev2.Core.Tests
 
             var recsetModel = new DataListItemModel("RecSet");
             dataListViewModel.RecsetCollection.Add(recsetModel);
-            dataListViewModel.RecsetCollection[2].Children.Add(new DataListItemModel("f1",parent:recsetModel));
+            dataListViewModel.RecsetCollection[2].Children.Add(new DataListItemModel("f1", parent: recsetModel));
             string expression = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:![[RecSet().f1]]!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)";
             var actual = model.GetDecisionElements(expression, dataListViewModel);
             //Assert
@@ -1501,9 +1502,9 @@ namespace Dev2.Core.Tests
             #region setup mock ModelChangedEventArgs
 
             var eventArgs = new Mock<ModelChangedEventArgs>();
-            eventArgs.Setup(c => c.ItemsAdded).Returns(new List<ModelItem>() {source.Object});
+            eventArgs.Setup(c => c.ItemsAdded).Returns(new List<ModelItem>() { source.Object });
 
-	        #endregion
+            #endregion
 
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
@@ -1513,12 +1514,12 @@ namespace Dev2.Core.Tests
             });
             var eventAggregator = new Mock<IEventAggregator>();
             ImportService.AddExportedValueToContainer(eventAggregator.Object);
-            
 
-            #endregion
+
+        #endregion
 
             #region setup event aggregator
-            var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object,eventAggregator.Object, false);
+            var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, eventAggregator.Object, false);
             var expectedMessage = new ConfigureDecisionExpressionMessage()
             {
                 ModelItem = source.Object,
@@ -1929,7 +1930,7 @@ namespace Dev2.Core.Tests
 
         #endregion
 
-        #endregion
+            #endregion
 
         #region EditActivity
 
@@ -2080,54 +2081,162 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
-        [Description("WorkflowDesignerViewModel selects the model item when the selection is changed in the debug window.")]
         [Owner("Trevor Williams-Ros")]
-        [Ignore]
-        public void WorkflowDesignerViewModel_UnitTest_DebugSelectionChangedFound_SelectsModelItem()
+        public void WorkflowDesignerViewModel_DebugSelectionChanged_NullDebugState_DoesNothing()
         {
-            WorkflowDesignerViewModel_UnitTest_Run(true);
+            //----------------------- Setup -----------------------//
+            var workflow = new ActivityBuilder
+            {
+                Implementation = new Flowchart
+                {
+                    StartNode = CreateFlowNode(Guid.NewGuid(), "SelectionChangedTest1", true, typeof(TestActivity))
+                }
+            };
+
+            #region Setup viewModel
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, false);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+
+            #endregion
+
+            //----------------------- Execute -----------------------//
+            EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = null, SelectionType = ActivitySelectionType.Single });
+
+            //----------------------- Assert -----------------------//
+            Assert.AreEqual(0, viewModel.BringIntoViewHitCount);
+        }
+
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
+        [Owner("Trevor Williams-Ros")]
+        public void WorkflowDesignerViewModel_DebugSelectionChanged_DesignerViewHidden_DoesNothing()
+        {
+            //----------------------- Setup -----------------------//
+            var workflow = new ActivityBuilder
+            {
+                Implementation = new Flowchart
+                {
+                    StartNode = CreateFlowNode(Guid.NewGuid(), "SelectionChangedTest1", true, typeof(TestActivity))
+                }
+            };
+
+            #region Setup viewModel
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, false);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+
+            #endregion
+
+            viewModel.SetIsDesignerViewVisible(false);
+
+            //----------------------- Execute -----------------------//
+            EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = new DebugState(), SelectionType = ActivitySelectionType.Single });
+
+            //----------------------- Assert -----------------------//
+            Assert.AreEqual(0, viewModel.GetSelectedModelItemHitCount);
         }
 
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
-        [Description("WorkflowDesignerViewModel selects the root flow chart when the selection is changed in the debug window and it is not found.")]
         [Owner("Trevor Williams-Ros")]
-        [Ignore]
-        public void WorkflowDesignerViewModel_UnitTest_DebugSelectionChangedNotFound_SelectsFlowchart()
+        public void WorkflowDesignerViewModel_DebugSelectionChanged_SingleSelectionItemNotFound_SelectsFlowchart()
         {
-            WorkflowDesignerViewModel_UnitTest_Run(false);
+            Verify_DebugSelectionChanged(ActivitySelectionType.Single, selectedActivityType: typeof(Flowchart), selectsModelItem: false);
         }
 
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
-        [Description("WorkflowDesignerViewModel selects the decision when the selection is changed in the debug window and it is not found.")]
         [Owner("Trevor Williams-Ros")]
-        [Ignore] // Cannot inject test decision with UniqueID property!
-        public void WorkflowDesignerViewModel_UnitTest_DebugSelectionChangedNotFound_SelectsDecision()
+        public void WorkflowDesignerViewModel_DebugSelectionChanged_SingleSelectionItemFound_SelectsModelItem()
         {
-            WorkflowDesignerViewModel_UnitTest_Run(true);
+            Verify_DebugSelectionChanged(ActivitySelectionType.Single, selectedActivityType: typeof(TestActivity));
         }
 
-        static void WorkflowDesignerViewModel_UnitTest_Run(bool selectsModelItem)
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
+        [Owner("Trevor Williams-Ros")]
+        public void WorkflowDesignerViewModel_DebugSelectionChanged_SingleSelectionDecisionOrSwitchItemFound_SelectsDecisionOrSwitch()
         {
-            var debugState = new DebugState { DisplayName = "SelectionChangedTest", ID = Guid.NewGuid() };
+            Verify_DebugSelectionChanged(ActivitySelectionType.Single, selectedActivityType: typeof(FlowDecision));
+        }
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
+        [Owner("Trevor Williams-Ros")]
+        public void WorkflowDesignerViewModel_DebugSelectionChanged_AddSelection_SelectsItems()
+        {
+            Verify_DebugSelectionChanged(ActivitySelectionType.Add, selectedActivityType: typeof(TestActivity));
+        }
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
+        [Owner("Trevor Williams-Ros")]
+        public void WorkflowDesignerViewModel_DebugSelectionChanged_RemoveSelection_SelectsItems()
+        {
+            Verify_DebugSelectionChanged(ActivitySelectionType.Remove, selectedActivityType: typeof(TestActivity));
+        }
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
+        [Owner("Trevor Williams-Ros")]
+        public void WorkflowDesignerViewModel_DebugSelectionChanged_ClearSelection_DeselectsItems()
+        {
+            Verify_DebugSelectionChanged(ActivitySelectionType.None, selectedActivityType: typeof(TestActivity));
+        }
+
+        static void Verify_DebugSelectionChanged(ActivitySelectionType selectionType, Type selectedActivityType, bool selectsModelItem = true)
+        {
+            //----------------------- Setup -----------------------//
+            var states = new List<DebugState> { new DebugState { DisplayName = "SelectionChangedTest1", ID = Guid.NewGuid() } };
+            if(selectionType == ActivitySelectionType.Add || selectionType == ActivitySelectionType.Remove)
+            {
+                states.Add(new DebugState { DisplayName = "SelectionChangedTest2", ID = Guid.NewGuid() });
+            }
 
             #region Setup workflow
 
-            var activity = new TestActivity
+            FlowNode prevNode = null;
+
+            var nodes = new List<FlowNode>();
+            foreach(var node in states.Select(state => CreateFlowNode(state.ID, state.DisplayName, selectsModelItem, selectedActivityType)))
             {
-                DisplayName = debugState.DisplayName,
-                UniqueID = selectsModelItem ? debugState.ID.ToString() : Guid.NewGuid().ToString()
-            };
+                if(prevNode != null)
+                {
+                    var flowStep = prevNode as FlowStep;
+                    if(flowStep != null)
+                    {
+                        flowStep.Next = node;
+                    }
+                }
+                nodes.Add(node);
+                prevNode = node;
+            }
 
             var workflow = new ActivityBuilder
             {
                 Implementation = new Flowchart
                 {
-                    StartNode = new FlowStep
-                    {
-                        Action = activity
-                    }
+                    StartNode = nodes[0]
                 }
             };
 
@@ -2149,20 +2258,91 @@ namespace Dev2.Core.Tests
 
             #endregion
 
-            EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = debugState });
-
-            Assert.AreEqual(1, viewModel.BringIntoViewHitCount, "WorkflowDesignerViewModel did not bring selection into view.");
-
-            if(selectsModelItem)
+            //----------------------- Execute -----------------------//
+            var i = 0;
+            foreach(var debugState in states)
             {
-                Assert.AreEqual(1, viewModel.SelectModelItemHitCount, "WorkflowDesignerViewModel did not select model item.");
-                Assert.AreEqual(typeof(TestActivity), viewModel.SelectModelItemValue.ItemType, "WorkflowDesignerViewModel did not select model item.");
+                if(selectionType == ActivitySelectionType.None || selectionType == ActivitySelectionType.Remove)
+                {
+                    // Ensure we have something to clear/remove
+                    EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = debugState, SelectionType = ActivitySelectionType.Add });
+
+                    // Only issue change event after all have been added
+                    if(++i == states.Count)
+                    {
+                        var selectionBefore = viewModel.Designer.Context.Items.GetValue<Selection>();
+                        Assert.AreEqual(states.Count, selectionBefore.SelectionCount);
+
+                        EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = debugState, SelectionType = selectionType });
+                    }
+                }
+                else
+                {
+                    EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = debugState, SelectionType = selectionType });
+                }
             }
-            else
+
+            //----------------------- Assert -----------------------//
+
+            var selection = viewModel.Designer.Context.Items.GetValue<Selection>();
+
+            switch(selectionType)
             {
-                Assert.AreEqual(1, viewModel.SelectModelItemHitCount, "WorkflowDesignerViewModel did not select root flow chart.");
-                Assert.AreEqual(typeof(Flowchart), viewModel.SelectModelItemValue.ItemType, "WorkflowDesignerViewModel did not select root flow chart.");
+                case ActivitySelectionType.None:
+                    Assert.AreEqual(0, selection.SelectionCount);
+                    Assert.AreEqual(1, viewModel.BringIntoViewHitCount); // 1 because we had to add something first!
+                    break;
+
+                case ActivitySelectionType.Single:
+                    Assert.AreEqual(1, selection.SelectionCount);
+                    Assert.AreEqual(1, viewModel.BringIntoViewHitCount);
+                    break;
+
+                case ActivitySelectionType.Add:
+                    Assert.AreEqual(2, selection.SelectionCount);
+                    Assert.AreEqual(2, viewModel.BringIntoViewHitCount);
+                    break;
+
+                case ActivitySelectionType.Remove:
+                    Assert.AreEqual(1, selection.SelectionCount);
+                    Assert.AreEqual(2, viewModel.BringIntoViewHitCount); // 2 because we had to add something first!
+                    break;
             }
+
+            foreach(var modelItem in selection.SelectedObjects)
+            {
+                Assert.AreEqual(selectedActivityType, modelItem.ItemType);
+                if(selectsModelItem)
+                {
+                    var actualID = selectedActivityType == typeof(FlowDecision)
+                        ? Guid.Parse(((TestDecisionActivity)modelItem.GetProperty("Condition")).UniqueID)
+                        : ModelItemUtils.GetUniqueID(modelItem);
+
+                    var actualState = states.FirstOrDefault(s => s.ID == actualID);
+                    Assert.IsNotNull(actualState);
+                }
+            }
+        }
+
+        static FlowNode CreateFlowNode(Guid id, string displayName, bool selectsModelItem, Type activityType)
+        {
+            if(activityType == typeof(FlowDecision))
+            {
+                return new FlowDecision(new TestDecisionActivity
+                {
+                    DisplayName = displayName,
+                    UniqueID = selectsModelItem ? id.ToString() : Guid.NewGuid().ToString()
+                });
+            }
+
+            return new FlowStep
+            {
+                Action = new TestActivity
+                {
+                    DisplayName = displayName,
+                    UniqueID = selectsModelItem ? id.ToString() : Guid.NewGuid().ToString()
+                }
+            };
         }
 
         #endregion

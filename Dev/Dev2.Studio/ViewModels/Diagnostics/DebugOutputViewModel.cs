@@ -62,6 +62,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private DebugStatus _debugStatus;
         private bool _showDebugStatus = true;
         readonly IEventAggregator _eventPublisher;
+        ICommand _selectAllCommand;
 
         #endregion
 
@@ -83,10 +84,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         }
 
         public DebugOutputViewModel(IEventAggregator eventPublisher, IEnvironmentRepository environmentRepository, WorkSurfaceKey workSurfaceKey = null)
-            {
+        {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
-            _eventPublisher = eventPublisher;           
+            _eventPublisher = eventPublisher;
             EnvironmentRepository = environmentRepository;
             _debugOutputTreeGenerationStrategy = new DebugOutputTreeGenerationStrategy(EnvironmentRepository);
 
@@ -109,6 +110,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 _debugStatus = value;
+
+                if(value == DebugStatus.Executing)
+                {
+                    ClearSelection();
+                }
 
                 NotifyOfPropertyChange(() => IsStopping);
                 NotifyOfPropertyChange(() => IsProcessing);
@@ -467,12 +473,12 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 return;
             }
 
-            if ((DebugStatus == DebugStatus.Stopping || DebugStatus == DebugStatus.Finished) && content.StateType != StateType.Message)
+            if((DebugStatus == DebugStatus.Stopping || DebugStatus == DebugStatus.Finished) && content.StateType != StateType.Message)
             {
                 return;
             }
 
-            if (content.IsFinalStep())
+            if(content.IsFinalStep())
             {
                 DebugStatus = DebugStatus.Finished;
             }
@@ -572,6 +578,28 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             get { return DebugStatus == DebugStatus.Configure; }
         }
 
+        public ICommand SelectAllCommand
+        {
+            get
+            {
+                if(_selectAllCommand == null)
+                {
+                    _selectAllCommand = new RelayCommand(SelectAll, c => true);
+                }
+                return _selectAllCommand;
+            }
+        }
+
+        void SelectAll(object obj)
+        {
+            ClearSelection();
+            UpdateItems<DebugStateTreeViewItemViewModel>(RootItems, item =>
+            {
+                item.SelectionType = ActivitySelectionType.Add;
+                item.IsSelected = true;
+            });
+        }   
+
         #endregion
 
         #region Private Methods
@@ -584,7 +612,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             RootItems.Clear();
             _contentItems.Clear();
             _pendingItems.Clear();
-            _debugOutputTreeGenerationStrategy = null;            
+            _debugOutputTreeGenerationStrategy = null;
             _debugOutputTreeGenerationStrategy = new DebugOutputTreeGenerationStrategy(EnvironmentRepository);
         }
 
@@ -777,12 +805,26 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             // BUG 9735 - 2013.06.22 - TWR : added
             if(propertyName == "IsProcessing")
             {
-                    FlushPending();
-                }
+                FlushPending();
             }
+        }
 
         #endregion
 
 
+        static void UpdateItems<T>(IEnumerable<DebugTreeViewItemViewModel> items, Action<T> update)
+            where T : DebugTreeViewItemViewModel
+        {
+            foreach(T item in items.Where(i => i is T))
+            {
+                update(item);
+                UpdateItems(item.Children, update);
+            }
+        }
+
+        static void ClearSelection()
+        {
+            EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { SelectionType = ActivitySelectionType.None });
+        }
     }
 }

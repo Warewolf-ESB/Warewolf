@@ -8,6 +8,7 @@ using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.Diagnostics;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Helpers;
@@ -60,7 +61,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void OpenNullLineItemDoesntStartProcess()
+        public void DebugOutputViewModel_OpenNullLineItemDoesntStartProcess()
         {
             ImportService.CurrentContext = _importServiceContext;
             var vm = new DebugOutputViewModel();
@@ -69,7 +70,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void OpenEmptyMoreLinkDoesntStartProcess()
+        public void DebugOutputViewModel_OpenEmptyMoreLinkDoesntStartProcess()
         {
             ImportService.CurrentContext = _importServiceContext;
             var vm = new DebugOutputViewModel();
@@ -82,7 +83,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void DebugOutputViewModelCanOpenNonNullOrEmptyMoreLinkLineItem()
+        public void DebugOutputViewModel_CanOpenNonNullOrEmptyMoreLinkLineItem()
         {
             ImportService.CurrentContext = _importServiceContext;
 
@@ -95,7 +96,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void DebugOutputViewModelCantOpenEmptyMoreLinkLineItem()
+        public void DebugOutputViewModel_CantOpenEmptyMoreLinkLineItem()
         {
             ImportService.CurrentContext = _importServiceContext;
             var vm = new DebugOutputViewModel();
@@ -106,7 +107,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void DebugOutputViewModelCantOpenNullMoreLinkLineItem()
+        public void DebugOutputViewModel_CantOpenNullMoreLinkLineItem()
         {
             ImportService.CurrentContext = _importServiceContext;
             var vm = new DebugOutputViewModel();
@@ -116,7 +117,7 @@ namespace Dev2.Core.Tests
 
 
         [TestMethod]
-        public void DebugOutputViewModelAppendErrorExpectErrorMessageAppende()
+        public void DebugOutputViewModel_AppendErrorExpectErrorMessageAppended()
         {
             ImportService.CurrentContext = _importServiceContext;
 
@@ -136,7 +137,9 @@ namespace Dev2.Core.Tests
             mock1.SetupSet(s => s.ErrorMessage).Callback(s => Assert.IsTrue(s.Equals("Error Test")));
             mock1.SetupSet(s => s.HasError).Callback(s => Assert.IsTrue(s.Equals(true)));
 
-            var vm = new DebugOutputViewModel();
+            var envRepo = GetEnvironmentRepository();
+
+            var vm = new DebugOutputViewModel(envRepo);
 
             vm.Append(mock1.Object);
             vm.Append(mock2.Object);
@@ -147,7 +150,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void DebugOutputViewModelAppendNestedDebugstatesExpectNestedInRootItems()
+        public void DebugOutputViewModel_AppendNestedDebugstatesExpectNestedInRootItems()
         {
             ImportService.CurrentContext = _importServiceContext;
 
@@ -161,7 +164,9 @@ namespace Dev2.Core.Tests
             mock2.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
             mock2.SetupGet(m => m.ParentID).Returns(_firstResourceID);
 
-            var vm = new DebugOutputViewModel();
+            var envRepo = GetEnvironmentRepository();
+            var vm = new DebugOutputViewModel(envRepo);
+
             vm.Append(mock1.Object);
             vm.Append(mock2.Object);
             Assert.AreEqual(1, vm.RootItems.Count);
@@ -175,7 +180,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void DebugOutputViewModelAppendWhenDebugStateStoppedShouldNotWriteItems()
+        public void DebugOutputViewModel_AppendWhenDebugStateStoppedShouldNotWriteItems()
         {
             ImportService.CurrentContext = _importServiceContext;
 
@@ -197,7 +202,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void DebugOutputViewModelAppendWhenDebugStateFinishedShouldNotWriteItems()
+        public void DebugOutputViewModel_AppendWhenDebugStateFinishedShouldNotWriteItems()
         {
             ImportService.CurrentContext = _importServiceContext;
 
@@ -222,7 +227,7 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_AppendItem")]
         [Description("DebugOutputViewModel AppendItem must not append item when DebugStatus is finished.")]
         [Owner("Jurie Smit")]
-        public void DebugOutputViewModelAppendWhenDebugStateFinishedShouldNotWriteItems_ItemIsMessage()
+        public void DebugOutputViewModel_AppendWhenDebugStateFinishedShouldNotWriteItems_ItemIsMessage()
         {
             ImportService.CurrentContext = _importServiceContext;
 
@@ -248,7 +253,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void DebugOutputDisplayedExpectsDisplayedToCorrectViewModel()
+        public void DebugOutputViewModel_DisplayedExpectsDisplayedToCorrectViewModel()
         {
             ImportService.CurrentContext = _importServiceContext;
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
@@ -283,7 +288,7 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_OpenItem")]
         [Description("DebugOutputViewModel OpenItem must set the DebugState's properties.")]
         [Owner("Trevor Williams-Ros")]
-        public void DebugOutputViewModel_UnitTest_OpenItemWithRemoteEnvironment_OpensResourceFromRemoteEnvironment()
+        public void DebugOutputViewModel_OpenItemWithRemoteEnvironment_OpensResourceFromRemoteEnvironment()
         {
             ImportService.CurrentContext = _importServiceContext;
 
@@ -334,13 +339,16 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_AppendItem")]
         [Description("DebugOutputViewModel appendItem must set Debugstatus to finished when DebugItem is final step.")]
         [Owner("Jurie Smit")]
-        public void DebugOutputViewModel_UnitTest_AppendItemFinalStep_DebugStatusFinished()
+        public void DebugOutputViewModel_AppendItemFinalStep_DebugStatusFinished()
         {
             //*********************Setup********************
             ImportService.CurrentContext = _importServiceContext;
             var mock1 = new Mock<IDebugState>();
             mock1.Setup(m => m.IsFinalStep()).Returns(true);
-            var vm = new DebugOutputViewModel();
+
+            var envRepo = GetEnvironmentRepository();
+            var vm = new DebugOutputViewModel(envRepo);
+
             vm.DebugStatus = DebugStatus.Ready;
 
             //*********************Test********************
@@ -354,13 +362,16 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_AppendItem")]
         [Description("DebugOutputViewModel appendItem must set Debugstatus to finished when DebugItem is final step.")]
         [Owner("Jurie Smit")]
-        public void DebugOutputViewModel_UnitTest_AppendItemNotFinalStep_DebugStatusUnchanced()
+        public void DebugOutputViewModel_AppendItemNotFinalStep_DebugStatusUnchanced()
         {
             //*********************Setup********************
             ImportService.CurrentContext = _importServiceContext;
             var mock1 = new Mock<IDebugState>();
             mock1.Setup(m => m.IsFinalStep()).Returns(false);
-            var vm = new DebugOutputViewModel();
+
+            var envRepo = GetEnvironmentRepository();
+            var vm = new DebugOutputViewModel(envRepo);
+
             vm.DebugStatus = DebugStatus.Ready;
 
             //*********************Test********************
@@ -374,15 +385,13 @@ namespace Dev2.Core.Tests
 
         // BUG 9735 - 2013.06.22 - TWR : added
         [TestMethod]
-        public void DebugOutputViewModelPendingQueueExpectedQueuesMessagesAndFlushesWhenFinishedProcessing()
+        public void DebugOutputViewModel_PendingQueueExpectedQueuesMessagesAndFlushesWhenFinishedProcessing()
         {
             ImportService.CurrentContext = _importServiceContext;
 
-            var envRepo = new Mock<IEnvironmentRepository>();
-            envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
-            envRepo.Setup(e => e.IsLoaded).Returns(true);
+            var envRepo = GetEnvironmentRepository();
 
-            var vm = new DebugOutputViewModel(envRepo.Object) { DebugStatus = DebugStatus.Executing };
+            var vm = new DebugOutputViewModel(envRepo) { DebugStatus = DebugStatus.Executing };
             for(var i = 0; i < 10; i++)
             {
                 var state = new Mock<IDebugState>();
@@ -401,6 +410,7 @@ namespace Dev2.Core.Tests
         }
 
         #endregion
+
 
         private static void CreateFullExportsAndVm()
         {
@@ -429,7 +439,6 @@ namespace Dev2.Core.Tests
 
             ImportService.CurrentContext = _importServiceContext;
         }
-
 
         public static Mock<IContextualResourceModel> CreateResource(ResourceType resourceType)
         {
@@ -547,5 +556,208 @@ namespace Dev2.Core.Tests
             var msg = new AddWorkSurfaceMessage(_secondResource.Object);
             _mainViewModel.Handle(msg);
         }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DebugOutputViewModel_IsStopping")]
+        public void DebugOutputViewModel_IsStopping_ReflectsDebugStatus()
+        {
+            //------------Setup for test--------------------------
+            var envRepo = GetEnvironmentRepository();
+            var viewModel = new DebugOutputViewModel(envRepo);
+
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            viewModel.DebugStatus = DebugStatus.Stopping;
+            Assert.IsTrue(viewModel.IsStopping);
+
+            viewModel.DebugStatus = DebugStatus.Ready;
+            Assert.IsFalse(viewModel.IsStopping);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DebugOutputViewModel_IsProcessing")]
+        public void DebugOutputViewModel_IsProcessing_ReflectsDebugStatus()
+        {
+            //------------Setup for test--------------------------
+            var envRepo = GetEnvironmentRepository();
+            var viewModel = new DebugOutputViewModel(envRepo);
+
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            viewModel.DebugStatus = DebugStatus.Executing;
+            Assert.IsTrue(viewModel.IsProcessing);
+
+            viewModel.DebugStatus = DebugStatus.Configure;
+            Assert.IsTrue(viewModel.IsProcessing);
+
+            viewModel.DebugStatus = DebugStatus.Ready;
+            Assert.IsFalse(viewModel.IsProcessing);
+
+            viewModel.DebugStatus = DebugStatus.Finished;
+            Assert.IsFalse(viewModel.IsProcessing);
+
+            viewModel.DebugStatus = DebugStatus.Stopping;
+            Assert.IsFalse(viewModel.IsProcessing);
+
+        }
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DebugOutputViewModel_DebugImage")]
+        public void DebugOutputViewModel_DebugImage_ReflectsDebugStatus()
+        {
+            //------------Setup for test--------------------------
+            var envRepo = GetEnvironmentRepository();
+            var viewModel = new DebugOutputViewModel(envRepo);
+
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            viewModel.DebugStatus = DebugStatus.Executing;
+            Assert.AreEqual("pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStop-32.png", viewModel.DebugImage);
+
+            viewModel.DebugStatus = DebugStatus.Ready;
+            Assert.AreEqual("pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStart-32.png", viewModel.DebugImage);
+        }
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DebugOutputViewModel_DebugText")]
+        public void DebugOutputViewModel_DebugText_ReflectsDebugStatus()
+        {
+            //------------Setup for test--------------------------
+            var envRepo = GetEnvironmentRepository();
+            var viewModel = new DebugOutputViewModel(envRepo);
+
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            viewModel.DebugStatus = DebugStatus.Executing;
+            Assert.AreEqual("Stop", viewModel.DebugText);
+
+            viewModel.DebugStatus = DebugStatus.Ready;
+            Assert.AreEqual("Debug", viewModel.DebugText);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DebugOutputViewModel_DebugStatus")]
+        public void DebugOutputViewModel_DebugStatus_Executing_PublishesDebugSelectionChangedEventArgs()
+        {
+            //------------Setup for test--------------------------
+            var envRepo = GetEnvironmentRepository();
+            var viewModel = new DebugOutputViewModel(envRepo);
+
+
+            var expectedProps = new[] { "IsStopping", "IsProcessing", "IsConfiguring", "DebugImage", "DebugText", "ProcessingText" };
+            var actualProps = new List<string>();
+            viewModel.PropertyChanged += (sender, args) => actualProps.Add(args.PropertyName);
+
+            var events = new List<DebugSelectionChangedEventArgs>();
+
+            var selectionChangedEvents = EventPublishers.Studio.GetEvent<DebugSelectionChangedEventArgs>();
+            selectionChangedEvents.Subscribe(events.Add);
+
+            //------------Execute Test---------------------------
+            viewModel.DebugStatus = DebugStatus.Executing;
+
+            EventPublishers.Studio.RemoveEvent<DebugSelectionChangedEventArgs>();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, events.Count);
+            Assert.AreEqual(ActivitySelectionType.None, events[0].SelectionType);
+            Assert.IsNull(events[0].DebugState);
+
+            CollectionAssert.AreEqual(expectedProps, actualProps);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DebugOutputViewModel_SelectAll")]
+        public void DebugOutputViewModel_SelectAll_Execute_PublishesClearSelection()
+        {
+            //------------Setup for test--------------------------
+            var envRepo = GetEnvironmentRepository();
+            var viewModel = new DebugOutputViewModel(envRepo);
+
+            var events = new List<DebugSelectionChangedEventArgs>();
+
+            var selectionChangedEvents = EventPublishers.Studio.GetEvent<DebugSelectionChangedEventArgs>();
+            selectionChangedEvents.Subscribe(events.Add);
+
+            //------------Execute Test---------------------------
+            viewModel.SelectAllCommand.Execute(null);
+
+            EventPublishers.Studio.RemoveEvent<DebugSelectionChangedEventArgs>();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, events.Count);
+            Assert.AreEqual(ActivitySelectionType.None, events[0].SelectionType);
+            Assert.IsNull(events[0].DebugState);
+        }
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DebugOutputViewModel_SelectAll")]
+        public void DebugOutputViewModel_SelectAll_Execute_AllDebugStateItemsSelected()
+        {
+            //------------Setup for test--------------------------
+            var envRepo = GetEnvironmentRepository();
+            var viewModel = new DebugOutputViewModel(envRepo);
+
+            viewModel.RootItems.Add(CreateItemViewModel<DebugStringTreeViewItemViewModel>(envRepo, 0, isSelected: false, parent: null));
+
+            for(var i = 1; i < 6; i++)
+            {
+                var item = CreateItemViewModel<DebugStateTreeViewItemViewModel>(envRepo, i, isSelected: false, parent: null);
+                for(var j = 0; j < 2; j++)
+                {
+                    CreateItemViewModel<DebugStateTreeViewItemViewModel>(envRepo, j, isSelected: false, parent: item);
+                }
+                viewModel.RootItems.Add(item);
+            }
+
+            //------------Execute Test---------------------------
+            viewModel.SelectAllCommand.Execute(null);
+
+
+            //------------Assert Results-------------------------
+
+            // Items are selected only if they are DebugStateTreeViewItemViewModel's
+            foreach(var item in viewModel.RootItems)
+            {
+                Assert.AreEqual(item is DebugStateTreeViewItemViewModel, item.IsSelected);
+                foreach(var child in item.Children)
+                {
+                    Assert.AreEqual(child is DebugStateTreeViewItemViewModel, child.IsSelected);
+                }
+            }
+        }
+
+        static DebugTreeViewItemViewModel CreateItemViewModel<T>(IEnvironmentRepository envRepository, int n, bool isSelected, DebugTreeViewItemViewModel parent)
+            where T : DebugTreeViewItemViewModel
+        {
+            if(typeof(T) == typeof(DebugStateTreeViewItemViewModel))
+            {
+                var content = new DebugState { DisplayName = "State " + n, ID = Guid.NewGuid(), ActivityType = ActivityType.Step };
+                var viewModel = new DebugStateTreeViewItemViewModel(envRepository, content, parent);
+                if(!isSelected)
+                {
+                    // viewModel.IsSelected is true when the ActivityType is Step
+                    viewModel.IsSelected = false;
+                }
+                return viewModel;
+            }
+
+            return new DebugStringTreeViewItemViewModel("String " + n, parent)
+            {
+                IsSelected = isSelected
+            };
+        }
+
+
     }
 }

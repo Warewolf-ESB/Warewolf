@@ -9,7 +9,6 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Utilities;
 using Moq;
@@ -27,9 +26,9 @@ namespace Dev2.Core.Tests.Workflows
                 new Mock<IPopupController>().Object,
                 createDesigner)
         {
-        }        
-        
-        public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper,IEventAggregator eventAggregator, bool createDesigner = false)
+        }
+
+        public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, IEventAggregator eventAggregator, bool createDesigner = false)
             : base(
                 eventAggregator,
                 resource, workflowHelper,
@@ -38,12 +37,18 @@ namespace Dev2.Core.Tests.Workflows
         {
         }
 
+        bool _isDesignerViewVisible = true;
         protected override bool IsDesignerViewVisible
         {
             get
             {
-                return true;
+                return _isDesignerViewVisible;
             }
+        }
+
+        public void SetIsDesignerViewVisible(bool isVisible)
+        {
+            _isDesignerViewVisible = isVisible;
         }
 
         public void TestCheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IEnvironmentModel environmentModel)
@@ -72,17 +77,17 @@ namespace Dev2.Core.Tests.Workflows
             DataObject = dataobject;
         }
 
-        public int SelectModelItemHitCount { get; set; }
-        public ModelItem SelectModelItemValue { get; set; }
 
-        protected override void SelectModelItem(ModelItem selectedModelItem)
+
+        public int GetSelectedModelItemHitCount { get; private set; }
+        protected override ModelItem GetSelectedModelItem(Guid itemID, Guid parentID)
         {
-            SelectModelItemHitCount++;
-            SelectModelItemValue = selectedModelItem;
-            base.SelectModelItem(selectedModelItem);
+            GetSelectedModelItemHitCount++;
+            return base.GetSelectedModelItem(itemID, parentID);
         }
 
-        public int BringIntoViewHitCount { get; set; }
+
+        public int BringIntoViewHitCount { get; private set; }
         protected override void BringIntoView(ModelItem selectedModelItem)
         {
             BringIntoViewHitCount++;

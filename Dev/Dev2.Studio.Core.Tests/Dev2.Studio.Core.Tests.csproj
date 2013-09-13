@@ -402,6 +402,7 @@
   <ItemGroup>
     <Folder Include="Account\NewFolder1\" />
     <Folder Include="Activities\Stubs\Template Stubs\" />
+    <Folder Include="Diagnostics\Debug\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
