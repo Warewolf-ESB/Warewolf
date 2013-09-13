@@ -2,6 +2,7 @@
 using System.Activities;
 using System.Collections.Generic;
 using Dev2.Collections;
+using Dev2.Communication;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -95,6 +96,7 @@ namespace Dev2.Core.Tests.ProperMoqs
         public string ServerResourceType { get; set; }
         public event Action<IContextualResourceModel> OnResourceSaved;
         public event Action OnDataListChanged;
+        public event EventHandler<DesignValidationMemo> OnDesignValidationReceived;
 
         public void Update(IResourceModel resourceModel)
         {

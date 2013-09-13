@@ -436,7 +436,6 @@ namespace Dev2.Studio.Core.Models
         void ReceiveDesignValidation(DesignValidationMemo memo)
         {
             IsValid = memo.IsValid;
-
             foreach(var error in Errors.Where(error => !memo.Errors.Contains(error)))
             {
                 _fixedErrors.Add(error);

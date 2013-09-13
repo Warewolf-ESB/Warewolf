@@ -1,4 +1,5 @@
 ﻿using System;
+using Dev2.Communication;
 
 namespace Dev2.Studio.Core.Interfaces
 {
@@ -11,5 +12,6 @@ namespace Dev2.Studio.Core.Interfaces
         string ServerResourceType { get; set; }
         event Action<IContextualResourceModel> OnResourceSaved;
         event Action OnDataListChanged;
+        event EventHandler<DesignValidationMemo> OnDesignValidationReceived;
     }
 }

@@ -7,9 +7,11 @@ using System.Text;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics;
+using Dev2.Providers.Errors;
 using Dev2.Services.Events;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.AppResources.Messages;
@@ -61,6 +63,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         private ICommand _runCommand;
         private ICommand _saveCommand;
         private ICommand _editResourceCommand;
+        bool _hasMappingChange;
 
         #endregion private fields
 
@@ -132,6 +135,13 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 }
 
                 _workSurfaceViewModel = value;
+                if(_workSurfaceViewModel == null)
+                {
+                    if(ContextualResourceModel != null)
+                    {
+                        ContextualResourceModel.OnDesignValidationReceived -= ValidationMemoReceived;
+                    }
+                }
                 NotifyOfPropertyChange(() => WorkSurfaceViewModel);
 
                 var isWorkFlowDesigner = _workSurfaceViewModel is WorkflowDesignerViewModel;
@@ -139,6 +149,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 {
                     var workFlowDesignerViewModel = (WorkflowDesignerViewModel)_workSurfaceViewModel;
                     _contextualResourceModel = workFlowDesignerViewModel.ResourceModel;
+                    if(ContextualResourceModel != null)
+                    {
+                        ContextualResourceModel.OnDesignValidationReceived += ValidationMemoReceived;
+                    }
                 }
 
                 if(WorkSurfaceViewModel != null)
@@ -146,6 +160,18 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                     WorkSurfaceViewModel.ConductWith(this);
             }
         }
+        }
+
+        void ValidationMemoReceived(object sender, DesignValidationMemo designValidationMemo)
+        {
+            if(designValidationMemo.IsValid)
+            {
+                return;
+            }
+            if(designValidationMemo.Errors.Find(info => info.FixType == FixType.ReloadMapping)!=null)
+            {
+                _hasMappingChange = true;
+            }
         }
 
         public DebugWriter DebugWriter { get; set; }
@@ -464,7 +490,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             if(!isLocalSave)
             {
-                CheckForServerMessages(resource);
                 resource.IsWorkflowSaved = true;
             }
             Build(resource);
@@ -474,8 +499,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if(!isLocalSave)
             {
                 DisplaySaveResult(result, resource);
+                if(_hasMappingChange)
+                {
+                    CheckForServerMessages(resource);
+                    _hasMappingChange = false;
+                }
             }
-
             resource.Environment.ResourceRepository.Save(resource);
             EventPublisher.Publish(new UpdateDeployMessage());
         }

@@ -978,7 +978,8 @@ namespace Dev2.Runtime.Hosting
 
                 var messages = GetCompileMessages(resource, contents, beforeAction, smc);
                 if(messages != null)
-                {
+                { 
+                    CompileMessageRepo.Instance.AddMessage(workspaceID, messages); //Sends the message for the resource being saved
                     UpdateDependantResourceWithCompileMessages(workspaceID, resource, messages);
                 }
             }
@@ -1010,6 +1011,7 @@ namespace Dev2.Runtime.Hosting
             return messages;
         }
 
+        //Sends the messages for effected resources
         void UpdateDependantResourceWithCompileMessages(Guid workspaceID, IResource resource, IList<CompileMessageTO> messages)
         {
             var dependants = Instance.GetDependantsAsResourceForTrees(workspaceID, resource.ResourceName);
@@ -1024,9 +1026,9 @@ namespace Dev2.Runtime.Hosting
                     compileMessageTO.UniqueID = dependant.UniqueID;
                 }
                 UpdateResourceXML(workspaceID, affectedResource, messages);
-                    CompileMessageRepo.Instance.AddMessage(workspaceID, messages);
-                }
+                CompileMessageRepo.Instance.AddMessage(workspaceID, messages);
             }
+        }
 
         void UpdateResourceXML(Guid workspaceID, IResource effectedResource, IList<CompileMessageTO> compileMessagesTO)
         {

@@ -185,8 +185,8 @@ namespace Dev2.Core.Tests
             Setup();
             var instanceID = Guid.NewGuid();
             var pubMemo = new DesignValidationMemo { InstanceID = instanceID };
-            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error." });
-            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Warning, Message = "Warning error." });
+            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error.", InstanceID = instanceID });
+            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Warning, Message = "Warning error.", InstanceID = instanceID });
 
             var eventPublisher = new EventPublisher();
             var connection = new Mock<IEnvironmentConnection>();
@@ -209,6 +209,39 @@ namespace Dev2.Core.Tests
                     var modelError = model.Errors.FirstOrDefault(me => me.ErrorType == error.ErrorType && me.Message == error.Message);
                     Assert.AreSame(error, modelError, "OnDesignValidationReceived did not set the error.");
                 }
+            };
+
+            eventPublisher.Publish(pubMemo);
+        }
+        
+        [TestMethod]
+        [TestCategory("ResourceModel_DesignValidationService")]
+        [Description("Design validation memo errors must be added to the errors list.")]
+        [Owner("Trevor Williams-Ros")]
+        public void ResourceModel_UnitTest_DesignValidationServicePublishingMemo_NoInstanceID_DoesNotUpdatesErrors()
+        {
+            Setup();
+            var instanceID = Guid.NewGuid();
+            var pubMemo = new DesignValidationMemo { InstanceID = instanceID };
+            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error." });
+            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Warning, Message = "Warning error." });
+
+            var eventPublisher = new EventPublisher();
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(e => e.ServerEvents).Returns(eventPublisher);
+
+            var environmentModel = new Mock<IEnvironmentModel>();
+            environmentModel.Setup(e => e.Connection).Returns(connection.Object);
+
+            var model = new ResourceModel(environmentModel.Object)
+            {
+                ID = instanceID
+            };
+
+            model.OnDesignValidationReceived += (sender, memo) =>
+            {
+                Assert.AreEqual(memo.Errors.Count, model.Errors.Count, "OnDesignValidationReceived did not update the number of errors correctly.");
+                Assert.AreEqual(2, model.Errors.Count, "OnDesignValidationReceived did not update the number of errors correctly.");                
             };
 
             eventPublisher.Publish(pubMemo);
@@ -254,8 +287,8 @@ namespace Dev2.Core.Tests
 
             // Publish 2 errors
             var pubMemo = new DesignValidationMemo { InstanceID = instanceID };
-            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error." });
-            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Warning, Message = "Warning error." });
+            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error.", InstanceID = instanceID });
+            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Warning, Message = "Warning error.", InstanceID = instanceID });
             eventPublisher.Publish(pubMemo);
 
             // Fix 1 error and publish
@@ -304,8 +337,8 @@ namespace Dev2.Core.Tests
 
             // Publish 2 errors
             var pubMemo = new DesignValidationMemo { InstanceID = instanceID };
-            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error." });
-            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Warning, Message = "Warning error." });
+            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error.",InstanceID = instanceID});
+            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Warning, Message = "Warning error.", InstanceID = instanceID });
             eventPublisher.Publish(pubMemo);
 
             // Fix 1 error and publish

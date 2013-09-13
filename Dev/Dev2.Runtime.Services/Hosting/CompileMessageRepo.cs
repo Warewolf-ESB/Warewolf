@@ -246,8 +246,7 @@ namespace Dev2.Runtime.Hosting
 
                 // now add new messages ;)
                 foreach (var msg in msgs)
-                    {
-
+                {
                     messages.Add(msg);
                 }
                 _allMessages.OnNext(messages);
