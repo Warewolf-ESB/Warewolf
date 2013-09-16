@@ -152,7 +152,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                     if(ContextualResourceModel != null)
                     {
                         ContextualResourceModel.OnDesignValidationReceived += ValidationMemoReceived;
-                    }
+                }
                 }
 
                 if(WorkSurfaceViewModel != null)
@@ -389,11 +389,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             GetServiceInputDataFromUser(debugInfoModel);
         }
 
-        public void Build()
-        {
-            Build(ContextualResourceModel, false);
-        }
-
         public void StopExecution()
         {
             SetDebugStatus(DebugStatus.Stopping);
@@ -490,9 +485,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             if(!isLocalSave)
             {
-                resource.IsWorkflowSaved = true;
+                CheckForServerMessages(resource);
+                
             }
-            Build(resource);
 
             var result = _workspaceItemRepository.UpdateWorkspaceItem(resource, isLocalSave);
 
@@ -505,8 +500,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                     _hasMappingChange = false;
                 }
             }
-            resource.Environment.ResourceRepository.Save(resource);
+
+            var saveResult = resource.Environment.ResourceRepository.Save(resource);
+            DispatchServerDebugMessage(saveResult, resource);
             EventPublisher.Publish(new UpdateDeployMessage());
+            resource.IsWorkflowSaved = true;
         }
 
         void CheckForServerMessages(IContextualResourceModel resource)
@@ -524,13 +522,13 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 return;
             }
-            CompileMessageList compileMessageList = JsonConvert.DeserializeObject<CompileMessageList>(compileMessagesFromServer);
+            var compileMessageList = JsonConvert.DeserializeObject<CompileMessageList>(compileMessagesFromServer);
             if(compileMessageList.Count == 0)
             {
                 return;
             }
             var numberOfDependants = compileMessageList.Dependants.Count;
-            ResourceChangedDialog dialog = new ResourceChangedDialog(resource, numberOfDependants, StringResources.MappingChangedWarningDialogTitle);
+            var dialog = new ResourceChangedDialog(resource, numberOfDependants, StringResources.MappingChangedWarningDialogTitle);
             dialog.ShowDialog();
             if(dialog.OpenDependencyGraph)
             {
@@ -553,56 +551,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             var debugstate = DebugStateFactory.Create(message, resource);
             EventPublisher.Publish(new DebugWriterWriteMessage(debugstate));
-        }
-
-        void Build(IContextualResourceModel resource, bool deploy = true)
-        {
-            if(resource == null || resource.Environment == null || !resource.Environment.IsConnected)
-            {
-                return;
-            }
-
-            var sb = new StringBuilder();
-            dynamic buildRequest = new UnlimitedObject();
-
-            if(!deploy)
-            {
-                buildRequest.Service = "CompileResourceService";
-            }
-            else
-            {
-                buildRequest.Service = "SaveResourceService";
-                buildRequest.Roles = String.Join(",", _securityContext.Roles);
-            }
-
-            sb.AppendLine(String.Format("<Build StartDate=\"{0}\">", DateTime.Now.ToString(CultureInfo.InvariantCulture)));
-
-            if(resource.ResourceType == ResourceType.WorkflowService)
-            {
-                sb.AppendLine(String.Format("<Build WorkflowName=\"{0}\" />", resource.ResourceName));
-            }
-            else if(resource.ResourceType == ResourceType.Service)
-            {
-                sb.AppendLine(String.Format("<Build Service=\"{0}\" />", resource.ResourceName));
-            }
-            else if(resource.ResourceType == ResourceType.Source)
-            {
-                sb.AppendLine(String.Format("<Build Source=\"{0}\" />", resource.ResourceName));
-            }
-
-            buildRequest.ResourceXml = resource.ToServiceDefinition();
-
-            Guid workspaceID = ((IStudioClientContext)resource.Environment.DsfChannel).WorkspaceID;
-
-            string result =
-                resource.Environment.DsfChannel.
-                      ExecuteCommand(buildRequest.XmlString, workspaceID, GlobalConstants.NullDataListID) ??
-                string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, buildRequest.Service);
-
-            sb.AppendLine(result);
-            sb.AppendLine(String.Format("</Build>"));
-
-            DispatchServerDebugMessage(sb.ToString(), resource);
         }
 
         void Debug()

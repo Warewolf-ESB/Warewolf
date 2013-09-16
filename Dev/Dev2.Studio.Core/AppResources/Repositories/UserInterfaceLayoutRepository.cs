@@ -57,9 +57,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return All().FirstOrDefault(func);
         }
 
-        public void Save(UserInterfaceLayoutModel instanceObj)
+        public string Save(UserInterfaceLayoutModel instanceObj)
         {
-            if (instanceObj == null) return;
+            if (instanceObj == null) return "Not Saved";
 
             string file;
             if (_userInterfaceLayoutModels.TryGetValue(instanceObj, out file))
@@ -98,6 +98,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
 
             FilePersistenceProvider.Write(file, instanceObj.MainViewDockingData);
+            return "Saved";
         }
 
         public void Save(ICollection<UserInterfaceLayoutModel> instanceObjs)

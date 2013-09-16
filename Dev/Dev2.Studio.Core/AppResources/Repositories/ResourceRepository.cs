@@ -198,22 +198,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return null;
         }
 
-        public void Save(IResourceModel instanceObj)
+        public string Save(IResourceModel instanceObj)
         {
-            var workflow =
-                FindSingle(
-                    c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase));
+            var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase));
             if(workflow == null)
             {
                 _resourceModels.Add(instanceObj);
             }
-
-            dynamic package = new UnlimitedObject();
-            package.Service = "SaveResourceService";
-            package.ResourceXml = instanceObj.ToServiceDefinition();
-            package.Roles = string.Join(",", _securityContext.Roles);
-
-            ExecuteCommand(_environmentModel, package, false);
+            return SaveResource(_environmentModel, instanceObj.ToServiceDefinition(),_securityContext.Roles);
         }
 
         public void Rename(string resourceID, string newName)
@@ -683,12 +675,18 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 throw new ArgumentNullException("environment");
             }
 
+            string sourceDefinition = environment.ToSourceDefinition();
+            string[] securityRoles = environment.Connection.SecurityContext.Roles;
+            SaveResource(targetEnvironment, sourceDefinition, securityRoles);
+        }
+
+        static string SaveResource(IEnvironmentModel targetEnvironment, string resourceDefinition, string[] securityRoles)
+        {
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = "SaveResourceService";
-            dataObj.ResourceXml = environment.ToSourceDefinition();
-            dataObj.Roles = string.Join(",", environment.Connection.SecurityContext.Roles);
-
-            ExecuteCommand(targetEnvironment, dataObj, false);
+            dataObj.ResourceXml = resourceDefinition;
+            dataObj.Roles = string.Join(",", securityRoles);
+            return ExecuteCommand(targetEnvironment, dataObj, false) as string;
         }
 
         public static void RemoveEnvironment(IEnvironmentModel targetEnvironment, IEnvironmentModel environment)
@@ -814,7 +812,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 }
                 return resultObj;
             }
-            return result;
+            return result as string;
         }
 
         #endregion

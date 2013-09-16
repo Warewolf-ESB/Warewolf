@@ -830,6 +830,10 @@ namespace Dev2.Studio.ViewModels
 
         #region Overrides of ConductorBaseWithActiveItem<WorkSurfaceContextViewModel>
 
+        #endregion
+
+        #region Overrides of ConductorBaseWithActiveItem<WorkSurfaceContextViewModel>
+
         protected override void ChangeActiveItem(WorkSurfaceContextViewModel newItem, bool closePrevious)
         {
             if(_previousActive != null)
@@ -849,7 +853,9 @@ namespace Dev2.Studio.ViewModels
                 }
                 
             }
-            //GC.Collect(2);
+            GC.Collect(2);
+            GC.WaitForPendingFinalizers();
+            GC.Collect(2);
             base.ChangeActiveItem(newItem, closePrevious);
         }
 
@@ -870,15 +876,17 @@ namespace Dev2.Studio.ViewModels
                     ActivateItem(_previousActive);
                 }
 
-                //item.Dispose();
                 base.DeactivateItem(item, close);
+                item.Dispose();
                 CloseCurrent = true;
             }
             else
             {
                 CloseCurrent = false;
             }
-           // GC.Collect(2);
+            GC.Collect(2);
+            GC.WaitForFullGCComplete();
+            GC.Collect(2);
         }
 
 
@@ -974,12 +982,12 @@ namespace Dev2.Studio.ViewModels
                 {
                     var deletePrompt = String.Format(StringResources.DialogBody_ConfirmDelete, models.FirstOrDefault().ResourceName,
                         models.FirstOrDefault().ResourceType.GetDescription());
-                    var deleteAnswer = PopupProvider.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
+            var deleteAnswer = PopupProvider.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
                         MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
-                    var shouldDelete = deleteAnswer == MessageBoxResult.Yes;
-                    return shouldDelete;
-                }
+            var shouldDelete = deleteAnswer == MessageBoxResult.Yes;
+                return shouldDelete;
+            }
             }
             return false;
         }
@@ -992,11 +1000,11 @@ namespace Dev2.Studio.ViewModels
             }
 
             foreach(var contextualModel in models)
-            {
+        {
                 if (contextualModel == null)
-                {
+            {
                     continue;
-                }
+            }
 
                 DeleteContext(contextualModel);
                 _eventPublisher.Publish(new RemoveNavigationResourceMessage(contextualModel));
@@ -1007,25 +1015,25 @@ namespace Dev2.Studio.ViewModels
                 }
 
 
-                //If its deleted from loalhost, and is a server, also delete from repository
+            //If its deleted from loalhost, and is a server, also delete from repository
                 if(contextualModel.Environment.IsLocalHost())
-                {
+            {
                     if(contextualModel.ResourceType == ResourceType.Source)
-                    {
+                {
                         if(contextualModel.ServerResourceType == "Server")
-                        {
-                            var appserUri =
+                    {
+                        var appserUri =
                                 Core.EnvironmentRepository.GetAppServerUriFromConnectionString(
                                     contextualModel.ConnectionString);
-                            var environment = EnvironmentRepository.Get(appserUri);
+                        var environment = EnvironmentRepository.Get(appserUri);
 
-                            if(environment != null)
-                            {
-                                _eventPublisher.Publish(new EnvironmentDeletedMessage(environment));
-                                EnvironmentRepository.Remove(environment);
-                            }
+                        if(environment != null)
+                        {
+                            _eventPublisher.Publish(new EnvironmentDeletedMessage(environment));
+                            EnvironmentRepository.Remove(environment);
                         }
                     }
+                }
                 }
             }
         }
@@ -1287,13 +1295,20 @@ namespace Dev2.Studio.ViewModels
         /// <summary>
         ///     Saves all open tabs locally and writes the open tabs the to collection of workspace items
         /// </summary>
-        public void PersistTabs()
+        public bool PersistTabs()
         {
             SaveWorkspaceItems();
-            foreach(var ctx in Items)
+            var savingCompleted = false;
+            for(int index = 0; index < Items.Count; index++)
             {
+                var ctx = Items[index];
                 ctx.Save(true);
+                if(index == Items.Count-1)
+                {
+                    savingCompleted = true;
+                }
             }
+            return savingCompleted;
         }
 
         public bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e)

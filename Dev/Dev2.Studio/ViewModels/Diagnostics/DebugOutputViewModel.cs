@@ -84,10 +84,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         }
 
         public DebugOutputViewModel(IEventAggregator eventPublisher, IEnvironmentRepository environmentRepository, WorkSurfaceKey workSurfaceKey = null)
-        {
+            {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
-            _eventPublisher = eventPublisher;
+            _eventPublisher = eventPublisher;           
             EnvironmentRepository = environmentRepository;
             _debugOutputTreeGenerationStrategy = new DebugOutputTreeGenerationStrategy(EnvironmentRepository);
 
@@ -612,7 +612,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             RootItems.Clear();
             _contentItems.Clear();
             _pendingItems.Clear();
-            _debugOutputTreeGenerationStrategy = null;
+            _debugOutputTreeGenerationStrategy = null;            
             _debugOutputTreeGenerationStrategy = new DebugOutputTreeGenerationStrategy(EnvironmentRepository);
         }
 
@@ -787,11 +787,14 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         // BUG 9735 - 2013.06.22 - TWR : added
         void FlushPending()
         {
+            if(_pendingItems != null)
+            {
             while(_pendingItems.Count > 0)
             {
                 AddItemToTree(_pendingItems[0]);
                 _pendingItems.RemoveAt(0);
             }
+        }
         }
 
         #endregion
@@ -805,12 +808,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             // BUG 9735 - 2013.06.22 - TWR : added
             if(propertyName == "IsProcessing")
             {
-                FlushPending();
+                    FlushPending();
+                }
             }
-        }
 
         #endregion
-
 
         static void UpdateItems<T>(IEnumerable<DebugTreeViewItemViewModel> items, Action<T> update)
             where T : DebugTreeViewItemViewModel

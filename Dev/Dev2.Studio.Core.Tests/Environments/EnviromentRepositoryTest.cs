@@ -311,6 +311,30 @@ namespace Dev2.Core.Tests.Environments
         }
 
         [TestMethod]
+        public void EnvironmentRepository_Save_ValidEnvironmentModel_ReturnsASaveMessage()
+        {
+            var source = new Mock<IEnvironmentModel>();
+            var e1 = new Mock<IEnvironmentModel>();
+
+            var repo = new TestEnvironmentRespository(source.Object);
+             
+            var result = repo.Save(e1.Object);
+
+            Assert.AreEqual(result, "Saved");
+        }
+
+
+        [TestMethod]
+        public void EnvironmentRepository_Save_ValidEnvironmentModel_ReturnsNotSaveMessage()
+        {
+            var source = new Mock<IEnvironmentModel>();
+            var repo = new TestEnvironmentRespository(source.Object);
+            IEnvironmentModel e1 = null;
+            var result = repo.Save(e1);
+            Assert.AreEqual(result, "Not Saved");
+        }
+
+        [TestMethod]
         public void EnvironmentRepositorySaveWithSingleItemExpectedDoesNotInvokesWriteSession()
         {
             var source = new Mock<IEnvironmentModel>();

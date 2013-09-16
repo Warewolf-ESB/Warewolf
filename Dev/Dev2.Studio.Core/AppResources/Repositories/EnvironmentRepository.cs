@@ -172,13 +172,14 @@ namespace Dev2.Studio.Core
             }
         }
 
-        public void Save(IEnvironmentModel environment)
+        public string Save(IEnvironmentModel environment)
         {
             if(environment == null)
             {
-                return;
+                return "Not Saved";
             }
             AddInternal(environment);
+            return "Saved";
         }
 
         #endregion

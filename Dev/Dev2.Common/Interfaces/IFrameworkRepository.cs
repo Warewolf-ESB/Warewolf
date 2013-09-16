@@ -7,7 +7,7 @@ namespace Dev2 {
         ICollection<T> All();
         ICollection<T> Find(Expression<Func<T, bool>> expression);
         T FindSingle(Expression<Func<T, bool>> expression);
-        void Save(T instanceObj);
+        string Save(T instanceObj);
         void Save(ICollection<T> instanceObjs);
         event EventHandler ItemAdded;
         void Load();

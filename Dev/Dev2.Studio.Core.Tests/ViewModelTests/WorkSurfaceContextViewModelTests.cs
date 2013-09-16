@@ -164,29 +164,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             //------------Assert Results-------------------------
             Assert.AreEqual(0, workSurfaceContextViewModel.DebugOutputViewModel.ContentItemCount);
         }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("WorkSurfaceContextViewModel_Build")]
-        public void WorkSurfaceContextViewModel_Build_WithResourceModel_ExecutesCommand()
-        {
-            //------------Setup for test--------------------------
-            WorkSurfaceContextViewModel workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel();
-            var contextualResourceModelMock = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            var mockDsfChannel = new Mock<IStudioClientContext>();
-            mockDsfChannel.Setup(context => context.WorkspaceID).Returns(Guid.NewGuid());
-            mockEnvironmentModel.Setup(model => model.DsfChannel).Returns(mockDsfChannel.Object);
-            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
-            mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(new Mock<IResourceRepository>().Object);
-            contextualResourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
-            workSurfaceContextViewModel.WorkSurfaceViewModel = new WorkflowDesignerViewModelMock(contextualResourceModelMock.Object,new Mock<IWorkflowHelper>().Object);
-            //------------Execute Test---------------------------
-            workSurfaceContextViewModel.Build();
-            //------------Assert Results-------------------------
-            mockDsfChannel.Verify(channel => channel.ExecuteCommand(It.IsAny<string>(),It.IsAny<Guid>(),It.IsAny<Guid>()),Times.Once());
-        }
-
+        
         static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel(IEnvironmentModel environmentModel)
         {
             CompositionInitializer.InitializeForMeflessBaseViewModel();

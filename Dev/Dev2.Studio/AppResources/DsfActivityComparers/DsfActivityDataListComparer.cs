@@ -34,154 +34,100 @@ namespace Dev2.Studio {
             }
         }
 
-        static List<string> DsfTransformActivityContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem) {
-            List<string> containingFeilds = new List<string>();
-            string comparisonValue = string.IsNullOrEmpty(dataListItem.Name) ? string.Empty : string.Format("[[{0}]]", dataListItem.Name);
+        static List<string> DsfTransformActivityContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem)
+        {
+            var containingFeilds = new List<string>();
+            var comparisonValue = string.IsNullOrEmpty(dataListItem.Name) ? string.Empty : string.Format("[[{0}]]", dataListItem.Name);
 
             var transformationProperty = objectToCheck.Properties["Transformation"];
             var transformationElementNameProperty = objectToCheck.Properties["TransformElementName"];
             var rootTagProperty = objectToCheck.Properties["RootTag"];
 
-            if (transformationProperty != null) {
+            if(transformationProperty != null)
+            {
                 var transformation = transformationProperty.ComputedValue == null ? string.Empty : transformationProperty.ComputedValue.ToString();
-                if (!string.IsNullOrEmpty(transformation) && !string.IsNullOrEmpty(comparisonValue)) {
-                    var verifyedParts = BuildParts(transformation);
-                    foreach (string item in verifyedParts) {
-                        string test = dataListItem.DisplayName;
-                        string test2 = dataListItem.DisplayName;
-                        if (dataListItem.DisplayName.Contains("(")) {
-                            int startIndex = dataListItem.DisplayName.IndexOf("(") + 1;
-                            test = dataListItem.DisplayName.Remove(startIndex);
-                            if (dataListItem.DisplayName.Contains(")")) {
-                                startIndex = dataListItem.DisplayName.IndexOf(")");
-                                test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
-                                if (item.Contains(test) && item.Contains(test2)) {
-                                    containingFeilds.Add("Transformation");
-                                    break;
-                                }
-                            }
-                        }
-                        else {
-                            test = dataListItem.DisplayName;
-                            if (item.Equals(test)) {
-                                containingFeilds.Add("Transformation");
-                                break;
-                            }
-                        }
-                    }
+                if(!string.IsNullOrEmpty(transformation) && !string.IsNullOrEmpty(comparisonValue))
+                {
+                    ValidateItemsWithElement(dataListItem, transformation, containingFeilds, "Transformation");
                 }
             }
 
-            if (transformationElementNameProperty != null) {
+            if(transformationElementNameProperty != null)
+            {
                 var transformationElementName = transformationElementNameProperty.ComputedValue == null ? string.Empty : transformationElementNameProperty.ComputedValue.ToString();
-                if (!string.IsNullOrEmpty(transformationElementName) && !string.IsNullOrEmpty(comparisonValue)) {
-                    if (!transformationElementName.StartsWith("[[") && !transformationElementName.EndsWith("]]")) {
+                if(!string.IsNullOrEmpty(transformationElementName) && !string.IsNullOrEmpty(comparisonValue))
+                {
+                    if(!transformationElementName.StartsWith("[[") && !transformationElementName.EndsWith("]]"))
+                    {
                         transformationElementName = "[[" + transformationElementName + "]]";
                     }
-                    var verifyedParts = BuildParts(transformationElementName);
-                    foreach (string item in verifyedParts) {
-                        string test = dataListItem.DisplayName;
-                        string test2 = dataListItem.DisplayName;
-                        if (dataListItem.DisplayName.Contains("(")) {
-                            int startIndex = dataListItem.DisplayName.IndexOf("(") + 1;
-                            test = dataListItem.DisplayName.Remove(startIndex);
-                            if (dataListItem.DisplayName.Contains(")")) {
-                                startIndex = dataListItem.DisplayName.IndexOf(")");
-                                test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
-                                if (item.Contains(test) && item.Contains(test2)) {
-                                    containingFeilds.Add("TransformElementName");
-                                    break;
-                                }
-                            }
-                        }
-                        else {
-                            test = dataListItem.DisplayName;
-                            if (item.Equals(test)) {
-                                containingFeilds.Add("TransformElementName");
-                                break;
-                            }
-                        }
-                    }
+                    ValidateItemsWithElement(dataListItem, transformationElementName, containingFeilds, "TransformElementName");
                 }
             }
 
-            if (rootTagProperty != null) {
+            if(rootTagProperty != null)
+            {
                 var rootTag = rootTagProperty.ComputedValue == null ? string.Empty : rootTagProperty.ComputedValue.ToString();
-                if (!string.IsNullOrEmpty(rootTag) && !string.IsNullOrEmpty(comparisonValue)) {
-                    if (!rootTag.StartsWith("[[") && !rootTag.EndsWith("]]")) {
+                if(!string.IsNullOrEmpty(rootTag) && !string.IsNullOrEmpty(comparisonValue))
+                {
+                    if(!rootTag.StartsWith("[[") && !rootTag.EndsWith("]]"))
+                    {
                         rootTag = "[[" + rootTag + "]]";
                     }
-                    var verifyedParts = BuildParts(rootTag);
-                    foreach (string item in verifyedParts) {
-                        string test = dataListItem.DisplayName;
-                        string test2 = dataListItem.DisplayName;
-                        if (dataListItem.DisplayName.Contains("(")) {
-                            int startIndex = dataListItem.DisplayName.IndexOf("(") + 1;
-                            test = dataListItem.DisplayName.Remove(startIndex);
-                            if (dataListItem.DisplayName.Contains(")")) {
-                                startIndex = dataListItem.DisplayName.IndexOf(")");
-                                test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
-                                if (item.Contains(test) && item.Contains(test2)) {
-                                    containingFeilds.Add("RootTag");
-                                    break;
-                                }
-                            }
-                        }
-                        else {
-                            test = dataListItem.DisplayName;
-                            if (item.Equals(test)) {
-                                containingFeilds.Add("RootTag");
-                                break;
-                            }
-                        }
-                    }
+                    ValidateItemsWithElement(dataListItem, rootTag, containingFeilds, "RootTag");
                 }
             }
-
             return containingFeilds;
         }
 
-        
+        static void ValidateItemsWithElement(IDataListItemModel dataListItem, string buildPartsName, List<string> containingFeilds, string nameForContainingFields)
+        {
+            var verifyedParts = BuildParts(buildPartsName);
+            foreach(string item in verifyedParts)
+            {
+                string test = dataListItem.DisplayName;
+                string test2 = dataListItem.DisplayName;
+                if(dataListItem.DisplayName.Contains("("))
+                {
+                    int startIndex = dataListItem.DisplayName.IndexOf("(") + 1;
+                    test = dataListItem.DisplayName.Remove(startIndex);
+                    if(dataListItem.DisplayName.Contains(")"))
+                    {
+                        startIndex = dataListItem.DisplayName.IndexOf(")");
+                        test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
+                        if(item.Contains(test) && item.Contains(test2))
+                        {
+                            containingFeilds.Add(nameForContainingFields);
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    test = dataListItem.DisplayName;
+                    if(item.Equals(test))
+                    {
+                        containingFeilds.Add(nameForContainingFields);
+                        break;
+                    }
+                }
+            }
+        }
+
+
         static List<string> DsfForEachActivityContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem) {
-            List<string> containingFeilds = new List<string>();
-            string comparisonValue = string.IsNullOrEmpty(dataListItem.Name) ? string.Empty : string.Format("[[{0}]]", dataListItem.Name);
+            var containingFeilds = new List<string>();
+            var comparisonValue = string.IsNullOrEmpty(dataListItem.Name) ? string.Empty : string.Format("[[{0}]]", dataListItem.Name);
 
             var forEachElementNameProperty = objectToCheck.Properties["ForEachElementName"];
-            //var additionalDataProperty = objectToCheck.Properties["AdditionalData"];
-
             if (forEachElementNameProperty != null) {
                 var foreachElementName = forEachElementNameProperty.ComputedValue == null ? string.Empty : forEachElementNameProperty.ComputedValue.ToString();
                 if (!string.IsNullOrEmpty(foreachElementName) && !string.IsNullOrEmpty(comparisonValue)) {
                     if (foreachElementName.StartsWith("[[") && foreachElementName.EndsWith("]]")) {
-                        var verifyedParts = BuildParts(foreachElementName);
-                        foreach (string item in verifyedParts) {
-                            string test = dataListItem.DisplayName;
-                            string test2 = dataListItem.DisplayName;
-                            if (dataListItem.DisplayName.Contains("(")) {
-                                int startIndex = dataListItem.DisplayName.IndexOf("(") + 1;
-                                test = dataListItem.DisplayName.Remove(startIndex);
-                                if (dataListItem.DisplayName.Contains(")")) {
-                                    startIndex = dataListItem.DisplayName.IndexOf(")");
-                                    test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
-                                    if (item.Contains(test) && item.Contains(test2)) {
-                                        containingFeilds.Add("foreachElementName");
-                                        break;
-                                    }
-                                }
-                            }
-                            else {
-                                test = dataListItem.DisplayName;
-                                if (item.Equals(test)) {
-                                    containingFeilds.Add("foreachElementName");
-                                    break;
-                                }
-                            }
-                        }
+                        ValidateItemsWithElement(dataListItem, foreachElementName, containingFeilds, "foreachElementName");
                     }
                 }
             }
-
-           
             return containingFeilds;
         }
 
@@ -198,6 +144,7 @@ namespace Dev2.Studio {
                     if (!fieldValue.StartsWith("[[") && !fieldValue.EndsWith("]]")) {
                         fieldValue = "[[" + fieldValue + "]]";
                     }
+                    ValidateItemsWithElement(dataListItem, fieldValue, containingFeilds, "FieldName");
                     var verifyedParts = BuildParts(fieldValue);
                     foreach (string item in verifyedParts) {
                         string test = dataListItem.DisplayName;

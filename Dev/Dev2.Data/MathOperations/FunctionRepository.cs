@@ -124,13 +124,14 @@ namespace Dev2.MathOperations {
         /// Save a collection of new user-defined functions to the function library
         /// </summary>
         /// <param name="instanceObj"></param>
-        public void Save(IFunction instanceObj) {
+        public string Save(IFunction instanceObj) {
             if(instanceObj != null) {
                 _functions.Add(instanceObj);
             }
             else {
                 throw new ArgumentNullException("Function cannot be null");
             }
+            return "Saved";
         }
 
         public event EventHandler ItemAdded;

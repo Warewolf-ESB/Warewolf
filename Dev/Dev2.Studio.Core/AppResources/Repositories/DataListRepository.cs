@@ -54,8 +54,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             instanceObjs.ToList().ForEach(datalist => _dataListViewModels.Add(datalist));
         }
 
-        public void Save(IDataListViewModel instanceObj) {
+        public string Save(IDataListViewModel instanceObj) {
             _dataListViewModels.Add(instanceObj);
+            return "Saved";
         }
 
         #region Implementation of IDisposable

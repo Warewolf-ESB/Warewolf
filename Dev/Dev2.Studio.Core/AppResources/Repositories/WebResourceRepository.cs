@@ -148,7 +148,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             throw new NotImplementedException();
         }
 
-        public void Save(IWebResourceViewModel instanceObj)
+        public string Save(IWebResourceViewModel instanceObj)
         {
             dynamic xml = new UnlimitedObject();
             xml.dstPathPart = instanceObj.Uri.Replace('/', '\\');
@@ -175,7 +175,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 instanceObj.Children.Add(instanceObj);
             }
-
+            return result;
         }
 
         #region Implementation of IDisposable
