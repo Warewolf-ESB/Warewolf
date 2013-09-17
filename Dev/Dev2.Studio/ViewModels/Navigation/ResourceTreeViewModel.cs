@@ -132,7 +132,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
-        private void HandleRename(string value, Window mainView)
+        protected void HandleRename(string value, Window mainView)
         {
             var resourceRepository = EnvironmentModel.ResourceRepository;
             if (resourceRepository.All().Any(res => res.ResourceName == value))

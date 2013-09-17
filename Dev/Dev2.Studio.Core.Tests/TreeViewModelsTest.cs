@@ -848,10 +848,10 @@ namespace Dev2.Core.Tests
 
             //Isolate rename resource unit
             var treeParent = new EnvironmentTreeViewModel(null, mockedEnvironment.Object);
-            var resourcetreeviewmodel = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, treeParent, mockedResourceModel.Object);
+            var resourcetreeviewmodel = new MockResourceTreeViewModel(new Mock<IDesignValidationService>().Object, treeParent, mockedResourceModel.Object);
 
             //------------Execute Test---------------------------
-            resourcetreeviewmodel.HandleRename(newResourceName, null);
+            resourcetreeviewmodel.TestRename(newResourceName);
 
             // Assert Dialog Shown
             mockedResourceRepo.Verify(repo => repo.Rename(oldResourceID.ToString(), newResourceName), Times.Never(), "Resource repository rename resource was called dispite a resource with the same name already there");

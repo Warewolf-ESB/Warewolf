@@ -16,5 +16,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             base.OnDesignValidationReceived(memo);
         }
+
+        public void TestRename(string newValue)
+        {
+            HandleRename(newValue, null);
+        }
     }
 }
