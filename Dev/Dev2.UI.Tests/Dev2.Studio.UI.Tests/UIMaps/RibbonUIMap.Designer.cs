@@ -33,7 +33,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
         {
             UITestControl returnControl = new UITestControl();
             WpfTabList uIRibbonTabList = this.UIBusinessDesignStudioWindow.UIRibbonTabList;
-            int tabCount = uIRibbonTabList.Tabs.Count;
+            //int tabCount = uIRibbonTabList.Tabs.Count;
             foreach (WpfTabPage buttonList in uIRibbonTabList.Tabs)
             {
                 if (buttonList.FriendlyName == tabName)

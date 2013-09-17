@@ -200,7 +200,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             get
             {
                 return _saveCommand ??
-                       (_saveCommand = new RelayCommand(param => Save(), param => CanExecute));
+                       (_saveCommand = new RelayCommand(param => Save(), param => CanDebug()));
             }
         }
 
@@ -311,7 +311,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 return _viewInBrowserCommand ??
                        (_viewInBrowserCommand = new RelayCommand(param => ViewInBrowser(),
-                                                                 param => CanExecute));
+                                                    param => CanDebug()));
             }
         }
 

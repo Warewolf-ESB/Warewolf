@@ -9,7 +9,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
     public partial class RibbonUIMap
     {
         int loopCount = 0;
-        private WpfTabList uIRibbonTabList;
+        WpfTabList uIRibbonTabList;
+
         public void ClickRibbonMenu(string menuAutomationId)
         {
             // This needs some explaining :)
@@ -20,14 +21,14 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             // We then recusrsively call the method again with the now validated tab, and it works as itended.
             // Note: This recursive call will only happen the first time the ribbon is used, as it will subsequently be initialised correctly.
 
-            if (uIRibbonTabList == null)
+            if(uIRibbonTabList == null)
             {
-                uIRibbonTabList = this.UIBusinessDesignStudioWindow.UIRibbonTabList;    
+                uIRibbonTabList = this.UIBusinessDesignStudioWindow.UIRibbonTabList;
             }
-            
+
             UITestControlCollection tabList = uIRibbonTabList.Tabs;
             UITestControl theControl = new UITestControl();
-            foreach (WpfTabPage tabPage in tabList)
+            foreach(WpfTabPage tabPage in tabList)
             {
                 if(tabPage.Name == menuAutomationId)
                 {
@@ -35,11 +36,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
                     Point p = new Point(theControl.BoundingRectangle.X + 5, theControl.BoundingRectangle.Y + 5);
                     //if (theControl.BoundingRectangle.Width > 500)
                     //{
-                        //UITestControlCollection myCollection = theControl.GetChildren();
-                        //UITestControl testControl = myCollection[0].Container;
-                        p = new Point(theControl.GetChildren()[0].BoundingRectangle.X + 20, theControl.GetChildren()[0].BoundingRectangle.Y + 10);
-                        Mouse.Click(p);
-                        return;
+                    //UITestControlCollection myCollection = theControl.GetChildren();
+                    //UITestControl testControl = myCollection[0].Container;
+                    p = new Point(theControl.GetChildren()[0].BoundingRectangle.X + 20, theControl.GetChildren()[0].BoundingRectangle.Y + 10);
+                    Mouse.Click(p);
+                    return;
                     //}
                     //if (p.X > 5 && theControl.BoundingRectangle.Width > 500)
                     //{
@@ -58,9 +59,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
                     }
                 }
             }
-            
+
             // Somethign has gone wrong - Retry!
-            
+
             loopCount++; // This was added due to the infinite loop happening if the ribbon was totally unclickable due to a crash
             if(loopCount < 10)
             {
@@ -75,7 +76,14 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             Mouse.Click(p);
         }
 
+        public UITestControl GetControlByName(string name)
+        {
+            var children = UIBusinessDesignStudioWindow.GetChildren();
+            var control = children.SelectMany(c => c.GetChildren())
+                .Where(c => c.FriendlyName == name)                    
+                .ToList().FirstOrDefault();
+
+            return control;
+        }
     }
-
-
 }
