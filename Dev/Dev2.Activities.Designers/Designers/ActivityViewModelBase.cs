@@ -64,8 +64,6 @@ namespace Dev2.Activities.Designers
         {
             VerifyArgument.IsNotNull("modelItem", modelItem);
             ModelItem = modelItem;
-
-
         }
 
         public virtual void OnModelItemChanged(ModelItem newItem)

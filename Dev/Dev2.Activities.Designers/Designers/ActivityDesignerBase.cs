@@ -285,7 +285,7 @@ namespace Dev2.Activities.Designers
 
         public static readonly DependencyProperty HelpTextProperty =
             DependencyProperty.Register("HelpText", typeof(string),
-            typeof(ActivityDesignerBase), new PropertyMetadata(string.Empty, HelpTextChangedCallback));
+            typeof(ActivityDesignerBase));
 
 
         public List<IActionableErrorInfo> Errors
@@ -300,19 +300,7 @@ namespace Dev2.Activities.Designers
 
 
         private OverlayType _dragEnterOverlayType;
-
-        private static void HelpTextChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs args)
-        {
-            var designer = (ActivityDesignerBase)o;
-            var oldText = args.OldValue.ToString();
-            var newText = args.NewValue.ToString();
-
-            if(oldText != newText && !string.IsNullOrWhiteSpace(newText))
-            {
-                designer.OverlayAdorner.UpdateContentSize();
-            }
-        }
-
+        
         #endregion HelpText
 
         #endregion

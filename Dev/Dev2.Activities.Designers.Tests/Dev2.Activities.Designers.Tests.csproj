@@ -80,6 +80,7 @@
     <Compile Include="CollectionBaseViewModelTests\ActivityCollectionViewModelBaseTests.cs" />
     <Compile Include="CollectionBaseViewModelTests\Stubs\TestActivityCollectionViewModelBase.cs" />
     <Compile Include="DateTimeTests\DateTimeViewModelTests.cs" />
+    <Compile Include="GetWebRequestTests\GetWebRequestViewModelTests.cs" />
     <Compile Include="HelpViewModelTests\HelpViewModelTests.cs" />
     <Compile Include="MultiAssignTests\MultiAssignViewModelTests.cs" />
     <Compile Include="MultiAssignTests\ViewModel Stub\testDsfMultiAssignActivityViewModel.cs" />
@@ -126,6 +127,7 @@
       <Name>Dev2.Studio.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

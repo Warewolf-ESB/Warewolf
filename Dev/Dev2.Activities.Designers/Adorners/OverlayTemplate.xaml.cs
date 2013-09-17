@@ -4,20 +4,19 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Caliburn.Micro;
 using Dev2.Activities.Designers;
+using Dev2.Activities.Help;
 
 namespace Dev2.Activities.Adorners
 {
     /// <summary>
-    /// Interaction logic for OverlayTemplate.xaml
+    ///     Interaction logic for OverlayTemplate.xaml
     /// </summary>
     public partial class OverlayTemplate
     {
-        public const double ResizerWidth = 12 + 4;  // BottomRightResizeThumbStyle.Width + (???? -> manual adjustment so that collapsed resizer column does not overlap content)
-
         readonly ActivityViewModelBase _activityViewModel;
-        readonly double _buttonsContainerHeight;
-
+       
         public OverlayTemplate(Border colourBorder, OverlayAdorner adorner, ActivityViewModelBase activityViewModel)
         {
             InitializeComponent();
@@ -35,43 +34,28 @@ namespace Dev2.Activities.Adorners
             };
 
             OuterBorder.SetBinding(Border.BorderBrushProperty, borderBrushBinding);
-            _buttonsContainerHeight = ButtonsContainer.Height;
-            Caliburn.Micro.Bind.SetModel(HelpContent, adorner);
-            EnsureHelpVisibility();
-          
+            Bind.SetModel(HelpContent, adorner);
+            HelpContent.Width = HelpView.DefaultWidth;
+            ToggleHelpVisibility();
         }
-
-        public double ActualHelpWidth { get { return ResizerWidth + (IsHelpViewCollapsed ? 0 : Help.HelpView.DefaultWidth); } }
 
         bool IsHelpViewCollapsed
         {
-            get { return _activityViewModel.IsHelpViewCollapsed; }
+            get
+            {
+                return _activityViewModel.IsHelpViewCollapsed;
+            } 
             set
             {
-                if(_activityViewModel.IsHelpViewCollapsed == value)
-                {
-                    return;
-                }
-                EnsureHelpVisibility(value);
+                _activityViewModel.IsHelpViewCollapsed = value;
             }
         }
 
-        public void EnsureHelpVisibility()
+        private void ToggleHelpVisibility()
         {
-            EnsureHelpVisibility(IsHelpViewCollapsed);
-        }
-
-        void EnsureHelpVisibility(bool isHelpViewCollapsed)
-        {
-            _activityViewModel.IsHelpViewCollapsed = isHelpViewCollapsed;
-            ThumbResizeBehavior.MinWidthOffset = ActualHelpWidth;
-            ThumbResizeBehavior.MinHeightOffset = _buttonsContainerHeight;
-            AdornerHelpScrollViewer.Visibility = isHelpViewCollapsed ? Visibility.Collapsed : Visibility.Visible;
-
+            HelpContent.Visibility = IsHelpViewCollapsed ? Visibility.Collapsed : Visibility.Visible;
             HelpExpandCollapseButtonImage.Source = GetHelpToggleButtonImage();
             HelpExpandCollapseButtonImage.ToolTip = GetHelpToolTipText();
-
-            UpdateContentSize();
         }
 
         string GetHelpToolTipText()
@@ -83,9 +67,9 @@ namespace Dev2.Activities.Adorners
         {
             var logo = new BitmapImage();
             logo.BeginInit();
-            var imageSource = IsHelpViewCollapsed ?
-                                  "pack://application:,,,/Dev2.Activities.Designers;component/Images/HelpTextExpander-16.png" :
-                                  "pack://application:,,,/Dev2.Activities.Designers;component/Images/HelpTextCollapser-16.png";
+            string imageSource = IsHelpViewCollapsed ?
+                                     "pack://application:,,,/Dev2.Activities.Designers;component/Images/HelpTextExpander-16.png" :
+                                     "pack://application:,,,/Dev2.Activities.Designers;component/Images/HelpTextCollapser-16.png";
             logo.UriSource = new Uri(imageSource);
             logo.EndInit();
             return logo;
@@ -94,20 +78,7 @@ namespace Dev2.Activities.Adorners
         void HelpExpandCollapseButtonImageOnMouseDown(object sender, MouseButtonEventArgs e)
         {
             IsHelpViewCollapsed = !IsHelpViewCollapsed;
-        }
-
-        public void UpdateContentSize()
-        {
-            var content = ContentPresenter.Content as FrameworkElement;
-            if(content == null)
-            {
-                return;
-            }
-            var minHeight = content.MinHeight + _buttonsContainerHeight;
-            var minWidth = content.MinWidth + ActualHelpWidth;
-
-            OuterBorder.Height = double.IsNaN(OuterBorder.Height) ? minHeight : Math.Max(OuterBorder.Height, minHeight);
-            OuterBorder.Width = double.IsNaN(OuterBorder.Width) ? minWidth : Math.Max(OuterBorder.Width, minWidth);
+            ToggleHelpVisibility();
         }
     }
 }

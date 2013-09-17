@@ -1,4 +1,6 @@
 ﻿
+using System.Windows;
+
 namespace Dev2.Activities.Designers.DsfMultiAssign
 {
     public partial class DsfMultiAssignActivityTemplate
@@ -20,5 +22,11 @@ namespace Dev2.Activities.Designers.DsfMultiAssign
         }
 
         #endregion
+
+        void FrameworkElement_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var element = (FrameworkElement)sender;
+            element.Focus();
+        }
     }
 }

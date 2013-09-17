@@ -14,7 +14,7 @@
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource GroupBoxBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="5 7" />
+        <Setter Property="Padding" Value="2" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>

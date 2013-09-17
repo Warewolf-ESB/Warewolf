@@ -1,5 +1,6 @@
 ﻿using Dev2.Activities;
 using Dev2.Activities.Designers.DsfDateTime;
+using Dev2.Activities.Designers.DsfGetWebRequest;
 using Dev2.Activities.Designers.DsfMultiAssign;
 using Dev2.Studio.ActivityDesigners.Scripting;
 using Dev2.Studio.ViewModels.Workflow;
@@ -60,8 +61,8 @@ namespace Dev2.Studio.ActivityDesigners
                     {typeof (DsfScriptingJavaScriptActivity), typeof (DsfScriptingJavaScriptDesigner)},
                     {typeof (DsfScriptingActivity), typeof (DsfScriptingActivityDesigner)},
                     {typeof (DsfXPathActivity), typeof (DsfXPathActivityDesigner)},
-                    {typeof (DsfUniqueActivity), typeof (DsfUniqueActivityDesigner)}
-
+                    {typeof (DsfUniqueActivity), typeof (DsfUniqueActivityDesigner)},
+                    {typeof (DsfWebGetRequestActivity), typeof (DsfGetWebRequestActivityDesigner)}
                     // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
                 };
 

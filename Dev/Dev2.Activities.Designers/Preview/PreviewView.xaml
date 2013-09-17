@@ -4,24 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Dev2.Activities.Preview"
-             xmlns:help="clr-namespace:Dev2.Activities.Help"    
-             
-             mc:Ignorable="d"
+             xmlns:help="clr-namespace:Dev2.Activities.Help"
+    xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
+    mc:Ignorable="d"
              d:DesignWidth="250"
              d:DataContext="{d:DesignInstance local:PreviewViewModel}">
-    <GroupBox x:Name="PreviewGroupBox"
+    <GroupBox x:Name="PreviewGroupBox" Margin="2"
               Style="{StaticResource ActivityGroupBoxStyle}"
-              VerticalContentAlignment="Top"   
-              Padding="0,-10,0,0"
-              >
+              VerticalContentAlignment="Stretch"   
+              Width="Auto">
         <GroupBox.Header>
-            <TextBlock Text="Preview" Margin="0,-10,0,0"></TextBlock>
+            <TextBlock Text="Preview" Margin="1" Padding="1"></TextBlock>
         </GroupBox.Header>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <!-- 
                     DO NOT USE ActivityDataGridStyle because ...
@@ -31,7 +30,7 @@
             <DataGrid Grid.Row="0"    
                       x:Name="InputsDataGrid"
                       IsTabStop="False"
-                      ItemsSource="{Binding Inputs}"
+                      ItemsSource="{Binding Inputs, Mode=TwoWay}"
                       MinHeight="27"
                       MaxHeight="102"
                       Width="Auto"
@@ -74,12 +73,12 @@
 
                 <DataGrid.Columns>
                     <!--<DataGridTemplateColumn IsReadOnly="True" MaxWidth="{Binding ElementName=InputsDataGrid, Path=ActualWidth, Converter={StaticResource PercentageConverter}, ConverterParameter=0.5}">-->
-                    <DataGridTemplateColumn IsReadOnly="True" Width="Auto">
+                    <DataGridTemplateColumn IsReadOnly="True" MinWidth="80" >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Key}"
                                            Padding="3,0"
-                                           VerticalAlignment="Center" />
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -91,18 +90,20 @@
                                 <TextBlock Padding="3,0"
                                            Text="="
                                            VerticalAlignment="Center"
-                                           HorizontalAlignment="Center" />
+                                           HorizontalAlignment="Left" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Width="0.70*">
+                    <DataGridTemplateColumn Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBox Height="23"
-                                         Margin="0,1" Text="{Binding Value}"
+                                <TextBox Height="23" 
+                                         Margin="1" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          Style="{StaticResource ActivityTextBoxStyle}"
-                                         help:HelpText.Text="{x:Static help:HelpTextResources.PreviewInputHelpText}" />
+                                         HorizontalAlignment="Stretch"
+                                         help:HelpText.Text="{x:Static help:HelpTextResources.PreviewInputHelpText}" 
+                                         attachedProperties:FocusSetter.IsFocused="{Binding IsPreviewFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -118,19 +119,22 @@
                         Style="{StaticResource ActivityDesignerButtonStyle}"></Button>
             </StackPanel>
 
-            <TextBox Grid.Row="2"
-                     Text="{Binding Output}"
-                     IsTabStop="False"
+            <TextBox Text="{Binding Output}"
+                     Grid.Row="2"
                      IsReadOnly="True"
-                     Style="{StaticResource ActivityTextBoxStyle}"
                      Margin="0"
-                     HorizontalAlignment="Stretch"
-                     VerticalContentAlignment="Center"
+                     MinHeight="50"
+                     MaxHeight="400"
                      Height="Auto"
-                     MinHeight="27"
-                     MaxHeight="62"
-                     ScrollViewer.VerticalScrollBarVisibility="Auto"
-                     VerticalScrollBarVisibility="Auto" />
+                     IsTabStop="False"
+                     Focusable="False"
+                     TextWrapping="Wrap"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Stretch"
+                     HorizontalContentAlignment="Stretch"
+                     VerticalContentAlignment="Stretch"
+                     VerticalScrollBarVisibility="Auto"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto" />
         </Grid>
     </GroupBox>
 </UserControl>

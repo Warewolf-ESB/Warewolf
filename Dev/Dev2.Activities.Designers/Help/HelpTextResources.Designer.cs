@@ -423,5 +423,33 @@ namespace Dev2.Activities.Help {
                 return ResourceManager.GetString("QuickVariableVariableListHelpText", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put any additional request-header information here..
+        /// </summary>
+        public static string WebRequestHeaderHelpText {
+            get {
+                return ResourceManager.GetString("WebRequestHeaderHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Will hold the response HTML.
+        ///Only variables in [[Scalar]] or [[Recordset(*).Field]] format. If you use a recordset and do not specify an index/row number, a new record will be added..
+        /// </summary>
+        public static string WebRequestResultHelpText {
+            get {
+                return ResourceManager.GetString("WebRequestResultHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The URI you would like to receive the HTML response from..
+        /// </summary>
+        public static string WebRequestURIHelpText {
+            get {
+                return ResourceManager.GetString("WebRequestURIHelpText", resourceCulture);
+            }
+        }
     }
 }

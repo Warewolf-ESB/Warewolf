@@ -1,0 +1,45 @@
+﻿<designers:ActivityTemplate x:Class="Dev2.Activities.Designers.DsfGetWebRequest.DsfGetWebRequestActivityTemplate"
+                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                            xmlns:dev2="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                            xmlns:designers="clr-namespace:Dev2.Activities.Designers"
+                            mc:Ignorable="d" 
+                            MinHeight="40">  
+
+    <designers:ActivityTemplate.Resources>
+        <ResourceDictionary x:Name="Resources" 
+                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Designers/DsfActivityResources.xaml"/>
+    </designers:ActivityTemplate.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Column="0" Grid.Row="0" Content="URL" VerticalAlignment="Bottom"/>
+        <dev2:IntellisenseTextBox Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="0"
+                                  Name="FocusedTextBox"
+                                  DefaultText="http://mywebpage.com"
+                                  Style="{StaticResource ActivityIntellisenseTextBoxStyle}" Width="200"
+                                  Text="{Binding Path=Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                                  Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
+                                  Loaded="FocusedTextBox_OnLoaded"
+                                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}"/>
+
+        <Label Grid.Column="0" Grid.Row="1" Content="Result" VerticalAlignment="Bottom"/>
+        <dev2:IntellisenseTextBox Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1"
+                                  DefaultText="[[HTML]]"
+                                  WrapInBrackets="True"
+                                  Style="{StaticResource ActivityIntellisenseTextBoxStyle}" Width="200"
+                                  Text="{Binding Path=Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InputFormattxt_AutoID}"/>
+
+    </Grid>
+</designers:ActivityTemplate>

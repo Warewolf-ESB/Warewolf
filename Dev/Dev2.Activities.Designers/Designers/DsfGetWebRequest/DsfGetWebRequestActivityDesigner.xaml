@@ -1,0 +1,16 @@
+﻿<designers:ActivityDesignerBase x:Class="Dev2.Activities.Designers.DsfGetWebRequest.DsfGetWebRequestActivityDesigner"
+                                x:TypeArguments="dsfWebRequest:DsfGetWebRequestActivityViewModel"
+                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                xmlns:dsfWebRequest="clr-namespace:Dev2.Activities.Designers.DsfGetWebRequest"
+                                xmlns:designers="clr-namespace:Dev2.Activities.Designers"
+                                xmlns:adorners="clr-namespace:Dev2.Activities.Adorners"
+                                IconLocation="pack://application:,,,/Dev2.Activities.Designers;component/Images/ToolGetWebRequest-32.png">
+
+    <designers:ActivityDesignerBase.Adorners>
+        <adorners:LargeViewOverlayAdornerPresenter>
+            <dsfWebRequest:DsfGetWebRequestActivityOverlayTemplate/>
+        </adorners:LargeViewOverlayAdornerPresenter>
+    </designers:ActivityDesignerBase.Adorners>
+    <dsfWebRequest:DsfGetWebRequestActivityTemplate/>
+</designers:ActivityDesignerBase>

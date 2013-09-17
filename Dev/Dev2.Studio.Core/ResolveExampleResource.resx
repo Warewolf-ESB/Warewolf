@@ -123,4 +123,7 @@
   <data name="DsfMultiAssignActivity" xml:space="preserve">
     <value>Utility - Assign</value>
   </data>
+  <data name="DsfWebGetRequestActivity" xml:space="preserve">
+    <value>Utility - Web Request</value>
+  </data>
 </root>

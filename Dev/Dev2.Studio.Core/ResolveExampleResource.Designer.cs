@@ -77,5 +77,14 @@ namespace Dev2 {
                 return ResourceManager.GetString("DsfMultiAssignActivity", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Utility - Web Request.
+        /// </summary>
+        internal static string DsfWebGetRequestActivity {
+            get {
+                return ResourceManager.GetString("DsfWebGetRequestActivity", resourceCulture);
+            }
+        }
     }
 }

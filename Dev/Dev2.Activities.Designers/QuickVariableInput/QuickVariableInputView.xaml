@@ -10,9 +10,10 @@
                             xmlns:adorners="clr-namespace:Dev2.Activities.Adorners"
                             xmlns:attached="clr-namespace:Dev2.Activities.AttachedProperties"
                             Background="White"
-                            MinWidth="364"
-                            MaxWidth="680"
+                            MinWidth="370"
                             MinHeight="333"
+                            MaxWidth="600"
+                            MaxHeight="600"
                             mc:Ignorable="d"
                             d:DataContext="{d:DesignInstance qvi:QuickVariableInputViewModel}">
     

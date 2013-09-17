@@ -265,4 +265,14 @@ This is a variable from an input field. Use comma-separated values for each inde
 Preview (scalar field - including indexed recordsets and ())
 This is a variable from an input field. Put some test info in and click the Preview button to test your result.</value>
   </data>
+  <data name="WebRequestHeaderHelpText" xml:space="preserve">
+    <value>Put any additional request-header information here.</value>
+  </data>
+  <data name="WebRequestResultHelpText" xml:space="preserve">
+    <value>Will hold the response HTML.
+Only variables in [[Scalar]] or [[Recordset(*).Field]] format. If you use a recordset and do not specify an index/row number, a new record will be added.</value>
+  </data>
+  <data name="WebRequestURIHelpText" xml:space="preserve">
+    <value>The URI you would like to receive the HTML response from.</value>
+  </data>
 </root>

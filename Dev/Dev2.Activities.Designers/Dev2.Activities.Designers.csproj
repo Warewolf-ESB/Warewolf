@@ -85,6 +85,16 @@
     <Compile Include="Adorners\OverlayTemplate.xaml.cs">
       <DependentUpon>OverlayTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers\DsfGetWebRequest\DsfGetWebRequestActivityDesigner.xaml.cs">
+      <DependentUpon>DsfGetWebRequestActivityDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers\DsfGetWebRequest\DsfGetWebRequestActivityOverlayTemplate.xaml.cs">
+      <DependentUpon>DsfGetWebRequestActivityOverlayTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers\DsfGetWebRequest\DsfGetWebRequestActivityTemplate.xaml.cs">
+      <DependentUpon>DsfGetWebRequestActivityTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers\DsfGetWebRequest\DsfGetWebRequestActivityViewModel.cs" />
     <Compile Include="Designers\IActivityCollectionViewModel.cs" />
     <Compile Include="Designers\IActivityViewModelBase.cs" />
     <Compile Include="QuickVariableInput\QuickVariableInputAdornerPresenter.cs" />
@@ -261,6 +271,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers\DsfGetWebRequest\DsfGetWebRequestActivityDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers\DsfGetWebRequest\DsfGetWebRequestActivityOverlayTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers\DsfGetWebRequest\DsfGetWebRequestActivityTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Designers\DsfMultiAssign\DsfMultiAssignActivityOverlayTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -350,6 +372,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ServiceHelp-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolGetWebRequest-32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

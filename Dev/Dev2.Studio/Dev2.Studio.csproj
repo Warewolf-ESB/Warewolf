@@ -1279,6 +1279,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\ToolGetWebRequest-32.png" />
     <Resource Include="Images\HelpLanguage-32.png" />
     <Resource Include="Images\ToolAssign-32.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

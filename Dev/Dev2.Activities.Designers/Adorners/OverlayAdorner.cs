@@ -7,22 +7,19 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interactivity;
 using System.Windows.Media;
 using Dev2.Activities.Annotations;
 using Dev2.Activities.Designers;
 using Dev2.Activities.QuickVariableInput;
-using Dev2.CustomControls.Behavior;
 using Dev2.Providers.Errors;
 using Dev2.Studio.AppResources.ExtensionMethods;
-using Dev2.UI;
 using Dev2.Util.ExtensionMethods;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Adorners
 {
     /// <summary>
-    /// The adorner used to host the overlay content
+    ///     The adorner used to host the overlay content
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <date>2013/07/24</date>
@@ -30,18 +27,18 @@ namespace Dev2.Activities.Adorners
     {
         #region fields
 
-        private VisualCollection _visuals;
-        private Border _contentBorder;
-        private ContentPresenter _contentPresenter;
-        private HelpViewModel _helpContent;
-        private OverlayTemplate _uc;
+        Border _contentBorder;
+        ContentPresenter _contentPresenter;
+        HelpViewModel _helpContent;
+        OverlayTemplate _uc;
+        VisualCollection _visuals;
 
         #endregion
 
         #region ctor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OverlayAdorner"/> class.
+        ///     Initializes a new instance of the <see cref="OverlayAdorner" /> class.
         /// </summary>
         /// <param name="adornedElement">The adorned element.</param>
         /// <param name="colourBorder">The colour border.</param>
@@ -70,7 +67,7 @@ namespace Dev2.Activities.Adorners
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OverlayAdorner"/> class.
+        ///     Initializes a new instance of the <see cref="OverlayAdorner" /> class.
         /// </summary>
         /// <param name="adornedElement">The adorned element.</param>
         /// <param name="content">The content.</param>
@@ -88,31 +85,18 @@ namespace Dev2.Activities.Adorners
         #region public properties
 
         /// <summary>
-        /// Gets or sets the content being displayed by this adorner
+        ///     Gets or sets the content being displayed by this adorner
         /// </summary>
         /// <value>
-        /// The content.
+        ///     The content.
         /// </value>
         /// <author>Jurie.smit</author>
         /// <date>2013/07/24</date>
-        public override object Content
-        {
-            get
-            {
-                return _contentPresenter.Content;
-            }
-            protected set
-            {
-                _contentPresenter.Content = value;
-            }
-        }
+        public override object Content { get { return _contentPresenter.Content; } protected set { _contentPresenter.Content = value; } }
 
         public HelpViewModel HelpContent
         {
-            get
-            {
-                return _helpContent;
-            }
+            get { return _helpContent; }
             set
             {
                 if(_helpContent == value)
@@ -124,43 +108,36 @@ namespace Dev2.Activities.Adorners
                 OnPropertyChanged();
             }
         }
+
         #endregion
 
         #region dependency properties
 
-        public override string HelpText
-        {
-            get { return (string)GetValue(HelpTextProperty); }
-            set { SetValue(HelpTextProperty, value); }
-        }
-
         public static readonly DependencyProperty HelpTextProperty =
             DependencyProperty.Register("HelpText", typeof(string),
-            typeof(OverlayAdorner), new PropertyMetadata(string.Empty, HelpTextChangedCallback));
+                typeof(OverlayAdorner), new PropertyMetadata(string.Empty, HelpTextChangedCallback));
 
+        public static readonly DependencyProperty ErrorsProperty =
+            DependencyProperty.Register("Errors", typeof(List<IActionableErrorInfo>),
+                typeof(OverlayAdorner), new PropertyMetadata(new List<IActionableErrorInfo>(), ErrorsChangedCallBack));
+        public override string HelpText { get { return (string)GetValue(HelpTextProperty); } set { SetValue(HelpTextProperty, value); } }
+        public override List<IActionableErrorInfo> Errors { get { return (List<IActionableErrorInfo>)GetValue(ErrorsProperty); } set { SetValue(ErrorsProperty, value); } }
 
-        private static void HelpTextChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs args)
+        static void HelpTextChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs args)
         {
             var adorner = (OverlayAdorner)o;
             var newText = (string)args.NewValue;
             adorner.HelpContent.HelpText = newText;
         }
 
-        public override List<IActionableErrorInfo> Errors
-        {
-            get { return (List<IActionableErrorInfo>)GetValue(ErrorsProperty); }
-            set { SetValue(ErrorsProperty, value); }
-        }
-
-        public static readonly DependencyProperty ErrorsProperty =
-            DependencyProperty.Register("Errors", typeof(List<IActionableErrorInfo>),
-            typeof(OverlayAdorner), new PropertyMetadata(new List<IActionableErrorInfo>(), ErrorsChangedCallBack));
-
         static void ErrorsChangedCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var adorner = (OverlayAdorner)d;
             var newValue = e.NewValue as List<IActionableErrorInfo>;
-            if(newValue == null) return;
+            if(newValue == null)
+            {
+                return;
+            }
             adorner.HelpContent.Errors = newValue;
         }
 
@@ -169,7 +146,7 @@ namespace Dev2.Activities.Adorners
         #region public methods
 
         /// <summary>
-        /// Hides the content of the adorner.
+        ///     Hides the content of the adorner.
         /// </summary>
         /// <date>2013/07/23</date>
         /// <author>Jurie.smit</author>
@@ -181,21 +158,13 @@ namespace Dev2.Activities.Adorners
         }
 
         /// <summary>
-        /// Shows the content of the adorner.
+        ///     Shows the content of the adorner.
         /// </summary>
         /// <date>2013/07/23</date>
         /// <author>Jurie.smit</author>
         /// <date>2013/07/24</date>
         public override void ShowContent()
         {
-            _uc.EnsureHelpVisibility();
-            HelpContent.ResetProperties();
-            // Set initial content height/width - DO NOT REMOVE!!!!
-            //
-            // So that text boxes with Vertical/Horizontal Alignment = Stretch 
-            // do not auto grow when user enters new lines but show scrollbars
-            UpdateContentSize();
-
             _contentBorder.Visibility = Visibility.Visible;
             _contentBorder.DataContext = DataContext;
         }
@@ -217,7 +186,7 @@ namespace Dev2.Activities.Adorners
         }
 
         /// <summary>
-        /// Changes the content of the adorner, and makes it visible.
+        ///     Changes the content of the adorner, and makes it visible.
         /// </summary>
         /// <param name="content">The content.</param>
         /// <param name="contentAutomationID">The content automation ID.</param>
@@ -225,32 +194,21 @@ namespace Dev2.Activities.Adorners
         /// <date>2013/07/24</date>
         public override void ChangeContent(object content, string contentAutomationID)
         {
-            if(!(content is ActivityTemplate))
+            var contentActivityTemplate = content as ActivityTemplate;
+            if(contentActivityTemplate == null)
             {
                 throw new Exception("The user control templates for activities needs to inherit from ActivityTemplate! Please inherit from ActivityTemplate");
             }
 
-            var collectionActivityTemplate = content as CollectionActivityTemplate;
-            if(collectionActivityTemplate != null)
+            contentActivityTemplate.Loaded += (sender, args) =>
             {
-                collectionActivityTemplate.Loaded += (sender, args) =>
-                    {
-                        var template = collectionActivityTemplate;
-                        var itemsControl = template.ItemsControl;
-                        if(itemsControl == null)
-                        {
-                            throw new Exception(
-                                "The user control templates for collection activities needs to contain an itemscontrol for representing the collection");
-                        }
-                        itemsControl.SetValue(DataGrid.CanUserResizeColumnsProperty, true);
-                        var inputElements = itemsControl.FindVisualChildren<IntellisenseTextBox>();
-                        inputElements.ToList().ForEach(i => i.SetValue(MaxHeightProperty, 48D));
-                        var sizeSyncBehavior = new DataGridColumnSizeSynchronizationBehavior();
-                        var focusBehavior = new DataGridFocusTextOnLoadBehavior();
-                        Interaction.GetBehaviors(itemsControl).Add(sizeSyncBehavior);
-                        Interaction.GetBehaviors(itemsControl).Add(focusBehavior);
-                    };
-            }
+                var element = content as FrameworkElement;
+                var txt = element.FindVisualChildren<TextBox>().FirstOrDefault();
+                if(txt != null)
+                {
+                    txt.Focus();
+                }
+            };
 
             Content = content;
             var uiElement = content as FrameworkElement;
@@ -262,10 +220,15 @@ namespace Dev2.Activities.Adorners
                 uiElement.DataContext = DataContext;
             }
 
-            Keyboard.Focus(uiElement);
-
             AddToButtonsContainer((ActivityTemplate)content);
             ShowContent();
+        }
+
+       
+
+        public override void UpdateContentSize()
+        {
+             
         }
 
         #endregion
@@ -273,11 +236,19 @@ namespace Dev2.Activities.Adorners
         #region protected overrides
 
         /// <summary>
-        /// Implements any custom measuring behavior for the adorner.
+        ///     Gets the number of visual child elements within this element.
+        /// </summary>
+        /// <returns>The number of visual child elements for this element.</returns>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/07/24</date>
+        protected override int VisualChildrenCount { get { return _visuals.Count; } }
+
+        /// <summary>
+        ///     Implements any custom measuring behavior for the adorner.
         /// </summary>
         /// <param name="constraint">A size to constrain the adorner to.</param>
         /// <returns>
-        /// A <see cref="T:System.Windows.Size" /> object representing the amount of layout space needed by the adorner.
+        ///     A <see cref="T:System.Windows.Size" /> object representing the amount of layout space needed by the adorner.
         /// </returns>
         /// <author>Jurie.smit</author>
         /// <date>2013/07/24</date>
@@ -288,27 +259,30 @@ namespace Dev2.Activities.Adorners
         }
 
         /// <summary>
-        /// When overridden in a derived class, positions child elements and determines a size for a <see cref="T:System.Windows.FrameworkElement" /> derived class.
+        ///     When overridden in a derived class, positions child elements and determines a size for a
+        ///     <see
+        ///         cref="T:System.Windows.FrameworkElement" />
+        ///     derived class.
         /// </summary>
         /// <param name="finalSize">The final area within the parent that this element should use to arrange itself and its children.</param>
         /// <returns>
-        /// The actual size used.
+        ///     The actual size used.
         /// </returns>
         /// <author>Jurie.smit</author>
         /// <date>2013/07/24</date>
         protected override Size ArrangeOverride(Size finalSize)
         {
             _contentBorder.Arrange(new Rect(0, 22,
-                                            finalSize.Width, finalSize.Height));
+                finalSize.Width, finalSize.Height));
             return _contentBorder.RenderSize;
         }
 
         /// <summary>
-        /// Overrides <see cref="M:System.Windows.Media.Visual.GetVisualChild(System.Int32)" />, and returns a child at the specified index from a collection of child elements.
+        ///     Overrides <see cref="M:System.Windows.Media.Visual.GetVisualChild(System.Int32)" />, and returns a child at the specified index from a collection of child elements.
         /// </summary>
         /// <param name="index">The zero-based index of the requested child element in the collection.</param>
         /// <returns>
-        /// The requested child element. This should not return null; if the provided index is out of range, an exception is thrown.
+        ///     The requested child element. This should not return null; if the provided index is out of range, an exception is thrown.
         /// </returns>
         /// <author>Jurie.smit</author>
         /// <date>2013/07/24</date>
@@ -317,25 +291,11 @@ namespace Dev2.Activities.Adorners
             return _visuals[index];
         }
 
-        /// <summary>
-        /// Gets the number of visual child elements within this element.
-        /// </summary>
-        /// <returns>The number of visual child elements for this element.</returns>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/07/24</date>
-        protected override int VisualChildrenCount
-        {
-            get
-            {
-                return _visuals.Count;
-            }
-        }
-
         #endregion
 
         #region event handlers
 
-        private void OnElementOnDataContextChanged(object sender, DependencyPropertyChangedEventArgs args)
+        void OnElementOnDataContextChanged(object sender, DependencyPropertyChangedEventArgs args)
         {
             DataContext = args.NewValue;
         }
@@ -344,11 +304,10 @@ namespace Dev2.Activities.Adorners
 
         #region private helpers
 
-        private void AddToButtonsContainer(ActivityTemplate activityTemplate)
+        void AddToButtonsContainer(ActivityTemplate activityTemplate)
         {
             _uc.LeftButtons.ItemsSource = activityTemplate.LeftButtons;
             _uc.RightButtons.ItemsSource = activityTemplate.RightButtons;
-
 
             if(activityTemplate is QuickVariableInputView)
             {
@@ -364,7 +323,7 @@ namespace Dev2.Activities.Adorners
             }
         }
 
-        private void CreateContentContainer(Border colourBorder)
+        void CreateContentContainer(Border colourBorder)
         {
             _visuals = new VisualCollection(this);
 
@@ -382,17 +341,15 @@ namespace Dev2.Activities.Adorners
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if(handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            if(handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
         #endregion
-
-        public override void UpdateContentSize()
-        {
-            _uc.UpdateContentSize();
-        }
     }
 }

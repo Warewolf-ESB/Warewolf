@@ -10,6 +10,8 @@
              d:DesignHeight="270"
              d:DesignWidth="300">
     <Border x:Name="OuterBorder"
+            Width="Auto"
+            Height="Auto"
             Focusable="True"
             BorderThickness="1,0,1,1"
             Background="White"
@@ -17,8 +19,8 @@
         <Grid x:Name="ContentGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -30,14 +32,12 @@
                               FocusManager.IsFocusScope="True">
             </ContentPresenter>
 
-            <ScrollViewer x:Name="AdornerHelpScrollViewer"
-                          Grid.Column="1">
-                <ContentControl x:Name="HelpContent"
-                                Focusable="False">
+            <ScrollViewer x:Name="HelpContent"
+                            Grid.Column="1"
+                            Focusable="False">
 
-                </ContentControl>
             </ScrollViewer>
-
+            
             <!-- 
                 Change HelpCollapseToggleWidth property in code-behind 
                 if you change the width or left and right margins of 
@@ -108,8 +108,7 @@
                    Style="{StaticResource BottomRightResizeThumbStyle}">
                 <i:Interaction.Behaviors>
                     <behaviors:ThumbResizeBehavior x:Name="ThumbResizeBehavior"
-                                                   TargetElement="{Binding ElementName=OuterBorder}"
-                                                   ContentElement="{Binding ElementName=ContentPresenter, Path=Content}" />
+                                                   TargetElement="{Binding ElementName=ContentPresenter, Path=Content}"/>
                 </i:Interaction.Behaviors>
             </Thumb>
         </Grid>

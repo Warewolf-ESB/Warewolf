@@ -1,0 +1,83 @@
+﻿<designers:ActivityTemplate x:Class="Dev2.Activities.Designers.DsfGetWebRequest.DsfGetWebRequestActivityOverlayTemplate"
+                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                            xmlns:dev2="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                            xmlns:help="clr-namespace:Dev2.Activities.Help"
+                            xmlns:designers="clr-namespace:Dev2.Activities.Designers"
+                            xmlns:preview="clr-namespace:Dev2.Activities.Preview"
+                            xmlns:adorners="clr-namespace:Dev2.Activities.Adorners"
+                            xmlns:vm="clr-namespace:Dev2.Activities.Designers.DsfGetWebRequest"
+                            xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
+                            mc:Ignorable="d" 
+                            MinHeight="300"
+                            MinWidth="255"
+                            Width="255"
+                            MaxWidth="600"
+                            MaxHeight="500"
+                            d:DataContext="{d:DesignInstance vm:DsfGetWebRequestActivityViewModel}">  
+
+    <designers:ActivityTemplate.Resources>
+        <ResourceDictionary x:Name="Resources" 
+                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Designers/DsfActivityResources.xaml"/>
+    </designers:ActivityTemplate.Resources>
+    
+      <designers:ActivityTemplate.RightButtons>
+        <adorners:AdornerButton x:Name="DoneButton"
+                                Content="Done"  
+                                IsValidatedBefore="True"
+                                IsClosedAfter="True"
+                                Style="{StaticResource AdornerButtonStyle}">
+        </adorners:AdornerButton>
+    </designers:ActivityTemplate.RightButtons>
+
+    <Grid Margin="5,5,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" MinHeight="50"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Column="0" Grid.Row="0" Content="URL" VerticalAlignment="Bottom"/>
+        <dev2:IntellisenseTextBox Grid.Column="1" Grid.Row="0"
+                                  DefaultText="http://mywebpage.com"
+                                  Focusable="True"
+                                  Style="{StaticResource ActivityIntellisenseTextBoxStyle}" 
+                                  Text="{Binding Path=Url, Mode=TwoWay,  NotifyOnTargetUpdated=True,
+                                  Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
+                                  attachedProperties:FocusSetter.IsFocused="{Binding IsUrlFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  help:HelpText.Text="{x:Static help:HelpTextResources.WebRequestURIHelpText}"
+                                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}"
+                                  Loaded="UrlOnLoaded"  />
+       
+        <Label Grid.Column="0" Grid.Row="1" Content="Header" VerticalAlignment="Top"/>
+        <dev2:IntellisenseTextBox Grid.Column="1" Grid.Row="1"
+                                  DefaultText="Host etc."
+                                  Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                  Text="{Binding Path=Headers, Mode=TwoWay,  NotifyOnTargetUpdated=True}"
+                                  help:HelpText.Text="{x:Static help:HelpTextResources.WebRequestHeaderHelpText}"
+                                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}"/>
+
+
+        <Label Grid.Column="0" Grid.Row="2" Content="Result"  VerticalAlignment="Bottom"/>
+        <dev2:IntellisenseTextBox Grid.Column="1" Grid.Row="2"
+                                  DefaultText="[[HTML]]"
+                                  WrapInBrackets="True"
+                                  Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                  Text="{Binding Path=Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}"
+                                  help:HelpText.Text="{x:Static help:HelpTextResources.WebRequestResultHelpText}"
+                                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InputFormattxt_AutoID}"/>
+        
+        <preview:PreviewView Grid.Column="0" Grid.Row="3"
+                             Grid.ColumnSpan="2"
+                             Margin="0"
+                             DataContext="{Binding PreviewViewModel}"/>
+
+    </Grid>
+</designers:ActivityTemplate>

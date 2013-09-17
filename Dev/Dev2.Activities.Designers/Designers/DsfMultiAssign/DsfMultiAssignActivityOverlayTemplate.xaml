@@ -19,7 +19,9 @@
                                       xmlns:attached="clr-namespace:Dev2.Activities.AttachedProperties"
                                       mc:Ignorable="d"
                                       MinWidth="350"
-                                      MaxWidth="680"
+                                      Width="350"
+                                      MaxWidth="600"
+                                      MaxHeight="500"
                                       MinHeight="250"
                                       d:DesignWidth="200"                                     
                                       d:DataContext="{d:DesignInstance Type=dsfMultiAssign:DsfMultiAssignActivityViewModel}">
@@ -40,13 +42,14 @@
             <activities1:ErrorsDictionaryToListConverter x:Key="ErrorsDictionaryToListConverter" />
         </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="60" />
         </Grid.RowDefinitions>
-        <DataGrid Grid.Row="0" 
+        <DataGrid Grid.Row="0"
                   x:Name="DataGrid"                  
-                  MinHeight="50"
-                  MaxHeight="220"
+                  MinHeight="60"
+                  MaxHeight="500"
+                  Height="Auto"
                   ItemsSource="{Binding Items, 
                   Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                   AutoGenerateColumns="False" 
@@ -104,7 +107,7 @@
                             <ui:IntellisenseTextBox AllowUserInsertLine="False" 
                                                     VerticalAlignment="Center"
                                                     DefaultText="{Binding WatermarkTextVariable}" 
-                                                    WrapInBrackets="True"                                                     
+                                                    WrapInBrackets="True"
                                                     help:HelpText.Text="{x:Static help:HelpTextResources.MultiAssignVariableHelpText}"
                                                     help:HelpText.Errors="{Binding Errors,Converter={StaticResource ErrorsDictionaryToListConverter},ConverterParameter=FieldName, UpdateSourceTrigger=PropertyChanged}"
                                                     attached:FocusSetter.IsFocused="{Binding IsFieldNameFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -139,6 +142,7 @@
                                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                     VerticalScrollBarVisibility="Auto"
                                                     TextWrapping="Wrap"
+                                                    Margin="0,0,1,0"
                                                     AcceptsReturn="True"
                                                     MaxHeight="50"
                                                     help:HelpText.Text="{x:Static help:HelpTextResources.MultiAssignNewVariableHelpText}"
