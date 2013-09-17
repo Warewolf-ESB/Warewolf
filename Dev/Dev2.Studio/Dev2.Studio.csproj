@@ -339,7 +339,6 @@
     <Compile Include="AppResources\Converters\NullToDebugRibbonButtonTextConverter.cs" />
     <Compile Include="AppResources\Exceptions\FeedbackRecordingProcessFailedToStartException.cs" />
     <Compile Include="AppResources\ExtensionMethods\StringExtensions.cs" />
-    <Compile Include="AppResources\Messages\SetDebugStatusMessage.cs" />
     <Compile Include="ActivityDesigners\BaseActivityDesigner.cs" />
     <Compile Include="ClassRoutedEventHandlers.cs" />
     <Compile Include="Controller\FlowController.cs" />
@@ -510,7 +509,6 @@
       <DependentUpon>ConnectControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Diagnostics\DebugOutputFilterStrategy.cs" />
-    <Compile Include="Diagnostics\DebugOutputTreeGenerationStrategy.cs" />
     <Compile Include="Deploy\DeployStatsCalculator.cs" />
     <Compile Include="Factory\ExceptionFactory.cs" />
     <Compile Include="Factory\FeedbackFactory.cs" />
@@ -1520,7 +1518,9 @@
       <Name>Dev2.Util</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="AppResources\Messages\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PostBuildEvent>

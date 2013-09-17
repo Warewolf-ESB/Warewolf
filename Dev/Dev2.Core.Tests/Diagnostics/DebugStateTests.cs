@@ -1,10 +1,9 @@
-﻿using Dev2.Diagnostics;
+﻿using System;
+using System.Linq;
+using Dev2.Diagnostics;
 using Dev2.Tests.Weave;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.IO;
-using System.Linq;
 
 namespace Dev2.Tests.Diagnostics
 {
@@ -129,7 +128,8 @@ namespace Dev2.Tests.Diagnostics
                 Server = "Server",
                 ServerID = Guid.NewGuid(),
                 StartTime = DateTime.Now,
-                EndTime = DateTime.Now.AddMinutes(3)
+                EndTime = DateTime.Now.AddMinutes(3),
+                SessionID = Guid.NewGuid()
             };
 
             DebugItem itemToAdd = new DebugItem();
@@ -157,18 +157,19 @@ namespace Dev2.Tests.Diagnostics
             Assert.AreEqual(debugStateIn.ServerID, debugStateOut.ServerID);
             Assert.AreEqual(debugStateIn.StartTime, debugStateOut.StartTime);
             Assert.AreEqual(debugStateIn.EndTime, debugStateOut.EndTime);
+            Assert.AreEqual(debugStateIn.SessionID, debugStateOut.SessionID);
 
             Assert.IsTrue(debugStateOut.Inputs[0].FetchResultsList().SequenceEqual(debugStateIn.Inputs[0].FetchResultsList(), new DebugItemResultEqualityComparer()));
         }
 
-        #endregion               
+        #endregion
 
         #region CreateDebugItemWithLongValue
 
         static DebugItem CreateDebugItemWithLongValue()
         {
             DebugItem result = new DebugItem();
-            result.Add(new DebugItemResult{Type = DebugItemResultType.Value,Value = LongText});
+            result.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = LongText });
             return result;
         }
 

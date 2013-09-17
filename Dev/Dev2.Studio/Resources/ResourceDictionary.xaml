@@ -401,6 +401,15 @@
         <Setter Property="Border.BorderThickness" Value="2" />
         <Setter Property="Border.Background" Value="{StaticResource TransparentBrush}" />
         <Setter Property="AutomationProperties.AutomationId" Value="{Binding Content.Name}" />
+        <Setter Property="Visibility">
+            <Setter.Value>
+                <MultiBinding Converter="{StaticResource IntInRangeToVisibilityConverter}">
+                    <Binding Path="Depth"/>
+                    <Binding Path="DataContext.DepthMin" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=TreeView}"/>                    
+                    <Binding Path="DataContext.DepthMax" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=TreeView}"/>                    
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
         <Style.Triggers>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>

@@ -15,11 +15,9 @@ using Dev2.Messages;
 using Dev2.Providers.Errors;
 using Dev2.Services.Events;
 using Dev2.Studio.AppResources.Comparers;
-using Dev2.Studio.AppResources.Messages;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Diagnostics;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
@@ -47,25 +45,25 @@ namespace Dev2.Studio.ViewModels.WorkSurface
     /// <date>2/27/2013</date>
     public class WorkSurfaceContextViewModel : BaseViewModel,
                                  IHandle<SaveResourceMessage>, IHandle<DebugResourceMessage>,
-                                 IHandle<ExecuteResourceMessage>, IHandle<SetDebugStatusMessage>, 
+                                 IHandle<ExecuteResourceMessage>, 
                                  IHandle<UpdateWorksurfaceContext>
     {
         #region private fields
 
-        private IDataListViewModel _dataListViewModel;
-        private IWorkSurfaceViewModel _workSurfaceViewModel;
-        private DebugOutputViewModel _debugOutputViewModel;
-        private IContextualResourceModel _contextualResourceModel;
+        IDataListViewModel _dataListViewModel;
+        IWorkSurfaceViewModel _workSurfaceViewModel;
+        readonly DebugOutputViewModel _debugOutputViewModel;
+        IContextualResourceModel _contextualResourceModel;
 
-        private readonly IWindowManager _windowManager;
-        private readonly IFrameworkSecurityContext _securityContext;
-        private readonly IWorkspaceItemRepository _workspaceItemRepository;
+        readonly IWindowManager _windowManager;
+        readonly IFrameworkSecurityContext _securityContext;
+        readonly IWorkspaceItemRepository _workspaceItemRepository;
 
-        private ICommand _viewInBrowserCommand;
-        private ICommand _debugCommand;
-        private ICommand _runCommand;
-        private ICommand _saveCommand;
-        private ICommand _editResourceCommand;
+        ICommand _viewInBrowserCommand;
+        ICommand _debugCommand;
+        ICommand _runCommand;
+        ICommand _saveCommand;
+        ICommand _editResourceCommand;
         bool _hasMappingChange;
 
         private IResourceDependencyService _dependencyService;
@@ -92,14 +90,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             get
             {
-                return _debugOutputViewModel ?? (_debugOutputViewModel = new DebugOutputViewModel());
+                return _debugOutputViewModel;
             }
-            set
-            {
-                _debugOutputViewModel = value;
-                NotifyOfPropertyChange(() => DebugOutputViewModel);
-            }
-        } 
+        }
 
         public bool DeleteRequested { get; set; }
 
@@ -179,8 +172,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
         }
 
-        public DebugWriter DebugWriter { get; set; }
-
         public bool CanExecute
         {
             get
@@ -239,10 +230,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             var model = WorkSurfaceViewModel as IWorkflowDesignerViewModel;
             if(model != null)
             {
-                _debugOutputViewModel = new DebugOutputViewModel();
-                IEnvironmentModel environmentModel = model.EnvironmentModel;
+                var environmentModel = model.EnvironmentModel;
                 if(environmentModel != null)
                 {
+                    // MUST use connection server event publisher - debug events are published from the server!
+                    _debugOutputViewModel = new DebugOutputViewModel(environmentModel.Connection.ServerEvents, EnvironmentRepository.Instance);
+                    
                     environmentModel.IsConnectedChanged += (sender, args) =>
                     {
                         if(args.IsConnected == false)
@@ -250,15 +243,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                             SetDebugStatus(DebugStatus.Finished);
                         }
                     };
-                    var connection = environmentModel.Connection;
-                if(connection != null)
-                {
-                    DebugWriter = (DebugWriter)connection.DebugWriter;
+                }
             }
-        }
-
             _dependencyService = dependencyService;
-        }
         }
 
         #endregion
@@ -290,17 +277,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
         }
 
-        public void Handle(SetDebugStatusMessage message)
-        {
-            if(message.WorkSurfaceKey.Equals(WorkSurfaceKey))
-            {
-                SetDebugStatus(message.DebugStatus);
-        }
-        }
-
         public void Handle(UpdateWorksurfaceContext message)
         {
-            if (ContextualResourceModel != null && ContextualResourceModel.ID == message.NewDataContext.ID)
+            if(ContextualResourceModel != null && ContextualResourceModel.ID == message.NewDataContext.ID)
             {
                 _workSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
             }
@@ -374,17 +353,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             DebugOutputViewModel.DebugStatus = debugStatus;
         }
 
-        public void DisplayDebugOutput(IDebugState debugState)
-        {
-            if(debugState != null)
-            {
-            DebugOutputViewModel.Append(debugState);
-        }
-        }
-
         public void GetServiceInputDataFromUser(IServiceDebugInfoModel input)
         {
-            var inputDataViewModel = new WorkflowInputDataViewModel(input) { Parent = this };
+            var inputDataViewModel = new WorkflowInputDataViewModel(input, DebugOutputViewModel) { Parent = this };
             _windowManager.ShowDialog(inputDataViewModel);
         }
 
@@ -565,7 +536,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         void DispatchServerDebugMessage(string message, IContextualResourceModel resource)
         {
             var debugstate = DebugStateFactory.Create(message, resource);
-            EventPublisher.Publish(new DebugWriterWriteMessage(debugstate));
+            if(_debugOutputViewModel != null)
+            {
+                debugstate.SessionID = _debugOutputViewModel.SessionID;
+                _debugOutputViewModel.Append(debugstate);
+            }
         }
 
         void Debug()
@@ -588,7 +563,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             base.OnActivate();
             DataListSingleton.SetDataList(DataListViewModel);
-            DebugOutputViewModel.DebugWriter = DebugWriter;
 
             var workflowDesignerViewModel = WorkSurfaceViewModel as WorkflowDesignerViewModel;
             if(workflowDesignerViewModel != null)

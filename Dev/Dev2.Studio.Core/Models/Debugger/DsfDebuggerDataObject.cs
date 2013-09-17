@@ -7,6 +7,7 @@ namespace Dev2.Studio.Core.Models
 {
     public class DsfDebuggerDataObject : IDSFDataObject
     {
+        public Guid DebugSessionID { get; set; }
         public Guid EnvironmentID { get; set; }
         public bool IsRemoteWorkflow { get { return EnvironmentID != Guid.Empty; } }
 

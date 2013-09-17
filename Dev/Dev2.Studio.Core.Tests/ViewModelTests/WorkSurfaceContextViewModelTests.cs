@@ -1,7 +1,9 @@
 ﻿using System;
 using Dev2.Composition;
+using Dev2.Core.Tests.Network;
 using Dev2.Core.Tests.Workflows;
 using Dev2.Diagnostics;
+using Dev2.Providers.Events;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;
@@ -52,7 +54,10 @@ namespace Dev2.Core.Tests.ViewModelTests
             CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
+            var mockedConn = new Mock<IEnvironmentConnection>();
+            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>().Object;
@@ -72,7 +77,10 @@ namespace Dev2.Core.Tests.ViewModelTests
             CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
+            var mockedConn = new Mock<IEnvironmentConnection>();
+            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>().Object;
@@ -93,7 +101,10 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_EnvironmentModelIsConnectedChanged_True_DebugStatusNotChanged()
         {
             //------------Setup for test--------------------------
+            var mockedConn = new Mock<IEnvironmentConnection>();
+            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             var environmentModel = mockEnvironmentModel.Object;
             var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(environmentModel);
             var connectedEventArgs = new ConnectedEventArgs();
@@ -114,6 +125,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             WorkSurfaceContextViewModel workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel();
             var mockDebugState = new Mock<IDebugState>();
             mockDebugState.Setup(state => state.StateType).Returns(StateType.All);
+            mockDebugState.Setup(m => m.SessionID).Returns(workSurfaceContextViewModel.DebugOutputViewModel.SessionID);
             workSurfaceContextViewModel.DebugOutputViewModel.Append(mockDebugState.Object);
             //------------Precondition----------------------------
             Assert.AreEqual(1, workSurfaceContextViewModel.DebugOutputViewModel.ContentItemCount);
@@ -136,34 +148,6 @@ namespace Dev2.Core.Tests.ViewModelTests
             //------------Assert Results-------------------------
             Assert.AreEqual(DebugStatus.Finished,workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus);
         }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("WorkSurfaceContextViewModel_DisplayDebugOutput")]
-        public void WorkSurfaceContextViewModel_DisplayDebugOutput_GivenDebugState_ShouldAddToDebugItem()
-        {
-            //------------Setup for test--------------------------
-            WorkSurfaceContextViewModel workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel();
-            var mockDebugState = new Mock<IDebugState>();
-            mockDebugState.Setup(state => state.StateType).Returns(StateType.All);
-            //------------Execute Test---------------------------
-            workSurfaceContextViewModel.DisplayDebugOutput(mockDebugState.Object);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1, workSurfaceContextViewModel.DebugOutputViewModel.ContentItemCount);
-        }       
-        
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("WorkSurfaceContextViewModel_DisplayDebugOutput")]
-        public void WorkSurfaceContextViewModel_DisplayDebugOutput_GivenNullDebugState_ShouldNotAddToDebugItem()
-        {
-            //------------Setup for test--------------------------
-            WorkSurfaceContextViewModel workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel();
-            //------------Execute Test---------------------------
-            workSurfaceContextViewModel.DisplayDebugOutput(null);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(0, workSurfaceContextViewModel.DebugOutputViewModel.ContentItemCount);
-        }
         
         static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel(IEnvironmentModel environmentModel)
         {
@@ -178,7 +162,12 @@ namespace Dev2.Core.Tests.ViewModelTests
         
         static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel()
         {
+            var mockedConn = new Mock<IEnvironmentConnection>();
+            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
+
             var environmentModel = mockEnvironmentModel.Object;
             return CreateWorkSurfaceContextViewModel(environmentModel);
         }

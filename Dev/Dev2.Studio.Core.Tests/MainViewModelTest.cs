@@ -222,6 +222,8 @@ namespace Dev2.Core.Tests
             dsfChannel.Setup(c => c.ServerID).Returns(serverID);
 
             var envConn = new Mock<IEnvironmentConnection>();
+            envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
             var env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.DsfChannel).Returns(dsfChannel.Object);
             env.Setup(e => e.Connection).Returns(envConn.Object);
@@ -329,6 +331,8 @@ namespace Dev2.Core.Tests
             dsfChannel.Setup(c => c.ServerID).Returns(serverID);
 
             var envConn = new Mock<IEnvironmentConnection>();
+            envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
             var env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.DsfChannel).Returns(dsfChannel.Object);
             env.Setup(e => e.Connection).Returns(envConn.Object);
@@ -1390,6 +1394,7 @@ namespace Dev2.Core.Tests
 
                 var envConn = new Mock<IEnvironmentConnection>();
                 var env = new Mock<IEnvironmentModel>();
+                envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
                 env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
                 env.Setup(e => e.Connection).Returns(envConn.Object);
 
@@ -1449,6 +1454,7 @@ namespace Dev2.Core.Tests
 
                 var envConn = new Mock<IEnvironmentConnection>();
                 var env = new Mock<IEnvironmentModel>();
+                envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
                 env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
                 env.Setup(e => e.Connection).Returns(envConn.Object);
                 envRepo.Setup(r => r.All()).Returns(new[] { env.Object });
@@ -1507,6 +1513,7 @@ namespace Dev2.Core.Tests
                 resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
                 var envRepo = new Mock<IEnvironmentRepository>();
                 var envConn = new Mock<IEnvironmentConnection>();
+                envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
                 var env = new Mock<IEnvironmentModel>();
                 env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
                 env.Setup(e => e.Connection).Returns(envConn.Object);
@@ -1603,6 +1610,7 @@ namespace Dev2.Core.Tests
 
                 var envConn = new Mock<IEnvironmentConnection>();
                 var env = new Mock<IEnvironmentModel>();
+                envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
                 env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
                 env.Setup(e => e.Connection).Returns(envConn.Object);
 

@@ -28,7 +28,6 @@ namespace Dev2.Studio.Core.Models
         IEventAggregator _eventPublisher;
         bool _publishEventsOnDispatcherThread;
         Guid _updateWorkFlowFromServerSubToken;
-        SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
 
         // BUG 9940 - 2013.07.29 - TWR - added
         public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
@@ -61,10 +60,6 @@ namespace Dev2.Studio.Core.Models
             VerifyArgument.IsNotNull("environmentConnection", environmentConnection);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _eventPublisher = eventPublisher;
-
-            // HACK: relay DebugWriterWriteMessage to event aggregator!
-            _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentConnection.ServerEvents);
-            _debugWriterSubscriptionService.Subscribe(msg => _eventPublisher.Publish(msg));
 
             CanStudioExecute = true;
 

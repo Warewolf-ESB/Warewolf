@@ -10,6 +10,7 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
+using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -103,7 +104,9 @@ namespace Dev2.Runtime.ESB.Execution
 
             if(data != null)
             {
-                return RemoteDebugItemParser.ParseItems(data);
+                IList<DebugState> fetchRemoteDebugItems = RemoteDebugItemParser.ParseItems(data);
+                fetchRemoteDebugItems.ForEach(state => state.SessionID=DataObject.DebugSessionID);
+                return fetchRemoteDebugItems;
             }
 
             return null;

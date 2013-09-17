@@ -67,5 +67,8 @@ namespace Dev2
 
         Guid EnvironmentID { get; set; }
         bool IsRemoteWorkflow { get; }
+
+        Guid DebugSessionID { get; set; }
+
     }
 }

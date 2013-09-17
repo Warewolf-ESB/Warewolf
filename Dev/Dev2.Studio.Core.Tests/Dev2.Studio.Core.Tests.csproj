@@ -159,6 +159,9 @@
     <Compile Include="ConverterTests\EmptyStringToVisibilityConverterTests.cs" />
     <Compile Include="ConverterTests\EmptyStringToBoolConverterTests.cs" />
     <Compile Include="ConverterTests\MathFunctionToDoubleConverterTests.cs" />
+    <Compile Include="ConverterTests\IntEnsureMinConverterTests.cs" />
+    <Compile Include="ConverterTests\IntInRangeToVisibilityConverterTests.cs" />
+    <Compile Include="DebugOutputViewModelTest.Append.cs" />
     <Compile Include="Factories\WorkSurfaceContextFactoryTests.cs" />
     <Compile Include="MainViewModelMock.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2DataGridTests.cs" />
@@ -176,7 +179,6 @@
     <Compile Include="DataList\DataListValidationTests.cs" />
     <Compile Include="DataMappingViewModelTest.cs" />
     <Compile Include="DebugOutputFilterStrategyTests.cs" />
-    <Compile Include="DebugOutputTreeGenerationStrategyTests.cs" />
     <Compile Include="DebugOutputViewModelTest.cs" />
     <Compile Include="DecisionTypeTest.cs" />
     <Compile Include="DeployServiceTest.cs" />
@@ -260,7 +262,7 @@
     <Compile Include="Utils\AsyncWorkerTests.cs" />
     <Compile Include="ViewModelTests\QuickVariableInputModelTests.cs" />
     <Compile Include="ViewModelTests\ConnectControlViewModelTests.cs" />
-	<Compile Include="ViewModelTests\WorkSurfaceContextViewModelTests.cs" />
+    <Compile Include="ViewModelTests\WorkSurfaceContextViewModelTests.cs" />
     <Compile Include="ViewModelTests\ViewModelMocks\MockCategoryTreeViewModelReparent.cs" />
     <Compile Include="ViewModelTests\ViewModelMocks\MockCategoryTreeViewModelRenameCategory.cs" />
     <Compile Include="Views\Global\ToolboxUserControlTests.cs" />

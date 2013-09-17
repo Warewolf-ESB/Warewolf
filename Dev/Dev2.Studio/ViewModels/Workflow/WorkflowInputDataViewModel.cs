@@ -11,7 +11,6 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Services.Events;
 using Dev2.Session;
-using Dev2.Studio.AppResources.Messages;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.Interfaces;
@@ -22,7 +21,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
-    public sealed class WorkflowInputDataViewModel : SimpleBaseViewModel
+    public class WorkflowInputDataViewModel : SimpleBaseViewModel
     {
         #region Fields
         //2012.10.11: massimo.guerrera - Added for PBI 5781
@@ -36,21 +35,16 @@ namespace Dev2.Studio.ViewModels.Workflow
         private IBinaryDataList _dataList;
         private int _workflowInputCount;
         private bool _rememberInputs;
-        readonly IEventAggregator _eventPublisher;
+        readonly DebugOutputViewModel _debugOutputViewModel;
 
         #endregion Fields
 
         #region Ctor
 
-        public WorkflowInputDataViewModel(IServiceDebugInfoModel input)
-            : this(EventPublishers.Aggregator, input)
+        public WorkflowInputDataViewModel( IServiceDebugInfoModel input, DebugOutputViewModel debugOutputViewModel)
         {
-        }
-
-        public WorkflowInputDataViewModel(IEventAggregator eventPublisher, IServiceDebugInfoModel input)
-        {
-            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            _eventPublisher = eventPublisher;
+            VerifyArgument.IsNotNull("debugOutputViewModel", debugOutputViewModel);
+            _debugOutputViewModel = debugOutputViewModel;
 
             DebugTO = new DebugTO
             {
@@ -63,7 +57,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 XmlData = input.ServiceInputData,
                 ResourceID = input.ResourceModel.ID,
                 ServerID = input.ResourceModel.ServerID,
-                RememberInputs = input.RememberInputs
+                RememberInputs = input.RememberInputs,
+                SessionID = debugOutputViewModel.SessionID
             };
 
             if(input.DebugModeSetting == DebugMode.DebugInteractive)
@@ -217,19 +212,27 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
 
             var context = Parent as WorkSurfaceContextViewModel;
-            if(context != null) context.BindToModel();
+            if(context != null)
+            {
+                context.BindToModel();
+            }
 
             var clientContext = _resourceModel.Environment.DsfChannel as IStudioClientContext;
             if(clientContext != null)
             {
-                XElement dataList = XElement.Parse(DebugTO.XmlData);
+                var dataList = XElement.Parse(DebugTO.XmlData);
                 dataList.Add(new XElement("BDSDebugMode", DebugTO.IsDebugMode));
+                dataList.Add(new XElement("DebugSessionID", DebugTO.SessionID));
+                dataList.Add(new XElement("EnvironmentID", _resourceModel.Environment.ID));
+                _debugOutputViewModel.DebugStatus = DebugStatus.Executing;
 
-                _eventPublisher.Publish
-                    (new SetDebugStatusMessage(DebugTO.ServerID, DebugTO.ResourceID, DebugStatus.Executing));
-
-                WebServer.SendAsync(WebServerMethod.POST, _resourceModel, dataList.ToString(), ExecutionCallback);
+                SendExecuteRequest(dataList);
             }
+            }
+
+        protected virtual void SendExecuteRequest(XElement payload)
+        {
+            WebServer.SendAsync(WebServerMethod.POST, _resourceModel, payload.ToString(), ExecutionCallback);
         }
 
         private void ExecutionCallback(UploadStringCompletedEventArgs args)
@@ -239,8 +242,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void SendFinishedMessage()
         {
-            _eventPublisher.Publish
-                (new SetDebugStatusMessage(DebugTO.ServerID, DebugTO.ResourceID, DebugStatus.Finished));
+            _debugOutputViewModel.DebugStatus = DebugStatus.Finished;
         }
 
         /// <summary>

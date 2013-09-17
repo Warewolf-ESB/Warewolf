@@ -139,11 +139,8 @@
     <Compile Include="ServiceProviders\UI\ListViewDragDropManager.cs" />
     <Compile Include="ServiceProviders\UI\UnloadedManager.cs" />
     <Compile Include="Trigger\FocusContentTrigger.cs" />
-    <Compile Include="Trigger\TreeViewItemExpandTrigger.cs" />
     <Compile Include="Trigger\KeyPressedTrigger.cs" />
     <Compile Include="Trigger\DelayTextChangedEventTrigger.cs" />
-    <Compile Include="Trigger\ParentKeyPressedTrigger.cs" />
-    <Compile Include="Trigger\TreeViewItemKeyPressedTrigger.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

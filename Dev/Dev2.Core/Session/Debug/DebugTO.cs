@@ -47,6 +47,7 @@ namespace Dev2.Session {
         public Guid ResourceID { get; set; }
 
         public Guid ServerID { get; set; }
+        public Guid SessionID { get; set; }
 
         #endregion Properties
 

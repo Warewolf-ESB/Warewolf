@@ -278,6 +278,8 @@ namespace Dev2.Runtime.ESB
                     ServerID = dataObject.ServerID,
                     OriginatingResourceID = dataObject.ResourceID,
                     OriginalInstanceID = dataObject.OriginalInstanceID,
+                    SessionID = dataObject.DebugSessionID,
+                    EnvironmentID = dataObject.EnvironmentID,
                     Server = string.Empty,
                     Version = string.Empty,
                     Name = GetType().Name,

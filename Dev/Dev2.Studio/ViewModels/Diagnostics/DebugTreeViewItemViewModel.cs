@@ -4,142 +4,44 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using Caliburn.Micro;
 using Dev2.Diagnostics;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Diagnostics;
 
 namespace Dev2.Studio.ViewModels.Diagnostics
 {
-    public class DebugStringTreeViewItemViewModel : DebugTreeViewItemViewModel
+    public class DebugStringTreeViewItemViewModel : DebugTreeViewItemViewModel<string>
     {
-        #region Class Members
-
-        readonly string _content;
-
-        #endregion Class Members
-
-        #region Constructor
-
-        public DebugStringTreeViewItemViewModel(string content, DebugTreeViewItemViewModel parent = null, bool isExpanded = true, bool isSelected = false, bool addedAsParent = false)
-            : base(parent)
+        public DebugStringTreeViewItemViewModel()
         {
-            _content = content;
-            IsExpanded = isExpanded;
-            IsSelected = isSelected;
-            AddedAsParent = addedAsParent;
+            IsExpanded = false;
         }
 
-        #endregion Constructor
-
-        #region Properties
-
-        public string Content
+        protected override void Initialize(string content)
         {
-            get
-            {
-                return _content;
-            }
         }
-
-        #endregion Properties
     }
 
-    public class DebugStateTreeViewItemViewModel : DebugTreeViewItemViewModel
+    public class DebugStateTreeViewItemViewModel : DebugTreeViewItemViewModel<IDebugState>
     {
-        readonly IDebugState _content;
-        readonly IEventAggregator _eventPublisher;
-        readonly List<object> _inputs;
-        readonly List<object> _outputs;
+        readonly IEnvironmentRepository _environmentRepository;
+        readonly ObservableCollection<object> _inputs;
+        readonly ObservableCollection<object> _outputs;
 
-        public DebugStateTreeViewItemViewModel(IEnvironmentRepository environmentRepository, IDebugState content, DebugTreeViewItemViewModel parent = null, bool addedAsParent = false)
-            : this(EventPublishers.Aggregator, environmentRepository, content, parent, addedAsParent)
+        public DebugStateTreeViewItemViewModel(IEnvironmentRepository environmentRepository)
         {
-        }
-
-        public DebugStateTreeViewItemViewModel(IEventAggregator eventPublisher, IEnvironmentRepository environmentRepository, IDebugState content, DebugTreeViewItemViewModel parent = null, bool addedAsParent = false)
-            : base(parent)
-        {
-            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            _eventPublisher = eventPublisher;
-
-            Content = content;
-
-            // Multiple when creating - so that we show the path of the execution when debugging
-            SelectionType = ActivitySelectionType.Add;
-
-            IsSelected = content != null && content.ActivityType != ActivityType.Workflow;
-
-            //// Thereafter user selection is single until further notice
-            //SelectionType = ActivitySelectionType.Single;
-
-            AddedAsParent = addedAsParent;
-            _inputs = new List<object>();
-            _outputs = new List<object>();
-
-            if(environmentRepository != null && content != null)
-            {
-                Guid serverID;
-                // check for remote server ID ;)
-                bool isRemote = Guid.TryParse(content.Server, out serverID);
-                // avoid flagging empty guid as valid ;)
-                if(isRemote && serverID == Guid.Empty)
-                {
-                    isRemote = false;
-                }
-                if(serverID == Guid.Empty)
-                {
-                    serverID = content.ServerID;
-                }
-
-                var env = environmentRepository.All().FirstOrDefault(e => e.ID == serverID) ?? environmentRepository.Source;
-
-                if(Equals(env, environmentRepository.Source) && isRemote)
-                {
-                    // We have an unknown remote server ;)
-                    content.Server = "Unknown Remote Server";
-                }
-                else
-                {
-                    if(content.IsFirstStep() || content.IsFinalStep())
-                    {
-                        Action<IEnvironmentModel> callback = delegate(IEnvironmentModel model)
-                        {
-                            if(model != null)
-                            {
-                                content.Server = model.Name;
-                            }
-
-                        };
-                        _eventPublisher.Publish(new GetContextualEnvironmentCallbackMessage(callback));
-                    }
-                    else
-                    {
-                        content.Server = env.Name;
-                    }
-                }
-            }
-
-            if(content != null)
-            {
-                BuildBindableListFromDebugItems(content.Inputs, Inputs);
-                BuildBindableListFromDebugItems(content.Outputs, Outputs);
-            }
+            VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
+            _environmentRepository = environmentRepository;
+            _inputs = new ObservableCollection<object>();
+            _outputs = new ObservableCollection<object>();
         }
 
         public ActivitySelectionType SelectionType { get; set; }
 
-        public IDebugState Content
-        {
-            get;
-            private set;
-        }
+        public ObservableCollection<object> Inputs { get { return _inputs; } }
 
-        public List<object> Inputs { get { return _inputs; } }
-
-        public List<object> Outputs { get { return _outputs; } }
+        public ObservableCollection<object> Outputs { get { return _outputs; } }
 
         public void AppendError(string errorMessage)
         {
@@ -157,11 +59,91 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             HasError = true;
         }
 
+        protected override void Initialize(IDebugState content)
+        {
+            _inputs.Clear();
+            _outputs.Clear();
+
+            if(content == null)
+            {
+                return;
+            }
+
+            // Multiple when creating - so that we show the path of the execution when debugging
+            SelectionType = ActivitySelectionType.Add;
+            IsSelected = content.ActivityType != ActivityType.Workflow;
+
+            // check for remote server ID ;)
+            Guid serverID;
+            var isRemote = Guid.TryParse(content.Server, out serverID);
+
+            // avoid flagging empty guid as valid ;)
+            if(isRemote && serverID == Guid.Empty)
+            {
+                isRemote = false;
+            }
+
+            var envID = content.EnvironmentID;
+
+            var env = _environmentRepository.All().FirstOrDefault(e => e.ID == envID) ?? _environmentRepository.Source;
+
+            if(Equals(env, _environmentRepository.Source) && isRemote)
+            {
+                // We have an unknown remote server ;)
+                content.Server = "Unknown Remote Server";
+            }
+            else
+            {
+                if(env != null)
+                {
+                    content.Server = env.Name;
+                }
+            }
+
+            BuildBindableListFromDebugItems(content.Inputs, _inputs);
+            BuildBindableListFromDebugItems(content.Outputs, _outputs);
+
+            if(content.HasError)
+            {
+                HasError = true;
+            }
+        }
+
+        protected override void OnPropertyChanged(string propertyName)
+        {
+            base.OnPropertyChanged(propertyName);
+            switch(propertyName)
+            {
+                case "IsSelected":
+                    NotifySelectionChanged();
+                    break;
+            }
+        }
+
+        void NotifySelectionChanged()
+        {
+            if(IsSelected) 
+            {
+                var content = Content;
+                if(Parent != null)
+                {
+                    // Only show selection at the root level!
+                    var parent = (DebugStateTreeViewItemViewModel)Parent;
+                    do
+                    {
+                        content = parent.Content;
+                        parent = (DebugStateTreeViewItemViewModel)parent.Parent;
+                    }
+                    while(parent != null);
+                }
+                EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = content, SelectionType = SelectionType });
+            }
+
+            SelectionType = ActivitySelectionType.Single;
+        }
+
         static void BuildBindableListFromDebugItems(IEnumerable<IDebugItem> debugItems, ICollection<object> destinationList)
         {
-            //
-            // Build destinationList
-            //
             destinationList.Clear();
 
             if(debugItems == null)
@@ -206,60 +188,86 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 destinationList.Add(list);
             }
         }
-
-        protected override void OnPropertyChanged(string propertyName)
-        {
-            base.OnPropertyChanged(propertyName);
-            switch(propertyName)
-            {
-                case "IsSelected":
-                    NotifySelectionChanged();
-                    break;
-            }
-        }
-
-        void NotifySelectionChanged()
-        {
-            if(IsSelected)
-            {
-                EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = Content, SelectionType = SelectionType });
-            }
-
-            SelectionType = ActivitySelectionType.Single;
-        }
     }
 
-    public abstract class DebugTreeViewItemViewModel : INotifyPropertyChanged
+    public interface IDebugTreeViewItemViewModel : INotifyPropertyChanged
     {
-        #region Fields
+        bool IsExpanded { get; set; }
+        bool IsSelected { get; set; }
+        int Depth { get; }
+        ObservableCollection<IDebugTreeViewItemViewModel> Children { get; }
+        IDebugTreeViewItemViewModel Parent { get; set; }
+        bool? HasError { get; set; }
 
-        readonly ObservableCollection<DebugTreeViewItemViewModel> _children;
-        readonly DebugTreeViewItemViewModel _parent;
+        void VerifyErrorState();
+    }
 
-        bool _addedAsParent;
+    public abstract class DebugTreeViewItemViewModel<TContent> : IDebugTreeViewItemViewModel
+        where TContent : class
+    {
+        readonly ObservableCollection<IDebugTreeViewItemViewModel> _children;
+
         bool? _hasError = false;
         bool _isExpanded;
         bool _isSelected;
+        TContent _content;
+        IDebugTreeViewItemViewModel _parent;
 
-        #endregion
-
-        #region Ctor
-
-        protected DebugTreeViewItemViewModel(DebugTreeViewItemViewModel parent = null)
+        protected DebugTreeViewItemViewModel()
         {
-            _parent = parent;
-            _children = new ObservableCollection<DebugTreeViewItemViewModel>();
+            _children = new ObservableCollection<IDebugTreeViewItemViewModel>();
         }
 
-        #endregion
+        public TContent Content
+        {
+            get { return _content; }
+            set
+            {
+                if(value != _content)
+                {
+                    _content = value;
+                    Initialize(value);
+                    OnPropertyChanged("Content");
+                }
+            }
+        }
 
-        #region Content Properties
+        abstract protected void Initialize(TContent value);
 
-        public ObservableCollection<DebugTreeViewItemViewModel> Children
+        public int Depth
+        {
+            get
+            {
+                return _parent == null ? 0 : _parent.Depth + 1;
+            }
+        }
+
+        public ObservableCollection<IDebugTreeViewItemViewModel> Children
         {
             get
             {
                 return _children;
+            }
+        }
+
+        public IDebugTreeViewItemViewModel Parent
+        {
+            get
+            {
+                return _parent;
+            }
+            set
+            {
+                if(value != _parent)
+                {
+                    _parent = value;
+                    if(_parent != null)
+                    {
+                        _parent.VerifyErrorState();
+                    }
+                    OnPropertyChanged("Parent");
+                    OnPropertyChanged("Depth");
+                }
             }
         }
 
@@ -272,9 +280,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             set
             {
                 _hasError = value;
-                if(Parent != null)
+                if(_parent != null)
                 {
-                    Parent.VerifyErrorState();
+                    _parent.VerifyErrorState();
                 }
                 OnPropertyChanged("HasError");
             }
@@ -286,7 +294,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 return;
             }
-            if(Children.Any(c => c.HasError == true || c.HasError == null))
+
+            if(_children.Any(c => c.HasError == true || c.HasError == null))
             {
                 HasError = null;
             }
@@ -294,16 +303,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 HasError = false;
             }
+            OnPropertyChanged("HasError");
         }
 
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        ///     Gets/sets whether the TreeViewItem
-        ///     associated with this object is expanded.
-        /// </summary>
         public bool IsExpanded
         {
             get
@@ -326,10 +328,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        /// <summary>
-        ///     Gets/sets whether the TreeViewItem
-        ///     associated with this object is selected.
-        /// </summary>
         public bool IsSelected
         {
             get
@@ -346,93 +344,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether the item was added as a parent.
-        /// </summary>
-        /// <value>
-        ///     <c>true</c> if the item was added as a parent; otherwise, <c>false</c>.
-        /// </value>
-        public bool AddedAsParent
-        {
-            get
-            {
-                return _addedAsParent;
-            }
-            set
-            {
-                _addedAsParent = value;
-                OnPropertyChanged("AddedAsParent");
-            }
-        }
-
-        public DebugTreeViewItemViewModel Parent
-        {
-            get
-            {
-                return _parent;
-            }
-        }
-
-        #endregion Properties
-
-        #region Methods
-
-        /// <summary>
-        ///     Returns the first item which matches a predicate form the node it's self and all it's children recursively.
-        /// </summary>
-        /// <param name="predicate">The predicate.</param>
-        public DebugTreeViewItemViewModel FindSelfOrChild(Func<DebugTreeViewItemViewModel, bool> predicate)
-        {
-            if(predicate == null)
-            {
-                return null;
-            }
-
-            //
-            // Check the current node agains the predicate
-            //
-            if(predicate(this))
-            {
-                return this;
-            }
-
-            //
-            // Recursively check all children against the predicate
-            //
-            foreach(DebugTreeViewItemViewModel child in Children)
-            {
-                DebugTreeViewItemViewModel recursiveMatch = child.FindSelfOrChild(predicate);
-                if(recursiveMatch != null)
-                {
-                    return recursiveMatch;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        ///     Gets the depth.
-        /// </summary>
-        /// <returns></returns>
-        public int GetDepth()
-        {
-            DebugTreeViewItemViewModel currentViewModel = this;
-
-            int depth = 0;
-            while(currentViewModel.Parent != null)
-            {
-                currentViewModel = currentViewModel.Parent;
-                depth++;
-            }
-
-            return depth;
-        }
-
-        #endregion Methods
-
-        #region INotifyPropertyChanged
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
@@ -442,7 +353,5 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
-        #endregion
     }
 }

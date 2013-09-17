@@ -61,7 +61,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var msgs = RemoteDebugMessageRepo.Instance.FetchDebugItems(id);
             // remove test datalist ;)
             DataListRemoval(dObj.DataListID);
-            Assert.AreEqual(2, msgs.Count);
+            Assert.AreEqual(1, msgs.Count);
         }
 
         [TestMethod]
@@ -87,7 +87,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(dObj.DataListID);
 
-            Assert.AreEqual(2, tmp2.Count);
+            Assert.AreEqual(1, tmp2.Count);
         }
 
         [TestMethod]
@@ -117,7 +117,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(dObj.DataListID);
 
-            Assert.AreEqual(2, tmp2.Count);
+            Assert.AreEqual(1, tmp2.Count);
         }
 
         [TestMethod]

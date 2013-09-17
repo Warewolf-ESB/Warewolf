@@ -452,7 +452,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 Name = GetType().Name,
                 HasError = hasError,
                 ErrorMessage = errorMessage,
-                EnvironmentID = dataObject.EnvironmentID
+                EnvironmentID = dataObject.EnvironmentID,
+                SessionID = dataObject.DebugSessionID
             };
         }
 

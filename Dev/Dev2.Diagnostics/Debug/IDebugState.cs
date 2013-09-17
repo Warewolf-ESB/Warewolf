@@ -6,7 +6,7 @@ namespace Dev2.Diagnostics
     /// <summary>
     /// Defines the requirements for a class whose state can be written to a <see cref="IDebugWriter"/>
     /// </summary>
-    public interface IDebugState
+    public interface IDebugState : IEquatable<IDebugState>
     {
         /// <summary>
         /// Gets or sets the workspace ID.
@@ -137,8 +137,12 @@ namespace Dev2.Diagnostics
 
         string Origin { get; }
 
+        Guid SessionID { get; set; }
+
         bool IsFinalStep();
 
         bool IsFirstStep();
+
+
     }
 }

@@ -299,6 +299,8 @@ namespace Dev2.DynamicServices
                     OriginalInstanceID = dataObject.OriginalInstanceID,
                     Server = string.Empty,
                     Version = string.Empty,
+                    SessionID = dataObject.DebugSessionID,
+                    EnvironmentID = dataObject.EnvironmentID,
                     Name = GetType().Name,
                     HasError = AllErrors.HasErrors(),
                     ErrorMessage = AllErrors.MakeDisplayReady()

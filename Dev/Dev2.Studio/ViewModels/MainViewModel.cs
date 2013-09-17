@@ -59,7 +59,6 @@ namespace Dev2.Studio.ViewModels
                                         IHandle<DeleteResourcesMessage>,
                                         IHandle<ShowDependenciesMessage>,
                                         IHandle<AddWorkSurfaceMessage>,
-                                        IHandle<DebugWriterWriteMessage>,
                                         IHandle<SetActiveEnvironmentMessage>,
                                         IHandle<ShowEditResourceWizardMessage>,
                                         IHandle<DeployResourcesMessage>,
@@ -487,11 +486,6 @@ namespace Dev2.Studio.ViewModels
             AddHelpTabWorkSurface(message.HelpLink);
         }
 
-        public void Handle(DebugWriterWriteMessage message)
-        {
-            DisplayDebugOutput(message.DebugState);
-        }
-
         public void Handle(RemoveResourceAndCloseTabMessage message)
         {
             if(message.ResourceToRemove == null)
@@ -553,21 +547,6 @@ namespace Dev2.Studio.ViewModels
 
             AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateResourceViewModel(tempResource));
             AddWorkspaceItem(tempResource);
-        }
-
-        private void DisplayDebugOutput(IDebugState debugState)
-        {
-            if(debugState == null)
-            {
-                return;
-            }
-            var key = WorkSurfaceKeyFactory.CreateKey(debugState);
-            // DEBUG FAILS HERE BECAUSE ctx is always null!
-            var ctx = FindWorkSurfaceContextViewModel(key);
-            if(ctx != null)
-            {
-                ctx.DisplayDebugOutput(debugState);
-            }
         }
 
         private void DeployAll()
@@ -982,12 +961,12 @@ namespace Dev2.Studio.ViewModels
                 {
                     var deletePrompt = String.Format(StringResources.DialogBody_ConfirmDelete, models.FirstOrDefault().ResourceName,
                         models.FirstOrDefault().ResourceType.GetDescription());
-            var deleteAnswer = PopupProvider.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
+                    var deleteAnswer = PopupProvider.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
                         MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
-            var shouldDelete = deleteAnswer == MessageBoxResult.Yes;
-                return shouldDelete;
-            }
+                    var shouldDelete = deleteAnswer == MessageBoxResult.Yes;
+                    return shouldDelete;
+                }
             }
             return false;
         }
@@ -1000,11 +979,11 @@ namespace Dev2.Studio.ViewModels
             }
 
             foreach(var contextualModel in models)
-        {
-                if (contextualModel == null)
             {
+                if (contextualModel == null)
+                {
                     continue;
-            }
+                }
 
                 DeleteContext(contextualModel);
                 _eventPublisher.Publish(new RemoveNavigationResourceMessage(contextualModel));
@@ -1015,25 +994,25 @@ namespace Dev2.Studio.ViewModels
                 }
 
 
-            //If its deleted from loalhost, and is a server, also delete from repository
+                //If its deleted from loalhost, and is a server, also delete from repository
                 if(contextualModel.Environment.IsLocalHost())
-            {
-                    if(contextualModel.ResourceType == ResourceType.Source)
                 {
-                        if(contextualModel.ServerResourceType == "Server")
+                    if(contextualModel.ResourceType == ResourceType.Source)
                     {
-                        var appserUri =
+                        if(contextualModel.ServerResourceType == "Server")
+                        {
+                            var appserUri =
                                 Core.EnvironmentRepository.GetAppServerUriFromConnectionString(
                                     contextualModel.ConnectionString);
-                        var environment = EnvironmentRepository.Get(appserUri);
+                            var environment = EnvironmentRepository.Get(appserUri);
 
-                        if(environment != null)
-                        {
-                            _eventPublisher.Publish(new EnvironmentDeletedMessage(environment));
-                            EnvironmentRepository.Remove(environment);
+                            if(environment != null)
+                            {
+                                _eventPublisher.Publish(new EnvironmentDeletedMessage(environment));
+                                EnvironmentRepository.Remove(environment);
+                            }
                         }
                     }
-                }
                 }
             }
         }

@@ -52,6 +52,16 @@ namespace Dev2.DynamicServices
                     }
                     IsDebug = isDebug;
 
+                    Guid debugSessionID;
+                    Guid.TryParse(dataObject.GetValue("DebugSessionID"), out debugSessionID);
+                    DebugSessionID = debugSessionID;
+                    
+                    Guid environmentID;
+                    if(Guid.TryParse(dataObject.GetValue("EnvironmentID"), out environmentID))
+                    {
+                        EnvironmentID = environmentID;
+                    }
+
                     var isOnDemandSimulation = false;
                     var onDemandSimulationString = dataObject.GetValue("IsOnDemandSimulation") as string;
                     if (!string.IsNullOrEmpty(onDemandSimulationString))
@@ -142,6 +152,8 @@ namespace Dev2.DynamicServices
         #endregion Constructor
 
         #region Properties
+
+        public Guid DebugSessionID { get; set; }
 
         public Guid EnvironmentID { get; set; }
         public bool IsRemoteWorkflow { get { return EnvironmentID != Guid.Empty; } }

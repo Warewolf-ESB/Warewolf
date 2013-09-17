@@ -36,7 +36,7 @@ namespace Dev2.Diagnostics
             Outputs = new List<DebugItem>();
 
             _tempPath = Path.Combine(Path.GetTempPath(), "Warewolf", "Debug");
-            if (!Directory.Exists(_tempPath))
+            if(!Directory.Exists(_tempPath))
             {
                 Directory.CreateDirectory(_tempPath);
             }
@@ -129,7 +129,7 @@ namespace Dev2.Diagnostics
             set
             {
                 _startTime = value;
-                if (EndTime != DateTime.MinValue)
+                if(EndTime != DateTime.MinValue)
                 {
                     Duration = StartTime - EndTime;
                 }
@@ -149,7 +149,7 @@ namespace Dev2.Diagnostics
             set
             {
                 _endTime = value;
-                if (StartTime != DateTime.MinValue)
+                if(StartTime != DateTime.MinValue)
                 {
                     Duration = StartTime - EndTime;
                 }
@@ -220,7 +220,7 @@ namespace Dev2.Diagnostics
             get
             {
 
-                switch (ExecutionOrigin)
+                switch(ExecutionOrigin)
                 {
                     case ExecutionOrigin.Unknown:
                         return string.Empty;
@@ -243,6 +243,8 @@ namespace Dev2.Diagnostics
 
         public string ExecutingUser { get; set; }
 
+        public Guid SessionID { get; set; }
+
         #endregion
 
         #region IDebugState - Write
@@ -253,7 +255,7 @@ namespace Dev2.Diagnostics
         /// <param name="writer">The writer to which this instance is written.</param>
         public void Write(IDebugWriter writer)
         {
-            if (writer == null)
+            if(writer == null)
             {
                 return;
             }
@@ -270,10 +272,10 @@ namespace Dev2.Diagnostics
             WorkspaceID = reader.ReadGuid();
             ID = reader.ReadGuid();
             ParentID = reader.ReadGuid();
-            StateType = (StateType) reader.ReadInt32();
+            StateType = (StateType)reader.ReadInt32();
             DisplayName = reader.ReadString();
             Name = reader.ReadString();
-            ActivityType = (ActivityType) reader.ReadInt32();
+            ActivityType = (ActivityType)reader.ReadInt32();
             Version = reader.ReadString();
             IsSimulation = reader.ReadBoolean();
             HasError = reader.ReadBoolean();
@@ -285,10 +287,11 @@ namespace Dev2.Diagnostics
             StartTime = reader.ReadDateTime();
             EndTime = reader.ReadDateTime();
             NumberOfSteps = reader.ReadInt32();
-            ExecutionOrigin = (ExecutionOrigin) reader.ReadInt32();
+            ExecutionOrigin = (ExecutionOrigin)reader.ReadInt32();
             ExecutionOriginDescription = reader.ReadString();
             ExecutingUser = reader.ReadString();
             EnvironmentID = reader.ReadGuid();
+            SessionID = reader.ReadGuid();
 
             Deserialize(reader, Inputs);
             Deserialize(reader, Outputs);
@@ -299,10 +302,10 @@ namespace Dev2.Diagnostics
             writer.Write(WorkspaceID);
             writer.Write(ID);
             writer.Write(ParentID);
-            writer.Write((int) StateType);
+            writer.Write((int)StateType);
             writer.Write(DisplayName);
             writer.Write(Name);
-            writer.Write((int) ActivityType);
+            writer.Write((int)ActivityType);
             writer.Write(Version);
             writer.Write(IsSimulation);
             writer.Write(HasError);
@@ -318,6 +321,7 @@ namespace Dev2.Diagnostics
             writer.Write(ExecutionOriginDescription);
             writer.Write(ExecutingUser);
             writer.Write(EnvironmentID);
+            writer.Write(SessionID);
 
             Serialize(writer, Inputs);
             Serialize(writer, Outputs);
@@ -332,13 +336,13 @@ namespace Dev2.Diagnostics
 
             writer.Write(items.Count);
             // ReSharper disable ForCanBeConvertedToForeach
-            for (var i = 0; i < items.Count; i++)
+            for(var i = 0; i < items.Count; i++)
             {
                 writer.Write(items[i].FetchResultsList().Count);
-                for (var j = 0; j < items[i].FetchResultsList().Count; j++)
+                for(var j = 0; j < items[i].FetchResultsList().Count; j++)
                 {
                     var itemResult = items[i].FetchResultsList()[j];
-                    writer.Write((int) itemResult.Type);
+                    writer.Write((int)itemResult.Type);
                     writer.Write(itemResult.Value);
                     writer.Write(itemResult.GroupName);
                     writer.Write(itemResult.GroupIndex);
@@ -351,15 +355,15 @@ namespace Dev2.Diagnostics
         private static void Deserialize(IByteReaderBase reader, ICollection<DebugItem> items)
         {
             var count = reader.ReadInt32();
-            for (var i = 0; i < count; i++)
+            for(var i = 0; i < count; i++)
             {
                 var item = new DebugItem();
                 var resultCount = reader.ReadInt32();
-                for (var j = 0; j < resultCount; j++)
+                for(var j = 0; j < resultCount; j++)
                 {
                     item.Add(new DebugItemResult
                         {
-                            Type = (DebugItemResultType) reader.ReadInt32(),
+                            Type = (DebugItemResultType)reader.ReadInt32(),
                             Value = reader.ReadString(),
                             GroupName = reader.ReadString(),
                             GroupIndex = reader.ReadInt32(),
@@ -397,9 +401,12 @@ namespace Dev2.Diagnostics
             Enum.TryParse(reader.GetAttribute("StateType"), out state);
             StateType = state;
 
-            while (reader.Read())
+            Guid.TryParse(reader.GetAttribute("SessionID"), out guid);
+            SessionID = guid;
+
+            while(reader.Read())
             {
-                if (reader.IsStartElement("HasError"))
+                if(reader.IsStartElement("HasError"))
                 {
                     var result = reader.ReadElementString("HasError");
 
@@ -408,22 +415,22 @@ namespace Dev2.Diagnostics
                     HasError = exists && boolean;
                 }
 
-                if (reader.IsStartElement("ErrorMessage"))
+                if(reader.IsStartElement("ErrorMessage"))
                 {
                     ErrorMessage = reader.ReadElementString("ErrorMessage");
                 }
 
-                if (reader.IsStartElement("Version"))
+                if(reader.IsStartElement("Version"))
                 {
                     Version = reader.ReadElementString("Version");
                 }
 
-                if (reader.IsStartElement("Name"))
+                if(reader.IsStartElement("Name"))
                 {
                     Name = reader.ReadElementString("Name");
                 }
 
-                if (reader.IsStartElement("ActivityType"))
+                if(reader.IsStartElement("ActivityType"))
                 {
                     var result = reader.ReadElementString("ActivityType");
 
@@ -432,12 +439,12 @@ namespace Dev2.Diagnostics
                     ActivityType = activityType;
                 }
 
-                if (reader.IsStartElement("Duration"))
+                if(reader.IsStartElement("Duration"))
                 {
                     DurationString = reader.ReadElementString("Duration");
                 }
 
-                if (reader.IsStartElement("StartTime"))
+                if(reader.IsStartElement("StartTime"))
                 {
                     var result = reader.ReadElementString("StartTime");
 
@@ -446,7 +453,7 @@ namespace Dev2.Diagnostics
                     StartTime = date;
                 }
 
-                if (reader.IsStartElement("EndTime"))
+                if(reader.IsStartElement("EndTime"))
                 {
                     var result = reader.ReadElementString("EndTime");
 
@@ -456,11 +463,11 @@ namespace Dev2.Diagnostics
                 }
 
 
-                if (reader.IsStartElement("Inputs"))
+                if(reader.IsStartElement("Inputs"))
                 {
                     Inputs = new List<DebugItem>();
                     reader.ReadStartElement();
-                    while (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DebugItem")
+                    while(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DebugItem")
                     {
                         var item = new DebugItem();
                         item.ReadXml(reader);
@@ -469,11 +476,11 @@ namespace Dev2.Diagnostics
                     reader.ReadEndElement();
                 }
 
-                if (reader.IsStartElement("Outputs"))
+                if(reader.IsStartElement("Outputs"))
                 {
                     Outputs = new List<DebugItem>();
                     reader.ReadStartElement();
-                    while (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DebugItem")
+                    while(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DebugItem")
                     {
                         var item = new DebugItem();
                         item.ReadXml(reader);
@@ -482,34 +489,34 @@ namespace Dev2.Diagnostics
                     reader.ReadEndElement();
                 }
 
-                if (reader.IsStartElement("ExecutionOrigin"))
+                if(reader.IsStartElement("ExecutionOrigin"))
                 {
                     var result = reader.ReadElementString("ExecutionOrigin");
 
                     ExecutionOrigin origin;
                     var exists = Enum.TryParse(result, out origin);
-                    if (exists)
+                    if(exists)
                     {
                         ExecutionOrigin = origin;
                     }
                 }
 
-                if (reader.IsStartElement("ExecutingUser"))
+                if(reader.IsStartElement("ExecutingUser"))
                 {
                     ExecutingUser = reader.ReadElementString("ExecutingUser");
                 }
 
-                if (reader.IsStartElement("NumberOfSteps"))
+                if(reader.IsStartElement("NumberOfSteps"))
                 {
                     int numberOfSteps;
-                    var success =int.TryParse(reader.ReadElementString("NumberOfSteps"), out numberOfSteps);
-                    if (success)
+                    var success = int.TryParse(reader.ReadElementString("NumberOfSteps"), out numberOfSteps);
+                    if(success)
                     {
                         NumberOfSteps = numberOfSteps;
                     }
                 }
 
-                if (reader.NodeType == XmlNodeType.EndElement && reader.Name == "DebugState")
+                if(reader.NodeType == XmlNodeType.EndElement && reader.Name == "DebugState")
                 {
                     reader.ReadEndElement();
                     break;
@@ -534,7 +541,9 @@ namespace Dev2.Diagnostics
 
             writer.WriteElementString("HasError", HasError.ToString());
 
-            if (HasError)
+            writer.WriteAttributeString("SessionID", SessionID.ToString());
+
+            if(HasError)
             {
                 writer.WriteElementString("ErrorMessage", ErrorMessage);
             }
@@ -543,35 +552,35 @@ namespace Dev2.Diagnostics
             var settings = ServerLogger.LoggingSettings;
 
             //Version
-            if (settings.IsVersionLogged && !string.IsNullOrWhiteSpace(Version))
+            if(settings.IsVersionLogged && !string.IsNullOrWhiteSpace(Version))
             {
                 writer.WriteElementString("Version", Version);
             }
 
             //Type
-            if (settings.IsTypeLogged)
+            if(settings.IsTypeLogged)
             {
                 writer.WriteElementString("Name", Name); 
                 writer.WriteElementString("ActivityType", ActivityType.ToString());
             }
 
             //Duration
-            if (settings.IsDurationLogged)
+            if(settings.IsDurationLogged)
             {
-                if (Duration != default(TimeSpan))
+                if(Duration != default(TimeSpan))
                 {
                     writer.WriteElementString("Duration", DurationString);
                 }
             }
 
             //DateTime
-            if (settings.IsDataAndTimeLogged)
+            if(settings.IsDataAndTimeLogged)
             {
-                if (StartTime != DateTime.MinValue)
+                if(StartTime != DateTime.MinValue)
                 {
                     writer.WriteElementString("StartTime", StartTime.ToString("O"));
                 }
-                if (EndTime != DateTime.MinValue)
+                if(EndTime != DateTime.MinValue)
                 {
                     writer.WriteElementString("EndTime", EndTime.ToString("O"));
                 }
@@ -579,13 +588,13 @@ namespace Dev2.Diagnostics
        
 
             //Input
-            if (settings.IsInputLogged && Inputs.Count > 0)
+            if(settings.IsInputLogged && Inputs.Count > 0)
             {
                 writer.WriteStartElement("Inputs");
                 writer.WriteAttributeString("Count", Inputs.Count.ToString(CultureInfo.InvariantCulture));
 
-                var inputSer = new XmlSerializer(typeof (DebugItem));
-                foreach (var other in Inputs)
+                var inputSer = new XmlSerializer(typeof(DebugItem));
+                foreach(var other in Inputs)
                 {
                     inputSer.Serialize(writer, other);
                 }
@@ -593,13 +602,13 @@ namespace Dev2.Diagnostics
             }
 
             //Output
-            if (settings.IsOutputLogged && Outputs.Count > 0)
+            if(settings.IsOutputLogged && Outputs.Count > 0)
             {
                 writer.WriteStartElement("Outputs");
                 writer.WriteAttributeString("Count", Outputs.Count.ToString(CultureInfo.InvariantCulture));
 
-                var outputSer = new XmlSerializer(typeof (DebugItem));
-                foreach (var other in Outputs)
+                var outputSer = new XmlSerializer(typeof(DebugItem));
+                foreach(var other in Outputs)
                 {
                     outputSer.Serialize(writer, other);
                 }
@@ -607,13 +616,13 @@ namespace Dev2.Diagnostics
             }
 
             //StartBlock
-            if (IsFirstStep())
+            if(IsFirstStep())
             {
-                if (ExecutionOrigin != ExecutionOrigin.Unknown)
+                if(ExecutionOrigin != ExecutionOrigin.Unknown)
                 {
                     writer.WriteElementString("ExecutionOrigin", ExecutionOrigin.ToString());
                 }
-                if (!string.IsNullOrWhiteSpace(ExecutingUser))
+                if(!string.IsNullOrWhiteSpace(ExecutingUser))
                 {
                     writer.WriteElementString("ExecutingUser", ExecutingUser);
                 }
@@ -621,7 +630,7 @@ namespace Dev2.Diagnostics
 
             //EndBlock
 
-            if (IsFinalStep())
+            if(IsFinalStep())
             {
                 writer.WriteElementString("NumberOfSteps", NumberOfSteps.ToString(CultureInfo.InvariantCulture));
             }
@@ -638,5 +647,35 @@ namespace Dev2.Diagnostics
             return StateType == StateType.Start &&
                    OriginalInstanceID == ID;
         }
+
+        #region Implementation of IEquatable<IDebugState>
+
+        public bool Equals(IDebugState other)
+        {
+            if(other == null)
+            {
+                return false;
+            }
+
+            return ID == other.ID && SessionID == other.SessionID;
+        }
+
+        public override bool Equals(Object obj)
+        {
+            if(obj == null)
+            {
+                return false;
+            }
+
+            var stateObj = obj as IDebugState;
+            return stateObj != null && Equals(stateObj);
+        }
+
+        public override int GetHashCode()
+        {
+            return ID.GetHashCode() ^ SessionID.GetHashCode();
+        }
+
+        #endregion
     }
 }

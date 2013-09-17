@@ -46,7 +46,7 @@ namespace Dev2.Core.Tests
             var content = new DebugState { ServerID = serverID };
 
             //Execute
-            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object, content);
+            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object) { Content = content };
 
             //Assert
             Assert.IsFalse(vm.IsExpanded, "The debug state tree viewmodel should be collapsed if not explicitly expanded in constructor");
@@ -58,11 +58,11 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void DebugStateTreeViewItemViewModel_Constructor_EnvironmentRepository_SetsDebugStateServer()
         {
-            var serverID = Guid.NewGuid();
+            var environmentID = Guid.NewGuid();
             const string ServerName = "Myserver";
 
             var env = new Mock<IEnvironmentModel>();
-            env.Setup(e => e.ID).Returns(serverID);
+            env.Setup(e => e.ID).Returns(environmentID);
             env.Setup(e => e.Name).Returns(ServerName);
 
             var env2 = new Mock<IEnvironmentModel>();
@@ -71,8 +71,8 @@ namespace Dev2.Core.Tests
             var envRep = new Mock<IEnvironmentRepository>();
             envRep.Setup(e => e.All()).Returns(() => new[] { env.Object, env2.Object });
 
-            var content = new DebugState { ServerID = serverID };
-            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object, content);
+            var content = new DebugState { EnvironmentID = environmentID };
+            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object) { Content = content };
             Assert.AreEqual(ServerName, content.Server);
         }
 
@@ -94,14 +94,14 @@ namespace Dev2.Core.Tests
 
             var env2 = new Mock<IEnvironmentModel>();
             env2.Setup(e => e.ID).Returns(env2ID);
-            env2.Setup(e => e.Name).Returns("RemoteServer");
+            env2.Setup(e => e.Name).Returns("Unknown Remote Server");
 
             var envRep = new Mock<IEnvironmentRepository>();
             envRep.Setup(e => e.All()).Returns(() => new[] { env.Object, env2.Object });
 
             var content = new DebugState { ServerID = serverID, Server = env2ID.ToString() };
-            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object, content);
-            Assert.AreEqual("RemoteServer", vm.Content.Server);
+            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object) { Content = content };
+            Assert.AreEqual("Unknown Remote Server", vm.Content.Server);
         }
 
         [TestMethod]
@@ -114,7 +114,7 @@ namespace Dev2.Core.Tests
             envRep.Setup(r => r.All()).Returns(new List<IEnvironmentModel>());
 
             //------------Execute Test---------------------------
-            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object, null);
+            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, vm.Inputs.Count);
@@ -124,12 +124,13 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DebugStateTreeViewItemViewModel_Constructor")]
-        public void DebugStateTreeViewItemViewModel_Constructor_NullEnvironmentRepository_NoExceptionThrown()
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void DebugStateTreeViewItemViewModel_Constructor_NullEnvironmentRepository_ExceptionThrown()
         {
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var vm = new DebugStateTreeViewItemViewModelMock(null, null);
+            var vm = new DebugStateTreeViewItemViewModelMock(null);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, vm.Inputs.Count);
@@ -181,7 +182,7 @@ namespace Dev2.Core.Tests
             expected.Outputs.Add(new DebugItem(new[] { new DebugItemResult(), new DebugItemResult { GroupName = "group1", GroupIndex = 1 } }));
 
             //------------Execute Test---------------------------
-            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object, expected);
+            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object) { Content = expected };
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, vm.Inputs.Count);
@@ -230,7 +231,7 @@ namespace Dev2.Core.Tests
             var content = new DebugState { DisplayName = "Error Test", ID = Guid.NewGuid(), ActivityType = ActivityType.Workflow };
 
             var envRep = CreateEnvironmentRepository();
-            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object, content);
+            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object) { Content = content };
 
             //------------Execute Test---------------------------
             vm.SelectionType = ActivitySelectionType.Add;
@@ -261,7 +262,7 @@ namespace Dev2.Core.Tests
 
             var envRep = CreateEnvironmentRepository();
 
-            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object, expected);
+            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object) { Content = expected };
 
             if(setIsSelected)
             {
@@ -288,38 +289,23 @@ namespace Dev2.Core.Tests
         static void Verify_Constructor_AssignsNameToContentServer(StateType stateType, bool contentServerIsSource = false)
         {
             //------------Setup for test--------------------------
-            var serverID = Guid.NewGuid();
+            var environmentID = Guid.NewGuid();
             var serverName = "TestEnvironment";
 
             var env = new Mock<IEnvironmentModel>();
-            env.Setup(e => e.ID).Returns(serverID);
+            env.Setup(e => e.ID).Returns(environmentID);
             env.Setup(e => e.Name).Returns(serverName);
 
             var envRep = CreateEnvironmentRepository(env.Object);
-            if(contentServerIsSource)
-            {
-                serverName = "Unknown Remote Server";
-                env = Mock.Get(envRep.Object.Source);
-            }
 
-            var content = new DebugState { Server = (!contentServerIsSource ? Guid.Empty : Guid.NewGuid()).ToString(), ServerID = serverID, StateType = stateType, DisplayName = "IsSelectedTest", ID = Guid.NewGuid(), ActivityType = ActivityType.Workflow };
+            var content = new DebugState { Server = (!contentServerIsSource ? Guid.Empty : Guid.NewGuid()).ToString(), EnvironmentID = environmentID, StateType = stateType, DisplayName = "IsSelectedTest", ID = Guid.NewGuid(), ActivityType = ActivityType.Workflow };
             content.OriginalInstanceID = content.ID;
 
-            var publisher = new Mock<IEventAggregator>();
-            if(stateType == StateType.Start || stateType == StateType.End)
-            {
-                publisher.Setup(p => p.Publish(It.IsAny<object>()))
-                    .Callback((object msg) => ((GetContextualEnvironmentCallbackMessage)msg).Callback(env.Object)).Verifiable();
-            }
 
             //------------Execute Test---------------------------
-            var vm = new DebugStateTreeViewItemViewModelMock(publisher.Object, envRep.Object, content);
+            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object) { Content = content };
 
             //------------Assert Results-------------------------
-            if(stateType == StateType.Start || stateType == StateType.End)
-            {
-                publisher.Verify(p => p.Publish(It.IsAny<GetContextualEnvironmentCallbackMessage>()));
-            }
             Assert.AreEqual(serverName, content.Server);
         }
 
@@ -335,7 +321,7 @@ namespace Dev2.Core.Tests
             var actualProps = new List<string>();
 
             var envRep = CreateEnvironmentRepository();
-            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object, content);
+            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object) { Content = content };
             vm.PropertyChanged += (sender, args) => actualProps.Add(args.PropertyName);
 
             //------------Execute Test---------------------------
@@ -373,13 +359,8 @@ namespace Dev2.Core.Tests
 
     public class DebugStateTreeViewItemViewModelMock : DebugStateTreeViewItemViewModel
     {
-        public DebugStateTreeViewItemViewModelMock(IEnvironmentRepository environmentRepository, IDebugState content, DebugTreeViewItemViewModel parent = null, bool addedAsParent = false)
-            : base(environmentRepository, content, parent, addedAsParent)
-        {
-        }
-
-        public DebugStateTreeViewItemViewModelMock(IEventAggregator eventPublisher, IEnvironmentRepository environmentRepository, IDebugState content, DebugTreeViewItemViewModel parent = null, bool addedAsParent = false)
-            : base(eventPublisher, environmentRepository, content, parent, addedAsParent)
+        public DebugStateTreeViewItemViewModelMock(IEnvironmentRepository environmentRepository)
+            : base(environmentRepository)
         {
         }
     }

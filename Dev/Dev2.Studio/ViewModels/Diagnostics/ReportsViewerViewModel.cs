@@ -8,6 +8,7 @@ using Caliburn.Micro;
 using Dev2.Diagnostics;
 using Dev2.Services.Events;
 using Dev2.Studio.AppResources.ExtensionMethods;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.InterfaceImplementors;
@@ -82,7 +83,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 if(_debugOutput == null)
                 {
-                    _debugOutput = new DebugOutputViewModel { ShowDebugStatus = false };
+                    _debugOutput = new DebugOutputViewModel(EventPublishers.Studio, EnvironmentRepository.Instance) { ShowDebugStatus = false };
                 }
                 return _debugOutput;
             }

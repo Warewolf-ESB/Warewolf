@@ -54,7 +54,9 @@
     <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterPositive" Type="{x:Type devFeedbackActions:RecorderFeedbackAction}" />
     <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterNegative" Type="{x:Type devFeedbackActions:RecorderFeedbackAction}" MatchingVisibilityValue="Collapsed" MismatchVisibilityValue="Visible" />
     <converters:EnumDisplayNameToItemSourceConverter x:Key="EnumDisplayNameToItemSourceConverter" />
-
+    <converters:IntInRangeToVisibilityConverter x:Key="IntInRangeToVisibilityConverter" />
+    <converters:IntEnsureMinConverter x:Key="IntEnsureMinConverter" />
+    
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverterenRoundingType">
         <converters:EnumToBoolConverter.TrueEnumValues>
             <converters:EnumCollection>
