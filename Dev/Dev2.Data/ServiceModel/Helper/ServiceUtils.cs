@@ -24,7 +24,7 @@ namespace Dev2.Data.ServiceModel.Helper
 
             var dl = xe.Elements().FirstOrDefault(c => c.Name == GlobalConstants.DataListRootTag);
 
-            if (dl != null)
+            if(dl != null)
             {
                 result = dl.ToString(SaveOptions.DisableFormatting);
             }
@@ -42,17 +42,17 @@ namespace Dev2.Data.ServiceModel.Helper
 
             var tmpA = xe.Elements().FirstOrDefault(c => c.Name == GlobalConstants.ActionRootTag);
 
-            if (tmpB != null)
+            if(tmpB != null)
             {
                 tmpA = tmpB.Elements().FirstOrDefault(c => c.Name == GlobalConstants.ActionRootTag);
             }
 
 
-            if (tmpA != null)
+            if(tmpA != null)
             {
                 var dl = tmpA.Elements().FirstOrDefault(c => c.Name == GlobalConstants.OutputRootTag);
 
-                if (dl != null)
+                if(dl != null)
                 {
                     result = dl.ToString();
                 }
@@ -71,17 +71,17 @@ namespace Dev2.Data.ServiceModel.Helper
 
             var tmpA = xe.Elements().FirstOrDefault(c => c.Name == GlobalConstants.ActionRootTag);
 
-            if (tmpB != null)
+            if(tmpB != null)
             {
                 tmpA = tmpB.Elements().FirstOrDefault(c => c.Name == GlobalConstants.ActionRootTag);
             }
 
 
-            if (tmpA != null)
+            if(tmpA != null)
             {
                 var dl = tmpA.Elements().FirstOrDefault(c => c.Name == GlobalConstants.InputRootTag);
 
-                if (dl != null)
+                if(dl != null)
                 {
                     result = dl.ToString();
                 }
@@ -90,8 +90,8 @@ namespace Dev2.Data.ServiceModel.Helper
             return result;
         }
 
-        
-        public static bool MappingsChanged(IList<IDev2Definition> oldMappings, IList<IDev2Definition> newMappings)
+
+        public static bool MappingValuesChanged(IList<IDev2Definition> oldMappings, IList<IDev2Definition> newMappings)
         {
             var mappingChanged = false;
             newMappings.ToList().ForEach(definition =>
@@ -103,6 +103,19 @@ namespace Dev2.Data.ServiceModel.Helper
             });
             return mappingChanged;
         }
+
+        public static bool MappingNamesChanged(IList<IDev2Definition> oldMappings, IList<IDev2Definition> newMappings)
+        {
+            var mappingChanged = false;
+            newMappings.ToList().ForEach(definition =>
+            {
+                if(oldMappings.ToList().Find(dev2Definition => dev2Definition.Name == definition.Name) == null)
+                {
+                    mappingChanged = true;
+                }
+            });
+            return mappingChanged;
+        }
     }
-    
+
 }

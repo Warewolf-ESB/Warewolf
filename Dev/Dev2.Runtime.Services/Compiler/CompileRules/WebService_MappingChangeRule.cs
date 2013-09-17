@@ -42,7 +42,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
             var postInputs = inputParser.Parse(inputMappingsPost);
             var postOutputs = outputParser.Parse(outputMappingsPost);
 
-            if (ServiceUtils.MappingsChanged(preInputs, postInputs) || ServiceUtils.MappingsChanged(preOutputs, postOutputs))
+            if (ServiceUtils.MappingValuesChanged(preInputs, postInputs) || ServiceUtils.MappingValuesChanged(preOutputs, postOutputs))
             {
                 var tmpInput = inputParser.Parse(inputMappingsPost);
                 var tmpOutput = outputParser.Parse(outputMappingsPost);

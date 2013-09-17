@@ -44,7 +44,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
                 return (new CompileMessageTO { MessageID = Guid.NewGuid(), MessageType = CompileMessageType.MappingChange, ServiceID = serviceID, MessagePayload = defStr,ErrorType = ErrorType.Critical});
             }
 
-            if (ServiceUtils.MappingsChanged(inputMappings, inputMappingsPost) || ServiceUtils.MappingsChanged(outputMappings, outputMappingsPost))
+            if(ServiceUtils.MappingNamesChanged(inputMappings, inputMappingsPost) || ServiceUtils.MappingNamesChanged(outputMappings, outputMappingsPost))
             {
                 var inputDefs = compiler.GenerateDefsFromDataList(postDL, enDev2ColumnArgumentDirection.Input);
                 var outputDefs = compiler.GenerateDefsFromDataList(postDL, enDev2ColumnArgumentDirection.Output);
