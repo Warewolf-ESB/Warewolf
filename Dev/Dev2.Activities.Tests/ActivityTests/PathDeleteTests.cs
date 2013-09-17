@@ -132,6 +132,29 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);            
         }
 
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("DsfPathDelete_Execution")]
+        public void DsfPathDelete_Execution_FileNotFound_DebugOutputErrorMessageRelevant()
+        {
+            var dsfPathDelete = new DsfPathDelete{ InputPath = TestContext.TestRunDirectory + "\\some file that doesnt exist.txt", Result = "[[res]]" };
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+            string actual;
+            string error;
+
+            //------------Execute Test---------------------------
+            var result = CheckPathOperationActivityDebugInputOutput(dsfPathDelete, "<ADL><FileNames><Name></Name></FileNames><res></res></ADL>",
+                                                                "<ADL><FileNames><Name></Name></FileNames><res></res></ADL>", out inRes, out outRes);
+            GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
+
+            // Assert Debug Output Error Message Relevant
+            Assert.IsTrue(string.IsNullOrEmpty(actual) || !actual.Contains("null reference"), "Irrelevent error displayed for file not found.");
+
+            //clean
+            DataListRemoval(result.DataListID);
+        }
+
         #endregion
     }
 }

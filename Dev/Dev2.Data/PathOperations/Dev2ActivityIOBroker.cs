@@ -254,36 +254,40 @@ namespace Dev2.PathOperations
                     if (!Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
                     {
                         // single file fetch
-                        String tmp = CreateTmpFile();
-                        using(Stream s = src.Get(src.IOPath))
+                        var tmp = CreateTmpFile();
+                        using(var s = src.Get(src.IOPath))
                         {
                             File.WriteAllBytes(tmp, s.ToByteArray());
-                            if(!src.IOPath.Path.StartsWith("ftp://") && !src.IOPath.Path.StartsWith("ftps://"))
+                            using (var tempFileStream = new FileStream(tmp, FileMode.Open)) // NOTE: Not sure why we need to do a second stream using the temp file?!?!?!
                             {
-                                var fileInfo = new FileInfo(src.IOPath.Path);
-                                if (fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))
+                                if (!src.IOPath.Path.StartsWith("ftp://") && !src.IOPath.Path.StartsWith("ftps://"))
                                 {
-                                    if (dst.Put(s, dst.IOPath, args, fileInfo.Directory) < 0)
+                                    var fileInfo = new FileInfo(src.IOPath.Path);
+                                    if (fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))
                                     {
-                                        result = resultBad;
+                                        if(dst.Put(tempFileStream, dst.IOPath, args, fileInfo.Directory) < 0)
+                                        {
+                                            result = resultBad;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if(dst.Put(tempFileStream, dst.IOPath, args, null) < 0)
+                                        {
+                                            result = resultBad;
+                                        }
                                     }
                                 }
                                 else
                                 {
-                                    if (dst.Put(s, dst.IOPath, args, null) < 0)
+                                    if(dst.Put(tempFileStream, dst.IOPath, args, null) < 0)
                                     {
                                         result = resultBad;
                                     }
                                 }
+                                tempFileStream.Close();
+                                tempFileStream.Dispose();
                             }
-                            else
-                            {
-                                if (dst.Put(s, dst.IOPath, args, null) < 0)
-                                {
-                                    result = resultBad;
-                                }
-                            }
-
                             s.Close();
                             s.Dispose();
                         }

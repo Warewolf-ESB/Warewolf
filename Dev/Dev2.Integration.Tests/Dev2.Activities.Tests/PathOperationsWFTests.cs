@@ -1,4 +1,5 @@
-﻿using Dev2.Integration.Tests.Helpers;
+﻿using System.IO;
+using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -207,6 +208,36 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
+            StringAssert.Contains(ResponseData, expected);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("DsfCopyTool_Execution")]
+        public void DsfCopyTool_Execute_RemoteToLocal_Success()
+        {
+            string PostData = String.Format("{0}{1}", WebserverURI, "FileCopyFromFTP");
+            string expected = @"<Result>Success</Result>";
+
+            //------------Execute Test---------------------------
+            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+
+            // Assert Success
+            StringAssert.Contains(ResponseData, expected);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("DsfCopyTool_Execution")]
+        public void DsfCopyTool_Execute_RemoteToRemote_Success()
+        {
+            string PostData = String.Format("{0}{1}", WebserverURI, "CreateFileCopyFtpToFtp");
+            string expected = @"<Result>Success</Result>";
+
+            //------------Execute Test---------------------------
+            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+
+            // Assert Success
             StringAssert.Contains(ResponseData, expected);
         }
 
