@@ -18,6 +18,7 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Workspaces;
+using ServiceStack.Common.Utils;
 using enActionType = Dev2.DynamicServices.enActionType;
 
 namespace Dev2.Runtime.ESB
@@ -90,8 +91,9 @@ namespace Dev2.Runtime.ESB
             errors.ClearErrors();
             try
             {
+                Guid serviceID = dataObject.ResourceID;
                 string serviceName = dataObject.ServiceName;
-                if(string.IsNullOrEmpty(serviceName))
+                if(serviceID == Guid.Empty && string.IsNullOrEmpty(serviceName))
                 {
                     errors.AddError(Resources.DynamicServiceError_ServiceNotSpecified);
                 }
@@ -103,11 +105,19 @@ namespace Dev2.Runtime.ESB
                         try
                         {
                             var sl = new ServiceLocator();
-                            var theService = sl.FindServiceByName(serviceName, _workspace.ID);
+                            DynamicService theService;
+                            if (serviceID == Guid.Empty)
+                            {
+                                theService = sl.FindService(serviceName, _workspace.ID);
+                            }
+                            else
+                            {
+                                theService = sl.FindService(serviceID, _workspace.ID);
+                            }
 
                             if(theService == null)
                             {
-                                errors.AddError("Service [ " + serviceName + " ] not found.");
+                                errors.AddError("Service [ " + serviceID + " ] not found.");
                             }
                             else if(theService.Actions.Count <= 1)
                             {
@@ -136,7 +146,7 @@ namespace Dev2.Runtime.ESB
                             }
                             else
                             {
-                                errors.AddError("Malformed Service [ " + serviceName + " ] it contains multiple actions");
+                                errors.AddError("Malformed Service [ " + serviceID + " ] it contains multiple actions");
                             }
                         }
                         catch(Exception e)
@@ -165,14 +175,48 @@ namespace Dev2.Runtime.ESB
         /// Generates the invoke container.
         /// </summary>
         /// <param name="dataObject">The data object.</param>
-        /// <param name="serviceName">Name of the service.</param>
+        /// <param name="serviceID"></param>
+        /// <param name="isLocalInvoke"></param>
         /// <returns></returns>
-        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, string serviceName, bool isLocalInvoke)
+        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceID, bool isLocalInvoke)
         {
             if(isLocalInvoke)
             {
                 ServiceLocator sl = new ServiceLocator();
-                DynamicService theService = sl.FindServiceByName(serviceName, _workspace.ID);
+                DynamicService theService = sl.FindService(serviceID, _workspace.ID);
+                EsbExecutionContainer executionContainer = null;
+
+
+                if(theService != null && theService.Actions.Any())
+                {
+                    ServiceAction sa = theService.Actions.FirstOrDefault();
+                    MapServiceActionDependencies(sa, sl);
+                    executionContainer = GenerateContainer(sa, dataObject, _workspace);
+                }
+
+                return executionContainer;
+            }
+            else
+            {
+                // we need a remote container ;)
+                // TODO : Set Output description for shaping ;)
+                return GenerateContainer(new ServiceAction() { ActionType = enActionType.RemoteService }, dataObject, null);
+            }
+        }
+
+        /// <summary>
+        /// Generates the invoke container.
+        /// </summary>
+        /// <param name="dataObject">The data object.</param>
+        /// <param name="serviceName"></param>
+        /// <param name="isLocalInvoke"></param>
+        /// <returns></returns>
+        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, String serviceName, bool isLocalInvoke)
+        {
+            if(isLocalInvoke)
+            {
+                ServiceLocator sl = new ServiceLocator();
+                DynamicService theService = sl.FindService(serviceName, _workspace.ID);
                 EsbExecutionContainer executionContainer = null;
 
 
@@ -231,10 +275,17 @@ namespace Dev2.Runtime.ESB
 
         private void MapServiceActionDependencies(ServiceAction serviceAction, ServiceLocator serviceLocator)
         {
-            
-            if(!string.IsNullOrWhiteSpace(serviceAction.ServiceName))
+
+            if (serviceAction.ServiceID == Guid.Empty)
             {
-                serviceAction.Service = serviceLocator.FindServiceByName(serviceAction.ServiceName, _workspace.ID);
+                if(!string.IsNullOrWhiteSpace(serviceAction.ServiceName))
+                {
+                    serviceAction.Service = serviceLocator.FindService(serviceAction.ServiceName, _workspace.ID);
+                }
+            }
+            else
+            {
+                serviceAction.Service = serviceLocator.FindService(serviceAction.ServiceID, _workspace.ID);
             }
 
             if(!string.IsNullOrWhiteSpace(serviceAction.SourceName))

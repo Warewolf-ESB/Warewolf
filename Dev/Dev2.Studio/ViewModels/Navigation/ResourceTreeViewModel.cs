@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using Caliburn.Micro;
@@ -21,7 +22,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Workflow;
-
+using Dev2.Studio.Views.ResourceManagement;
 
 #endregion
 
@@ -127,7 +128,23 @@ namespace Dev2.Studio.ViewModels.Navigation
                 {
                     throw new ArgumentException(StringResources.InvalidResourceNameExceptionMessage);
                 }
-                EnvironmentModel.ResourceRepository.Rename(DataContext.ID.ToString(), value);
+                HandleRename(value, Application.Current.MainWindow);
+            }
+        }
+
+        private void HandleRename(string value, Window mainView)
+        {
+            var resourceRepository = EnvironmentModel.ResourceRepository;
+            if (resourceRepository.All().Any(res => res.ResourceName == value))
+            {
+                if (mainView != null)
+                {
+                    new RenameResourceDialog(DataContext, value, mainView).ShowDialog();
+                }
+            }
+            else
+            {
+                resourceRepository.Rename(DataContext.ID.ToString(), value);
                 DataContext.ResourceName = value;
                 NotifyOfPropertyChange(() => DisplayName);
 

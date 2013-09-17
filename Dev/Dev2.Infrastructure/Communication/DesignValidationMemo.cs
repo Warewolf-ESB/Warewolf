@@ -14,7 +14,7 @@ namespace Dev2.Communication
 
         public string Source { get; set; }
         public string Type { get; set; }
-        public string ServiceName { get; set; }
+        public Guid ServiceID { get; set; }
         public bool IsValid { get; set; }
 
         public List<ErrorInfo> Errors { get; set; }

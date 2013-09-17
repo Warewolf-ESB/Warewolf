@@ -129,6 +129,10 @@ namespace Dev2.DynamicServices {
         /// </summary>
         public string ServiceName { get; set; }
         /// <summary>
+        /// The ID of the service that will be invoked if this is an InvokeDynamicService type service action, this is prefered over using serviceName to resolve the service
+        /// </summary>
+        public Guid ServiceID { get; set; }
+        /// <summary>
         /// The instance of the service that will be invoked
         /// </summary>
         public DynamicService Service { get; set; }

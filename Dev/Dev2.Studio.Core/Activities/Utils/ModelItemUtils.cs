@@ -2,6 +2,7 @@
 using System.Activities;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
+using Dev2.Network.Messaging.Messages;
 
 namespace Dev2.Studio.Core.Activities.Utils
 {
@@ -72,6 +73,21 @@ namespace Dev2.Studio.Core.Activities.Utils
             Guid instanceID;
             Guid.TryParse(instanceIDStr, out instanceID);
             return instanceID;
+        }
+
+        public static Guid TryGetResourceID(ModelItem modelItem)
+        {
+            var resourceIDArg = modelItem.Properties["ResourceID"];
+            if(resourceIDArg != null && resourceIDArg.ComputedValue != null)
+            {
+                if (resourceIDArg.ComputedValue is InArgument<Guid>)
+                {
+                    var resourceIDStr = (resourceIDArg.ComputedValue as InArgument<Guid>).Expression;
+                    return Guid.Parse(resourceIDStr.ToString());
+                }
+                return (Guid)resourceIDArg.ComputedValue;
+            }
+            return Guid.Empty;
         }
     }
 }

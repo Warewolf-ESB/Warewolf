@@ -20,7 +20,7 @@ namespace Dev2.Runtime.ESB.Control
         /// <param name="workspaceID">The workspace ID.</param>
         /// <exception cref="System.IO.InvalidDataException">Empty or null service passed in</exception>
         /// <exception cref="System.Runtime.Serialization.InvalidDataContractException">Null workspace</exception>
-        public DynamicService FindServiceByName(string serviceName, Guid workspaceID)
+        public DynamicService FindService(string serviceName, Guid workspaceID)
         {
 
             if(string.IsNullOrEmpty(serviceName))
@@ -29,6 +29,25 @@ namespace Dev2.Runtime.ESB.Control
             }
 
             var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceName);
+            return services.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Finds the service by ID
+        /// </summary>
+        /// <param name="serviceID">ID of the service.</param>
+        /// <param name="workspaceID">The workspace ID.</param>
+        /// <exception cref="System.IO.InvalidDataException">Empty or null service passed in</exception>
+        /// <exception cref="System.Runtime.Serialization.InvalidDataContractException">Null workspace</exception>
+        public DynamicService FindService(Guid serviceID, Guid workspaceID)
+        {
+
+            if(serviceID == Guid.Empty)
+            {
+                throw new InvalidDataException("Empty or null service passed in");
+            }
+
+            var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceID);
             return services.FirstOrDefault();
         }
 

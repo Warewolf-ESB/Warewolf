@@ -206,7 +206,7 @@ namespace Dev2.DataList.Contract
         /// <param name="errors">The errors.</param>
         /// <param name="masterShape">The master shape.</param>
         /// <returns></returns>
-        Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors,string masterShape);
+        Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors, string masterShape);
 
         /// <summary>
         /// Shapes the definitions in string form to create/amended a DL.

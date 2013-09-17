@@ -55,7 +55,7 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            // Monitor.Enter(_testGuard);
+           // Monitor.Enter(_testGuard);
 
             //ImportService.CurrentContext = CompositionInitializer.PopUpProviderForTestsWithMockMainViewModel();
         }
@@ -77,7 +77,7 @@ namespace Dev2.Core.Tests
         public void RemoveAllUnusedDataListObjectsWithItemsNotUsedExpectedItemsRemoved()
         {
             var eventAggregator = new EventAggregator();
-
+            
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
 
@@ -192,7 +192,7 @@ namespace Dev2.Core.Tests
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.ResourceModel;
             var eventAggregator = new EventAggregator();
 
-
+            
             var model = CreateWorkflowDesignerViewModel(eventAggregator, resourceModel.Object, null, false);
             var dataListViewModel = new DataListViewModel();
 
@@ -1504,7 +1504,7 @@ namespace Dev2.Core.Tests
             var eventArgs = new Mock<ModelChangedEventArgs>();
             eventArgs.Setup(c => c.ItemsAdded).Returns(new List<ModelItem>() { source.Object });
 
-            #endregion
+	        #endregion
 
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
@@ -1514,12 +1514,8 @@ namespace Dev2.Core.Tests
             });
             var eventAggregator = new Mock<IEventAggregator>();
             ImportService.AddExportedValueToContainer(eventAggregator.Object);
-
-
-        #endregion
-
-            #region setup event aggregator
-            var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, eventAggregator.Object, false);
+            
+            var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object,eventAggregator.Object, false);
             var expectedMessage = new ConfigureDecisionExpressionMessage()
             {
                 ModelItem = source.Object,
@@ -1930,7 +1926,7 @@ namespace Dev2.Core.Tests
 
         #endregion
 
-            #endregion
+        #endregion
 
         #region EditActivity
 
@@ -1940,7 +1936,7 @@ namespace Dev2.Core.Tests
         [Owner("Travis Frisinger")]
         public void WorkflowDesignerViewModel_UnitTest_EditActivityWithNullEnviromentID_ConnectsAndLoadsResources()
         {
-            const string ServiceName = "Test Service";
+            Guid ServiceID = Guid.NewGuid();
             var environmentID = Guid.NewGuid();
 
             var environment = new Mock<IEnvironmentModel>();
@@ -1967,7 +1963,7 @@ namespace Dev2.Core.Tests
 
             #endregion
 
-            var modelItem = DsfActivityViewModelTests.CreateModelItem(Guid.NewGuid(), ServiceName, environmentID);
+            var modelItem = DsfActivityViewModelTests.CreateModelItem(Guid.NewGuid(), ServiceID, environmentID);
             var modelService = viewModel.Designer.Context.Services.GetService<ModelService>();
             modelItem.Setup(mi => mi.Root).Returns(modelService.Root);
 
@@ -1977,16 +1973,13 @@ namespace Dev2.Core.Tests
             environment.Verify(e => e.LoadResources());
         }
 
-
-
-
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_EditActivity")]
         [Description("WorkflowDesignerViewModel EditActivity must connect and load the resources of a disconnected environment.")]
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_UnitTest_EditActivityWithDisconnectedEnvironment_ConnectsAndLoadsResources()
         {
-            const string ServiceName = "Test Service";
+            Guid ServiceID = Guid.NewGuid();
             var environmentID = Guid.NewGuid();
 
             var environment = new Mock<IEnvironmentModel>();
@@ -2013,7 +2006,7 @@ namespace Dev2.Core.Tests
 
             #endregion
 
-            var modelItem = DsfActivityViewModelTests.CreateModelItem(Guid.NewGuid(), ServiceName, environmentID);
+            var modelItem = DsfActivityViewModelTests.CreateModelItem(Guid.NewGuid(), ServiceID, environmentID);
             var modelService = viewModel.Designer.Context.Services.GetService<ModelService>();
             modelItem.Setup(mi => mi.Root).Returns(modelService.Root);
 
@@ -2029,7 +2022,7 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_UnitTest_EditActivityWithEmptyEnvironmentID_UsesParentEnvironmentID()
         {
-            const string ServiceName = "Test Service";
+            Guid ServiceID = Guid.NewGuid();
             var environmentID = Guid.Empty;
 
             #region Setup parentEnvironment
@@ -2067,12 +2060,57 @@ namespace Dev2.Core.Tests
             #endregion
 
             var modelService = viewModel.Designer.Context.Services.GetService<ModelService>();
-            var modelItem = DsfActivityViewModelTests.CreateModelItem(Guid.NewGuid(), ServiceName, environmentID);
+            var modelItem = DsfActivityViewModelTests.CreateModelItem(Guid.NewGuid(), ServiceID, environmentID);
             modelItem.Setup(mi => mi.Root).Returns(modelService.Root);
 
             viewModel.Handle(new EditActivityMessage(modelItem.Object, parentEnvironment.Object.ID, envRepository.Object));
 
             Assert.AreSame(parentEnvironment.Object, actualEnvironment);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WorkflowDesignerViewModel_EditActivity")]
+        public void WorkflowDesignerViewModel_EditActivity_ResourceIDUsedToFindResourceToEdit()
+        {
+            var parentEnvironmentID = Guid.NewGuid();
+
+            #region Setup viewModel
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            var mockedResRepo = new Mock<IResourceRepository>();
+            Expression<Func<IResourceModel, bool>> actual = null;
+            mockedResRepo.Setup(repo => repo.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Callback<Expression<Func<IResourceModel, bool>>>(f =>
+            {
+                actual = f;
+            });
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(mockedResRepo.Object);
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(new ActivityBuilder());
+
+            var viewModel = CreateWorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+
+            #endregion
+
+            var modelService = viewModel.Designer.Context.Services.GetService<ModelService>();
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.Name).Returns("ResourceID");
+            prop.Setup(p => p.ComputedValue).Returns(Guid.NewGuid());
+            var modelProperties = new[] { prop.Object };
+            var modelItem = DsfActivityViewModelTests.CreateModelItem(Guid.NewGuid(), Guid.NewGuid(), parentEnvironmentID, modelProperties);
+            modelItem.Setup(mi => mi.Root).Returns(modelService.Root);
+            var mockedEnvironmentRepository = new Mock<IEnvironmentRepository>();
+            var mockedEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockedEnvironmentModel.Setup(env => env.ResourceRepository).Returns(mockedResRepo.Object);
+            mockedEnvironmentRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockedEnvironmentModel.Object);
+
+            //------------Execute Test---------------------------
+            viewModel.Handle(new EditActivityMessage(modelItem.Object, parentEnvironmentID, mockedEnvironmentRepository.Object));
+
+            // Assert Result
+            Assert.IsTrue((actual.Body as BinaryExpression).Right.Type.FullName.Contains("Guid"), "Resource ID was not used to identify resource");
         }
 
         #endregion
@@ -2090,7 +2128,7 @@ namespace Dev2.Core.Tests
                 Implementation = new Flowchart
                 {
                     StartNode = CreateFlowNode(Guid.NewGuid(), "SelectionChangedTest1", true, typeof(TestActivity))
-                }
+        }
             };
 
             #region Setup viewModel
@@ -2209,7 +2247,7 @@ namespace Dev2.Core.Tests
             //----------------------- Setup -----------------------//
             var states = new List<DebugState> { new DebugState { DisplayName = "SelectionChangedTest1", ID = Guid.NewGuid() } };
             if(selectionType == ActivitySelectionType.Add || selectionType == ActivitySelectionType.Remove)
-            {
+        {
                 states.Add(new DebugState { DisplayName = "SelectionChangedTest2", ID = Guid.NewGuid() });
             }
 
@@ -2224,7 +2262,7 @@ namespace Dev2.Core.Tests
                 {
                     var flowStep = prevNode as FlowStep;
                     if(flowStep != null)
-                    {
+            {
                         flowStep.Next = node;
                     }
                 }
@@ -2312,8 +2350,8 @@ namespace Dev2.Core.Tests
             foreach(var modelItem in selection.SelectedObjects)
             {
                 Assert.AreEqual(selectedActivityType, modelItem.ItemType);
-                if(selectsModelItem)
-                {
+            if(selectsModelItem)
+            {
                     var actualID = selectedActivityType == typeof(FlowDecision)
                         ? Guid.Parse(((TestDecisionActivity)modelItem.GetProperty("Condition")).UniqueID)
                         : ModelItemUtils.GetUniqueID(modelItem);
@@ -2338,10 +2376,10 @@ namespace Dev2.Core.Tests
             return new FlowStep
             {
                 Action = new TestActivity
-                {
+            {
                     DisplayName = displayName,
                     UniqueID = selectsModelItem ? id.ToString() : Guid.NewGuid().ToString()
-                }
+            }
             };
         }
 

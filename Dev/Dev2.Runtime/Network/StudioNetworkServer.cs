@@ -366,7 +366,7 @@ namespace Dev2.DynamicServices
 
         static void CoalesceMappingChangedErrors(DesignValidationMemo memo, CompileMessageTO compilerMessage)
         {
-            memo.ServiceName = compilerMessage.ServiceName;
+            memo.ServiceID = compilerMessage.ServiceID;
             memo.IsValid = false;
             memo.Errors.Add(compilerMessage.ToErrorInfo());
         }
@@ -377,7 +377,7 @@ namespace Dev2.DynamicServices
 
         static void CoalesceResourceSavedErrors(DesignValidationMemo memo, CompileMessageTO compilerMessage)
         {
-            memo.ServiceName = compilerMessage.ServiceName;
+            memo.ServiceID = compilerMessage.ServiceID;
             memo.IsValid = true;
         }
 

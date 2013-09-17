@@ -48,7 +48,7 @@ namespace Dev2.Studio.Views.ResourceManagement
             DialogResult = false;
         }
 
-        private void button2_Click(object sender, RoutedEventArgs e)
+        private void Button1_OnClick(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
         }

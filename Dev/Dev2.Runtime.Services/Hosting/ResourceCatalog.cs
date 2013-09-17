@@ -24,6 +24,7 @@ using Dev2.Runtime.Network;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
+using ServiceStack.Common.Utils;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -686,6 +687,19 @@ namespace Dev2.Runtime.Hosting
             return results.OfType<TServiceType>().ToList();
         }
 
+        public List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, Guid resourceID)
+            where TServiceType : DynamicServiceObjectBase
+        {
+            if(resourceID == Guid.Empty)
+            {
+                throw new ArgumentNullException("resourceID");
+            }
+
+            var resource = GetResource(workspaceID, resourceID);
+            var results = resource == null ? new List<DynamicServiceObjectBase>() : GetDynamicObjects(resource);
+            return results.OfType<TServiceType>().ToList();
+        }
+
         public List<DynamicServiceObjectBase> GetDynamicObjects(IResource resource)
         {
             if(resource == null)
@@ -978,7 +992,7 @@ namespace Dev2.Runtime.Hosting
 
                 var messages = GetCompileMessages(resource, contents, beforeAction, smc);
                 if(messages != null)
-                { 
+                {
                     CompileMessageRepo.Instance.AddMessage(workspaceID, messages); //Sends the message for the resource being saved
                     UpdateDependantResourceWithCompileMessages(workspaceID, resource, messages);
                 }
@@ -1026,9 +1040,9 @@ namespace Dev2.Runtime.Hosting
                     compileMessageTO.UniqueID = dependant.UniqueID;
                 }
                 UpdateResourceXML(workspaceID, affectedResource, messages);
-                CompileMessageRepo.Instance.AddMessage(workspaceID, messages);
+                    CompileMessageRepo.Instance.AddMessage(workspaceID, messages);
+                }
             }
-        }
 
         void UpdateResourceXML(Guid workspaceID, IResource effectedResource, IList<CompileMessageTO> compileMessagesTO)
         {

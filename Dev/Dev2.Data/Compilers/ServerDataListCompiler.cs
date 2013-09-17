@@ -939,7 +939,8 @@ namespace Dev2.Server.Datalist
 
             string theShape;
 
-            if (string.IsNullOrEmpty(masterShape))
+
+            if(string.IsNullOrEmpty(masterShape))
             {
                 theShape = DataListUtil.GenerateDataListFromDefs(definitions);
             }
@@ -948,7 +949,6 @@ namespace Dev2.Server.Datalist
                 theShape = masterShape;
             }
 
-            
             byte[] empty = new byte[0];
             string error;
 

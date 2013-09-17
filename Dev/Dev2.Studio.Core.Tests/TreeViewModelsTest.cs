@@ -4,6 +4,8 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
+using System.Windows;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Communication;
@@ -20,7 +22,6 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels.Navigation;
-using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -824,6 +825,36 @@ namespace Dev2.Core.Tests
 
             // Assert Category Node And Type Node Removed
             Assert.AreEqual(0, vmRoot.Children[0].Children.Count, "Dangling nodes below environment not removed");
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("ResourceTreeViewModel_Rename")]
+        public void ResourceTreeViewModel_Rename_ResourceWithTheSameNameAlreadyExistsResourceNotRenamed()
+        {
+            var oldResourceID = Guid.NewGuid();
+            const string newResourceName = "NameOfExistingResource";
+
+            //Mock resource repository
+            var mockedResourceRepo = new Mock<IResourceRepository>();
+            var mockedEnvironment = new Mock<IEnvironmentModel>();
+            var mockedResourceModel = new Mock<IContextualResourceModel>();
+            var allExistingResources = new Collection<IResourceModel>();
+            mockedResourceModel.Setup(res => res.ID).Returns(oldResourceID);
+            allExistingResources.Add(new ResourceModel(mockedEnvironment.Object){ResourceName = newResourceName});
+            mockedResourceRepo.Setup(repo => repo.Rename(oldResourceID.ToString(), newResourceName)).Verifiable();
+            mockedResourceRepo.Setup(repo => repo.All()).Returns(allExistingResources);
+            mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
+
+            //Isolate rename resource unit
+            var treeParent = new EnvironmentTreeViewModel(null, mockedEnvironment.Object);
+            var resourcetreeviewmodel = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, treeParent, mockedResourceModel.Object);
+
+            //------------Execute Test---------------------------
+            resourcetreeviewmodel.HandleRename(newResourceName, null);
+
+            // Assert Dialog Shown
+            mockedResourceRepo.Verify(repo => repo.Rename(oldResourceID.ToString(), newResourceName), Times.Never(), "Resource repository rename resource was called dispite a resource with the same name already there");
         }
 
         [TestMethod]

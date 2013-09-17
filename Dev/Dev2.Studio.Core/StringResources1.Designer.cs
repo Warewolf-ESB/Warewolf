@@ -317,6 +317,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The {0} {1} cannot be renamed because a resource with that name already exists on the same server..
+        /// </summary>
+        public static string DialogBody_HasDuplicateName {
+            get {
+                return ResourceManager.GetString("DialogBody_HasDuplicateName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Couldn&apos;t find the resource needed to display the wizard. Please ensure that a resource with the name &apos;Dev2ServiceDetails&apos; exists..
         /// </summary>
         public static string DialogBody_MissingWizard {
@@ -389,6 +398,15 @@ namespace Dev2 {
         public static string DialogTitle_HasDependencies {
             get {
                 return ResourceManager.GetString("DialogTitle_HasDependencies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} exists.
+        /// </summary>
+        public static string DialogTitle_HasDuplicateName {
+            get {
+                return ResourceManager.GetString("DialogTitle_HasDuplicateName", resourceCulture);
             }
         }
         

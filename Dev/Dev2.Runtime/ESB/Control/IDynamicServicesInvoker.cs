@@ -18,9 +18,9 @@ namespace Dev2.DynamicServices {
         /// Generates the invoke container.
         /// </summary>
         /// <param name="dataObject">The data object.</param>
-        /// <param name="serviceName">Name of the service.</param>
+        /// <param name="serviceID"></param>
         /// <param name="isLocal">if set to <c>true</c> [is local].</param>
         /// <returns></returns>
-        EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, string serviceName,bool isLocal);
+        EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceID, bool isLocal);
     }
 }

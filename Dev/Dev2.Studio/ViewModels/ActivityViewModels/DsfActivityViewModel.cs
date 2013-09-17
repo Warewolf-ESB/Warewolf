@@ -11,6 +11,7 @@ using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Providers.Errors;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Activities.TO;
@@ -93,6 +94,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             _uniqueID = ModelItemUtils.GetUniqueID(modelItem);
             RootModel = rootModel;
             SeriveName = ModelItemUtils.GetProperty("ServiceName", modelItem) as string;
+            var resourceID = ModelItemUtils.TryGetResourceID(modelItem);
 
             var environmentID = Guid.Empty;
             var envID = ModelItemUtils.GetProperty("EnvironmentID", modelItem) as InArgument<Guid>;
@@ -104,7 +106,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             var designValidationMemo = new DesignValidationMemo
             {
                 InstanceID = _uniqueID,
-                ServiceName = SeriveName,
+                ServiceID = resourceID,
                 IsValid = rootModel.Errors.Count == 0
             };
             designValidationMemo.Errors.AddRange(rootModel.GetErrors(_uniqueID).Cast<ErrorInfo>());
@@ -122,9 +124,9 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                         _validationService.Subscribe(_uniqueID, UpdateLastValidationMemo);
                     }
 
-                    if(!string.IsNullOrEmpty(SeriveName))
+                    if(resourceID != null && resourceID != Guid.Empty)
                     {
-                        ResourceModel = environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == SeriveName) as IContextualResourceModel;
+                        ResourceModel = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceID) as IContextualResourceModel;
                         if(ResourceModel == null)
                         {
                             if(environmentModel.IsConnected)

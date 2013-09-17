@@ -231,10 +231,10 @@ namespace Dev2.DynamicServices
 
         public T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors)
         {
-            var serviceName = dataObject.ServiceName;
+            var serviceID = dataObject.ResourceID;
             IWorkspace theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
             var invoker = new DynamicServicesInvoker(this, this, theWorkspace);
-            var generateInvokeContainer = invoker.GenerateInvokeContainer(dataObject, serviceName, true);
+            var generateInvokeContainer = invoker.GenerateInvokeContainer(dataObject, serviceID, true);
             var curDlid = generateInvokeContainer.Execute(out errors);
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var convertFrom = compiler.ConvertFrom(curDlid, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
@@ -345,7 +345,15 @@ namespace Dev2.DynamicServices
             compiler.PushBinaryDataList(left.UID, left, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
-            EsbExecutionContainer executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal);
+            EsbExecutionContainer executionContainer;
+            if (dataObject.ResourceID != Guid.Empty)
+            {
+                executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ResourceID, isLocal);
+            }
+            else
+            {
+                executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal);
+            }
             Guid result = dataObject.DataListID;
 
             if (executionContainer != null)

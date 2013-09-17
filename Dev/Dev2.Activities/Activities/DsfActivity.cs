@@ -299,6 +299,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                             dataObject.DataListID = subExeID;
                             dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
+                            dataObject.ResourceID = ResourceID.Expression==null?Guid.Empty:Guid.Parse(ResourceID.Expression.ToString());
 
                             // Execute Request
                             var resultID = ExecutionImpl(esbChannel, dataObject, out tmpErrors);

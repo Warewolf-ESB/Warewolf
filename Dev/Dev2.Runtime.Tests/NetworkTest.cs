@@ -263,7 +263,7 @@ namespace Dev2.DynamicServices.Test
             Assert.AreEqual(2, server.WriteEventProviderMemos.Count);
             foreach(DesignValidationMemo memo in server.WriteEventProviderMemos)
             {
-                Assert.AreEqual(message.ServiceName, memo.ServiceName, "Memo service name not updated with compiler message service name");
+                Assert.AreEqual(message.ServiceID, memo.ServiceID, "Memo service name not updated with compiler message service name");
                 Assert.AreEqual(message.WorkspaceID, memo.WorkspaceID, "Memo workspace ID not updated");
                 Assert.IsFalse(memo.IsValid, "Error memo not invalidated");
                 Assert.AreEqual(1, memo.Errors.Count, "The wrong number of errors was added to the memo");
@@ -298,7 +298,7 @@ namespace Dev2.DynamicServices.Test
 
             var memo = (DesignValidationMemo)server.WriteEventProviderMemos[0];
             Assert.AreEqual(message.ServiceID, memo.InstanceID, "Memo ID not updated with compiler message service ID");
-            Assert.AreEqual(message.ServiceName, memo.ServiceName, "Memo service name not updated with compiler message service name");
+            Assert.AreEqual(message.ServiceID, memo.ServiceID, "Memo service name not updated with compiler message service name");
             Assert.AreEqual(message.WorkspaceID, memo.WorkspaceID, "Memo workspace ID not updated");
             Assert.IsTrue(memo.IsValid, "Resource saved with invalid memo");
         }

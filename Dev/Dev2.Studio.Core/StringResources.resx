@@ -526,6 +526,9 @@ Would you like to start the setup now?</value>
   <data name="DialogBody_HasDependencies" xml:space="preserve">
     <value>The {0} {1} cannot be deleted because something depends on it.</value>
   </data>
+    <data name="DialogBody_HasDuplicateName" xml:space="preserve">
+    <value>The {0} {1} cannot be renamed because a resource with that name already exists on the same server.</value>
+  </data>
   <data name="DialogBody_MissingWizard" xml:space="preserve">
     <value>Couldn't find the resource needed to display the wizard. Please ensure that a resource with the name 'Dev2ServiceDetails' exists.</value>
   </data>
@@ -534,6 +537,9 @@ Would you like to start the setup now?</value>
   </data>
   <data name="DialogTitle_HasDependencies" xml:space="preserve">
     <value>{0} has dependants</value>
+  </data>
+    <data name="DialogTitle_HasDuplicateName" xml:space="preserve">
+    <value>{0} exists</value>
   </data>
   <data name="DialogTitle_MissingWizard" xml:space="preserve">
     <value>Missing Wizard</value>

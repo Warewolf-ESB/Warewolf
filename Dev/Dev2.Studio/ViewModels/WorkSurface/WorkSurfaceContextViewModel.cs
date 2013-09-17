@@ -45,7 +45,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
     /// <date>2/27/2013</date>
     public class WorkSurfaceContextViewModel : BaseViewModel,
                                  IHandle<SaveResourceMessage>, IHandle<DebugResourceMessage>,
-                                 IHandle<ExecuteResourceMessage>, 
+                                 IHandle<ExecuteResourceMessage>, IHandle<SetDebugStatusMessage>, 
                                  IHandle<UpdateWorksurfaceContext>
     {
         #region private fields
@@ -92,7 +92,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 return _debugOutputViewModel;
             }
-        }
+        } 
 
         public bool DeleteRequested { get; set; }
 
@@ -150,7 +150,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                     if(ContextualResourceModel != null)
                     {
                         ContextualResourceModel.OnDesignValidationReceived += ValidationMemoReceived;
-                    }
+                }
                 }
 
                 if(WorkSurfaceViewModel != null)
@@ -166,7 +166,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 return;
             }
-            if(designValidationMemo.Errors.Find(info => info.FixType == FixType.ReloadMapping)!=null)
+            if(designValidationMemo.Errors.Find(info => info.FixType == FixType.ReloadMapping) != null)
             {
                 _hasMappingChange = true;
             }
@@ -243,8 +243,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                             SetDebugStatus(DebugStatus.Finished);
                         }
                     };
-                }
             }
+        }
             _dependencyService = dependencyService;
         }
 
@@ -280,6 +280,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public void Handle(UpdateWorksurfaceContext message)
         {
             if(ContextualResourceModel != null && ContextualResourceModel.ID == message.NewDataContext.ID)
+            {
+                _workSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
+        }
+        }
+
+        public void Handle(UpdateWorksurfaceContext message)
+        {
+            if (ContextualResourceModel != null && ContextualResourceModel.ID == message.NewDataContext.ID)
             {
                 _workSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
             }

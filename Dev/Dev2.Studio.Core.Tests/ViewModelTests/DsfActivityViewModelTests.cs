@@ -113,7 +113,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void DsfActivityViewModel_UnitTest_ConstructorWithNullRootModel_ThrowsArgumentNullException()
         {
             //SetupMefStuff();
-            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid(), string.Empty, Guid.NewGuid()).Object, null, null);
+            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid(), Guid.Empty, Guid.NewGuid()).Object, null, null);
         }
 
         [TestMethod]
@@ -124,7 +124,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void DsfActivityViewModel_UnitTest_ConstructorWithNullEnvironmentRepository_ThrowsArgumentNullException()
         {
             //SetupMefStuff();
-            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid(), string.Empty, Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object, null);
+            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid(), Guid.Empty, Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object, null);
         }
 
         [TestMethod]
@@ -221,7 +221,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var rootModel = CreateResourceModel(Guid.NewGuid(), out resourceRepository, null);
             var resourceModel = CreateResourceModel(Guid.NewGuid(), true, null);
             resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceModel.Object);
-            var modelItem = CreateModelItem(instanceID, resourceModel.Object.ResourceName, Guid.Empty, null);
+            var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, Guid.Empty, null);
             var envRepository = new Mock<IEnvironmentRepository>();
             //------------------------------------------Execute ---------------------------------------------------------------------------------------
             var vm = new DsfActivityViewModel(modelItem.Object, rootModel.Object, envRepository.Object);
@@ -244,7 +244,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var rootModel = CreateResourceModel(Guid.NewGuid(), true, null);
             var resourceModel = CreateResourceModel(Guid.NewGuid(), out resourceRepository, null);
             resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceModel.Object);
-            var modelItem = CreateModelItem(instanceID, resourceModel.Object.ResourceName, resourceModel.Object.Environment.ID, null);
+            var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, resourceModel.Object.Environment.ID, null);
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
             //------------------------------------------Execute ---------------------------------------------------------------------------------------
@@ -268,6 +268,36 @@ namespace Dev2.Core.Tests.ViewModelTests
 
             Assert.IsTrue(vm.Properties.Count == 3);
             vm.Dispose();
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("DsfActivityViewModel_Constructor")]
+        public void DsfActivityViewModel_Constructor_ResourceIDUsedToFindResource()
+        {
+            var resourceID = Guid.NewGuid();
+            var rootModel = CreateResourceModel(resourceID);
+            var modelProperties = new[] { CreateModelProperty("ResourceID", resourceID).Object };
+            var modelItem = CreateModelItem(Guid.NewGuid(), rootModel.Object.ID, rootModel.Object.Environment.ID, modelProperties);
+            var mockedEnvironmentRepository = new Mock<IEnvironmentRepository>();
+            var mockedEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockedResRepo = new Mock<IResourceRepository>();
+            mockedEnvironmentModel.Setup(env => env.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
+
+            Expression<Func<IResourceModel, bool>> actual = null;
+            mockedResRepo.Setup(repo => repo.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Callback<Expression<Func<IResourceModel, bool>>>(f =>
+            {
+                actual = f;
+            });
+            mockedEnvironmentModel.Setup(env => env.ResourceRepository).Returns(mockedResRepo.Object);
+            mockedEnvironmentRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockedEnvironmentModel.Object);
+
+            // ReSharper disable once ObjectCreationAsStatement
+            //------------Execute Test---------------------------
+            new DsfActivityViewModel(modelItem.Object, rootModel.Object, mockedEnvironmentRepository.Object);
+
+            // Assert Resource ID Used To Find Resource
+            Assert.IsTrue((actual.Body as BinaryExpression).Right.Type.FullName.Contains("Guid"), "Resource ID was not used to identify resource");
         }
 
         #endregion
@@ -657,7 +687,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         #region CreateModelItem
 
-        public static Mock<ModelItem> CreateModelItem(Guid uniqueID, string serviceName, Guid environmentID, params ModelProperty[] modelProperties)
+        public static Mock<ModelItem> CreateModelItem(Guid uniqueID, Guid serviceID, Guid environmentID, params ModelProperty[] modelProperties)
         {
             var startIndex = 0;
             if(modelProperties == null)
@@ -671,7 +701,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             }
 
             modelProperties[startIndex++] = CreateModelProperty("UniqueID", uniqueID.ToString()).Object;
-            modelProperties[startIndex++] = CreateModelProperty("ServiceName", serviceName).Object;
+            modelProperties[startIndex++] = CreateModelProperty("ResourceID", serviceID).Object;
             modelProperties[startIndex++] = CreateModelProperty("EnvironmentID", new InArgument<Guid>(environmentID)).Object;
 
             var properties = new Mock<ModelPropertyCollection>();
@@ -772,7 +802,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var rootModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull, resourceErrors);
             var resourceModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull);
 
-            var modelItem = CreateModelItem(instanceID, resourceModel.Object.ResourceName, resourceModel.Object.Environment.ID, modelProperties);
+            var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, resourceModel.Object.Environment.ID, modelProperties);
 
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
