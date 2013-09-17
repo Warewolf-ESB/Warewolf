@@ -223,47 +223,13 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfGetWebRequestActivityViewModel_ExecutePreview")]
-        public void DsfGetWebRequestActivityViewModel_ExecutePreviewWhenUrlIsInvalid_WebRequestIsNotInvoked()
-        {
-            var properties = new Dictionary<string, Mock<ModelProperty>>();
-            var propertyCollection = new Mock<ModelPropertyCollection>();
-
-            var url = new Mock<ModelProperty>();
-            url.Setup(p => p.ComputedValue).Returns("www.asdfsd");
-            properties.Add("Url", url);
-            propertyCollection.Protected().Setup<ModelProperty>("Find", "Url", true).Returns(url.Object);
-
-            var modelItemMock = new Mock<ModelItem>();
-            modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
-
-            var sut = new DsfGetWebRequestActivityViewModel(modelItemMock.Object);
-
-            sut.HelpViewModel = new HelpViewModel();
-            var isInvoked = false;
-            sut.WebInvoke = (m, u) =>
-            {
-                isInvoked = true;
-                return "Was Called";
-            };
-            sut.Url = "";
-
-            sut.PreviewViewModel.PreviewCommand.Execute(null);
-
-            Assert.IsTrue(string.IsNullOrWhiteSpace(sut.PreviewViewModel.Output));
-            Assert.IsFalse(isInvoked);
-            Assert.IsTrue(sut.HelpViewModel.Errors.Count > 0);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DsfGetWebRequestActivityViewModel_ExecutePreview")]
         public void DsfGetWebRequestActivityViewModel_ExecutePreviewWhenUrlIsNull_WebRequestIsNotInvoked()
         {
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
 
             var url = new Mock<ModelProperty>();
-            url.Setup(p => p.ComputedValue).Returns("www.asdfsd");
+            url.Setup(p => p.ComputedValue).Returns(string.Empty);
             properties.Add("Url", url);
             propertyCollection.Protected().Setup<ModelProperty>("Find", "Url", true).Returns(url.Object);
 

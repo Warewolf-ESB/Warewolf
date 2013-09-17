@@ -139,7 +139,10 @@ namespace Dev2.Activities.Designers.DsfGetWebRequest
             PreviewViewModel.Output = string.Empty;
             var variableList = DataListCleaningUtils.SplitIntoRegions(Url);
             var previewUrl = Url;
-            variableList.ForEach(v => previewUrl = previewUrl.Replace(v, PreviewViewModel.Inputs.Single(p => p.Key == v).Value));
+            if (!string.IsNullOrWhiteSpace(previewUrl))
+            {
+                variableList.ForEach(v => previewUrl = previewUrl.Replace(v, PreviewViewModel.Inputs.Single(p => p.Key == v).Value));
+            }
             var errors = ValidateUrl(previewUrl);
             if(!errors.Any())
             {
