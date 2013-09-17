@@ -120,6 +120,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrap\UIBootstrap.cs" />
+    <Compile Include="AutoConnectorTests.cs" />
     <Compile Include="MenuUITests.cs" />
     <Compile Include="FormatNumberUITests.cs" />
     <Compile Include="ExplorerUITests.cs" />

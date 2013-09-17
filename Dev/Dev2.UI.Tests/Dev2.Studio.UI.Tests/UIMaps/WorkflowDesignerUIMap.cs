@@ -1,4 +1,5 @@
-﻿using System.CodeDom.Compiler;
+﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -79,10 +80,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         /// <summary>
         /// Finds controls on the Workflow Designer
-       /// </summary>
-       /// <param name="theTab"></param>
-       /// <param name="controlAutomationId"></param>
-       /// <returns></returns>
+        /// </summary>
+        /// <param name="theTab"></param>
+        /// <param name="controlAutomationId"></param>
+        /// <returns></returns>
         public UITestControlCollection GetAllControlsOnDesignSurface(UITestControl theTab, string controlAutomationId)
         {
             // Unless the UI drastically changes (In which case most Automation tests will fail),
@@ -169,10 +170,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         /// Returns a point under a control
         /// </summary>
         /// <param name="control">A UITestControl from FindControlByAutomationID</param>
-        /// <param name="pixels">How many pixels under the control</param>
-        public Point GetPointUnderControl(UITestControl control, int pixels)
+        /// <param name="verticalOffSet">How many pixels under the control</param>
+        /// <param name="horizontalOffSet"></param>
+        public Point GetPointUnderControl(UITestControl control, int verticalOffSet, int horizontalOffSet = 0)
         {
-            Point returnPoint = new Point(control.BoundingRectangle.X, control.BoundingRectangle.Y + pixels);
+            Point returnPoint = new Point(control.BoundingRectangle.X + horizontalOffSet, control.BoundingRectangle.Y + verticalOffSet);
 
             return returnPoint;
         }
@@ -299,7 +301,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         public void Adorner_ClickLargeView(UITestControl theTab)
         {
-            UITestControl aControl = FindControlByAutomationId(theTab, "LargeViewToggle");            
+            UITestControl aControl = FindControlByAutomationId(theTab, "LargeViewToggle");
             Mouse.Click(aControl, new Point(5, 5));
         }
 
@@ -327,21 +329,21 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                     return child;
                 }
             }
-            return null;     
+            return null;
         }
 
         public bool Adorner_ClickFixErrors(UITestControl theTab, string controlAutomationId)
         {
             UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection testFlowChildCollection = aControl.GetChildren();
-            if (testFlowChildCollection.Count > 0)
+            if(testFlowChildCollection.Count > 0)
             {
-                foreach (UITestControl theControl in testFlowChildCollection)
+                foreach(UITestControl theControl in testFlowChildCollection)
                 {
                     if(theControl.ControlType == ControlType.Button && theControl.Height == 22 && theControl.Width == 22)
                     {
                         Point newPoint = new Point();
-                        if (theControl.TryGetClickablePoint(out newPoint))
+                        if(theControl.TryGetClickablePoint(out newPoint))
                         {
                             Mouse.Click(theControl, newPoint);
                         }
@@ -523,13 +525,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             public UIWarewolfWindow()
             {
                 #region Search Criteria
+
                 this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf";
                 this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
                 this.WindowTitles.Add("Warewolf");
+
                 #endregion
             }
 
             #region Properties
+
             public UIFlowchartCustom4 UIFlowchartCustom
             {
                 get
@@ -541,10 +546,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                     return this.mUIFlowchartCustom;
                 }
             }
+
             #endregion
 
             #region Fields
-            private UIFlowchartCustom4 mUIFlowchartCustom;
+
+            UIFlowchartCustom4 mUIFlowchartCustom;
+
             #endregion
         }
 
@@ -552,17 +560,21 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         public class UIFlowchartCustom4 : WpfCustom
         {
 
-            public UIFlowchartCustom4(UITestControl searchLimitContainer) :
-                base(searchLimitContainer)
+            public UIFlowchartCustom4(UITestControl searchLimitContainer)
+                :
+                    base(searchLimitContainer)
             {
                 #region Search Criteria
+
                 this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
                 this.SearchProperties["AutomationId"] = "Unsaved 1(FlowchartDesigner)";
                 this.WindowTitles.Add("Warewolf");
+
                 #endregion
             }
 
             #region Properties
+
             public UIDsfMultiAssignActiviCustom UIDsfMultiAssignActiviCustom
             {
                 get
@@ -574,10 +586,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                     return this.mUIDsfMultiAssignActiviCustom;
                 }
             }
+
             #endregion
 
             #region Fields
-            private UIDsfMultiAssignActiviCustom mUIDsfMultiAssignActiviCustom;
+
+            UIDsfMultiAssignActiviCustom mUIDsfMultiAssignActiviCustom;
+
             #endregion
         }
 
@@ -585,17 +600,21 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         public class UIDsfMultiAssignActiviCustom : WpfCustom
         {
 
-            public UIDsfMultiAssignActiviCustom(UITestControl searchLimitContainer) :
-                base(searchLimitContainer)
+            public UIDsfMultiAssignActiviCustom(UITestControl searchLimitContainer)
+                :
+                    base(searchLimitContainer)
             {
                 #region Search Criteria
+
                 this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DsfMultiAssignActivityDesigner";
                 this.SearchProperties["AutomationId"] = "Assign(DsfMultiAssignActivityDesigner)";
                 this.WindowTitles.Add("Warewolf");
+
                 #endregion
             }
 
             #region Properties
+
             public WpfToggleButton UIUI_Assign_QuickVariaToggleButton
             {
                 get
@@ -603,18 +622,24 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                     if((this.mUIUI_Assign_QuickVariaToggleButton == null))
                     {
                         this.mUIUI_Assign_QuickVariaToggleButton = new WpfToggleButton(this);
+
                         #region Search Criteria
+
                         this.mUIUI_Assign_QuickVariaToggleButton.SearchProperties[WpfToggleButton.PropertyNames.AutomationId] = "[UI_Assign_QuickVariableAddBtn_AutoID]";
                         this.mUIUI_Assign_QuickVariaToggleButton.WindowTitles.Add("Warewolf");
+
                         #endregion
                     }
                     return this.mUIUI_Assign_QuickVariaToggleButton;
                 }
             }
+
             #endregion
 
             #region Fields
-            private WpfToggleButton mUIUI_Assign_QuickVariaToggleButton;
+
+            WpfToggleButton mUIUI_Assign_QuickVariaToggleButton;
+
             #endregion
         }
 
@@ -624,7 +649,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         {
 
             #region Variable Declarations
+
             WpfToggleButton uIUI_Assign_QuickVariaToggleButton = new UIWarewolfWindow().UIFlowchartCustom.UIDsfMultiAssignActiviCustom.UIUI_Assign_QuickVariaToggleButton;
+
             #endregion
 
             // Set to 'Pressed' state '[UI_Assign_QuickVariableAddBtn_AutoID]' toggle button
@@ -695,7 +722,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection assignControlCollection = assignControl.GetChildren();
             UITestControl qviControl = GetQVIControl(assignControlCollection);
-      
+
             UITestControlCollection qviChildren = qviControl.GetChildren();
             UITestControl previewBtn = new UITestControl();
             foreach(UITestControl quickVarInputChildren in qviChildren)
@@ -740,6 +767,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             WpfText previewBox = (WpfText)qviChildren[qviChildren.Count - 1];
             return previewBox.DisplayText;
         }
+
         #endregion Assign Control
 
         #region BaseConvert Control
@@ -832,7 +860,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         {
             get
             {
-                if (_tabManagerUIMap == null)
+                if(_tabManagerUIMap == null)
                 {
                     _tabManagerUIMap = new TabManagerUIMap();
                 }
@@ -843,7 +871,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         #endregion
 
-        private TabManagerUIMap _tabManagerUIMap;
+        TabManagerUIMap _tabManagerUIMap;
 
         // Intellisense Box
         public UITestControl GetIntellisenseItem(int id)
@@ -903,17 +931,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             //DataMappings view must be expanded on the dsfActivityControl: this cannot be checked here
             var dsfActivityContents = dsfActivityControl.GetChildren();
             foreach(var x in from control in dsfActivityContents
-                              where control.ControlType == ControlType.Table && control is WpfTable
-                              select (control as WpfTable).GetChildren()
-                                  into rows
-                                  from row in rows
-                                  where row.ControlType == ControlType.Row
-                                  select row.GetChildren()
-                                      into cells
-                                      from cell in cells
-                                      where cell.ControlType == ControlType.Cell
-                                      where cell.GetChildren().Any(element => (element.ControlType == ControlType.Edit && element is WpfEdit && (element as WpfEdit).Text == searchText))
-                                      select cell)
+                             where control.ControlType == ControlType.Table && control is WpfTable
+                             select (control as WpfTable).GetChildren()
+                             into rows
+                             from row in rows
+                             where row.ControlType == ControlType.Row
+                             select row.GetChildren()
+                             into cells
+                             from cell in cells
+                             where cell.ControlType == ControlType.Cell
+                             where cell.GetChildren().Any(element => (element.ControlType == ControlType.Edit && element is WpfEdit && (element as WpfEdit).Text == searchText))
+                             select cell)
             {
                 return true;
             }
@@ -925,16 +953,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             UITestControl aControl = FindControlByAutomationId(theTab, "AdornerScrollViewer");
             UITestControlCollection uiTestControlCollection = aControl.GetChildren();
 
-            foreach (UITestControl uiTestControl in uiTestControlCollection)
+            foreach(UITestControl uiTestControl in uiTestControlCollection)
             {
-                if (uiTestControl.GetProperty("AutomationId").ToString() == "LargeViewContent")
+                if(uiTestControl.GetProperty("AutomationId").ToString() == "LargeViewContent")
                 {
                     UITestControlCollection testControlCollection = uiTestControl.GetChildren();
                     List<UITestControl> uiTestControls = testControlCollection.Where(c => c.ClassName == "Uia.TextBox").ToList();
                     return uiTestControls;
                 }
             }
-            return null;                                 
+            return null;
         }
 
         public List<UITestControl> Tool_GetAllTextBoxes(UITestControl theTab, string toolAutomationId, string toolDesignerTemplate)
@@ -951,7 +979,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                     return uiTestControls;
                 }
             }
-            return null;  
+            return null;
         }
 
         public bool IsControlSelected(UITestControl workflow)
@@ -976,7 +1004,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         {
             var steps = new UITestControlCollection();
             var count = 0;
-            while (steps.Count < expectedStepCount && count <= timeout)
+            while(steps.Count < expectedStepCount && count <= timeout)
             {
                 Keyboard.SendKeys("{F5}");
                 Playback.Wait(500);
@@ -988,11 +1016,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             }
         }
 
-        private static UITestControl GetQVIControl(UITestControlCollection assignControlCollection)
+        static UITestControl GetQVIControl(UITestControlCollection assignControlCollection)
         {
             UITestControl qviControl = null;
 
-            foreach (UITestControl theControl in assignControlCollection)
+            foreach(UITestControl theControl in assignControlCollection)
             {
                 if(theControl.FriendlyName == "QuickVariableInputContent")
                 {
@@ -1133,7 +1161,21 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         public bool AssignControl_IsLeftTextBoxHighlightedRed(UITestControl leftTextBox)
         {
             var pixelGrabber = new Bitmap(leftTextBox.CaptureImage());
-            return pixelGrabber.GetPixel(5,0) == Color.Red;
+            return pixelGrabber.GetPixel(5, 0) == Color.Red;
+        }
+
+        public Point GetStartNodeBottomAutoConnectorPoint()
+        {
+            var startNode = FindStartNode(TabManagerUIMap.GetActiveTab());
+            //Note that 85 is the relative vertical distance in pixels from the top corner of the start node bounding rectangle
+            // and 25 is the relative horizontal distance in pixels from that point
+            return GetPointUnderControl(startNode, 85, 25);
+        }
+
+        public List<UITestControl> GetAllConnectors()
+        {
+            UITestControlCollection uiTestControlCollection = GetFlowchartDesigner(TabManagerUIMap.GetActiveTab()).GetChildren();
+            return uiTestControlCollection.Where(c => c.ClassName == "Uia.ConnectorWithoutStartDot").ToList();
         }
     }
 }

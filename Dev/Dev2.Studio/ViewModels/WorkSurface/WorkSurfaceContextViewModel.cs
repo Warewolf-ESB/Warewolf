@@ -584,7 +584,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         /// </summary>
         protected override void OnDispose()
         {
-            DebugOutputViewModel.Dispose();
+            if(DebugOutputViewModel != null)
+            {
+                DebugOutputViewModel.Dispose();
+            }
             if(DataListViewModel != null)
             {
                 ((SimpleBaseViewModel)DataListViewModel).Dispose();
