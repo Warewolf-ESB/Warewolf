@@ -30,7 +30,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Description("Service should never get null values")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void RenameResourceCategory_UnitTest_ExecuteWithNullValues_ExpectedInvalidDataContractException()
         {
@@ -41,7 +41,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Description("Service should never get null values")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void RenameResourceCategory_UnitTest_ExecuteWithNoOldCategoryInValues_ExpectedInvalidDataContractException()
         {
@@ -53,7 +53,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Description("Service should never get null values")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void RenameResourceCategory_UnitTest_ExecuteWithNullOldCategory_ExpectedInvalidDataContractException()
         {
@@ -65,7 +65,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Description("Service should never get null values")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void RenameResourceCategory_UnitTest_ExecuteWithBlankOldCategory_ExpectInvalidDataContractException()
         {
@@ -77,7 +77,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Description("Service should never get null values")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void RenameResourceCategory_UnitTest_ExecuteWithNoNewCategoryInValues_ExpectedInvalidDataContractException()
         {
@@ -89,7 +89,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Description("Service should never get null values")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void RenameResourceCategory_UnitTest_ExecuteWithNullNewCategoryExpectedInvalidDataContractException()
         {
@@ -101,7 +101,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Description("Service should never get null values")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void RenameResourceCategory_UnitTest_ExecuteWithBlankNewCategory_ExpectInvalidDataContractException()
         {
@@ -115,7 +115,7 @@ namespace Dev2.Tests.Runtime.Services
         #region HandlesType
 
         [TestMethod]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         public void RenameResourceCategory_UnitTest_HandlesType_ExpectedReturnsRenameResourceCategoryService()
         {
             var esb = new RenameResource();
@@ -129,7 +129,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Description("Service should never get null values")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         public void RenameResourceCategory_UnitTest_CreateServiceEntry_ExpectedReturnsDynamicService()
         {
             var esb = new RenameResource();

@@ -406,5 +406,23 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             return GetCategory(serverName, serviceType, categoryName);
         }
+
+        public void RightClickRenameProject(string serverName, string serviceType, string folderName, string projectName)
+        {
+            UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
+            Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
+            Mouse.Move(p);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            Thread.Sleep(2500);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            Thread.Sleep(2500);
+            SendKeys.SendWait("{DOWN}");
+            Thread.Sleep(100);
+            SendKeys.SendWait("{DOWN}");
+            Thread.Sleep(100);
+            SendKeys.SendWait("{DOWN}");
+            Thread.Sleep(100);
+            SendKeys.SendWait("{ENTER}");
+        }
     }
 }

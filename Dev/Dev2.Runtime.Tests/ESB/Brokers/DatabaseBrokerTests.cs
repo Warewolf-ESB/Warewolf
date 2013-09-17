@@ -13,7 +13,7 @@ namespace Dev2.Tests.Runtime.ESB.Brokers
         [TestMethod]
         [TestCategory("MsSqlBrokerRegressionTest")]
         [Description("Test for MsSqlBroker's GetDatabases method: An unsorted datatable is passed to GetDatabases and a sorted list of strings is expected to be returned")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void MsSqlBroker_MsSqlBrokerRegressionTest_GetDatabases_ListIsSorted()
         // ReSharper restore InconsistentNaming

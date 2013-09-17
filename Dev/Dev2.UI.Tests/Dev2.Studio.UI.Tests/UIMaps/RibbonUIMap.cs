@@ -69,7 +69,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             }
         }
 
-        public void ClickRibbonMenuItem(string itemName)
+        public void  ClickRibbonMenuItem(string itemName)
         {
             var control = UIBusinessDesignStudioWindow.GetChildren().FirstOrDefault(c => c.FriendlyName == itemName);
             var p = new Point(control.BoundingRectangle.X + 5, control.BoundingRectangle.Y + 5);

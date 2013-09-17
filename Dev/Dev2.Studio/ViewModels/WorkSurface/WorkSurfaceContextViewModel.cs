@@ -11,6 +11,7 @@ using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics;
+using Dev2.Messages;
 using Dev2.Providers.Errors;
 using Dev2.Services.Events;
 using Dev2.Studio.AppResources.Comparers;
@@ -20,6 +21,7 @@ using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Diagnostics;
 using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
@@ -45,7 +47,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
     /// <date>2/27/2013</date>
     public class WorkSurfaceContextViewModel : BaseViewModel,
                                  IHandle<SaveResourceMessage>, IHandle<DebugResourceMessage>,
-                                 IHandle<ExecuteResourceMessage>, IHandle<SetDebugStatusMessage>
+                                 IHandle<ExecuteResourceMessage>, IHandle<SetDebugStatusMessage>, 
+                                 IHandle<UpdateWorksurfaceContext>
     {
         #region private fields
 
@@ -64,6 +67,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         private ICommand _saveCommand;
         private ICommand _editResourceCommand;
         bool _hasMappingChange;
+
+        private IResourceDependencyService _dependencyService;
 
         #endregion private fields
 
@@ -152,7 +157,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                     if(ContextualResourceModel != null)
                     {
                         ContextualResourceModel.OnDesignValidationReceived += ValidationMemoReceived;
-                }
+                    }
                 }
 
                 if(WorkSurfaceViewModel != null)
@@ -209,11 +214,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         #region ctors
 
         public WorkSurfaceContextViewModel(WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
-            : this(EventPublishers.Aggregator, workSurfaceKey, workSurfaceViewModel)
+            : this(EventPublishers.Aggregator, workSurfaceKey, workSurfaceViewModel, new ResourceDependencyService())
         {
         }
 
-        public WorkSurfaceContextViewModel(IEventAggregator eventPublisher, WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
+        public WorkSurfaceContextViewModel(IEventAggregator eventPublisher, WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel, IResourceDependencyService dependencyService)
             : base(eventPublisher)
         {
             if(workSurfaceKey == null)
@@ -251,6 +256,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                     DebugWriter = (DebugWriter)connection.DebugWriter;
             }
         }
+
+            _dependencyService = dependencyService;
         }
         }
 
@@ -289,6 +296,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 SetDebugStatus(message.DebugStatus);
         }
+        }
+
+        public void Handle(UpdateWorksurfaceContext message)
+        {
+            if (ContextualResourceModel != null && ContextualResourceModel.ID == message.NewDataContext.ID)
+            {
+                _workSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
+            }
         }
 
         #endregion IHandle

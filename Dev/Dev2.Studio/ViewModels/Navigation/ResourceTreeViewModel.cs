@@ -9,8 +9,7 @@ using System.Windows.Navigation;
 using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
 using Dev2.Communication;
-using Dev2.Composition;
-using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Messages;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
@@ -21,7 +20,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
-using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 
 
@@ -132,18 +130,8 @@ namespace Dev2.Studio.ViewModels.Navigation
                 EnvironmentModel.ResourceRepository.Rename(DataContext.ID.ToString(), value);
                 DataContext.ResourceName = value;
                 NotifyOfPropertyChange(() => DisplayName);
-                if(App.Current != null)
-                {
-                    var mainViewModel = App.Current.MainWindow.DataContext as MainViewModel;
-                    if(mainViewModel != null)
-                    {
-                        var workSurfaceViewModel = mainViewModel.ActiveItem.WorkSurfaceViewModel as WorkflowDesignerViewModel;
-                        if(workSurfaceViewModel != null && (workSurfaceViewModel.DisplayName == DataContext.ResourceName))
-                        {
-                            workSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
-                        }
-                    }
-                }
+
+                _eventPublisher.Publish(new UpdateWorksurfaceContext(DataContext));
             }
         }
 
@@ -797,7 +785,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 return _renameCommand ?? (_renameCommand =
-                    new RelayCommand((obj) => { IsRenaming = true; }));
+                    new RelayCommand(obj => { IsRenaming = true; }));
             }
         }
 
@@ -999,7 +987,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         /// <summary>
-        /// Sends a message to edit the wizard for this resource with a blank ID
+        /// Sends a message to edit the wizard for this resource
         /// </summary>
         /// <author>Ashley.lewis</author>
         /// <date>2013/05/20</date>

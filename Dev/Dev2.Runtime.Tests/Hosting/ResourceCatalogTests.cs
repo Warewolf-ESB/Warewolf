@@ -17,10 +17,12 @@ using Dev2.DynamicServices.Test.XML;
 using Dev2.Network;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
+using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Network;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Framework;
@@ -33,6 +35,14 @@ namespace Dev2.Tests.Runtime.Hosting
         // Change this if you change the number of resouces saved by SaveResources()
         const int SaveResourceCount = 6;
         static object syncRoot = new object();
+
+        static string _testDir;
+
+        [ClassInitialize]
+        public static void MyClassInit(TestContext context)
+        {
+            _testDir = context.DeploymentDirectory;
+        }
 
         #region Instance
 
@@ -1307,7 +1317,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [TestCategory("DynamicObjectHelperUnitTest")]
         [Description("Test for DynamicObjectHelper's AddServiceAction method: An invalid action (it's actually variable named action in the datalist) is passed to it and it is not expected to be added to the DynamicService object")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         public void DynamicObjectHelper_DynamicObjectHelperUnitTest_WithANodeFromTheDatalist_NoServiceActionsAddedToTheDynamicService()
         {
             //init
@@ -1379,7 +1389,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Description("Updates the Name of the resource")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         public void ResourceCatalog_UnitTest_UpdateResourceNameValidArguments_ExpectFileContentsAndNameUpdated()
         {
             //------------Setup for test-------------------------
@@ -1410,7 +1420,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Description("Requires Valid arguments")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ResourceCatalog_UnitTest_UpdateResourceNameWithNullOldName_ExpectArgumentNullException()
         {
@@ -1441,7 +1451,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Description("Needs valid arguments")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ResourceCatalog_UnitTest_UpdateResourceWithNullNewName_ExpectArgumentNullException()
         {
@@ -1472,7 +1482,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Description("Needs valid arguments")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ResourceCatalog_UnitTest_UpdateResourceNameWithEmptyNewName_ExpectArgumentNullException()
         {
@@ -1501,9 +1511,6 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual("Bug6619Dep", element.Value);
         }
 
-        #endregion
-
-        #region UpdateResourceCatalog
         [TestMethod]
         [Description("Updates the Category of the resource")]
         [Owner("Huggs")]
@@ -1523,17 +1530,17 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID,oldResource.ResourcePath, "TestCategory", ResourceType.WorkflowService.ToString());
+            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, oldResource.ResourcePath, "TestCategory", ResourceType.WorkflowService.ToString());
             //------------Assert Results-------------------------
-            Assert.AreEqual(ExecStatus.Success,resourceCatalogResult.Status);
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual("<CompilerMessage>Updated Category from 'Bugs' to 'TestCategory'</CompilerMessage>", resourceCatalogResult.Message);
             string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID);
-            XElement xElement = XElement.Load(new StringReader(resourceContents),LoadOptions.None);
+            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
             XElement element = xElement.Element("Category");
             Assert.IsNotNull(element);
-            Assert.AreEqual("TestCategory",element.Value);
-        }   
-        
+            Assert.AreEqual("TestCategory", element.Value);
+        }
+
         [TestMethod]
         [Description("Updates the Category of the resource")]
         [Owner("Huggs")]
@@ -1553,17 +1560,17 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID,oldResource.ResourcePath.ToLower(), "TestCategory", ResourceType.WorkflowService.ToString());
+            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, oldResource.ResourcePath.ToLower(), "TestCategory", ResourceType.WorkflowService.ToString());
             //------------Assert Results-------------------------
-            Assert.AreEqual(ExecStatus.Success,resourceCatalogResult.Status);
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual("<CompilerMessage>Updated Category from 'bugs' to 'TestCategory'</CompilerMessage>", resourceCatalogResult.Message);
             string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID);
-            XElement xElement = XElement.Load(new StringReader(resourceContents),LoadOptions.None);
+            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
             XElement element = xElement.Element("Category");
             Assert.IsNotNull(element);
-            Assert.AreEqual("TestCategory",element.Value);
-        }   
-        
+            Assert.AreEqual("TestCategory", element.Value);
+        }
+
         [TestMethod]
         [Description("Requires Valid arguments")]
         [Owner("Huggs")]
@@ -1586,15 +1593,15 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, null, "TestCategory", ResourceType.WorkflowService.ToString());
             //------------Assert Results-------------------------
-            Assert.AreEqual(ExecStatus.Success,resourceCatalogResult.Status);
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual("<CompilerMessage>Updated Category from 'Bugs' to 'TestCategory'</CompilerMessage>", resourceCatalogResult.Message);
             string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID);
-            XElement xElement = XElement.Load(new StringReader(resourceContents),LoadOptions.None);
+            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
             XElement element = xElement.Element("Category");
             Assert.IsNotNull(element);
-            Assert.AreEqual("TestCategory",element.Value);
-        }       
-        
+            Assert.AreEqual("TestCategory", element.Value);
+        }
+
         [TestMethod]
         [Description("Needs valid arguments")]
         [Owner("Huggs")]
@@ -1617,14 +1624,14 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, oldResource.ResourcePath, null, ResourceType.WorkflowService.ToString());
             //------------Assert Results-------------------------
-            Assert.AreEqual(ExecStatus.Success,resourceCatalogResult.Status);
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual("<CompilerMessage>Updated Category from 'Bugs' to 'TestCategory'</CompilerMessage>", resourceCatalogResult.Message);
             string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID);
-            XElement xElement = XElement.Load(new StringReader(resourceContents),LoadOptions.None);
+            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
             XElement element = xElement.Element("Category");
             Assert.IsNotNull(element);
-            Assert.AreEqual("TestCategory",element.Value);
-        }      
+            Assert.AreEqual("TestCategory", element.Value);
+        }
 
         [TestMethod]
         [Description("Needs valid arguments")]
@@ -1648,14 +1655,15 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, oldResource.ResourcePath, "", ResourceType.WorkflowService.ToString());
             //------------Assert Results-------------------------
-            Assert.AreEqual(ExecStatus.Success,resourceCatalogResult.Status);
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual("<CompilerMessage>Updated Category from 'Bugs' to 'TestCategory'</CompilerMessage>", resourceCatalogResult.Message);
             string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID);
-            XElement xElement = XElement.Load(new StringReader(resourceContents),LoadOptions.None);
+            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
             XElement element = xElement.Element("Category");
             Assert.IsNotNull(element);
-            Assert.AreEqual("TestCategory",element.Value);
+            Assert.AreEqual("TestCategory", element.Value);
         }      
+
         #endregion
 
         #region SaveResources
@@ -2145,6 +2153,41 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             resourceCatalog.FireUpdateMessage(new Guid());
             messageBroker.Verify(broker => broker.Send(It.IsAny<UpdateWorkflowFromServerMessage>(), It.IsAny<IStudioNetworkSession>()), Times.Once());
+        }
+
+        #endregion
+
+        #region Rename Resource
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("RenameResourceService_Execute")]
+        public void RenameResourceService_Execute_DashesInNewName_ResourceFileNameChanged()
+        {
+            var workspace = Guid.NewGuid();
+            var resourceID = Guid.NewGuid();
+            const string newResourceName = "New-Name-With-Dashes";
+            const string oldResourceName = "Old Resource Name";
+            var resourceFilePath = string.Concat(_testDir, "\\Workspaces\\", workspace, "\\Services\\", oldResourceName);
+
+            var getCatalog = ResourceCatalog.Start(new Mock<IContextManager<IStudioNetworkSession>>().Object);
+            var resource = new Resource
+            {
+                ResourceName = oldResourceName,
+                ResourceID = resourceID,
+                FilePath = resourceFilePath
+            };
+            getCatalog.SaveResource(workspace, resource);
+            var renameResourceService = new RenameResource();
+            var mockedWorkspace = new Mock<IWorkspace>();
+            mockedWorkspace.Setup(ws => ws.ID).Returns(workspace);
+            File.WriteAllText(resourceFilePath, "<TestResource Name=\"" + oldResourceName + "\" />", Encoding.UTF8);
+
+            //------------Execute Test---------------------------
+            renameResourceService.Execute(new Dictionary<string, string> { { "ResourceID", resourceID.ToString() }, { "NewName", newResourceName } }, mockedWorkspace.Object);
+
+            // Assert Resource FileName Changed
+            Assert.IsTrue(File.Exists(_testDir + "\\Workspaces\\" + workspace + "\\Services\\New-Name-With-Dashes.xml"), "Resource name not changed when new name has dashes");
         }
 
         #endregion

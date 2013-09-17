@@ -601,6 +601,33 @@ namespace Dev2.Studio.UI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("RenameResource_WithDashes")]
+        public void RenameResource_WithDashes_ResourceRenamed()
+        {
+            CreateWorkflow();
+            Keyboard.SendKeys("^S");
+            Playback.Wait(5000);
+            Keyboard.SendKeys(WorkflowDesignerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0], "{TAB}{TAB}{TAB}{TAB}{TAB}OldResourceName{ENTER}");
+            Playback.Wait(5000);
+            Mouse.Click(DocManagerUIMap.UIBusinessDesignStudioWindow);
+            TabManagerUIMap.CloseTab("OldResourceName");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("OldResourceName");
+            ExplorerUIMap.RightClickRenameProject("Localhost", "WORKFLOWS", "Unassigned", "OldResourceName");
+            Keyboard.SendKeys("New-Test-Resource-With-Dashes{ENTER}");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("New-Test-Resource-With-Dashes");
+            ExplorerUIMap.DoubleClickOpenProject("Localhost", "WORKFLOWS", "Unassigned", "New-Test-Resource-With-Dashes");
+            Keyboard.SendKeys("^S{F5}");
+            Playback.Wait(1000);
+            Keyboard.SendKeys("{F5}");
+            DoCleanup("New-Test-Resource-With-Dashes");
+        }
+
         #endregion Test
 
 

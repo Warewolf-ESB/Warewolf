@@ -21,7 +21,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test ServiceExecutionAbstract's CreateService function: It is expected to get a service and a source resource")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void ServiceExecutionAbstract_ServiceExecutionAbstractUnitTest_CreateService_ResourceCatalogRetrievesBothResources()
         // ReSharper restore InconsistentNaming
@@ -49,7 +49,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test ServiceExecutionAbstract's Execute function: It is expected to call execute service on a database service")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void ServiceExecutionAbstract_ServiceExecutionAbstractUnitTest_Execute_ExecuteServiceIsCalled()
             // ReSharper restore InconsistentNaming

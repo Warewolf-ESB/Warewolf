@@ -796,8 +796,7 @@ namespace Dev2.Core.Tests
         // ReSharper restore InconsistentNaming
         {
             //init
-            var validator = new Mock<IDesignValidationService>();
-            var vm = new MockResourceTreeViewModel(validator.Object, _categoryVm, new Mock<IContextualResourceModel>().Object, typeof(DsfActivity).AssemblyQualifiedName) { DataContext = new TestResourceModel() };
+            var vm = new MockResourceTreeViewModel(new Mock<IDesignValidationService>().Object, _categoryVm, new Mock<IContextualResourceModel>().Object, typeof(DsfActivity).AssemblyQualifiedName) { DataContext = new TestResourceModel() };
             var memo = new DesignValidationMemo();
             var testError = new ErrorInfo { Message = "Test Error Message" };
             memo.Errors.Add(testError);
@@ -825,6 +824,33 @@ namespace Dev2.Core.Tests
 
             // Assert Category Node And Type Node Removed
             Assert.AreEqual(0, vmRoot.Children[0].Children.Count, "Dangling nodes below environment not removed");
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("ResourceTreeViewModel_Rename")]
+        public void ResourceTreeViewModel_Rename_WithADash_ResourceRepositoryRenameCalled()
+        {
+            var oldResourceID = Guid.NewGuid();
+            const string newResourceName = "new-display-name-with-dashes";
+
+            //Mock resource repository
+            var mockedResourceRepo = new Mock<IResourceRepository>();
+            var mockedEnvironment = new Mock<IEnvironmentModel>();
+            var mockedResourceModel = new Mock<IContextualResourceModel>();
+            mockedResourceModel.Setup(res => res.ID).Returns(oldResourceID);
+            mockedResourceRepo.Setup(repo => repo.Rename(oldResourceID.ToString(), newResourceName)).Verifiable();
+            mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
+
+            //Isolate rename resource unit
+            var treeParent = new EnvironmentTreeViewModel(null, mockedEnvironment.Object);
+            var resourcetreeviewmodel = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, treeParent, mockedResourceModel.Object);
+
+            //------------Execute Test---------------------------
+            resourcetreeviewmodel.DisplayName = newResourceName;
+
+            // Assert Resource Repository Rename Called
+            mockedResourceRepo.Verify(repo => repo.Rename(oldResourceID.ToString(), newResourceName), Times.Once(), "Resource repository rename resource was not called with the correct params"); ;
         }
 
         #endregion Resource

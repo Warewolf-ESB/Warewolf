@@ -247,7 +247,7 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         [TestCategory("StudioNetworkServerUnitTest")]
         [Description("Test for StudioNetworkServer's 'UpdateMappingChangedMemo' method: A valid memo and message is passed to StudioNetworkServer and the memo is updated with the message error")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void StudioNetworkServer_StudioNetworkServerUnitTest_UpdateMappingChangedMemo_MemoUpdated()
         // ReSharper restore InconsistentNaming
@@ -280,7 +280,7 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         [TestCategory("StudioNetworkServerUnitTest")]
         [Description("Test for StudioNetworkServer's 'UpdateResourceSavedMemo' method: A valid memo and message is passed to StudioNetworkServer and the memo is updated with the message error")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void StudioNetworkServer_StudioNetworkServerUnitTest_UpdateResourceSavedMemo_MemoUpdated()
         // ReSharper restore InconsistentNaming
