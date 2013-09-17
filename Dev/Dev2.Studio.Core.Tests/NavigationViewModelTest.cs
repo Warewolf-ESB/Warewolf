@@ -426,7 +426,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("NavigationViewModel_UpdateResource")]
-        public void ResourceTreeViewModel_UpdateResource_ServiceTypeAndCategoryNotFound_ServiceTypeAndCategoryCreatedForNewResource()
+        public void NavigationViewModel_UpdateResource_ServiceTypeAndCategoryNotFound_ServiceTypeAndCategoryCreatedForNewResource()
         {
             // ReSharper disable ObjectCreationAsStatement
             Init();
@@ -1503,5 +1503,42 @@ namespace Dev2.Core.Tests
         #endregion
 
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("NavigationViewModel_UpdateResource")]
+        [Ignore]
+        public void NavigationViewModel_UpdateResource_ServiceTypeFound_TreeViewModelItemWithActivityFullName()
+        {
+            //------------Setup for test--------------------------
+
+            var eventPublisher = new Mock<IEventAggregator>();
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+
+            var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object);
+
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.Connection.Alias).Returns("Expected Environment");
+            env.Setup(e => e.Connection.AppServerUri).Returns(new Uri("http://10.0.0.1"));
+            env.Setup(e => e.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+            var newResource = new Mock<IContextualResourceModel>();
+            newResource.Setup(res => res.Category).Returns("Expected Category");
+            newResource.Setup(res => res.ResourceName).Returns("Expected Resource Name");
+            newResource.Setup(res => res.Environment).Returns(env.Object);
+
+            //nvm.Root.Children.Add(new CategoryTreeViewModel("Workflows", ResourceType.WorkflowService, nvm.Root));
+
+            new EnvironmentTreeViewModel(vm.Root, env.Object);
+
+            //------------Execute Test---------------------------
+            nvm.UpdateResource(newResource.Object);
+
+            //------------Assert Results-------------------------
+            var workflowsNode = nvm.Root.Children[0];
+            var categoryNode = workflowsNode.Children[0];
+            var resourceNode = (ResourceTreeViewModel)categoryNode.Children[0];
+            Assert.IsNotNull(resourceNode.ActivityFullName);
+        }
     }
 }

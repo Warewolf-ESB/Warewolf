@@ -439,7 +439,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             var resourceNode = findExistingCategoryNode.Children.FirstOrDefault(res => res.DisplayName == resourceModel.ResourceName);
             if (resourceNode == null)
             {
-                return new ResourceTreeViewModel(new DesignValidationService(EventPublishers.Studio), findExistingCategoryNode, resourceModel);
+                return TreeViewModelFactory.Create(_eventPublisher, resourceModel, findExistingCategoryNode, false, true);
             }
 
             return resourceNode;
