@@ -45,7 +45,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
     /// <date>2/27/2013</date>
     public class WorkSurfaceContextViewModel : BaseViewModel,
                                  IHandle<SaveResourceMessage>, IHandle<DebugResourceMessage>,
-                                 IHandle<ExecuteResourceMessage>, IHandle<SetDebugStatusMessage>, 
+                                 IHandle<ExecuteResourceMessage>, 
                                  IHandle<UpdateWorksurfaceContext>
     {
         #region private fields
@@ -280,14 +280,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public void Handle(UpdateWorksurfaceContext message)
         {
             if(ContextualResourceModel != null && ContextualResourceModel.ID == message.NewDataContext.ID)
-            {
-                _workSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
-        }
-        }
-
-        public void Handle(UpdateWorksurfaceContext message)
-        {
-            if (ContextualResourceModel != null && ContextualResourceModel.ID == message.NewDataContext.ID)
             {
                 _workSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
             }
