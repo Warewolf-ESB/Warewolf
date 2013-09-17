@@ -101,6 +101,7 @@
     <Compile Include="ActivityTests\DsfFlowNodeTests.cs" />
     <Compile Include="ActivityTests\ExecuteCommandLineTest.cs" />
     <Compile Include="ActivityTests\FindRecordsActivityTest.cs" />
+    <Compile Include="ActivityTests\FindRecordsMultipleCriteriaActivityTest.cs" />
     <Compile Include="ActivityTests\ForEachActivityTest.cs" />
     <Compile Include="ActivityTests\GatherSystemInformationTests.cs" />
     <Compile Include="ActivityTests\HighLevel ActivityTests.cs" />
@@ -149,6 +150,7 @@
       <DependentUpon>ActivityStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="TOTests\ActivityDTOTests.cs" />
+    <Compile Include="TOTests\FindRecordsTOTests.cs" />
     <Compile Include="Utils\DsfFakeActivity.cs" />
     <Compile Include="Utils\MockDsfNativeActivity.cs" />
     <Compile Include="Utils\StringComparer.cs" />

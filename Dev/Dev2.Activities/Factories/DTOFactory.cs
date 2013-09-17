@@ -22,6 +22,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime,
                     string.Empty, index, inserted)),
             TypeSwitch.Case<XPathDTO>(x => toReturn = new XPathDTO("", "", index, false, inserted)),
+            TypeSwitch.Case<FindRecordsTO>(() => toReturn=new FindRecordsTO("","",index,false,inserted)),
             TypeSwitch.Default(() => toReturn =null));
 
             return toReturn;

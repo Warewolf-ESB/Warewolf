@@ -41,7 +41,7 @@ namespace Dev2.DataList
                 }
 
                 IList<Dev2Column> realCols = bdle.Columns;
-                string[] tmpCols = InputField.Split(',');
+                string[] tmpCols = InputField.Replace(" ","").Split(',');
 
                 // Travis.Frisinger : 09.25.2012
                 // we need to adjust the tmpCols to avoid * causing crap with the match

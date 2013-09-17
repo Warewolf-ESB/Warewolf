@@ -53,8 +53,7 @@ namespace Dev2.Studio.Views.Workflow
         {
             if(_foldingStrategy != null && _foldingManager != null)
             {
-                Application.Current.Dispatcher.Invoke(() => _foldingStrategy.UpdateFoldings(_foldingManager, _editor.Document));
-
+                _foldingStrategy.UpdateFoldings(_foldingManager, _editor.Document);
             }
         }
 

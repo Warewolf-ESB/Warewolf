@@ -1,5 +1,6 @@
 ﻿using Dev2.Activities;
 using Dev2.Activities.Designers.DsfDateTime;
+using Dev2.Activities.Designers.DsfFindRecordsMultipleCriteria;
 using Dev2.Activities.Designers.DsfGetWebRequest;
 using Dev2.Activities.Designers.DsfMultiAssign;
 using Dev2.Studio.ActivityDesigners.Scripting;
@@ -53,6 +54,7 @@ namespace Dev2.Studio.ActivityDesigners
                     {typeof (DsfFileForEachActivity), typeof (DsfFileForEachActivityDesigner)},
                     {typeof (DsfCheckpointActivity), typeof (DsfCheckpointActivityDesigner)},
                     {typeof (DsfFindRecordsActivity), typeof (DsfFindRecordsActivityDesigner)},
+                    {typeof (DsfFindRecordsMultipleCriteriaActivity), typeof (DsfFindRecordsMultipleCriteriaDesigner)},
                     {typeof (DsfNumberFormatActivity), typeof (DsfNumberFormatActivityDesigner)},
                     {typeof (DsfExecuteCommandLineActivity), typeof (DsfExecuteCommandLineActivityDesigner)},
                     {typeof (DsfGatherSystemInformationActivity), typeof (DsfGatherSystemInformationActivityDesigner)},

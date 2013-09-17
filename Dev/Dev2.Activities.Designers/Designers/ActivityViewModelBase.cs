@@ -1,9 +1,11 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Caliburn.Micro;
 using Dev2.Activities.Adorners;
 using Dev2.Providers.Errors;
 using Dev2.Services.Configuration;
+using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers
 {
@@ -64,6 +66,19 @@ namespace Dev2.Activities.Designers
         {
             VerifyArgument.IsNotNull("modelItem", modelItem);
             ModelItem = modelItem;
+
+            ModelItem.PropertyChanged += ModelItemPropertyChanged;
+        }
+
+        void ModelItemPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            var propertyName = propertyChangedEventArgs.PropertyName;
+            var s = ModelItemUtils.GetProperty(propertyName, ModelItem) as string;
+            var propertyInfo = GetType().GetProperty(propertyName);
+            if(propertyInfo != null)
+            {
+                propertyInfo.SetValue(this, s);
+            }
         }
 
         public virtual void OnModelItemChanged(ModelItem newItem)

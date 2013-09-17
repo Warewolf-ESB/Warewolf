@@ -36,12 +36,26 @@ namespace Dev2.DataList
                         {
                             fnResult.Add(p.Index.ToString());
                         }
+                        else
+                        {
+                            if(to.RequireAllFieldsToMatch)
+                            {
+                                return new List<string>();
+                            }
+                        }
                     }
                     else
                     {
                         if (!p.Payload.ToLower().Equals(to.SearchCriteria.ToLower(), StringComparison.CurrentCulture))
                         {
                             fnResult.Add(p.Index.ToString());
+                        }
+                        else
+                        {
+                            if(to.RequireAllFieldsToMatch)
+                            {
+                                return new List<string>();
+                            }
                         }
                     }
                 }

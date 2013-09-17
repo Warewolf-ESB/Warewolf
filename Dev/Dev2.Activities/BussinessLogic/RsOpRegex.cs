@@ -34,6 +34,13 @@ namespace Dev2.DataList
                     if (exp.IsMatch(p.Payload) && !string.IsNullOrEmpty(p.Payload)) {
                         fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
                     }
+                    else
+                    {
+                        if(to.RequireAllFieldsToMatch)
+                        {
+                            return new List<string>();
+                        }
+                    }
                 }
 
                 return fnResult.Distinct().ToList();

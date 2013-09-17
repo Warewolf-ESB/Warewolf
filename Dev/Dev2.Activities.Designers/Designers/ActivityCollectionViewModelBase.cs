@@ -1,7 +1,11 @@
-﻿using System.Activities.Presentation.Model;
+﻿using System;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -119,6 +123,7 @@ namespace Dev2.Activities.Designers
             InitializeQuickVariableInput();
         }
 
+
         private void InitializeQuickVariableInput()
         {
             QuickVariableInputViewModel = new QuickVariableInputViewModel(this);
@@ -165,10 +170,17 @@ namespace Dev2.Activities.Designers
 
             if(_items.Count <= 0)
             {
-                var dto = (TDev2TOFn)DTOFactory.CreateNewDTO(new TDev2TOFn(), 1);
-                dto.Inserted = true;
-                _items.Add(dto);
-                _items.Add((TDev2TOFn)DTOFactory.CreateNewDTO(new TDev2TOFn(), 2));
+                var dto = DTOFactory.CreateNewDTO(new TDev2TOFn(), 1) as TDev2TOFn;
+                if(dto != null)
+                {
+                    dto.Inserted = true;
+                    _items.Add(dto);
+                }
+                var item2 = DTOFactory.CreateNewDTO(new TDev2TOFn(), 2) as TDev2TOFn;
+                if(item2 != null)
+                {
+                    _items.Add(item2);
+                }
             }
 
             CreateDisplayName();
@@ -252,6 +264,7 @@ namespace Dev2.Activities.Designers
                     canAdd = false;
                 }
             }
+          
 
                     if(canAdd)
             {
@@ -320,10 +333,10 @@ namespace Dev2.Activities.Designers
             CreateDisplayName();
         }
 
-        public void AddRows(KeyEventArgs args)
+        public void AddRows(RoutedEventArgs args)
         {
             AddRow();
-            AdjustScrollViewer(args);
+            AdjustScrollViewer(args.OriginalSource);
 
             var activityDto = SelectedValue as TDev2TOFn;
             if(activityDto != null && activityDto.Inserted)
@@ -334,15 +347,19 @@ namespace Dev2.Activities.Designers
             CreateDisplayName();
         }
 
-        private void AdjustScrollViewer(KeyEventArgs args)
+        private void AdjustScrollViewer(object originalSource)
         {
-            if(args.OriginalSource != null)
+            if(originalSource != null)
             {
-                DependencyObject source = args.OriginalSource as DependencyObject;
+                DependencyObject source = originalSource as DependencyObject;
                 var scrollViewer = source.GetSelfAndAncestors().OfType<ScrollViewer>().ToList();
                 if(scrollViewer != null)
                 {
-                    scrollViewer[0].ScrollToVerticalOffset(scrollViewer[0].VerticalOffset + 0.000001);
+                    if(scrollViewer.Count > 0)
+                    {
+                        scrollViewer[0].ScrollToVerticalOffset(scrollViewer[0].VerticalOffset + 0.000001);
+                    }
+
                 }
             }
         }

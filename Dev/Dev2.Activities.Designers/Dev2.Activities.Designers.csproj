@@ -95,6 +95,13 @@
       <DependentUpon>DsfGetWebRequestActivityTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers\DsfGetWebRequest\DsfGetWebRequestActivityViewModel.cs" />
+    <Compile Include="Designers\DsfFindRecordsMultipleCriteria\DsfFindRecordsMultipleCriteriaDesigner.xaml.cs">
+      <DependentUpon>DsfFindRecordsMultipleCriteriaDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers\DsfFindRecordsMultipleCriteria\DsfFindRecordsMultipleCriteriaTemplate.xaml.cs">
+      <DependentUpon>DsfFindRecordsMultipleCriteriaTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers\DsfFindRecordsMultipleCriteria\DsfFindRecordsMultipleCriteriaViewModel.cs" />
     <Compile Include="Designers\IActivityCollectionViewModel.cs" />
     <Compile Include="Designers\IActivityViewModelBase.cs" />
     <Compile Include="QuickVariableInput\QuickVariableInputAdornerPresenter.cs" />
@@ -271,6 +278,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers\DsfFindRecordsMultipleCriteria\DsfFindRecordsMultipleCriteriaDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers\DsfFindRecordsMultipleCriteria\DsfFindRecordsMultipleCriteriaTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Designers\DsfGetWebRequest\DsfGetWebRequestActivityDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -363,7 +378,6 @@
     <Folder Include="Designers\DsfComment\" />
     <Folder Include="Designers\DsfCountRecords\" />
     <Folder Include="Designers\DsfDataSplit\" />
-    <Folder Include="Designers\DsfFindRecords\" />
     <Folder Include="Designers\DsfForEach\" />
   </ItemGroup>
   <ItemGroup>

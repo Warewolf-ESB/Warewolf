@@ -12,5 +12,6 @@ namespace Dev2.DataList.Contract
         string SearchType { get; set; }
         string StartIndex { get; set; }
         bool MatchCase { get; set; }
+        bool RequireAllFieldsToMatch { get; set; }
     }
 }

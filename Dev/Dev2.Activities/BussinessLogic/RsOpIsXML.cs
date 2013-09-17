@@ -32,6 +32,13 @@ namespace Dev2.DataList
                     if (p.Payload.IsXml()) {
                         fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
                     }
+                    else
+                    {
+                        if(to.RequireAllFieldsToMatch)
+                        {
+                            return new List<string>();
+                        }
+                    }
                 }
 
                 return fnResult.Distinct().ToList();

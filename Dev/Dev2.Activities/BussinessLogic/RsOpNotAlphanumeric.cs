@@ -33,6 +33,13 @@ namespace Dev2.DataList
                     if (!p.Payload.IsAlphaNumeric()) {
                         fnResult.Add(p.Index.ToString());
                     }
+                    else
+                    {
+                        if(to.RequireAllFieldsToMatch)
+                        {
+                            return new List<string>();
+                        }
+                    }
                 }
 
                 return fnResult.Distinct().ToList();

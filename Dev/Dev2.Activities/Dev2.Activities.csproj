@@ -88,6 +88,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\DsfFindRecordsMultipleCriteriaActivity.cs" />
     <Compile Include="Activities\DsfPluginActivity.cs" />
     <Compile Include="Activities\DsfDatabaseActivity.cs" />
     <Compile Include="Activities\DsfDataMergeActivity.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Activities\DsfWorkflowActivity.cs" />
     <Compile Include="Activities\DsfXPathActivity.cs" />
     <Compile Include="Activities\EmailSender.cs" />
+    <Compile Include="Activities\FindRecordsTO.cs" />
     <Compile Include="Activities\GetSystemInformationHelper.cs" />
     <Compile Include="Activities\IDev2Activity.cs" />
     <Compile Include="Activities\IEmailSender.cs" />

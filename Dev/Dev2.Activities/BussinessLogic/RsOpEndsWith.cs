@@ -30,16 +30,30 @@ namespace Dev2.DataList
                 foreach (RecordSetSearchPayload p in operationRange) {
                     if (to.MatchCase)
                     {
-                        if (p.Payload.EndsWith(to.SearchCriteria))
+                        if(p.Payload.EndsWith(to.SearchCriteria))
                         {
                             fnResult.Add(p.Index.ToString());
+                        }
+                        else
+                        {
+                            if(to.RequireAllFieldsToMatch)
+                            {
+                                return new List<string>();
+                            }
                         }
                     }
                     else
                     {
-                        if (p.Payload.ToLower().EndsWith(to.SearchCriteria.ToLower()))
+                        if(p.Payload.ToLower().EndsWith(to.SearchCriteria.ToLower()))
                         {
                             fnResult.Add(p.Index.ToString());
+                        }
+                        else
+                        {
+                            if(to.RequireAllFieldsToMatch)
+                            {
+                                return new List<string>();
+                            }
                         }
                     }
                 }

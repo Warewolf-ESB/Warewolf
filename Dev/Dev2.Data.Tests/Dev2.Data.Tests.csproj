@@ -134,10 +134,6 @@
       <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Runtime.Tests\Dev2.Runtime.Tests.csproj">
-      <Project>{85617545-2121-4683-9828-daedb5878ce9}</Project>
-      <Name>Dev2.Runtime.Tests</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestStrings.resx">

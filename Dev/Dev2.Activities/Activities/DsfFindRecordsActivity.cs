@@ -66,6 +66,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [Inputs("MatchCase")]        
         public bool MatchCase { get; set; }
 
+        public bool RequireAllFieldsToMatch { get; set; }
+
         #endregion Properties
 
         #region Ctor
@@ -79,7 +81,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             SearchCriteria = string.Empty;
             Result = string.Empty;
             StartIndex = string.Empty;
-
+            RequireAllFieldsToMatch = false;
         }
 
         #endregion Ctor

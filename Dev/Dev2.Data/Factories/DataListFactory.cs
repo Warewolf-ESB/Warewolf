@@ -280,9 +280,9 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Creating a new SearchTO object
         /// </summary>
-        public static SearchTO CreateSearchTO(string fieldsToSearch, string searchType, string searchCriteria, string startIndex, string result, bool matchCase)
+        public static SearchTO CreateSearchTO(string fieldsToSearch, string searchType, string searchCriteria, string startIndex, string result, bool matchCase,bool requireAllFieldsToMatch = false)
         {
-            return new SearchTO(fieldsToSearch, searchType, searchCriteria, startIndex, result, matchCase);
+            return new SearchTO(fieldsToSearch, searchType, searchCriteria, startIndex, result, matchCase,requireAllFieldsToMatch);
         }
 
         /// <summary>

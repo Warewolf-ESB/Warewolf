@@ -39,6 +39,13 @@ namespace Dev2.DataList
 
                             fnResult.Add(p.Index.ToString());
                         }
+                        else
+                        {
+                            if(to.RequireAllFieldsToMatch)
+                            {
+                                return new List<string>();
+                            }
+                        }
                     }
 
                 }

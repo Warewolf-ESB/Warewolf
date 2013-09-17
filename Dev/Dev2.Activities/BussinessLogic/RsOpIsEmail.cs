@@ -31,8 +31,16 @@ namespace Dev2.DataList
 
                 foreach (RecordSetSearchPayload p in operationRange) {
 
-                    if (p.Payload.IsEmail()) {
+                    if(p.Payload.IsEmail())
+                    {
                         fnResult.Add(p.Index.ToString());
+                    }
+                    else
+                    {
+                        if(to.RequireAllFieldsToMatch)
+                        {
+                            return new List<string>();
+                        }
                     }
                 }
 
