@@ -875,10 +875,10 @@ namespace Dev2.Core.Tests
 
             //Isolate rename resource unit
             var treeParent = new EnvironmentTreeViewModel(null, mockedEnvironment.Object);
-            var resourcetreeviewmodel = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, treeParent, mockedResourceModel.Object);
+            var resourcetreeviewmodel = new MockResourceTreeViewModel(new Mock<IDesignValidationService>().Object, treeParent, mockedResourceModel.Object);
 
             //------------Execute Test---------------------------
-            resourcetreeviewmodel.DisplayName = newResourceName;
+            resourcetreeviewmodel.TestRename(newResourceName);
 
             // Assert Resource Repository Rename Called
             mockedResourceRepo.Verify(repo => repo.Rename(oldResourceID.ToString(), newResourceName), Times.Once(), "Resource repository rename resource was not called with the correct params"); ;
