@@ -1008,7 +1008,8 @@ namespace Dev2.Core.Tests
                 });
             reMockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(reMockResourceRepository.Object);
             vm.LoadEnvironmentResources(reMockEnvironmentModel.Object);
-            Assert.IsTrue(vm.Root.Children[0].Children[0].Children[1].Children.Count == 0, "The resource was not removed to the tree");
+
+            Assert.IsTrue(vm.Root.Children[0].Children[0].Children[0].Children.Count == 0, "The resource was not removed to the tree");
         }
 
         [TestMethod]

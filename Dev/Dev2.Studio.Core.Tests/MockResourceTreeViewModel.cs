@@ -21,5 +21,12 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             HandleRename(newValue, null);
         }
+
+        public int OnDesignValidationReceivedHitCount { get; set; }
+        protected override void OnDesignValidationReceived(DesignValidationMemo memo)
+        {
+            OnDesignValidationReceivedHitCount++;
+            base.OnDesignValidationReceived(memo);
+        }
     }
 }

@@ -1118,7 +1118,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         #region OnDesignValidationReceived
 
         // PBI 6690 - 2013.07.04 - TWR : added
-        protected void OnDesignValidationReceived(DesignValidationMemo memo)
+        protected virtual void OnDesignValidationReceived(DesignValidationMemo memo)
         {
             if(memo != null)
             {

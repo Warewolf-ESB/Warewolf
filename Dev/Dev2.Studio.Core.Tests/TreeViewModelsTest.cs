@@ -506,7 +506,7 @@ namespace Dev2.Core.Tests
         {
             //MEF!!!
             ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
-       
+
             var eventAggregator = new Mock<IEventAggregator>().Object;
 
             //Initialization
@@ -520,7 +520,7 @@ namespace Dev2.Core.Tests
             //Execute
             var vm = new CategoryTreeViewModelMock(new Mock<IEventAggregator>().Object, parent.Object, "Test Category", ResourceType.WorkflowService) { TreeParent = parent.Object, DisplayName = "Renamed Test Category" };
 
-            
+
             Assert.AreEqual(1, vm.RenameCategoryHitCount, "Rename category not called after display name change");
         }
 
@@ -908,26 +908,88 @@ namespace Dev2.Core.Tests
         #endregion Resource
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        [Description("Constructor must throw exception if DataContext parameter is null.")]
-        [TestCategory("UnitTest")]
         [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourceTreeViewModel_Constructor")]
+        [ExpectedException(typeof(ArgumentNullException))]
         // ReSharper disable InconsistentNaming
-        public void ResourceTreeViewModelConstructor_UnitTest_NullDataContext_ThrowsException()
+        public void ResourceTreeViewModel_Constructor_NullEventAggregator_ThrowsException()
+        // ReSharper restore InconsistentNaming
+        {
+            var tvm = new ResourceTreeViewModel(null, null, new Mock<IContextualResourceModel>().Object);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourceTreeViewModel_Constructor")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        // ReSharper disable InconsistentNaming
+        public void ResourceTreeViewModel_Constructor_NullDataContext_ThrowsException()
         // ReSharper restore InconsistentNaming
         {
             var tvm = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, null);
         }
 
-        [ExpectedException(typeof(ArgumentNullException))]
-        [Description("Constructor must throw exception if ValidatonService parameter is null.")]
-        [TestCategory("UnitTest")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
-        public void ResourceTreeViewModelConstructor_UnitTest_NullValidatonService_ThrowsException()
-        // ReSharper restore InconsistentNaming
+        [TestCategory("ResourceTreeViewModel_Constructor")]
+        public void ResourceTreeViewModel_Constructor_ServerResourceTypeIsDbService_ActivityFullNameIsDsfDatabaseActivity()
         {
-            var tvm = new ResourceTreeViewModel(null, null, new Mock<IContextualResourceModel>().Object);
+            ResourceTreeViewModel_Verify_ActivityFullName("DbService", typeof(DsfDatabaseActivity));
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourceTreeViewModel_Constructor")]
+        public void ResourceTreeViewModel_Constructor_ServerResourceTypeIsPluginService_ActivityFullNameIsDsfPluginActivity()
+        {
+            ResourceTreeViewModel_Verify_ActivityFullName("PluginService", typeof(DsfPluginActivity));
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourceTreeViewModel_Constructor")]
+        public void ResourceTreeViewModel_Constructor_ServerResourceTypeIsEmptyOrNull_ActivityFullNameIsDsfActivity()
+        {
+            ResourceTreeViewModel_Verify_ActivityFullName("", typeof(DsfActivity));
+            ResourceTreeViewModel_Verify_ActivityFullName(null, typeof(DsfActivity));
+        }
+
+        void ResourceTreeViewModel_Verify_ActivityFullName(string serverResourceType, Type expectedType)
+        {
+            //------------Setup for test--------------------------
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.ServerResourceType).Returns(serverResourceType);
+            resourceModel.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+            //------------Execute Test---------------------------
+            var tvm = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, resourceModel.Object);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expectedType.AssemblyQualifiedName, tvm.ActivityFullName);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourceTreeViewModel_Constructor")]
+        public void ResourceTreeViewModel_Constructor_SubscribesToDesignValidationService()
+        {
+            //------------Setup for test--------------------------
+            var eventPublisher = new EventPublisher();
+
+            var resourceID = Guid.NewGuid();
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.ID).Returns(resourceID);
+            resourceModel.Setup(r => r.Environment.Connection.ServerEvents).Returns(eventPublisher);
+
+            //------------Execute Test---------------------------
+            var tvm = new MockResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, resourceModel.Object);
+
+            eventPublisher.Publish(new DesignValidationMemo { InstanceID = resourceID });
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, tvm.OnDesignValidationReceivedHitCount);
+
+            tvm.Dispose();
         }
 
         [TestMethod]
