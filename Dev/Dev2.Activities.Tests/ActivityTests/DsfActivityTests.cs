@@ -118,7 +118,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // Assert Not Always Zero
             Assert.IsNotNull(actualState);
-            Assert.AreNotEqual(0, actualState.Duration.Ticks, "Duration was 0");
+            Assert.AreNotEqual(0, actualState.StartTime.CompareTo(actualState.EndTime), "Duration was 0");
 
             // Finalize
             DataListRemoval(result.DataListID);
