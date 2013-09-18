@@ -2551,7 +2551,7 @@ namespace Dev2.Core.Tests
         {
             var wf = CreateWorkflowDesignerViewModel(eventPublisher, resourceModel, WorkflowHelper.Instance, false);
 
-            var designerAttributes = new Dictionary<Type, Type> { { typeof(DsfActivity), typeof(DsfActivityDesigner) }, { typeof(DsfMultiAssignActivity), typeof(Dev2.Activities.Designers.DsfMultiAssign.DsfMultiAssignActivityDesigner) }, { typeof(DsfAssignActivity), typeof(DsfAssignActivityDesigner) }, { typeof(TransformActivity), typeof(DsfTransformActivityDesigner) }, { typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner) }, { typeof(DsfCountRecordsetActivity), typeof(DsfCountRecordsetActivityDesigner) } };
+            var designerAttributes = new Dictionary<Type, Type> { { typeof(DsfActivity), typeof(DsfActivityDesigner) }, { typeof(DsfMultiAssignActivity), typeof(Dev2.Activities.Designers.DsfMultiAssign.DsfMultiAssignActivityDesigner) }, { typeof(DsfAssignActivity), typeof(DsfAssignActivityDesigner) },{ typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner) }, { typeof(DsfCountRecordsetActivity), typeof(DsfCountRecordsetActivityDesigner) } };
 
             wf.InitializeDesigner(designerAttributes);
 

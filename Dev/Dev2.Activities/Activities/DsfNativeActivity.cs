@@ -515,28 +515,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetForEachInputs/Outputs
 
-        public virtual IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
-        {
-            return GetDataListItemsForEach(context);
-        }
+        public abstract IList<DsfForEachItem> GetForEachInputs();
 
-        public virtual IList<DsfForEachItem> GetForEachOutputs(NativeActivityContext context)
-        {
-            return GetDataListItemsForEach(context);
-        }
+        public abstract IList<DsfForEachItem> GetForEachOutputs();
 
         #endregion
 
         #region GetForEachItems
 
-        protected IList<DsfForEachItem> GetForEachItems(NativeActivityContext context, StateType stateType, params string[] strings)
+        protected IList<DsfForEachItem> GetForEachItems(params string[] strings)
         {
             if(strings == null || strings.Length == 0)
             {
                 return DsfForEachItem.EmptyList;
             }
 
-            var items = GetDataListItemsForEach(context);
             var result = new List<DsfForEachItem>();
 
             foreach(var s in strings)
@@ -545,61 +538,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     continue;
                 }
-
-                if(s.IndexOf("[[", StringComparison.OrdinalIgnoreCase) != -1)
+                result.Add(new DsfForEachItem
                 {
-                    if(s.IndexOf("()", StringComparison.OrdinalIgnoreCase) != -1)
-                    {
-                        var exactMatch = !s.EndsWith("()]]");
-                        var matchText = exactMatch ? s : s.TrimStart('[').TrimEnd(']');
-
-                        if(stateType == StateType.Before)
-                        {
-                            result.AddRange((from item in items
-                                             where exactMatch
-                                                       ? string.Compare(matchText, item.Name, StringComparison.OrdinalIgnoreCase) == 0
-                                                       : item.Name.Contains(matchText) //Need to loop through all fields
-                                             select new DsfForEachItem
-                                             {
-                                                 GroupID = item.GroupID,
-                                                 Name = item.Name.Replace("(", "(" + item.RowIndex),
-                                                 Value = item.Value,
-                                                 RowIndex = item.RowIndex
-                                             }));
-                        }
-                        else if(stateType == StateType.After)
-                        {
-                            result.AddRange((from item in items
-                                             where exactMatch
-                                                       ? string.Compare(matchText, item.Name, StringComparison.OrdinalIgnoreCase) == 0
-                                                       : item.Name.Contains(matchText) //Need to loop through all fields
-                                             select new DsfForEachItem
-                                             {
-                                                 GroupID = item.GroupID,
-                                                 Name = item.Name.Replace("(", "(" + item.RowIndex),
-                                                 Value = item.Name,
-                                                 RowIndex = item.RowIndex
-                                             }));
-                        }
-
-                    }
-                    else
-                    {
-                        result.Add(new DsfForEachItem
-                        {
-                            Name = s,
-                            Value = items.Aggregate(s, (current, item) => current.Replace(item.Name, item.Value))
-                        });
-                    }
-                }
-                else
-                {
-                    result.Add(new DsfForEachItem
-                    {
-                        Name = string.Empty,
-                        Value = s
-                    });
-                }
+                    Name = s,
+                    Value = s
+                });
             }
             return result;
         }
@@ -607,64 +550,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #region GetDataListItemsForEach
-
-        static IList<DsfForEachItem> GetDataListItemsForEach(NativeActivityContext context)
-        {
-            var result = new List<DsfForEachItem>();
-
-            var dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            ErrorResultTO errors;
-            var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
-            if(dataList == null)
-            {
-                return result;
-            }
-
-            var groupID = 1;
-            foreach(var key in dataList.FetchAllUserKeys())
-            {
-                string error;
-                IBinaryDataListEntry entry;
-                if(dataList.TryGetEntry(key, out entry, out error))
-                {
-                    if(entry.IsRecordset)
-                    {
-                        var idxItr = entry.FetchRecordsetIndexes();
-
-                        while(idxItr.HasMore())
-                        {
-                            var index = idxItr.FetchNextIndex();
-                            var record = entry.FetchRecordAt(index, out error);
-                            // ReSharper disable LoopCanBeConvertedToQuery
-                            foreach(var recordField in record)
-                            // ReSharper restore LoopCanBeConvertedToQuery
-                            {
-                                result.Add(new DsfForEachItem
-                                {
-                                    Name = string.Format("[[{0}().{1}]]", recordField.Namespace, recordField.FieldName),
-                                    Value = recordField.TheValue,
-                                    RowIndex = index,
-                                    GroupID = groupID
-                                });
-                            }
-                            groupID++;
-                        }
-                    }
-                    else
-                    {
-                        var scalar = entry.FetchScalar();
-                        result.Add(new DsfForEachItem
-                        {
-                            Name = string.Format("[[{0}]]", scalar.FieldName),
-                            Value = scalar.TheValue
-                        });
-                    }
-                }
-            }
-            return result;
-        }
 
         #endregion
 

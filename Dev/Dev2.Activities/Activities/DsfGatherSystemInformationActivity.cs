@@ -194,6 +194,18 @@ namespace Dev2.Activities
             }
         }
 
+        public override IList<DsfForEachItem> GetForEachInputs()
+        {
+            var enumerable = SystemInformationCollection.Select(to => to.Result);
+            return GetForEachItems(enumerable.ToArray());
+        }
+
+        public override IList<DsfForEachItem> GetForEachOutputs()
+        {
+            var enumerable = SystemInformationCollection.Select(to => to.Result);
+            return GetForEachItems(enumerable.ToArray());
+        }
+
         public override enFindMissingType GetFindMissingType()
         {
             return enFindMissingType.DataGridActivity;

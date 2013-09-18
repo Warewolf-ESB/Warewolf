@@ -55,14 +55,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
+        public override IList<DsfForEachItem> GetForEachInputs()
         {
             return DsfForEachItem.EmptyList;
         }
 
-        public override IList<DsfForEachItem> GetForEachOutputs(NativeActivityContext context)
+        public override IList<DsfForEachItem> GetForEachOutputs()
         {
-            return GetForEachItems(context, StateType.After, FieldValue);
+            return GetForEachItems(FieldValue);
         }
 
         #endregion

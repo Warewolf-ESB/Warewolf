@@ -1,10 +1,14 @@
-﻿using ActivityUnitTests;
+﻿using System.Activities;
+using System.Collections;
+using System.Linq;
+using ActivityUnitTests;
+using Dev2.Activities;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
@@ -350,5 +354,35 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCalculateActivity_GetForEachInputs")]
+        public void DsfCalculateActivity_GetForEachInputs_NullContext_EmptyList()
+        {
+            //------------Setup for test--------------------------
+            var dsfCalculateActivity = new DsfCalculateActivity();
+            //------------Execute Test---------------------------
+            var dsfForEachItems = dsfCalculateActivity.GetForEachInputs();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(dsfForEachItems.Any());
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCalculateActivity_GetForEachInputs")]
+        public void DsfCalculateActivity_GetForEachInputs_WhenHasContext_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            DsfCalculateActivity act = new DsfCalculateActivity { Expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])", Result = "[[res]]" };
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            //------------Execute Test---------------------------
+            
+            //------------Assert Results-------------------------
+        }
     }
 }

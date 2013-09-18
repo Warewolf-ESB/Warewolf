@@ -59,12 +59,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
+        public override IList<DsfForEachItem> GetForEachInputs()
         {
             return DsfForEachItem.EmptyList;
         }
 
-        public override IList<DsfForEachItem> GetForEachOutputs(NativeActivityContext context)
+        public override IList<DsfForEachItem> GetForEachOutputs()
         {
             return new List<DsfForEachItem>
             {

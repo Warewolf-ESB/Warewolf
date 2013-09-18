@@ -311,6 +311,16 @@ namespace Dev2.Activities
             return _debugOutputs;
         }
 
+        public override IList<DsfForEachItem> GetForEachInputs()
+        {
+            return GetForEachItems(CommandFileName);
+        }
+
+        public override IList<DsfForEachItem> GetForEachOutputs()
+        {
+            return GetForEachItems(CommandResult);
+        }
+
         #endregion
 
         #region Private Methods

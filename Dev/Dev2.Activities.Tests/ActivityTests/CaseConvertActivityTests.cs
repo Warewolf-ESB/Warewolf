@@ -510,7 +510,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var dsfCaseConvert = new DsfCaseConvertActivity() { ConvertCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
-            var inputs = dsfCaseConvert.GetForEachInputs(null);
+            var inputs = dsfCaseConvert.GetForEachInputs();
 
             //------------Assert Results-------------------------
 
@@ -533,7 +533,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var dsfCaseConvert = new DsfCaseConvertActivity() { ConvertCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
-            var inputs = dsfCaseConvert.GetForEachOutputs(null);
+            var inputs = dsfCaseConvert.GetForEachOutputs();
 
             //------------Assert Results-------------------------
 

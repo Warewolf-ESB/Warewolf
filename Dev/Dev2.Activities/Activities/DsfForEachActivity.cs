@@ -284,7 +284,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (tmp != null)
                 {
-                    IList<DsfForEachItem> data = tmp.GetForEachInputs(context);
+                    IList<DsfForEachItem> data = tmp.GetForEachInputs();
                     IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
 
                     if (AmendInputs(idx, data, _inputsToken, updates))
@@ -302,7 +302,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     operationalData.InnerActivity.CurCodedInputs = updates;
 
                     // Process outputs
-                    data = tmp.GetForEachOutputs(context);
+                    data = tmp.GetForEachOutputs();
                     updates = new List<Tuple<string, string>>();
 
                     if (AmendOutputs(idx, data, _outputsToken, updates))
@@ -325,7 +325,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if (tmp2 != null && !(tmp2 is DsfForEachActivity))
                     {
-                        IList<DsfForEachItem> data = tmp2.GetForEachInputs(context);
+                        IList<DsfForEachItem> data = tmp2.GetForEachInputs();
                         IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
 
                         if (AmendInputs(idx, data, _inputsToken, updates))
@@ -342,7 +342,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         operationalData.InnerActivity.CurCodedInputs = updates;
 
                         // Process outputs
-                        data = tmp2.GetForEachOutputs(context);
+                        data = tmp2.GetForEachOutputs();
                         updates = new List<Tuple<string, string>>();
 
                         if (AmendOutputs(idx, data, _outputsToken, updates))
@@ -518,7 +518,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (tmp != null)
                     {
                         // Restore Inputs ;)
-                        IList<DsfForEachItem> data = tmp.GetForEachInputs(context);
+                        IList<DsfForEachItem> data = tmp.GetForEachInputs();
                         IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
 
                         // amend inputs ;)
@@ -535,7 +535,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
                         // Restore Outputs ;)
-                        data = tmp.GetForEachInputs(context);
+                        data = tmp.GetForEachInputs();
                         updates = new List<Tuple<string, string>>();
 
                         // amend inputs ;)
@@ -558,7 +558,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         // Restore Inputs ;)
                         if (tmp2 != null)
                         {
-                            IList<DsfForEachItem> data = tmp2.GetForEachInputs(context);
+                            IList<DsfForEachItem> data = tmp2.GetForEachInputs();
                             IList<Tuple<string, string>> updates = new List<Tuple<string, string>>();
 
                             // amend inputs ;)
@@ -575,7 +575,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
                             // Restore Outputs ;)
-                            data = tmp2.GetForEachInputs(context);
+                            data = tmp2.GetForEachInputs();
                             updates = new List<Tuple<string, string>>();
 
                             // amend inputs ;)
@@ -726,14 +726,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
+        public override IList<DsfForEachItem> GetForEachInputs()
         {
-            return GetForEachItems(context, StateType.Before, ForEachElementName);
+            return GetForEachItems(ForEachElementName);
         }
 
-        public override IList<DsfForEachItem> GetForEachOutputs(NativeActivityContext context)
+        public override IList<DsfForEachItem> GetForEachOutputs()
         {
-            return GetForEachItems(context, StateType.After, ForEachElementName.Replace("*", ""));
+            return GetForEachItems(ForEachElementName.Replace("*", ""));
         }
 
         #endregion

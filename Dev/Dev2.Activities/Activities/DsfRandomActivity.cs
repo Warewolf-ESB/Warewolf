@@ -343,14 +343,14 @@ namespace Dev2.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
+        public override IList<DsfForEachItem> GetForEachInputs()
         {
-            return GetForEachItems(context, StateType.Before,To,From,Length);
+            return GetForEachItems(To,From,Length);
         }
 
-        public override IList<DsfForEachItem> GetForEachOutputs(NativeActivityContext context)
+        public override IList<DsfForEachItem> GetForEachOutputs()
         {
-            return GetForEachItems(context, StateType.After, Result);
+            return GetForEachItems(Result);
         }
 
         #endregion

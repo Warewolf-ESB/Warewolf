@@ -2,6 +2,7 @@
 using System.Activities;
 using System.Collections.Generic;
 using Dev2;
+using Dev2.Activities;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -412,6 +413,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var resultID = esbChannel.ExecuteTransactionallyScopedRequest(dataObject, dataObject.WorkspaceID, out tmpErrors);
             return resultID;
+        }
+
+        public override IList<DsfForEachItem> GetForEachInputs()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IList<DsfForEachItem> GetForEachOutputs()
+        {
+            throw new NotImplementedException();
         }
 
         public override enFindMissingType GetFindMissingType()

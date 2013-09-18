@@ -448,7 +448,7 @@ namespace ActivityUnitTests.ActivityTests
 
             //------------Execute Test---------------------------
 
-            var inputs = dsfBaseConvert.GetForEachInputs(null);
+            var inputs = dsfBaseConvert.GetForEachInputs();
 
             //------------Assert Results-------------------------
 
@@ -475,7 +475,7 @@ namespace ActivityUnitTests.ActivityTests
 
             //------------Execute Test---------------------------
 
-            var inputs = dsfBaseConvert.GetForEachOutputs(null);
+            var inputs = dsfBaseConvert.GetForEachOutputs();
 
             //------------Assert Results-------------------------
 

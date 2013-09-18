@@ -1,5 +1,8 @@
-﻿
+﻿using System.Collections.Generic;
+using Dev2.Activities;
 // ReSharper disable CheckNamespace
+
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
 {
@@ -20,6 +23,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         public override void UpdateForEachOutputs(System.Collections.Generic.IList<System.Tuple<string, string>> updates, System.Activities.NativeActivityContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override IList<DsfForEachItem> GetForEachInputs()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override IList<DsfForEachItem> GetForEachOutputs()
         {
             throw new System.NotImplementedException();
         }

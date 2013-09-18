@@ -1605,7 +1605,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Execute Test---------------------------
 
-            var inputs = act.GetForEachInputs(null);
+            var inputs = act.GetForEachInputs();
 
             //------------Assert Results-------------------------
 
@@ -1628,7 +1628,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Execute Test---------------------------
 
-            var inputs = act.GetForEachOutputs(null);
+            var inputs = act.GetForEachOutputs();
 
             //------------Assert Results-------------------------
 

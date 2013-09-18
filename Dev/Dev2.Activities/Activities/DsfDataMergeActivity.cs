@@ -388,20 +388,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
+        public override IList<DsfForEachItem> GetForEachInputs()
         {
             var items = (MergeCollection.Where(c => !string.IsNullOrEmpty(c.InputVariable)).Select(c => c.InputVariable).Union(MergeCollection.Where(c => !string.IsNullOrEmpty(c.At)).Select(c => c.At))).ToArray();
-            return GetForEachItems(context, StateType.Before, items);
+            return GetForEachItems(items);
         }
 
-        public override IList<DsfForEachItem> GetForEachOutputs(NativeActivityContext context)
+        public override IList<DsfForEachItem> GetForEachOutputs()
         {
             var items = new string[1];
             if (!string.IsNullOrEmpty(Result))
             {
                 items[0] = Result;
             }
-            return GetForEachItems(context, StateType.After, items);
+            return GetForEachItems(items);
         }
 
         #endregion

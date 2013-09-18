@@ -1,6 +1,7 @@
 ﻿using System.Activities;
 using Dev2;
 using System.Collections.Generic;
+using Dev2.Activities;
 using Dev2.DataList.Contract;
 using System;
 using Dev2.Common;
@@ -166,6 +167,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IList<DsfForEachItem> GetForEachInputs()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IList<DsfForEachItem> GetForEachOutputs()
         {
             throw new NotImplementedException();
         }

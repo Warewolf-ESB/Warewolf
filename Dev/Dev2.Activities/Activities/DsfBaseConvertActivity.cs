@@ -413,7 +413,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
+        public override IList<DsfForEachItem> GetForEachInputs()
         {
             var result = new List<DsfForEachItem>();
 
@@ -428,7 +428,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return result;
         }
 
-        public override IList<DsfForEachItem> GetForEachOutputs(NativeActivityContext context)
+        public override IList<DsfForEachItem> GetForEachOutputs()
         {
             var result = new List<DsfForEachItem>();
 

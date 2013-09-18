@@ -130,7 +130,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             allErrors.MergeErrors(errorResultTO);
                             if(RequireAllTrue)
                             {
-                                results = currentResults.Count == 0 ? iterationResults : currentResults.Intersect(iterationResults);
+                                results = i == 0 ? iterationResults : currentResults.Intersect(iterationResults);
                             }
                             else
                             {
@@ -449,16 +449,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
+        public override IList<DsfForEachItem> GetForEachInputs()
         {
             var items = (new[] { FieldsToSearch }).Union(ResultsCollection.Where(c => !string.IsNullOrEmpty(c.SearchCriteria)).Select(c => c.SearchCriteria)).ToArray();
-            return GetForEachItems(context, StateType.Before, items);
+            return GetForEachItems(items);
         }
 
-        public override IList<DsfForEachItem> GetForEachOutputs(NativeActivityContext context)
+        public override IList<DsfForEachItem> GetForEachOutputs()
         {
             var items = Result;
-            return GetForEachItems(context, StateType.After, items);
+            return GetForEachItems(items);
         }
 
         #endregion

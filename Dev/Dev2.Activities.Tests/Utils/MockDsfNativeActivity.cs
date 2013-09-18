@@ -1,4 +1,5 @@
-﻿using Dev2.Diagnostics;
+﻿using Dev2.Activities;
+using Dev2.Diagnostics;
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -42,6 +43,16 @@ namespace Dev2.Tests.Activities.Utils
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
+        }
+
+        public override IList<DsfForEachItem> GetForEachInputs()
+        {
+            return null;
+        }
+
+        public override IList<DsfForEachItem> GetForEachOutputs()
+        {
+            return null;
         }
 
         protected override void OnExecutedCompleted(NativeActivityContext context, bool hasError, bool isResumable)
