@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using ActivityUnitTests.ActivityTests;
 using ActivityUnitTests.XML;
+using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
@@ -16,6 +17,7 @@ using Dev2.Tests.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -578,5 +580,102 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion
 
+        // ReSharper disable InconsistentNaming
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfNativeActivity_GetForEachItems")]
+        public void DsfNativeActivity_GetForEachItems_NullStringList_EmptyList()
+        {
+            //------------Setup for test--------------------------
+            var dsfNativeActivity = new TestNativeActivity(false,"Test");
+            
+            //------------Execute Test---------------------------
+            var forEachItemsForTest = dsfNativeActivity.GetForEachItemsForTest(null);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(forEachItemsForTest.Any());
+        }     
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfNativeActivity_GetForEachItems")]
+        public void DsfNativeActivity_GetForEachItems_EmptyStringList_EmptyList()
+        {
+            //------------Setup for test--------------------------
+            var dsfNativeActivity = new TestNativeActivity(false,"Test");
+            
+            //------------Execute Test---------------------------
+            var forEachItemsForTest = dsfNativeActivity.GetForEachItemsForTest(new string[0]);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(forEachItemsForTest.Any());
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfNativeActivity_GetForEachItems")]
+        public void DsfNativeActivity_GetForEachItems_WhenHasStringItems_ReturnsForEachItemList()
+        {
+            //------------Setup for test--------------------------
+            var dsfNativeActivity = new TestNativeActivity(false, "Test");
+            const string item1NameAndValue = "Test";
+            const string item2NameAndValue = "Test1";
+            var stringList = new[] { item1NameAndValue, item2NameAndValue };
+            //------------Execute Test---------------------------
+            var forEachItemsForTest = dsfNativeActivity.GetForEachItemsForTest(stringList);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2,forEachItemsForTest.Count);
+            Assert.IsNotNull(forEachItemsForTest.FirstOrDefault(item => item.Name == item2NameAndValue));
+            Assert.IsNotNull(forEachItemsForTest.FirstOrDefault(item => item.Value == item2NameAndValue));
+            Assert.IsNotNull(forEachItemsForTest.FirstOrDefault(item => item.Name == item1NameAndValue));
+            Assert.IsNotNull(forEachItemsForTest.FirstOrDefault(item => item.Value == item1NameAndValue));
+        }
+    }
+
+    internal class TestNativeActivity : DsfNativeActivity<string>
+    {
+
+        public TestNativeActivity(bool isExecuteAsync, string displayName)
+            : base(isExecuteAsync, displayName)
+        {
+        }
+
+        public TestNativeActivity(bool isExecuteAsync, string displayName, IDebugDispatcher debugDispatcher)
+            : base(isExecuteAsync, displayName, debugDispatcher)
+        {
+        }
+
+        #region Overrides of DsfNativeActivity<string>
+
+        /// <summary>
+        /// When overridden runs the activity's execution logic 
+        /// </summary>
+        /// <param name="context">The context to be used.</param>
+        protected override void OnExecute(NativeActivityContext context)
+        {
+        }
+
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        {
+        }
+
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        {
+        }
+
+        public IList<DsfForEachItem> GetForEachItemsForTest(params string[] strings)
+        {
+            return GetForEachItems(strings);
+        }
+
+        public override IList<DsfForEachItem> GetForEachInputs()
+        {
+            return null;
+        }
+
+        public override IList<DsfForEachItem> GetForEachOutputs()
+        {
+            return null;
+        }
+
+        #endregion
     }
 }

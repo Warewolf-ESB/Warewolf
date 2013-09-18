@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ActivityUnitTests;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
@@ -22,7 +23,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void CommentGetDebugInputOutputWithText()
         {
-            DsfCommentActivity act = new DsfCommentActivity { Text = "SomeText" };
+            var act = new DsfCommentActivity { Text = "SomeText" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
@@ -60,5 +61,88 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(DebugItemResultType.Value, debugOutput[0].Type);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCommentActivity_UpdateForEachInputs")]
+        public void DsfCommentActivity_UpdateForEachInputs_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfCommentActivity { Text = "SomeText" };
+            var tuple1 = new Tuple<string, string>("Test1", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("SomeText",act.Text);
+        }   
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCommentActivity_UpdateForEachOutputs")]
+        public void DsfCommentActivity_UpdateForEachOutputs_NullDoesNothing_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfCommentActivity { Text = "SomeText" };
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("SomeText", act.Text);
+        } 
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCommentActivity_UpdateForEachOutputs")]
+        public void DsfCommentActivity_UpdateForEachOutputsMoreThanTwoItems_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfCommentActivity { Text = "SomeText" };
+            var tuple1 = new Tuple<string, string>("Test1", "Test");
+            var tuple2 = new Tuple<string, string>("Test2", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1,tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("SomeText", act.Text);
+        }  
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCommentActivity_UpdateForEachOutputs")]
+        public void DsfCommentActivity_UpdateForEachOutputs_UpdatesTextValue()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfCommentActivity { Text = "SomeText" };
+            var tuple1 = new Tuple<string, string>("Test1", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test",act.Text);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCommentActivity_GetForEachInputs")]
+        public void DsfCommentActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfCommentActivity { Text = "SomeText" };
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachInputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, dsfForEachItems.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCommentActivity_GetForEachOutputs")]
+        public void DsfCommentActivity_GetForEachOutputs_WhenHasResult_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfCommentActivity { Text = "SomeText" };
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual("SomeText", dsfForEachItems[0].Name);
+            Assert.AreEqual("SomeText", dsfForEachItems[0].Value);
+        }
     }
 }

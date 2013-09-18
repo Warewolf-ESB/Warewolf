@@ -1,4 +1,5 @@
-﻿using ActivityUnitTests;
+﻿using System;
+using ActivityUnitTests;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
@@ -870,6 +871,111 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion GetWizardData Tests
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDataSplitActivity_UpdateForEachInputs")]
+        public void DsfDataSplitActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            DsfDataSplitActivity act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
+
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[CompanyName]]", act.ResultsCollection[0].OutputVariable);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDataSplitActivity_UpdateForEachInputs")]
+        public void DsfDataSplitActivity_UpdateForEachInputs_MoreThan1Updates_UpdatesMergeCollection()
+        {
+            //------------Setup for test--------------------------
+            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1),new DataSplitDTO("[[CompanyName]]", "Index", "1", 2) };
+            var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
+
+            var tuple1 = new Tuple<string, string>("2", "Test");
+            var tuple2 = new Tuple<string, string>("1", "Test2");
+            var tuple3 = new Tuple<string, string>("[[CompanyName]]", "Test3");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2,tuple3 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.ResultsCollection[0].At);
+            Assert.AreEqual("Test2", act.ResultsCollection[1].At);
+            Assert.AreEqual("Test3", act.SourceString);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDataSplitActivity_UpdateForEachOutputs")]
+        public void DsfDataSplitActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
+
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[CompanyName]]", act.SourceString);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDataSplitActivity_UpdateForEachOutputs")]
+        public void DsfDataSplitActivity_UpdateForEachOutputs_1Updates_UpdateCountNumber()
+        {
+            //------------Setup for test--------------------------
+            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
+
+            var tuple1 = new Tuple<string, string>("[[CompanyName]]", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.ResultsCollection[0].OutputVariable);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDataSplitActivityGetForEachInputs")]
+        public void DsfDataSplitActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachInputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, dsfForEachItems.Count);
+            Assert.AreEqual("[[CompanyName]]", dsfForEachItems[0].Name);
+            Assert.AreEqual("[[CompanyName]]", dsfForEachItems[0].Value);
+            Assert.AreEqual("2", dsfForEachItems[1].Name);
+            Assert.AreEqual("2", dsfForEachItems[1].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDataSplitActivity_GetForEachOutputs")]
+        public void DsfDataSplitActivity_GetForEachOutputs_WhenHasResult_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual("[[CompanyName]]", dsfForEachItems[0].Name);
+            Assert.AreEqual("[[CompanyName]]", dsfForEachItems[0].Value);
+        }
+
 
         #region Private Test Methods
 

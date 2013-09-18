@@ -530,21 +530,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return DsfForEachItem.EmptyList;
             }
 
-            var result = new List<DsfForEachItem>();
-
-            foreach(var s in strings)
-            {
-                if(string.IsNullOrEmpty(s))
+            return (from s in strings
+                where !string.IsNullOrEmpty(s)
+                select new DsfForEachItem
                 {
-                    continue;
-                }
-                result.Add(new DsfForEachItem
-                {
-                    Name = s,
-                    Value = s
-                });
-            }
-            return result;
+                    Name = s, Value = s
+                }).ToList();
         }
 
         #endregion

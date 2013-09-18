@@ -1,4 +1,5 @@
-﻿using System.Activities;
+﻿using System;
+using System.Activities;
 using System.Collections;
 using System.Linq;
 using ActivityUnitTests;
@@ -370,19 +371,130 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCalculateActivity_GetForEachInputs")]
-        public void DsfCalculateActivity_GetForEachInputs_WhenHasContext_ReturnsInputList()
+        public void DsfCalculateActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
         {
             //------------Setup for test--------------------------
-            DsfCalculateActivity act = new DsfCalculateActivity { Expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])", Result = "[[res]]" };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
+            var act = new DsfCalculateActivity { Expression = expression, Result = "[[res]]" };
             //------------Execute Test---------------------------
-            
+            var dsfForEachItems = act.GetForEachInputs();
             //------------Assert Results-------------------------
+            Assert.AreEqual(1,dsfForEachItems.Count);
+            Assert.AreEqual(expression,dsfForEachItems[0].Name);
+            Assert.AreEqual(expression,dsfForEachItems[0].Value);
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCalculateActivity_GetForEachOutputs")]
+        public void DsfCalculateActivity_GetForEachOutputs_WhenHasResult_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
+            const string result = "[[res]]";
+            var act = new DsfCalculateActivity { Expression = expression, Result = result };
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,dsfForEachItems.Count);
+            Assert.AreEqual(result, dsfForEachItems[0].Name);
+            Assert.AreEqual(result, dsfForEachItems[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCalculateActivity_UpdateForEachInputs")]
+        public void DsfCalculateActivity_UpdateForEachInputs_GivenNullUpdates_DoNothing()
+        {
+            //------------Setup for test--------------------------
+            const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
+            const string result = "[[res]]";
+            var act = new DsfCalculateActivity { Expression = expression, Result = result };
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(null,null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expression,act.Expression);
+        }      
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCalculateActivity_UpdateForEachInputs")]
+        public void DsfCalculateActivity_UpdateForEachInputs_GivenMoreThanOneUpdates_DoNothing()
+        {
+            //------------Setup for test--------------------------
+            const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
+            const string result = "[[res]]";
+            var act = new DsfCalculateActivity { Expression = expression, Result = result };
+            //------------Execute Test---------------------------
+            var tuple1 = new Tuple<string, string>("Test","Test");
+            var tuple2 = new Tuple<string, string>("Test2","Test2");
+            act.UpdateForEachInputs(new List<Tuple<string, string>>{tuple1,tuple2}, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expression,act.Expression);
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCalculateActivity_UpdateForEachInputs")]
+        public void DsfCalculateActivity_UpdateForEachInputs_GivenOneUpdate_UpdatesExpressionToItem2InTuple()
+        {
+            //------------Setup for test--------------------------
+            const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
+            const string result = "[[res]]";
+            var act = new DsfCalculateActivity { Expression = expression, Result = result };
+            //------------Execute Test---------------------------
+            var tuple1 = new Tuple<string, string>("Test1","Test");
+            act.UpdateForEachInputs(new List<Tuple<string, string>>{tuple1}, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test",act.Expression);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCalculateActivity_UpdateForEachOutputs")]
+        public void DsfCalculateActivity_UpdateForEachOutputs_GivenNullUpdates_DoNothing()
+        {
+            //------------Setup for test--------------------------
+            const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
+            const string result = "[[res]]";
+            var act = new DsfCalculateActivity { Expression = expression, Result = result };
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(null,null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expression,act.Expression);
+        }      
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCalculateActivity_UpdateForEachOutputs")]
+        public void DsfCalculateActivity_UpdateForEachOutputs_GivenMoreThanOneUpdates_DoNothing()
+        {
+            //------------Setup for test--------------------------
+            const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
+            const string result = "[[res]]";
+            var act = new DsfCalculateActivity { Expression = expression, Result = result };
+            var tuple1 = new Tuple<string, string>("Test","Test");
+            var tuple2 = new Tuple<string, string>("Test2","Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expression,act.Expression);
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCalculateActivity_UpdateForEachOutputs")]
+        public void DsfCalculateActivity_UpdateForEachOutputs_GivenOneUpdate_UpdatesExpressionToItem2InTuple()
+        {
+            //------------Setup for test--------------------------
+            const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
+            const string result = "[[res]]";
+            var act = new DsfCalculateActivity { Expression = expression, Result = result };
+            var tuple1 = new Tuple<string, string>("Test1","Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test",act.Result);
         }
     }
 }

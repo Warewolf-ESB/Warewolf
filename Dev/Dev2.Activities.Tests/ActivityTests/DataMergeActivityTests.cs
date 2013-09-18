@@ -1,4 +1,5 @@
-﻿using ActivityUnitTests;
+﻿using System;
+using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -408,6 +409,133 @@ WallisBuchan
         }
 
         #endregion
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDataMergeActivity_UpdateForEachInputs")]
+        public void DsfDataMergeActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            _mergeCollection.Clear();
+            _mergeCollection.Add(new DataMergeDTO("[[CompanyName]]", "Chars", ",", 1, " ", "Left"));
+            var act = new DsfDataMergeActivity { Result = "[[res]]", MergeCollection = _mergeCollection };
+
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[CompanyName]]", act.MergeCollection[0].InputVariable);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDataMergeActivity_UpdateForEachInputs")]
+        public void DsfDataMergeActivity_UpdateForEachInputs_MoreThan1Updates_UpdatesMergeCollection()
+        {
+            //------------Setup for test--------------------------
+            _mergeCollection.Clear();
+            _mergeCollection.Add(new DataMergeDTO("[[CompanyName]]", "Chars", ",", 1, " ", "Left"));
+            _mergeCollection.Add(new DataMergeDTO("[[CompanyNumber]]", "Chars", ",", 2, " ", "Left"));
+            var act = new DsfDataMergeActivity { Result = "[[res]]", MergeCollection = _mergeCollection };
+
+            var tuple1 = new Tuple<string, string>("[[CompanyName]]", "Test");
+            var tuple2 = new Tuple<string, string>("[[CompanyNumber]]", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.MergeCollection[0].InputVariable);
+            Assert.AreEqual("Test2", act.MergeCollection[1].InputVariable);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDataMergeActivity_UpdateForEachOutputs")]
+        public void DsfDataMergeActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            _mergeCollection.Clear();
+            _mergeCollection.Add(new DataMergeDTO("[[CompanyName]]", "Chars", ",", 1, " ", "Left"));
+            DsfDataMergeActivity act = new DsfDataMergeActivity { Result = "[[res]]", MergeCollection = _mergeCollection };
+
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[res]]", act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDataMergeActivity_UpdateForEachOutputs")]
+        public void DsfDataMergeActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            _mergeCollection.Clear();
+            _mergeCollection.Add(new DataMergeDTO("[[CompanyName]]", "Chars", ",", 1, " ", "Left"));
+            DsfDataMergeActivity act = new DsfDataMergeActivity { Result = "[[res]]", MergeCollection = _mergeCollection };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>("Test2", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[res]]", act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDataMergeActivity_UpdateForEachOutputs")]
+        public void DsfDataMergeActivity_UpdateForEachOutputs_1Updates_UpdateCountNumber()
+        {
+            //------------Setup for test--------------------------
+            _mergeCollection.Clear();
+            _mergeCollection.Add(new DataMergeDTO("[[CompanyName]]", "Chars", ",", 1, " ", "Left"));
+            DsfDataMergeActivity act = new DsfDataMergeActivity { Result = "[[res]]", MergeCollection = _mergeCollection };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDataMergeActivityGetForEachInputs")]
+        public void DsfDataMergeActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            _mergeCollection.Clear();
+            _mergeCollection.Add(new DataMergeDTO("[[CompanyName]]", "Chars", ",", 1, " ", "Left"));
+            _mergeCollection.Add(new DataMergeDTO("[[CompanyNumber]]", "Chars", ",", 2, " ", "Left"));
+            DsfDataMergeActivity act = new DsfDataMergeActivity { Result = "[[res]]", MergeCollection = _mergeCollection };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachInputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(3, dsfForEachItems.Count);
+            Assert.AreEqual("[[CompanyName]]", dsfForEachItems[0].Name);
+            Assert.AreEqual("[[CompanyName]]", dsfForEachItems[0].Value);
+            Assert.AreEqual("[[CompanyNumber]]", dsfForEachItems[1].Name);
+            Assert.AreEqual("[[CompanyNumber]]", dsfForEachItems[1].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDataMergeActivity_GetForEachOutputs")]
+        public void DsfDataMergeActivity_GetForEachOutputs_WhenHasResult_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            _mergeCollection.Clear();
+            _mergeCollection.Add(new DataMergeDTO("[[CompanyName]]", "Chars", ",", 1, " ", "Left"));
+            DsfDataMergeActivity act = new DsfDataMergeActivity { Result = "[[res]]", MergeCollection = _mergeCollection };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual("[[res]]", dsfForEachItems[0].Name);
+            Assert.AreEqual("[[res]]", dsfForEachItems[0].Value);
+        }
 
         #region Private Test Methods
 

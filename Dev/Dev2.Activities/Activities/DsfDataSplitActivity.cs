@@ -530,35 +530,41 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+            if(updates != null)
             {
-                // locate all updates for this tuple
-                var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.At) && c.At.Equals(t.Item1));
-
-                // issues updates
-                foreach (var a in items)
+                foreach (Tuple<string, string> t in updates)
                 {
-                    a.At = t.Item2;
-                }
+                    // locate all updates for this tuple
+                    var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.At) && c.At.Equals(t.Item1));
 
-                if (SourceString == t.Item1)
-                {
-                    SourceString = t.Item2;
+                    // issues updates
+                    foreach (var a in items)
+                    {
+                        a.At = t.Item2;
+                    }
+
+                    if (SourceString == t.Item1)
+                    {
+                        SourceString = t.Item2;
+                    }
                 }
             }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+            if(updates != null)
             {
-                // locate all updates for this tuple
-                var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.OutputVariable) && c.OutputVariable.Equals(t.Item1));
-
-                // issues updates
-                foreach (var a in items)
+                foreach (Tuple<string, string> t in updates)
                 {
-                    a.OutputVariable = t.Item2;
+                    // locate all updates for this tuple
+                    var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.OutputVariable) && c.OutputVariable.Equals(t.Item1));
+
+                    // issues updates
+                    foreach (var a in items)
+                    {
+                        a.OutputVariable = t.Item2;
+                    }
                 }
             }
         }
