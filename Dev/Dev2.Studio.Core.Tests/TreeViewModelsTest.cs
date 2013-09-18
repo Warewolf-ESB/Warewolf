@@ -859,6 +859,7 @@ namespace Dev2.Core.Tests
             var mockedEnvironment = new Mock<IEnvironmentModel>();
             var mockedResourceModel = new Mock<IContextualResourceModel>();
             mockedResourceModel.Setup(res => res.ID).Returns(oldResourceID);
+            mockedResourceRepo.Setup(repo => repo.All()).Returns(new Collection<IResourceModel>());
             mockedResourceRepo.Setup(repo => repo.Rename(oldResourceID.ToString(), newResourceName)).Verifiable();
             mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
 
