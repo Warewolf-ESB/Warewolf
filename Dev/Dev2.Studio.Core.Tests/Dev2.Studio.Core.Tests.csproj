@@ -263,8 +263,7 @@
     <Compile Include="ViewModelTests\QuickVariableInputModelTests.cs" />
     <Compile Include="ViewModelTests\ConnectControlViewModelTests.cs" />
     <Compile Include="ViewModelTests\WorkSurfaceContextViewModelTests.cs" />
-    <Compile Include="ViewModelTests\ViewModelMocks\MockCategoryTreeViewModelReparent.cs" />
-    <Compile Include="ViewModelTests\ViewModelMocks\MockCategoryTreeViewModelRenameCategory.cs" />
+    <Compile Include="ViewModelTests\ViewModelMocks\CategoryTreeViewModelMock.cs" />
     <Compile Include="Views\Global\ToolboxUserControlTests.cs" />
     <Compile Include="Webs\ConnectCallbackHandlerTests.cs" />
     <Compile Include="TestResourceStringsTest.Designer.cs">

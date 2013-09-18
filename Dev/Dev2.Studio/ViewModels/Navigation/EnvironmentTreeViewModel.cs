@@ -40,21 +40,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion
 
         #region ctor + init
-        //, ImportService.GetExportValue<IWizardEngine>()
-        public EnvironmentTreeViewModel(ITreeNode parent, IEnvironmentModel environmentModel)
-            : this(parent, environmentModel, EventPublishers.Aggregator)
-        {
-        }
-        //, IWizardEngine wizardEngine
-        public EnvironmentTreeViewModel(ITreeNode parent, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
-            : base(null, eventPublisher)
+        public EnvironmentTreeViewModel(IEventAggregator eventPublisher, ITreeNode parent, IEnvironmentModel environmentModel)
+            : base(eventPublisher, parent)
         {
             EnvironmentModel = environmentModel;
-            IsExpanded = true;
-            if(parent != null)
-            {
-                parent.Add(this);
-            }
+            IsExpanded = true;           
         }
 
         #endregion

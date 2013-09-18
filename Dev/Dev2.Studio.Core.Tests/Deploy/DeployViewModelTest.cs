@@ -318,14 +318,15 @@ namespace Dev2.Core.Tests
             provider.Setup(prov => prov.Load()).Returns(new List<IServer>() { new ServerDTO(server.Object), new ServerDTO(secondServer.Object) });
 
             //Setup Navigation Tree
-            var mockedSource = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, It.IsAny<Guid>(), mockedServerRepo.Object, false, enDsfActivityType.All);
-            var treeParent = new CategoryTreeViewModel("Test Category", ResourceType.WorkflowService, null)
+            var eventAggregator = new Mock<IEventAggregator>().Object;
+            var mockedSource = new NavigationViewModel(eventAggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, It.IsAny<Guid>(), mockedServerRepo.Object, false, enDsfActivityType.All);
+            var treeParent = new CategoryTreeViewModel(eventAggregator, null, "Test Category", ResourceType.WorkflowService)
             {
                 IsExpanded = false
             };
             const string expectedResourceName = "Test Resource";
             resourceNode.Setup(res => res.ResourceName).Returns(expectedResourceName);
-            var resourceTreeNode = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, treeParent, resourceNode.Object, expectedResourceName);
+            var resourceTreeNode = new ResourceTreeViewModel(eventAggregator, treeParent, resourceNode.Object);
 
             //Setup Server Resources
             server.Setup(svr => svr.LoadResources()).Callback(() => mockedSource.Root.Add(treeParent));

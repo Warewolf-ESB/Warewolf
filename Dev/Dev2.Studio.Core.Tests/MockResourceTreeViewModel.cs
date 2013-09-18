@@ -1,5 +1,5 @@
-﻿using Dev2.Communication;
-using Dev2.Services;
+﻿using Caliburn.Micro;
+using Dev2.Communication;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Navigation;
 
@@ -7,8 +7,8 @@ namespace Dev2.Studio.ViewModels.Navigation
 {
     public class MockResourceTreeViewModel : ResourceTreeViewModel
     {
-        public MockResourceTreeViewModel(IDesignValidationService validationService, ITreeNode parent, IContextualResourceModel dataContext, string activityFullName = null)
-            : base(validationService, parent, dataContext, activityFullName)
+        public MockResourceTreeViewModel(IEventAggregator eventPublisher, ITreeNode parent, IContextualResourceModel dataContext)
+            : base(eventPublisher, parent, dataContext)
         {
         }
 

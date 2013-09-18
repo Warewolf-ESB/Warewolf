@@ -59,20 +59,15 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         #region ctor + init
         //, IWizardEngine wizardEngine
-        protected AbstractTreeViewModel(ITreeNode parent, IEventAggregator eventPublisher) 
+        protected AbstractTreeViewModel(IEventAggregator eventPublisher, ITreeNode parent)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            //VerifyArgument.IsNotNull("wizardEngine", wizardEngine);
             _eventPublisher = eventPublisher;
-       //     WizardEngine = wizardEngine;
 
-            if (parent != null)
+            if(parent != null)
             {
                 parent.Add(this);
             }
-
-            //            _children = new ObservableCollection<ITreeNode>();
-            //            _children.CollectionChanged += ChildrenOnCollectionChanged;
         }
 
         #endregion ctor + init
@@ -1072,9 +1067,9 @@ namespace Dev2.Studio.ViewModels.Navigation
     public abstract class AbstractTreeViewModel<T> : AbstractTreeViewModel, ITreeNode<T>
     {
         private T _dataContext;
-        //, wizardEngine
-        protected AbstractTreeViewModel(ITreeNode parent, IEventAggregator eventPublisher)
-            : base(parent, eventPublisher)
+
+        protected AbstractTreeViewModel(IEventAggregator eventPublisher, ITreeNode parent)
+            : base(eventPublisher, parent)
         {
         }
 

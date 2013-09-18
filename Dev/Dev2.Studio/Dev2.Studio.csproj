@@ -515,7 +515,6 @@
     <Compile Include="Deploy\DeployStatsCalculator.cs" />
     <Compile Include="Factory\ExceptionFactory.cs" />
     <Compile Include="Factory\FeedbackFactory.cs" />
-    <Compile Include="Factory\TreeViewModelFactory.cs" />
     <Compile Include="Feedback\Actions\EmailFeedbackAction.cs" />
     <Compile Include="Feedback\Actions\RecorderFeedbackAction.cs" />
     <Compile Include="Feedback\FeedbackInvoker.cs" />
@@ -546,7 +545,6 @@
     <Compile Include="ViewModels\Navigation\RootTreeViewModel.cs" />
     <Compile Include="ViewModels\Navigation\ServiceTypeTreeViewModel.cs" />
     <Compile Include="ViewModels\Navigation\TreeViewModelHelper.cs" />
-    <Compile Include="ViewModels\Navigation\WizardTreeViewModel.cs" />
     <Compile Include="ViewModels\UiAutomation\AutomationIdCreaterViewModel.cs" />
     <Compile Include="ViewModels\Wizards\ActivitySettingsViewModel.cs" />
     <Compile Include="ViewModels\Workflow\WorkflowDesignerViewModel.cs" />

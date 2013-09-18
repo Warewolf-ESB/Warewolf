@@ -1408,7 +1408,7 @@ namespace Dev2.Core.Tests
             crm.Setup(r => r.ResourceName).Returns("Test");
             crm.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
             //, new Mock<IWizardEngine>().Object
-            var treeVM = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, new Mock<IDesignValidationService>().Object, null, crm.Object);
+            var treeVM = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, crm.Object);
 
             var wh = new Mock<IWorkflowHelper>();
 

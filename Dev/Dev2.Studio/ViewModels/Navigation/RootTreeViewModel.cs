@@ -23,14 +23,8 @@ namespace Dev2.Studio.ViewModels.Navigation
     {
         #region ctor + init
 
-        public RootTreeViewModel()
-            : this(EventPublishers.Aggregator)
-        {
-
-        }
-
         public RootTreeViewModel(IEventAggregator eventPublisher)
-            : base(null, eventPublisher)
+            : base(eventPublisher, null)
         {
         }
 

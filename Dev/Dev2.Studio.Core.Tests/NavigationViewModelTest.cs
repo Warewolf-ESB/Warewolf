@@ -430,18 +430,20 @@ namespace Dev2.Core.Tests
         {
             // ReSharper disable ObjectCreationAsStatement
             Init();
+            var eventAggregator = new Mock<IEventAggregator>().Object;
+
             var environment = new Mock<IEnvironmentModel>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(conn => conn.Alias).Returns("Expected Environment");
             mockConnection.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             mockConnection.Setup(conn => conn.AppServerUri).Returns(new Uri("http://10.0.0.1"));
             environment.Setup(env => env.Connection).Returns(mockConnection.Object);
-            new EnvironmentTreeViewModel(vm.Root, environment.Object);
+            new EnvironmentTreeViewModel(eventAggregator, vm.Root, environment.Object);
             var newResource = new Mock<IContextualResourceModel>();
             newResource.Setup(res => res.Category).Returns("Expected Category");
             newResource.Setup(res => res.ResourceName).Returns("Expected Resource Name");
             newResource.Setup(res => res.Environment).Returns(environment.Object);
-            new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, null, newResource.Object);
+            new ResourceTreeViewModel(eventAggregator, null, newResource.Object);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Execute Test---------------------------
@@ -492,9 +494,11 @@ namespace Dev2.Core.Tests
             localResource.Setup(res => res.DisplayName).Returns(expectedNodeName);
             //localResource.Setup(res => res<IResourceModel>.DataContext.ID)
 
-            new EnvironmentTreeViewModel(vm.Root, localEnvironment.Object);
-            new ServiceTypeTreeViewModel(ResourceType.WorkflowService, vm.Root.Children[0]);
-            new CategoryTreeViewModel(expectedCategoryName, ResourceType.WorkflowService, vm.Root.Children[0].Children[0]);
+            var eventAggregator = new Mock<IEventAggregator>().Object;
+
+            new EnvironmentTreeViewModel(eventAggregator, vm.Root, localEnvironment.Object);
+            new ServiceTypeTreeViewModel(eventAggregator, vm.Root.Children[0], ResourceType.WorkflowService);
+            new CategoryTreeViewModel(eventAggregator, vm.Root.Children[0].Children[0], expectedCategoryName, ResourceType.WorkflowService);
             vm.Root.Children[0].Children[0].Children[0].Children.Add(localResource.Object);
 
             //------------Execute Test---------------------------
@@ -908,7 +912,10 @@ namespace Dev2.Core.Tests
         public void RefreshSingleEnvironmentTestExpectedRefreshOfOneEnvironmentOnly()
         {
             RefreshTestsSetup();
-            var rootTreeViewModel = new RootTreeViewModel();
+
+            var eventAggregator = new Mock<IEventAggregator>().Object;
+
+            var rootTreeViewModel = new RootTreeViewModel(eventAggregator);
             rootTreeViewModel.Parent = vm;
 
             var envConn = new Mock<IEnvironmentConnection>();
@@ -917,7 +924,7 @@ namespace Dev2.Core.Tests
             envConn.Setup(e => e.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
 
             var envModel = new EnvironmentModel(new Mock<IEventAggregator>().Object, Guid.NewGuid(), envConn.Object, reMockResourceRepository.Object);
-            var environmentTreeViewModel = new EnvironmentTreeViewModel(rootTreeViewModel, envModel);
+            var environmentTreeViewModel = new EnvironmentTreeViewModel(eventAggregator, rootTreeViewModel, envModel);
             environmentTreeViewModel.RefreshCommand.Execute(null);
 
             reMockResourceRepository.Verify(x => x.UpdateWorkspace(It.IsAny<IList<IWorkspaceItem>>()), Times.Exactly(1));
@@ -1348,12 +1355,12 @@ namespace Dev2.Core.Tests
                 viewModel.AddEnvironment(env);
             }
 
-            var rootTreeViewModel = new RootTreeViewModel { Parent = viewModel };
+            var rootTreeViewModel = new RootTreeViewModel(publisher.Object) { Parent = viewModel };
 
             //------------Execute Test---------------------------
 
 
-            var environmentTreeViewModel = new EnvironmentTreeViewModel(rootTreeViewModel, envModel.Object);
+            var environmentTreeViewModel = new EnvironmentTreeViewModel(publisher.Object, rootTreeViewModel, envModel.Object);
             environmentTreeViewModel.DisconnectCommand.Execute(null);
 
             //------------Assert Results-------------------------
@@ -1529,7 +1536,7 @@ namespace Dev2.Core.Tests
 
             //nvm.Root.Children.Add(new CategoryTreeViewModel("Workflows", ResourceType.WorkflowService, nvm.Root));
 
-            new EnvironmentTreeViewModel(vm.Root, env.Object);
+            new EnvironmentTreeViewModel(eventPublisher.Object, vm.Root, env.Object);
 
             //------------Execute Test---------------------------
             nvm.UpdateResource(newResource.Object);

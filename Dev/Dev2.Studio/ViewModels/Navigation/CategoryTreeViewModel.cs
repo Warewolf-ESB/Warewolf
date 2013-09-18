@@ -6,14 +6,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
-using Dev2.Composition;
-using Dev2.Services.Events;
-using Dev2.Studio.AppResources.ExtensionMethods;
-using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
@@ -22,7 +17,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
-using Dev2.Studio.Core.Wizards.Interfaces;
+
 
 #endregion
 
@@ -37,7 +32,7 @@ namespace Dev2.Studio.ViewModels.Navigation
     {
         #region private fields
 
-        private ResourceType _resourceType;
+        ResourceType _resourceType;
         bool _isRenaming;
         string _displayName;
         ICommand _showNewWorkflowWizard;
@@ -48,22 +43,13 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion
 
         #region ctor + init
-        //, ImportService.GetExportValue<IWizardEngine>()
-        public CategoryTreeViewModel(string name, ResourceType resourceType, ITreeNode parent)
-            : this(name, resourceType, parent, EventPublishers.Aggregator)
-        {
-        }
-        //, IWizardEngine wizardEngine
-        public CategoryTreeViewModel(string name, ResourceType resourceType, ITreeNode parent, IEventAggregator eventPublisher)
-            : base(null, eventPublisher)
+
+        public CategoryTreeViewModel(IEventAggregator eventPublisher, ITreeNode parent, string name, ResourceType resourceType)
+            : base(eventPublisher, parent)
         {
             IsRenaming = false;
             DisplayName = name;
             ResourceType = resourceType;
-            if (parent != null)
-            {
-                parent.Add(this);
-            }
         }
 
         #endregion
@@ -86,7 +72,8 @@ namespace Dev2.Studio.ViewModels.Navigation
             get { return _resourceType; }
             set
             {
-                if (_resourceType == value) return;
+                if(_resourceType == value)
+                    return;
 
                 _resourceType = value;
                 NotifyOfPropertyChange(() => ResourceType);
@@ -120,10 +107,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                if (IsExpanded)
+                if(IsExpanded)
                 {
                     return StringResources.Navigation_OpenFolder_Icon_Pack_Uri;
-        }
+                }
                 return StringResources.Navigation_Folder_Icon_Pack_Uri;
             }
         }
@@ -132,7 +119,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                if (_children == null)
+                if(_children == null)
                 {
                     _children = new SortedObservableCollection<ITreeNode>();
                     _children.CollectionChanged += ChildrenOnCollectionChanged;
@@ -141,7 +128,8 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
             set
             {
-                if (_children == value) return;
+                if(_children == value)
+                    return;
 
                 _children = value;
                 _children.CollectionChanged -= ChildrenOnCollectionChanged;
@@ -183,7 +171,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 return base.IsExpanded;
             }
             set
-            {                
+            {
                 base.IsExpanded = value;
                 NotifyOfPropertyChange(() => IconPath);
             }
@@ -193,7 +181,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return false;// ResourceType == ResourceType.Service;
+                return false; // ResourceType == ResourceType.Service;
             }
         }
 
@@ -201,25 +189,30 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return false;// ResourceType == ResourceType.Source;
+                return false; // ResourceType == ResourceType.Source;
             }
         }
 
-        public override bool IsRenaming { 
+        public override bool IsRenaming
+        {
             get { return _isRenaming; }
             set
             {
-                if (_isRenaming == value) return;
+                if(_isRenaming == value)
+                    return;
 
                 _isRenaming = value;
                 NotifyOfPropertyChange(() => IsRenaming);
             }
         }
 
-        public string DisplayNameValidationRegex { get
+        public string DisplayNameValidationRegex
         {
-            return Common. ExtMethods. StringExtension.IsValidCategoryname.ToString();
-        } }
+            get
+            {
+                return Common.ExtMethods.StringExtension.IsValidCategoryname.ToString();
+            }
+        }
 
         //2013.05.19: Ashley Lewis for PBI 8858 - Rename folder context menu item
         public override ICommand RenameCommand
@@ -227,7 +220,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 return _renameCommand ?? (_renameCommand =
-                    new RelayCommand((obj) => { IsRenaming = true; }));
+                    new RelayCommand(obj => { IsRenaming = true; }));
             }
         }
 
@@ -240,11 +233,11 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
             set
             {
-                if (_displayName == value)
+                if(_displayName == value)
                 {
                     return;
                 }
-                if (_displayName == null)
+                if(_displayName == null)
                 {
                     _displayName = value;
                     return;
@@ -256,12 +249,12 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         protected virtual void RenameCategory(string newCategory)
         {
-            if (string.IsNullOrEmpty(newCategory) || !newCategory.IsValidCategoryName())
+            if(string.IsNullOrEmpty(newCategory) || !newCategory.IsValidCategoryName())
             {
                 throw new ArgumentException(StringResources.InvalidCategoryNameExceptionMessage, "newCategory");
             }
-            
-            EnvironmentModel.ResourceRepository.RenameCategory(DisplayName, newCategory,ResourceType);
+
+            EnvironmentModel.ResourceRepository.RenameCategory(DisplayName, newCategory, ResourceType);
             Reparent(newCategory);
         }
 
@@ -269,7 +262,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             IsRenaming = false;
         }
-        
+
         public void CancelRename(KeyEventArgs eventArgs)
         {
             if(eventArgs.Key == Key.Escape)
@@ -298,7 +291,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                if (TreeParent != null)
+                if(TreeParent != null)
                 {
                     return TreeParent.DisplayName == "WORKFLOWS" || TreeParent.DisplayName == "SOURCES" || TreeParent.DisplayName == "SERVICES";
                 }
@@ -332,7 +325,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                if (DisplayName.Length > 0)
+                if(DisplayName.Length > 0)
                 {
                     return "Deploy All " + DisplayName.ToUpper();
                 }
@@ -347,10 +340,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         public override void SetFilter(string filterText, bool updateChildren)
         {
             //bool originalFilter = IsFiltered;
-            if (!updateChildren) return;
+            if(!updateChildren)
+                return;
 
             IsFiltered = !DisplayName.ToUpper().Contains(filterText.ToUpper());
-            if (!IsFiltered)
+            if(!IsFiltered)
             {
                 Children.ToList().ForEach(c => { c.IsFiltered = false; });
             }
@@ -373,10 +367,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override ITreeNode FindChild<T>(T resourceToFind)
         {
-            if (resourceToFind is string)
+            if(resourceToFind is string)
             {
                 var name = resourceToFind as string;
-                if (String.Compare(DisplayName, name, StringComparison.InvariantCultureIgnoreCase) == 0)
+                if(String.Compare(DisplayName, name, StringComparison.InvariantCultureIgnoreCase) == 0)
                     return this;
             }
             return base.FindChild(resourceToFind);
@@ -389,11 +383,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         public override int CompareTo(object obj)
         {
             var model = obj as CategoryTreeViewModel;
-            if (model != null)
+            if(model != null)
             {
                 CategoryTreeViewModel other = model;
-                if ((String.Compare(DisplayName, StringResources.Navigation_Category_Unassigned,
-                                    StringComparison.InvariantCultureIgnoreCase)) == 0)
+                if((String.Compare(DisplayName, StringResources.Navigation_Category_Unassigned,
+                    StringComparison.InvariantCultureIgnoreCase)) == 0)
                     return -1;
                 return String.Compare(DisplayName, other.DisplayName, StringComparison.InvariantCultureIgnoreCase);
             }
@@ -404,7 +398,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         protected override ITreeNode CreateParent(string displayName)
         {
-           return new CategoryTreeViewModel(displayName, ResourceType, TreeParent);
+            return new CategoryTreeViewModel(_eventPublisher, TreeParent, displayName, ResourceType);
         }
     }
 }

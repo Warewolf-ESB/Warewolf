@@ -4,8 +4,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
-using System.Windows;
-using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Communication;
@@ -70,7 +68,7 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void MyTestInitialize()
         {
-           // Monitor.Enter(TestGuard);
+            // Monitor.Enter(TestGuard);
 
             _eventAggregator = new Mock<IEventAggregator>();
             EventPublishers.Aggregator = _eventAggregator.Object;
@@ -79,8 +77,8 @@ namespace Dev2.Core.Tests
             var securityContext = new Mock<IFrameworkSecurityContext>();
             _testConnection = new TcpConnection(securityContext.Object, new Uri("http://127.0.0.1:77/dsf"), 1234);
 
-//            ImportService.CurrentContext =
-//                CompositionInitializer.InializeWithEventAggregator();
+            //            ImportService.CurrentContext =
+            //                CompositionInitializer.InializeWithEventAggregator();
 
 
             _mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -99,20 +97,16 @@ namespace Dev2.Core.Tests
             _mockResourceModel2.Setup(r => r.ResourceName).Returns("Mock2");
             _mockResourceModel2.Setup(r => r.Environment).Returns(_mockEnvironmentModel.Object);
 
-            _rootVm = TreeViewModelFactory.Create() as RootTreeViewModel;
-            _environmentVm = TreeViewModelFactory.Create(_mockEnvironmentModel.Object, _rootVm) as EnvironmentTreeViewModel;
-            _serviceTypeVm = TreeViewModelFactory.Create(ResourceType.WorkflowService, _environmentVm) as ServiceTypeTreeViewModel;
-            _serviceTypeVm2 = TreeViewModelFactory.Create(ResourceType.Service, _environmentVm) as ServiceTypeTreeViewModel;
+            _rootVm = new RootTreeViewModel(_eventAggregator.Object);
+            _environmentVm = new EnvironmentTreeViewModel(_eventAggregator.Object, _rootVm, _mockEnvironmentModel.Object);
+            _serviceTypeVm = new ServiceTypeTreeViewModel(_eventAggregator.Object, _environmentVm, ResourceType.WorkflowService);
+            _serviceTypeVm2 = new ServiceTypeTreeViewModel(_eventAggregator.Object, _environmentVm, ResourceType.Service);
 
-            _categoryVm = TreeViewModelFactory.CreateCategory(_mockResourceModel.Object.Category,
-                _mockResourceModel.Object.ResourceType, _serviceTypeVm) as CategoryTreeViewModel;
+            _categoryVm = new CategoryTreeViewModel(_eventAggregator.Object, _serviceTypeVm, _mockResourceModel.Object.Category, _mockResourceModel.Object.ResourceType);
+            _categoryVm2 = new CategoryTreeViewModel(_eventAggregator.Object, _serviceTypeVm2, _mockResourceModel2.Object.Category, _mockResourceModel2.Object.ResourceType);
 
-            _categoryVm2 = TreeViewModelFactory.CreateCategory(_mockResourceModel2.Object.Category,
-                _mockResourceModel2.Object.ResourceType, _serviceTypeVm2) as CategoryTreeViewModel;
-
-            var validationService = new Mock<IDesignValidationService>();
-            _resourceVm = new ResourceTreeViewModel(validationService.Object, _categoryVm, _mockResourceModel.Object, typeof(DsfActivity).AssemblyQualifiedName);
-            _resourceVm2 = new ResourceTreeViewModel(validationService.Object, _categoryVm2, _mockResourceModel2.Object, typeof(DsfActivity).AssemblyQualifiedName);
+            _resourceVm = new ResourceTreeViewModel(_eventAggregator.Object, _categoryVm, _mockResourceModel.Object);
+            _resourceVm2 = new ResourceTreeViewModel(_eventAggregator.Object, _categoryVm2, _mockResourceModel2.Object);
         }
 
         [TestCleanup]
@@ -215,28 +209,16 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void TestFiler_Were_FiterIsSet_Expected_CheckedNodesAndParentCategoriesArentFiltered_()
         {
-            ITreeNode parent =
-                TreeViewModelFactory.CreateCategory("More", ResourceType.WorkflowService, null);
+            var eventAggregator = new Mock<IEventAggregator>().Object;
+            ITreeNode parent = new CategoryTreeViewModel(eventAggregator, null, "More", ResourceType.WorkflowService);
 
-            var checkedNonMatchingNode = new ResourceTreeViewModel(
-                new Mock<IDesignValidationService>().Object,
-                parent,
-                    Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "cake").Object,
-                typeof(DsfActivity).AssemblyQualifiedName);
+            var checkedNonMatchingNode = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, parent, Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "cake").Object);
 
             checkedNonMatchingNode.IsChecked = true;
 
-            var nonMatchingNode = new ResourceTreeViewModel(
-                new Mock<IDesignValidationService>().Object,
-                parent,
-                    Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "cake1111").Object,
-                typeof(DsfActivity).AssemblyQualifiedName);
+            var nonMatchingNode = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, parent, Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "cake1111").Object);
 
-            var matchingNode = new ResourceTreeViewModel(
-                new Mock<IDesignValidationService>().Object,
-                parent,
-                    Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "Match").Object,
-                typeof(DsfActivity).AssemblyQualifiedName);
+            var matchingNode = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, parent, Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "Match").Object);
 
             parent.FilterText = ("Match");
 
@@ -249,16 +231,16 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void TestFiler_Were_AllNodesFiltered_Expected_CheckedNodesAndParentCategoriestFiltered_()
         {
-            var rootVM = TreeViewModelFactory.Create() as RootTreeViewModel;
-            var environmentVM = TreeViewModelFactory.Create(_mockEnvironmentModel.Object, rootVM) as EnvironmentTreeViewModel;
-            var serviceTypeVM = TreeViewModelFactory.Create(ResourceType.WorkflowService, environmentVM) as ServiceTypeTreeViewModel;
-            var categoryVM = TreeViewModelFactory.CreateCategory(_mockResourceModel.Object.Category,
-                _mockResourceModel.Object.ResourceType, serviceTypeVM);
+            var eventAggregator = new Mock<IEventAggregator>().Object;
+            var rootVM = new RootTreeViewModel(eventAggregator);
+            var environmentVM = new EnvironmentTreeViewModel(eventAggregator, rootVM, _mockEnvironmentModel.Object);
+            var serviceTypeVM = new ServiceTypeTreeViewModel(eventAggregator, environmentVM, ResourceType.WorkflowService);
+            var categoryVM = new CategoryTreeViewModel(eventAggregator, serviceTypeVM, _mockResourceModel.Object.Category, _mockResourceModel.Object.ResourceType);
             var resource1 = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "cake1").Object;
             var resource2 = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "cake2").Object;
 
-            var resourceVM1 = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, categoryVM, resource1, typeof(DsfActivity).AssemblyQualifiedName);
-            var resourceVM2 = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, categoryVM, resource2, typeof(DsfActivity).AssemblyQualifiedName);
+            var resourceVM1 = new ResourceTreeViewModel(eventAggregator, categoryVM, resource1);
+            var resourceVM2 = new ResourceTreeViewModel(eventAggregator, categoryVM, resource2);
 
             resourceVM1.IsChecked = false;
             resourceVM2.IsChecked = false;
@@ -273,15 +255,17 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void TestFilter_Were_AllNodesCheckedAndFilter_Expected_CheckedNodesAndParentCategoriestNotFiltered()
         {
-            var rootVM = TreeViewModelFactory.Create() as RootTreeViewModel;
-            var environmentVM = TreeViewModelFactory.Create(_mockEnvironmentModel.Object, rootVM) as EnvironmentTreeViewModel;
-            var serviceTypeVM = TreeViewModelFactory.Create(ResourceType.WorkflowService, environmentVM) as ServiceTypeTreeViewModel;
-            var categoryVM = TreeViewModelFactory.CreateCategory(_mockResourceModel.Object.Category,
-                _mockResourceModel.Object.ResourceType, serviceTypeVM);
+            var eventAggregator = new Mock<IEventAggregator>().Object;
+            var rootVM = new RootTreeViewModel(eventAggregator);
+            var environmentVM = new EnvironmentTreeViewModel(eventAggregator, rootVM, _mockEnvironmentModel.Object);
+            var serviceTypeVM = new ServiceTypeTreeViewModel(eventAggregator, environmentVM, ResourceType.WorkflowService);
+            var categoryVM = new CategoryTreeViewModel(eventAggregator, serviceTypeVM, _mockResourceModel.Object.Category, _mockResourceModel.Object.ResourceType);
+
             var resource1 = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "cake1").Object;
             var resource2 = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "cake2").Object;
-            var resourceVM1 = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, categoryVM, resource1, typeof(DsfActivity).AssemblyQualifiedName);
-            var resourceVM2 = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, categoryVM, resource2, typeof(DsfActivity).AssemblyQualifiedName);
+
+            var resourceVM1 = new ResourceTreeViewModel(eventAggregator, categoryVM, resource1);
+            var resourceVM2 = new ResourceTreeViewModel(eventAggregator, categoryVM, resource2);
 
             resourceVM1.IsChecked = false;
             resourceVM2.IsChecked = false;
@@ -443,16 +427,17 @@ namespace Dev2.Core.Tests
         [TestCategory("ServiceTypeTreeViewModel_Add")]
         public void ServiceTypeTreeViewModel_Add_UnassignedResource_InsertedAtTop()
         {
-            var serviceTypeTreeViewModel = new ServiceTypeTreeViewModel(ResourceType.WorkflowService, null);
+            var eventAggregator = new Mock<IEventAggregator>().Object;
+            var serviceTypeTreeViewModel = new ServiceTypeTreeViewModel(eventAggregator, null, ResourceType.WorkflowService);
             var existingChildren = new ObservableCollection<ITreeNode>
             {
-                new CategoryTreeViewModel("aaa", ResourceType.WorkflowService, null),
-                new CategoryTreeViewModel("zzz", ResourceType.WorkflowService, null)
+                new CategoryTreeViewModel(eventAggregator, null, "aaa", ResourceType.WorkflowService),
+                new CategoryTreeViewModel(eventAggregator, null, "zzz", ResourceType.WorkflowService)
             };
             serviceTypeTreeViewModel.Children = existingChildren;
 
             //------------Execute Test---------------------------
-            serviceTypeTreeViewModel.Add(new CategoryTreeViewModel(StringResources.Navigation_Category_Unassigned,ResourceType.WorkflowService,null));
+            serviceTypeTreeViewModel.Add(new CategoryTreeViewModel(eventAggregator, null, StringResources.Navigation_Category_Unassigned, ResourceType.WorkflowService));
 
             // Assert InsertedAtTop
             Assert.AreEqual(StringResources.Navigation_Category_Unassigned, serviceTypeTreeViewModel.Children[0].DisplayName);
@@ -472,7 +457,7 @@ namespace Dev2.Core.Tests
 
             var count = _categoryVm2.ChildrenCount;
 
-            var toAdd = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, null, mockResource3.Object, typeof(DsfActivity).AssemblyQualifiedName);
+            var toAdd = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, mockResource3.Object);
 
             _categoryVm2.Add(toAdd);
 
@@ -524,7 +509,7 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             // ReSharper disable ObjectCreationAsStatement
-            var vm = new MockCategoryTreeViewModelRenameCategory("Test Category", ResourceType.WorkflowService, null) { DisplayName = "Renamed Test Category" };
+            var vm = new CategoryTreeViewModelMock(new Mock<IEventAggregator>().Object, null, "Test Category", ResourceType.WorkflowService) { DisplayName = "Renamed Test Category" };
             // ReSharper restore ObjectCreationAsStatement
 
             Assert.AreEqual(1, vm.RenameCategoryHitCount, "Rename category not called after display name change");
@@ -550,7 +535,7 @@ namespace Dev2.Core.Tests
 
 
             //Execute
-            var vm = new MockCategoryTreeViewModelReparent("Test Category", ResourceType.WorkflowService, parent.Object) { TreeParent = parent.Object, DisplayName = "Renamed Test Category" };
+            var vm = new CategoryTreeViewModelMock(new Mock<IEventAggregator>().Object, parent.Object, "Test Category", ResourceType.WorkflowService) { TreeParent = parent.Object, DisplayName = "Renamed Test Category" };
 
             //Assert
             mockResourceRepo.Verify(c => c.RenameCategory(It.IsAny<string>(), It.IsAny<string>(), ResourceType.WorkflowService), Times.Once(), "ResourceReposities RenameCategory function was not called after category tree view model rename resource was called");
@@ -622,7 +607,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void ResourceNodeEditCommand_With_Source_Expected_MediatorShowEditResourceWizardMessage()
         {
-            
+
             _mockResourceModel.SetupGet(m => m.ResourceType).Returns(ResourceType.Source);
             _resourceVm.EditCommand.Execute(null);
             _eventAggregator.Verify(e => e.Publish(It.Is<ShowEditResourceWizardMessage>
@@ -632,7 +617,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void ResourceNodeEditCommand_With_WorkflowService_Expected_MediatorAddWorkflowDesignerMessage()
         {
-            
+
             _mockResourceModel.SetupGet(m => m.ResourceType).Returns(ResourceType.WorkflowService);
             _resourceVm.EditCommand.Execute(null);
             _eventAggregator.Verify(e => e.Publish(It.Is<AddWorkSurfaceMessage>
@@ -642,7 +627,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void ResourceNodeEditCommand_With_Service_Expected_MediatorShowEditResourceWizardMessage()
         {
-            
+
             _mockResourceModel.SetupGet(m => m.ResourceType).Returns(ResourceType.Service);
             _resourceVm.EditCommand.Execute(null);
             _eventAggregator.Verify(e => e.Publish(It.Is<ShowEditResourceWizardMessage>
@@ -652,7 +637,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void ResourceNodeShowPropertiesCommand_Expected_MediatorShowEditResourceWizardMessage()
         {
-            
+
             _mockResourceModel.SetupGet(m => m.ResourceType).Returns(ResourceType.Service);
             _resourceVm.ShowPropertiesCommand.Execute(null);
             _eventAggregator.Verify(e => e.Publish(It.Is<ShowEditResourceWizardMessage>
@@ -725,7 +710,7 @@ namespace Dev2.Core.Tests
             mockResource3.Setup(r => r.ResourceType).Returns(ResourceType.Service);
             mockResource3.Setup(r => r.Category).Returns("Testing3");
             mockResource3.Setup(r => r.ResourceName).Returns("Mock3");
-            var toAdd = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, _categoryVm2, mockResource3.Object, typeof(DsfActivity).AssemblyQualifiedName);
+            var toAdd = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, _categoryVm2, mockResource3.Object);
 
             _categoryVm2.IsChecked = true;
             Assert.IsTrue(_categoryVm2.Children.Count(c => c.IsChecked == true) == 2);
@@ -747,7 +732,7 @@ namespace Dev2.Core.Tests
             mockResource3.Setup(r => r.ResourceType).Returns(ResourceType.Service);
             mockResource3.Setup(r => r.Category).Returns("Testing2");
             mockResource3.Setup(r => r.ResourceName).Returns("Mock3");
-            var toAdd = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, _categoryVm2, mockResource3.Object, typeof(DsfActivity).AssemblyQualifiedName);
+            var toAdd = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, _categoryVm2, mockResource3.Object);
 
             Thread.Sleep(100);
 
@@ -778,7 +763,7 @@ namespace Dev2.Core.Tests
         // ReSharper restore InconsistentNaming
         {
             //init
-            var vm = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, _categoryVm, new Mock<IContextualResourceModel>().Object, typeof(DsfActivity).AssemblyQualifiedName);
+            var vm = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, _categoryVm, new Mock<IContextualResourceModel>().Object);
             var testError = new ErrorInfo { Message = "Test IDataErrorInfo Message" };
             vm.DataContext = new ResourceModel(ResourceModelTest.CreateMockEnvironment().Object);
             vm.DataContext.AddError(testError);
@@ -797,7 +782,7 @@ namespace Dev2.Core.Tests
         // ReSharper restore InconsistentNaming
         {
             //init
-            var vm = new MockResourceTreeViewModel(new Mock<IDesignValidationService>().Object, _categoryVm, new Mock<IContextualResourceModel>().Object, typeof(DsfActivity).AssemblyQualifiedName) { DataContext = new TestResourceModel() };
+            var vm = new MockResourceTreeViewModel(new Mock<IEventAggregator>().Object, _categoryVm, new Mock<IContextualResourceModel>().Object) { DataContext = new TestResourceModel() };
             var memo = new DesignValidationMemo();
             var testError = new ErrorInfo { Message = "Test Error Message" };
             memo.Errors.Add(testError);
@@ -812,12 +797,14 @@ namespace Dev2.Core.Tests
         [TestCategory("ResourceTreeViewModel_RemoveNode")]
         public void ResourceTreeViewModel_RemoveNode_OnlyResourceInItsType_CategoryNodeAndTypeNodeRemoved()
         {
+            var eventAggregator = new Mock<IEventAggregator>().Object;
+
             // ReSharper disable ObjectCreationAsStatement
-            var vmRoot = new RootTreeViewModel();
-            new EnvironmentTreeViewModel(vmRoot, new Mock<IEnvironmentModel>().Object);
-            new ServiceTypeTreeViewModel(ResourceType.WorkflowService, vmRoot.Children[0]);
-            new CategoryTreeViewModel("TESTCATEGORY", ResourceType.WorkflowService, vmRoot.Children[0].Children[0]);
-            var danglingNode = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, vmRoot.Children[0].Children[0].Children[0], new Mock<IContextualResourceModel>().Object);
+            var vmRoot = new RootTreeViewModel(eventAggregator);
+            new EnvironmentTreeViewModel(eventAggregator, vmRoot, new Mock<IEnvironmentModel>().Object);
+            new ServiceTypeTreeViewModel(eventAggregator, vmRoot.Children[0], ResourceType.WorkflowService);
+            new CategoryTreeViewModel(eventAggregator, vmRoot.Children[0].Children[0], "TESTCATEGORY", ResourceType.WorkflowService);
+            var danglingNode = new ResourceTreeViewModel(eventAggregator, vmRoot.Children[0].Children[0].Children[0], new Mock<IContextualResourceModel>().Object);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Execute Test---------------------------
@@ -835,20 +822,22 @@ namespace Dev2.Core.Tests
             var oldResourceID = Guid.NewGuid();
             const string newResourceName = "NameOfExistingResource";
 
+            var eventAggregator = new Mock<IEventAggregator>().Object;
+
             //Mock resource repository
             var mockedResourceRepo = new Mock<IResourceRepository>();
             var mockedEnvironment = new Mock<IEnvironmentModel>();
             var mockedResourceModel = new Mock<IContextualResourceModel>();
             var allExistingResources = new Collection<IResourceModel>();
             mockedResourceModel.Setup(res => res.ID).Returns(oldResourceID);
-            allExistingResources.Add(new ResourceModel(mockedEnvironment.Object){ResourceName = newResourceName});
+            allExistingResources.Add(new ResourceModel(mockedEnvironment.Object) { ResourceName = newResourceName });
             mockedResourceRepo.Setup(repo => repo.Rename(oldResourceID.ToString(), newResourceName)).Verifiable();
             mockedResourceRepo.Setup(repo => repo.All()).Returns(allExistingResources);
             mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
 
             //Isolate rename resource unit
-            var treeParent = new EnvironmentTreeViewModel(null, mockedEnvironment.Object);
-            var resourcetreeviewmodel = new MockResourceTreeViewModel(new Mock<IDesignValidationService>().Object, treeParent, mockedResourceModel.Object);
+            var treeParent = new EnvironmentTreeViewModel(eventAggregator, null, mockedEnvironment.Object);
+            var resourcetreeviewmodel = new MockResourceTreeViewModel(eventAggregator, treeParent, mockedResourceModel.Object);
 
             //------------Execute Test---------------------------
             resourcetreeviewmodel.TestRename(newResourceName);
@@ -873,9 +862,11 @@ namespace Dev2.Core.Tests
             mockedResourceRepo.Setup(repo => repo.Rename(oldResourceID.ToString(), newResourceName)).Verifiable();
             mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
 
+            var eventAggregator = new Mock<IEventAggregator>().Object;
+
             //Isolate rename resource unit
-            var treeParent = new EnvironmentTreeViewModel(null, mockedEnvironment.Object);
-            var resourcetreeviewmodel = new MockResourceTreeViewModel(new Mock<IDesignValidationService>().Object, treeParent, mockedResourceModel.Object);
+            var treeParent = new EnvironmentTreeViewModel(eventAggregator, null, mockedEnvironment.Object);
+            var resourcetreeviewmodel = new MockResourceTreeViewModel(eventAggregator, treeParent, mockedResourceModel.Object);
 
             //------------Execute Test---------------------------
             resourcetreeviewmodel.TestRename(newResourceName);
@@ -894,11 +885,10 @@ namespace Dev2.Core.Tests
         // ReSharper disable InconsistentNaming
         public void ResourceTreeViewModelConstructor_UnitTest_NullDataContext_ThrowsException()
         // ReSharper restore InconsistentNaming
-        {
-            var validationService = new Mock<IDesignValidationService>();
-
-            var tvm = new ResourceTreeViewModel(validationService.Object, null, null);
+        {           
+            var tvm = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, null);
         }
+
         [ExpectedException(typeof(ArgumentNullException))]
         [Description("Constructor must throw exception if ValidatonService parameter is null.")]
         [TestCategory("UnitTest")]
@@ -929,7 +919,7 @@ namespace Dev2.Core.Tests
             dbServiceModel.Setup(m => m.ID).Returns(Guid.NewGuid);
 
             var eventAggregator = new Mock<IEventAggregator>().Object;
-            var dbServiceTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(eventAggregator, dbServiceModel.Object, null, false);
+            var dbServiceTvm = new ResourceTreeViewModel(eventAggregator, null, dbServiceModel.Object);
             Assert.AreEqual(typeof(DsfDatabaseActivity).AssemblyQualifiedName, dbServiceTvm.ActivityFullName, "TreeViewModelFactory.Create did not assign database activity type correctly");
 
             var otherModel = new Mock<IContextualResourceModel>();
@@ -938,7 +928,7 @@ namespace Dev2.Core.Tests
             otherModel.Setup(m => m.Environment).Returns(mockEnvironment.Object);
             otherModel.Setup(m => m.ID).Returns(Guid.NewGuid);
 
-            var otherTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(eventAggregator, otherModel.Object, null, false);
+            var otherTvm = new ResourceTreeViewModel(eventAggregator, null, otherModel.Object);
             Assert.AreEqual(typeof(DsfActivity).AssemblyQualifiedName, otherTvm.ActivityFullName, "TreeViewModelFactory.Create did not assign DSF activity type correctly");
 
         }
@@ -962,7 +952,7 @@ namespace Dev2.Core.Tests
             dbServiceModel.Setup(m => m.ID).Returns(Guid.NewGuid);
 
             var eventAggregator = new Mock<IEventAggregator>().Object;
-            var dbServiceTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(eventAggregator, dbServiceModel.Object, null, false);
+            var dbServiceTvm = new ResourceTreeViewModel(eventAggregator, null, dbServiceModel.Object);
             Assert.AreEqual(typeof(DsfPluginActivity).AssemblyQualifiedName, dbServiceTvm.ActivityFullName, "TreeViewModelFactory.Create did not assign database activity type correctly");
 
             var otherModel = new Mock<IContextualResourceModel>();
@@ -971,7 +961,7 @@ namespace Dev2.Core.Tests
             otherModel.Setup(m => m.Environment).Returns(mockEnvironment.Object);
             otherModel.Setup(m => m.ID).Returns(Guid.NewGuid);
 
-            var otherTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(eventAggregator, otherModel.Object, null, false);
+            var otherTvm = new ResourceTreeViewModel(eventAggregator, null, otherModel.Object);
             Assert.AreEqual(typeof(DsfActivity).AssemblyQualifiedName, otherTvm.ActivityFullName, "TreeViewModelFactory.Create did not assign DSF activity type correctly");
 
         }
@@ -988,7 +978,7 @@ namespace Dev2.Core.Tests
         {
             var envModel = new Mock<IEnvironmentModel>();
 
-            var envTreeViewModel = new EnvironmentTreeViewModel(_rootVm, envModel.Object);
+            var envTreeViewModel = new EnvironmentTreeViewModel(new Mock<IEventAggregator>().Object, _rootVm, envModel.Object);
             envTreeViewModel.PropertyChanged += (sender, args) =>
             {
                 Assert.AreEqual("IsConnected", args.PropertyName, "EnvironmentTreeViewModel did not raise IsConnected property changed event.");
