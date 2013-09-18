@@ -29,7 +29,6 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private RelayCommand _addRecordsetCommand;
         private OptomizedObservableCollection<DataListHeaderItemModel> _baseCollection;
-        private IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
         private RelayCommand _findUnusedAndMissingDataListItems;
         private OptomizedObservableCollection<IDataListItemModel> _recsetCollection;
         private OptomizedObservableCollection<IDataListItemModel> _scalarCollection;
@@ -479,6 +478,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public string WriteToResourceModel()
         {
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             string result = string.Empty;
             string errorString;
             AddRecordsetNamesIfMissing();
@@ -494,7 +494,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
             }
 
-            _compiler.ForceDeleteDataListByID(postDl.UID);
+            compiler.ForceDeleteDataListByID(postDl.UID);
             if (!string.IsNullOrEmpty(errorString))
             {
                 throw new Exception(errorString);
@@ -750,6 +750,7 @@ namespace Dev2.Studio.ViewModels.DataList
         public void CreateListsOfIDataListItemModelToBindTo(out string errorString)
         {
             errorString = string.Empty;
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             if (!string.IsNullOrEmpty(Resource.DataList))
             {
                 ErrorResultTO errors;
@@ -763,7 +764,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     string errorMessage = errors.FetchErrors().Aggregate(string.Empty, (current, error) => current + error);
                     throw new Exception(errorMessage);
                 }
-                _compiler.ForceDeleteDataListByID(binarnyDL.UID);
+                compiler.ForceDeleteDataListByID(binarnyDL.UID);
             }
             else
             {
@@ -805,21 +806,22 @@ namespace Dev2.Studio.ViewModels.DataList
         /// <returns></returns>
         private IBinaryDataList CreateBinaryDataListFromXmlData(string xmlDataList, out ErrorResultTO errors)
         {
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IBinaryDataList result = null;
             var allErrors = new ErrorResultTO();
-            Guid dlGuid = _compiler.ConvertTo(
+            Guid dlGuid = compiler.ConvertTo(
                 DataListFormat.CreateFormat(GlobalConstants._Studio_XML), xmlDataList, xmlDataList, out errors);
 
             if (!errors.HasErrors())
             {
-                result = _compiler.FetchBinaryDataList(dlGuid, out errors);
+                result = compiler.FetchBinaryDataList(dlGuid, out errors);
                 if (errors.HasErrors())
                 {
                     allErrors.MergeErrors(errors);
                 }
             }
 
-            _compiler.ForceDeleteDataListByID(dlGuid);
+            compiler.ForceDeleteDataListByID(dlGuid);
             return result;
         }
 
@@ -832,8 +834,9 @@ namespace Dev2.Studio.ViewModels.DataList
         /// <returns></returns>
         private string CreateXmlDataFromBinaryDataList(IBinaryDataList binaryDataList, out ErrorResultTO errors)
         {
-            Guid dlGuid = _compiler.PushBinaryDataList(binaryDataList.UID, binaryDataList, out errors);
-            string result = _compiler.ConvertFrom(dlGuid,
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            Guid dlGuid = compiler.PushBinaryDataList(binaryDataList.UID, binaryDataList, out errors);
+            string result = compiler.ConvertFrom(dlGuid,
                                                   DataListFormat.CreateFormat(GlobalConstants._Studio_XML),
                                                   enTranslationDepth.Shape, out errors);
 
@@ -939,7 +942,6 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             ClearCollections();
             Resource = null;
-            _compiler = null;
         }
 
         #endregion Override Methods
