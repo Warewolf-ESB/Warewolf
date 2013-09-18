@@ -18,6 +18,7 @@ namespace Dev2.Core.Tests.ViewModelTests.ViewModelMocks
         protected override void RenameCategory(string newCategory)
         {
             RenameCategoryHitCount++;
+            base.RenameCategory(newCategory);
         }
 
         public int ReparentHitCount;
@@ -25,6 +26,7 @@ namespace Dev2.Core.Tests.ViewModelTests.ViewModelMocks
         protected override void Reparent(string parentName)
         {
             ReparentHitCount++;
+            base.Reparent(parentName);
         }
     }
 }

@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition.Primitives;
-using System.Threading;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
-using Dev2.Core.Tests.ViewModelTests.ViewModelMocks;
-using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Services;
+using Dev2.Providers.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
@@ -22,9 +19,7 @@ using Dev2.Studio.Deploy;
 using Dev2.Studio.Enums;
 using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Deploy;
-using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.ViewModels.Navigation;
-using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -326,6 +321,8 @@ namespace Dev2.Core.Tests
             };
             const string expectedResourceName = "Test Resource";
             resourceNode.Setup(res => res.ResourceName).Returns(expectedResourceName);
+            resourceNode.Setup(res => res.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
             var resourceTreeNode = new ResourceTreeViewModel(eventAggregator, treeParent, resourceNode.Object);
 
             //Setup Server Resources
@@ -376,7 +373,7 @@ namespace Dev2.Core.Tests
             var statsCalc = new Mock<IDeployStatsCalculator>();
             statsCalc.Setup(c => c.CalculateStats(It.IsAny<IEnumerable<ITreeNode>>(), It.IsAny<Dictionary<string, Func<ITreeNode, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out deployItemCount));
 
-            var deployViewModel = new DeployViewModel(serverProvider.Object, envRepo.Object,new Mock<IEventAggregator>().Object, statsCalc.Object);
+            var deployViewModel = new DeployViewModel(serverProvider.Object, envRepo.Object, new Mock<IEventAggregator>().Object, statsCalc.Object);
 
             deployViewModel.SelectedDestinationServer = destServer.Object;
 

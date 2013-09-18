@@ -12,7 +12,6 @@ using Dev2.Core.Tests.ProperMoqs;
 using Dev2.Core.Tests.ViewModelTests.ViewModelMocks;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
-using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -20,7 +19,6 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels.Navigation;
-using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -454,6 +452,7 @@ namespace Dev2.Core.Tests
             mockResource3.Setup(r => r.ResourceType).Returns(ResourceType.Service);
             mockResource3.Setup(r => r.Category).Returns("Testing3");
             mockResource3.Setup(r => r.ResourceName).Returns("Mock3");
+            mockResource3.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
 
             var count = _categoryVm2.ChildrenCount;
 
@@ -507,11 +506,21 @@ namespace Dev2.Core.Tests
         {
             //MEF!!!
             ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
+       
+            var eventAggregator = new Mock<IEventAggregator>().Object;
 
-            // ReSharper disable ObjectCreationAsStatement
-            var vm = new CategoryTreeViewModelMock(new Mock<IEventAggregator>().Object, null, "Test Category", ResourceType.WorkflowService) { DisplayName = "Renamed Test Category" };
-            // ReSharper restore ObjectCreationAsStatement
+            //Initialization
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            mockResourceRepo.Setup(c => c.RenameCategory(It.IsAny<string>(), It.IsAny<string>(), ResourceType.WorkflowService)).Verifiable();
 
+            var parent = new Mock<ServiceTypeTreeViewModel>(eventAggregator, null, ResourceType.WorkflowService);
+            parent.Setup(model => model.EnvironmentModel.ResourceRepository).Returns(mockResourceRepo.Object);
+            parent.Setup(model => model.Children).Returns(new ObservableCollection<ITreeNode>());
+
+            //Execute
+            var vm = new CategoryTreeViewModelMock(new Mock<IEventAggregator>().Object, parent.Object, "Test Category", ResourceType.WorkflowService) { TreeParent = parent.Object, DisplayName = "Renamed Test Category" };
+
+            
             Assert.AreEqual(1, vm.RenameCategoryHitCount, "Rename category not called after display name change");
         }
 
@@ -526,16 +535,18 @@ namespace Dev2.Core.Tests
             //MEF!!!
             ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
+            var eventAggregator = new Mock<IEventAggregator>().Object;
+
             //Initialization
             var mockResourceRepo = new Mock<IResourceRepository>();
             mockResourceRepo.Setup(c => c.RenameCategory(It.IsAny<string>(), It.IsAny<string>(), ResourceType.WorkflowService)).Verifiable();
-            var parent = new Mock<ServiceTypeTreeViewModel>(ResourceType.WorkflowService, null);
-            parent.Setup(model => model.EnvironmentModel.ResourceRepository).Returns(mockResourceRepo.Object);
-            parent.Object.Children = new ObservableCollection<ITreeNode>();
 
+            var parent = new Mock<ServiceTypeTreeViewModel>(eventAggregator, null, ResourceType.WorkflowService);
+            parent.Setup(model => model.EnvironmentModel.ResourceRepository).Returns(mockResourceRepo.Object);
+            parent.Setup(model => model.Children).Returns(new ObservableCollection<ITreeNode>());
 
             //Execute
-            var vm = new CategoryTreeViewModelMock(new Mock<IEventAggregator>().Object, parent.Object, "Test Category", ResourceType.WorkflowService) { TreeParent = parent.Object, DisplayName = "Renamed Test Category" };
+            var vm = new CategoryTreeViewModelMock(eventAggregator, parent.Object, "Test Category", ResourceType.WorkflowService) { TreeParent = parent.Object, DisplayName = "Renamed Test Category" };
 
             //Assert
             mockResourceRepo.Verify(c => c.RenameCategory(It.IsAny<string>(), It.IsAny<string>(), ResourceType.WorkflowService), Times.Once(), "ResourceReposities RenameCategory function was not called after category tree view model rename resource was called");
@@ -710,6 +721,8 @@ namespace Dev2.Core.Tests
             mockResource3.Setup(r => r.ResourceType).Returns(ResourceType.Service);
             mockResource3.Setup(r => r.Category).Returns("Testing3");
             mockResource3.Setup(r => r.ResourceName).Returns("Mock3");
+            mockResource3.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
             var toAdd = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, _categoryVm2, mockResource3.Object);
 
             _categoryVm2.IsChecked = true;
@@ -732,6 +745,8 @@ namespace Dev2.Core.Tests
             mockResource3.Setup(r => r.ResourceType).Returns(ResourceType.Service);
             mockResource3.Setup(r => r.Category).Returns("Testing2");
             mockResource3.Setup(r => r.ResourceName).Returns("Mock3");
+            mockResource3.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
             var toAdd = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, _categoryVm2, mockResource3.Object);
 
             Thread.Sleep(100);
@@ -763,7 +778,10 @@ namespace Dev2.Core.Tests
         // ReSharper restore InconsistentNaming
         {
             //init
-            var vm = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, _categoryVm, new Mock<IContextualResourceModel>().Object);
+            var mockResource3 = new Mock<IContextualResourceModel>();
+            mockResource3.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+            var vm = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, _categoryVm, mockResource3.Object);
             var testError = new ErrorInfo { Message = "Test IDataErrorInfo Message" };
             vm.DataContext = new ResourceModel(ResourceModelTest.CreateMockEnvironment().Object);
             vm.DataContext.AddError(testError);
@@ -782,7 +800,10 @@ namespace Dev2.Core.Tests
         // ReSharper restore InconsistentNaming
         {
             //init
-            var vm = new MockResourceTreeViewModel(new Mock<IEventAggregator>().Object, _categoryVm, new Mock<IContextualResourceModel>().Object) { DataContext = new TestResourceModel() };
+            var mockResource3 = new Mock<IContextualResourceModel>();
+            mockResource3.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+            var vm = new MockResourceTreeViewModel(new Mock<IEventAggregator>().Object, _categoryVm, mockResource3.Object) { DataContext = new TestResourceModel() };
             var memo = new DesignValidationMemo();
             var testError = new ErrorInfo { Message = "Test Error Message" };
             memo.Errors.Add(testError);
@@ -804,7 +825,11 @@ namespace Dev2.Core.Tests
             new EnvironmentTreeViewModel(eventAggregator, vmRoot, new Mock<IEnvironmentModel>().Object);
             new ServiceTypeTreeViewModel(eventAggregator, vmRoot.Children[0], ResourceType.WorkflowService);
             new CategoryTreeViewModel(eventAggregator, vmRoot.Children[0].Children[0], "TESTCATEGORY", ResourceType.WorkflowService);
-            var danglingNode = new ResourceTreeViewModel(eventAggregator, vmRoot.Children[0].Children[0].Children[0], new Mock<IContextualResourceModel>().Object);
+
+            var mockResource3 = new Mock<IContextualResourceModel>();
+            mockResource3.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+            var danglingNode = new ResourceTreeViewModel(eventAggregator, vmRoot.Children[0].Children[0].Children[0], mockResource3.Object);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Execute Test---------------------------
@@ -830,6 +855,8 @@ namespace Dev2.Core.Tests
             var mockedResourceModel = new Mock<IContextualResourceModel>();
             var allExistingResources = new Collection<IResourceModel>();
             mockedResourceModel.Setup(res => res.ID).Returns(oldResourceID);
+            mockedResourceModel.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
             allExistingResources.Add(new ResourceModel(mockedEnvironment.Object) { ResourceName = newResourceName });
             mockedResourceRepo.Setup(repo => repo.Rename(oldResourceID.ToString(), newResourceName)).Verifiable();
             mockedResourceRepo.Setup(repo => repo.All()).Returns(allExistingResources);
@@ -859,6 +886,8 @@ namespace Dev2.Core.Tests
             var mockedEnvironment = new Mock<IEnvironmentModel>();
             var mockedResourceModel = new Mock<IContextualResourceModel>();
             mockedResourceModel.Setup(res => res.ID).Returns(oldResourceID);
+            mockedResourceModel.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
             mockedResourceRepo.Setup(repo => repo.All()).Returns(new Collection<IResourceModel>());
             mockedResourceRepo.Setup(repo => repo.Rename(oldResourceID.ToString(), newResourceName)).Verifiable();
             mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
@@ -886,7 +915,7 @@ namespace Dev2.Core.Tests
         // ReSharper disable InconsistentNaming
         public void ResourceTreeViewModelConstructor_UnitTest_NullDataContext_ThrowsException()
         // ReSharper restore InconsistentNaming
-        {           
+        {
             var tvm = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, null);
         }
 

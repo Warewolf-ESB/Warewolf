@@ -1766,7 +1766,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(e => e.Source.IsConnected).Returns(false);
             envRepo.Setup(e => e.Source.Connection.IsConnected).Returns(false);
             var vm = new MainViewModel(eventAggregator.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, envRepo.Object, new Mock<IVersionChecker>().Object, false, new Mock<IBrowserPopupController>().Object);
-            var expected = new Mock<AbstractTreeViewModel>(new Mock<ITreeNode>().Object,new Mock<IEventAggregator>().Object);
+            var expected = new Mock<AbstractTreeViewModel>(new Mock<IEventAggregator>().Object, new Mock<ITreeNode>().Object);
             expected.Setup(model => model.EnvironmentModel).Returns(environmentModel);
             var deployMessage = new DeployResourcesMessage(expected.Object);
             vm.Handle(deployMessage);
