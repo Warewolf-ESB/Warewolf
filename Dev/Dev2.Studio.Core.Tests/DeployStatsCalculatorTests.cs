@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Providers.Events;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -46,17 +47,33 @@ namespace Dev2.Core.Tests
             _importContext = CompositionInitializer.DeployViewModelOkayTest();
 
             var eventAggregator = new Mock<IEventAggregator>().Object;
-
+            var serverEvents = new Mock<IEventPublisher>().Object;
+            
             _mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            _mockResourceModel = new Mock<IContextualResourceModel>();
-            _mockResourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
-            _mockResourceModel.Setup(r => r.Category).Returns("Testing");
+            _mockEnvironmentModel.Setup(e => e.Connection.ServerEvents).Returns(serverEvents);
+
+            _mockResourceModel = CreateResourceModel(serverEvents);
+
             _rootVm = new RootTreeViewModel(eventAggregator);
 
             _environmentVm = new EnvironmentTreeViewModel(eventAggregator, _rootVm, _mockEnvironmentModel.Object);
             _serviceTypeVm = new ServiceTypeTreeViewModel(eventAggregator, _environmentVm, ResourceType.WorkflowService);
             _categoryVm = new CategoryTreeViewModel(eventAggregator, _serviceTypeVm, _mockResourceModel.Object.Category, _mockResourceModel.Object.ResourceType);
             _resourceVm = new ResourceTreeViewModel(eventAggregator, _categoryVm, _mockResourceModel.Object);
+        }
+
+        static Mock<IContextualResourceModel> CreateResourceModel()
+        {
+            return CreateResourceModel(new Mock<IEventPublisher>().Object);
+        }
+
+        static Mock<IContextualResourceModel> CreateResourceModel(IEventPublisher serverEvents)
+        {
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
+            resourceModel.Setup(r => r.Category).Returns("Testing");
+            resourceModel.Setup(r => r.Environment.Connection.ServerEvents).Returns(serverEvents);
+            return resourceModel;
         }
 
         #endregion Initialization
@@ -152,7 +169,7 @@ namespace Dev2.Core.Tests
         {
             ImportService.CurrentContext = _importContext;
 
-            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, new Mock<ITreeNode>().Object, new Mock<IContextualResourceModel>().Object);
+            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, new Mock<ITreeNode>().Object, CreateResourceModel().Object);
             bool expected = false;
             bool actual = DeployStatsCalculator.SelectForDeployPredicate(navigationItemViewModel);
 
@@ -210,7 +227,7 @@ namespace Dev2.Core.Tests
         {
             ImportService.CurrentContext = _importContext;
 
-            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, new Mock<ITreeNode>().Object, new Mock<IContextualResourceModel>().Object);
+            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, new Mock<ITreeNode>().Object, CreateResourceModel().Object);
 
             bool expected = false;
             bool actual = DeployStatsCalculator.SelectForDeployPredicateWithTypeAndCategories(navigationItemViewModel, ResourceType.WorkflowService, new List<string>(), new List<string>());
@@ -352,7 +369,7 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = _importContext;
 
 
-            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, new Mock<IContextualResourceModel>().Object);
+            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, CreateResourceModel().Object);
 
             IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel().Object;
 
@@ -446,7 +463,7 @@ namespace Dev2.Core.Tests
 
             var eventAggregator = new Mock<IEventAggregator>().Object;
 
-            var resourceModel = new Mock<IContextualResourceModel>();
+            var resourceModel = CreateResourceModel();
             _environmentVm = new EnvironmentTreeViewModel(eventAggregator, _rootVm, new Mock<IEnvironmentModel>().Object);
             _serviceTypeVm = new ServiceTypeTreeViewModel(eventAggregator, _environmentVm, ResourceType.WorkflowService);
             _categoryVm = new CategoryTreeViewModel(eventAggregator, _serviceTypeVm, "Test Category", _mockResourceModel.Object.ResourceType);
@@ -479,7 +496,7 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = _importContext;
 
 
-            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, new Mock<ITreeNode>().Object, new Mock<IContextualResourceModel>().Object);
+            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, new Mock<ITreeNode>().Object, CreateResourceModel().Object);
             //TreeViewModelFactory.Create(
             //    null,
             //    null, false);
