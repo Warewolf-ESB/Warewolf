@@ -126,6 +126,136 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion Get Input/Output Tests
 
+        // ReSharper disable InconsistentNaming
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfPathCopy_UpdateForEachInputs")]
+        public void DsfPathCopy_UpdateForEachInputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var newGuid = Guid.NewGuid();
+            var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt");
+            var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt");
+            var act = new DsfPathCopy { InputPath = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
+
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(inputPath, act.InputPath);
+            Assert.AreEqual(outputPath, act.OutputPath);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfPathCopy_UpdateForEachInputs")]
+        public void DsfPathCopy_UpdateForEachInputs_MoreThan1Updates_Updates()
+        {
+            //------------Setup for test--------------------------
+            var newGuid = Guid.NewGuid();
+            var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt");
+            var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt");
+            var act = new DsfPathCopy { InputPath = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
+
+            var tuple1 = new Tuple<string, string>(outputPath, "Test");
+            var tuple2 = new Tuple<string, string>(inputPath, "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test2", act.InputPath);
+            Assert.AreEqual("Test", act.OutputPath);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfPathCopy_UpdateForEachOutputs")]
+        public void DsfPathCopy_UpdateForEachOutputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var newGuid = Guid.NewGuid();
+            const string result = "[[CompanyName]]";
+            var act = new DsfPathCopy { InputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = result };
+
+            act.UpdateForEachOutputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result, act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfPathCopy_UpdateForEachOutputs")]
+        public void DsfPathCopy_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var newGuid = Guid.NewGuid();
+            const string result = "[[CompanyName]]";
+            var act = new DsfPathCopy { InputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = result };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>("Test2", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result, act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfPathCopy_UpdateForEachOutputs")]
+        public void DsfPathCopy_UpdateForEachOutputs_1Updates_UpdateResult()
+        {
+            //------------Setup for test--------------------------
+            var newGuid = Guid.NewGuid();
+            var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt");
+            var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt");
+            var act = new DsfPathCopy { InputPath = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfPathCopy_GetForEachInputs")]
+        public void DsfPathCopy_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            var newGuid = Guid.NewGuid();
+            var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt");
+            var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt");
+            var act = new DsfPathCopy { InputPath = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachInputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, dsfForEachItems.Count);
+            Assert.AreEqual(inputPath, dsfForEachItems[0].Name);
+            Assert.AreEqual(inputPath, dsfForEachItems[0].Value); 
+            Assert.AreEqual(outputPath, dsfForEachItems[1].Name);
+            Assert.AreEqual(outputPath, dsfForEachItems[1].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfPathCopy_GetForEachOutputs")]
+        public void DsfPathCopy_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
+        {
+            //------------Setup for test--------------------------
+            var newGuid = Guid.NewGuid();
+            const string result = "[[CompanyName]]";
+            var act = new DsfPathCopy { InputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = result };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual(result, dsfForEachItems[0].Name);
+            Assert.AreEqual(result, dsfForEachItems[0].Value);
+        }
 
     }
 }

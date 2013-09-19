@@ -217,5 +217,137 @@ namespace Dev2.Tests.Activities.ActivityTests
         } 
 
         #endregion
+
+        // ReSharper disable InconsistentNaming
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfFolderRead_UpdateForEachInputs")]
+        public void DsfFolderRead_UpdateForEachInputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", "[[CompanyName]]");
+            var act = new DsfFolderRead { InputPath = inputPath, Result = "[[res]]" };
+
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(inputPath, act.InputPath);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfFolderRead_UpdateForEachInputs")]
+        public void DsfFolderRead_UpdateForEachInputs_MoreThan1Updates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", "[[CompanyName]]");
+            var act = new DsfFolderRead { InputPath = inputPath, Result = "[[res]]" };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>(inputPath, "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(inputPath, act.InputPath);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfFolderRead_UpdateForEachInputs")]
+        public void DsfFolderRead_UpdateForEachInputs_1Update_UpdateInputPath()
+        {
+            //------------Setup for test--------------------------
+            var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", "[[CompanyName]]");
+            var act = new DsfFolderRead { InputPath = inputPath, Result = "[[res]]" };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.InputPath);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfFolderRead_UpdateForEachOutputs")]
+        public void DsfFolderRead_UpdateForEachOutputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string result = "[[res]]";
+            var act = new DsfFolderRead { InputPath = string.Concat(TestContext.TestRunDirectory, "\\", "[[CompanyName]]"), Result = result };
+
+            act.UpdateForEachOutputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result, act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfFolderRead_UpdateForEachOutputs")]
+        public void DsfFolderRead_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string result = "[[res]]";
+            var act = new DsfFolderRead { InputPath = string.Concat(TestContext.TestRunDirectory, "\\", "[[CompanyName]]"), Result = result };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>("Test2", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result, act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfFolderRead_UpdateForEachOutputs")]
+        public void DsfFolderRead_UpdateForEachOutputs_1Updates_UpdateCommandResult()
+        {
+            //------------Setup for test--------------------------
+            const string result = "[[res]]";
+            var act = new DsfFolderRead { InputPath = string.Concat(TestContext.TestRunDirectory, "\\", "[[CompanyName]]"), Result = result };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfFolderRead_GetForEachInputs")]
+        public void DsfFolderRead_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", "[[CompanyName]]");
+            var act = new DsfFolderRead { InputPath = inputPath, Result = "[[res]]" };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachInputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual(inputPath, dsfForEachItems[0].Name);
+            Assert.AreEqual(inputPath, dsfForEachItems[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfFolderRead_GetForEachOutputs")]
+        public void DsfFolderRead_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
+        {
+            //------------Setup for test--------------------------
+            const string result = "[[res]]";
+            var act = new DsfFolderRead { InputPath = string.Concat(TestContext.TestRunDirectory, "\\", "[[CompanyName]]"), Result = result };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual(result, dsfForEachItems[0].Name);
+            Assert.AreEqual(result, dsfForEachItems[0].Value);
+        }
+
     }
 }
