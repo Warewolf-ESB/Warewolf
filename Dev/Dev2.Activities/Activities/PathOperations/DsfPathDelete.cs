@@ -110,7 +110,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates.Count == 1)
+            if (updates != null && updates.Count == 1)
             {
                 InputPath = updates[0].Item2;
             }
@@ -118,7 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates.Count == 1)
+            if (updates != null && updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }

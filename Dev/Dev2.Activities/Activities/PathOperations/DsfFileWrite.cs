@@ -146,23 +146,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+            if(updates != null)
             {
-                if (t.Item1 == OutputPath)
+                foreach (Tuple<string, string> t in updates)
                 {
-                    OutputPath = t.Item2;
-                }
+                    if (t.Item1 == OutputPath)
+                    {
+                        OutputPath = t.Item2;
+                    }
 
-                if (t.Item1 == FileContents)
-                {
-                    FileContents = t.Item2;
+                    if (t.Item1 == FileContents)
+                    {
+                        FileContents = t.Item2;
+                    }
                 }
             }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates.Count == 1)
+            if (updates != null && updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }

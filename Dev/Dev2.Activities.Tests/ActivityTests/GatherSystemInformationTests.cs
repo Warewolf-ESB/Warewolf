@@ -1,4 +1,5 @@
-﻿using System.Activities.Statements;
+﻿using System;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using ActivityUnitTests;
@@ -491,8 +492,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new GatherSystemInformationTO(enTypeOfSystemInformationToGather.Language, "[[testLanguage]]", 2)
             };
             var mock = new Mock<IGetSystemInformation>();
-            const string expectedValue = "Intel i7";
-            mock.Setup(information => information.GetCPUTotalInformation()).Returns(expectedValue);
+            const string ExpectedValue = "Intel i7";
+            mock.Setup(information => information.GetCPUTotalInformation()).Returns(ExpectedValue);
             var activity = DsfGatherSystemInformationActivity(mock);
             activity.SystemInformationCollection = systemInformationCollection;
             //------------Execute Test---------------------------
@@ -511,8 +512,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new GatherSystemInformationTO(enTypeOfSystemInformationToGather.Language, "[[testLanguage]]", 2)
             };
             var mock = new Mock<IGetSystemInformation>();
-            const string expectedValue = "Intel i7";
-            mock.Setup(information => information.GetCPUAvailableInformation()).Returns(expectedValue);
+            const string ExpectedValue = "Intel i7";
+            mock.Setup(information => information.GetCPUAvailableInformation()).Returns(ExpectedValue);
             var activity = DsfGatherSystemInformationActivity(mock);
             activity.SystemInformationCollection = systemInformationCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
@@ -528,8 +529,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO>();
             var mock = new Mock<IGetSystemInformation>();
-            const string expectedValue = "Intel i7";
-            mock.Setup(information => information.GetCPUAvailableInformation()).Returns(expectedValue);
+            const string ExpectedValue = "Intel i7";
+            mock.Setup(information => information.GetCPUAvailableInformation()).Returns(ExpectedValue);
             var activity = DsfGatherSystemInformationActivity(mock);
             activity.SystemInformationCollection = systemInformationCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
@@ -549,8 +550,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new GatherSystemInformationTO(enTypeOfSystemInformationToGather.Language, "[[testLanguage]]", 2)
             };
             var mock = new Mock<IGetSystemInformation>();
-            const string expectedValue = "Intel i7";
-            mock.Setup(information => information.GetCPUAvailableInformation()).Returns(expectedValue);
+            const string ExpectedValue = "Intel i7";
+            mock.Setup(information => information.GetCPUAvailableInformation()).Returns(ExpectedValue);
             var activity = DsfGatherSystemInformationActivity(mock);
             activity.SystemInformationCollection = systemInformationCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
@@ -558,6 +559,131 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.AddListToCollection(new[]{"[[Var1]]"}, true,modelItem);
             //------------Assert Results-------------------------
             Assert.AreEqual(2,activity.SystemInformationCollection.Count);
+        }
+
+        // ReSharper disable InconsistentNaming
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfGatherSystemInformationActivity_UpdateForEachInputs")]
+        public void DsfGatherSystemInformationActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUAvailable, "[[testVar]]", 1) };
+            var mock = new Mock<IGetSystemInformation>();
+            const string expectedValue = "Intel i7";
+            mock.Setup(information => information.GetCPUAvailableInformation()).Returns(expectedValue);
+            var act = DsfGatherSystemInformationActivity(mock);
+            act.SystemInformationCollection = systemInformationCollection;
+
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[testVar]]", act.SystemInformationCollection[0].Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfGatherSystemInformationActivity_UpdateForEachInputs")]
+        public void DsfGatherSystemInformationActivity_UpdateForEachInputs_MoreThan1Updates_Collection()
+        {
+            //------------Setup for test--------------------------
+            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUAvailable, "[[testVar]]", 1) };
+            var mock = new Mock<IGetSystemInformation>();
+            const string expectedValue = "Intel i7";
+            mock.Setup(information => information.GetCPUAvailableInformation()).Returns(expectedValue);
+            var act = DsfGatherSystemInformationActivity(mock);
+            act.SystemInformationCollection = systemInformationCollection;
+
+            var tuple1 = new Tuple<string, string>("[[testVar]]", "Test");
+            var tuple2 = new Tuple<string, string>("[[Customers(*).DOB]]", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.SystemInformationCollection[0].Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfGatherSystemInformationActivity_UpdateForEachInputs")]
+        public void DsfGatherSystemInformationActivity_UpdateForEachOutputs_MoreThan1Updates_Collection()
+        {
+            //------------Setup for test--------------------------
+            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUAvailable, "[[testVar]]", 1) };
+            var mock = new Mock<IGetSystemInformation>();
+            const string expectedValue = "Intel i7";
+            mock.Setup(information => information.GetCPUAvailableInformation()).Returns(expectedValue);
+            var act = DsfGatherSystemInformationActivity(mock);
+            act.SystemInformationCollection = systemInformationCollection;
+
+            var tuple1 = new Tuple<string, string>("[[testVar]]", "Test");
+            var tuple2 = new Tuple<string, string>("[[Customers(*).DOB]]", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.SystemInformationCollection[0].Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfGatherSystemInformationActivity_UpdateForEachOutputs")]
+        public void DsfGatherSystemInformationActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUAvailable, "[[testVar]]", 1) };
+            var mock = new Mock<IGetSystemInformation>();
+            const string expectedValue = "Intel i7";
+            mock.Setup(information => information.GetCPUAvailableInformation()).Returns(expectedValue);
+            var act = DsfGatherSystemInformationActivity(mock);
+            act.SystemInformationCollection = systemInformationCollection;
+
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[testVar]]", act.SystemInformationCollection[0].Result);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfGatherSystemInformationActivity_GetForEachInputs")]
+        public void DsfGatherSystemInformationActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUAvailable, "[[testVar]]", 1) };
+            var mock = new Mock<IGetSystemInformation>();
+            const string expectedValue = "Intel i7";
+            mock.Setup(information => information.GetCPUAvailableInformation()).Returns(expectedValue);
+            var act = DsfGatherSystemInformationActivity(mock);
+            act.SystemInformationCollection = systemInformationCollection;
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachInputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual("[[testVar]]", dsfForEachItems[0].Name);
+            Assert.AreEqual("[[testVar]]", dsfForEachItems[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfGatherSystemInformationActivity_GetForEachOutputs")]
+        public void DsfGatherSystemInformationActivity_GetForEachOutputs_WhenHasResult_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUAvailable, "[[testVar]]", 1) };
+            var mock = new Mock<IGetSystemInformation>();
+            const string expectedValue = "Intel i7";
+            mock.Setup(information => information.GetCPUAvailableInformation()).Returns(expectedValue);
+            var act = DsfGatherSystemInformationActivity(mock);
+            act.SystemInformationCollection = systemInformationCollection;
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual("[[testVar]]", dsfForEachItems[0].Name);
+            Assert.AreEqual("[[testVar]]", dsfForEachItems[0].Value);
         }
 
         static DsfGatherSystemInformationActivity DsfGatherSystemInformationActivity(Mock<IGetSystemInformation> mock)

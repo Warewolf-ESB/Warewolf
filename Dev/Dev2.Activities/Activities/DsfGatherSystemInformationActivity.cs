@@ -213,12 +213,40 @@ namespace Dev2.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-           
+            if(updates != null)
+            {
+                foreach(Tuple<string, string> t in updates)
+                {
+                    // locate all updates for this tuple
+                    Tuple<string, string> t1 = t;
+                    var items = SystemInformationCollection.Where(c => !string.IsNullOrEmpty(c.Result) && c.Result.Equals(t1.Item1));
+
+                    // issues updates
+                    foreach(var a in items)
+                    {
+                        a.Result = t.Item2;
+                    }
+                }
+            }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-           
+            if(updates != null)
+            {
+                foreach(Tuple<string, string> t in updates)
+                {
+                    // locate all updates for this tuple
+                    Tuple<string, string> t1 = t;
+                    var items = SystemInformationCollection.Where(c => !string.IsNullOrEmpty(c.Result) && c.Result.Equals(t1.Item1));
+
+                    // issues updates
+                    foreach(var a in items)
+                    {
+                        a.Result = t.Item2;
+                    }
+                }
+            }
         }
 
         #region Overrides of DsfNativeActivity<string>
