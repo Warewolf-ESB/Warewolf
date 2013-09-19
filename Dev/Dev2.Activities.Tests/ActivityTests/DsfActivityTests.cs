@@ -101,7 +101,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("DsfActivity_DebugOutput")]
-        [Ignore]//This should be a ui test
         public void DsfActivity_DebugOutput_Duration_NotAlwaysZero()
         {
             var dsfActivity = new DsfActivity() { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping };

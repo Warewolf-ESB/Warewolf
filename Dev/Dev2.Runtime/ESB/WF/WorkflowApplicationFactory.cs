@@ -2,6 +2,7 @@
 using System.Activities;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.DurableInstancing;
 using System.Threading;
@@ -272,6 +273,7 @@ namespace Dev2.DynamicServices
                 ExecutableServiceRepository.Instance.Add(this);
                 DispatchDebugState(DataTransferObject, StateType.Start);
                 _runTime = DateTime.Now;
+                ServerLogger.LogMessage("Workflow started run at " + DateTime.Now.ToString(CultureInfo.InvariantCulture));
                 _previousNumberOfSteps = DataTransferObject.NumberOfSteps;
                 DataTransferObject.NumberOfSteps = 0;
                 _instance.Run();
@@ -282,6 +284,7 @@ namespace Dev2.DynamicServices
             {
                 Guid parentInstanceID;
                 Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
+                ServerLogger.LogMessage("Workflow ended run at " + DateTime.Now.ToString(CultureInfo.InvariantCulture));
 
                 var debugState = new DebugState
                 {
