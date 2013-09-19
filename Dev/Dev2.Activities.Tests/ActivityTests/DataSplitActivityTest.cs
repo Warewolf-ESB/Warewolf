@@ -942,7 +942,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfDataSplitActivityGetForEachInputs")]
+        [TestCategory("DsfDataSplitActivity_GetForEachInputs")]
         public void DsfDataSplitActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
         {
             //------------Setup for test--------------------------

@@ -469,6 +469,141 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("This is output from the user\r\n", debugOutputResults[2].Value);            
         }
 
+        // ReSharper disable InconsistentNaming
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfExecuteCommandLineActivity_UpdateForEachInputs")]
+        public void DsfExecuteCommandLineActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]" };
+
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(command1, act.CommandFileName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfExecuteCommandLineActivity_UpdateForEachInputs")]
+        public void DsfExecuteCommandLineActivity_UpdateForEachInputs_MoreThan1Updates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]" };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>(command1, "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test2", act.CommandFileName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfExecuteCommandLineActivity_UpdateForEachInputs")]
+        public void DsfExecuteCommandLineActivity_UpdateForEachInputs_UpdatesNotMatching_DoesNotUpdateRecordsetName()
+        {
+            //------------Setup for test--------------------------
+            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]" };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(command1, act.CommandFileName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfExecuteCommandLineActivity_UpdateForEachOutputs")]
+        public void DsfExecuteCommandLineActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            const string result = "[[OutVar1]]";
+            var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = result };
+
+            act.UpdateForEachOutputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result, act.CommandResult);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfExecuteCommandLineActivity_UpdateForEachOutputs")]
+        public void DsfExecuteCommandLineActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            const string result = "[[OutVar1]]";
+            var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = result };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>("Test2", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result, act.CommandResult);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfExecuteCommandLineActivity_UpdateForEachOutputs")]
+        public void DsfExecuteCommandLineActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
+        {
+            //------------Setup for test--------------------------
+            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            const string result = "[[OutVar1]]";
+            var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = result };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.CommandResult);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfExecuteCommandLineActivity_GetForEachInputs")]
+        public void DsfExecuteCommandLineActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]" };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachInputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual(command1, dsfForEachItems[0].Name);
+            Assert.AreEqual(command1, dsfForEachItems[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfExecuteCommandLineActivity_GetForEachOutputs")]
+        public void DsfExecuteCommandLineActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
+        {
+            //------------Setup for test--------------------------
+            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            const string result = "[[OutVar1]]";
+            DsfExecuteCommandLineActivity act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = result };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual(result, dsfForEachItems[0].Name);
+            Assert.AreEqual(result, dsfForEachItems[0].Value);
+        }
+
         void SetUpForExecution(DsfExecuteCommandLineActivity activity, string testData, string currentDl)
         {
             TestStartNode = new FlowStep

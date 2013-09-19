@@ -522,5 +522,127 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion
+
+        // ReSharper disable InconsistentNaming
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDeleteRecordActivity_UpdateForEachInputs")]
+        public void DsfDeleteRecordActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string recordsetName = "[[Numeric()]]";
+            var act = new DsfDeleteRecordActivity { RecordsetName = recordsetName, Result = "[[res]]" };
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(recordsetName, act.RecordsetName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDeleteRecordActivity_UpdateForEachInputs")]
+        public void DsfDeleteRecordActivity_UpdateForEachInputs_MoreThan1Updates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string recordsetName = "[[Numeric()]]";
+            var act = new DsfDeleteRecordActivity { RecordsetName = recordsetName, Result = "[[res]]" };
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>(recordsetName, "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test2", act.RecordsetName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDeleteRecordActivity_UpdateForEachInputs")]
+        public void DsfDeleteRecordActivity_UpdateForEachInputs_UpdatesNotMatching_DoesNotUpdateRecordsetName()
+        {
+            //------------Setup for test--------------------------
+            const string recordsetName = "[[Numeric()]]";
+            var act = new DsfDeleteRecordActivity { RecordsetName = recordsetName, Result = "[[res]]" };
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(recordsetName, act.RecordsetName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDeleteRecordActivity_UpdateForEachOutputs")]
+        public void DsfDeleteRecordActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string result = "[[res]]";
+            var act = new DsfDeleteRecordActivity { RecordsetName = "[[Numeric()]]", Result = result };
+            act.UpdateForEachOutputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result, act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDeleteRecordActivity_UpdateForEachOutputs")]
+        public void DsfDeleteRecordActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string result = "[[res]]";
+            var act = new DsfDeleteRecordActivity { RecordsetName = "[[Numeric()]]", Result = result };
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>("Test2", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result, act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDeleteRecordActivity_UpdateForEachOutputs")]
+        public void DsfDeleteRecordActivity_UpdateForEachOutputs_1Updates_UpdateResult()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfDeleteRecordActivity { RecordsetName = "[[Numeric()]]", Result = "[[res]]" };
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDeleteRecordActivity_GetForEachInputs")]
+        public void DsfDeleteRecordActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            const string recordsetName = "[[Numeric()]]";
+            var act = new DsfDeleteRecordActivity { RecordsetName = recordsetName, Result = "[[res]]" };
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachInputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual(recordsetName, dsfForEachItems[0].Name);
+            Assert.AreEqual(recordsetName, dsfForEachItems[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDeleteRecordActivityGetForEachOutputs")]
+        public void DsfDeleteRecordActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfDeleteRecordActivity { RecordsetName = "[[Numeric()]]", Result = "[[res]]" };
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual("[[res]]", dsfForEachItems[0].Name);
+            Assert.AreEqual("[[res]]", dsfForEachItems[0].Value);
+        }
+
     }
 }

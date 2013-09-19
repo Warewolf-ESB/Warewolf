@@ -1,4 +1,5 @@
-﻿using System.Activities.Statements;
+﻿using System;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using ActivityUnitTests;
 using Dev2.Common;
@@ -715,5 +716,150 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion
 
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfFindRecordsMultipleCriteriaActivity_UpdateForEachInputs")]
+        public void DsfFindRecordsMultipleCriteriaActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfFindRecordsMultipleCriteriaActivity
+            {
+                FieldsToSearch = "[[Customers(*).DOB]]",
+                ResultsCollection = new List<FindRecordsTO> { new FindRecordsTO("/", "Contains", 1) },
+                Result = "[[res]]"
+            };
+
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("/", act.ResultsCollection[0].SearchCriteria);
+            Assert.AreEqual("[[Customers(*).DOB]]", act.FieldsToSearch);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfFindRecordsMultipleCriteriaActivity_UpdateForEachInputs")]
+        public void DsfFindRecordsMultipleCriteriaActivity_UpdateForEachInputs_MoreThan1Updates_UpdatesMergeCollection()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfFindRecordsMultipleCriteriaActivity
+            {
+                FieldsToSearch = "[[Customers(*).DOB]]",
+                ResultsCollection = new List<FindRecordsTO> { new FindRecordsTO("/", "Contains", 1) },
+                Result = "[[res]]"
+            };
+
+            var tuple1 = new Tuple<string, string>("/", "Test");
+            var tuple2 = new Tuple<string, string>("[[Customers(*).DOB]]", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.ResultsCollection[0].SearchCriteria);
+            Assert.AreEqual("Test2", act.FieldsToSearch);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfFindRecordsMultipleCriteriaActivity_UpdateForEachOutputs")]
+        public void DsfFindRecordsMultipleCriteriaActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfFindRecordsMultipleCriteriaActivity
+            {
+                FieldsToSearch = "[[Customers(*).DOB]]",
+                ResultsCollection = new List<FindRecordsTO> { new FindRecordsTO("/", "Contains", 1) },
+                Result = "[[res]]"
+            };
+
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[res]]", act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfFindRecordsMultipleCriteriaActivity_UpdateForEachOutputs")]
+        public void DDsfFindRecordsMultipleCriteriaActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfFindRecordsMultipleCriteriaActivity
+            {
+                FieldsToSearch = "[[Customers(*).DOB]]",
+                ResultsCollection = new List<FindRecordsTO> { new FindRecordsTO("/", "Contains", 1) },
+                Result = "[[res]]"
+            };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>("Test2", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[res]]", act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfFindRecordsMultipleCriteriaActivity_UpdateForEachOutputs")]
+        public void DsfFindRecordsMultipleCriteriaActivity_UpdateForEachOutputs_1Updates_UpdateResult()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfFindRecordsMultipleCriteriaActivity
+            {
+                FieldsToSearch = "[[Customers(*).DOB]]",
+                ResultsCollection = new List<FindRecordsTO> { new FindRecordsTO("/", "Contains", 1) },
+                Result = "[[res]]"
+            };
+
+            var tuple1 = new Tuple<string, string>("[[res]]", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfFindRecordsMultipleCriteriaActivity_GetForEachInputs")]
+        public void DsfFindRecordsMultipleCriteriaActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfFindRecordsMultipleCriteriaActivity
+            {
+                FieldsToSearch = "[[Customers(*).DOB]]",
+                ResultsCollection = new List<FindRecordsTO> { new FindRecordsTO("/", "Contains", 1) },
+                Result = "[[res]]"
+            };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachInputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, dsfForEachItems.Count);
+            Assert.AreEqual("[[Customers(*).DOB]]", dsfForEachItems[0].Name);
+            Assert.AreEqual("[[Customers(*).DOB]]", dsfForEachItems[0].Value);
+            Assert.AreEqual("/", dsfForEachItems[1].Name);
+            Assert.AreEqual("/", dsfForEachItems[1].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfFindRecordsMultipleCriteriaActivity_GetForEachOutputs")]
+        public void DsfFindRecordsMultipleCriteriaActivity_GetForEachOutputs_WhenHasResult_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfFindRecordsMultipleCriteriaActivity
+            {
+                FieldsToSearch = "[[Customers(*).DOB]]",
+                ResultsCollection = new List<FindRecordsTO> { new FindRecordsTO("/", "Contains", 1) },
+                Result = "[[res]]"
+            };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual("[[res]]", dsfForEachItems[0].Name);
+            Assert.AreEqual("[[res]]", dsfForEachItems[0].Value);
+        }
     }
 }

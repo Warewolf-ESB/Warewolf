@@ -285,10 +285,25 @@ namespace Dev2.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
+            if(updates != null)
+            {
+                foreach(var t in updates)
+                {
+
+                    if(t.Item1 == CommandFileName)
+                    {
+                        CommandFileName = t.Item2;
+                    }
+                }
+            }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
+            if(updates != null && updates.Count == 1)
+            {
+                CommandResult = updates[0].Item2;
+            }
         }
 
         #region Overrides of DsfNativeActivity<string>

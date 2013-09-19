@@ -291,6 +291,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Get Inputs/Outputs
 
+        /// <summary>
+        ///Not covered as this Activity has been deprecated and replaced with the <see cref="DsfFindRecordsMultipleCriteriaActivity"/>
+        ///It is here purely for backward compatibility
+        /// </summary>
+        /// <param name="updates"></param>
+        /// <param name="context"></param>
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
             if (updates.Count == 1)
@@ -298,7 +304,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 FieldsToSearch = updates[0].Item2;
             }
         }
-
+        /// <summary>
+        ///Not covered as this Activity has been deprecated and replaced with the <see cref="DsfFindRecordsMultipleCriteriaActivity"/>
+        ///It is here purely for backward compatibility
+        /// </summary>
+        /// <param name="updates"></param>
+        /// <param name="context"></param>
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
             if (updates.Count == 1)
@@ -309,12 +320,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
         #region GetForEachInputs/Outputs
-
+        /// <summary>
+        ///Not covered as this Activity has been deprecated and replaced with the <see cref="DsfFindRecordsMultipleCriteriaActivity"/>
+        ///It is here purely for backward compatibility
+        /// </summary>
         public override IList<DsfForEachItem> GetForEachInputs()
         {
             return GetForEachItems(FieldsToSearch);
         }
-
+        /// <summary>
+        ///Not covered as this Activity has been deprecated and replaced with the <see cref="DsfFindRecordsMultipleCriteriaActivity"/>
+        ///It is here purely for backward compatibility
+        /// </summary>
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
             return GetForEachItems(Result);

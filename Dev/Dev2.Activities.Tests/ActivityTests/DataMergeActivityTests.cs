@@ -500,7 +500,7 @@ WallisBuchan
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfDataMergeActivityGetForEachInputs")]
+        [TestCategory("DsfDataMergeActivity_GetForEachInputs")]
         public void DsfDataMergeActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
         {
             //------------Setup for test--------------------------

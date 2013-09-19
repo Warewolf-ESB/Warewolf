@@ -415,32 +415,38 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+            if(updates != null)
             {
-                // locate all updates for this tuple
-                Tuple<string, string> t1 = t;
-                var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.SearchCriteria) && c.SearchCriteria.Equals(t1.Item1));
-
-                // issues updates
-                foreach (var a in items)
+                foreach (Tuple<string, string> t in updates)
                 {
-                    a.SearchCriteria = t.Item2;
-                }
+                    // locate all updates for this tuple
+                    Tuple<string, string> t1 = t;
+                    var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.SearchCriteria) && c.SearchCriteria.Equals(t1.Item1));
 
-                if (FieldsToSearch == t.Item1)
-                {
-                    FieldsToSearch = t.Item2;
+                    // issues updates
+                    foreach (var a in items)
+                    {
+                        a.SearchCriteria = t.Item2;
+                    }
+
+                    if (FieldsToSearch == t.Item1)
+                    {
+                        FieldsToSearch = t.Item2;
+                    }
                 }
             }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (var t in updates)
+            if(updates != null)
             {
-                if(Result == t.Item1)
+                foreach (var t in updates)
                 {
-                    Result = t.Item2;
+                    if(Result == t.Item1)
+                    {
+                        Result = t.Item2;
+                    }
                 }
             }
         }

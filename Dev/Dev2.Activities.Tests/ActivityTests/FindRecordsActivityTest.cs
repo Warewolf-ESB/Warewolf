@@ -33,9 +33,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                     SearchType = ">",
                     StartIndex = "",
                     Result = "[[Result().res]]"
-                }
+                }                
             };
-
+            
             const string data = @"<ADL>
   <Recset>
 	<Field1>Mr A</Field1>
@@ -332,10 +332,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void FindRecord_Get_Debug_Input_Output_With_Recordset_Using_Star_Index_With_Field_Expected_Pass()
         {
             DsfFindRecordsActivity act = new DsfFindRecordsActivity { FieldsToSearch = "[[Customers(*).DOB]]", SearchType = "Contains", SearchCriteria = "/", Result = "[[res]]" };
-
             List<DebugItem> inRes;
             List<DebugItem> outRes;
-
             var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
 
