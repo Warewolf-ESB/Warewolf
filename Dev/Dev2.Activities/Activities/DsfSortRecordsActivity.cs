@@ -185,19 +185,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+            if(updates != null)
             {
-
-                if (t.Item1 == SortField)
+                foreach (Tuple<string, string> t in updates)
                 {
-                    SortField = t.Item2;
+
+                    if (t.Item1 == SortField)
+                    {
+                        SortField = t.Item2;
+                    }
                 }
             }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-           
+            if(updates != null)
+            {
+                foreach(Tuple<string, string> t in updates)
+                {
+
+                    if(t.Item1 == SortField)
+                    {
+                        SortField = t.Item2;
+                    }
+                }
+            }
         }
 
         #region GetForEachInputs/Outputs
@@ -209,7 +222,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
-            return new List<DsfForEachItem>();
+            return GetForEachItems(SortField);
         }
 
         #endregion

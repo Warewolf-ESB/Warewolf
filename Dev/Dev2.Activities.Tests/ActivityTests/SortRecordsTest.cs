@@ -1,4 +1,5 @@
-﻿using ActivityUnitTests;
+﻿using System;
+using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -449,6 +450,138 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion
+
+        // ReSharper disable InconsistentNaming
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSortRecordsActivity_UpdateForEachInputs")]
+        public void DsfSortRecordsActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string SortField = "[[Company().Name]]";
+            var act = new DsfSortRecordsActivity { SortField = SortField};
+
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(SortField, act.SortField);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSortRecordsActivity_UpdateForEachInputs")]
+        public void DsfSortRecordsActivity_UpdateForEachInputs_MoreThan1Updates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string SortField = "[[Company().Name]]";
+            var act = new DsfSortRecordsActivity { SortField = SortField };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>(SortField, "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test2", act.SortField);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSortRecordsActivity_UpdateForEachInputs")]
+        public void DsfSortRecordsActivity_UpdateForEachInputs_1Update_UpdateInputPath()
+        {
+            //------------Setup for test--------------------------
+            const string SortField = "[[Company().Name]]";
+            var act = new DsfSortRecordsActivity { SortField = SortField };
+
+            var tuple1 = new Tuple<string, string>(SortField, "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.SortField);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSortRecordsActivity_UpdateForEachOutputs")]
+        public void DsfSortRecordsActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string SortField = "[[Company().Name]]";
+            var act = new DsfSortRecordsActivity { SortField = SortField };
+
+            act.UpdateForEachOutputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(SortField, act.SortField);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSortRecordsActivity_UpdateForEachOutputs")]
+        public void DsfSortRecordsActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string SortField = "[[Company().Name]]";
+            var act = new DsfSortRecordsActivity { SortField = SortField };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>("Test2", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(SortField, act.SortField);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSortRecordsActivity_UpdateForEachOutputs")]
+        public void DsfSortRecordsActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
+        {
+            //------------Setup for test--------------------------
+            const string SortField = "[[Company().Name]]";
+            var act = new DsfSortRecordsActivity { SortField = SortField };
+
+            var tuple1 = new Tuple<string, string>(SortField, "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.SortField);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSortRecordsActivity_GetForEachInputs")]
+        public void DsfSortRecordsActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            const string SortField = "[[Company().Name]]";
+            var act = new DsfSortRecordsActivity { SortField = SortField };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachInputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual(SortField, dsfForEachItems[0].Name);
+            Assert.AreEqual(SortField, dsfForEachItems[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSortRecordsActivity_GetForEachOutputs")]
+        public void DsfSortRecordsActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
+        {
+            //------------Setup for test--------------------------
+            const string SortField = "[[Company().Name]]";
+            var act = new DsfSortRecordsActivity { SortField = SortField };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual(SortField, dsfForEachItems[0].Name);
+            Assert.AreEqual(SortField, dsfForEachItems[0].Value);
+        }
+
 
         #region Private Test Methods
 

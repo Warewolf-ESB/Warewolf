@@ -348,48 +348,51 @@ namespace Dev2.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+            if(updates != null)
             {
+                foreach (Tuple<string, string> t in updates)
+                {
 
-                if (t.Item1 == FromAccount)
-                {
-                    FromAccount = t.Item2;
-                }
-                if (t.Item1 == Password)
-                {
-                    Password = t.Item2;
-                }
-                if (t.Item1 == To)
-                {
-                    To = t.Item2;
-                }
-                if (t.Item1 == Cc)
-                {
-                    Cc = t.Item2;
-                }
-                if (t.Item1 == Bcc)
-                {
-                    Bcc = t.Item2;
-                }
-                if (t.Item1 == Subject)
-                {
-                    Subject = t.Item2;
-                }
-                if (t.Item1 == Attachments)
-                {
-                    Attachments = t.Item2;
-                }
-                if (t.Item1 == Body)
-                {
-                    Body = t.Item2;
-                }
+                    if (t.Item1 == FromAccount)
+                    {
+                        FromAccount = t.Item2;
+                    }
+                    if (t.Item1 == Password)
+                    {
+                        Password = t.Item2;
+                    }
+                    if (t.Item1 == To)
+                    {
+                        To = t.Item2;
+                    }
+                    if (t.Item1 == Cc)
+                    {
+                        Cc = t.Item2;
+                    }
+                    if (t.Item1 == Bcc)
+                    {
+                        Bcc = t.Item2;
+                    }
+                    if (t.Item1 == Subject)
+                    {
+                        Subject = t.Item2;
+                    }
+                    if (t.Item1 == Attachments)
+                    {
+                        Attachments = t.Item2;
+                    }
+                    if (t.Item1 == Body)
+                    {
+                        Body = t.Item2;
+                    }
 
+                }
             }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates.Count == 1)
+            if (updates != null && updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }

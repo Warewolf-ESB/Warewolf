@@ -1,4 +1,5 @@
-﻿using System.Activities.Statements;
+﻿using System;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using ActivityUnitTests;
@@ -537,6 +538,141 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("5", debugOutput[9].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugOutput[9].Type);
         }
+
+        // ReSharper disable InconsistentNaming
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfRandomActivity_UpdateForEachInputs")]
+        public void DsfRandomActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string InFields = "[[Numeric(1).num]]";
+            const string ResultFields = "Up";
+            const string Result = "[[res]]";
+            var act = new DsfUniqueActivity { InFields = InFields, ResultFields = ResultFields, Result = Result };
+
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(InFields, act.InFields);
+            Assert.AreEqual(ResultFields, act.ResultFields);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfRandomActivity_UpdateForEachInputs")]
+        public void DsfRandomActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
+        {
+            //------------Setup for test--------------------------
+            const string InFields = "[[Numeric(1).num]]";
+            const string ResultFields = "Up";
+            const string Result = "[[res]]";
+            var act = new DsfUniqueActivity { InFields = InFields, ResultFields = ResultFields, Result = Result };
+
+            var tuple1 = new Tuple<string, string>(ResultFields, "Test");
+            var tuple2 = new Tuple<string, string>(InFields, "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test2", act.InFields);
+            Assert.AreEqual("Test", act.ResultFields);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfRandomActivity_UpdateForEachOutputs")]
+        public void DsfRandomActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string InFields = "[[Numeric(1).num]]";
+            const string ResultFields = "Up";
+            const string Result = "[[res]]";
+            var act = new DsfUniqueActivity { InFields = InFields, ResultFields = ResultFields, Result = Result };
+
+            act.UpdateForEachOutputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Result, act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfRandomActivity_UpdateForEachOutputs")]
+        public void DsfRandomActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string InFields = "[[Numeric(1).num]]";
+            const string ResultFields = "Up";
+            const string Result = "[[res]]";
+            var act = new DsfUniqueActivity { InFields = InFields, ResultFields = ResultFields, Result = Result };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>("Test2", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Result, act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfRandomActivity_UpdateForEachOutputs")]
+        public void DsfRandomActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
+        {
+            //------------Setup for test--------------------------
+            const string InFields = "[[Numeric(1).num]]";
+            const string ResultFields = "Up";
+            const string Result = "[[res]]";
+            var act = new DsfUniqueActivity { InFields = InFields, ResultFields = ResultFields, Result = Result };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfRandomActivity_GetForEachInputs")]
+        public void DsfRandomActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            const string InFields = "[[Numeric(1).num]]";
+            const string ResultFields = "Up";
+            const string Result = "[[res]]";
+            var act = new DsfUniqueActivity { InFields = InFields, ResultFields = ResultFields, Result = Result };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachInputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, dsfForEachItems.Count);
+            Assert.AreEqual(InFields, dsfForEachItems[0].Name);
+            Assert.AreEqual(InFields, dsfForEachItems[0].Value);
+            Assert.AreEqual(ResultFields, dsfForEachItems[1].Name);
+            Assert.AreEqual(ResultFields, dsfForEachItems[1].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfRandomActivity_GetForEachOutputs")]
+        public void DsfRandomActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
+        {
+            //------------Setup for test--------------------------
+            const string InFields = "[[Numeric(1).num]]";
+            const string ResultFields = "Up";
+            const string Result = "[[res]]";
+            var act = new DsfUniqueActivity { InFields = InFields, ResultFields = ResultFields, Result = Result };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual(Result, dsfForEachItems[0].Name);
+            Assert.AreEqual(Result, dsfForEachItems[0].Value);
+        }
+
 
         #region Private Test Methods
 

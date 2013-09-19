@@ -1,4 +1,5 @@
-﻿using ActivityUnitTests;
+﻿using System;
+using ActivityUnitTests;
 using Dev2.Common;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
@@ -552,6 +553,155 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion
+
+
+        // ReSharper disable InconsistentNaming
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfReplaceActivity_UpdateForEachInputs")]
+        public void DsfReplaceActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string FieldsToSearch = "[[Numeric(1).num]]";
+            const string Find = "Up";
+            const string Result = "[[res]]";
+            const string ReplaceWith = "2";
+            var act = new DsfReplaceActivity { FieldsToSearch = FieldsToSearch, Find = Find, ReplaceWith = ReplaceWith, Result = Result };
+
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(FieldsToSearch, act.FieldsToSearch);
+            Assert.AreEqual(Find, act.Find);
+            Assert.AreEqual(ReplaceWith, act.ReplaceWith);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfReplaceActivity_UpdateForEachInputs")]
+        public void DsfReplaceActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
+        {
+            //------------Setup for test--------------------------
+            const string FieldsToSearch = "[[Numeric(1).num]]";
+            const string Find = "Up";
+            const string Result = "[[res]]";
+            const string ReplaceWith = "2";
+            var act = new DsfReplaceActivity { FieldsToSearch = FieldsToSearch, Find = Find, ReplaceWith = ReplaceWith, Result = Result };
+
+            var tuple1 = new Tuple<string, string>(FieldsToSearch, "Test");
+            var tuple2 = new Tuple<string, string>(Find, "Test2");
+            var tuple3 = new Tuple<string, string>(ReplaceWith, "Test3");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2, tuple3 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test2", act.Find);
+            Assert.AreEqual("Test", act.FieldsToSearch);
+            Assert.AreEqual("Test3", act.ReplaceWith);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfReplaceActivity_UpdateForEachOutputs")]
+        public void DsfReplaceActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string FieldsToSearch = "[[Numeric(1).num]]";
+            const string Find = "Up";
+            const string Result = "[[res]]";
+            const string ReplaceWith = "2";
+            var act = new DsfReplaceActivity { FieldsToSearch = FieldsToSearch, Find = Find, ReplaceWith = ReplaceWith, Result = Result };
+
+            act.UpdateForEachOutputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Result, act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfReplaceActivity_UpdateForEachOutputs")]
+        public void DsfReplaceActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string FieldsToSearch = "[[Numeric(1).num]]";
+            const string Find = "Up";
+            const string Result = "[[res]]";
+            const string ReplaceWith = "2";
+            var act = new DsfReplaceActivity { FieldsToSearch = FieldsToSearch, Find = Find, ReplaceWith = ReplaceWith, Result = Result };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>("Test2", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Result, act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfReplaceActivity_UpdateForEachOutputs")]
+        public void DsfReplaceActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
+        {
+            //------------Setup for test--------------------------
+            const string FieldsToSearch = "[[Numeric(1).num]]";
+            const string Find = "Up";
+            const string Result = "[[res]]";
+            const string ReplaceWith = "2";
+            var act = new DsfReplaceActivity { FieldsToSearch = FieldsToSearch, Find = Find, ReplaceWith = ReplaceWith, Result = Result };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfReplaceActivity_GetForEachInputs")]
+        public void DsfReplaceActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            const string FieldsToSearch = "[[Numeric(1).num]]";
+            const string Find = "Up";
+            const string Result = "[[res]]";
+            const string ReplaceWith = "2";
+            var act = new DsfReplaceActivity { FieldsToSearch = FieldsToSearch, Find = Find, ReplaceWith = ReplaceWith, Result = Result };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachInputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(3, dsfForEachItems.Count);
+            Assert.AreEqual(FieldsToSearch, dsfForEachItems[0].Name);
+            Assert.AreEqual(FieldsToSearch, dsfForEachItems[0].Value);
+            Assert.AreEqual(Find, dsfForEachItems[1].Name);
+            Assert.AreEqual(Find, dsfForEachItems[1].Value);
+            Assert.AreEqual(ReplaceWith, dsfForEachItems[2].Name);
+            Assert.AreEqual(ReplaceWith, dsfForEachItems[2].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfReplaceActivity_GetForEachOutputs")]
+        public void DsfReplaceActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
+        {
+            //------------Setup for test--------------------------
+            const string FieldsToSearch = "[[Numeric(1).num]]";
+            const string Find = "Up";
+            const string Result = "[[res]]";
+            const string ReplaceWith = "2";
+            var act = new DsfReplaceActivity { FieldsToSearch = FieldsToSearch, Find = Find, ReplaceWith = ReplaceWith, Result = Result };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual(Result, dsfForEachItems[0].Name);
+            Assert.AreEqual(Result, dsfForEachItems[0].Value);
+        }
+
+
 
         #region Private Test Methods
 

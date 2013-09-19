@@ -1,4 +1,5 @@
-﻿using System.Activities.Statements;
+﻿using System;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -297,6 +298,130 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual(expectedResult3, debugOutResults[3].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugOutResults[3].Type);
         }
+
+        // ReSharper disable InconsistentNaming
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfWebGetRequestActivity_UpdateForEachInputs")]
+        public void DsfWebGetRequestActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string Url = "[[CompanyName]]";
+            const string result = "[[res]]";
+            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Url, act.Url);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfWebGetRequestActivity_UpdateForEachInputs")]
+        public void DsfWebGetRequestActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
+        {
+            //------------Setup for test--------------------------
+            const string Url = "[[CompanyName]]";
+            const string result = "[[res]]";
+            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>(Url, "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test2", act.Url);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfWebGetRequestActivity_UpdateForEachOutputs")]
+        public void DsfWebGetRequestActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string Url = "[[CompanyName]]";
+            const string result = "[[res]]";
+            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+
+            act.UpdateForEachOutputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result, act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfWebGetRequestActivity_UpdateForEachOutputs")]
+        public void DsfWebGetRequestActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string Url = "[[CompanyName]]";
+            const string result = "[[res]]";
+            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>("Test2", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result, act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfWebGetRequestActivity_UpdateForEachOutputs")]
+        public void DsfWebGetRequestActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
+        {
+            //------------Setup for test--------------------------
+            const string Url = "[[CompanyName]]";
+            const string result = "[[res]]";
+            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfWebGetRequestActivity_GetForEachInputs")]
+        public void DsfWebGetRequestActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            const string Url = "[[CompanyName]]";
+            const string result = "[[res]]";
+            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachInputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual(Url, dsfForEachItems[0].Name);
+            Assert.AreEqual(Url, dsfForEachItems[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfWebGetRequestActivity_GetForEachOutputs")]
+        public void DsfWebGetRequestActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
+        {
+            //------------Setup for test--------------------------
+            const string Url = "[[CompanyName]]";
+            const string result = "[[res]]";
+            var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual(result, dsfForEachItems[0].Name);
+            Assert.AreEqual(result, dsfForEachItems[0].Value);
+        }
+
 
         static DsfWebGetRequestActivity GetWebGetRequestActivity(Mock<IWebRequestInvoker> mockWebRequestInvoker)
         {
