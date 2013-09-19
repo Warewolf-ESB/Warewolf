@@ -7,6 +7,7 @@ using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;

@@ -887,8 +887,11 @@ namespace Dev2.Runtime.Hosting
 
             var result = SaveImpl(workspaceID, resource, contents, userRoles);
 
-            CompileTheResourceAfterSave(workspaceID, resource, contents, beforeAction);
-            SavedResourceCompileMessage(workspaceID, resource, string.Format("<CompilerMessage>{0}'</CompilerMessage>", result.Message));
+            if(result.Status == ExecStatus.Success)
+            {
+                CompileTheResourceAfterSave(workspaceID, resource, contents, beforeAction);
+                SavedResourceCompileMessage(workspaceID, resource, string.Format("<CompilerMessage>{0}'</CompilerMessage>", result.Message));
+            }
 
             return result;
         }

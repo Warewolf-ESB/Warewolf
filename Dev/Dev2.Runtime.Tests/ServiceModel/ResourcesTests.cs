@@ -456,7 +456,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                     ResourceCatalog.Instance.SaveResource(workspaceID, resource);
                 }
                 var resources = new Dev2.Runtime.ServiceModel.Resources();
-                const string expectedJson = "{\"Names\":[\"My Name 0\",\"My Name 2\",\"My Name 4\"],\"Paths\":[\"MY PATH 0\",\"MY PATH 2\",\"MY PATH 4\"]}";
+                const string expectedJson = "{\"Names\":[\"My Name 0\",\"My Name 1\",\"My Name 2\",\"My Name 3\",\"My Name 4\",\"My Name 5\"],\"Paths\":[\"MY PATH 0\",\"MY PATH 2\",\"MY PATH 4\"]}";
 
                 //Run PathsAndNames
                 var actualJson = resources.PathsAndNames("EmailSource", workspaceID, Guid.Empty);

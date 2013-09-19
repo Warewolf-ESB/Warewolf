@@ -91,20 +91,20 @@ namespace Dev2.Runtime.ServiceModel
 
             if (!String.IsNullOrEmpty(args))
             {
-                ResourceIterator.Instance.Iterate(new[] { RootFolders[(ResourceType)Enum.Parse(typeof(ResourceType), args)] }, workspaceID, iteratorResult =>
+                ResourceIterator.Instance.Iterate(new[] { "Services", "Sources" }, workspaceID, iteratorResult =>
                 {
                     string resourceType;
                     if (iteratorResult.Values.TryGetValue(3, out resourceType))
                     {
-                        if (GetWebsSensitiveServiceType((ResourceType)Enum.Parse(typeof(ResourceType), resourceType)) == getSearchPath)
+                        string name;
+                        if (iteratorResult.Values.TryGetValue(1, out name))
                         {
-                            string name;
-                            if (iteratorResult.Values.TryGetValue(1, out name))
-                            {
-                                names.Add(name);
-                            }
-                            string category;
-                            if (iteratorResult.Values.TryGetValue(2, out category))
+                            names.Add(name);
+                        }
+                        string category;
+                        if (iteratorResult.Values.TryGetValue(2, out category))
+                        {
+                            if (GetWebsSensitiveServiceType((ResourceType)Enum.Parse(typeof(ResourceType), resourceType)) == getSearchPath)
                             {
                                 //2013.05.20: Ashley Lewis for PBI 8858 - studio paths are in upper case in the explorer
                                 paths.Add(category.ToUpper());
