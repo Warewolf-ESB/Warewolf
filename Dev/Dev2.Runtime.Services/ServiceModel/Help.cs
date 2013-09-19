@@ -37,6 +37,7 @@ namespace Dev2.Runtime.ServiceModel
                         result.Add("dbSourceUserID", "Enter either your database <b>user name</b> or a Windows domain username e.g. 'Domainname\\Username'");
                         result.Add("dbSourcePassword", "Enter the <b>password</b> for the server.");
                         result.Add("dbSourceDatabase", "Select one of the <b>databases</b> hosted by the server");
+                        result.Add("DuplicateFound", "Name already exists.");
                         break;
                     //16.04.2013: Ashley Lewis - PBI 8721:
                     case "pluginSource":
@@ -47,6 +48,7 @@ namespace Dev2.Runtime.ServiceModel
                         result.Add("tab 1", "<h4>Global Cache</h4><p>Select an assembly from the <b>Global Assemblies Cache</b></p>");
                         result.Add("GACList", "<h4>Global Cache</h4><p>Select an assembly from the <b>Global Assemblies Cache</b></p>");
                         result.Add("gacSearchTerm", "<h4>Global Cache</h4><p>You are viewing all assemblies</p>");
+                        result.Add("DuplicateFound", "Name already exists.");
                         break;
 
                     // PBI 953 - 2013.05.16 - TWR - Added
@@ -58,6 +60,7 @@ namespace Dev2.Runtime.ServiceModel
                         result.Add("enableSsl", "Specifies whether the SMTP client uses <b>Secure Sockets Layer (SSL)</b> to encrypt the connection. e.g.<br/>" + GetSmtpExamples());
                         result.Add("port", "Enter the <b>port number</b> on the SMTP host. The default value is 25. e.g.<br/>" + GetSmtpExamples());
                         result.Add("timeout", "Enter the amount of <b>time in seconds</b> after which a send operation times out. The default value is 100 seconds.");
+                        result.Add("DuplicateFound", "Name already exists.");
                         break;
 
                     // PBI 953 - 2013.05.16 - TWR - Added
@@ -70,11 +73,12 @@ namespace Dev2.Runtime.ServiceModel
                         result.Add("userName", "Enter the <b>user name</b> used to authenticate with the server.");
                         result.Add("password", "Enter the <b>password</b> used to authenticate with the server.");
                         result.Add("defaultQuery", "Enter the default <b>service query</b>. This will be used for <b>Test Connection</b> and as the default <b>Request URL</b> when creating a new web service. e.g. <span style=\"word-wrap:break-word\">/GetCitiesByCountry?CountryName=US</span>");
+                        result.Add("DuplicateFound", "Name already exists.");
                         break;
                     //2013.06.20: Ashley Lewis for bug 9786 - save validation help text
                     case "SaveDialog":
                         result.Add("default", "Name cannot be blank.");
-                        result.Add("DuplicateFound", "A duplicate resource was found");
+                        result.Add("DuplicateFound", "Name already exists.");
                         break;
                 }
             }
