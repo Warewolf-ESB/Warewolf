@@ -567,7 +567,7 @@ namespace Dev2.Common
                 return false;
             }
 
-            //only log if included in the settings;
+            //only log if included in the settings
             bool shouldlog = LoggingSettings.LogAll ||
                 _workflowsToLog.ContainsKey(resourceID);
             return shouldlog;

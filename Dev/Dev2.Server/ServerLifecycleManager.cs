@@ -1445,7 +1445,6 @@ namespace Unlimited.Applications.DynamicServicesHost
                         ErrorResultTO errors;
                         IDSFDataObject dataObj = new DsfDataObject(requestXML, GlobalConstants.NullDataListID);
                         result = _esbEndpoint.ExecuteRequest(dataObj, GlobalConstants.ServerWorkspaceID, out errors);
-                        //result = _esbEndpoint.ExecuteCommand(requestXML, GlobalConstants.NullDataListID);
                     }
                     catch (Exception e)
                     {

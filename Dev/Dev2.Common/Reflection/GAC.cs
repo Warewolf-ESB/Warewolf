@@ -1110,23 +1110,6 @@ namespace Dev2.Common.Reflection
         /// Undocumented.
         /// </summary>
         /// <param name="dwFlags"></param>
-        /// <param name="pszStreamName"></param>
-        /// <param name="dwFormat"></param>
-        /// <param name="dwFormatFlags"></param>
-        /// <param name="ppIStream"></param>
-        /// <param name="puliMaxSize"></param>
-        //void CreateStream(
-        //    uint dwFlags,
-        //    [MarshalAs(UnmanagedType.LPWStr)] string pszStreamName,
-        //    uint dwFormat,
-        //    uint dwFormatFlags,
-        //    out UCOMIStream ppIStream,
-        //    ref long puliMaxSize);
-
-        /// <summary>
-        /// Undocumented.
-        /// </summary>
-        /// <param name="dwFlags"></param>
         /// <param name="pulDisposition"></param>
         void Commit(
             uint dwFlags,

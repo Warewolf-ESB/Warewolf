@@ -41,11 +41,6 @@ namespace Dev2.Common
                 }
 
                 return _appPath;
-
-                // 17.04.2013
-                // The code below will not work with the integration build process 
-                // as it always returns a path relative to the test executor dll, not the dev2 dlls ;(
-                //return Directory.GetCurrentDirectory();
             }
         }
 

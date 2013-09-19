@@ -16,7 +16,6 @@ namespace Dev2.Common {
         public bool CanUseEnumerator(bool isReversed)
         {
             return false;
-            //return (isReversed != true);
         }
 
         public string ExecuteOperation(char[] canidate, int startIdx, bool isReversed) {

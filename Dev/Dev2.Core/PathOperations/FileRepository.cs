@@ -187,7 +187,6 @@ namespace Dev2.PathOperations
                     // ReSharper restore EmptyGeneralCatchClause
                     {
                         ServerLogger.LogError(ex);
-                        // Deserialization failed;
                     }
                 }
             }

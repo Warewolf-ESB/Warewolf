@@ -18,7 +18,6 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Workspaces;
-using ServiceStack.Common.Utils;
 using enActionType = Dev2.DynamicServices.enActionType;
 
 namespace Dev2.Runtime.ESB
@@ -300,7 +299,7 @@ namespace Dev2.Runtime.ESB
 
         public void Dispose()
         {
-            //throw new NotImplementedException();
+
         }
 
         #endregion

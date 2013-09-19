@@ -2387,7 +2387,6 @@ namespace System.Windows.Controls
                     {
                         // Replace item
                         // Unfortunately replacing via index throws a fatal 
-                        // exception: View[view_index] = item;
                         // Cost: O(n) vs O(1)
                         _view.RemoveAt(view_index);
                         _view.Insert(view_index, item);

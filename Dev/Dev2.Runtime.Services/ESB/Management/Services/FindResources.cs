@@ -90,7 +90,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         serviceInfo.Dev2WorkerServiceCategory = tmpNode.InnerText;
                     }
-                    //serviceInfo.Dev2WorkerServiceCategory = node.ChildNodes[3].InnerText;
                     serviceInfo.Dev2WorkerServiceContents = node.OuterXml;
                     serviceData.AddResponse(serviceInfo);
                 }

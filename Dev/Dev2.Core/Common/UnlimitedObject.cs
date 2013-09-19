@@ -514,7 +514,6 @@ namespace Unlimited.Framework
             }
 
             return true;
-            //return (CodeIdentifier.MakeValid(name) == name);
         }
 
         /// <summary>

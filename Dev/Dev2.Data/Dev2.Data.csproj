@@ -319,7 +319,6 @@
     <Compile Include="TO\DataListPayloadFrameTO.cs" />
     <Compile Include="TO\DataListTranslatedPayloadTO.cs" />
     <Compile Include="TO\DataListVerifyPart.cs" />
-    <Compile Include="TO\DataRegion.cs" />
     <Compile Include="TO\DataValue.cs" />
     <Compile Include="TO\DateTimeVerifyPart.cs" />
     <Compile Include="TO\DebugOutputTO.cs" />

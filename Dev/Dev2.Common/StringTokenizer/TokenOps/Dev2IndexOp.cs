@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Dev2.Common {
@@ -19,7 +17,6 @@ namespace Dev2.Common {
         public bool CanUseEnumerator(bool isReversed)
         {
             return false;
-            //return (isReversed != true);
         }
 
         public string ExecuteOperation(char[] canidate, int startIdx, bool isReversed) {
