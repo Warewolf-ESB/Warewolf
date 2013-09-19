@@ -798,33 +798,36 @@ namespace Dev2.Runtime.Hosting
 
         static bool CheckType<T>(IResource resource) where T : Resource, new()
         {
-            if(typeof(T) == typeof(Workflow) && resource.ResourceType != ResourceType.WorkflowService)
+            if (resource != null)
+            {
+                if (typeof (T) == typeof (Workflow) && resource.ResourceType != ResourceType.WorkflowService)
+                {
+                return true;
+            }
+                if (typeof (T) == typeof (DbService) && resource.ResourceType != ResourceType.DbService)
             {
                 return true;
             }
-            if(typeof(T) == typeof(DbService) && resource.ResourceType != ResourceType.DbService)
+                if (typeof (T) == typeof (DbSource) && resource.ResourceType != ResourceType.DbSource)
             {
                 return true;
             }
-            if(typeof(T) == typeof(DbSource) && resource.ResourceType != ResourceType.DbSource)
+                if (typeof (T) == typeof (PluginService) && resource.ResourceType != ResourceType.PluginService)
             {
                 return true;
             }
-            if(typeof(T) == typeof(PluginService) && resource.ResourceType != ResourceType.PluginService)
+                if (typeof (T) == typeof (PluginSource) && resource.ResourceType != ResourceType.PluginSource)
             {
                 return true;
             }
-            if(typeof(T) == typeof(PluginSource) && resource.ResourceType != ResourceType.PluginSource)
+                if (typeof (T) == typeof (WebService) && resource.ResourceType != ResourceType.WebService)
             {
                 return true;
             }
-            if(typeof(T) == typeof(WebService) && resource.ResourceType != ResourceType.WebService)
+                if (typeof (T) == typeof (WebSource) && resource.ResourceType != ResourceType.WebSource)
             {
                 return true;
             }
-            if(typeof(T) == typeof(WebSource) && resource.ResourceType != ResourceType.WebSource)
-            {
-                return true;
             }
             return false;
         }
@@ -889,8 +892,8 @@ namespace Dev2.Runtime.Hosting
 
             if(result.Status == ExecStatus.Success)
             {
-                CompileTheResourceAfterSave(workspaceID, resource, contents, beforeAction);
-                SavedResourceCompileMessage(workspaceID, resource, string.Format("<CompilerMessage>{0}'</CompilerMessage>", result.Message));
+            CompileTheResourceAfterSave(workspaceID, resource, contents, beforeAction);
+            SavedResourceCompileMessage(workspaceID, resource, string.Format("<CompilerMessage>{0}'</CompilerMessage>", result.Message));
             }
 
             return result;

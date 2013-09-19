@@ -35,7 +35,7 @@ namespace Dev2.Services.Execution
             DataObj = dataObj;
             HandlesOutputFormatting = handlesOutputFormatting;
             RequiresFormatting = requiresFormatting;
-            if(DataObj.ResourceID != Guid.Empty)
+            if(DataObj.ResourceID != Guid.Empty || !string.IsNullOrEmpty(dataObj.ServiceName))
             {
                 CreateService(ResourceCatalog.Instance);
             }
@@ -59,7 +59,7 @@ namespace Dev2.Services.Execution
 
         void GetSource(ResourceCatalog catalog)
         {
-                Source = catalog.GetResource<TSource>(DataObj.WorkspaceID, Service.Source.ResourceID);
+            Source = catalog.GetResource<TSource>(DataObj.WorkspaceID, Service.Source.ResourceID);
             if(Source == null)
             {
                 Source = catalog.GetResource<TSource>(DataObj.WorkspaceID, Service.Source.ResourceName);
@@ -72,7 +72,7 @@ namespace Dev2.Services.Execution
 
         protected virtual bool GetService(ResourceCatalog catalog)
         {
-                Service = catalog.GetResource<TService>(DataObj.WorkspaceID, DataObj.ResourceID);
+            Service = catalog.GetResource<TService>(DataObj.WorkspaceID, DataObj.ResourceID);
             if(Service == null)
             {
                 Service = catalog.GetResource<TService>(DataObj.WorkspaceID, DataObj.ServiceName);

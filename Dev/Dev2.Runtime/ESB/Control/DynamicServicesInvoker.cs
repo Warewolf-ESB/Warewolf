@@ -117,7 +117,7 @@ namespace Dev2.Runtime.ESB
 
                             if(theService == null)
                             {
-                                errors.AddError("Service [ " + serviceID + " ] not found.");
+                                errors.AddError("Service [ " + serviceName + " ] not found.");
                             }
                             else if(theService.Actions.Count <= 1)
                             {
