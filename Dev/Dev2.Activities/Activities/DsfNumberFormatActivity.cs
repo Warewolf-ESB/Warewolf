@@ -229,34 +229,37 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+            if(updates != null)
             {
-
-                if (t.Item1 == Expression)
+                foreach (Tuple<string, string> t in updates)
                 {
-                    Expression = t.Item2;
-                }
 
-                if (t.Item1 == RoundingType)
-                {
-                    RoundingType = t.Item2;
-                }
+                    if (t.Item1 == Expression)
+                    {
+                        Expression = t.Item2;
+                    }
 
-                if (t.Item1 == RoundingDecimalPlaces)
-                {
-                    RoundingDecimalPlaces = t.Item2;
-                }
+                    if (t.Item1 == RoundingType)
+                    {
+                        RoundingType = t.Item2;
+                    }
 
-                if (t.Item1 == DecimalPlacesToShow)
-                {
-                    DecimalPlacesToShow = t.Item2;
+                    if (t.Item1 == RoundingDecimalPlaces)
+                    {
+                        RoundingDecimalPlaces = t.Item2;
+                    }
+
+                    if (t.Item1 == DecimalPlacesToShow)
+                    {
+                        DecimalPlacesToShow = t.Item2;
+                    }
                 }
             }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates.Count == 1)
+            if (updates != null && updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }

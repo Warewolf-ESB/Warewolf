@@ -1,4 +1,5 @@
-﻿using ActivityUnitTests;
+﻿using System;
+using ActivityUnitTests;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -255,6 +256,164 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion
+
+        // ReSharper disable InconsistentNaming
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfNumberFormatActivity_UpdateForEachInputs")]
+        public void DsfNumberFormatActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string expression = "[[Numeric(1).num]]";
+            const string roundingType = "Up";
+            const string result = "[[res]]";
+            const string roundingDecimalPlaces = "2";
+            const string decimalPlacesToShow = "2";
+            var act = new DsfNumberFormatActivity { Expression = expression, RoundingType = roundingType, RoundingDecimalPlaces = roundingDecimalPlaces, DecimalPlacesToShow = decimalPlacesToShow, Result = result };
+
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expression, act.Expression);
+            Assert.AreEqual(roundingType, act.RoundingType);
+            Assert.AreEqual(roundingDecimalPlaces, act.RoundingDecimalPlaces);
+            Assert.AreEqual(decimalPlacesToShow, act.DecimalPlacesToShow);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfNumberFormatActivity_UpdateForEachInputs")]
+        public void DsfNumberFormatActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
+        {
+            //------------Setup for test--------------------------
+            const string expression = "[[Numeric(1).num]]";
+            const string roundingType = "Up";
+            const string result = "[[res]]";
+            const string roundingDecimalPlaces = "2";
+            const string decimalPlacesToShow = "3";
+            var act = new DsfNumberFormatActivity { Expression = expression, RoundingType = roundingType, RoundingDecimalPlaces = roundingDecimalPlaces, DecimalPlacesToShow = decimalPlacesToShow, Result = result };
+
+            var tuple1 = new Tuple<string, string>(expression, "Test");
+            var tuple2 = new Tuple<string, string>(roundingType, "Test2");
+            var tuple3 = new Tuple<string, string>(roundingDecimalPlaces, "Test3");
+            var tuple4 = new Tuple<string, string>(decimalPlacesToShow, "Test4");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2, tuple3, tuple4 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test2", act.RoundingType);
+            Assert.AreEqual("Test", act.Expression);
+            Assert.AreEqual("Test3", act.RoundingDecimalPlaces);
+            Assert.AreEqual("Test4", act.DecimalPlacesToShow);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfNumberFormatActivity_UpdateForEachOutputs")]
+        public void DsfNumberFormatActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string expression = "[[Numeric(1).num]]";
+            const string roundingType = "Up";
+            const string result = "[[res]]";
+            const string roundingDecimalPlaces = "2";
+            const string decimalPlacesToShow = "2";
+            var act = new DsfNumberFormatActivity { Expression = expression, RoundingType = roundingType, RoundingDecimalPlaces = roundingDecimalPlaces, DecimalPlacesToShow = decimalPlacesToShow, Result = result };
+
+            act.UpdateForEachOutputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result, act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfNumberFormatActivity_UpdateForEachOutputs")]
+        public void DsfNumberFormatActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string expression = "[[Numeric(1).num]]";
+            const string roundingType = "Up";
+            const string result = "[[res]]";
+            const string roundingDecimalPlaces = "2";
+            const string decimalPlacesToShow = "2";
+            var act = new DsfNumberFormatActivity { Expression = expression, RoundingType = roundingType, RoundingDecimalPlaces = roundingDecimalPlaces, DecimalPlacesToShow = decimalPlacesToShow, Result = result };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>("Test2", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result, act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfNumberFormatActivity_UpdateForEachOutputs")]
+        public void DsfNumberFormatActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
+        {
+            //------------Setup for test--------------------------
+            const string expression = "[[Numeric(1).num]]";
+            const string roundingType = "Up";
+            const string result = "[[res]]";
+            const string roundingDecimalPlaces = "2";
+            const string decimalPlacesToShow = "2";
+            var act = new DsfNumberFormatActivity { Expression = expression, RoundingType = roundingType, RoundingDecimalPlaces = roundingDecimalPlaces, DecimalPlacesToShow = decimalPlacesToShow, Result = result };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfNumberFormatActivity_GetForEachInputs")]
+        public void DsfNumberFormatActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            const string expression = "[[Numeric(1).num]]";
+            const string roundingType = "Up";
+            const string result = "[[res]]";
+            const string roundingDecimalPlaces = "2";
+            const string decimalPlacesToShow = "2";
+            var act = new DsfNumberFormatActivity { Expression = expression, RoundingType = roundingType, RoundingDecimalPlaces = roundingDecimalPlaces, DecimalPlacesToShow = decimalPlacesToShow, Result = result };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachInputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(4, dsfForEachItems.Count);
+            Assert.AreEqual(expression, dsfForEachItems[0].Name);
+            Assert.AreEqual(expression, dsfForEachItems[0].Value);
+            Assert.AreEqual(roundingType, dsfForEachItems[1].Name);
+            Assert.AreEqual(roundingType, dsfForEachItems[1].Value);
+            Assert.AreEqual(roundingDecimalPlaces, dsfForEachItems[2].Name);
+            Assert.AreEqual(roundingDecimalPlaces, dsfForEachItems[2].Value);
+            Assert.AreEqual(decimalPlacesToShow, dsfForEachItems[3].Name);
+            Assert.AreEqual(decimalPlacesToShow, dsfForEachItems[3].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfNumberFormatActivity_GetForEachOutputs")]
+        public void DsfNumberFormatActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
+        {
+            //------------Setup for test--------------------------
+            const string expression = "[[Numeric(1).num]]";
+            const string roundingType = "Up";
+            const string result = "[[res]]";
+            const string roundingDecimalPlaces = "2";
+            const string decimalPlacesToShow = "2";
+            var act = new DsfNumberFormatActivity { Expression = expression, RoundingType = roundingType, RoundingDecimalPlaces = roundingDecimalPlaces, DecimalPlacesToShow = decimalPlacesToShow, Result = result };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual(result, dsfForEachItems[0].Name);
+            Assert.AreEqual(result, dsfForEachItems[0].Value);
+        }
 
     }
 }
