@@ -9,6 +9,7 @@ using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.DataList;
@@ -185,6 +186,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
             WriteToResourceModel();
+            Logger.TraceInfo("Publish message of type - " + typeof(UpdateIntellisenseMessage), GetType().Name);
             EventPublisher.Publish(new UpdateIntellisenseMessage());
         }
 
@@ -266,6 +268,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
             WriteToResourceModel();
+            Logger.TraceInfo("Publish message of type - " + typeof(UpdateIntellisenseMessage), GetType().Name);
             EventPublisher.Publish(new UpdateIntellisenseMessage());
         }
 
@@ -355,6 +358,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
             WriteToResourceModel();
+            Logger.TraceInfo("Publish message of type - " + typeof(UpdateIntellisenseMessage), GetType().Name);
             EventPublisher.Publish(new UpdateIntellisenseMessage());
             RemoveBlankScalars();
             RemoveBlankRecordsets();

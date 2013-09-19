@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.DataList.Contract;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Messages;
@@ -195,6 +196,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views.WebsiteBuilder
 
         public void Handle(TabClosedMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             if(message.Context.Equals(this))
             {
                 EventPublishers.Aggregator.Unsubscribe(this);

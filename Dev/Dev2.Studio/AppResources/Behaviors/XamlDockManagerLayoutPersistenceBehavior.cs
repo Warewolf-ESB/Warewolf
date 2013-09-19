@@ -2,6 +2,7 @@
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Composition;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Messages;
@@ -200,6 +201,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         public void Handle(IResetLayoutMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             if (!AssociatedObject.Equals(message.Context))
             {
                 return;

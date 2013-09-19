@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -137,6 +138,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void Handle(SetSelectedIContextualResourceModel message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             SelectedResourceModel = message.SelectedResource;
             if(message.DidDoubleClickOccur)
             {

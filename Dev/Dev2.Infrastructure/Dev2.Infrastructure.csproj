@@ -81,6 +81,7 @@
     <Compile Include="Providers\Errors\IErrorInfo.cs" />
     <Compile Include="Providers\Events\EventPublisher.cs" />
     <Compile Include="Hosting\IHostContext.cs" />
+    <Compile Include="Providers\Logs\Logger.cs" />
     <Compile Include="Providers\Validation\IValidator.cs" />
     <Compile Include="Providers\Validation\IPerformsValidation.cs" />
     <Compile Include="Providers\Validation\Rules\Rule.cs" />
@@ -105,9 +106,7 @@
     <Compile Include="VerifyArgument.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Providers\Logs\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -5,6 +5,7 @@ using Dev2.Composition;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Network.Execution;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.AppResources.Behaviors;
 using Dev2.Studio.AppResources.ExtensionMethods;
@@ -334,11 +335,13 @@ namespace Dev2.Studio.ViewModels.Wizards
 
         public void Handle(EnvironmentDisconnectedMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             OnEnvironmentConnected(message.EnvironmentModel);
         }
 
         public void Handle(EnvironmentConnectedMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             OnEnvironmentDisconnected(message.EnvironmentModel);
         }
 

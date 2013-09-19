@@ -13,6 +13,7 @@ using Caliburn.Micro;
 using Dev2.Collections;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
+using Dev2.Providers.Logs;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -532,6 +533,7 @@ namespace Dev2.Studio.Core.Models
             Version = resourceModel.Version;
             ConnectionString = resourceModel.ConnectionString;
             ID = resourceModel.ID;
+            Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceDesignerMessage), GetType().Name);
             _eventPublisher.Publish(new UpdateResourceDesignerMessage(this));
             _errors.Clear();
             if (resourceModel.Errors != null)

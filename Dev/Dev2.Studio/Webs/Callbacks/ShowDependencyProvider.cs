@@ -1,5 +1,6 @@
 using Caliburn.Micro;
 using Dev2.Data.Enums;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -30,6 +31,7 @@ namespace Dev2.Studio.Webs.Callbacks
             dialog.ShowDialog();
             if (dialog.OpenDependencyGraph)
             {
+                Logger.TraceInfo("Publish message of type - " + typeof(ShowReverseDependencyVisualizer), GetType().Name);
                 _eventPublisher.Publish(new ShowReverseDependencyVisualizer(resource));
             }
         }

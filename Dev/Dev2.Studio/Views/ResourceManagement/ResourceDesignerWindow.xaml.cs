@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -159,6 +160,7 @@ namespace Dev2.Studio.Views.ResourceManagement
 
         public void Handle(UpdateResourceDesignerMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             IEqualityComparer<IResourceModel> equalityComparer = ResourceModelEqualityComparer.Current;
 
             var resourceModel = message.ResourceModel;

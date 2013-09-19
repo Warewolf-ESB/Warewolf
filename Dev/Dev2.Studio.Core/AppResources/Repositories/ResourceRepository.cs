@@ -13,6 +13,7 @@ using Dev2.Composition;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
+using Dev2.Providers.Logs;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;

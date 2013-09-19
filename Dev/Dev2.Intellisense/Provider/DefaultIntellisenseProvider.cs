@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using Caliburn.Micro;
 using Dev2.DataList.Contract;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -570,6 +571,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public void Handle(UpdateIntellisenseMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             OnUpdateIntellisense();
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using Caliburn.Micro;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -103,8 +104,10 @@ namespace Dev2.Studio.Webs.Callbacks
                 ReloadResource(defaultEnvironment, connectionName, ResourceType.Source);
             }
 
-            CurrentEnvironmentRepository.Save(Server.Environment);         
+            CurrentEnvironmentRepository.Save(Server.Environment);
+            Logger.TraceInfo("Publish message of type - " + typeof(AddServerToExplorerMessage), GetType().Name);
             _eventPublisher.Publish(new AddServerToExplorerMessage(Server.Environment, Context,true));
+            Logger.TraceInfo("Publish message of type - " + typeof(AddServerToDeployMessage), GetType().Name);
             _eventPublisher.Publish(new AddServerToDeployMessage(Server, Context));
         }
 

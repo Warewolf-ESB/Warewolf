@@ -11,6 +11,7 @@ using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core;
@@ -247,16 +248,19 @@ namespace Dev2.Studio.Webs
 
         public void Handle(ShowWebpartWizardMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             ShowWebpartWizard(message.LayoutObjectViewModel);
         }
 
         public void Handle(CloseWizardMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             CloseWizard();
         }
 
         public void Handle(SetActivePageMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             SetActivePage(message.LayoutObjectViewModel);
         }
         #endregion IHandle

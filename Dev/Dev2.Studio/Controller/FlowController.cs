@@ -7,6 +7,7 @@ using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Data.SystemTemplates;
 using Dev2.Data.SystemTemplates.Models;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Controller;
@@ -250,21 +251,25 @@ namespace Dev2.Studio.Controller
 
         public void Handle(ConfigureDecisionExpressionMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             ConfigureDecisionExpression(message);
         }
 
         public void Handle(ConfigureSwitchExpressionMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             ConfigureSwitchExpression(message);
         }
 
         public void Handle(ConfigureCaseExpressionMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             ConfigureSwitchCaseExpression(message);
         }
 
         public void Handle(EditCaseExpressionMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             EditSwitchCaseExpression(message);
         }
 

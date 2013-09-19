@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
@@ -109,6 +110,7 @@ namespace Dev2.Studio.Views.DataList
             if(vm != null)
             {
                 vm.WriteToResourceModel();
+                Logger.TraceInfo("Publish message of type - " + typeof(UpdateIntellisenseMessage), GetType().Name);
                 _eventPublisher.Publish(new UpdateIntellisenseMessage());
             }
         }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Input;
 // TWR: Moved here as ConnectView/Model are related to the ConnectControl and will become a user control later
 using Caliburn.Micro;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
@@ -122,10 +123,12 @@ namespace Dev2.Studio.ViewModels.Explorer
             //
             // Add the new server
             //
+            Logger.TraceInfo("Publish message of type - " + typeof(AddServerToDeployMessage), GetType().Name);
             _eventPublisher.Publish(new AddServerToDeployMessage(Server, IsSource, IsDestination));
             //
             // Signal the explorer to update loading any new servers
             //
+            Logger.TraceInfo("Publish message of type - " + typeof(UpdateExplorerMessage), GetType().Name);
             _eventPublisher.Publish(new UpdateExplorerMessage(false));
 
         }
@@ -338,6 +341,7 @@ namespace Dev2.Studio.ViewModels.Explorer
             get
             {
                 IEnvironmentModel getActiveEnvironment = null;
+                Logger.TraceInfo("Publish message of type - " + typeof(GetActiveEnvironmentCallbackMessage), GetType().Name);
                 _eventPublisher.Publish(new GetActiveEnvironmentCallbackMessage(env =>
                 {
                     getActiveEnvironment = env;

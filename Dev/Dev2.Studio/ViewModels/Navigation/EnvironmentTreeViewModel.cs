@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
@@ -299,7 +300,11 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 return _newResourceCommand ??
                        (_newResourceCommand = new RelayCommand<string>((s)
-                           => _eventPublisher.Publish(new ShowNewResourceWizard(s)), o => HasFileMenu));
+                                                                       =>
+                       {
+                           Logger.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard), GetType().Name);
+                           _eventPublisher.Publish(new ShowNewResourceWizard(s));
+                       }, o => HasFileMenu));
             }
         }
 
@@ -406,7 +411,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             Disconnect();
             var rootVM = FindRootNavigationViewModel();
             var ctx = (rootVM == null) ? null : rootVM.Context;
-
+            Logger.TraceInfo("Publish message of type - " + typeof(RemoveEnvironmentMessage), GetType().Name);
             _eventPublisher.Publish(new RemoveEnvironmentMessage(EnvironmentModel, ctx));
             RaisePropertyChangedForCommands();
         }
@@ -452,6 +457,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public void Handle(CloseWizardMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             throw new NotImplementedException();
         }
 

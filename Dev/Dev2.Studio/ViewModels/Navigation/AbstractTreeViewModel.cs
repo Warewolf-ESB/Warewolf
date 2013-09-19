@@ -3,6 +3,7 @@
 using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
 using Dev2.Composition;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -596,9 +597,12 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 return _deployCommand ??
                        (_deployCommand =
-                        new RelayCommand(param => 
-                            _eventPublisher.Publish(new DeployResourcesMessage(this)),
-                                         o => CanDeploy));
+                        new RelayCommand(param =>
+                        {
+                            Logger.TraceInfo("Publish message of type - " + typeof(DeployResourcesMessage), GetType().Name);
+                            _eventPublisher.Publish(new DeployResourcesMessage(this));
+                        },
+                            o => CanDeploy));
             }
         }
 
@@ -747,7 +751,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
 
             NotifyOfPropertyChange(() => IsChecked);
-
+            Logger.TraceInfo("Publish message of type - " + typeof(ResourceCheckedMessage), GetType().Name);
             _eventPublisher.Publish(new ResourceCheckedMessage());
         }
 

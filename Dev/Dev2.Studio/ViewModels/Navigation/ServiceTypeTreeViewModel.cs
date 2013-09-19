@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
 using Dev2.Composition;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -149,6 +150,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         void ShowNewResourceWizard(object obj)
         {
             var commandParameter = obj.ToString();
+            Logger.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard), GetType().Name);
             _eventPublisher.Publish(new ShowNewResourceWizard(commandParameter));
         }
 

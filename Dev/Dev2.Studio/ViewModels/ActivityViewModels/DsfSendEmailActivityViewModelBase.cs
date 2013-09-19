@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Data.Enums;
+using Dev2.Providers.Logs;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -282,6 +283,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         public void CreateNewEmailSource()
         {
             _hasClickedSave = true;
+            Logger.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard), GetType().Name);
             _eventPublisher.Publish(new ShowNewResourceWizard("EmailSource"));
             UpdateEnvironmentResources();
         }
@@ -289,6 +291,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         public void EditEmailSource()
         {
             Action<IEnvironmentModel> callback = EditEmailSource;
+            Logger.TraceInfo("Publish message of type - " + typeof(GetActiveEnvironmentCallbackMessage), GetType().Name);
             _eventPublisher.Publish(new GetActiveEnvironmentCallbackMessage(callback));
         }
 
@@ -303,6 +306,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         private void UpdateEnvironmentResources()
         {
             Action<IEnvironmentModel> callback = UpdateEnvironmentResourcesCallback;
+            Logger.TraceInfo("Publish message of type - " + typeof(GetActiveEnvironmentCallbackMessage), GetType().Name);
             _eventPublisher.Publish(new GetActiveEnvironmentCallbackMessage(callback));
         }
 
@@ -313,6 +317,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                 IResourceModel resourceModel = env.ResourceRepository.FindSingle(c => c.ResourceName == SelectedEmailSource.ResourceName);
                 if (resourceModel != null)
                 {
+                    Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage), GetType().Name);
                     _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
                 }
             }

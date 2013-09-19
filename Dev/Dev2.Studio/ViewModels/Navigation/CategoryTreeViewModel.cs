@@ -9,6 +9,7 @@ using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
+using Dev2.Providers.Logs;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
@@ -152,6 +153,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             IResourceModel hydrateWizard = new ResourceModel(EnvironmentModel);
             hydrateWizard.Category = DisplayName;
             hydrateWizard.DisplayName = obj.ToString();
+            Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage), GetType().Name);
             _eventPublisher.Publish(new ShowEditResourceWizardMessage(hydrateWizard));
         }
 
@@ -314,6 +316,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         void DeleteFolder(object obj)
         {
+            Logger.TraceInfo("Publish message of type - " + typeof(DeleteResourcesMessage), GetType().Name);
             _eventPublisher.Publish(new DeleteResourcesMessage(Children.Select(child =>
             {
                 var model = child as ResourceTreeViewModel;

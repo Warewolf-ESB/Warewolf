@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Data.ServiceModel;
 using Dev2.Messages;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.InterfaceImplementors;
@@ -269,8 +270,10 @@ namespace Dev2.UI
                 if(server != null && _isSelectedFromDropDown)
                 {
                     InvokeCommands(server);
+                    Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedItemInExplorerTree), GetType().Name);
                     _eventPublisher.Publish(new SetSelectedItemInExplorerTree(server.Environment.Name));
                     SelectedServer = server;
+                    Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage), GetType().Name);
                     _eventPublisher.Publish(new SetActiveEnvironmentMessage(server.Environment));
                 }
                 else
@@ -323,6 +326,7 @@ namespace Dev2.UI
 
         public void Handle(UpdateActiveEnvironmentMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             if(message.EnvironmentModel != null && BindToActiveEnvironment)
             {
                 _isSelectedFromDropDown = false;

@@ -8,6 +8,7 @@ using Caliburn.Micro;
 using Dev2.Common.Utils;
 using Dev2.Composition;
 using Dev2.Data.ServiceModel.Messages;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
@@ -84,6 +85,7 @@ namespace Dev2.Studio.Webs.Callbacks
             {
                 var resourceWithContext = new ResourceModel(environmentModel);
                 resourceWithContext.Update(resource);
+                Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage), GetType().Name);
                 _eventPublisher.Publish(new UpdateResourceMessage(resourceWithContext));
             }            
         }

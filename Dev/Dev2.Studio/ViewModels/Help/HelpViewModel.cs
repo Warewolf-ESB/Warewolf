@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using Caliburn.Micro;
 using CefSharp.Wpf;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -62,6 +63,7 @@ namespace Dev2.Studio.ViewModels.Help
 
         public void Handle(TabClosedMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             if(!message.Context.Equals(this)) return;
 
             EventPublisher.Unsubscribe(this);

@@ -8,6 +8,7 @@ using Dev2.DataList.Contract.Network;
 using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Network.Messaging.Messages;
+using Dev2.Providers.Logs;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Repositories;
@@ -279,11 +280,13 @@ namespace Dev2.Studio.Core.Models
                 if(Application.Current != null)
                 {
                     // application is not shutting down!!
+                    Logger.TraceInfo("Publish message of type - " + typeof(AbstractEnvironmentMessage), GetType().Name);
                     Application.Current.Dispatcher.BeginInvoke(new Action(() => _eventPublisher.Publish(message)), null);
                 }
             }
             else
             {
+                Logger.TraceInfo("Publish message of type - " + typeof(AbstractEnvironmentMessage), GetType().Name);
                 _eventPublisher.Publish(message);
             }
         }

@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2;
 using Dev2.Composition;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Actions;
@@ -644,6 +645,7 @@ namespace Unlimited.Framework
         {
             if(!string.IsNullOrEmpty(SelectedLayoutObject.WebpartServiceName))
             {
+                Logger.TraceInfo("Publish message of type - " + typeof(ShowWebpartWizardMessage), GetType().Name);
                 _eventPublisher.Publish(new ShowWebpartWizardMessage(this));
             }
         }
@@ -750,6 +752,7 @@ namespace Unlimited.Framework
 
         public void Close()
         {
+            Logger.TraceInfo("Publish message of type - " + typeof(CloseWizardMessage), GetType().Name);
             _eventPublisher.Publish(new CloseWizardMessage(this));
         }
 

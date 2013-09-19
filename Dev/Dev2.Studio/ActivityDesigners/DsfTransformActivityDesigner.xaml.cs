@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
 using Caliburn.Micro;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Messages;
 
@@ -35,6 +36,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities{
 
         public void Handle(DataListItemSelectedMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
         }
 
         public void Dispose()

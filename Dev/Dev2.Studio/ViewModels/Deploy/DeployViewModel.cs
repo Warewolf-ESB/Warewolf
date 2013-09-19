@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -514,6 +515,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 // Reload the environments resources & update explorer
                 //
                 LoadDestinationEnvironment(SelectedDestinationServer);
+                Logger.TraceInfo("Publish message of type - " + typeof(RefreshExplorerMessage), GetType().Name);
                 EventPublisher.Publish(new RefreshExplorerMessage());
 
                 DeploySuccessfull = true;
@@ -641,16 +643,19 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         public void Handle(ResourceCheckedMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             CalculateStats();
         }
 
         public void Handle(UpdateDeployMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             RefreshEnvironments();
         }
 
         public void Handle(SelectItemInDeployMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             _initialItemDisplayName = message.DisplayName;
             _initialItemEnvironment = message.Environment;
             SelectSourceServerFromInitialValue();
@@ -658,6 +663,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         public void Handle(AddServerToDeployMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             if(message.Context != null)
             {
                 var ctx = message.Context;
@@ -678,6 +684,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         public void Handle(EnvironmentDeletedMessage message)
         {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
             if(Source != null)
             {
                 Source.RemoveEnvironment(message.EnvironmentModel);

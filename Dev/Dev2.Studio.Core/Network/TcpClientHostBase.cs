@@ -18,6 +18,7 @@ using Dev2.Network;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Providers.Events;
+using Dev2.Providers.Logs;
 using Dev2.Studio.Core.Diagnostics;
 using Dev2.Studio.Core.Messages;
 
@@ -117,6 +118,7 @@ namespace Dev2.Studio.Core.Network
 
             if(DebugWriter == null)
             {
+                Logger.TraceInfo("Publish message of type - " + typeof(DebugWriterWriteMessage), GetType().Name);
                 DebugWriter = new DebugWriter(s => _serverEventPublisher.Publish(new DebugWriterWriteMessage { DebugState = s }));
             }
             if(_debugWriters.TryAdd(AccountID, DebugWriter))
@@ -370,6 +372,7 @@ namespace Dev2.Studio.Core.Network
 
             // DO NOT use publish as memo is of type object 
             // and hence won't find the correct subscriptions
+            Logger.TraceInfo("Publish message of type - " + typeof(Memo), GetType().Name);
             _serverEventPublisher.PublishObject(memo);
         }
 

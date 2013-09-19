@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
@@ -57,6 +58,7 @@ namespace Dev2.Studio.Webs.Callbacks
                 if (_resourceModel != null)
                 {
                     _resourceModel.IsNewWorkflow = false;
+                    Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage), GetType().Name);
                     _eventPublisher.Publish(new SaveResourceMessage(_resourceModel, true, false));
                     IContextualResourceModel newResourceModel =
                         ResourceModelFactory.CreateResourceModel(_resourceModel.Environment, "Workflow",
@@ -69,12 +71,16 @@ namespace Dev2.Studio.Webs.Callbacks
                     newResourceModel.DataList = _resourceModel.DataList;
                     newResourceModel.IsNewWorkflow = false;
 
+                    Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage), GetType().Name);
                     _eventPublisher.Publish(new UpdateResourceMessage(newResourceModel));
                     if (_addToTabManager)
                     {
+                        Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage), GetType().Name);
                         _eventPublisher.Publish(new AddWorkSurfaceMessage(newResourceModel));
                     }
+                    Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage), GetType().Name);
                     _eventPublisher.Publish(new SaveResourceMessage(newResourceModel, false, _addToTabManager));
+                    Logger.TraceInfo("Publish message of type - " + typeof(RemoveResourceAndCloseTabMessage), GetType().Name);
                     _eventPublisher.Publish(new RemoveResourceAndCloseTabMessage(_resourceModel));
 
                     NewWorkflowNames.Instance.Remove(_resourceModel.ResourceName);

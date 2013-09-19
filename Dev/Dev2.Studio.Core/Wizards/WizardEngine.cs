@@ -11,6 +11,7 @@ using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
@@ -413,8 +414,11 @@ namespace Dev2.Studio.Core.Wizards
             {
                 resource.Category = string.Empty;
                 resource.DataList = wizardDataListString;
+                Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage), GetType().Name);
                 _eventPublisher.Publish(new AddWorkSurfaceMessage(resource));
+                Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage), GetType().Name);
                 _eventPublisher.Publish(new SaveResourceMessage(resource, false));
+                Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage), GetType().Name);
                 _eventPublisher.Publish(new UpdateResourceMessage(resource));
             }
         }
@@ -466,8 +470,9 @@ namespace Dev2.Studio.Core.Wizards
                     IList<string> addedList = new List<string>();
                     IList<string> removedList = new List<string>();
                     resource.DataList = MergeWizardDataListsAndReturnDiffs(resource.DataList, parentDl, out addedList, out removedList);
-
+                    Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage), GetType().Name);
                     _eventPublisher.Publish(new AddWorkSurfaceMessage(resource));
+                    Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage), GetType().Name);
                     _eventPublisher.Publish(new SaveResourceMessage(resource, false));
 
                     string differencesString = Dev2MessageFactory.CreateStringFromListWithLabel("Added", addedList);
@@ -493,6 +498,7 @@ namespace Dev2.Studio.Core.Wizards
                 }
                 else if(IsSystemWizard(resource))
                 {
+                    Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage), GetType().Name);
                     _eventPublisher.Publish(new AddWorkSurfaceMessage(resource));
                 }
                 else

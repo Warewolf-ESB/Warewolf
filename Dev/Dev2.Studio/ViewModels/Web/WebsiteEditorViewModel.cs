@@ -10,6 +10,7 @@ using Caliburn.Micro;
 using CefSharp.Wpf;
 using Dev2.Common;
 using Dev2.Composition;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
@@ -501,6 +502,7 @@ namespace Dev2.Studio.Core.ViewModels
         {
             if(_webActivity != null && _webActivity.ResourceModel != null && _webActivity.ResourceModel.Environment != null)
             {
+                Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage), GetType().Name);
                 EventPublisher.Publish(new SaveResourceMessage(_resource,false));
                 dynamic package = new UnlimitedObject();
                 package.Service = StringResources.Website_BootStrap_Service;
@@ -516,6 +518,7 @@ namespace Dev2.Studio.Core.ViewModels
 
         public void Close()
         {
+            Logger.TraceInfo("Publish message of type - " + typeof(CloseWizardMessage), GetType().Name);
             EventPublisher.Publish(new CloseWizardMessage(this));
         }
 
@@ -719,6 +722,7 @@ namespace Dev2.Studio.Core.ViewModels
 
         public void OpenPropertyEditor()
         {
+            Logger.TraceInfo("Publish message of type - " + typeof(ShowWebpartWizardMessage), GetType().Name);
             EventPublisher.Publish(new ShowWebpartWizardMessage(this));
         }
 

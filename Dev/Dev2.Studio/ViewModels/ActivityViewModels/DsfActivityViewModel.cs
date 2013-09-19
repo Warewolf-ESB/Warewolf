@@ -11,6 +11,7 @@ using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Providers.Errors;
+using Dev2.Providers.Logs;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services;
 using Dev2.Services.Events;
@@ -717,18 +718,22 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         void OpenWizard()
         {
+            Logger.TraceInfo("Publish message of type - " + typeof(ShowActivityWizardMessage), GetType().Name);
             _eventPublisher.Publish(new ShowActivityWizardMessage(_modelItem));
         }
 
         void OpenSettings()
         {
+            Logger.TraceInfo("Publish message of type - " + typeof(ShowActivitySettingsWizardMessage), GetType().Name);
             _eventPublisher.Publish(new ShowActivitySettingsWizardMessage(_modelItem));
         }
 
         void OpenHelp()
         {
+          
             if(HasHelpLink)
             {
+                Logger.TraceInfo("Publish message of type - " + typeof(ShowHelpTabMessage), GetType().Name);
                 _eventPublisher.Publish(new ShowHelpTabMessage(HelpLink));
             }
         }
@@ -742,6 +747,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         {
             if(!IsDeleted)
             {
+                Logger.TraceInfo("Publish message of type - " + typeof(EditActivityMessage), GetType().Name);
                 _eventPublisher.Publish(new EditActivityMessage(_modelItem, RootModel.Environment.ID, null));
             }
         }
