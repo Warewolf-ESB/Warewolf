@@ -2181,6 +2181,9 @@ namespace Dev2.Tests.Runtime.Hosting
             var renameResourceService = new RenameResource();
             var mockedWorkspace = new Mock<IWorkspace>();
             mockedWorkspace.Setup(ws => ws.ID).Returns(workspace);
+            Directory.CreateDirectory(string.Concat(_testDir, "\\Workspaces\\"));
+            Directory.CreateDirectory(string.Concat(_testDir, "\\Workspaces\\", workspace));
+            Directory.CreateDirectory(string.Concat(_testDir, "\\Workspaces\\", workspace, "\\Services\\"));
             File.WriteAllText(resourceFilePath, "<TestResource Name=\"" + oldResourceName + "\" />", Encoding.UTF8);
 
             //------------Execute Test---------------------------
