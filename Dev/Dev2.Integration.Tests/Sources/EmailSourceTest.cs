@@ -16,7 +16,7 @@ namespace Dev2.Integration.Tests.Sources
         const int SmtpTimeout = 30000;
 
         [TestMethod]
-       
+        [Ignore]
         public void EmailSourcesTest_YAHOO()
         {
             var source = CreateYahooSource().ToString();
@@ -27,7 +27,7 @@ namespace Dev2.Integration.Tests.Sources
         }
 
         [TestMethod]
-       
+        [Ignore]
         public void EmailSourcesTest_GMAIL_SSL()
         {
             var source = CreateGmailSource().ToString();
@@ -38,7 +38,7 @@ namespace Dev2.Integration.Tests.Sources
         }
 
         [TestMethod]
-       
+        [Ignore]
         public void EmailSourcesTest_HOTMAIL_SSL()
         {
             var source = CreateWindowsLiveSource().ToString();
@@ -49,7 +49,7 @@ namespace Dev2.Integration.Tests.Sources
         }
 
         [TestMethod]
-       
+        [Ignore]
         public void EmailSourcesTest_LOCAL()
         {
             var source = CreateLocalSource().ToString();

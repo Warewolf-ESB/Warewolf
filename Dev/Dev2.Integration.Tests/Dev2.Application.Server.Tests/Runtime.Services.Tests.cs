@@ -22,7 +22,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         #region Successfully saving and loading 
 
         [TestMethod]
-       
+        [Ignore]
         public void LoadExpectedXmlReturnedProperly()
         {
             string webServerAddress = ServerSettings.WebserverURI.Replace("services/", "wwwroot/sources/pluginsource?rid=2f93aa19-d507-4ed0-9b7e-a8b1b07ce12f#");
@@ -179,7 +179,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         // http://127.0.0.1:1234/services/Bug9394
 
         [TestMethod]
-       
+        [Ignore]
         public void TestDomainUserCanExecut()
         {
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug9394");

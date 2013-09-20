@@ -67,7 +67,7 @@ namespace Dev2.Integration.Tests
         /// Created to ensure baseline sanity for resumption bugs.... I am sick of fixing them ;)
         /// </summary>
         [TestMethod]
-       
+        [Ignore]
         public void Ensure_Wizards_Can_Resume()
         {
             WebRequest wr = WebRequest.Create("http://localhost:1234/services/Button.wiz");
@@ -137,7 +137,7 @@ namespace Dev2.Integration.Tests
         /// Created to ensure baseline sanity for resumption bugs.... I am sick of fixing them ;)
         /// </summary>
         [TestMethod]
-       
+        [Ignore]
         public void Ensure_Wizards_Can_Use_Output_Mapping()
         {
 

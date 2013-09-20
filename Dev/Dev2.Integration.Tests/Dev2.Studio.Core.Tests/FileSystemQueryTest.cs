@@ -9,7 +9,7 @@ namespace Dev2.Core.Tests
     {
 
         [TestMethod]
-       
+        [Ignore]
         public void QueryListWhereNothingPassedExpectListOfDrives()
         {
             //------------Setup for test--------------------------
@@ -21,7 +21,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-       
+        [Ignore]
         public void QueryListWhereDrivePassedExpectFoldersAndFilesOnDrive()
         {
             //------------Setup for test--------------------------
@@ -33,7 +33,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-       
+        [Ignore]
         public void QueryListWhereDriveAndFolderPassedNoSlashExpectFolder()
         {
             //------------Setup for test--------------------------
@@ -67,7 +67,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-       
+        [Ignore]
         public void QueryListWhereNoNetworkExpectFolderNetworkShareInformation()
         {
             //------------Setup for test--------------------------
@@ -79,7 +79,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-       
+        [Ignore]
         public void QueryListWhereNetworkPathExpectFolderNetworkShareInformation()
         {
             //------------Setup for test--------------------------
@@ -91,7 +91,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-       
+        [Ignore]
         public void QueryListWherePartialNetworkPathExpectFolderNetworkShareInformation()
         {
             //------------Setup for test--------------------------
@@ -103,7 +103,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-       
+        [Ignore]
         public void QueryListWhereNetworkPathHasFilesExpectFolderWithFilesNetworkShareInformation()
         {
             //------------Setup for test--------------------------
@@ -116,7 +116,7 @@ namespace Dev2.Core.Tests
 
 
         [TestMethod]
-       
+        [Ignore]
         public void QueryListWhereNetworkPathHasFolderExpectFolderInformation()
         {
             //------------Setup for test--------------------------
@@ -139,7 +139,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-       
+        [Ignore]
         public void QueryListWhereNetworkPathHasMiddleOfFileExpectFileInformation()
         {
             //------------Setup for test--------------------------
