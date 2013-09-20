@@ -346,6 +346,9 @@
     <EmbeddedResource Include="XML\say world.xml" />
     <EmbeddedResource Include="XML\server - tfs bld.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\EmailTest.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

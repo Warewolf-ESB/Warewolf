@@ -223,6 +223,23 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(ResourceType.Server,serverDependency.ResourceType);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Resource_LoadDependencies")]
+        public void Resource_LoadDependencies_HasEmailSource_ShouldHaveEmailSourceInDepencyList()
+        {
+            //------------Setup for test--------------------------
+            XElement element = XmlResource.Fetch("EmailTest");            
+            //------------Execute Test---------------------------
+            var resource = new Resource(element);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(resource);
+            Assert.IsNotNull(resource.Dependencies);
+            Assert.AreEqual(1, resource.Dependencies.Count);
+            Assert.AreEqual("TestEmailSource", resource.Dependencies[0].ResourceName);
+            Assert.AreEqual("988e1146-ddb8-456d-8a01-4377a707605b", resource.Dependencies[0].ResourceID.ToString());
+        }
+
         string GetValidXMLString()
         {
             return "<Service Name=\"Bug6619\" ID=\"1736ca6e-b870-467f-8d25-262972d8c3e8\" ServerID=\"51a58300-7e9d-4927-a57b-e5d700b11b55\" IsValid=\"true\">" +

@@ -486,11 +486,40 @@ namespace Dev2.Runtime.ServiceModel.Data
                         AddRemoteServerDependencies(element);
                     });
                 }
+                AddEmailSources(elementToUse);
             }
             catch(Exception e)
             {
                 var resName = xml.AttributeSafe("Name");
                 errors.AppendLine("Loading dependencies for [ " + resName + " ] caused " + e.Message);
+            }
+        }
+
+        void AddEmailSources(XElement elementToUse)
+        {
+            if(elementToUse == null)
+            {
+                return;
+            }
+            if(Dependencies == null)
+            {
+                Dependencies = new List<ResourceForTree>();
+            }
+            var dependenciesFromXml = from desc in elementToUse.Descendants()
+                where desc.Name.LocalName.Contains("EmailSource") && desc.HasAttributes
+                select desc;
+            var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
+            var count = xElements.Count();
+            if(count == 1)
+            {
+                var element = xElements[0];
+                var resourceIDAsString = element.AttributeSafe("ResourceID");
+                var resourceName = element.AttributeSafe("ResourceName");
+                var actionTypeStr = element.AttributeSafe("Type");
+                var resourceType = GetResourceTypeFromString(actionTypeStr);
+                Guid resID;
+                Guid.TryParse(resourceIDAsString, out resID);
+                Dependencies.Add(CreateResourceForTree(resID, Guid.Empty, resourceName, resourceType));
             }
         }
 
