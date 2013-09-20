@@ -195,6 +195,7 @@ namespace Dev2.Studio.UI.Tests
             //Note that this point is a position relative to the multi assign on the design surface. This is to ensure that the tool is dropped exactly on the line
             var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 300);
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
+            Playback.Wait(2000);
             DecisionWizardUIMap.ClickDone();
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
             DecisionWizardUIMap.ClickDone();
@@ -211,6 +212,7 @@ namespace Dev2.Studio.UI.Tests
             var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
             //Drag a control to the design surface
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
+            Playback.Wait(2000);
             DecisionWizardUIMap.ClickDone();
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
