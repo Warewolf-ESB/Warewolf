@@ -147,6 +147,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 int pos = 0;
                                 int end = (ResultsCollection.Count - 1);
                                 
+                                // track used tokens so we can adjust flushing ;)
+                                HashSet<string> usedTokens = new HashSet<string>();
+
                                 while (tokenizer.HasMoreOps() && !exit)
                                 {
                                      tmp = tokenizer.NextToken();
@@ -158,6 +161,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                                         foreach(var region in DataListCleaningUtils.SplitIntoRegions(outputVariable))
                                         {
+                                            // if it already exist, flush this round ;)
+                                            if (!usedTokens.Add(region))
+                                            {
+                                                toUpsert.FlushIterationFrame();
+                                            }
+                                            
                                             toUpsert.Add(region, tmp);
                                         }
                                     }
@@ -167,6 +176,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     {
                                         pos = 0;
                                         opCnt++;                                     
+
+                                        // clear token cache
+                                        usedTokens.Clear();
 
                                         toUpsert.FlushIterationFrame();
 
@@ -183,8 +195,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                                 // flush the final frame ;)
 
-                                toUpsert.FlushIterationFrame(true);
-                                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                                toUpsert.FlushIterationFrame();
+
+                                if (dataObject.IsDebugMode())
                                 {
                                     int innerCount = 1;
                                     foreach(DataSplitDTO dataSplitDto in ResultsCollection)
@@ -192,7 +205,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         var outputVariable = ResultsCollection[innerCount-1].OutputVariable;
                                     if (outputVariable.Contains("()."))
                                     {
-                                        outputVariable = outputVariable.Remove(outputVariable.IndexOf(".", System.StringComparison.Ordinal));
+                                            outputVariable = outputVariable.Remove(outputVariable.IndexOf(".", StringComparison.Ordinal));
                                         outputVariable = outputVariable.Replace("()", "(*)")+"]]";
                                     }
                                         IBinaryDataListEntry binaryDataListEntry = compiler.Evaluate(dlID, enActionType.User, outputVariable, false, out errors);
@@ -285,15 +298,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugInputs.Add(itemToAdd);
         }
 
-        private void AddDebugOutputItem(string expression, string value, int indexCount, Guid dlId)
-        {
-            DebugItem itemToAdd = new DebugItem();
-
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCount.ToString(CultureInfo.InvariantCulture) });
-
-            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId,0, enDev2ArgumentType.Output));
-            _debugOutputs.Add(itemToAdd);
-        }
 
         private void AddDebugOutputItemFromEntry(string expression, IBinaryDataListEntry value, int indexCount, Guid dlId)
         {
@@ -301,7 +305,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCount.ToString(CultureInfo.InvariantCulture) });
 
-            itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, value, dlId, enDev2ArgumentType.Output, -1));
+            itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, value, dlId, enDev2ArgumentType.Output));
             _debugOutputs.Add(itemToAdd);
         }
 
@@ -532,41 +536,41 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if(updates != null)
             {
-                foreach (Tuple<string, string> t in updates)
+            foreach (Tuple<string, string> t in updates)
+            {
+                // locate all updates for this tuple
+                var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.At) && c.At.Equals(t.Item1));
+
+                // issues updates
+                foreach (var a in items)
                 {
-                    // locate all updates for this tuple
-                    var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.At) && c.At.Equals(t.Item1));
+                    a.At = t.Item2;
+                }
 
-                    // issues updates
-                    foreach (var a in items)
-                    {
-                        a.At = t.Item2;
-                    }
-
-                    if (SourceString == t.Item1)
-                    {
-                        SourceString = t.Item2;
-                    }
+                if (SourceString == t.Item1)
+                {
+                    SourceString = t.Item2;
                 }
             }
+        }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
             if(updates != null)
             {
-                foreach (Tuple<string, string> t in updates)
-                {
-                    // locate all updates for this tuple
-                    var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.OutputVariable) && c.OutputVariable.Equals(t.Item1));
+            foreach (Tuple<string, string> t in updates)
+            {
+                // locate all updates for this tuple
+                var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.OutputVariable) && c.OutputVariable.Equals(t.Item1));
 
-                    // issues updates
-                    foreach (var a in items)
-                    {
-                        a.OutputVariable = t.Item2;
-                    }
+                // issues updates
+                foreach (var a in items)
+                {
+                    a.OutputVariable = t.Item2;
                 }
             }
+        }
         }
 
         #endregion

@@ -44,6 +44,107 @@ namespace Dev2.Tests.Activities.ActivityTests
         //
         #endregion
 
+
+
+        #region Funky Language
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfDataMergeActivity_Execute")]
+        public void DsfDataSplitActivity_Execute_WhenUsingAppendAndMixedSplitType_ExpectCorrectSplit()
+        {
+
+            //------------Setup for test--------------------------
+
+            _resultsCollection.Add(new DataSplitDTO("[[rs().col1]]", "Chars", "|", 1));
+            _resultsCollection.Add(new DataSplitDTO("[[rs().col2]]", "Chars", "|", 2));
+            _resultsCollection.Add(new DataSplitDTO("[[rs().col3]]", "New Line", "", 3));
+            _resultsCollection.Add(new DataSplitDTO("[[rs().data]]", "New Line", "", 4));
+            _resultsCollection.Add(new DataSplitDTO("[[rs().data]]", "New Line", "", 5));
+
+            SetupArguments("<ADL><testData>RSA ID|FirstName|LastName" + Environment.NewLine +
+                           "13456456789|Samantha Some|Jones" + Environment.NewLine +
+                           "09123456646|James|Apple</testData></ADL>",
+                           "<ADL><rs><col1/><col2/><col3/><data/></rs><testData/></ADL>",
+                           "[[testData]]",
+                           _resultsCollection);
+
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+            string error;
+
+            var col1List = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "col1", out error);
+            var col2List = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "col2", out error);
+            var col3List = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "col3", out error);
+            var dataList = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "data", out error);
+            
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            //------------Assert Results-------------------------
+
+            var col1Expected = new List<string>() {"RSA ID",""};
+            var col2Expected = new List<string>() { "FirstName", "" };
+            var col3Expected = new List<string>() { "LastName", "" };
+            var dataExpected = new List<string>() { "13456456789|Samantha Some|Jones", "09123456646|James|Apple" };
+
+            var comparer = new ActivityUnitTests.Utils.StringComparer();
+            CollectionAssert.AreEqual(col1Expected, col1List, comparer);
+            CollectionAssert.AreEqual(col2Expected, col2List, comparer);
+            CollectionAssert.AreEqual(col3Expected, col3List, comparer);
+            CollectionAssert.AreEqual(dataExpected, dataList, comparer);
+        }
+
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfDataMergeActivity_Execute")]
+        public void DsfDataSplitActivity_Execute_WhenUsingStarAndMixedSplitType_ExpectCorrectSplit()
+        {
+
+            //------------Setup for test--------------------------
+
+            _resultsCollection.Add(new DataSplitDTO("[[rs().col1]]", "Chars", "|", 1));
+            _resultsCollection.Add(new DataSplitDTO("[[rs().col2]]", "Chars", "|", 2));
+            _resultsCollection.Add(new DataSplitDTO("[[rs().col3]]", "New Line", "", 3));
+            _resultsCollection.Add(new DataSplitDTO("[[rs(*).data]]", "New Line", "", 4));
+            _resultsCollection.Add(new DataSplitDTO("[[rs(*).data]]", "New Line", "", 5));
+
+            SetupArguments("<ADL><testData>RSA ID|FirstName|LastName" + Environment.NewLine +
+                           "13456456789|Samantha Some|Jones" + Environment.NewLine +
+                           "09123456646|James|Apple</testData></ADL>",
+                           "<ADL><rs><col1/><col2/><col3/><data/></rs><testData/></ADL>",
+                           "[[testData]]",
+                           _resultsCollection);
+
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+            string error;
+
+            var col1List = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "col1", out error);
+            var col2List = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "col2", out error);
+            var col3List = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "col3", out error);
+            var dataList = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "data", out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            //------------Assert Results-------------------------
+
+            var col1Expected = new List<string>() { "RSA ID", ""};
+            var col2Expected = new List<string>() { "FirstName","" };
+            var col3Expected = new List<string>() { "LastName","" };
+            var dataExpected = new List<string>() { "13456456789|Samantha Some|Jones", "09123456646|James|Apple" };
+
+            var comparer = new ActivityUnitTests.Utils.StringComparer();
+            CollectionAssert.AreEqual(col1Expected, col1List, comparer);
+            CollectionAssert.AreEqual(col2Expected, col2List, comparer);
+            CollectionAssert.AreEqual(col3Expected, col3List, comparer);
+            CollectionAssert.AreEqual(dataExpected, dataList, comparer);
+        }
+
+        #endregion
+
         [TestMethod] // - OK
         public void EmptySourceString_Expected_No_Splits()
         {
