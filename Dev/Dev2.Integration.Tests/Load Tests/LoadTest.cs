@@ -7,7 +7,7 @@ namespace Dev2.Integration.Tests.Load_Tests
     /// <summary>
     /// Summary description for LoadTest
     /// </summary>
-    [TestClass]
+    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
     public class LoadTest
     {
         public LoadTest()

@@ -11,7 +11,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     /// <summary>
     /// Summary description for DsfDataSplitActivityWFTests
     /// </summary>
-    [TestClass]
+    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
     public class DsfDataSplitActivityWFTests
     {
         string WebserverURI = ServerSettings.WebserverURI;

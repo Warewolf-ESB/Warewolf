@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Internal_Services
 {
-    [TestClass]
+    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
     public class GetDebugStateTests
     {
     }

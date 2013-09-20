@@ -7,7 +7,7 @@ namespace Dev2.Integration.Tests.Activities
     /// <summary>
     /// Please place any bug integration test not specific to tooling here ;)
     /// </summary>
-    [TestClass]
+    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
     public class GeneralWorkflowTest
     {
         readonly string _webserverUri = ServerSettings.WebserverURI;

@@ -6,7 +6,7 @@ namespace Dev2.Integration.Tests.Internal_Services
     /// <summary>
     /// Summary description for SystemServices
     /// </summary>
-    [TestClass]
+    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
     public class RenameResourceCategoryServicesTest
     {
         private string _webServerURI = ServerSettings.WebserverURI;

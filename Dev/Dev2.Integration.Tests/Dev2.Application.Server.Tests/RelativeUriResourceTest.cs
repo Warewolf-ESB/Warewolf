@@ -7,7 +7,7 @@ using Dev2.Integration.Tests.Helpers;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 {
-    [TestClass]
+    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
     public class RelativeUriResourceTest
     {
         private const string _workflowName = "RelativeUriResourceTest";
