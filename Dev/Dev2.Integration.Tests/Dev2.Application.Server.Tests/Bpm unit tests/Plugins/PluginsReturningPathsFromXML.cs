@@ -10,7 +10,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests.Pl
     {
         // Bug 7820
         [TestMethod]
-        [Ignore]
+       
         public void TestPluginsReturningPathsFromXML(){
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "PluginsReturningPathsFromXML");
             string expected = @"Company().OuterNestedRecordSet().InnerNestedRecordSet:ItemValue";

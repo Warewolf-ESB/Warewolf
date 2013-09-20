@@ -62,7 +62,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests.En
 
 
         [TestMethod]
-        [Ignore]
+       
         public void AssemblyTypeEndpoint_PocoResponse_Expected_AllFieldsReturnedForPoco()
         {
             //string postValue = @"ServiceType=Plugin&assemblyLocation=Plugins/Dev2.AnytingToXmlHook.Plugin.dll&assemblyName=Dev2.AnytingToXmlHook.Plugin.AnythignToXmlHookPlugin&method=EmitComplex&args=Nothing";
