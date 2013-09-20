@@ -378,32 +378,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             Guid id;
 
-            // This is the issue, data.GetValue("") causes problems when using ID as a data list variable ;)
-
-            // We CANNOT USE .GetValue because is causes issues when datalist items have the same name, silly unlimited object ;(
             Guid.TryParse(data.GetValue("ID"), out id);
-
-            // HACK FOR BENCHMARK!! ;)
-            if (id == Guid.Empty)
-            {
-                const string magicStr = "ID=\"";
-                string tmp = data.XmlString;
-
-                int idx = tmp.IndexOf(magicStr, StringComparison.Ordinal);
-                if (idx > 0)
-                {
-                    idx += 4;
-                }
-
-                int end = tmp.IndexOf("\"", idx, StringComparison.Ordinal);
-
-                if (end > 0)
-                {
-                    var len = (end - idx);
-                    var myID = tmp.Substring(idx, len);
-                    Guid.TryParse(myID, out id);
-                }
-            }
 
             //2013.05.15: Ashley Lewis - Bug 9348 updates force hydration, initialization doesn't
             if (!IsInCache(id) || forced)
