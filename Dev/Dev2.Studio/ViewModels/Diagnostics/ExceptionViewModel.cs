@@ -49,6 +49,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public string ServerLogTempPath { get; set; }
 
+        public string StudioLogTempPath { get; set; }
+
         /// <summary>
         /// Gets or sets the exception ui wrapper, using a collection to bind a treeview to it.
         /// </summary>

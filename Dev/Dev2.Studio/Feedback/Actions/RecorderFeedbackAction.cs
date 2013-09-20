@@ -1,4 +1,5 @@
-﻿using Dev2.Composition;
+﻿using System.Collections.Generic;
+using Dev2.Composition;
 using Dev2.Studio.AppResources.Exceptions;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Controller;
@@ -128,8 +129,7 @@ namespace Dev2.Studio.Feedback.Actions
                 MessageBoxResult result = Popup.Show("The recording session cannot start at this time, would you like to send a standard email feedback?", "Recording Not Started", MessageBoxButton.YesNoCancel, MessageBoxImage.Error);
                 if (result == MessageBoxResult.Yes)
                 {
-                    
-                    new FeedbackInvoker().InvokeFeedback(Factory.FeedbackFactory.CreateEmailFeedbackAction("", ServerUtil.GetLocalhostServer().Environment));
+                    new FeedbackInvoker().InvokeFeedback(Factory.FeedbackFactory.CreateEmailFeedbackAction(new Dictionary<string, string>(), ServerUtil.GetLocalhostServer().Environment));
                     TryCancelFeedback();
                 }
                 else completedResult = feedbackRecordingProcessFailedToStartException;
@@ -179,8 +179,12 @@ namespace Dev2.Studio.Feedback.Actions
                 }
                 return;
             }
-            var attachments = _outputPath + ";" + FileHelper.GetServerLogTempPath(environmentModel);
-            IFeedbackAction emailFeedbackAction = new EmailFeedbackAction(attachments, environmentModel);
+           
+            var attachedFiles = new Dictionary<string, string>();
+            attachedFiles.Add("RecordingLog", _outputPath);
+            attachedFiles.Add("ServerLog", FileHelper.GetServerLogTempPath(environmentModel));
+            attachedFiles.Add("StudioLog", FileHelper.GetStudioLogTempPath());
+            IFeedbackAction emailFeedbackAction = new EmailFeedbackAction(attachedFiles, environmentModel);
             //ImportService.SatisfyImports(emailFeedbackAction);
 
             if (_onCompleted != null)

@@ -18,8 +18,8 @@ namespace Dev2.Providers.Logs
         static void WriteEntry(string message, string type, string module)
         {
             Trace.WriteLine(
-                string.Format("{0},{1},{2},{3}",
-                    DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                string.Format("{0} :: {1} -> {2}  {3}",
+                    DateTime.Now,
                     type,
                     module,
                     message));

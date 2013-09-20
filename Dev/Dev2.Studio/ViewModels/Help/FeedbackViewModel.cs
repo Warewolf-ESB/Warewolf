@@ -36,21 +36,22 @@ namespace Dev2.Studio.ViewModels.Help
         private bool _updateCaretPosition;
         private string _recordingAttachmentPath;
         private string _serverlogAttachmentPath;
+        private string _studiologAttachmentPath;
         #endregion
 
         #region ctors and init
 
         public FeedbackViewModel()
-            : this("")
+            : this(new Dictionary<string, string>())
         {
         }
 
-        public FeedbackViewModel(string attachmentPath)
+        public FeedbackViewModel(Dictionary<string, string> attachedFiles)
         {
             SysInfoService = ImportService.GetExportValue<ISystemInfoService>();
 
             var sysInfo = SysInfoService.GetSystemInfo();
-            Init(sysInfo, attachmentPath);
+            Init(sysInfo, attachedFiles);
             SelectedCategory = "Feedback";
             DisplayName = "Feedback";
         }
@@ -59,37 +60,21 @@ namespace Dev2.Studio.ViewModels.Help
         /// Inits the viewmodel with the specified sys info, and setups the default categories.
         /// </summary>
         /// <param name="sysInfo">The sys info.</param>
-        /// <param name="attachmentPath">path to the attachment</param>
+        /// <param name="attachedFiles">path to the attachment</param>
         /// <author>Jurie.smit</author>
         /// <datetime>2013/01/14-09:19 AM</datetime>
-        private void Init(SystemInfoTO sysInfo, string attachmentPath)
+        private void Init(SystemInfoTO sysInfo, Dictionary<string, string> attachedFiles)
         {
             Comment = null;
-            if (!string.IsNullOrEmpty(attachmentPath))
-            {
-                if (attachmentPath.Contains(";"))
-                {
-                    var listOfPaths = attachmentPath.Split(';').ToList();
-                    if (listOfPaths.Count == 2)
-                    {
-                        RecordingAttachmentPath = listOfPaths[0];
-                        ServerLogAttachmentPath = listOfPaths[1];
-                    }
-                    else
-                    {
-                        throw new ArgumentException(StringResources.FeedbackViewModel_Init_ArgException, "attachmentPath");
-                    }
-                }
-                else
-                {
-                    throw new ArgumentException(StringResources.FeedbackViewModel_Init_ArgException, "attachmentPath");
-                }
-            }
+
+            ServerLogAttachmentPath = attachedFiles.Where(f => f.Key.Equals("ServerLog", StringComparison.CurrentCulture)).Select(v => v.Value).SingleOrDefault();
+            StudioLogAttachmentPath = attachedFiles.Where(f => f.Key.Equals("StudioLog", StringComparison.CurrentCulture)).Select(v => v.Value).SingleOrDefault();
+            RecordingAttachmentPath = attachedFiles.Where(f => f.Key.Equals("RecordingLog", StringComparison.CurrentCulture)).Select(v => v.Value).SingleOrDefault();
 
             Comment = GenerateDefaultComment(sysInfo);
             SetCaretPosition();
             Categories.AddRange(new List<string> { "General", "Compliment", "Feature request", "Bug", "Feedback" });
-            if(!String.IsNullOrWhiteSpace(attachmentPath)) SelectedCategory = "Feedback";
+            if(attachedFiles.Count > 0) SelectedCategory = "Feedback";
         }
 
         #endregion
@@ -232,6 +217,28 @@ namespace Dev2.Studio.ViewModels.Help
         }
 
         /// <summary>
+        /// Gets or sets the log file attachement path.
+        /// </summary>
+        /// <value>
+        /// The attachement path.
+        /// </value>
+        public string StudioLogAttachmentPath
+        {
+            get
+            {
+                return _studiologAttachmentPath;
+            }
+            set
+            {
+                if(_studiologAttachmentPath == value) return;
+
+                _studiologAttachmentPath = value;
+                NotifyOfPropertyChange(() => StudioLogAttachmentPath);
+                NotifyOfPropertyChange(() => HasStudioLogAttachment);
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this instance has a recording file attachment.
         /// </summary>
         /// <value>
@@ -259,36 +266,21 @@ namespace Dev2.Studio.ViewModels.Help
             }
         }
 
+
         /// <summary>
-        /// Gets a value indicating this instance does not have a log file attachment and where to find it.
+        /// Gets a value indicating whether this instance has a log file attachment.
         /// </summary>
         /// <value>
-        /// The message displayed to the user.
+        /// <c>true</c> if this instance has an attachment; otherwise, <c>false</c>.
         /// </value>
-        public string ServerLogFileMessage
+        public bool HasStudioLogAttachment
         {
             get
             {
-                string messageText = null;
-                foreach(var model in EnvironmentRepository.Instance.All())
-                {
-                    if(messageText == null)
-                    {
-                        messageText = StringResources.Server_log_file_could_not_be_found;
-                    }
-                    if(!model.IsLocalHost())
-                    {
-                        messageText += "\n\\\\" + model.Connection.AppServerUri.Host + "\\..\\Program Files\\Warewolf\\ServerLog.txt";
-                    }
-                    else
-                    {
-                        messageText += "\n" + Assembly.GetExecutingAssembly().Location.Replace("Warewolf Studio.exe", "ServerLog.txt");
-                    }
-                }
-                return messageText;
+                return File.Exists(StudioLogAttachmentPath);
             }
         }
-
+        
         /// <summary>
         /// Gets or sets the sys info service to retreieve system info from.
         /// </summary>
@@ -437,16 +429,26 @@ namespace Dev2.Studio.ViewModels.Help
                 Content = Comment
             };
 
+            string attachments = "";
+
             if(HasRecordingAttachment)
             {
-                message.AttachmentLocation = RecordingAttachmentPath;
-            }
-            if(HasServerLogAttachment)
-            {
-                message.AttachmentLocation = string.Concat(HasRecordingAttachment?message.AttachmentLocation + ";":null,
-                                                            ServerLogAttachmentPath);
+                attachments += !string.IsNullOrEmpty(RecordingAttachmentPath) ? RecordingAttachmentPath : "";
             }
 
+            if(HasServerLogAttachment)
+            {
+                attachments += !string.IsNullOrEmpty(attachments) ? ";" : "";
+                attachments += !string.IsNullOrEmpty(ServerLogAttachmentPath) ? ServerLogAttachmentPath : "";
+            }
+
+            if(HasStudioLogAttachment)
+            {
+                attachments += !string.IsNullOrEmpty(attachments) ? ";" : "";
+                attachments += !string.IsNullOrEmpty(StudioLogAttachmentPath) ? StudioLogAttachmentPath : "";
+            }
+
+            message.AttachmentLocation = attachments;
             commService.SendCommunication(message);
             RequestClose(ViewModelDialogResults.Okay);
         }

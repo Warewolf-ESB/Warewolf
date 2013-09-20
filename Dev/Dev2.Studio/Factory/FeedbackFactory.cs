@@ -12,9 +12,9 @@ namespace Dev2.Studio.Factory
 {
     public static class FeedbackFactory
     {
-        public static IFeedbackAction CreateEmailFeedbackAction(string attachmentPath, IEnvironmentModel server)
+        public static IFeedbackAction CreateEmailFeedbackAction(Dictionary<string ,string> attachedFiles, IEnvironmentModel server)
         {
-            var emailFeedbackAction = new EmailFeedbackAction(attachmentPath, server);
+            var emailFeedbackAction = new EmailFeedbackAction(attachedFiles, server);
             ImportService.SatisfyImports(emailFeedbackAction);
             return emailFeedbackAction;
         }

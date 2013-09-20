@@ -526,7 +526,7 @@ Would you like to start the setup now?</value>
   <data name="DialogBody_HasDependencies" xml:space="preserve">
     <value>The {0} {1} cannot be deleted because something depends on it.</value>
   </data>
-    <data name="DialogBody_HasDuplicateName" xml:space="preserve">
+  <data name="DialogBody_HasDuplicateName" xml:space="preserve">
     <value>The {0} {1} cannot be renamed because a resource with that name already exists on the same server.</value>
   </data>
   <data name="DialogBody_MissingWizard" xml:space="preserve">
@@ -538,7 +538,7 @@ Would you like to start the setup now?</value>
   <data name="DialogTitle_HasDependencies" xml:space="preserve">
     <value>{0} has dependants</value>
   </data>
-    <data name="DialogTitle_HasDuplicateName" xml:space="preserve">
+  <data name="DialogTitle_HasDuplicateName" xml:space="preserve">
     <value>{0} exists</value>
   </data>
   <data name="DialogTitle_MissingWizard" xml:space="preserve">
@@ -759,9 +759,6 @@ Would you like to start the setup now?</value>
   </data>
   <data name="FeedbackViewModel_Init_ArgException" xml:space="preserve">
     <value>AttachmentPath must contain exactly one semicolon seperator, between recording log file and server log file.</value>
-  </data>
-  <data name="Server_log_file_could_not_be_found" xml:space="preserve">
-    <value>Server log file could not be found at this location:</value>
   </data>
   <data name="MappingChangedWarningDialogTitle" xml:space="preserve">
     <value>Inputs / Outputs Changed</value>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Dev2.Composition;
@@ -120,12 +121,24 @@ namespace Dev2.Studio.Factory
                     StackTrace = e.StackTrace,
                     OutputPath = FileHelper.GetUniqueOutputPath(".txt"),
                     ServerLogTempPath = FileHelper.GetServerLogTempPath(environmentModel),
+                    StudioLogTempPath = FileHelper.GetStudioLogTempPath(),
                     DisplayName = isCritical == ErrorSeverity.Critical ? StringResources.CritErrorTitle : StringResources.ErrorTitle,
                     Critical = isCritical == ErrorSeverity.Critical
                 };
 
-            string attachmentPath = ";" + vm.ServerLogTempPath;
-            vm.FeedbackAction = FeedbackFactory.CreateEmailFeedbackAction(attachmentPath, environmentModel);
+            var attachedFiles = new Dictionary<string ,string>();
+            
+            if(!string.IsNullOrWhiteSpace(vm.ServerLogTempPath))
+            {
+                attachedFiles.Add("ServerLog", vm.ServerLogTempPath);
+            }
+
+            if(!string.IsNullOrWhiteSpace(vm.StudioLogTempPath))
+            {
+                attachedFiles.Add("StudioLog", vm.StudioLogTempPath);
+            }
+
+            vm.FeedbackAction = FeedbackFactory.CreateEmailFeedbackAction(attachedFiles, environmentModel);
             ImportService.SatisfyImports(vm);
             vm.Exception.Clear();
             vm.Exception.Add(Create(e, isCritical == ErrorSeverity.Critical));

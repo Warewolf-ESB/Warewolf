@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Text;
 using Dev2.Common;
 using Dev2.Studio.Core.Interfaces;
 using Ionic.Zip;
@@ -129,18 +130,45 @@ namespace Dev2.Studio.Core.Helpers
             if (!string.IsNullOrEmpty(serverLogData))
             {
                 string uniqueOutputPath = GetUniqueOutputPath(".txt");
-                CreateTextFile(serverLogData, uniqueOutputPath);
-                string sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);
-                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueOutputPath);
-                string destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
-                ZipFile zip = new ZipFile();
-                zip.AddFile(uniqueOutputPath, ".");
-                zip.Save(destinationArchiveFileName);
-                return destinationArchiveFileName;
+                return CreateATemporaryFile(serverLogData, uniqueOutputPath);
             }
             return null;
         }
-        
+
+        public static string GetStudioLogTempPath()
+        {
+            var studioLog = Path.Combine(Environment.CurrentDirectory, "Warewolf Studio.log");
+            
+            if(File.Exists(studioLog))
+            {
+
+                string fileContent;
+                using(var fs = new FileStream(studioLog, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using(var sr = new StreamReader(fs, Encoding.Default))
+                {
+                    fileContent = sr.ReadToEnd();
+                }
+
+                string uniqueOutputPath = GetUniqueOutputPath(".txt");
+                return CreateATemporaryFile(fileContent, uniqueOutputPath);
+            }
+            return null;
+        }
+
+        private static string CreateATemporaryFile(string fileContent, string uniqueOutputPath)
+        {
+            CreateTextFile(fileContent, uniqueOutputPath);
+            string sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueOutputPath);
+            string destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
+            using(var zip = new ZipFile())
+            {
+                zip.AddFile(uniqueOutputPath, ".");
+                zip.Save(destinationArchiveFileName);
+            }
+            return destinationArchiveFileName;
+        }
+
         public static string GetDebugItemTempFilePath(string uri)
         {
             if(String.IsNullOrEmpty(uri))

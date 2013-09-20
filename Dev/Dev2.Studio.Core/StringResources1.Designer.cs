@@ -907,15 +907,6 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Server log file could not be found at this location:.
-        /// </summary>
-        public static string Server_log_file_could_not_be_found {
-            get {
-                return ResourceManager.GetString("Server_log_file_could_not_be_found", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to ResourceUpload.
         /// </summary>
         public static string Services_Add_Resource {
