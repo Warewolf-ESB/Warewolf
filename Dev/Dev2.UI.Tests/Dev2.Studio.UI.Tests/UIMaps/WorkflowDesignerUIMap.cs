@@ -27,6 +27,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         /// <returns>Returns the control as a UITestControl object</returns>
         public UITestControl FindControlByAutomationId(UITestControl theTab, string controlAutomationId)
         {
+            if (theTab == null)
+            {
+                throw new ArgumentNullException("theTab");
+            }
             // Unless the UI drastically changes (In which case most Automation tests will fail),
             // the order will remain constant
 

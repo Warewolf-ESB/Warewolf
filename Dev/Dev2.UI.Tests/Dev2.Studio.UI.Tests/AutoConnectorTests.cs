@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Drawing;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
@@ -148,12 +149,20 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("AutoConnectorResource");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "AutoConnectorResource");
-            var control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "DsfMultiAssignActivityDesigner");
+            var activeTab = TabManagerUIMap.GetActiveTab();
+            var control = WorkflowDesignerUIMap.FindControlByAutomationId(activeTab, "DsfMultiAssignActivityDesigner");
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             //Drag a tool to the design surface
             //Note that this point is a position relative to the multi assign on the design surface. This is to ensure that the tool is dropped exactly on the line
-            var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 300);
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
+            if (control != null)
+            {
+                var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 300);
+                ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
+            }
+            else
+            {
+                throw new Exception("DsfMultiAssignActivityDesigner not found on active tab");
+            }
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert that the line was split
             Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
@@ -174,8 +183,16 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("email service");
             //Note that this point is a position relative to the multi assign on the design surface. This is to ensure that the tool is dropped exactly on the line
-            var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 300);
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", point);
+            if (control != null)
+            {
+                var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 300);
+                ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service",
+                                                            point);
+            }
+            else
+            {
+                throw new Exception("DsfMultiAssignActivityDesigner not found on active tab");
+            }
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
             Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
@@ -193,8 +210,15 @@ namespace Dev2.Studio.UI.Tests
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             //Drag a decision to the design surface
             //Note that this point is a position relative to the multi assign on the design surface. This is to ensure that the tool is dropped exactly on the line
-            var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 300);
-            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
+            if (control != null)
+            {
+                var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 300);
+                ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
+            }
+            else
+            {
+                throw new Exception("DsfMultiAssignActivityDesigner not found on active tab");
+            }
             Playback.Wait(5000);
             DecisionWizardUIMap.ClickDone();
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
