@@ -91,7 +91,7 @@ namespace Dev2.Runtime.ServiceModel
 
             if (!String.IsNullOrEmpty(args))
             {
-                ResourceIterator.Instance.Iterate(new[] { "Services", "Sources" }, workspaceID, iteratorResult =>
+                ResourceIterator.Instance.Iterate(RootFolders.Select(c => c.Value).Distinct().ToArray() , workspaceID, iteratorResult =>
                 {
                     string resourceType;
                     if (iteratorResult.Values.TryGetValue(3, out resourceType))

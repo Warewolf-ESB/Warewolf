@@ -35,19 +35,16 @@ namespace Dev2.Common.Utils
         /// <returns></returns>
         public static string ReplaceSlashes(string stringToReplaceIn)
         {
-            if(stringToReplaceIn.Contains("\\") || stringToReplaceIn.Contains("//"))
+            int indexOfSlash = stringToReplaceIn.IndexOf("\\", StringComparison.InvariantCulture);
+            if(indexOfSlash != -1)
             {
-                int indexOfSlash = stringToReplaceIn.IndexOf("\\", StringComparison.InvariantCulture);
-                if(indexOfSlash != -1)
+                if(indexOfSlash == stringToReplaceIn.Length - 1 || stringToReplaceIn[indexOfSlash + 1] != '"')
                 {
-                    if(stringToReplaceIn[indexOfSlash+1] != '"')
-                    {
-                        stringToReplaceIn = stringToReplaceIn.Remove(indexOfSlash, 1);
-                        stringToReplaceIn = stringToReplaceIn.Insert(indexOfSlash, "/");
-                        stringToReplaceIn = ReplaceSlashes(stringToReplaceIn);
-                    }
+                    stringToReplaceIn = stringToReplaceIn.Remove(indexOfSlash, 1);
+                    stringToReplaceIn = stringToReplaceIn.Insert(indexOfSlash, "/");
+                    stringToReplaceIn = ReplaceSlashes(stringToReplaceIn);
                 }
-            }            
+            }      
             return stringToReplaceIn.Replace("//", "/");
         }
     }

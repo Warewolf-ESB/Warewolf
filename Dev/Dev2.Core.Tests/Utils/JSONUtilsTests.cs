@@ -1,5 +1,4 @@
-﻿using System;
-using Dev2.Common.Utils;
+﻿using Dev2.Common.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Utils
@@ -10,7 +9,7 @@ namespace Dev2.Tests.Utils
         [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("JSONUtils_ReplaceSlashes")]
-        public void JSONUtils_ReplaceSlashes_WithBackSlashes_SlashesReplaced()
+        public void JSONUtils_ReplaceSlashes_BackSlashes_SlashesReplaced()
         {
             //------------Execute Test---------------------------
             var actual = JSONUtils.ReplaceSlashes(@"a\b\c");
@@ -22,25 +21,25 @@ namespace Dev2.Tests.Utils
         [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("JSONUtils_ReplaceSlashes")]
-        public void JSONUtils_ReplaceSlashes_WithBackSlashesBeforeQuotes_SlashesNotReplaced()
+        public void JSONUtils_ReplaceSlashes_BackSlashesBeforeQuotes_SlashesNotReplaced()
         {
             //------------Execute Test---------------------------
-            var actual = JSONUtils.ReplaceSlashes(@"a\""b\""c");
+            var actual = JSONUtils.ReplaceSlashes(@"a\""b\""c\""");
 
             // Assert Slashes Not Replaced
-            Assert.AreEqual(@"a\""b\""c", actual, "Slashes not replaced by JSON util");
+            Assert.AreEqual(@"a\""b\""c\""", actual, "Slashes not replaced by JSON util");
         }
 
         [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("JSONUtils_ReplaceSlashes")]
-        public void JSONUtils_ReplaceSlashes_WithComplexPayload_SlashesStillReplaced()
+        public void JSONUtils_ReplaceSlashes_TrailingSlashes_SlashesStillReplaced()
         {
             //------------Execute Test---------------------------
-            var actual = JSONUtils.ReplaceSlashes("\"Val\":\"1/2\\3/4\\\"");
+            var actual = JSONUtils.ReplaceSlashes(@"a\\b/c\\");
 
             // Assert Slashes Replaced
-            Assert.AreEqual("\"Val\":\"1/2/3/4\\\"", actual, "Slashes not replaced by JSON util");
+            Assert.AreEqual(@"a/b/c/", actual, "Slashes not replaced by JSON util");
         }
     }
 }

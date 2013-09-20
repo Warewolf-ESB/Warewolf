@@ -356,7 +356,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                     ResourceCatalog.Instance.SaveResource(workspaceID, resource);
                 }
                 var resources = new Dev2.Runtime.ServiceModel.Resources();
-                const string expectedJson = "{\"Names\":[\"My Name 0\",\"My Name 2\",\"My Name 4\"],\"Paths\":[\"MY PATH 0\",\"MY PATH 2\",\"MY PATH 4\"]}";
+                const string expectedJson = "{\"Names\":[\"My Name 0\",\"My Name 1\",\"My Name 2\",\"My Name 3\",\"My Name 4\",\"My Name 5\"],\"Paths\":[\"MY PATH 0\",\"MY PATH 2\",\"MY PATH 4\"]}";
 
                 //Run PathsAndNames
                 var actualJson = resources.PathsAndNames("WorkflowService", workspaceID, Guid.Empty);
@@ -412,7 +412,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                     ResourceCatalog.Instance.SaveResource(workspaceID, resource);
                 }
                 var resources = new Dev2.Runtime.ServiceModel.Resources();
-                const string expectedJson = "{\"Names\":[\"My Name 1\",\"My Name 2\",\"My Name 4\",\"My Name 5\",\"My Name 7\",\"My Name 8\"],\"Paths\":[\"MY PATH 1\",\"MY PATH 2\",\"MY PATH 4\",\"MY PATH 5\",\"MY PATH 7\",\"MY PATH 8\"]}";
+                const string expectedJson = "{\"Names\":[\"My Name 0\",\"My Name 1\",\"My Name 2\",\"My Name 3\",\"My Name 4\",\"My Name 5\",\"My Name 6\",\"My Name 7\",\"My Name 8\"],\"Paths\":[\"MY PATH 1\",\"MY PATH 2\",\"MY PATH 4\",\"MY PATH 5\",\"MY PATH 7\",\"MY PATH 8\"]}";
 
                 //Run PathsAndNames
                 var actualJson = resources.PathsAndNames("DbService", workspaceID, Guid.Empty);
