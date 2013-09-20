@@ -11,14 +11,12 @@ namespace Unlimited.Framework
     using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Text;
     using System.Text.RegularExpressions;
     using System.Xml;
     using System.Xml.Linq;
-    using System.Xml.XPath;
     using Dev2.Common;
     using Dev2.DataList.Contract;
-    using Dev2.DataList.Contract.Binary_Objects;
+
     #endregion
 
     /// <summary>
@@ -37,7 +35,7 @@ namespace Unlimited.Framework
     {
 
         #region Attributes
-        private static IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
+
         #endregion
 
         #region Properties
@@ -57,10 +55,10 @@ namespace Unlimited.Framework
         {
             get
             {
-                IEnumerable<XElement> ErrorElement = xmlData.Descendants("Error");
-                bool result = false;
+                var errorElement = xmlData.Descendants("Error");
+                var result = false;
 
-                ErrorElement
+                errorElement
                     .ToList()
                     .ForEach(elm =>
                     {
@@ -82,15 +80,12 @@ namespace Unlimited.Framework
         {
             get
             {
-                IEnumerable<XElement> serviceElement = xmlData.Descendants("Service").Where(c => !c.HasAttributes);
+                var serviceElement = xmlData.Descendants("Service").Where(c => !c.HasAttributes);
                 if(serviceElement.Count() > 1)
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
         }
 
@@ -104,7 +99,7 @@ namespace Unlimited.Framework
             {
                 if(_parent == null)
                 {
-                    XElement parent = xmlData.Ancestors().FirstOrDefault();
+                    var parent = xmlData.Ancestors().FirstOrDefault();
 
                     if(parent != null)
                     {
@@ -132,22 +127,23 @@ namespace Unlimited.Framework
                     return null;
                 }
 
-                List<UnlimitedObject> unlimitedReq = new List<UnlimitedObject>();
+                var unlimitedReq = new List<UnlimitedObject>();
 
-                IEnumerable<XElement> requests = xmlData.Descendants("Service").Where(c => !c.HasAttributes);
+                var requests = xmlData.Descendants("Service").Where(c => !c.HasAttributes);
 
-                if(requests.Count() == 0)
+                var xElements = requests as XElement[] ?? requests.ToArray();
+                if(!xElements.Any())
                 {
                     return unlimitedReq;
                 }
 
-                List<XElement> svc = new List<XElement>();
-                List<string> data = new List<string>();
+                var svc = new List<XElement>();
+                var data = new List<string>();
 
 
                 //Iterate through all messages that contain a Service tag
                 //add them to a collection
-                foreach(XElement d in requests)
+                foreach(XElement d in xElements)
                 {
                     XElement req = d.Ancestors().FirstOrDefault();
 
@@ -307,11 +303,7 @@ namespace Unlimited.Framework
             {
                 return XElement.Parse(data).ToString();
             }
-            else
-            {
-                return data;
-            }
-            
+            return data;
         }
 
 
@@ -337,17 +329,6 @@ namespace Unlimited.Framework
         }
 
         /// <summary>
-        /// Adds the attrib.
-        /// </summary>
-        /// <param name="attribName">Name of the attrib.</param>
-        /// <param name="attribValue">The attrib value.</param>
-        public void AddAttrib(string attribName, string attribValue)
-        {
-            xmlData.Add(new XAttribute(attribName, attribValue));
-
-        }
-
-        /// <summary>
         /// Gets the name of the root.
         /// </summary>
         /// <value>
@@ -361,144 +342,7 @@ namespace Unlimited.Framework
             }
         }
 
-        /// <summary>
-        /// Elements the or attribute exists.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public bool ElementOrAttributeExists(string name)
-        {
-
-
-            Exceptions.ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString("name", name);
-
-            if(!IsValidElementOrAttributeName(name))
-            {
-                return false;
-            }
-
-            bool exists = false;
-
-            if(!ElementExists(name))
-            {
-                var attrib = xmlData.DescendantsAndSelf().Where(c => c.Attribute(name) != null);
-                if(attrib.Count() > 0)
-                {
-                    exists = true;
-                }
-            }
-            else
-            {
-                exists = true;
-            }
-
-            return exists;
-
-        }
-
-        /// <summary>
-        /// Facilitates an XPath expression that can be run against the current xml data
-        /// </summary>
-        /// <param name="xPathExpression">An XPath expression</param>
-        /// <returns>A List of UnlimitedObjects that match the XPath expression</returns>
-        /// <exception cref="System.ArgumentException"></exception>
-        ///  <exception cref="System.ArgumentNullException"></exception>
-        public UnlimitedObject XPath(string xPathExpression)
-        {
-            Exceptions.ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString("xPathExpression", xPathExpression);
-
-            IEnumerable<XObject> results = null;
-            UnlimitedObject unlimitedReq;
-
-            try
-            {
-
-                IEnumerable res = xmlData.XPathEvaluate(xPathExpression) as IEnumerable;
-
-                if(res != null)
-                {
-                    results = res.Cast<XObject>();
-                }
-            }
-            catch(XPathException xPathEx)
-            {
-                return new UnlimitedObject(xPathEx);
-            }
-            catch(InvalidOperationException invalidEx)
-            {
-                return new UnlimitedObject(invalidEx);
-            }
-
-            unlimitedReq = new UnlimitedObject("QueryResult");
-
-
-            StringBuilder sb = new StringBuilder();
-
-            foreach(var result in results)
-            {
-
-                switch(result.NodeType)
-                {
-
-                    case XmlNodeType.Attribute:
-                        XAttribute att = result as XAttribute;
-                        if(att != null)
-                        {
-                            unlimitedReq.CreateElement(att.Name.ToString()).SetValue(att.Value);
-                        }
-                        break;
-
-                    case XmlNodeType.Text:
-                        sb.Append(result.ToString());
-                        break;
-
-                    default:
-                        unlimitedReq.Add(new UnlimitedObject(result));
-                        break;
-                }
-
-            }
-
-            if(sb.Length > 0)
-            {
-                unlimitedReq.GetElement("QueryResult").SetValue(sb.ToString());
-            }
-
-
-            return unlimitedReq;
-
-
-        }
-        /// <summary>
-        /// Indicates whether the current xml data is a descendant of a particular element
-        /// </summary>
-        /// <param name="elementName">The ancestor element that we are searching for</param>
-        /// <returns>Boolean where true means that the current xml data is a descendant of the provided ancestor</returns>
-        ///  <exception cref="System.ArgumentException"></exception>
-        ///  <exception cref="System.ArgumentNullException"></exception>
-        public bool IsDescendantOf(string elementName)
-        {
-            Exceptions.ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString("elementName", elementName);
-            if(!IsValidElementOrAttributeName(elementName))
-            {
-                return false;
-            }
-
-            bool isDescendant = xmlData.Ancestors(elementName).Count() >= 1;
-
-            if(isDescendant)
-            {
-                XElement parent = xmlData.Ancestors(elementName).FirstOrDefault();
-
-                if(parent != null)
-                {
-                    Parent = new UnlimitedObject(parent);
-                }
-            }
-
-            return isDescendant;
-        }
-
+       
         /// <summary>
         /// Determines whether [is valid element or attribute name] [the specified name].
         /// </summary>
@@ -526,36 +370,7 @@ namespace Unlimited.Framework
             return true;
         }
 
-        /// <summary>
-        /// Replaces all occurrences of a tag's name with another tag name
-        /// </summary>
-        /// <param name="sourceTagName">The tag name to replace</param>
-        /// <param name="targetTagName">The new tag name to use to replace the old one</param>
-        /// <returns>String representation of the new xml data</returns>
-        ///  <exception cref="System.ArgumentException"></exception>
-        ///  <exception cref="System.ArgumentNullException"></exception>
-        public string ReplaceTagName(string sourceTagName, string targetTagName)
-        {
-            Exceptions.ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString("sourceTagName", sourceTagName);
-            Exceptions.ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString("targetTagName", targetTagName);
-
-            if(!IsValidElementOrAttributeName(targetTagName))
-            {
-                return xmlData.ToString();
-            }
-
-            IEnumerable<XElement> nodes = xmlData.DescendantsAndSelf(sourceTagName);
-
-            if(nodes != null)
-            {
-                foreach(XElement xn in nodes)
-                {
-                    xn.Name = targetTagName;
-                }
-            }
-            return xmlData.ToString();
-        }
-
+       
         /// <summary>
         /// Get the value of node or attribute in the current XmlData propery
         /// </summary>
@@ -850,52 +665,6 @@ namespace Unlimited.Framework
 
 
         /// <summary>
-        /// Sets the value of all.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="value">The value.</param>
-        public void SetValueOfAll(string name, string value)
-        {
-
-            XElement valueXML = null;
-            string replaceValue = string.Empty;
-            bool isXml = false;
-
-            try
-            {
-                valueXML = XElement.Parse(value);
-                replaceValue = valueXML.ToString();
-                isXml = true;
-            }
-            catch(Exception ex)
-            {
-                ServerLogger.LogError(ex);
-                replaceValue = value;
-            }
-
-
-            if(!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(replaceValue))
-            {
-
-                var matches = xmlData.Descendants(name);
-
-                matches.ToList().ForEach(c =>
-                {
-                    if(isXml)
-                    {
-                        c.ReplaceNodes(valueXML);
-                    }
-                    else
-                    {
-                        c.SetValue(replaceValue);
-                    }
-                });
-
-            }
-
-
-        }
-        /// <summary>
         /// Adds an element to the current XmlData property
         /// </summary>
         /// <param name="response">The UnlimitedObject that contains the XElement that we want to embed into the current XmlData propery</param>
@@ -975,21 +744,7 @@ namespace Unlimited.Framework
             xmlData = data;
         }
 
-        /// <summary>
-        /// Get the name of the current element
-        /// </summary>
-        /// <returns>String</returns>
-        public string GetTagName()
-        {
-            string returnValue = string.Empty;
-            if(xmlData != null)
-            {
-                returnValue = xmlData.Name.LocalName;
-            }
-
-            return returnValue;
-        }
-
+       
         /// <summary>
         /// Recursively reflects over an object and returns an xml representation of its members
         /// </summary>
@@ -1075,13 +830,8 @@ namespace Unlimited.Framework
 
         #region Overridden methods from the DynamicObject Class
 
-        public override IEnumerable<string> GetDynamicMemberNames()
-        {
-
-            return base.GetDynamicMemberNames();
-        }
-
         #region TryGetMember
+
         /// <summary>
         /// This method is what facilitates the dynamic ability of this object. It gets called whenever you refer to a property or method.
         /// The method returns a value to be bound against the property requested. If you want the binding to fail at runtime then 
@@ -1089,12 +839,12 @@ namespace Unlimited.Framework
         /// </summary>
         /// <param name="binder">The object that contains the metadata of the dynamic propery being referenced.</param>
         /// <param name="tmp">The value to bind the property to</param>
+        /// <param name="result">The resulting vallue for the property</param>
         /// <returns></returns>
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            bool returnVal = false;
+            var returnVal = false;
             result = null;
-            if(binder == null) return true;
 
             //Check if there is a match in the xmldocument either node or attribute with the name of the property the developer is requesting
             var name = binder.Name;
@@ -1106,13 +856,13 @@ namespace Unlimited.Framework
                 return true;
             }
             var xElements = ExcludeDatalistFromNodes(name, currentXMLData);
-            if(xElements.Count() > 0)
+            if(xElements.Any())
             {
                 //If there is a single match that has children or attributes then return a generic list containing a single UnlimitedObject
                 //We do this to enable iteration.
                 if(xElements.Count() == 1)
                 {
-                    if(xElements.First().Descendants().Count() > 0 || xElements.First().HasAttributes)
+                    if(xElements.First().Descendants().Any() || xElements.First().HasAttributes)
                     {
                         //If the match has attributes return a generic list as this makes
                         //iterations simple using a foreach
@@ -1138,7 +888,11 @@ namespace Unlimited.Framework
                     else
                     {
                         //There is only 1 element match - we should return the value of that match
-                        result = xElements.FirstOrDefault().Value;
+                        var xElement = xElements.FirstOrDefault();
+                        if(xElement != null)
+                        {
+                            result = xElement.Value;
+                        }
                     }
                     returnVal = true;
                 }
@@ -1253,12 +1007,6 @@ namespace Unlimited.Framework
         }
         #endregion TrySetMember
 
-        public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
-        {
-            result = new UnlimitedObject(xmlData.Element(XName.Get((string)indexes[0])));
-            return true;
-        }
-
         public override bool TryBinaryOperation(BinaryOperationBinder binder, object arg, out object result)
         {
             switch(binder.Operation)
@@ -1283,91 +1031,14 @@ namespace Unlimited.Framework
         #endregion
 
         #region Static Methods
-        /// <summary>
-        /// Returns a service request that can be executed at the dsf
-        /// </summary>
-        /// <param name="serviceName">The name of the dsf service to invoke</param>
-        /// <param name="dataTags">The data tags that is a comma separated list of required service parameter names</param>
-        /// <param name="workflowInputData">The string xml data passed into the workflow when the it was invoked</param>
-        /// <param name="lastResult">The string xml data from the previous activity execution </param>
-        /// <param name="resultPipeLine">The string xml data from all previous activity execution</param>
-        /// <returns>String xml data containing a request that can be executed in the DSF</returns>
-        public static string GenerateServiceRequest(string serviceName, string dataTags, string workflowInputData, string lastResult, string resultPipeLine, IDSFDataObject parentRequest)
-        {
-
-            Exceptions.ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString("serviceName", serviceName);
-
-            //Create unlimited objects from all the string xml data that we need to
-            //search to retrieve parameter values to pass to the dsf service
-            List<dynamic> dataSources = new List<dynamic>{
-                GetStringXmlDataAsUnlimitedObject(workflowInputData),
-                GetStringXmlDataAsUnlimitedObject(lastResult),
-                GetStringXmlDataAsUnlimitedObject(resultPipeLine)
-            };
-
-            //Retrieve the csv of parameternames as an unlimited object
-            dynamic dataTagObj = GetCsvAsUnlimitedObject(dataTags);
-            //Return a service request string.
-            return GenerateServiceRequest(serviceName, dataTagObj, dataSources, parentRequest);
-        }
 
         /// <summary>
         /// Returns a service request that can be executed at the dsf
         /// </summary>
         /// <param name="serviceName">The name of the dsf service to invoke</param>
         /// <param name="dataTags">An UnlimitedObject wrapping the csv data as xml</param>
-        /// <param name="dataSources">A List of UnlimitedObjects to search for parameter values</param>
-        /// <returns>String xml data containing a request that can be executed in the DSF</returns>
-        public static string GenerateServiceRequest(string serviceName, dynamic dataTags, List<dynamic> dataSources, IDSFDataObject parentRequest)
-        {
-            //Create an UnlimitedObject that will wrap a dsf request
-            dynamic serviceRequest = new UnlimitedObject();
-            //Set the name of the dsf service to execute
-            serviceRequest.Service = serviceName;
-
-            dynamic tags = dataTags.dt;
-            string dataValue = string.Empty;
-
-            //Traverse the list of unlimitedObjects for each data tag
-            //A data tag in this xml document contains a parameter name
-            //that the dsf service is expecting
-            if(tags is List<UnlimitedObject>)
-            {
-                foreach(dynamic dataTag in tags)
-                {
-                    //Search the datasources for the current parameter's value 
-                    dataValue = GetDataValueFromUnlimitedObject(dataTag.dt, dataSources);
-                    //Set the dsf requests parameter value
-                    serviceRequest.GetElement(dataTag.dt).SetValue(dataValue);
-                }
-            }
-
-            //There is only a single parameter
-            //Search for the parameters value and set it in the dsf request
-            if(tags is string)
-            {
-                dataValue = GetDataValueFromUnlimitedObject(tags, dataSources);
-                serviceRequest.GetElement(tags).SetValue(dataValue);
-            }
-
-            //
-            // Set all the inherited fields from the parent on the new request
-            //
-            if(parentRequest != null)
-            {
-                serviceRequest.BookmarkExecutionCallbackID = parentRequest.BookmarkExecutionCallbackID;
-                serviceRequest.WorkspaceID = parentRequest.WorkspaceID;
-            }
-
-            return serviceRequest.XmlString;
-        }
-
-        /// <summary>
-        /// Returns a service request that can be executed at the dsf
-        /// </summary>
-        /// <param name="serviceName">The name of the dsf service to invoke</param>
-        /// <param name="dataTags">An UnlimitedObject wrapping the csv data as xml</param>
-        /// <param name="dataSources">A List of UnlimitedObjects to search for parameter values</param>
+        /// <param name="ambientDataList">A List of UnlimitedObjects to search for parameter values</param>
+        /// <param name="parentRequest"></param>
         /// <returns>String xml data containing a request that can be executed in the DSF</returns>
         public static string GenerateServiceRequest(string serviceName, dynamic dataTags, List<string> ambientDataList, IDSFDataObject parentRequest)
         {
@@ -1525,87 +1196,6 @@ namespace Unlimited.Framework
             return dataObject;
         }
 
-        //This method exists only for the business design studio
-        //Its short name makes it more understandable in that environment
-        //when switches need to be understood
-
-        // PBI : 5376 - Kept this method for decision nodes....
-        // Just hi-jacked the functionality so we can passing dataSource as the dataListID ;)
-        public static string Get(string tagName, dynamic dataSource)
-        {
-            // TODO : Hi-jack the DataListID to look up from....
-
-            Guid dataListID;
-            IList<string> tmp = dataSource as IList<string>;
-            string result = string.Empty;
-
-            if(tmp != null)
-            {
-                Guid.TryParse((tmp[0] as string), out dataListID);
-
-                // all good, fetch the data for evaluation ;)
-                if(dataListID != GlobalConstants.NullDataListID)
-                {
-                    ErrorResultTO errors = new ErrorResultTO();
-                    string evalExp = DataListUtil.AddBracketsToValueIfNotExist(tagName);
-                    IBinaryDataListEntry val = _compiler.Evaluate(dataListID, enActionType.User, evalExp, false, out errors);
-                    if(errors.HasErrors())
-                    {
-                        ServerLogger.LogMessage("Dev2 Expression Fetch Error : " + errors.MakeUserReady());
-                    }
-
-                    if(val != null)
-                    {
-                        if(!val.IsRecordset)
-                        {
-                            result = val.FetchScalar().TheValue;
-                        }
-                        else
-                        {
-                            string error = string.Empty;
-                            result = val.TryFetchLastIndexedRecordsetUpsertPayload(out error).TheValue;
-                            if(error != string.Empty)
-                            {
-                                ServerLogger.LogMessage("Dev2 Expression Fetch Error : " + error);
-                            }
-                        }
-                    }
-
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Returns UnlimitedObject that wraps and xml interpretation of the csv string
-        /// </summary>
-        /// <param name="csv">The csv string</param>
-        /// <returns>UnlimitedObject that wraps the csv data as xml</returns>
-        public static dynamic GetCsvAsUnlimitedObject(string csv)
-        {
-            if(string.IsNullOrEmpty(csv))
-            {
-                return new UnlimitedObject();
-            }
-            csv = "<rt><dt>" + csv.Replace(",", "</dt><dt>") + "</dt></rt>";
-            return GetStringXmlDataAsUnlimitedObject(csv);
-        }
-
-        /// <summary>
-        /// Gets the unlimited object from unlimited objects.
-        /// </summary>
-        /// <param name="unlimitedObjects">The unlimited objects.</param>
-        /// <returns></returns>
-        public static UnlimitedObject GetUnlimitedObjectFromUnlimitedObjects(IList<UnlimitedObject> unlimitedObjects)
-        {
-            dynamic dataObj = new UnlimitedObject();
-
-            unlimitedObjects.ToList().ForEach(uobj => dataObj.AddResponse(uobj));
-
-            return dataObj;
-
-        }
         #endregion
     }
 }

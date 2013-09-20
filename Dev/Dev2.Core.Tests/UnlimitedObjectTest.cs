@@ -72,21 +72,6 @@ namespace Dev2.Tests
         }
         
         [TestMethod]
-        public void XPath_Attribute_Returns_Result()
-        {
-            const string a = @"<Regions>
-<Region Type=""text"" Name=""companyName""></Region>
-<Region Type=""image"" Name=""companyLogo""></Region>
-<Region Type=""menu"" Name=""companyLogo""></Region>
-</Regions>
-                      ";
-            const string expectedXML = "<QueryResult>  <Type>text</Type>  <Type>image</Type>  <Type>menu</Type></QueryResult>";
-            UnlimitedObject tmp = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(a);
-            var test = tmp.XPath("//Region/@Type");
-            Assert.AreEqual(expectedXML,test.xmlData.ToString().Replace(Environment.NewLine,""));
-        }
-
-        [TestMethod]
         public void Test_DeleteElementByTagName_RemovesElement()
         {
             const string del = @"
@@ -562,6 +547,60 @@ namespace Dev2.Tests
             Assert.AreEqual("<DataList>\r\n  <ID Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />\r\n  <ServerID Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />\r\n  <ResourceType Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />\r\n  <Version Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />\r\n  <IsValid Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />\r\n  <ErrorMessages Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />\r\n  <Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />\r\n  <DisplayName Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />\r\n  <DataList Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />\r\n</DataList>", value.XmlString);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("UnlimitedObject_GetValue")]
+        public void UnlimitedObjectService_GetValue_HasNodeInDataListAndXMLData_Inputs_ReturnsNonDataListNode()
+        {
+            //------------Setup for test--------------------------
+            var actual = GetUnlimitedObjectForService();
+            //------------Execute Test---------------------------
+            var value = actual.GetValue("Inputs");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("<Inputs>\r\n  <Input Name=\"CityName\" Source=\"CityName\" EmptyToNull=\"false\" DefaultValue=\"Nice\" />\r\n  <Input Name=\"CountryName\" Source=\"CountryName\" EmptyToNull=\"false\" DefaultValue=\"France\" />\r\n</Inputs>", value);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("UnlimitedObject_GetValue")]
+        public void UnlimitedObjectService_GetValue_HasNodeInDataListAndXMLData_Input_ReturnsNonDataListNode()
+        {
+            //------------Setup for test--------------------------
+            var actual = GetUnlimitedObjectForService();
+            //------------Execute Test---------------------------
+            var value = actual.GetValue("Input");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("<XmlData>\r\n  <Input Name=\"CityName\" Source=\"CityName\" EmptyToNull=\"false\" DefaultValue=\"Nice\" />\r\n  <Input Name=\"CountryName\" Source=\"CountryName\" EmptyToNull=\"false\" DefaultValue=\"France\" />\r\n</XmlData>", value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("UnlimitedObject_GetValue")]
+        public void UnlimitedObjectService_GetValue_HasNodeInDataListAndXMLData_Outputs_ReturnsNonDataListNode()
+        {
+            //------------Setup for test--------------------------
+            var actual = GetUnlimitedObjectForService();
+            //------------Execute Test---------------------------
+            var value = actual.GetValue("Outputs");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("<Outputs>\r\n  <Output Name=\"Location\" MapsTo=\"Location\" Value=\"[[Location]]\" Recordset=\"\" />\r\n  <Output Name=\"Time\" MapsTo=\"Time\" Value=\"[[Time]]\" Recordset=\"\" />\r\n</Outputs>", value);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("UnlimitedObject_GetValue")]
+        public void UnlimitedObjectService_GetValue_HasNodeInDataListAndXMLData_Output_ReturnsNonDataListNode()
+        {
+            //------------Setup for test--------------------------
+            var actual = GetUnlimitedObjectForService();
+            //------------Execute Test---------------------------
+            var value = actual.GetValue("Output");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("<XmlData>\r\n  <Output Name=\"Location\" MapsTo=\"Location\" Value=\"[[Location]]\" Recordset=\"\" />\r\n  <Output Name=\"Time\" MapsTo=\"Time\" Value=\"[[Time]]\" Recordset=\"\" />\r\n</XmlData>", value);
+        }
+
         static UnlimitedObject GetUnlimitedObject()
         {
             const string xml = @"
@@ -579,6 +618,33 @@ namespace Dev2.Tests
 	    	   <Name Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
     		   <DisplayName Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
 		       <DataList Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+	        </DataList>
+        </Dev2ServiceInput>
+";
+            UnlimitedObject actual = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(xml);
+            return actual;
+        }
+        
+        static UnlimitedObject GetUnlimitedObjectForService()
+        {
+            const string xml = @"
+        <Dev2ServiceInput ID=""TestID"">
+            <DisplayName>TesstValues</DisplayName>
+            <Test>Tesst</Test>
+            <Test World=""Hi"">Tesst1</Test>
+           <Inputs>
+				<Input Name=""CityName"" Source=""CityName"" EmptyToNull=""false"" DefaultValue=""Nice"" />
+				<Input Name=""CountryName"" Source=""CountryName"" EmptyToNull=""false"" DefaultValue=""France"" />
+			</Inputs>
+			<Outputs>
+				<Output Name=""Location"" MapsTo=""Location"" Value=""[[Location]]"" Recordset="""" />
+				<Output Name=""Time"" MapsTo=""Time"" Value=""[[Time]]"" Recordset="""" />
+			</Outputs>
+            <DataList>
+		       <Inputs Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+		       <Input Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+		       <Output Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+		       <Outputs Description="""" IsEditable=""True"" ColumnIODirection=""None"" />		       
 	        </DataList>
         </Dev2ServiceInput>
 ";
