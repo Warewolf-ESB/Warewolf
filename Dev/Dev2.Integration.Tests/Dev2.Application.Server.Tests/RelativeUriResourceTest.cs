@@ -7,7 +7,7 @@ using Dev2.Integration.Tests.Helpers;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 {
-    [TestClass][Ignore]//Ashley: One of these tests may be causing the server to hang in a background thread, preventing windows 7 build server from performing any more builds
+    [TestClass]
     public class RelativeUriResourceTest
     {
         private const string _workflowName = "RelativeUriResourceTest";

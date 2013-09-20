@@ -6,7 +6,7 @@ namespace Dev2.Integration.Tests.Internal_Services
     /// <summary>
     /// Summary description for SystemServices
     /// </summary>
-    [TestClass][Ignore]//Ashley: One of these tests may be causing the server to hang in a background thread, preventing windows 7 build server from performing any more builds
+    [TestClass]
     public class RenameResourceCategoryServicesTest
     {
         private string _webServerURI = ServerSettings.WebserverURI;

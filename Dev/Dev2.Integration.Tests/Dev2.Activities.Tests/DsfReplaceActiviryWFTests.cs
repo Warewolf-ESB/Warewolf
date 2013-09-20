@@ -7,7 +7,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     /// <summary>
     /// Summary description for DsfDataSplitActivityWFTests
     /// </summary>
-    [TestClass][Ignore]//Ashley: One of these tests may be causing the server to hang in a background thread, preventing windows 7 build server from performing any more builds
+    [TestClass]
     public class DsfReplaceActivityWFTests
     {
         string WebserverURI = ServerSettings.WebserverURI;

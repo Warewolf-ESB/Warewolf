@@ -11,7 +11,7 @@ namespace Dev2.Core.Tests
     /// <summary>
     /// Summary description for FrameworkSecurityProviderTest
     /// </summary>
-    [TestClass][Ignore]//Ashley: One of these tests may be causing the server to hang in a background thread, preventing windows 7 build server from performing any more builds
+    [TestClass]
     public class FrameworkSecurityProviderTest
     {
         private TestContext testContextInstance;
