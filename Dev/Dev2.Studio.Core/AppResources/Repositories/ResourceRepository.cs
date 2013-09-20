@@ -416,13 +416,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
                 // TODO : make this property use new fetch definition service ;)
 
-                if (data.XamlDefinition is string)
+                var xamlDefinition = data.XamlDefinition as string;
+                if(!string.IsNullOrEmpty(xamlDefinition))
                 {
-                    if (!string.IsNullOrEmpty(data.XamlDefinition))
-                    {
-                        resource.WorkflowXaml = data.XamlDefinition;
-                        resource.ServiceDefinition = data.XmlString;
-                    }
+                    resource.WorkflowXaml = xamlDefinition;
+                    resource.ServiceDefinition = data.XmlString;
                 }
 
                 resource.DataList = data.GetValue("DataList");
@@ -464,80 +462,59 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     resource.ServiceDefinition = data.XmlString;
                 }
 
-                if (data.DisplayName is string)
+                var displayName = data.DisplayName as string;
+                resource.DisplayName = displayName ?? resourceType.ToString();
+
+                var iconPath = data.IconPath as string;
+                if(iconPath != null)
                 {
-                    resource.DisplayName = data.DisplayName;
-                }
-                else
-                {
-                    resource.DisplayName = resourceType.ToString();
+                    resource.IconPath = iconPath;
                 }
 
-                if (data.IconPath is string)
+                var authorRoles = data.AuthorRoles as string;
+                if(authorRoles != null)
                 {
-                    resource.IconPath = data.IconPath;
+                    resource.AuthorRoles = authorRoles;
                 }
 
-                if (data.AuthorRoles is string)
+                var category = data.Category as string;
+                resource.Category = category ?? string.Empty;
+
+                var tags = data.Tags as string;
+                if(tags != null)
                 {
-                    resource.AuthorRoles = data.AuthorRoles;
+                    resource.Tags = tags;
                 }
 
-                if (data.Category is string)
+                var comment = data.Comment as string;
+                if(comment != null)
                 {
-                    resource.Category = data.Category;
-                }
-                else
-                {
-                    resource.Category = string.Empty;
+                    resource.Comment = comment;
                 }
 
-                if (data.Tags is string)
+                var serverResourceType = data.ResourceType as string;
+                resource.ServerResourceType = serverResourceType ?? string.Empty;
+
+                var connectionString = data.ConnectionString as string;
+                resource.ConnectionString = connectionString ?? string.Empty;
+
+                var unitTestTargetWorkflowService = data.UnitTestTargetWorkflowService as string;
+                if(unitTestTargetWorkflowService != null)
                 {
-                    resource.Tags = data.Tags;
+                    resource.UnitTestTargetWorkflowService = unitTestTargetWorkflowService;
                 }
 
-                if (data.Comment is string)
+                var helpLink = data.HelpLink as string;
+                if(!string.IsNullOrEmpty(helpLink))
                 {
-                    resource.Comment = data.Comment;
+                    resource.HelpLink = helpLink;
                 }
 
-                if (data.ResourceType is string)
-                {
-                    resource.ServerResourceType = data.ResourceType;
-                }
-                else
-                {
-                    resource.ServerResourceType = string.Empty;
-                }
-
-                if (data.ConnectionString is string)
-                {
-                    resource.ConnectionString = data.ConnectionString;
-                }
-                else
-                {
-                    resource.ConnectionString = string.Empty;
-                }
-
-
-                if (data.UnitTestTargetWorkflowService is string)
-                {
-                    resource.UnitTestTargetWorkflowService = data.UnitTestTargetWorkflowService;
-                }
-
-                if (data.HelpLink is string)
-                {
-                    if (!string.IsNullOrEmpty(data.HelpLink))
-                    {
-                        resource.HelpLink = data.HelpLink;
-                    }
-                }
-
-                if (data.IsNewWorkflow is string)
+                var isNewWorkflow = data.IsNewWorkflow as string;
+                if(isNewWorkflow != null)
                 {
                     resource.IsNewWorkflow = false;
-                    if (string.Equals(data.IsNewWorkflow, "true", StringComparison.InvariantCulture))
+                    if (string.Equals(isNewWorkflow, "true", StringComparison.InvariantCulture))
                     {
                         resource.IsNewWorkflow = true;
                         NewWorkflowNames.Instance.Add(resource.DisplayName);
@@ -567,10 +544,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         }
                     }
                 }
-
                 return resource;
             }
-
             return null;
         }
 

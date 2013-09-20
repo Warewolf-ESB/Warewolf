@@ -96,9 +96,9 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepository_HydrateResourceModel_WhenDataListContainsIDTag_ValidResourceModel()
         {
             //------------Setup for test--------------------------
-            Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            Mock<IWizardEngine> mockWizEngine = new Mock<IWizardEngine>();
-            Mock<IFrameworkSecurityContext> mockSecurityCtx = new Mock<IFrameworkSecurityContext>();
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockWizEngine = new Mock<IWizardEngine>();
+            var mockSecurityCtx = new Mock<IFrameworkSecurityContext>();
 
             var resourceRepository = new ResourceRepository(mockEnvironmentModel.Object, mockWizEngine.Object, mockSecurityCtx.Object);
 

@@ -238,6 +238,10 @@ namespace Unlimited.Framework
         /// <param name="xml">The xml elements that we will be manipulating or reading from</param>
         public UnlimitedObject(XElement xml)
         {
+            if(xml == null)
+            {
+                throw new ArgumentNullException("xml");
+            }
             xmlData = xml;
             this.ObjectState = enObjectState.UNCHANGED;
         }
@@ -248,6 +252,10 @@ namespace Unlimited.Framework
         /// <param name="xml">Creates the root node named as the this string.</param>
         public UnlimitedObject(string xml)
         {
+            if(string.IsNullOrEmpty(xml))
+            {
+                throw new ArgumentNullException("xml");
+            }
             //Travis said so;)
             // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
             if(!xml.StartsWith("<"))
@@ -269,10 +277,12 @@ namespace Unlimited.Framework
         /// <param name="dataObject"></param>
         public UnlimitedObject(object dataObject)
         {
+            VerifyArgument.IsNotNull("dataObject",dataObject);
 
-            if(dataObject is XElement)
+            var element = dataObject as XElement;
+            if(element != null)
             {
-                xmlData = (XElement)dataObject;
+                xmlData = element;
                 return;
             }
 
@@ -549,34 +559,38 @@ namespace Unlimited.Framework
         /// <summary>
         /// Get the value of node or attribute in the current XmlData propery
         /// </summary>
-        /// <param name="Name">The name of the attribute or element of which we are trying to get the value</param>
+        /// <param name="name">The name of the attribute or element of which we are trying to get the value</param>
         /// <returns>string representation of the value</returns>
         ///  <exception cref="System.ArgumentException"></exception>
         ///  <exception cref="System.ArgumentNullException"></exception>
-        public string GetValue(string Name)
+        public string GetValue(string name)
         {
-            Exceptions.ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString("Name", Name);
+            Exceptions.ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString("Name", name);
 
-            if(!IsValidElementOrAttributeName(Name))
+            if(!IsValidElementOrAttributeName(name))
             {
                 return string.Empty;
             }
 
-            string returnVal = string.Empty;
+            var returnVal = string.Empty;
 
-
-            var matches = xmlData.DescendantsAndSelf(Name);
-
-            if(matches.Count() > 1)
+            var currentXMLData = xmlData;
+            string s;
+            if(HasAttributeValue(name, currentXMLData, out s))
+            {
+                return s;
+            }
+            var xElements = ExcludeDatalistFromNodes(name, currentXMLData);
+            if(xElements.Count > 1)
             {
                 var returnData = new UnlimitedObject();
-                matches.ToList().ForEach(mtch => returnData.Add(new UnlimitedObject(mtch)));
+                xElements.ToList().ForEach(mtch => returnData.Add(new UnlimitedObject(mtch)));
 
                 returnVal = returnData.XmlString;
             }
             else
             {
-                var xm = matches.FirstOrDefault();
+                var xm = xElements.FirstOrDefault();
                 //This is a complex string not just a value
                 if(xm != null)
                 {
@@ -586,33 +600,46 @@ namespace Unlimited.Framework
                     }
                     else
                     {
-
-                        if(xmlData.Attribute(XName.Get(Name)) != null)
-                        {
-                            //This is a singleton attribute value that we can return.
-                            return xmlData.Attribute(XName.Get(Name)).Value;
-                        }
-                        else
-                        {
+                        return currentXMLData.Attribute(XName.Get(name)) != null ? currentXMLData.Attribute(XName.Get(name)).Value : xm.Value;
                             //This is a singleton value that we can return
-                            return returnVal = xm.Value;
                         }
-
                     }
-                }
                 else
                 {
-                    var attrib = xmlData.DescendantsAndSelf().Where(c => c.Attribute(Name) != null);
-                    if(attrib.Count() > 0)
+                    var attrib = currentXMLData.DescendantsAndSelf().Where(c => c.Attribute(name) != null);
+                    var elements = attrib as IList<XElement> ?? attrib.ToList();
+                    if(elements.Any())
                     {
-                        returnVal = attrib.FirstOrDefault().Attribute(Name).Value;
+                        var firstOrDefault = elements.FirstOrDefault();
+                        if(firstOrDefault != null)
+                    {
+                            returnVal = firstOrDefault.Attribute(name).Value;
+                        }
+                    }
                     }
                 }
+            return returnVal;
             }
 
-
-            return returnVal;
+        static IList<XElement> ExcludeDatalistFromNodes(string name, XElement currentXMLData)
+        {
+            var matches = currentXMLData.DescendantsAndSelf(name);
+            var xElements = matches as IList<XElement> ?? matches.Where(element => (element.Parent != null && element.Parent.Name != "DataList") || element.Parent==null).ToList();
+            return xElements;
         }
+
+        static bool HasAttributeValue(string name, XElement currentXMLData, out string s)
+        {
+            s = null;
+            var attributeOfProperty = currentXMLData.Attribute(name);
+            if(attributeOfProperty == null)
+            {
+                return false;
+            }
+            s = attributeOfProperty.Value;
+            return true;
+        }
+
         /// <summary>
         /// Retrieves the specified element from the current xml data. If it does not exist, a new one is created with the name provided and returned
         /// </summary>
@@ -1067,25 +1094,31 @@ namespace Unlimited.Framework
         {
             bool returnVal = false;
             result = null;
-            if(binder == null)
-                return true;
+            if(binder == null) return true;
 
             //Check if there is a match in the xmldocument either node or attribute with the name of the property the developer is requesting
-            var match = xmlData.DescendantsAndSelf(binder.Name);
-
-            if(match.Count() > 0)
+            var name = binder.Name;
+            var currentXMLData = xmlData;
+            string s;
+            if(HasAttributeValue(name, currentXMLData, out s))
+            {
+                result = s;
+                return true;
+            }
+            var xElements = ExcludeDatalistFromNodes(name, currentXMLData);
+            if(xElements.Count() > 0)
             {
                 //If there is a single match that has children or attributes then return a generic list containing a single UnlimitedObject
                 //We do this to enable iteration.
-                if(match.Count() == 1)
+                if(xElements.Count() == 1)
                 {
-                    if(match.First().Descendants().Count() > 0 || match.First().HasAttributes)
+                    if(xElements.First().Descendants().Count() > 0 || xElements.First().HasAttributes)
                     {
                         //If the match has attributes return a generic list as this makes
                         //iterations simple using a foreach
-                        if(match.First().HasAttributes)
+                        if(xElements.First().HasAttributes)
                         {
-                            result = new List<UnlimitedObject> { new UnlimitedObject(match.FirstOrDefault()) };
+                            result = new List<UnlimitedObject> { new UnlimitedObject(xElements.FirstOrDefault()) };
                         }
                         //If the match does not have attributes we 
                         //can safely assume that the application
@@ -1098,23 +1131,23 @@ namespace Unlimited.Framework
                         //throw an exception.
                         else
                         {
-                            result = new UnlimitedObject(match.FirstOrDefault());
+                            result = new UnlimitedObject(xElements.FirstOrDefault());
 
                         }
                     }
                     else
                     {
                         //There is only 1 element match - we should return the value of that match
-                        result = match.FirstOrDefault().Value;
+                        result = xElements.FirstOrDefault().Value;
                     }
                     returnVal = true;
                 }
 
                 //There are multiple element matches - we should create a new UnlimitedDynamic object per match
-                if(match.Count() > 1)
+                if(xElements.Count() > 1)
                 {
                     List<UnlimitedObject> matches = new List<UnlimitedObject>();
-                    foreach(XElement subelement in match)
+                    foreach(XElement subelement in xElements)
                     {
                         matches.Add(new UnlimitedObject(subelement));
                     }
@@ -1340,7 +1373,7 @@ namespace Unlimited.Framework
         {
             dynamic input = new UnlimitedObject("Dev2ServiceInput");
 
-            ambientDataList.ForEach(data => input.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(data)));
+            ambientDataList.ForEach(data => input.Add(GetStringXmlDataAsUnlimitedObject(data)));
             Sanitize(input);
             input.Service = serviceName;
 
