@@ -101,6 +101,10 @@ namespace Dev2.Studio.Factory
             return builder;
         }
 
+        public static Func<string, string> GetUniqueOutputPath = (extension) => FileHelper.GetUniqueOutputPath(extension);
+        public static Func<IEnvironmentModel,string> GetServerLogTempPath = (environmentModel) => FileHelper.GetServerLogTempPath(environmentModel);
+        public static Func<string> GetStudioLogTempPath = () => FileHelper.GetStudioLogTempPath();
+
         /// <summary>
         /// Creates the exception view model.
         /// </summary>
@@ -119,9 +123,9 @@ namespace Dev2.Studio.Factory
                 {
                     OutputText = CreateStringValue(e, null, true).ToString(),
                     StackTrace = e.StackTrace,
-                    OutputPath = FileHelper.GetUniqueOutputPath(".txt"),
-                    ServerLogTempPath = FileHelper.GetServerLogTempPath(environmentModel),
-                    StudioLogTempPath = FileHelper.GetStudioLogTempPath(),
+                    OutputPath = GetUniqueOutputPath(".txt"),
+                    ServerLogTempPath = GetServerLogTempPath(environmentModel),
+                    StudioLogTempPath = GetStudioLogTempPath(),
                     DisplayName = isCritical == ErrorSeverity.Critical ? StringResources.CritErrorTitle : StringResources.ErrorTitle,
                     Critical = isCritical == ErrorSeverity.Critical
                 };

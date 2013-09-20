@@ -41,6 +41,8 @@ namespace Dev2.Studio.ViewModels.Help
 
         #region ctors and init
 
+        public Func<string, bool> DoesFileExists = (fileName) => File.Exists(fileName);
+
         public FeedbackViewModel()
             : this(new Dictionary<string, string>())
         {
@@ -248,7 +250,7 @@ namespace Dev2.Studio.ViewModels.Help
         {
             get
             {
-                return File.Exists(RecordingAttachmentPath);
+                return DoesFileExists(RecordingAttachmentPath);
             }
         }
 
@@ -262,7 +264,7 @@ namespace Dev2.Studio.ViewModels.Help
         {
             get
             {
-                return File.Exists(ServerLogAttachmentPath);
+                return DoesFileExists(ServerLogAttachmentPath);
             }
         }
 
@@ -277,7 +279,7 @@ namespace Dev2.Studio.ViewModels.Help
         {
             get
             {
-                return File.Exists(StudioLogAttachmentPath);
+                return DoesFileExists(StudioLogAttachmentPath);
             }
         }
         
@@ -320,6 +322,9 @@ namespace Dev2.Studio.ViewModels.Help
         {
             get { return _openServerLogAttachmentFolderCommand ?? (_openServerLogAttachmentFolderCommand = new RelayCommand(o => OpenAttachmentFolder(ServerLogAttachmentPath))); }
         }
+
+        public string Attachments { get; private set; }
+
         #endregion public properties
 
         #region methods
@@ -428,27 +433,25 @@ namespace Dev2.Studio.ViewModels.Help
                                         , String.IsNullOrWhiteSpace(SelectedCategory) ? "" : " : ", SelectedCategory),
                 Content = Comment
             };
-
-            string attachments = "";
-
+            
             if(HasRecordingAttachment)
             {
-                attachments += !string.IsNullOrEmpty(RecordingAttachmentPath) ? RecordingAttachmentPath : "";
+                Attachments += !string.IsNullOrEmpty(RecordingAttachmentPath) ? RecordingAttachmentPath : "";
             }
 
             if(HasServerLogAttachment)
             {
-                attachments += !string.IsNullOrEmpty(attachments) ? ";" : "";
-                attachments += !string.IsNullOrEmpty(ServerLogAttachmentPath) ? ServerLogAttachmentPath : "";
+                Attachments += !string.IsNullOrEmpty(Attachments) ? ";" : "";
+                Attachments += !string.IsNullOrEmpty(ServerLogAttachmentPath) ? ServerLogAttachmentPath : "";
             }
 
             if(HasStudioLogAttachment)
             {
-                attachments += !string.IsNullOrEmpty(attachments) ? ";" : "";
-                attachments += !string.IsNullOrEmpty(StudioLogAttachmentPath) ? StudioLogAttachmentPath : "";
+                Attachments += !string.IsNullOrEmpty(Attachments) ? ";" : "";
+                Attachments += !string.IsNullOrEmpty(StudioLogAttachmentPath) ? StudioLogAttachmentPath : "";
             }
 
-            message.AttachmentLocation = attachments;
+            message.AttachmentLocation = Attachments;
             commService.SendCommunication(message);
             RequestClose(ViewModelDialogResults.Okay);
         }

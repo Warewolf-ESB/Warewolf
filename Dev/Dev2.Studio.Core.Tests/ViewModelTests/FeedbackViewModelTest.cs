@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Dev2.Composition;
 using Dev2.Studio.Core.Services.Communication;
@@ -83,57 +84,94 @@ OS version : ");
             mockCommService.Verify(c => c.SendCommunication(It.IsAny<EmailCommMessage>()), Times.Once());
         }
 
-        //[TestMethod]
-        //public void FeedbackViewModelSendWithValidCommWithRecordingAttachmentExpectedSendMethodInvokedWithAttachment()
-        //{
-        //    var mockSysInfo = new Mock<ISystemInfoService>();
-        //    mockSysInfo.Setup(sysInfo => sysInfo.GetSystemInfo()).Returns(GetMockSysInfo());
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        public void FeedbackViewModel_Send_LogFilesExistToAttach_FilesAreConcatenatedAsAttachments()
+        {
+            var mockSysInfo = new Mock<ISystemInfoService>();
+            mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
 
-        //    var mockCommService = new Mock<ICommService<EmailCommMessage>>();
-        //    ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
-        //    mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
+            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
 
-        //    // PBI 9598 - 2013.06.10 - TWR : fixed paths
-        //    var attachmentPath = Path.Combine(_testDir, string.Format("FeedbackTest_{0}.txt", Guid.NewGuid()));
-        //    File.WriteAllText(attachmentPath, "test text");
+            var mockCommService = new Mock<ICommService<EmailCommMessage>>();
+            mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
 
-        //    var viewModel = new FeedbackViewModel(attachmentPath + ";");
+            var attacheFiles = new Dictionary<string, string>
+            {
+                {"RecordingLog", "RecordingLog.log"},
+                {"ServerLog", "ServerLog.log"},
+                {"StudioLog", "StudioLog.log"}
+            };
 
-        //    viewModel.Send(mockCommService.Object);
-        //    mockCommService.Verify(c => c.SendCommunication(It.IsAny<EmailCommMessage>())
-        //                         , Times.Once()
-        //                         , "Send Message failed for mail with attachment");
-        //}
+            var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = (e) => true };
+            feedbackViewModel.Send(mockCommService.Object);
 
-        //[TestMethod]
-        //public void FeedbackViewModelSendWithValidCommWithAttachmentExpectedSendMethodInvokedWithTwoAttachment()
-        //{
-        //    var mockSysInfo = new Mock<ISystemInfoService>();
-        //    mockSysInfo.Setup(sysInfo => sysInfo.GetSystemInfo()).Returns(GetMockSysInfo());
+            Assert.AreEqual("RecordingLog.log;ServerLog.log;StudioLog.log", feedbackViewModel.Attachments);
+        }
 
-        //    var mockCommService = new Mock<ICommService<EmailCommMessage>>();
-        //    ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
-        //    mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
+        [TestMethod]
+        public void FeedbackViewModelSendWithValidCommWithRecordingAttachmentExpectedSendMethodInvokedWithAttachment()
+        {
+            var mockSysInfo = new Mock<ISystemInfoService>();
+            mockSysInfo.Setup(sysInfo => sysInfo.GetSystemInfo()).Returns(GetMockSysInfo());
 
-        //    // PBI 9598 - 2013.06.10 - TWR : fixed paths
-        //    var attachmentPath1 = Path.Combine(_testDir, string.Format("FeedbackTest_{0}.txt", Guid.NewGuid()));
-        //    File.WriteAllText(attachmentPath1, "test text");
+            var mockCommService = new Mock<ICommService<EmailCommMessage>>();
+            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
+            mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
 
-        //    var attachmentPath2 = Path.Combine(_testDir, string.Format("FeedbackTest_{0}.txt", Guid.NewGuid()));
-        //    File.WriteAllText(attachmentPath2, "test text");
+            // PBI 9598 - 2013.06.10 - TWR : fixed paths
+            var attachmentPath = Path.Combine(_testDir, string.Format("FeedbackTest_{0}.txt", Guid.NewGuid()));
+            File.WriteAllText(attachmentPath, "test text");
 
-        //    var viewModel = new FeedbackViewModel(string.Format("{0};{1}", attachmentPath1, attachmentPath2));
+            var attachedFiles = new Dictionary<string, string> { { "ServerLog", attachmentPath } };
+            var viewModel = new FeedbackViewModel(attachedFiles);
 
-        //    Assert.AreEqual(attachmentPath1, viewModel.RecordingAttachmentPath);
-        //    Assert.AreEqual(attachmentPath2, viewModel.ServerLogAttachmentPath);
-        //    Assert.AreEqual(true, viewModel.HasServerLogAttachment);
-        //    Assert.AreEqual(true, viewModel.HasRecordingAttachment);
+            viewModel.Send(mockCommService.Object);
+            mockCommService.Verify(c => c.SendCommunication(It.IsAny<EmailCommMessage>())
+                                 , Times.Once()
+                                 , "Send Message failed for mail with attachment");
+        }
 
-        //    viewModel.Send(mockCommService.Object);
-        //    mockCommService.Verify(c => c.SendCommunication(It.IsAny<EmailCommMessage>())
-        //                         , Times.Once()
-        //                         , "Send Message failed for mail with attachment");
-        //}
+        [TestMethod]
+        public void FeedbackViewModelSendWithValidCommWithAttachmentExpectedSendMethodInvokedWithTwoAttachment()
+        {
+            var mockSysInfo = new Mock<ISystemInfoService>();
+            mockSysInfo.Setup(sysInfo => sysInfo.GetSystemInfo()).Returns(GetMockSysInfo());
+
+            var mockCommService = new Mock<ICommService<EmailCommMessage>>();
+            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
+            mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
+
+            // PBI 9598 - 2013.06.10 - TWR : fixed paths
+            var attachmentPath1 = Path.Combine(_testDir, string.Format("FeedbackTest_{0}.txt", Guid.NewGuid()));
+            File.WriteAllText(attachmentPath1, "test text");
+
+            var attachmentPath2 = Path.Combine(_testDir, string.Format("FeedbackTest_{0}.txt", Guid.NewGuid()));
+            File.WriteAllText(attachmentPath2, "test text");
+
+            var attachmentPath3 = Path.Combine(_testDir, string.Format("FeedbackTest_{0}.txt", Guid.NewGuid()));
+            File.WriteAllText(attachmentPath2, "test text");
+
+            var attachedFiles = new Dictionary<string, string>
+            {
+                { "RecordingLog", attachmentPath1 },
+                { "ServerLog", attachmentPath2 },
+                { "StudioLog", attachmentPath3 }
+            };
+
+            var viewModel = new FeedbackViewModel(attachedFiles);
+
+            Assert.AreEqual(attachmentPath1, viewModel.RecordingAttachmentPath);
+            Assert.AreEqual(attachmentPath2, viewModel.ServerLogAttachmentPath);
+            Assert.AreEqual(attachmentPath3, viewModel.StudioLogAttachmentPath);
+            Assert.IsTrue(viewModel.HasServerLogAttachment);
+            Assert.IsTrue(viewModel.HasRecordingAttachment);
+           
+            viewModel.Send(mockCommService.Object);
+            mockCommService.Verify(c => c.SendCommunication(It.IsAny<EmailCommMessage>())
+                                 , Times.Once()
+                                 , "Send Message failed for mail with attachment");
+        }
 
         [TestMethod]
         [ExpectedException(typeof(NullReferenceException))]
@@ -148,32 +186,34 @@ OS version : ");
             feedbackViewModel.Send(null);
         }
 
-        //[TestMethod]
-        //[Owner("Ashley Lewis")]
-        //[TestCategory("FeedbackViewModel_Send")]
-        //public void FeedbackViewModel_Send_ServerlogFileAttachment_EmailHasServerLogFileAttachment()
-        //{
-        //    var mockSysInfo = new Mock<ISystemInfoService>();
-        //    mockSysInfo.Setup(sysInfo => sysInfo.GetSystemInfo()).Returns(GetMockSysInfo());
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("FeedbackViewModel_Send")]
+        public void FeedbackViewModel_Send_ServerlogFileAttachment_EmailHasServerLogFileAttachment()
+        {
+            var mockSysInfo = new Mock<ISystemInfoService>();
+            mockSysInfo.Setup(sysInfo => sysInfo.GetSystemInfo()).Returns(GetMockSysInfo());
 
-        //    var mockCommService = new Mock<ICommService<EmailCommMessage>>();
-        //    ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
-        //    var actual = new EmailCommMessage();
-        //    mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Callback<EmailCommMessage>((msg)=>
-        //    {
-        //        actual = msg;
-        //    });
+            var mockCommService = new Mock<ICommService<EmailCommMessage>>();
+            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
+            var actual = new EmailCommMessage();
+            mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Callback<EmailCommMessage>((msg) =>
+            {
+                actual = msg;
+            });
 
-        //    var attachmentPath = Path.Combine(_testDir, string.Format("FeedbackTest_{0}.txt", Guid.NewGuid()));
-        //    File.WriteAllText(attachmentPath, "test text");
+            var attachmentPath = Path.Combine(_testDir, string.Format("FeedbackTest_{0}.txt", Guid.NewGuid()));
+            File.WriteAllText(attachmentPath, "test text");
 
-        //    var feedbackViewModel = new FeedbackViewModel(";" + attachmentPath);
+            var attachedFiles = new Dictionary<string, string> { { "ServerLog", attachmentPath }};
 
-        //    //------------Execute Test---------------------------
-        //    feedbackViewModel.Send(mockCommService.Object);
+            var feedbackViewModel = new FeedbackViewModel(attachedFiles);
 
-        //    // Assert email has server log file attachment
-        //    Assert.AreEqual(attachmentPath, actual.AttachmentLocation, "Wrong file attached");
-        //}
+            //------------Execute Test---------------------------
+            feedbackViewModel.Send(mockCommService.Object);
+
+            // Assert email has server log file attachment
+            Assert.AreEqual(attachmentPath, actual.AttachmentLocation, "Wrong file attached");
+        }
     }
 }

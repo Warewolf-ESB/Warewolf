@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Dev2.Providers.Logs;
 using Dev2.Studio;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
@@ -100,5 +101,11 @@ namespace Dev2.Core.Tests.Diagnostics
         }
 
         #endregion
+
+        [TestMethod]
+        public void TEST()
+        {
+            Logger.TraceInfo();
+        }
     }
 }

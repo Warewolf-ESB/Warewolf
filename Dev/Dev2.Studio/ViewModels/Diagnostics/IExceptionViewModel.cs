@@ -7,6 +7,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
     public interface IExceptionViewModel
     {
         string OutputText { get; set; }
+        string OutputPath { get; set; }
+        string ServerLogTempPath { get; set; }
+        string StudioLogTempPath { get; set; }
         IWindowManager WindowNavigation { get; set; }
         IFeedbackInvoker FeedbackInvoker { get; set; }
         BindableCollection<ExceptionUIModel> Exception { get; set; }

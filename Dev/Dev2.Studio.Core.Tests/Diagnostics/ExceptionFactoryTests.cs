@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -83,6 +84,26 @@ namespace Dev2.Core.Tests.Diagnostics
 
             //Assert
             Assert.IsTrue(vm.Critical, "Non critical error view model created for critical error");
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        public void ExceptionFactoryCreateCriticalExceptionViewModel_LogFilesExists_EnsureThatTheLogFilesAreAlsoInitialized()
+        {
+            //Initialization
+            var e = GetException();
+            const string studioLog = "Studio.log";
+            ExceptionFactory.GetStudioLogTempPath = () => studioLog;
+            const string uniqueTxt = "Unique.txt";
+            ExceptionFactory.GetUniqueOutputPath = (ext) => uniqueTxt;
+            const string severTxt = "Sever.txt";
+            ExceptionFactory.GetServerLogTempPath = (evn) => severTxt; 
+            //Execute
+            var vm = ExceptionFactory.CreateViewModel(e, _contextModel.Object, ErrorSeverity.Critical);
+            //Assert
+            Assert.AreEqual(vm.StudioLogTempPath, studioLog);
+            Assert.AreEqual(vm.ServerLogTempPath, severTxt);
+            Assert.AreEqual(vm.OutputPath, uniqueTxt);
         }
 
         #endregion
