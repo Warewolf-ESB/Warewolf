@@ -14,7 +14,7 @@ using Unlimited.Framework.Converters.Graph;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 {
-    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
+    [TestClass]
     public class RuntimeServicesTests
     {
         #region Plugin

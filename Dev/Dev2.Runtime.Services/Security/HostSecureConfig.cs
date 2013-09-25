@@ -99,9 +99,11 @@ namespace Dev2.Runtime.Security
 
         private void EnsureSecureConfigFileExists()
         {
+            ConfigurationManager.RefreshSection(SectionName);
             // We need to check both the live and development paths ;)
             if (!File.Exists(FileName))
             {
+                ServerLogger.LogMessage("File not found: " + FileName);
                 var newSettings = new NameValueCollection();
                 newSettings["ServerID"] = "";
                 newSettings["ServerKey"] = "";
