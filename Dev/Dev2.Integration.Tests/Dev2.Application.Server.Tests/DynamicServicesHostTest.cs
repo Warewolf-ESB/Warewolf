@@ -8,7 +8,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
     /// <summary>
     /// Summary description for DynamicServicesHostTest
     /// </summary>
-    [TestClass]
+    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
     public class DynamicServicesHostTest
     {
         /// <summary>

@@ -10,7 +10,7 @@ namespace Dev2.Integration.Tests.Sources
     /// <summary>
     /// Summary description for EmailSourceTest
     /// </summary>
-    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
+    [TestClass]
     public class EmailSourceTest
     {
         const int SmtpTimeout = 30000;
