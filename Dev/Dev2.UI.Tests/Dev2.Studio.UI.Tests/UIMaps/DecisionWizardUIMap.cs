@@ -46,7 +46,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         /// <summary>
         /// ClickCancel
         /// </summary>
-        public void KeyboardDone()
+        public void HitDoneWithKeyboard()
         {
             UITestControl decisionDialog = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             // Click image

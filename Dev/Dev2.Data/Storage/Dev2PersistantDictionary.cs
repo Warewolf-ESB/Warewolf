@@ -298,6 +298,7 @@ namespace Dev2.Data.Binary_Objects
 
         public void Add(string key, T objToAdd)
         {
+            if (!_file.CanWrite) return;
             lock (_opsLock)
             {
                 if (_file.Length - _lastCompactSize > _compactThresholdSize)
