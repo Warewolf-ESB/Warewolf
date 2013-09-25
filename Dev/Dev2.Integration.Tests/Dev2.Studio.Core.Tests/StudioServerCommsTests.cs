@@ -18,7 +18,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
     // Sashen.Naidoo : 13-02-2012 : Tests the Studio can always create a connection to the server
     //                              & that the Studio always performs it's connection actions in a 
     //                              synchronous fashion.
-    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
+    [TestClass]
     public class StudioServerCommsTests
     {                      
         #region Environment Connection Tests

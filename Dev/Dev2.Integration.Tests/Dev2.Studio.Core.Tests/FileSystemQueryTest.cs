@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
+    [TestClass]
     // This is for testing against the actual fileSystem which may vary
     public class FileSystemQueryTest
     {

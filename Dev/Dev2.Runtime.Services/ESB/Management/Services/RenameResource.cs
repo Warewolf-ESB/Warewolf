@@ -33,12 +33,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 throw new InvalidDataContractException("No value provided for NewName parameter.");
             }
-            var saveResult = ResourceCatalog.Instance.RenameResource(theWorkspace.ID, resourceID, newName);
-            if(saveResult.Status == ExecStatus.Success)
+            var saveToWorkSpaceResult = ResourceCatalog.Instance.RenameResource(theWorkspace.ID, resourceID, newName);
+            if(saveToWorkSpaceResult.Status == ExecStatus.Success)
             {
-                saveResult = ResourceCatalog.Instance.RenameResource(Guid.Empty, resourceID, newName);
+                var saveToLocalServerResult = ResourceCatalog.Instance.RenameResource(Guid.Empty, resourceID, newName);
+                if (saveToLocalServerResult.Status == ExecStatus.Success)
+                {
+                    return saveToLocalServerResult.Message;
+                }
             }
-            return saveResult.Message;
+            return saveToWorkSpaceResult.Message;
         }
 
         public DynamicService CreateServiceEntry()

@@ -11,7 +11,7 @@ namespace Dev2.Core.Tests
     /// <summary>
     /// Summary description for FrameworkSecurityProviderTest
     /// </summary>
-    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
+    [TestClass]
     public class FrameworkSecurityProviderTest
     {
         private TestContext testContextInstance;

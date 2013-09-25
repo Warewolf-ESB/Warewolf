@@ -2187,10 +2187,11 @@ namespace Dev2.Tests.Runtime.Hosting
             File.WriteAllText(resourceFilePath, "<TestResource Name=\"" + oldResourceName + "\" />", Encoding.UTF8);
 
             //------------Execute Test---------------------------
-            renameResourceService.Execute(new Dictionary<string, string> { { "ResourceID", resourceID.ToString() }, { "NewName", newResourceName } }, mockedWorkspace.Object);
+            var result = renameResourceService.Execute(new Dictionary<string, string> { { "ResourceID", resourceID.ToString() }, { "NewName", newResourceName } }, mockedWorkspace.Object);
 
             // Assert Resource FileName Changed
-            Assert.IsTrue(File.Exists(_testDir + "\\Workspaces\\" + workspace + "\\Services\\New-Name-With-Dashes.xml"), "Resource name not changed when new name has dashes");
+            Assert.IsTrue(result.Contains("Renamed Resource"));
+            Assert.IsTrue(File.Exists(_testDir + "\\Workspaces\\" + workspace + "\\Services\\New-Name-With-Dashes.xml"), "Resource does not exist: " + _testDir + "\\Workspaces\\" + workspace + "\\Services\\New-Name-With-Dashes.xml");
         }
 
         #endregion
