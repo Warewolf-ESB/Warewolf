@@ -4,7 +4,7 @@ using Warewolf.Sql;
 
 namespace Dev2.Integration.Tests.Sql
 {
-    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
+    [TestClass]
     public class WorkflowsTests
     {
         [ClassInitialize]
