@@ -8,7 +8,7 @@ using Moq.Protected;
 
 namespace Dev2.Integration.Tests.Dev2.Activities.Designers.DsfGetWebRequest
 {
-    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
+    [TestClass]
     public class GetWebRequestViewModelTests
     {
         #region Constructor

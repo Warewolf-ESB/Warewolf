@@ -10,7 +10,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices 
     /// <summary>
     /// Summary description for FindDirectoryServiceTest
     /// </summary>
-    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
+    [TestClass]
     public class FindDirectoryServiceTest {
         public FindDirectoryServiceTest() {
             //

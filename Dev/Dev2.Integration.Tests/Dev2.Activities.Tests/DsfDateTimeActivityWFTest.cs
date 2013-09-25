@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
-    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
+    [TestClass]
     public class DsfDateTimeActivityWFTest {
         
         #region DateTime Complex Tests

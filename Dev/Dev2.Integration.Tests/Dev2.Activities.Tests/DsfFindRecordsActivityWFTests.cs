@@ -8,7 +8,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     /// <summary>
     /// Summary description for DsfFindRecordsActivityWFTests
     /// </summary>
-    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
+    [TestClass]
     public class DsfFindRecordsActivityWFTests
     {
         string WebserverURI = ServerSettings.WebserverURI;

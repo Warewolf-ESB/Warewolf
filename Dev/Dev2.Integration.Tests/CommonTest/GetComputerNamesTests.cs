@@ -6,7 +6,7 @@ namespace Dev2.Data.Tests.Persistence
     /// <summary>
     /// Summary description for AvlTreeTest
     /// </summary>
-    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
+    [TestClass]
     public class GetComputerNamesTests
     {
         /// <summary>

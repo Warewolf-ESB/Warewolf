@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -7,7 +8,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     /// <summary>
     /// Summary description for ToolingWorkflowTest
     /// </summary>
-    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
+    [TestClass]
     public class ToolingWorkflowTest
     {
         string WebserverURI = ServerSettings.WebserverURI;
@@ -63,25 +64,47 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void AllToolsTestExpectPass()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "Tool Testing");
-            
-            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+
+            var responseData = string.Empty;
+            try
+            {
+                responseData = TestHelper.PostDataToWebserver(PostData);
+            }
+            catch(WebException e)
+            {
+                if (e.Message.Contains("timed out"))
+                {
+                    Assert.Inconclusive("Tools test workflow took to long to run");
+                }
+            }
 
             // Find Record Index: PASS
             string Expected = @"<DataList><Test><Result>ForEach: Success</Result></Test><Test><Result>Switch: PASS</Result></Test><Test><Result>Decision: PASS</Result></Test><Test><Result>Count Records: PASS</Result></Test><Test><Result>Delete Record: PASS</Result></Test><Test><Result>Sort Records: PASS</Result></Test><Test><Result>Find Record Index: PASS</Result></Test><Test><Result>Assign: PASS</Result></Test><Test><Result>Base Conversion: PASS</Result></Test><Test><Result>Case Convert: PASS</Result></Test><Test><Result>Data Merge: FAIL</Result></Test><Test><Result>Data Split: PASS</Result></Test><Test><Result>Date and Time: PASS</Result></Test><Test><Result>Date and Time Difference: PASS</Result></Test><Test><Result>Find Index: PASS</Result></Test><Test><Result>Format Number: INCONCLUSIVE</Result></Test><Test><Result>Replace: INCONCLUSIVE</Result></Test><Test><Result>Javascript:PASS</Result></Test><Test><Result>Unique: PASS</Result></Test><Test><Result>XPath Tool: PASS</Result></Test></DataList>";
 
-            Assert.IsTrue(ResponseData.Contains(Expected), "Expected [ " + Expected + ", But Got [ " + ResponseData + " ]");
+            Assert.IsTrue(responseData.Contains(Expected), "Expected [ " + Expected + ", But Got [ " + responseData + " ]");
         }
 
         [TestMethod]
         public void ServiceExecutionTest()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "ServiceExecutionTest");
-
-            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+            
+            var responseData = string.Empty;
+            try
+            {
+                responseData = TestHelper.PostDataToWebserver(PostData);
+            }
+            catch (WebException e)
+            {
+                if (e.Message.Contains("timed out"))
+                {
+                    Assert.Inconclusive("Service execution test workflow took to long to run");
+                }
+            }
 
             string Expected = @"<DataList><rs><val>1</val><result>res = 3</result></rs><rs><val>2</val><result>res = 3</result></rs><rs><val>3</val><result>res = 3</result></rs><rs><val></val><result>res = 3</result></rs></DataList>";
 
-            Assert.IsTrue(ResponseData.Contains(Expected), "Got [ " + Expected + " ] Expected [ " + Expected + " ]");
+            Assert.IsTrue(responseData.Contains(Expected), "Got [ " + Expected + " ] Expected [ " + Expected + " ]");
         }
     }
 }
