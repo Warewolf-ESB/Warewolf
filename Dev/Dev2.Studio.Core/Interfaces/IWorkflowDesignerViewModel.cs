@@ -15,7 +15,6 @@ namespace Dev2.Studio.Core.ViewModels {
         string AuthorRoles { get; set; }
         WorkflowDesigner Designer { get; }
         UIElement DesignerView { get; }
-
         /// <summary>
         /// Gets the environment model.
         /// </summary>

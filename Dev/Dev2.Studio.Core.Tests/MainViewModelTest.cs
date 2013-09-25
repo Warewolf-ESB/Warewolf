@@ -1613,6 +1613,7 @@ namespace Dev2.Core.Tests
                 envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
                 env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
                 env.Setup(e => e.Connection).Returns(envConn.Object);
+                env.Setup(e => e.IsConnected).Returns(true);
 
                 var resourceModel = new Mock<IContextualResourceModel>();
                 resourceModel.Setup(m => m.Environment).Returns(env.Object);
@@ -1639,6 +1640,57 @@ namespace Dev2.Core.Tests
 
                 wsiRepo.Verify(r => r.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.Is<bool>(b => b)));
                 resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()));
+        }
+        
+        [TestMethod]
+        public void MainViewModelOnDeactivateWithTrueExpectedSavesResourceModels_WhenEnvironmentNotConnectedDoesNotCallSave()
+        {
+                var wsiRepo = new Mock<IWorkspaceItemRepository>();
+                wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
+                wsiRepo.Setup(r => r.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.Is<bool>(b => b))).Verifiable();
+
+                SetupImportServiceForPersistenceTests(wsiRepo);
+
+                var resourceID = Guid.NewGuid();
+                var serverID = Guid.NewGuid();
+
+                #region Setup resourceModel
+
+                var resourceRepo = new Mock<IResourceRepository>();
+                resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
+
+                var envConn = new Mock<IEnvironmentConnection>();
+                var env = new Mock<IEnvironmentModel>();
+                envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+                env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
+                env.Setup(e => e.Connection).Returns(envConn.Object);
+                env.Setup(e => e.IsConnected).Returns(false);
+
+                var resourceModel = new Mock<IContextualResourceModel>();
+                resourceModel.Setup(m => m.Environment).Returns(env.Object);
+                resourceModel.Setup(m => m.ID).Returns(resourceID);
+
+                #endregion
+
+                Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+                var securityContext = new Mock<IFrameworkSecurityContext>();
+                var workflowHelper = new Mock<IWorkflowHelper>();
+                var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, securityContext.Object, mockPopUp.Object, false);
+                var contextViewModel = new WorkSurfaceContextViewModel(
+                    new WorkSurfaceKey { ResourceID = resourceID, ServerID = serverID, WorkSurfaceContext = designerViewModel.WorkSurfaceContext },
+                    designerViewModel);
+
+                var envRepo = new Mock<IEnvironmentRepository>();
+                envRepo.Setup(r => r.All()).Returns(new[] { env.Object });
+                envRepo.Setup(e => e.Source).Returns(env.Object);
+                envRepo.Setup(r => r.ReadSession()).Returns(new[] { env.Object.ID });
+                var viewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
+                viewModel.Items.Add(contextViewModel);
+
+                viewModel.TestClose();
+
+                wsiRepo.Verify(r => r.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.Is<bool>(b => b)),Times.Never());
+                resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()), Times.Never());
         }
 
         #endregion
@@ -1721,9 +1773,10 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void IsActiveEnvironmentConnectExpectFalseWithNullEnvironment()
         {
-                CreateFullExportsAndVm();
+            CreateFullExportsAndVm();
             var actual = _mainViewModel.IsActiveEnvironmentConnected();
-            Assert.IsTrue(actual == false);
+            Assert.IsFalse(actual);
+            Assert.IsFalse(_mainViewModel.HasActiveConnection);
         }
 
         #endregion

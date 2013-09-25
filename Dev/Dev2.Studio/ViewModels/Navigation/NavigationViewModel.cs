@@ -702,32 +702,35 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             UpdateIsRefreshing(environment, true);
 
-            await _asyncWorker.Start(() =>
+            if(_asyncWorker != null)
             {
-                if(!environment.IsConnected)
+                await _asyncWorker.Start(() =>
                 {
-                    Connect(environment);
-                }
-                environment.LoadResources();
-
-            }, () =>
-            {
-                try
-                {
-                    if(environment.IsConnected && environment.CanStudioExecute)
+                    if(!environment.IsConnected)
                     {
-                        //
-                        // Build the resources into a tree
-                        //
-                        BuildNavigationItemViewModels(environment);
+                        Connect(environment);
                     }
-                }
-                finally
+                    environment.LoadResources();
+
+                }, () =>
                 {
-                    UpdateIsRefreshing(environment, false);
-                    OnLoadResourcesCompleted();
-                }
-            });
+                    try
+                    {
+                        if(environment.IsConnected && environment.CanStudioExecute)
+                        {
+                            //
+                            // Build the resources into a tree
+                            //
+                            BuildNavigationItemViewModels(environment);
+                        }
+                    }
+                    finally
+                    {
+                        UpdateIsRefreshing(environment, false);
+                        OnLoadResourcesCompleted();
+                    }
+                });
+            }
         }
 
         void UpdateIsRefreshing(IEnvironmentModel environment, bool isRefreshing)

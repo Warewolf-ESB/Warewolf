@@ -97,6 +97,7 @@ namespace Dev2.Studio.ViewModels
         private ICommand _notImplementedCommand;
         private ICommand _showStartPageCommand;
         readonly IAsyncWorker _asyncWorker;
+        bool _hasActiveConnection;
 
         #endregion
 
@@ -365,6 +366,19 @@ namespace Dev2.Studio.ViewModels
 
         // PBI 9941 - 2013.07.07 - TWR: added
         public IVersionChecker Version { get; private set; }
+
+        public bool HasActiveConnection
+        {
+            get
+            {
+                return _hasActiveConnection;
+            }
+            set
+            {
+                _hasActiveConnection = value;
+                NotifyOfPropertyChange(() => HasActiveConnection);
+            }
+        }
 
         #region ctor
 
@@ -730,9 +744,15 @@ namespace Dev2.Studio.ViewModels
                 return false;
             }
 
-            return ((ActiveEnvironment != null) &&
-                (ActiveEnvironment.IsConnected) &&
-                (ActiveEnvironment.CanStudioExecute));
+            if(ActiveItem != null)
+            {
+                HasActiveConnection = ActiveItem.IsEnvironmentConnected();
+            }
+            else
+            {
+                HasActiveConnection = false;
+            }
+            return ((ActiveEnvironment != null) && (ActiveEnvironment.IsConnected) && (ActiveEnvironment.CanStudioExecute));
         }
 
         public void AddDependencyVisualizerWorkSurface(IContextualResourceModel resource)
@@ -909,7 +929,7 @@ namespace Dev2.Studio.ViewModels
                 if(item != null)
                 {
                     item.Parent = this;
-                    IWorkflowDesignerViewModel wfItem = item.WorkSurfaceViewModel as IWorkflowDesignerViewModel;
+                    var wfItem = item.WorkSurfaceViewModel as IWorkflowDesignerViewModel;
                     if(wfItem != null)
                     {
                         AddWorkspaceItem(wfItem.ResourceModel);
@@ -1303,10 +1323,13 @@ namespace Dev2.Studio.ViewModels
         {
             SaveWorkspaceItems();
             var savingCompleted = false;
-            for(int index = 0; index < Items.Count; index++)
+            for(var index = 0; index < Items.Count; index++)
             {
                 var ctx = Items[index];
-                ctx.Save(true);
+                if(ctx.IsEnvironmentConnected())
+                {
+                    ctx.Save(true);
+                }
                 if(index == Items.Count-1)
                 {
                     savingCompleted = true;

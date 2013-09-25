@@ -143,10 +143,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 }
                 NotifyOfPropertyChange(() => WorkSurfaceViewModel);
 
-                var isWorkFlowDesigner = _workSurfaceViewModel is WorkflowDesignerViewModel;
+                var isWorkFlowDesigner = _workSurfaceViewModel is IWorkflowDesignerViewModel;
                 if(isWorkFlowDesigner)
                 {
-                    var workFlowDesignerViewModel = (WorkflowDesignerViewModel)_workSurfaceViewModel;
+                    var workFlowDesignerViewModel = (IWorkflowDesignerViewModel)_workSurfaceViewModel;
                     _contextualResourceModel = workFlowDesignerViewModel.ResourceModel;
                     if(ContextualResourceModel != null)
                     {
