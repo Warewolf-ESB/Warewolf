@@ -204,27 +204,34 @@ namespace Dev2.Studio.UI.Tests
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("AutoConnectorResource");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "AutoConnectorResource");
+            ExplorerUIMap.EnterExplorerSearchText("Auto Connector Resource");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Auto Connector Resource");
             var control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "DsfMultiAssignActivityDesigner");
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             //Drag a decision to the design surface
             //Note that this point is a position relative to the multi assign on the design surface. This is to ensure that the tool is dropped exactly on the line
             if (control != null)
             {
-                var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 300);
+                var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
                 ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
             }
             else
             {
                 throw new Exception("DsfMultiAssignActivityDesigner not found on active tab");
             }
-            Playback.Wait(5000);
-            DecisionWizardUIMap.ClickDone();
-            var connectors = WorkflowDesignerUIMap.GetAllConnectors();
-            DecisionWizardUIMap.ClickDone();
-            //Assert start auto connector worked
-            Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
+
+            if (DecisionWizardUIMap.WaitForDialog(5000))
+            {
+                DecisionWizardUIMap.ClickCancel();
+                var connectors = WorkflowDesignerUIMap.GetAllConnectors();
+                DecisionWizardUIMap.KeyboardDone();
+                //Assert start auto connector worked
+                Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
+            }
+            else
+            {
+                Assert.Fail("Decision dialog not shown after decision drop within the given timeout period.");
+            }
         }
 
         [TestMethod]
@@ -237,7 +244,7 @@ namespace Dev2.Studio.UI.Tests
             //Drag a control to the design surface
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
             Playback.Wait(5000);
-            DecisionWizardUIMap.ClickDone();
+            DecisionWizardUIMap.KeyboardDone();
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
             Assert.AreEqual(1, connectors.Count, "Start auto connector doesnt work");
@@ -247,5 +254,20 @@ namespace Dev2.Studio.UI.Tests
         {
             Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}W");
         }
+
+        public UIMap UIMap
+        {
+            get
+            {
+                if((this.map == null))
+                {
+                    this.map = new UIMap();
+                }
+
+                return this.map;
+            }
+        }
+
+        private UIMap map;
     }
 }

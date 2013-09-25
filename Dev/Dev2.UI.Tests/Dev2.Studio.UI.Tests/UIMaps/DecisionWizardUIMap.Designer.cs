@@ -31,69 +31,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public partial class DecisionWizardUIMap
     {
-        
-        /// <summary>
-        /// ClickCancel
-        /// </summary>
-        public void ClickCancel()
-        {
-            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-
-            // Click image
-            Mouse.Click(uIItemImage, new Point(768, 483));
-        }
-
-        /// <summary>
-        /// ClickCancel
-        /// </summary>
-        public void ClickDone()
-        {
-            UITestControl decisionDialog = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            // Click image
-            Keyboard.SendKeys(decisionDialog, "{TAB}{ENTER}");
-        }
-
-        /// <summary>
-        /// Select nth menu item
-        /// </summary>
-        public void SelectMenuItem(int n)
-        {
-            for(int i = 0; i < n; i++)
-            {
-                Keyboard.SendKeys("{DOWN}");
-            }
-        }
-
-        /// <summary>
-        /// Send n tabs
-        /// </summary>
-        public void SendTabs(int n)
-        {
-            for (int i = 0; i < n; i++)
-            {
-                Thread.Sleep(700);
-                Keyboard.SendKeys("{TAB}");
-            }
-        }
-
-        /// <summary>
-        /// Gets the first intellisense result
-        /// </summary>
-        public void GetFirstIntellisense(string startWith)
-        {
-            Keyboard.SendKeys("[[V");
-            Thread.Sleep(250);
-            Keyboard.SendKeys("{DOWN}");
-            Thread.Sleep(250);
-            Keyboard.SendKeys("{ENTER}");
-            Thread.Sleep(250);
-            Keyboard.SendKeys("^A");
-            Thread.Sleep(250);
-            Keyboard.SendKeys("^C");
-            Thread.Sleep(250);
-            Keyboard.SendKeys("{DELETE}");
-        }
-        
         #region Properties
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
         {
@@ -126,6 +63,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         }
         
         #region Properties
+
         public WpfImage UIItemImage
         {
             get
@@ -140,10 +78,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
                 return this.mUIItemImage;
             }
         }
+
         #endregion
         
         #region Fields
+
         private WpfImage mUIItemImage;
+
         #endregion
     }
 }

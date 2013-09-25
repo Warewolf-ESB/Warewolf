@@ -43,13 +43,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
         }
 
         #region Properties
-        public UIUI_DocManager_AutoIDCustom1 UIUI_DocManager_AutoIDCustom
+        public UIUI_DocManager_AutoIDCustom UIUI_DocManager_AutoIDCustom
         {
             get
             {
                 if ((this.mUIUI_DocManager_AutoIDCustom == null))
                 {
-                    this.mUIUI_DocManager_AutoIDCustom = new UIUI_DocManager_AutoIDCustom1(this);
+                    this.mUIUI_DocManager_AutoIDCustom = new UIUI_DocManager_AutoIDCustom(this);
                 }
                 return this.mUIUI_DocManager_AutoIDCustom;
             }
@@ -108,7 +108,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
         #endregion
 
         #region Fields
-        private UIUI_DocManager_AutoIDCustom1 mUIUI_DocManager_AutoIDCustom;
+        private UIUI_DocManager_AutoIDCustom mUIUI_DocManager_AutoIDCustom;
 
         private UIItemCustom3 mUIItemCustom;
 
