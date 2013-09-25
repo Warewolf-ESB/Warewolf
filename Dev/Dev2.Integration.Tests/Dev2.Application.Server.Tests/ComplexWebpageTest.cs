@@ -11,7 +11,7 @@ namespace Dev2.Integration.Tests
     /// <summary>
     /// Summary description for Resumption
     /// </summary>
-    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
+    [TestClass]
     public class ComplexWebpages
     {
         public ComplexWebpages()
