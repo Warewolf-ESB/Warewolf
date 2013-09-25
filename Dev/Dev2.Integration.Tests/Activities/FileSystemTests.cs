@@ -8,7 +8,7 @@ using Unlimited.UnitTest.Framework.PathOperationTests;
 
 namespace Dev2.Integration.Tests.Activities
 {
-    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
+    [TestClass]
     public class FileSystemTests
     {
         private string tmpfile1;

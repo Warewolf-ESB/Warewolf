@@ -611,7 +611,6 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(5000);
             Keyboard.SendKeys(WorkflowDesignerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0], "{TAB}{TAB}{TAB}{TAB}{TAB}OldResourceName{ENTER}");
             Playback.Wait(5000);
-            Mouse.Click(DocManagerUIMap.UIBusinessDesignStudioWindow);
             TabManagerUIMap.CloseTab("OldResourceName");
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();

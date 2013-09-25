@@ -12,7 +12,7 @@ namespace Dev2.Integration.Tests.Activities
     /// <summary>
     /// Summary description for FtpTests
     /// </summary>
-    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
+    [TestClass]
     public class FtpTests
     {
 
