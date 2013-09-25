@@ -22,7 +22,12 @@ namespace Dev2.Runtime.Security
         public HostSecureConfig()
         {
             EnsureSecureConfigFileExists();
-            NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection(SectionName);
+            var settings = (NameValueCollection)ConfigurationManager.GetSection(SectionName);
+            if (settings == null)
+            {
+                //2013.09.25: Ashley Lewis - Log if settings is null
+                ServerLogger.LogMessage("Configuration Manager failed to load secureSettings. With " + FileName + " Root Section Group Name = " + ConfigurationManager.OpenExeConfiguration(FileName).RootSectionGroup.SectionGroupName);
+            }
             Initialize(settings, true);
         }
 
