@@ -69,6 +69,8 @@ namespace Dev2.Studio.Core.Tests {
             IWebCommunicationResponse actual = _webRequest.Post(uri, data);
             IWebCommunicationResponse expected = _webCommResp;
             XElement serializedActual = XElement.Parse(actual.Content);
+
+            Assert.AreNotEqual(0, serializedActual.Descendants().Count());
             XElement actualFinding = serializedActual.Descendants().First(c => c.Name == "tabIndex");
 
             Assert.AreNotEqual(string.Empty, actualFinding.Value);

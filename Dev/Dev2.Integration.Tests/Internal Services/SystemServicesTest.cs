@@ -10,7 +10,7 @@ namespace Dev2.Integration.Tests.Internal_Services
     /// <summary>
     /// Summary description for SystemServices
     /// </summary>
-    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
+    [TestClass]
     public class SystemServicesTest
     {
         private string _webServerURI = ServerSettings.WebserverURI;
