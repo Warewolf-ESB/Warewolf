@@ -80,13 +80,11 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
 
             AssociatedObject.MouseMove -= AssociatedObject_MouseMove;
-            AssociatedObject.Drop -= AssociatedObject_Drop;
             AssociatedObject.DragOver -= AssociatedObject_DragOver;
             AssociatedObject.MouseDown -= AssociatedObject_MouseDown;
             AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
 
             AssociatedObject.MouseMove += AssociatedObject_MouseMove;
-            AssociatedObject.Drop += AssociatedObject_Drop;
             AssociatedObject.DragOver += AssociatedObject_DragOver;
             AssociatedObject.MouseDown += AssociatedObject_MouseDown;
             AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
@@ -100,7 +98,6 @@ namespace Dev2.Studio.AppResources.Behaviors
             if (AssociatedObject != null)
             {
                 AssociatedObject.MouseMove -= AssociatedObject_MouseMove;
-                AssociatedObject.Drop -= AssociatedObject_Drop;
                 AssociatedObject.DragOver -= AssociatedObject_DragOver;
                 AssociatedObject.MouseDown -= AssociatedObject_MouseDown;
                 AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
@@ -120,8 +117,8 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             if (!DontAllowDraging)
             {
-                IInputElement inputElement = sender as IInputElement;
-                DependencyObject dependencyObject = sender as DependencyObject;
+                var inputElement = sender as IInputElement;
+                var dependencyObject = sender as DependencyObject;
 
                 if (e.LeftButton == MouseButtonState.Pressed && inputElement != null && dependencyObject != null && _dragSource != null)
                 {
@@ -130,10 +127,16 @@ namespace Dev2.Studio.AppResources.Behaviors
                     if ((Math.Abs(currentPosition.X - _lastMouseDown.X) > 2) ||
                         (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 2))
                     {
-                        DataObject dragData = new DataObject();
-                        ResourceTreeViewModel dragSourceDataContext = _dragSource.DataContext as ResourceTreeViewModel;
+                        var dragData = new DataObject();
+                        var dragSourceDataContext = _dragSource.DataContext as ResourceTreeViewModel;
+                        
                         if (dragSourceDataContext != null)
                         {
+                            if(dragSourceDataContext.IsRenaming)
+                            {
+                                return;
+                            }
+
                             dragSourceDataContext.IsNew = true;
                             if (!string.IsNullOrEmpty(dragSourceDataContext.ActivityFullName))
                             {
@@ -149,11 +152,6 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
         }
 
-        private void AssociatedObject_Drop(object sender, DragEventArgs e)
-        {
-            // var i = 1; Why the heck is this method still here? - Proper body removed...
-        }
-
         private void AssociatedObject_DragOver(object sender, DragEventArgs e)
         {
             e.Effects = DragDropEffects.None;
@@ -161,7 +159,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void AssociatedObject_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            IInputElement inputElement = sender as IInputElement;
+            var inputElement = sender as IInputElement;
 
             if (e.ChangedButton == MouseButton.Left && inputElement != null)
             {
