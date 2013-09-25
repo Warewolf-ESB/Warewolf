@@ -126,7 +126,11 @@ namespace Dev2.Studio.ViewModels.Navigation
                 {
                     throw new ArgumentException(StringResources.InvalidResourceNameExceptionMessage);
                 }
-                HandleRename(value, Application.Current.MainWindow);
+
+                if(!string.IsNullOrEmpty(value))
+                {
+                    HandleRename(value, Application.Current.MainWindow);
+                }
             }
         }
 
