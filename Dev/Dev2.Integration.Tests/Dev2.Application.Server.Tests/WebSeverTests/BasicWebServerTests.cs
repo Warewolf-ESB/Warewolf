@@ -11,7 +11,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.WebSeverTests
     /// <summary>
     /// Summary description for BasicWebServerTests
     /// </summary>
-    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
+    [TestClass]
     public class BasicWebServerTests
     {
         public BasicWebServerTests()

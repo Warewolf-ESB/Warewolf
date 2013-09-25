@@ -16,7 +16,7 @@ using Unlimited.Framework;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
 {
-    [TestClass][Ignore]//Ashley: round 2 hunting the evil test
+    [TestClass]
     public class ApplicationServerBuildTests
     {
         public ApplicationServerBuildTests()
