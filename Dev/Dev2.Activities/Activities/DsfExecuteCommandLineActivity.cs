@@ -23,6 +23,8 @@ namespace Dev2.Activities
 
         string _commandFileName;
         string _commandResult;
+        Process _process;
+        NativeActivityContext _nativeActivityContext;
 
         #endregion
        
@@ -61,7 +63,7 @@ namespace Dev2.Activities
 
         public DsfExecuteCommandLineActivity()
             : base("Execute Command Line")
-        {
+        {            
         }
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
@@ -75,12 +77,13 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            _nativeActivityContext = context;
+            var dataObject = _nativeActivityContext.GetExtension<IDSFDataObject>();
+            var compiler = DataListFactory.CreateDataListCompiler();
 
-            Guid dlID = dataObject.DataListID;
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var dlID = dataObject.DataListID;
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
 
             try
             {
@@ -160,8 +163,8 @@ namespace Dev2.Activities
                 }
                 if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
-                    DispatchDebugState(context,StateType.Before);
-                    DispatchDebugState(context, StateType.After);
+                    DispatchDebugState(_nativeActivityContext,StateType.Before);
+                    DispatchDebugState(_nativeActivityContext, StateType.After);
                 }
             }
            
@@ -169,56 +172,67 @@ namespace Dev2.Activities
 
         bool ExecuteProcess(string val, out StreamReader errorReader, out StreamReader outputReader)
         {
-            using(var process = new Process())
+            _process = new Process();
+            using(_process)
             {
                 var processStartInfo = CreateProcessStartInfo(val);
-                
-                if (processStartInfo == null) throw new ArgumentNullException("processStartInfo");
 
-                process.StartInfo = processStartInfo;
+                if(processStartInfo == null)
+                {
+                    throw new ArgumentNullException("processStartInfo");
+                }
 
-                bool processStarted = process.Start();
-                outputReader = process.StandardOutput;
-                errorReader = process.StandardError;
-                if(!ProcessHasStarted(processStarted, process))
+                _process.StartInfo = processStartInfo;
+                var processStarted = _process.Start();
+                outputReader = _process.StandardOutput;
+                errorReader = _process.StandardError;
+                if(!ProcessHasStarted(processStarted, _process))
                 {
                     return false;
                 }
 
                 // TODO : Make this a user option on the expanded tool ;)
-                process.PriorityClass = ProcessPriorityClass.RealTime; // Force it to run quick ;)
-                process.StandardInput.Close();
+                _process.PriorityClass = ProcessPriorityClass.RealTime; // Force it to run quick ;)
+                _process.StandardInput.Close();
 
-                while(!process.HasExited)
+                while(!_process.HasExited)
                 {
-                    if(!process.HasExited)
+                    if(!_process.HasExited)
                     {
-                        var isWaitingForUserInput = ModalChecker.IsWaitingForUserInput(process);
-                        if (isWaitingForUserInput)
+                        var isWaitingForUserInput = ModalChecker.IsWaitingForUserInput(_process);
+                        if(!isWaitingForUserInput)
                         {
-                            process.Kill();
-                            throw new ApplicationException("The process required user input.");
+                            continue;
                         }
+                        _process.Kill();
+                        throw new ApplicationException("The process required user input.");
                     }
-
-
                     Thread.Sleep(10);
                 }
-                process.Close();
+                _process.Close();
             }
             return true;
         }
 
+        #region Overrides of NativeActivity<string>
+
+        void StopProcess()
+        {
+            _process.Close();
+            _process.Dispose();
+        }
+
+        #endregion
 
         bool ProcessHasStarted(bool processStarted, Process process)
         {
-            if(!processStarted)
+            if(processStarted)
             {
-                CommandResult = "Command did not start. " + Environment.NewLine +
-                                "Exit Code: " + process.ExitCode;
-                return false;
+                return true;
             }
-            return true;
+            CommandResult = "Command did not start. " + Environment.NewLine +
+                            "Exit Code: " + process.ExitCode;
+            return false;
         }
 
         ProcessStartInfo CreateProcessStartInfo(string val)
@@ -266,7 +280,7 @@ namespace Dev2.Activities
                 {
                     var cmd = val.Substring(0, idx);
                     var args = val.Substring((idx + 1));
-                    psi = new ProcessStartInfo(cmd, args);
+                    psi = new ProcessStartInfo("cmd.exe","/C "+cmd+" "+args);
                 }
             }
 
@@ -285,15 +299,16 @@ namespace Dev2.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if(updates != null)
+            if(updates == null)
             {
-                foreach(var t in updates)
-                {
+                return;
+            }
+            foreach(var t in updates)
+            {
 
-                    if(t.Item1 == CommandFileName)
-                    {
-                        CommandFileName = t.Item2;
-                    }
+                if(t.Item1 == CommandFileName)
+                {
+                    CommandFileName = t.Item2;
                 }
             }
         }
@@ -342,7 +357,7 @@ namespace Dev2.Activities
 
         private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
         {
-            DebugItem itemToAdd = new DebugItem();
+            var itemToAdd = new DebugItem();
 
             if (!string.IsNullOrWhiteSpace(labelText))
             {
@@ -359,7 +374,7 @@ namespace Dev2.Activities
 
         private void AddDebugOutputItem(string expression, string value, Guid dlId)
         {
-            DebugItem itemToAdd = new DebugItem();
+            var itemToAdd = new DebugItem();
             itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, 0, enDev2ArgumentType.Output));
             _debugOutputs.Add(itemToAdd);
         }
