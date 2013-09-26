@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -25,7 +26,7 @@ namespace Dev2.Studio.Webs.Callbacks
 
         protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
-            ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Service);
+            ReloadResource(environmentModel, Guid.Parse(jsonObj.ResourceID.Value), ResourceType.Service);
         }
 
         public override void Cancel()

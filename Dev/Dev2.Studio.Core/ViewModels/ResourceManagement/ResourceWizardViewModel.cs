@@ -238,7 +238,7 @@ namespace Dev2.Studio.Core.ViewModels
                     //
                     // Reload resource call
                     //
-                    List<IResourceModel> effectedResources = _resource.Environment.ResourceRepository.ReloadResource(_resource.ResourceName, _resource.ResourceType, ResourceModelEqualityComparer.Current);
+                    List<IResourceModel> effectedResources = _resource.Environment.ResourceRepository.ReloadResource(_resource.ID, _resource.ResourceType, ResourceModelEqualityComparer.Current);
                     foreach(IResourceModel resource in effectedResources)
                     {
                         var resourceWithContext = new ResourceModel(_resource.Environment);
@@ -294,7 +294,7 @@ namespace Dev2.Studio.Core.ViewModels
             Close();
         }
 
-        public void Dev2ReloadResource(string resourceName, string resourceType)
+        public void Dev2ReloadResource(Guid resourceID, string resourceType)
         {
             ResourceType parsedResourceType;
             if(Enum.TryParse<ResourceType>(resourceType, out parsedResourceType) &&
@@ -303,7 +303,7 @@ namespace Dev2.Studio.Core.ViewModels
                 //
                 // Reload resource call
                 //
-                List<IResourceModel> effectedResources = _resource.Environment.ResourceRepository.ReloadResource(resourceName, parsedResourceType, ResourceModelEqualityComparer.Current);
+                List<IResourceModel> effectedResources = _resource.Environment.ResourceRepository.ReloadResource(resourceID, parsedResourceType, ResourceModelEqualityComparer.Current);
                 foreach(IResourceModel resource in effectedResources)
                 {
                     var resourceWithContext = new ResourceModel(_resource.Environment);

@@ -140,7 +140,7 @@ namespace Dev2.Workspaces
 
             #endregion
 
-            ResourceCatalog.Instance.CopyResource(workspaceItem.ServiceName, resourceType, source.ID, destination.ID, roles);
+            ResourceCatalog.Instance.CopyResource(workspaceItem.ID, source.ID, destination.ID, roles);
         }
 
         #endregion

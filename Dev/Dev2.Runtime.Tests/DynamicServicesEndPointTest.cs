@@ -18,6 +18,7 @@ namespace Dev2.DynamicServices.Test
         const int VersionNo = 9999;
 
         const string ServiceName = "TestForEachOutput";
+        Guid ServiceID = Guid.NewGuid();
 
         const string _serviceShape = @"<DataList>
   <inputScalar Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
@@ -63,7 +64,9 @@ namespace Dev2.DynamicServices.Test
             ResourceCatalogTests.SaveResources(_workspaceID, VersionNo.ToString(), false, false,
                null,
                new[] { ServiceName },
-               out resources);
+               out resources,
+               null,
+               new[] { ServiceID });
 
             ResourceCatalog.Instance.LoadWorkspace(_workspaceID);
             

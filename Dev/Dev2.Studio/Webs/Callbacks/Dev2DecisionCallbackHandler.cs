@@ -44,7 +44,7 @@ namespace Dev2.Studio.Webs.Callbacks
             throw new NotImplementedException();
         }
 
-        public void Dev2ReloadResource(string resourceName, string resourceType)
+        public void Dev2ReloadResource(Guid resourceID, string resourceType)
         {
             throw new NotImplementedException();
         }

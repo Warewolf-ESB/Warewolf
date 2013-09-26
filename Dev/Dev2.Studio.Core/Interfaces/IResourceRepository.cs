@@ -9,7 +9,7 @@ namespace Dev2.Studio.Core.Interfaces
 {
     public interface IResourceRepository : IFrameworkRepository<IResourceModel>
     {
-        List<IResourceModel> ReloadResource(string resourceName, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer);
+        List<IResourceModel> ReloadResource(Guid resourceID, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer);
         void UpdateWorkspace(IList<IWorkspaceItem> workspaceItems);
         // ReSharper disable once InconsistentNaming
         void Rename(string resourceID, string newName);

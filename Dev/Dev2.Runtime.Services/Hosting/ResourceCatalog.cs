@@ -398,12 +398,6 @@ namespace Dev2.Runtime.Hosting
 
         #region CopyResource
 
-        public bool CopyResource(string resourceName, ResourceType resourceType, Guid sourceWorkspaceID, Guid targetWorkspaceID, string userRoles = null)
-        {
-            var resource = GetResource(sourceWorkspaceID, resourceName);
-            return CopyResource(resource, targetWorkspaceID, userRoles);
-        }
-
         public bool CopyResource(Guid resourceID, Guid sourceWorkspaceID, Guid targetWorkspaceID, string userRoles = null)
         {
             var resource = GetResource(sourceWorkspaceID, resourceID);
@@ -501,41 +495,7 @@ namespace Dev2.Runtime.Hosting
                         };
 
                     case 1:
-                        var resource = resources[0];
-                        if(!resource.IsUserInAuthorRoles(userRoles))
-                        {
-                            return new ResourceCatalogResult
-                            {
-                                Status = ExecStatus.AccessViolation,
-                                Message = string.Format("<Error>{0} '{1}' deletion failed: Access Violation: you are attempting to delete a resource that you do not have rights to.</Error>", type, resourceName)
-                            };
-                        }
-
-                        VersionControl(Path.GetDirectoryName(resource.FilePath), resource);
-
-                        workspaceResources.Remove(resource);
-                        if(File.Exists(resource.FilePath))
-                        {
-                            File.Delete(resource.FilePath);
-                        }
-                        var messages = new List<CompileMessageTO>
-                        {
-                            new CompileMessageTO
-                            {
-                                ErrorType = ErrorType.Critical,
-                                MessageID = Guid.NewGuid(),
-                                MessagePayload = "The resource has been deleted",
-                                MessageType = CompileMessageType.ResourceDeleted,
-                                ServiceID = resource.ResourceID
-
-                            }
-                        };
-                        UpdateDependantResourceWithCompileMessages(workspaceID, resource, messages);
-                        return new ResourceCatalogResult
-                        {
-                            Status = ExecStatus.Success,
-                            Message = "Success"
-                        };
+                        return DeleteImpl(workspaceID, type, userRoles, resources, workspaceResources);
 
                     default:
                         return new ResourceCatalogResult
@@ -545,6 +505,87 @@ namespace Dev2.Runtime.Hosting
                         };
                 }
             }
+        }
+
+        public ResourceCatalogResult DeleteResource(Guid workspaceID, Guid resourceID, string type, string userRoles = null)
+        {
+            var workspaceLock = GetWorkspaceLock(workspaceID);
+            lock(workspaceLock)
+            {
+                if(resourceID == Guid.Empty || string.IsNullOrEmpty(type))
+                {
+                    throw new InvalidDataContractException("ResourceID or Type is missing from the request");
+                }
+
+                var resourceTypes = ResourceTypeConverter.ToResourceTypes(type, false);
+
+                var workspaceResources = GetResources(workspaceID);
+                var resources = workspaceResources.FindAll(r =>
+                    Equals(r.ResourceID, resourceID)
+                    && resourceTypes.Contains(r.ResourceType));
+
+                switch(resources.Count)
+                {
+                    case 0:
+                        return new ResourceCatalogResult
+                        {
+                            Status = ExecStatus.NoMatch,
+                            Message = string.Format("<Result>{0} '{1}' was not found.</Result>", type, resourceID)
+                        };
+
+                    case 1:
+                        return DeleteImpl(workspaceID, type, userRoles, resources, workspaceResources);
+
+                    default:
+                        return new ResourceCatalogResult
+                        {
+                            Status = ExecStatus.DuplicateMatch,
+                            Message = string.Format("<Result>Multiple matches found for {0} '{1}'.</Result>", type, resourceID)
+                        };
+                }
+            }
+        }
+
+        private ResourceCatalogResult DeleteImpl(Guid workspaceID, string type, string userRoles, List<IResource> resources,
+                                                 List<IResource> workspaceResources)
+        {
+            var resource = resources[0];
+            if (!resource.IsUserInAuthorRoles(userRoles))
+            {
+                return new ResourceCatalogResult
+                    {
+                        Status = ExecStatus.AccessViolation,
+                        Message =
+                            string.Format(
+                                "<Error>{0} '{1}' deletion failed: Access Violation: you are attempting to delete a resource that you do not have rights to.</Error>",
+                                type, resource.ResourceID)
+                    };
+            }
+
+            VersionControl(Path.GetDirectoryName(resource.FilePath), resource);
+
+            workspaceResources.Remove(resource);
+            if (File.Exists(resource.FilePath))
+            {
+                File.Delete(resource.FilePath);
+            }
+            var messages = new List<CompileMessageTO>
+                {
+                    new CompileMessageTO
+                        {
+                            ErrorType = ErrorType.Critical,
+                            MessageID = Guid.NewGuid(),
+                            MessagePayload = "The resource has been deleted",
+                            MessageType = CompileMessageType.ResourceDeleted,
+                            ServiceID = resource.ResourceID
+                        }
+                };
+            UpdateDependantResourceWithCompileMessages(workspaceID, resource, messages);
+            return new ResourceCatalogResult
+                {
+                    Status = ExecStatus.Success,
+                    Message = "Success"
+                };
         }
 
         #endregion

@@ -18,17 +18,17 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             StringBuilder result = new StringBuilder();
 
-            string resourceName;
+            string resourceID;
             string resourceType;
 
-            values.TryGetValue("ResourceName", out resourceName);
+            values.TryGetValue("ResourceID", out resourceID);
             values.TryGetValue("ResourceType", out resourceType);
 
 
             try
             {
                 // 2012.10.01: TWR - 5392 - Server does not dynamically reload resources 
-                if(resourceName == "*")
+                if(resourceID == "*")
                 {
                     ResourceCatalog.Instance.LoadWorkspace(theWorkspace.ID);
                 }
@@ -38,44 +38,51 @@ namespace Dev2.Runtime.ESB.Management.Services
                     // Ugly conversion between studio resource type and server resource type
                     //
                     enDynamicServiceObjectType serviceType;
-                    switch(resourceType)
+                    Guid getID;
+                    if(resourceID != null && Guid.TryParse(resourceID, out getID))
                     {
-                        case "HumanInterfaceProcess":
-                        case "Website":
-                        case "WorkflowService":
-                            serviceType = enDynamicServiceObjectType.WorkflowActivity;
-                            break;
-                        case "Service":
-                            serviceType = enDynamicServiceObjectType.DynamicService;
-                            break;
-                        case "Source":
-                            serviceType = enDynamicServiceObjectType.Source;
-                            break;
-                        default:
-                            throw new Exception("Unexpected resource type '" + resourceType + "'.");
+                        switch(resourceType)
+                        {
+                            case "HumanInterfaceProcess":
+                            case "Website":
+                            case "WorkflowService":
+                                serviceType = enDynamicServiceObjectType.WorkflowActivity;
+                                break;
+                            case "Service":
+                                serviceType = enDynamicServiceObjectType.DynamicService;
+                                break;
+                            case "Source":
+                                serviceType = enDynamicServiceObjectType.Source;
+                                break;
+                            default:
+                                throw new Exception("Unexpected resource type '" + resourceType + "'.");
+                        }
+
+                        //
+                        // Copy the file from the server workspace into the current workspace
+                        //
+                        theWorkspace.Update(
+                            new WorkspaceItem(theWorkspace.ID, HostSecurityProvider.Instance.ServerID, Guid.Empty, getID)
+                                {
+                                    Action = WorkspaceItemAction.Edit,
+                                    IsWorkflowSaved = true,
+                                    ServiceType = serviceType.ToString()
+                                }, false);
+                        //
+                        // Reload resources
+                        //
+                        ResourceCatalog.Instance.LoadWorkspace(theWorkspace.ID);
+                        result.Append(string.Concat("'", resourceID, "' Reloaded..."));
                     }
-
-                    //
-                    // Copy the file from the server workspace into the current workspace
-                    //
-                    theWorkspace.Update(new WorkspaceItem(theWorkspace.ID, HostSecurityProvider.Instance.ServerID,Guid.Empty,Guid.Empty)
+                    else
                     {
-                        Action = WorkspaceItemAction.Edit,
-                        ServiceName = resourceName,
-                        IsWorkflowSaved =  true,
-                        ServiceType = serviceType.ToString()
-                    }, false);
-
-                    //
-                    // Reload resources
-                    //
-                    ResourceCatalog.Instance.LoadWorkspace(theWorkspace.ID);
+                        throw new ArgumentException("ResourceID must be a Guid.");
+                    }
                 }
-                result.Append(string.Concat("'", resourceName, "' Reloaded..."));
             }
             catch(Exception ex)
             {
-                result.Append(string.Concat("Error reloading '", resourceName, "'..."));
+                result.Append(string.Concat("Error reloading '", resourceID, "'..."));
                 ServerLogger.LogError(ex);
             }
 

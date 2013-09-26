@@ -92,11 +92,11 @@ namespace Dev2.Studio.Core
             }
         }
 
-        public void Dev2ReloadResource(string resourceName, string resourceType)
+        public void Dev2ReloadResource(Guid resourceID, string resourceType)
         {
             if(PropertyEditorViewModel != null)
             {
-                InvokeAction(() => PropertyEditorViewModel.Dev2ReloadResource(resourceName, resourceType));
+                InvokeAction(() => PropertyEditorViewModel.Dev2ReloadResource(resourceID, resourceType));
             }
         }
 

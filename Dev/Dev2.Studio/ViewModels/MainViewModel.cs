@@ -972,19 +972,17 @@ namespace Dev2.Studio.ViewModels
             if(!models.Any(model => ResourceDependencyService.HasDependencies(model)))
                 return true;
 
-            bool? result = null;
             if(models.Count > 1)
             {
-                var dialog = new DeleteFolderDialog();
-                result = dialog.ShowDialog();
-                return result.HasValue && result.Value;
+                new DeleteFolderDialog().ShowDialog();
+                return false;
             }
             if(models.Count == 1)
             {
-                var dialog = new DeleteResourceDialog(models.FirstOrDefault());
-                result = dialog.ShowDialog();
+                new DeleteResourceDialog(models.FirstOrDefault()).ShowDialog();
+                return false;
             }
-            return result.HasValue && result.Value;
+            return true;
         }
 
         private bool ConfirmDelete(ICollection<IContextualResourceModel> models)
@@ -1288,7 +1286,7 @@ namespace Dev2.Studio.ViewModels
             IWorkspaceItem workspaceItem = WorkspaceItemRepository.Instance.WorkspaceItems.FirstOrDefault(c => c.ID == resourceModel.ID);
             if(workspaceItem == null)
             {
-                resourceModel.Environment.ResourceRepository.ReloadResource(resourceModel.ResourceName, resourceModel.ResourceType, ResourceModelEqualityComparer.Current);
+                resourceModel.Environment.ResourceRepository.ReloadResource(resourceModel.ID, resourceModel.ResourceType, ResourceModelEqualityComparer.Current);
             }
 
             AddWorkspaceItem(resourceModel);
@@ -1328,7 +1326,7 @@ namespace Dev2.Studio.ViewModels
                 var ctx = Items[index];
                 if(ctx.IsEnvironmentConnected())
                 {
-                    ctx.Save(true);
+                ctx.Save(true);
                 }
                 if(index == Items.Count-1)
                 {

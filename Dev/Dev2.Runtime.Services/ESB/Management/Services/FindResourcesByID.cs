@@ -30,8 +30,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             var findResourcesByIDService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><GuidCsv/><Type/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
             findResourcesByIDService.Actions.Add(findResourcesByIDAction);
 
-
-
             return findResourcesByIDService;
         }
 

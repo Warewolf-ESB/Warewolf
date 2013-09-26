@@ -40,6 +40,12 @@ namespace Dev2.DynamicServices.Test
 
         const string SourceName = "CitiesDatabase";
 
+        Guid SourceID = Guid.NewGuid();
+
+        Guid ServiceID = Guid.NewGuid();
+
+        Guid UnsignedServiceID = Guid.NewGuid();
+
         public const string ServerConnection1Name = "ServerConnection1";
 
         public const string ServerConnection1ResourceName = "MyDevServer";
@@ -65,7 +71,9 @@ namespace Dev2.DynamicServices.Test
             ResourceCatalogTests.SaveResources(_workspaceID, VersionNo.ToString(), true, false,
                 new[] { SourceName, ServerConnection1Name, ServerConnection2Name },
                 new[] { ServiceName, ServiceNameUnsigned },
-                out resources);
+                out resources,
+                new[] { SourceID, Guid.Parse(ServerConnection1ID), Guid.Parse(ServerConnection2ID) },
+                new[] { ServiceID, UnsignedServiceID });
 
             ResourceCatalog.Instance.LoadWorkspace(_workspaceID);
         }

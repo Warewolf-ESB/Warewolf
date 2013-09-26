@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Webs.Callbacks;
@@ -18,9 +19,9 @@ namespace Dev2.Core.Tests.Webs
             base.Save(environmentModel, jsonObj);
         }
 
-        public void TestCheckForServerMessages(IEnvironmentModel environmentModel, string name, IWorkspaceItemRepository workspace)
+        public void TestCheckForServerMessages(IEnvironmentModel environmentModel, Guid id, IWorkspaceItemRepository workspace)
         {
-            base.CheckForServerMessages(environmentModel, name, workspace);
+            CheckForServerMessages(environmentModel, id, workspace);
         }
     }
 }

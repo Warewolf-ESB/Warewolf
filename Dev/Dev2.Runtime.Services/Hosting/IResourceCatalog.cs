@@ -77,8 +77,6 @@ namespace Dev2.Runtime.Hosting
         /// <returns></returns>
         IList<IResource> LoadWorkspaceViaBuilder(string workspacePath, params string[] folders);
 
-        bool CopyResource(string resourceName, ResourceType resourceType, Guid sourceWorkspaceID, Guid targetWorkspaceID, string userRoles = null);
-
         bool CopyResource(Guid resourceID, Guid sourceWorkspaceID, Guid targetWorkspaceID, string userRoles = null);
 
         bool CopyResource(IResource resource, Guid targetWorkspaceID, string userRoles = null);

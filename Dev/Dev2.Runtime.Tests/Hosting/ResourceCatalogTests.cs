@@ -165,7 +165,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var sourcesPath = Path.Combine(workspacePath, "Sources");
             Directory.CreateDirectory(sourcesPath);
-            var resources = SaveResources(sourcesPath, null, false, false, "CatalogSourceAnytingToXmlPlugin", "CatalogSourceCitiesDatabase", "CatalogSourceTestServer").ToList();
+            var resources = SaveResources(sourcesPath, null, false, false, new[]{"CatalogSourceAnytingToXmlPlugin", "CatalogSourceCitiesDatabase", "CatalogSourceTestServer"}, new[]{Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()}).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Sources", "Services");
@@ -208,7 +208,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
-            var resources = SaveResources(path, null, false, false, "Calculate_RecordSet_Subtract", "TestDecisionUnsigned").ToList();
+            var resources = SaveResources(path, null, false, false, new[] { "Calculate_RecordSet_Subtract", "TestDecisionUnsigned" }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Sources", "Services");
@@ -231,7 +231,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var path = Path.Combine(workspacePath, "Sources");
             Directory.CreateDirectory(path);
-            var resources = SaveResources(path, null, false, false, "CitiesDatabase").ToList();
+            var resources = SaveResources(path, null, false, false, new[]{"CitiesDatabase"}, new[]{Guid.NewGuid()}).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Sources", "Services");
@@ -254,7 +254,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
-            var resources = SaveResources(path, null, false, false, "CatalogServiceAllTools").ToList();
+            var resources = SaveResources(path, null, false, false, new[]{"CatalogServiceAllTools"}, new[]{Guid.NewGuid()}).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Sources", "Services");
@@ -532,7 +532,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -553,7 +553,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "WebService";
-            SaveResources(path, null, false, true, new[] { "WebService", resourceName }).ToList();
+            SaveResources(path, null, false, true, new[] { "WebService", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
             path = Path.Combine(workspacePath, "Sources");
 
             var xml = XmlResource.Fetch("WeatherWebSource");
@@ -582,7 +582,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "WebService";
-            SaveResources(path, null, false, true, new[] { "WebService", resourceName }).ToList();
+            SaveResources(path, null, false, true, new[] { "WebService", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
             path = Path.Combine(workspacePath, "Sources");
 
             var xml = XmlResource.Fetch("WeatherWebSource");
@@ -1398,7 +1398,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceID = "ec636256-5f11-40ab-a044-10e731d87555";
-            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }, new[] { Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -1430,7 +1430,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceID = "ec636256-5f11-40ab-a044-10e731d87555";
-            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }, new[] { Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -1461,7 +1461,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceID = "ec636256-5f11-40ab-a044-10e731d87555";
-            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }, new[] { Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -1492,7 +1492,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceID = "ec636256-5f11-40ab-a044-10e731d87555";
-            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }, new[] { Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -1522,7 +1522,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -1552,7 +1552,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -1583,7 +1583,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -1614,7 +1614,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -1645,7 +1645,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -1668,18 +1668,18 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region SaveResources
 
-        public static void SaveResources(Guid sourceWorkspaceID, Guid copyToWorkspaceID, string versionNo, bool injectID, bool signXml, string[] sources, string[] services, out List<IResource> resources)
+        public static void SaveResources(Guid sourceWorkspaceID, Guid copyToWorkspaceID, string versionNo, bool injectID, bool signXml, string[] sources, string[] services, out List<IResource> resources, Guid[] sourceIDs, Guid[] serviceIDs)
         {
             lock(syncRoot)
             {
                 var sourceWorkspacePath = SaveResources(sourceWorkspaceID, versionNo, injectID, signXml, sources,
-                                                        services, out resources);
+                                                        services, out resources, sourceIDs, serviceIDs);
                 var targetWorkspacePath = EnvironmentVariables.GetWorkspacePath(copyToWorkspaceID);
                 DirectoryHelper.Copy(sourceWorkspacePath, targetWorkspacePath, true);
             }
         }
 
-        public static string SaveResources(Guid workspaceID, string versionNo, bool injectID, bool signXml, string[] sources, string[] services, out List<IResource> resources)
+        public static string SaveResources(Guid workspaceID, string versionNo, bool injectID, bool signXml, string[] sources, string[] services, out List<IResource> resources, Guid[] sourceIDs, Guid[] serviceIDs)
         {
             lock(syncRoot)
             {
@@ -1693,11 +1693,11 @@ namespace Dev2.Tests.Runtime.Hosting
                 resources = new List<IResource>();
                 if(sources != null && sources.Length != 0)
                 {
-                    resources.AddRange(SaveResources(sourcesPath, versionNo, injectID, signXml, sources));
+                    resources.AddRange(SaveResources(sourcesPath, versionNo, injectID, signXml, sources, sourceIDs));
                 }
                 if(services != null && services.Length != 0)
                 {
-                    resources.AddRange(SaveResources(servicesPath, versionNo, injectID, signXml, services));
+                    resources.AddRange(SaveResources(servicesPath, versionNo, injectID, signXml, services, serviceIDs));
                 }
 
                 return workspacePath;
@@ -1709,14 +1709,17 @@ namespace Dev2.Tests.Runtime.Hosting
             return SaveResources(workspaceID, null, false, false,
                 new[] { "CatalogSourceAnytingToXmlPlugin", "CatalogSourceCitiesDatabase", "CatalogSourceTestServer" },
                 new[] { "CatalogServiceAllTools", "CatalogServiceCitiesDatabase", "CatalogServiceCalculateRecordSetSubtract" },
-                out resources);
+                out resources, 
+                new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()}, 
+                new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()});
         }
 
-        static IEnumerable<IResource> SaveResources(string resourcesPath, string versionNo, bool injectID, bool signXml, params string[] resourceNames)
+        static IEnumerable<IResource> SaveResources(string resourcesPath, string versionNo, bool injectID, bool signXml, string[] resourceNames, Guid[] resourceIDs)
         {
             lock(syncRoot)
             {
                 var result = new List<IResource>();
+                int count = 0;
                 foreach(var resourceName in resourceNames)
                 {
                     var xml = XmlResource.Fetch(resourceName);
@@ -1725,7 +1728,7 @@ namespace Dev2.Tests.Runtime.Hosting
                         var idAttr = xml.Attribute("ID");
                         if(idAttr == null)
                         {
-                            xml.Add(new XAttribute("ID", Guid.NewGuid()));
+                            xml.Add(new XAttribute("ID", resourceIDs[count]));
                         }
                     }
 
@@ -1751,6 +1754,7 @@ namespace Dev2.Tests.Runtime.Hosting
                             contents, Encoding.UTF8);
                     }
                     result.Add(res);
+                    count++;
                 }
                 return result;
             }
@@ -1769,7 +1773,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -1791,7 +1795,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -1835,7 +1839,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "WebService";
-            SaveResources(path, null, false, true, new[] { "WebService", resourceName }).ToList();
+            SaveResources(path, null, false, true, new[] { "WebService", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
             path = Path.Combine(workspacePath, "Sources");
 
             var xml = XmlResource.Fetch("WeatherWebSource");
@@ -1881,7 +1885,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -1904,7 +1908,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -1928,7 +1932,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { resourceName }).ToList();
+            SaveResources(path, null, false, false, new[] { resourceName }, new[] { Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -1953,7 +1957,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -1975,7 +1979,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "WebService";
-            SaveResources(path, null, false, true, new[] { "WebService", resourceName }).ToList();
+            SaveResources(path, null, false, true, new[] { "WebService", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
             path = Path.Combine(workspacePath, "Sources");
 
             var xml = XmlResource.Fetch("WeatherWebSource");
@@ -2021,7 +2025,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -2044,7 +2048,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -2068,7 +2072,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { resourceName }).ToList();
+            SaveResources(path, null, false, false, new[] { resourceName }, new[] { Guid.NewGuid() }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");

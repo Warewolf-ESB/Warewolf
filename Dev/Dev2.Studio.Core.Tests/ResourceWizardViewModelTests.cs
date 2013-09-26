@@ -114,33 +114,6 @@ namespace Dev2.Core.Tests
 
         #endregion Dev2Done Tests
 
-        #region Dev2Reload Tests
-
-        [TestMethod]
-        public void Dev2ReloadResource_Expected_UpdateExplorerMediatorMessageSent()
-        {
-            var mockEventAggregator = Dev2MockFactory.SetupMockEventAggregator();
-
-            ImportService.CurrentContext =
-                CompositionInitializer.InitializeWithMockEventAggregator(mockEventAggregator);
-
-            Mock<IContextualResourceModel> _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            ResourceWizardViewModel resourceWizardViewModel = new ResourceWizardViewModel(_mockResourceModel.Object);
-
-
-            mockEventAggregator.Setup(c => c.Publish(It.IsAny<UpdateResourceMessage>()))
-                               .Callback<object>(msg =>
-                               {
-                                   var resourcemodelMsg = (UpdateResourceMessage)msg;
-                                   Assert.IsTrue(resourcemodelMsg.ResourceModel == _mockResourceModel.Object);
-                               });
-
-            resourceWizardViewModel.Dev2ReloadResource("", ResourceType.Source.ToString());
-
-        }
-
-        #endregion Dev2Reload Tests
-
         #region Dev2Set Tests
 
         [TestMethod]

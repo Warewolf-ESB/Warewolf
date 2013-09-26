@@ -101,7 +101,7 @@ namespace Dev2.Studio.Webs.Callbacks
                 //
                 ResourceRepository.AddEnvironment(defaultEnvironment, Server.Environment);
 
-                ReloadResource(defaultEnvironment, connectionName, ResourceType.Source);
+                ReloadResource(defaultEnvironment, Guid.Parse(connectionID), ResourceType.Source);
             }
 
             CurrentEnvironmentRepository.Save(Server.Environment);

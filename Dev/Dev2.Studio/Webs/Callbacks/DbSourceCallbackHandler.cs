@@ -25,7 +25,7 @@ namespace Dev2.Studio.Webs.Callbacks
 
         protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
-            ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Source);
+            ReloadResource(environmentModel, jsonObj.ResourceID.Value, ResourceType.Source);
         }
 
         public override void Cancel()

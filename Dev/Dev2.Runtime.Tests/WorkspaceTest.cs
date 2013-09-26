@@ -24,6 +24,7 @@ namespace Dev2.DynamicServices.Test
     public class WorkspaceTest
     {
         const string ServiceName = "Calculate_RecordSet_Subtract";
+        Guid ServiceID = Guid.Parse("b2b0cc87-32ba-4504-8046-79edfb18d5fd");
 
         const enDynamicServiceObjectType ServiceType = enDynamicServiceObjectType.DynamicService;
 
@@ -80,23 +81,18 @@ namespace Dev2.DynamicServices.Test
                 var workspaceItem = new Mock<IWorkspaceItem>();
                 workspaceItem.Setup(m => m.Action).Returns(WorkspaceItemAction.Edit);
                 workspaceItem.Setup(m => m.ServiceName).Returns(ServiceName);
+                workspaceItem.Setup(m => m.ID).Returns(ServiceID);
                 workspaceItem.Setup(m => m.ServiceType).Returns(ServiceType.ToString);
 
                 Guid workspaceID;
                 var repositoryInstance = SetupRepo(out workspaceID);
                 var workspace = repositoryInstance.Get(workspaceID);
 
-                var previous = ResourceCatalog.Instance.GetResource(workspaceID, ServiceName);
+                var previous = ResourceCatalog.Instance.GetResource(workspaceID, ServiceID);
                 workspace.Update(workspaceItem.Object, false, previous.AuthorRoles);
-                var next = ResourceCatalog.Instance.GetResource(workspaceID, ServiceName);
+                var next = ResourceCatalog.Instance.GetResource(workspaceID, ServiceID);
                 Assert.AreNotSame(previous, next);
             }
-        }
-
-        [TestMethod]
-        public void UpdateWorkItemWithDiscardAction()
-        {
-            UpdateWorkItemWithEditAction();
         }
 
         [TestMethod]
@@ -108,15 +104,16 @@ namespace Dev2.DynamicServices.Test
                 var workspaceItem = new Mock<IWorkspaceItem>();
                 workspaceItem.Setup(m => m.Action).Returns(WorkspaceItemAction.Commit);
                 workspaceItem.Setup(m => m.ServiceName).Returns(ServiceName);
+                workspaceItem.Setup(m => m.ID).Returns(ServiceID);
                 workspaceItem.Setup(m => m.ServiceType).Returns(ServiceType.ToString);
 
                 Guid workspaceID;
                 var repositoryInstance = SetupRepo(out workspaceID);
                 var workspace = repositoryInstance.Get(workspaceID);
 
-                var previous = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceName);
+                var previous = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceID);
                 workspace.Update(workspaceItem.Object, false, previous.AuthorRoles);
-                var next = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceName);
+                var next = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceID);
                 Assert.AreNotSame(previous, next);
             }
         }
@@ -141,11 +138,11 @@ namespace Dev2.DynamicServices.Test
                 data["IsLocalSave"] = "true";
 
                 // Now remove the 
-                ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID, ServiceName, "WorkflowService", "Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access");
+                ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID, ServiceID, "WorkflowService", "Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access");
 
                 endpoint.Execute(data, workspace);
 
-                var res = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceName);
+                var res = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceID);
 
                 Assert.IsNull(res);
             }
@@ -166,16 +163,16 @@ namespace Dev2.DynamicServices.Test
 
                 IEsbManagementEndpoint endpoint = new UpdateWorkspaceItem();
                 IDictionary<string, string> data = new Dictionary<string, string>();
-                data["ItemXml"] = testWorkspaceItemXml.ToString().Replace("WorkspaceID=\"B1890C86-95D8-4612-A7C3-953250ED237A\"", "WorkspaceID=\"" + workspaceID + "\"").Replace("Action=\"None\"", "Action=\"Commit\"");
+                data["ItemXml"] = testWorkspaceItemXml.ToString().Replace("WorkspaceItem ID=\"3B876ED9-E4B4-42AF-9EF9-98127AE432C3\"", "WorkspaceItem ID=\"" + ServiceID + "\"").Replace("WorkspaceID=\"B1890C86-95D8-4612-A7C3-953250ED237A\"", "WorkspaceID=\"" + workspaceID + "\"").Replace("Action=\"None\"", "Action=\"Commit\"");
                 data["Roles"] = string.Empty;
                 data["IsLocalSave"] = "false";
 
                 // Now remove the 
-                ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID, ServiceName, "WorkflowService", "Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access");
+                ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID, ServiceID, "WorkflowService", "Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access");
 
                 endpoint.Execute(data, workspace);
 
-                var res = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceName);
+                var res = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceID);
 
                 Assert.IsNotNull(res);
             }
@@ -190,6 +187,7 @@ namespace Dev2.DynamicServices.Test
                 var workspaceItem = new Mock<IWorkspaceItem>();
                 workspaceItem.Setup(m => m.Action).Returns(WorkspaceItemAction.Commit);
                 workspaceItem.Setup(m => m.ServiceName).Returns(ServiceName);
+                workspaceItem.Setup(m => m.ID).Returns(ServiceID);
                 workspaceItem.Setup(m => m.ServiceType).Returns(ServiceType.ToString);
 
                 Guid workspaceID;
@@ -197,9 +195,9 @@ namespace Dev2.DynamicServices.Test
 
                 var workspace = repositoryInstance.Get(GlobalConstants.ServerWorkspaceID);
 
-                var previous = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceName);
+                var previous = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceID);
                 workspace.Update(workspaceItem.Object, false, previous.AuthorRoles);
-                var next = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceName);
+                var next = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceID);
                 Assert.AreSame(previous, next);
             }
         }
@@ -389,7 +387,7 @@ namespace Dev2.DynamicServices.Test
             var repo = new WorkspaceRepository();
             workspaceID = Guid.NewGuid();
             List<IResource> resources;
-            ResourceCatalogTests.SaveResources(Guid.Empty, null, true, true, new string[0], new[] { ServiceName }, out resources);
+            ResourceCatalogTests.SaveResources(Guid.Empty, null, true, true, new string[0], new[] { "Calculate_RecordSet_Subtract" }, out resources,new Guid[0], new[] { Guid.NewGuid() });
 
             // Force reload of server workspace from _currentTestDir
             ResourceCatalog.Instance.LoadWorkspace(GlobalConstants.ServerWorkspaceID);

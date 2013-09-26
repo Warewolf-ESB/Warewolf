@@ -35,27 +35,31 @@ namespace Dev2.Studio.Webs.Callbacks
 
         protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
-            _environmentModel = environmentModel;
-            var getDynamicResourceType = jsonObj.ResourceType.Value;
-            string resourceName = jsonObj.ResourceName.Value;
-            if(getDynamicResourceType != null)
+            Guid resourceID;
+            if (Guid.TryParse(jsonObj.ResourceID.Value, out resourceID))
             {
-                //2013.04.29: Ashley Lewis - PBI 8721 database source and plugin source wizards can be called from with their respective service wizards
-                if (getDynamicResourceType == Data.ServiceModel.ResourceType.DbSource.ToString() || getDynamicResourceType == Data.ServiceModel.ResourceType.PluginSource.ToString() || getDynamicResourceType == Data.ServiceModel.ResourceType.WebSource.ToString())
+                _environmentModel = environmentModel;
+                var getDynamicResourceType = jsonObj.ResourceType.Value;
+                if (getDynamicResourceType != null)
                 {
-                    //2013.03.12: Ashley Lewis - BUG 9208
-                    ReloadResource(environmentModel, resourceName, ResourceType.Source);
+                    //2013.04.29: Ashley Lewis - PBI 8721 database source and plugin source wizards can be called from with their respective service wizards
+                    if (getDynamicResourceType == Data.ServiceModel.ResourceType.DbSource.ToString() ||
+                        getDynamicResourceType == Data.ServiceModel.ResourceType.PluginSource.ToString() ||
+                        getDynamicResourceType == Data.ServiceModel.ResourceType.WebSource.ToString())
+                    {
+                        //2013.03.12: Ashley Lewis - BUG 9208
+                        ReloadResource(environmentModel, resourceID, ResourceType.Source);
+                    }
+                    else
+                    {
+                        ReloadResource(environmentModel, resourceID, ResourceType.Service);
+                    }
                 }
                 else
                 {
-                    ReloadResource(environmentModel, resourceName, ResourceType.Service);
+                    ReloadResource(environmentModel, resourceID, ResourceType.Service);
                 }
             }
-            else
-            {
-                ReloadResource(environmentModel, resourceName, ResourceType.Service);
-            }
-
         }
 
         protected override void Navigate(IEnvironmentModel environmentModel, string uri, dynamic jsonArgs, string returnUri)
@@ -114,29 +118,32 @@ namespace Dev2.Studio.Webs.Callbacks
             {
                 // DB source invokes this
                 var xml = XElement.Parse(value);
-                var sourceName = xml.ElementSafe("ResourceName");
-                NavigateBack(sourceName);
+                Guid sourceID;
+                if(Guid.TryParse(xml.ElementSafe("ResourceID"), out sourceID))
+                {
+                    NavigateBack(sourceID);
+                }
             }
         }
 
-        public override void Dev2ReloadResource(string resourceName, string resourceType)
+        public override void Dev2ReloadResource(Guid resourceID, string resourceType)
         {
             if(_isEditingSource)
             {
                 // DB source invoked this from new window
-                NavigateBack(resourceName);
+                NavigateBack(resourceID);
             }
         }
 
         #region NavigateBack
 
-        void NavigateBack(string sourceName)
+        void NavigateBack(Guid sourceID)
         {
             var uri = _returnUri;
             _isEditingSource = false;
             _returnUri = null;
 
-            const string SourceParam = "sourceName=";
+            const string SourceParam = "rid=";
             var idx = uri.IndexOf(SourceParam, StringComparison.InvariantCultureIgnoreCase);
             if(idx > 0)
             {
@@ -144,15 +151,15 @@ namespace Dev2.Studio.Webs.Callbacks
                 var end = uri.IndexOf('&', start);
                 end = end > 0 ? end : uri.Length;
                 uri = uri.Remove(start, (end - start));
-                uri = uri.Insert(start, sourceName);
+                uri = uri.Insert(start, sourceID.ToString());
             }
             else
             {
-                uri += (uri.IndexOf('?') > 0 ? "&" : "?") + SourceParam + sourceName;
+                uri += (uri.IndexOf('?') > 0 ? "&" : "?") + SourceParam + sourceID.ToString();
             }
 
             Navigate(uri);
-            ReloadResource(_environmentModel, sourceName, ResourceType.Source);
+            ReloadResource(_environmentModel, sourceID, ResourceType.Source);
         }
 
         #endregion

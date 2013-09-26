@@ -17,6 +17,7 @@
     
     <UserControl.InputBindings>
         <KeyBinding Command="{Binding RenameCommand}" Key="F2" />
+        <KeyBinding Command="{Binding DeleteCommand}" Key="Delete" />
     </UserControl.InputBindings>
     
     <Grid>

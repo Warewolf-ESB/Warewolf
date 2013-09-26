@@ -72,15 +72,15 @@ namespace Dev2.Studio.Webs.Callbacks
 
         #region ReloadResource
 
-        protected void ReloadResource(IEnvironmentModel environmentModel, string resourceName, ResourceType resourceType)
+        protected void ReloadResource(IEnvironmentModel environmentModel, Guid resourceID, ResourceType resourceType)
         {
             if(environmentModel == null || environmentModel.ResourceRepository == null)
             {
                 return;
             }
             var getWorksurfaceItemRepo = ImportService.GetExportValue<IWorkspaceItemRepository>();
-            CheckForServerMessages(environmentModel, resourceName, getWorksurfaceItemRepo);
-            var effectedResources = environmentModel.ResourceRepository.ReloadResource(resourceName, resourceType, ResourceModelEqualityComparer.Current);
+            CheckForServerMessages(environmentModel, resourceID, getWorksurfaceItemRepo);
+            var effectedResources = environmentModel.ResourceRepository.ReloadResource(resourceID, resourceType, ResourceModelEqualityComparer.Current);
             foreach(var resource in effectedResources)
             {
                 var resourceWithContext = new ResourceModel(environmentModel);
@@ -146,8 +146,9 @@ namespace Dev2.Studio.Webs.Callbacks
         {
         }
 
-        public virtual void Dev2ReloadResource(string resourceName, string resourceType)
+        public virtual void Dev2ReloadResource(Guid resourceName, string resourceType)
         {
+            throw new NotImplementedException();
         }
 
         public virtual void Close()
@@ -197,9 +198,9 @@ namespace Dev2.Studio.Webs.Callbacks
 
         #endregion
 
-        protected void CheckForServerMessages(IEnvironmentModel environmentModel, string resourceName, IWorkspaceItemRepository workspace)
+        protected void CheckForServerMessages(IEnvironmentModel environmentModel, Guid resourceID, IWorkspaceItemRepository workspace)
         {
-            var resourceModel = environmentModel.ResourceRepository.FindSingle(model => model.ResourceName == resourceName);
+            var resourceModel = environmentModel.ResourceRepository.FindSingle(model => model.ID == resourceID);
             if (resourceModel != null)
             {
                 var resource = new ResourceModel(environmentModel);

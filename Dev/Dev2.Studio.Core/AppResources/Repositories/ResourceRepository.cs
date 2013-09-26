@@ -108,21 +108,20 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Load();
         }
 
-        public List<IResourceModel> ReloadResource(string resourceName, Enums.ResourceType resourceType,
+        public List<IResourceModel> ReloadResource(Guid resourceID, Enums.ResourceType resourceType,
                                                    IEqualityComparer<IResourceModel> equalityComparer)
         {
             dynamic reloadPayload = new UnlimitedObject();
             reloadPayload.Service = "ReloadResourceService";
-            reloadPayload.ResourceName = resourceName;
+            reloadPayload.ResourceID = resourceID.ToString();
             reloadPayload.ResourceType = Enum.GetName(typeof(Enums.ResourceType), resourceType);
 
             ExecuteCommand(_environmentModel, reloadPayload);
 
             dynamic findPayload = new UnlimitedObject();
-            findPayload.Service = "GetResourceService";
-            findPayload.ResourceName = resourceName;
-            findPayload.ResourceType = Enum.GetName(typeof(Enums.ResourceType), resourceType);
-            findPayload.Roles = string.Join(",", _securityContext.Roles);
+            findPayload.Service = "FindResourcesByID";
+            findPayload.GuidCsv = resourceID.ToString();
+            findPayload.Type = Enum.GetName(typeof(Enums.ResourceType), resourceType);
 
             var findResultObj = ExecuteCommand(_environmentModel, findPayload);
 
@@ -532,9 +531,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         protected virtual void LoadResources()
         {
             dynamic dataObj = new UnlimitedObject();
-            dataObj.Service = "FindResourceService";
-            dataObj.ResourceName = "*";
-            dataObj.ResourceType = string.Empty;
+            dataObj.Service = "FindAllResourcesService";
             dataObj.Roles = string.Join(",", _securityContext.Roles);
 
             var resultObj = ExecuteCommand(_environmentModel, dataObj);

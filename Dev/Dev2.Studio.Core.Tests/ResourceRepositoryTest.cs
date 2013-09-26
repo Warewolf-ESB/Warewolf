@@ -739,7 +739,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             //------------Execute Test---------------------------
-            var reloadedResources = _repo.ReloadResource("TestWorkflowService", ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest());
+            var reloadedResources = _repo.ReloadResource(_resourceGuid, ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest());
             //------------Assert Results-------------------------
             Assert.AreEqual(2, reloadedResources.Count);
         }
@@ -759,7 +759,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             //------------Execute Test---------------------------
-            var reloadedResources = _repo.ReloadResource("TestWorkflowService", ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest());
+            var reloadedResources = _repo.ReloadResource(_resourceGuid, ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest());
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, reloadedResources.Count);

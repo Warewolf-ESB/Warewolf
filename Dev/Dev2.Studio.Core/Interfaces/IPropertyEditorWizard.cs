@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace Dev2.Studio.Core.Interfaces
 {
@@ -22,7 +23,7 @@ namespace Dev2.Studio.Core.Interfaces
 
         void Dev2Done();
 
-        void Dev2ReloadResource(string resourceName, string resourceType);
+        void Dev2ReloadResource(Guid resourceName, string resourceType);
 
         void Close();
 

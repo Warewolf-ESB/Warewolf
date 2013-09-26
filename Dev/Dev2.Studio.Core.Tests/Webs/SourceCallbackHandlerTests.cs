@@ -56,12 +56,13 @@ namespace Dev2.Core.Tests.Webs
         public void SourceCallbackHandlerSaveWithValidArgsExpectedPublishesUpdateResourceMessage()
         {
             const string ResourceName = "TestSource";
+            Guid ResourceID = Guid.NewGuid();
 
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.Setup(r => r.ResourceName).Returns(ResourceName);
 
             var resourceRepo = new Mock<IResourceRepository>();
-            resourceRepo.Setup(r => r.ReloadResource(It.IsAny<string>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>()))
+            resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>()))
                         .Returns(new List<IResourceModel> { resourceModel.Object });
 
             var envModel = new Mock<IEnvironmentModel>();
@@ -80,7 +81,7 @@ namespace Dev2.Core.Tests.Webs
                             })
                              .Verifiable();
 
-            var jsonObj = JObject.Parse("{ 'ResourceName': '" + ResourceName + "'}");
+            var jsonObj = JObject.Parse("{ 'ResourceID': '" + ResourceID + "'}");
             handler.TestSave(envModel.Object, jsonObj);
 
             aggregator.Verify(e => e.Publish(It.IsAny<UpdateResourceMessage>()), Times.Once());
