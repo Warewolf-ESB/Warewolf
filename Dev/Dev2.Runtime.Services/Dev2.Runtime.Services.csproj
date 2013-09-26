@@ -124,7 +124,6 @@
     <Compile Include="ESB\Management\Services\FindNetworkComputers.cs" />
     <Compile Include="ESB\Management\Services\FindResource.cs" />
     <Compile Include="ESB\Management\Services\FindResourceForBinding.cs" />
-    <Compile Include="ESB\Management\Services\FindResources.cs" />
     <Compile Include="ESB\Management\Services\FindResourcesByID.cs" />
     <Compile Include="ESB\Management\Services\FindServerUsername.cs" />
     <Compile Include="ESB\Management\Services\FindSourcesByType.cs" />
