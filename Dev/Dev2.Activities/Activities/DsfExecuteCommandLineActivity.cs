@@ -3,6 +3,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Threading;
 using Dev2.Common;
 using Dev2.Data.Factories;
@@ -11,6 +12,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
+using Dev2.Runtime.ServiceModel;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -110,11 +112,13 @@ namespace Dev2.Activities
                         {
                             string val = c.TheValue;
                             StreamReader errorReader;
-                            StreamReader outputReader;
+                            StringBuilder outputReader;
                             if(!ExecuteProcess(val, out errorReader, out outputReader)) return;
 
                             allErrors.AddError(errorReader.ReadToEnd());
-                            string readValue = outputReader.ReadToEnd();
+                            var bytes = Encoding.Default.GetBytes(outputReader.ToString());
+                            string readValue = Encoding.ASCII.GetString(bytes).Replace("?"," ");
+                            
                             //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                             foreach (var region in DataListCleaningUtils.SplitIntoRegions(CommandResult))
                             {
@@ -125,7 +129,6 @@ namespace Dev2.Activities
                                 }
                             }
                             errorReader.Close();
-                            outputReader.Close();
 
                             if (toUpsert.HasLiveFlushing)
                             {
@@ -170,8 +173,9 @@ namespace Dev2.Activities
            
         }
 
-        bool ExecuteProcess(string val, out StreamReader errorReader, out StreamReader outputReader)
+        bool ExecuteProcess(string val, out StreamReader errorReader, out StringBuilder outputReader)
         {
+            outputReader = new StringBuilder();
             _process = new Process();
             using(_process)
             {
@@ -184,7 +188,9 @@ namespace Dev2.Activities
 
                 _process.StartInfo = processStartInfo;
                 var processStarted = _process.Start();
-                outputReader = _process.StandardOutput;
+                _process.BeginOutputReadLine();
+                StringBuilder reader = outputReader;
+                _process.OutputDataReceived += (sender, args) => reader.AppendLine(args.Data);
                 errorReader = _process.StandardError;
                 if(!ProcessHasStarted(processStarted, _process))
                 {
@@ -194,7 +200,7 @@ namespace Dev2.Activities
                 // TODO : Make this a user option on the expanded tool ;)
                 _process.PriorityClass = ProcessPriorityClass.RealTime; // Force it to run quick ;)
                 _process.StandardInput.Close();
-
+                _process.WaitForExit();
                 while(!_process.HasExited)
                 {
                     if(!_process.HasExited)
@@ -252,20 +258,35 @@ namespace Dev2.Activities
                     idx = val.IndexOf("\" ", StringComparison.Ordinal);
                     if (idx < 0)
                     {
-                        psi = new ProcessStartInfo(val);
+                        val += Environment.NewLine + "exit";
+                        psi = new ProcessStartInfo("cmd.exe", "/C " + val);
                     }
                     else
                     {
-                        var cmd = val.Substring(0, (idx+1)); // keep trailing "
-                        var args = val.Substring((idx + 2));
-                        psi = new ProcessStartInfo(cmd, args);
+                        var cmd = val.Substring(0, (idx + 1));// keep trailing "
+                        if(File.Exists(cmd))
+                        {
+                            var args = val.Substring((idx + 2));
+                            psi = new ProcessStartInfo("cmd.exe", "/C " + cmd + " " + args);
+                        }
+                        else
+                        {
+                            psi = ExecuteSystemCommand(val);
+                        }
                     }
                 }
                 else
                 {
-                    var cmd = val.Substring(0, (idx+1)); // keep trailing "
-                    var args = val.Substring((idx + 2));
-                    psi = new ProcessStartInfo(cmd, args);
+                    var cmd = val.Substring(0, (idx + 1));// keep trailing "
+                    if(File.Exists(cmd))
+                    {
+                        var args = val.Substring((idx + 2));
+                        psi = new ProcessStartInfo("cmd.exe", "/C " + cmd + " " + args);
+                    }
+                    else
+                    {
+                        psi = ExecuteSystemCommand(val);
+                    }                    
                 }
             }
             else
@@ -274,13 +295,20 @@ namespace Dev2.Activities
                 var idx = val.IndexOf(" ", StringComparison.Ordinal);
                 if (idx < 0)
                 {
-                    psi = new ProcessStartInfo(val);
+                    psi = new ProcessStartInfo("cmd.exe", "/C " + val);
                 }
                 else
                 {
-                    var cmd = val.Substring(0, idx);
-                    var args = val.Substring((idx + 1));
-                    psi = new ProcessStartInfo("cmd.exe","/C "+cmd+" "+args);
+                    var cmd = val.Substring(0, (idx + 1));// keep trailing "
+                    if(File.Exists(cmd))
+                    {
+                        var args = val.Substring((idx + 2));
+                        psi = new ProcessStartInfo("cmd.exe", "/C " + cmd + " " + args);
+                    }
+                    else
+                    {
+                        psi = ExecuteSystemCommand(val);
+                    }
                 }
             }
 
@@ -294,6 +322,15 @@ namespace Dev2.Activities
                 psi.CreateNoWindow = true;   
             }
 
+            return psi;
+        }
+
+        static ProcessStartInfo ExecuteSystemCommand(string val)
+        {
+            var fullPath = Path.Combine(Path.GetTempPath(),Path.GetTempFileName()+".bat");
+            File.Create(fullPath).Close();
+            File.WriteAllText(fullPath,val);
+            var psi = new ProcessStartInfo("cmd.exe", "/C " + fullPath);
             return psi;
         }
 
