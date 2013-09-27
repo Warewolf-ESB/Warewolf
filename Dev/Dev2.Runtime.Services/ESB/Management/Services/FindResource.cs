@@ -8,16 +8,20 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Find resources in the service catalog
     /// </summary>
-    public class FindAllResources : IEsbManagementEndpoint
+    public class FindResource : IEsbManagementEndpoint
     {
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
+            string resourceName;
+            string type;
             string roles;
 
+            values.TryGetValue("ResourceName", out resourceName);
+            values.TryGetValue("ResourceType", out type);
             values.TryGetValue("Roles", out roles);
 
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
-            var result = ResourceCatalog.Instance.GetPayload(theWorkspace.ID, "*", string.Empty, roles);
+            var result = ResourceCatalog.Instance.GetPayload(theWorkspace.ID, resourceName, type, roles);
             return result;
         }
 
@@ -34,7 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public string HandlesType()
         {
-            return "FindAllResourcesService";
+            return "FindResourceService";
         }
     }
 }

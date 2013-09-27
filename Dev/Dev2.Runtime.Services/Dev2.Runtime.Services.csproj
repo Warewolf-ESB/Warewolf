@@ -122,7 +122,7 @@
     <Compile Include="ESB\Management\Services\FindDirectory.cs" />
     <Compile Include="ESB\Management\Services\FindDrive.cs" />
     <Compile Include="ESB\Management\Services\FindNetworkComputers.cs" />
-    <Compile Include="ESB\Management\Services\FindAllResources.cs" />
+    <Compile Include="ESB\Management\Services\FindResource.cs" />
     <Compile Include="ESB\Management\Services\FindResourceForBinding.cs" />
     <Compile Include="ESB\Management\Services\FindResourcesByID.cs" />
     <Compile Include="ESB\Management\Services\FindServerUsername.cs" />

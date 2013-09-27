@@ -531,7 +531,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         protected virtual void LoadResources()
         {
             dynamic dataObj = new UnlimitedObject();
-            dataObj.Service = "FindAllResourcesService";
+            dataObj.Service = "FindResourceService";
+            dataObj.ResourceName = "*";
+            dataObj.ResourceType = string.Empty;
             dataObj.Roles = string.Join(",", _securityContext.Roles);
 
             var resultObj = ExecuteCommand(_environmentModel, dataObj);
