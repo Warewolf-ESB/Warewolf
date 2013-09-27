@@ -279,5 +279,20 @@ namespace Dev2.Data.Tests.ConverterTest
             Assert.AreEqual("<DataList><scalar>aaa</scalar></DataList>", data);
         }
 
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("ErrorResultTO_MakeDatalistReady")]
+        public void ErrorResultTO_MakeDatalistReady_CannotSetUnknownMemberError_MessageConvertedToOutdatedServerError()
+        {
+            var errorResultTO = new ErrorResultTO();
+            errorResultTO.AddError("Cannot set unknown member");
+            //------------Execute Test---------------------------
+
+            var result = errorResultTO.MakeDataListReady(false);
+            var expected = "\"errors\": [ \"Resource has unrecognized formatting, this Warewolf Server may be to outdated to read this resource.\"]";
+
+            // Assert Message Converted To Outdated Server Error
+            Assert.AreEqual(expected, result, "Error message not relevent");
+        }
     }
 }

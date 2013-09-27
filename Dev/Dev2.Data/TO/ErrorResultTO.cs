@@ -110,45 +110,56 @@ namespace Dev2.DataList.Contract
         /// Makes the error collection data list insert ready.
         /// </summary>
         /// <returns></returns>
-        public string MakeDataListReady(bool AsXML = true) {
+        public string MakeDataListReady(bool AsXML = true)
+        {
             StringBuilder result = new StringBuilder();
 
-            if (!AsXML)
+            if(!AsXML)
             {
                 result.Append("\"errors\": [ ");
             }
 
             int errCnt = 0;
-            foreach (string e in _errorList)
+            foreach(string e in _errorList)
             {
-                if (AsXML)
+                var formattedMsg = FormatErrorMessage(e);
+                if(AsXML)
                 {
                     result.Append(GlobalConstants.InnerErrorTag);
-                    result.Append(e);
+                    result.Append(formattedMsg);
                     result.Append(GlobalConstants.InnerErrorTagEnd);
                 }
                 else
                 {
                     // we want JSON ;)
                     result.Append("\"");
-                    result.Append(e);
+                    result.Append(formattedMsg);
                     result.Append("\"");
 
                     errCnt++;
-                    if (errCnt < _errorList.Count)
+                    if(errCnt < _errorList.Count)
                     {
                         result.Append(",");
                     }
                 }
             }
 
-            if (!AsXML)
+            if(!AsXML)
             {
                 result.Append("]");
             }
 
             return result.ToString();
-        }     
+        }
+
+        private string FormatErrorMessage(string s)
+        {
+            if(s.Contains("Cannot set unknown member"))
+            {
+                return "Resource has unrecognized formatting, this Warewolf Server may be to outdated to read this resource.";
+            }
+            return s;
+        }
    
         /// <summary>
         /// Makes ErrorResultTO from a error string from the data list.

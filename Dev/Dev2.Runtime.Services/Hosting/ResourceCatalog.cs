@@ -1318,7 +1318,7 @@ namespace Dev2.Runtime.Hosting
                             Status = ExecStatus.Success,
                             Message = string.Format("<CompilerMessage>{0} '{1}' to '{2}'</CompilerMessage>", "Renamed Resource", resourceID, newName)
                         };
-                    };
+                    }
                 }
             }
             catch(Exception)
@@ -1338,7 +1338,7 @@ namespace Dev2.Runtime.Hosting
 
         ResourceCatalogResult UpdateResourceName(Guid workspaceID, IResource resource, string newName)
         {
-            //get old resource
+            //rename resource
             var resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
             var resourceElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
             var nameAttrib = resourceElement.Attribute("Name");
@@ -1364,6 +1364,8 @@ namespace Dev2.Runtime.Hosting
                         .Replace("DisplayName=\"" + oldName, "DisplayName=\"" + newName));
                 }
             }
+            resource.ResourceName = newName;
+            resource.FilePath = resource.FilePath.Replace(oldName, newName);
             //delete old resource
             if(File.Exists(resource.FilePath))
             {
@@ -1372,10 +1374,7 @@ namespace Dev2.Runtime.Hosting
                     File.Delete(resource.FilePath);
                 }
             }
-            //rename resource
-            resource.ResourceName = newName;
-            resource.FilePath = resource.FilePath.Replace(oldName, newName);
-            //re-create and resign
+            //re-create, resign and save to file system the new resource
             return SaveImpl(workspaceID, resource, resourceElement.ToString(SaveOptions.DisableFormatting));
         }
 
