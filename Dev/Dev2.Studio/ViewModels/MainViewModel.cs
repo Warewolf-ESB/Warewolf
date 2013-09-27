@@ -979,7 +979,13 @@ namespace Dev2.Studio.ViewModels
             }
             if(models.Count == 1)
             {
-                new DeleteResourceDialog(models.FirstOrDefault()).ShowDialog();
+                var model = models.FirstOrDefault();
+                var dialog = new DeleteResourceDialog(model);
+                dialog.ShowDialog();
+                if(dialog.OpenDependencyGraph)
+                {
+                    AddReverseDependencyVisualizerWorkSurface(model);
+                }
                 return false;
             }
             return true;
