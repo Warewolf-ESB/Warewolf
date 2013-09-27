@@ -122,14 +122,18 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
             set
             {
+                
                 if(!value.IsValidCategoryName())
                 {
                     throw new ArgumentException(StringResources.InvalidResourceNameExceptionMessage);
                 }
-
-                if(!string.IsNullOrEmpty(value))
+                
+                if(!string.IsNullOrEmpty(value) &&  value.Trim().Length > 0)
                 {
-                    HandleRename(value, Application.Current.MainWindow);
+                    if(!value.Equals(DisplayName, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        HandleRename(value, Application.Current.MainWindow);
+                    }
                 }
             }
         }
