@@ -1144,7 +1144,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             //2013.06.26: Ashley Lewis for bug 9728 - event avoids focus loss after a delete
             CommandManager.AddPreviewExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
 
-            //2013.07.03: Ashley Lewis for bug 9637 - deselect flowchart on selection change
+            //2013.07.03: Ashley Lewis for bug 9637 - deselect flowchart after selection change (if more than one item selected)
             Selection.Subscribe(_wd.Context, SelectedItemChanged);
 
             // BUG 9304 - 2013.05.08 - TWR
