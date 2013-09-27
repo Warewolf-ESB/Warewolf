@@ -1304,10 +1304,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void FocusActivityBuilder()
         {
             var findActivityBuilderModel = _wd.Context.Services.GetService<ModelService>();
-            var activityBuilderModel = findActivityBuilderModel.Find(findActivityBuilderModel.Root, typeof(ActivityBuilder)).ToList();
-            if(activityBuilderModel.Count > 0)
+            if (findActivityBuilderModel != null)
             {
-                activityBuilderModel[0].Focus();
+                var activityBuilderModel = findActivityBuilderModel.Find(findActivityBuilderModel.Root, typeof(ActivityBuilder)).ToList();
+                if(activityBuilderModel.Count > 0)
+                {
+                    activityBuilderModel[0].Focus();
+                }
             }
         }
 
