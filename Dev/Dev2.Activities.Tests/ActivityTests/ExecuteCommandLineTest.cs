@@ -106,7 +106,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            const string randomString = "./ConsoleAppToTestExecuteCommandLineActivity.exe";
+            var randomString = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" \"output\"";
             activity.CommandFileName = randomString;
             activity.CommandResult = "[[OutVar1]]";
             TestStartNode = new FlowStep
@@ -119,7 +119,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            Assert.IsFalse(Compiler.HasErrors(result.DataListID));
+            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            var isNullOrEmpty = String.IsNullOrEmpty(fetchErrors);
+            Assert.IsTrue(isNullOrEmpty);
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
             
             // remove test datalist ;)
@@ -466,7 +468,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(DebugItemResultType.Label, debugOutputResults[1].Type);
             Assert.AreEqual(GlobalConstants.EqualsExpression, debugOutputResults[1].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugOutputResults[2].Type);
-            Assert.AreEqual("This is output from the user\r\n", debugOutputResults[2].Value);            
+            Assert.AreEqual("This is output from the user", debugOutputResults[2].Value);            
         }
 
         // ReSharper disable InconsistentNaming

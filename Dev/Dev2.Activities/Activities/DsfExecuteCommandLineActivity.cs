@@ -116,7 +116,7 @@ namespace Dev2.Activities
                             if(!ExecuteProcess(val, out errorReader, out outputReader)) return;
 
                             allErrors.AddError(errorReader.ReadToEnd());
-                            var bytes = Encoding.Default.GetBytes(outputReader.ToString());
+                            var bytes = Encoding.Default.GetBytes(outputReader.ToString().Trim());
                             string readValue = Encoding.ASCII.GetString(bytes).Replace("?"," ");
                             
                             //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
@@ -190,7 +190,10 @@ namespace Dev2.Activities
                 var processStarted = _process.Start();
                 _process.BeginOutputReadLine();
                 StringBuilder reader = outputReader;
-                _process.OutputDataReceived += (sender, args) => reader.AppendLine(args.Data);
+                _process.OutputDataReceived += (sender, args) =>
+                {
+                    reader.AppendLine(args.Data);
+                };
                 errorReader = _process.StandardError;
                 if(!ProcessHasStarted(processStarted, _process))
                 {
@@ -259,7 +262,7 @@ namespace Dev2.Activities
                     if (idx < 0)
                     {
                         val += Environment.NewLine + "exit";
-                        psi = new ProcessStartInfo("cmd.exe", "/C " + val);
+                        psi = new ProcessStartInfo("cmd.exe", "/Q /C " + val);
                     }
                     else
                     {
@@ -267,7 +270,7 @@ namespace Dev2.Activities
                         if(File.Exists(cmd))
                         {
                             var args = val.Substring((idx + 2));
-                            psi = new ProcessStartInfo("cmd.exe", "/C " + cmd + " " + args);
+                            psi = new ProcessStartInfo("cmd.exe", "/Q /C " + cmd + " " + args);
                         }
                         else
                         {
@@ -281,7 +284,7 @@ namespace Dev2.Activities
                     if(File.Exists(cmd))
                     {
                         var args = val.Substring((idx + 2));
-                        psi = new ProcessStartInfo("cmd.exe", "/C " + cmd + " " + args);
+                        psi = new ProcessStartInfo("cmd.exe", "/Q /C " + cmd + " " + args);
                     }
                     else
                     {
@@ -295,7 +298,7 @@ namespace Dev2.Activities
                 var idx = val.IndexOf(" ", StringComparison.Ordinal);
                 if (idx < 0)
                 {
-                    psi = new ProcessStartInfo("cmd.exe", "/C " + val);
+                    psi = new ProcessStartInfo("cmd.exe", "/Q /C " + val);
                 }
                 else
                 {
@@ -303,7 +306,7 @@ namespace Dev2.Activities
                     if(File.Exists(cmd))
                     {
                         var args = val.Substring((idx + 2));
-                        psi = new ProcessStartInfo("cmd.exe", "/C " + cmd + " " + args);
+                        psi = new ProcessStartInfo("cmd.exe", "/Q /C " + cmd + " " + args);
                     }
                     else
                     {
@@ -330,7 +333,7 @@ namespace Dev2.Activities
             var fullPath = Path.Combine(Path.GetTempPath(),Path.GetTempFileName()+".bat");
             File.Create(fullPath).Close();
             File.WriteAllText(fullPath,val);
-            var psi = new ProcessStartInfo("cmd.exe", "/C " + fullPath);
+            var psi = new ProcessStartInfo("cmd.exe", "/Q /C " + fullPath);
             return psi;
         }
 

@@ -13,7 +13,7 @@ namespace Dev2.Runtime.Execution
         IList<IExecutableService> AssociatedServices { get; }
 
         void Run();
-        Task Terminate();
+        void Terminate();
         void Resume(IDSFDataObject dataObject);
     }
 }

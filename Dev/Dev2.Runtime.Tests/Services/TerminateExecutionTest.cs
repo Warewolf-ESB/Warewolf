@@ -132,7 +132,7 @@ namespace Dev2.Tests.Runtime.Services
             service.SetupGet(s => s.ID).Returns(_resourceID);
             service.SetupGet(s => s.WorkspaceID).Returns(_workspaceID);
             service.SetupGet(s => s.AssociatedServices).Returns(new List<IExecutableService>());
-            service.Setup(s => s.Terminate()).Returns(async () => await TaskEx.FromResult("mock string")).Verifiable();
+            //service.Setup(s => s.Terminate()).Returns(async () => await TaskEx.FromResult("mock string")).Verifiable();
             return service;
         }
     }

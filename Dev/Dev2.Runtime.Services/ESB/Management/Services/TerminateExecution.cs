@@ -36,8 +36,7 @@ namespace Dev2.Runtime.ESB.Management
                 return string.Format("<{0}>{1}</{0}>", "Result", Resources.CompilerError_TerminationFailed);
             }
 
-            var task = service.Terminate();
-            task.Wait();
+            service.Terminate();
 
             return string.Format("<{0}>{1}</{0}>", "Result", Resources.CompilerMessage_TerminationSuccess);
         }

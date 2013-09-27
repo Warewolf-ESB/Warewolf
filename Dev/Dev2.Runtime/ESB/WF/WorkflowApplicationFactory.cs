@@ -324,13 +324,18 @@ namespace Dev2.DynamicServices
                 }
             }
 
-            public async Task Terminate()
+            public void Terminate()
             {
-                _instance.Cancel();
+                try
+                {
+                    _instance.Cancel(new TimeSpan(0,0,0,0,1));
+                }
+                catch(TimeoutException e)
+                {
+                    //Empty so that the exception does not bubble up. The timeout is set this way to ensure that the workflow stops immediately
+                }
                 ExecutableServiceRepository.Instance.Remove(this);
                 AssociatedServices.ForEach(s => s.Terminate());
-                await Task.Factory.FromAsync(_instance.BeginTerminate,
-                                                            _instance.EndTerminate, "User cancelled", null);
                 Dispose();
             }  
 
