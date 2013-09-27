@@ -56,10 +56,16 @@
                 Visibility="{Binding HasRecordingAttachment, Converter={StaticResource BoolToVisConverter}}"
                 AutomationProperties.AutomationId="FeebackView_OpenAttachment"/>
 
-        <Button Content="This feedback has a log file. Browse..." Grid.Row="5" HorizontalAlignment="Left" 
+        <Button Content="This feedback has a server log file. Browse..." Grid.Row="5" HorizontalAlignment="Left" 
                 Margin="15,2,0,5"
                 Style="{StaticResource LinkButton}" Command="{Binding OpenServerLogAttachmentFolderCommand}"
                 Visibility="{Binding HasServerLogAttachment, Converter={StaticResource BoolToVisConverter}}"
+                AutomationProperties.AutomationId="FeebackView_OpenAttachment"/>
+        
+        <Button Content="This feedback has a studio log file. Browse..." Grid.Row="5" HorizontalAlignment="Left" 
+                Margin="15,2,0,5"
+                Style="{StaticResource LinkButton}" Command="{Binding OpenStudioLogAttachmentFolderCommand}"
+                Visibility="{Binding HasStudioLogAttachment, Converter={StaticResource BoolToVisConverter}}"
                 AutomationProperties.AutomationId="FeebackView_OpenAttachment"/>
 
         <Label Content="{Binding ServerLogFileMessage}" Grid.Row="5" HorizontalAlignment="Left" Margin="5,4,0,0"

@@ -1,4 +1,4 @@
-﻿
+﻿using System.Collections.Generic;
 using System.Drawing;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
@@ -17,6 +17,7 @@ namespace Dev2.Studio.UI.Tests
     [CodedUITest]
     public class AutoConnectorTests
     {
+        #region Properties
         DecisionWizardUIMap _decisionWizardUIMap;
         DocManagerUIMap _docManagerMap;
         ExplorerUIMap _explorerUIMap;
@@ -100,7 +101,9 @@ namespace Dev2.Studio.UI.Tests
                 return _decisionWizardUIMap;
             }
         }
+        #endregion
 
+        #region Tests
         [TestCleanup]
         public void TestCleanup()
         {
@@ -111,6 +114,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("AutoConnectorTests")]
         public void AutoConnectorTests_DragActivityOnStartAutoConnectorNode_AConnectorIsCreated()
         {
             CreateWorkflow();
@@ -118,29 +122,31 @@ namespace Dev2.Studio.UI.Tests
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("email service");
-            var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            Point point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", point);
-            var connectors = WorkflowDesignerUIMap.GetAllConnectors();
+            List<UITestControl> connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
             Assert.AreEqual(1, connectors.Count, "Start auto connector was not created");
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("AutoConnectorTests")]
         public void AutoConnectorTests_DragAToolOnStartAutoConnectorNode_AConnectorIsCreated()
         {
             CreateWorkflow();
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            Point point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
             //Drag a control to the design surface
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
-            var connectors = WorkflowDesignerUIMap.GetAllConnectors();
+            List<UITestControl> connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
             Assert.AreEqual(1, connectors.Count, "Start auto connector was not created");
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("AutoConnectorTests")]
         public void AutoConnectorTests_DragAToolOnALineBetweenConnectors_ASecondConnectorIsCreated()
         {
             //Drag a tool to the design surface
@@ -148,19 +154,20 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("AutoConnectorResource");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "AutoConnectorResource");
-            var control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "DsfMultiAssignActivityDesigner");
+            UITestControl control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "DsfMultiAssignActivityDesigner");
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             //Drag a tool to the design surface
             //Note that this point is a position relative to the multi assign on the design surface. This is to ensure that the tool is dropped exactly on the line
             var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 300);
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
-            var connectors = WorkflowDesignerUIMap.GetAllConnectors();
+            List<UITestControl> connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert that the line was split
             Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("AutoConnectorTests")]
         public void AutoConnectorTests_DragAnActivityOnALineBetweenConnectors_ASecondConnectorIsCreated()
         {
             //Drag an activity to the design surface
@@ -168,7 +175,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("AutoConnectorResource");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "AutoConnectorResource");
-            var control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "DsfMultiAssignActivityDesigner");
+            UITestControl control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "DsfMultiAssignActivityDesigner");
             // Drag another service to over the line between two connectors
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
@@ -176,27 +183,28 @@ namespace Dev2.Studio.UI.Tests
             //Note that this point is a position relative to the multi assign on the design surface. This is to ensure that the tool is dropped exactly on the line
             var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 300);
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", point);
-            var connectors = WorkflowDesignerUIMap.GetAllConnectors();
+            List<UITestControl> connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
             Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("AutoConnectorTests")]
         public void AutoConnectorTests_DragADecisionOnALineBetweenConnectors_ASecondConnectorIsCreated()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("AutoConnectorResource");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "AutoConnectorResource");
-            var control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "DsfMultiAssignActivityDesigner");
+            UITestControl control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "DsfMultiAssignActivityDesigner");
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             //Drag a decision to the design surface
             //Note that this point is a position relative to the multi assign on the design surface. This is to ensure that the tool is dropped exactly on the line
             var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 300);
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
             DecisionWizardUIMap.ClickDone();
-            var connectors = WorkflowDesignerUIMap.GetAllConnectors();
+            List<UITestControl> connectors = WorkflowDesignerUIMap.GetAllConnectors();
             DecisionWizardUIMap.ClickDone();
             //Assert start auto connector worked
             Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
@@ -204,22 +212,27 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("AutoConnectorTests")]
         public void AutoConnectorTests_DragADecisionOnStartAutoConnectorNode_ASecondConnectorIsCreated()
         {
             CreateWorkflow();
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            Point point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
             //Drag a control to the design surface
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
             DecisionWizardUIMap.ClickDone();
-            var connectors = WorkflowDesignerUIMap.GetAllConnectors();
+            List<UITestControl> connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
             Assert.AreEqual(1, connectors.Count, "Start auto connector doesnt work");
         }
 
+        #endregion
+
+        #region Utils
         public void CreateWorkflow()
         {
             Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}W");
         }
+        #endregion
     }
 }

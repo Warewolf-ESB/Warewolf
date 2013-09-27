@@ -30,6 +30,7 @@ namespace Dev2.Studio.ViewModels.Help
         private ICommand _cancelCommand;
         private ICommand _openRecordingAttachmentFolderCommand;
         private ICommand _openServerLogAttachmentFolderCommand;
+        private ICommand _openStudioLogAttachmentFolderCommand;
         private string _comment;
         private OptomizedObservableCollection<string> _categories;
         private string _selectedCategory;
@@ -275,14 +276,7 @@ namespace Dev2.Studio.ViewModels.Help
         /// <value>
         /// <c>true</c> if this instance has an attachment; otherwise, <c>false</c>.
         /// </value>
-        public bool HasStudioLogAttachment
-        {
-            get
-            {
-                return DoesFileExists(StudioLogAttachmentPath);
-            }
-        }
-        
+        public bool HasStudioLogAttachment { get { return DoesFileExists(StudioLogAttachmentPath); } }
         /// <summary>
         /// Gets or sets the sys info service to retreieve system info from.
         /// </summary>
@@ -321,6 +315,11 @@ namespace Dev2.Studio.ViewModels.Help
         public ICommand OpenServerLogAttachmentFolderCommand
         {
             get { return _openServerLogAttachmentFolderCommand ?? (_openServerLogAttachmentFolderCommand = new RelayCommand(o => OpenAttachmentFolder(ServerLogAttachmentPath))); }
+        }
+
+        public ICommand OpenStudioLogAttachmentFolderCommand
+        {
+            get { return _openStudioLogAttachmentFolderCommand ?? (_openStudioLogAttachmentFolderCommand = new RelayCommand(o => OpenAttachmentFolder(StudioLogAttachmentPath))); }
         }
 
         public string Attachments { get; private set; }
