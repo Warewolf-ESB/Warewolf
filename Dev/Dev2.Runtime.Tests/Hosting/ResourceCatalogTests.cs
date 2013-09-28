@@ -1388,9 +1388,9 @@ namespace Dev2.Tests.Runtime.Hosting
         #region UpdateResourceCatalog
 
         [TestMethod]
-        [Description("Updates the Name of the resource")]
+        [Description("Updates the Name of a resource and updates where used")]
         [Owner("Ashley Lewis")]
-        public void ResourceCatalog_UnitTest_UpdateResourceNameValidArguments_ExpectFileContentsAndNameUpdated()
+        public void ResourceCatalog_UnitTest_UpdateResourceNameValidArguments_ExpectFileContentsAndNameUpdatedBothResources()
         {
             //------------Setup for test-------------------------
             var workspaceID = Guid.NewGuid();
@@ -1398,24 +1398,38 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceID = "ec636256-5f11-40ab-a044-10e731d87555";
-            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }, new[] { Guid.NewGuid() }).ToList();
+            var depResourceID = "1736ca6e-b870-467f-8d25-262972d8c3e8";
+            SaveResources(path, null, true, false, new[] { "Bug6619Dep", "Bug6619" }, new[] { Guid.Parse(resourceID), Guid.Parse(depResourceID) }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
             IResource oldResource = result.FirstOrDefault(resource => resource.ResourceID.ToString() == resourceID);
+            IResource depResource = result.FirstOrDefault(resource => resource.ResourceID.ToString() == depResourceID);
             //------------Assert Precondition--------------------
-            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(2, result.Count);
             //------------Execute Test---------------------------
             ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID.ToString(), "RenamedResource");
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual("<CompilerMessage>Renamed Resource 'ec636256-5f11-40ab-a044-10e731d87555' to 'RenamedResource'</CompilerMessage>", resourceCatalogResult.Message);
+
+            //assert resource renamed
             string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID);
             XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
             XAttribute nameAttrib = xElement.Attribute("Name");
             Assert.IsNotNull(nameAttrib);
             Assert.AreEqual("RenamedResource", nameAttrib.Value);
             Assert.IsTrue(File.Exists(path + "\\RenamedResource.xml"));
+
+            //assert rename where used
+            resourceContents = rc.GetResourceContents(workspaceID, depResource.ResourceID);
+            xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
+            var actionElem = xElement.Element("Action");
+            Assert.IsNotNull(actionElem);
+            var xamlElem = actionElem.Element("XamlDefinition");
+            Assert.IsNotNull(xamlElem);
+            Assert.IsTrue(xamlElem.ToString().Contains("DisplayName=\"RenamedResource\""), "Resource not renamed where used.");
+            Assert.IsFalse(xamlElem.ToString().Contains("DisplayName=\"Bug6619Dep\""), "Resource not renamed where used.");
         }
 
         [TestMethod]
@@ -1430,7 +1444,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceID = "ec636256-5f11-40ab-a044-10e731d87555";
-            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }, new[] { Guid.NewGuid() }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }, new[] { Guid.Parse(resourceID) }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -1461,7 +1475,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceID = "ec636256-5f11-40ab-a044-10e731d87555";
-            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }, new[] { Guid.NewGuid() }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }, new[] { Guid.Parse(resourceID) }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
@@ -1492,7 +1506,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
             var resourceID = "ec636256-5f11-40ab-a044-10e731d87555";
-            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }, new[] { Guid.NewGuid() }).ToList();
+            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }, new[] { Guid.Parse(resourceID) }).ToList();
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");

@@ -23,6 +23,7 @@ using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Network;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
 using ServiceStack.Common.Utils;
 
@@ -550,7 +551,7 @@ namespace Dev2.Runtime.Hosting
                                                  List<IResource> workspaceResources)
         {
             var resource = resources[0];
-            if (!resource.IsUserInAuthorRoles(userRoles))
+            if (userRoles!=string.Empty && !resource.IsUserInAuthorRoles(userRoles))
             {
                 return new ResourceCatalogResult
                     {
@@ -1309,16 +1310,28 @@ namespace Dev2.Runtime.Hosting
             var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourceID == Guid.Parse(resourceID)).ToArray();
             try
             {
-                if(resourcesToUpdate.Any())
+                if (!resourcesToUpdate.Any())
                 {
-                    if(UpdateResourceName(workspaceID, resourcesToUpdate[0], newName).Status == ExecStatus.Success)
+                    return new ResourceCatalogResult
                     {
-                        return new ResourceCatalogResult
-                        {
-                            Status = ExecStatus.Success,
-                            Message = string.Format("<CompilerMessage>{0} '{1}' to '{2}'</CompilerMessage>", "Renamed Resource", resourceID, newName)
-                        };
-                    }
+                        Status = ExecStatus.Fail,
+                        Message =
+                            string.Format("<CompilerMessage>{0} '{1}' to '{2}'</CompilerMessage>",
+                                            "Failed to Find Resource", resourceID, newName)
+                    };
+                }
+
+                //rename and save to workspace
+                var renameResult = UpdateResourceName(workspaceID, resourcesToUpdate[0], newName);
+                if (renameResult.Status != ExecStatus.Success)
+                {
+                    return new ResourceCatalogResult
+                    {
+                        Status = ExecStatus.Fail,
+                        Message =
+                            string.Format("<CompilerMessage>{0} '{1}' to '{2}'</CompilerMessage>",
+                                            "Failed to Rename Resource", resourceID, newName)
+                    };
                 }
             }
             catch(Exception)
@@ -1331,16 +1344,19 @@ namespace Dev2.Runtime.Hosting
             }
             return new ResourceCatalogResult
             {
-                Status = ExecStatus.Fail,
-                Message = string.Format("<CompilerMessage>{0} '{1}' to '{2}'</CompilerMessage>", "Failed to Rename Resource", resourceID, newName)
+                Status = ExecStatus.Success,
+                Message = string.Format("<CompilerMessage>{0} '{1}' to '{2}'</CompilerMessage>", "Renamed Resource", resourceID, newName)
             };
         }
 
         ResourceCatalogResult UpdateResourceName(Guid workspaceID, IResource resource, string newName)
         {
+            RenameWhereUsed(GetDependantsAsResourceForTrees(workspaceID, resource.ResourceName), workspaceID, resource.ResourceName, newName);
+
             //rename resource
             var resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
             var resourceElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
+            //xml name attibute
             var nameAttrib = resourceElement.Attribute("Name");
             string oldName = null;
             if(nameAttrib == null)
@@ -1352,6 +1368,7 @@ namespace Dev2.Runtime.Hosting
                 oldName = nameAttrib.Value;
                 nameAttrib.SetValue(newName);
             }
+            //xaml
             var actionElement = resourceElement.Element("Action");
             if(actionElement != null)
             {
@@ -1364,18 +1381,57 @@ namespace Dev2.Runtime.Hosting
                         .Replace("DisplayName=\"" + oldName, "DisplayName=\"" + newName));
                 }
             }
+            //xml display name element
+            var displayNameElement = resourceElement.Element("DisplayName");
+            displayNameElement.SetValue(newName);
+            //object name
             resource.ResourceName = newName;
-            resource.FilePath = resource.FilePath.Replace(oldName, newName);
-            //delete old resource
-            if(File.Exists(resource.FilePath))
+            //delete old resource in local workspace without updating dependants with compile messages
+            if (File.Exists(resource.FilePath))
             {
-                lock(GetFileLock(resource.FilePath))
+                lock (GetFileLock(resource.FilePath))
                 {
                     File.Delete(resource.FilePath);
                 }
             }
+            //update file path
+            resource.FilePath = resource.FilePath.Replace(oldName, newName);
             //re-create, resign and save to file system the new resource
             return SaveImpl(workspaceID, resource, resourceElement.ToString(SaveOptions.DisableFormatting));
+        }
+
+        private void RenameWhereUsed(List<ResourceForTree> dependants, Guid workspaceID, string oldName, string newName)
+        {
+            foreach (var dependant in dependants)
+            {
+                var dependantResource = GetResource(workspaceID, dependant.ResourceID);
+                //rename where used
+                var resourceContents = GetResourceContents(workspaceID, dependantResource.ResourceID);
+                var resourceElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
+                //in the xaml only
+                var actionElement = resourceElement.Element("Action");
+                if(actionElement != null)
+                {
+                    var xaml = actionElement.Element("XamlDefinition");
+                    if(xaml != null)
+                    {
+                        xaml.SetValue(xaml.Value
+                            .Replace("DisplayName=\"" + oldName, "DisplayName=\"" + newName)
+                            .Replace("ServiceName=\"" + oldName, "ServiceName=\"" + newName)
+                            .Replace("ToolboxFriendlyName=\"" + oldName, "ToolboxFriendlyName=\"" + newName));
+                    }
+                }
+                //delete old resource
+                if(File.Exists(dependantResource.FilePath))
+                {
+                    lock(GetFileLock(dependantResource.FilePath))
+                    {
+                        File.Delete(dependantResource.FilePath);
+                    }
+                }
+                //re-create, resign and save to file system the new resource
+                SaveImpl(workspaceID, dependantResource, resourceElement.ToString());
+            }
         }
 
         public ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory, string resourceTypeStr)

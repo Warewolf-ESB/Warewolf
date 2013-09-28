@@ -176,8 +176,16 @@ namespace Dev2.Workspaces
         public WorkspaceItem(XElement xml)
         {
             ID = Guid.Parse(GetAttributeValue(xml, "ID"));
-            WorkspaceID = Guid.Parse(GetAttributeValue(xml, "WorkspaceID"));
-            ServerID = Guid.Parse(GetAttributeValue(xml, "ServerID"));
+            Guid tryGetWorkspaceID;
+            if (Guid.TryParse(GetAttributeValue(xml, "WorkspaceID"), out tryGetWorkspaceID))
+            {
+                WorkspaceID = tryGetWorkspaceID;
+            }
+            Guid tryGetServerID;
+            if (Guid.TryParse(GetAttributeValue(xml, "ServerID"), out tryGetServerID))
+            {
+                ServerID = tryGetServerID;
+            }
             Guid envID;
             if (Guid.TryParse(GetAttributeValue(xml, "EnvironmentID"), out envID))
             {
