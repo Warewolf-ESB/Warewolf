@@ -1452,30 +1452,47 @@ namespace BusinessDesignStudio.Unit.Tests
 
         [TestMethod]
         [TestCategory("ResourceRepositoryUnitTest")]
-        [Description("Test for ResourceRepository's rename function: Rename is called and connection is expected to be open with correct package to the server")]
+        [Description(
+            "Test for ResourceRepository's rename function: Rename is called and connection is expected to be open with correct package to the server"
+            )]
         [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
-        public void ResourceRepository_ResourceRepositoryUnitTest_RenameResource_ExecuteCommandExecutesTheRightXmlPayload()
-        // ReSharper restore InconsistentNaming
+        public void
+            ResourceRepository_ResourceRepositoryUnitTest_RenameResource_ExecuteCommandExecutesTheRightXmlPayload()
+            // ReSharper restore InconsistentNaming
         {
             //init
+            var resID = Guid.NewGuid();
+            var newResName = "New Test Name";
             var mockEnvironment = new Mock<IEnvironmentModel>();
             mockEnvironment.Setup(c => c.Connection.SecurityContext);
             var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
             var expected = @"<XmlData>
   <Service>RenameResourceService</Service>
-  <NewName>New Test Name</NewName>
-  <ResourceID>Test Name</ResourceID>
+  <NewName>" + newResName + @"</NewName>
+  <ResourceID>" + resID + @"</ResourceID>
 </XmlData>";
-            mockEnvironmentConnection.Setup(c => c.ExecuteCommand(expected, It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
+            mockEnvironmentConnection.Setup(c => c.ExecuteCommand(expected, It.IsAny<Guid>(), It.IsAny<Guid>()))
+                                     .Returns(string.Format("<XmlData>Success</XmlData>")).Verifiable();
             mockEnvironment.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
-            var vm = new ResourceRepository(mockEnvironment.Object, new Mock<IWizardEngine>().Object, new Mock<IFrameworkSecurityContext>().Object);
+            var vm = new ResourceRepository(mockEnvironment.Object, new Mock<IWizardEngine>().Object,
+                                            new Mock<IFrameworkSecurityContext>().Object);
+            var resourceModel = new Mock<IResourceModel>();
+            resourceModel.Setup(res => res.ID).Returns(resID);
+            string actualRenamedValue = null;
+            resourceModel.SetupSet(res => res.ResourceName).Callback(value =>
+                {
+                    actualRenamedValue = value;
+                });
+            vm.Add(resourceModel.Object);
 
             //exe
-            vm.Rename("Test Name", "New Test Name");
+            vm.Rename(resID.ToString(), newResName);
 
             //assert
             mockEnvironmentConnection.Verify(connection => connection.ExecuteCommand(expected, It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
+            Assert.IsNotNull(actualRenamedValue, "Resource not renamed locally");
+            Assert.AreEqual(newResName, actualRenamedValue);
         }
 
         [TestMethod]

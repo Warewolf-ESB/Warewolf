@@ -210,11 +210,26 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void Rename(string resourceID, string newName)
         {
-            dynamic package = new UnlimitedObject();
-            package.Service = "RenameResourceService";
-            package.NewName = newName;
-            package.ResourceID = resourceID;
-            ExecuteCommand(_environmentModel, package, false);
+            Guid resID;
+            if (Guid.TryParse(resourceID, out resID))
+            {
+                dynamic package = new UnlimitedObject();
+                package.Service = "RenameResourceService";
+                package.NewName = newName;
+                package.ResourceID = resourceID;
+                if (ExecuteCommand(_environmentModel, package, false).Contains("Success"))
+                {
+                    var findInLocalRepo = _resourceModels.FirstOrDefault(res => res.ID == Guid.Parse(resourceID));
+                    if (findInLocalRepo != null)
+                    {
+                        findInLocalRepo.ResourceName = newName;
+                    }
+                }
+            }
+            else
+            {
+                throw new ArgumentException(StringResources.Resource_ID_must_be_a_Guid, "resourceID");
+            }
         }
 
         public void RenameCategory(string oldCategory, string newCategory, Enums.ResourceType resourceType)
