@@ -165,12 +165,15 @@ namespace Dev2.Studio.ViewModels.Navigation
                     _eventPublisher.Publish(new UpdateWorksurfaceFlowNodeDisplayName(getDependantsID, DataContext.ResourceName, newName));
                 }
                 //update this data context
-                DataContext.ServiceDefinition = DataContext.ServiceDefinition
-                        .Replace("x:Class=\"" + DataContext.ResourceName, "x:Class=\"" + newName)
-                        .Replace("Name=\"" + DataContext.ResourceName, "Name=\"" + newName)
-                        .Replace("ToolboxFriendlyName=\"" + DataContext.ResourceName, "ToolboxFriendlyName=\"" + newName)
-                        .Replace("<DisplayName>" + DataContext.ResourceName + "</DisplayName>", "<DisplayName>" + newName + "</DisplayName>")
-                        .Replace("DisplayName=\"" + DataContext.ResourceName, "DisplayName=\"" + newName);
+                if(DataContext.ServiceDefinition != null)
+                {
+                    DataContext.ServiceDefinition = DataContext.ServiceDefinition
+                            .Replace("x:Class=\"" + DataContext.ResourceName, "x:Class=\"" + newName)
+                            .Replace("Name=\"" + DataContext.ResourceName, "Name=\"" + newName)
+                            .Replace("ToolboxFriendlyName=\"" + DataContext.ResourceName, "ToolboxFriendlyName=\"" + newName)
+                            .Replace("<DisplayName>" + DataContext.ResourceName + "</DisplayName>", "<DisplayName>" + newName + "</DisplayName>")
+                            .Replace("DisplayName=\"" + DataContext.ResourceName, "DisplayName=\"" + newName);
+                }
                 DataContext.ResourceName = newName;
                 NotifyOfPropertyChange(() => DisplayName);
             }

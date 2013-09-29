@@ -1452,7 +1452,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
         [TestMethod]
         [TestCategory("ResourceRepositoryUnitTest")]
-        [Description("Test for ResourceRepository's rename function: Rename is called and conneciton is expected to be executed with correct package")]
+        [Description("Test for ResourceRepository's rename function: Rename is called and connection is expected to be open with correct package to the server")]
         [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void ResourceRepository_ResourceRepositoryUnitTest_RenameResource_ExecuteCommandExecutesTheRightXmlPayload()

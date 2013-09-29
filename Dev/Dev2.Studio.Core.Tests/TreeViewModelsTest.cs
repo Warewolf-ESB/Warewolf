@@ -905,6 +905,43 @@ namespace Dev2.Core.Tests
             mockedResourceRepo.Verify(repo => repo.Rename(oldResourceID.ToString(), newResourceName), Times.Once(), "Resource repository rename resource was not called with the correct params"); ;
         }
 
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("ResourceTreeViewModel_Rename")]
+        public void ResourceTreeViewModel_Rename_ResourceRenamedBackToOldName_ResourceRenamed()
+        {
+            var oldResourceID = Guid.NewGuid();
+            const string oldResourceName = "OldName";
+            const string newResourceName = "NewName";
+
+            //Mock resource repository
+            var mockedResourceRepo = new Mock<IResourceRepository>();
+            var mockedEnvironment = new Mock<IEnvironmentModel>();
+            var mockedResourceModel = new Mock<IContextualResourceModel>();
+            mockedResourceModel.Setup(res => res.ID).Returns(oldResourceID);
+            mockedResourceModel.Setup(res => res.ResourceName).Returns(oldResourceName);
+            mockedResourceModel.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+            mockedResourceRepo.Setup(repo => repo.All()).Returns(new Collection<IResourceModel>());
+            mockedResourceRepo.Setup(repo => repo.Rename(oldResourceID.ToString(), newResourceName)).Verifiable();
+            mockedResourceRepo.Setup(repo => repo.Rename(oldResourceID.ToString(), oldResourceName)).Verifiable();
+            mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
+
+            var eventAggregator = new Mock<IEventAggregator>().Object;
+
+            //Isolate rename resource unit
+            var treeParent = new EnvironmentTreeViewModel(eventAggregator, null, mockedEnvironment.Object);
+            var resourcetreeviewmodel = new MockResourceTreeViewModel(eventAggregator, treeParent, mockedResourceModel.Object);
+
+            //------------Execute Test---------------------------
+            resourcetreeviewmodel.TestRename(newResourceName);
+            resourcetreeviewmodel.TestRename(oldResourceName);
+
+            // Assert resource renamed both times
+            mockedResourceRepo.Verify(repo => repo.Rename(oldResourceID.ToString(), newResourceName), Times.Once(), "Resource repository rename resource was not called with the correct params");
+            mockedResourceRepo.Verify(repo => repo.Rename(oldResourceID.ToString(), oldResourceName), Times.Once(), "Resource repository rename resource was not called with the correct params");
+        }
+
         #endregion Resource
 
         [TestMethod]

@@ -214,23 +214,26 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             var WorksurfaceResourceID = Guid.NewGuid();
             var newName = "RenamedResource";
-            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(null, WorksurfaceResourceID);
+            string actualNewName = null;
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(model => model.ID).Returns(WorksurfaceResourceID);
+            mockResourceModel.SetupSet(model => model.ResourceName).Callback(value => { actualNewName = value; });
+            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(null, mockResourceModel);
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.Handle(new UpdateWorksurfaceDisplayName(WorksurfaceResourceID, "Worksurface Resource Name", newName));
 
             // Assert ContextualResourceModel Name Changed
-            Assert.AreEqual(newName, workSurfaceContextViewModel.ContextualResourceModel.ResourceName);
+            Assert.IsNotNull(actualNewName);
+            Assert.AreEqual(actualNewName, newName, "Tab title not updated");
         }
-        
-        static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel(IEnvironmentModel environmentModel, Guid? ResourceModelID = null)
+
+        static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel(IEnvironmentModel environmentModel, Mock<IContextualResourceModel> ResourceModel = null)
         {
             CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
-            var mockResourceModel = new Mock<IContextualResourceModel>();
+            var mockResourceModel = ResourceModel??new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.Environment).Returns(environmentModel);
-            mockResourceModel.Setup(model => model.ID).Returns(ResourceModelID ?? Guid.NewGuid());
-            mockResourceModel.Setup(model => model.ResourceName).Returns("Worksurface Resource Name");
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
             mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(mockResourceModel.Object);
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>().Object;
