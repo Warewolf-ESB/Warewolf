@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common;
@@ -47,7 +48,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
     public class WorkSurfaceContextViewModel : BaseViewModel,
                                  IHandle<SaveResourceMessage>, IHandle<DebugResourceMessage>,
                                  IHandle<ExecuteResourceMessage>, 
-                                 IHandle<UpdateWorksurfaceContext>
+                                 IHandle<UpdateWorksurfaceDisplayName>
     {
         #region private fields
 
@@ -66,8 +67,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         ICommand _saveCommand;
         ICommand _editResourceCommand;
         bool _hasMappingChange;
-
-        private IResourceDependencyService _dependencyService;
 
         #endregion private fields
 
@@ -210,11 +209,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         #region ctors
 
         public WorkSurfaceContextViewModel(WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
-            : this(EventPublishers.Aggregator, workSurfaceKey, workSurfaceViewModel, new ResourceDependencyService())
+            : this(EventPublishers.Aggregator, workSurfaceKey, workSurfaceViewModel)
         {
         }
 
-        public WorkSurfaceContextViewModel(IEventAggregator eventPublisher, WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel, IResourceDependencyService dependencyService)
+        public WorkSurfaceContextViewModel(IEventAggregator eventPublisher, WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
             : base(eventPublisher)
         {
             if(workSurfaceKey == null)
@@ -250,7 +249,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                     };
             }
         }
-            _dependencyService = dependencyService;
         }
 
         #endregion
@@ -285,13 +283,27 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
         }
 
-        public void Handle(UpdateWorksurfaceContext message)
+        public void Handle(UpdateWorksurfaceDisplayName message)
         {
             Logger.TraceInfo(message.GetType().Name, GetType().Name);
-            if(ContextualResourceModel != null && ContextualResourceModel.ID == message.NewDataContext.ID)
+            if(ContextualResourceModel != null && ContextualResourceModel.ID == message.WorksurfaceResourceID)
             {
+                //tab title
+                ContextualResourceModel.ResourceName = message.NewName;
                 _workSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
             }
+        }
+
+        public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
+        {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            ContextualResourceModel.ServiceDefinition = ContextualResourceModel.ServiceDefinition
+                    .Replace("x:Class=\"" + ContextualResourceModel.ResourceName, "x:Class=\"" + message.NewName)
+                    .Replace("Name=\"" + ContextualResourceModel.ResourceName, "Name=\"" + message.NewName)
+                    .Replace("ToolboxFriendlyName=\"" + ContextualResourceModel.ResourceName, "ToolboxFriendlyName=\"" + message.NewName)
+                    .Replace("<DisplayName>" + ContextualResourceModel.ResourceName + "</DisplayName>", "<DisplayName>" + message.NewName + "</DisplayName>")
+                    .Replace("DisplayName=\"" + ContextualResourceModel.ResourceName, "DisplayName=\"" + message.NewName);
+            NotifyOfPropertyChange("ContextualResourceModel");
         }
 
         #endregion IHandle

@@ -324,6 +324,7 @@
     <Compile Include="Messages\ConfigureCaseExpressionMessage.cs" />
     <Compile Include="Messages\ConfigureDecisionExpressionMessage.cs" />
     <Compile Include="Messages\ConfigureSwitchExpressionMessage.cs" />
+    <Compile Include="Messages\UpdateWorksurfaceDisplayName.cs" />
     <Compile Include="Messages\DataListItemSelectedMessage.cs" />
     <Compile Include="Messages\DebugResourceMessage.cs" />
     <Compile Include="Messages\DebugWriterWriteMessage.cs" />
@@ -373,7 +374,7 @@
     <Compile Include="Messages\UpdateResourceDesignerMessage.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />
     <Compile Include="Messages\UpdateWebpagePreviewMessage.cs" />
-    <Compile Include="Messages\UpdateWorksurfaceContext.cs" />
+    <Compile Include="Messages\UpdateWorksurfaceFlowNodeDisplayName.cs" />
     <Compile Include="Models\DataList\BaseDataListItemModel.cs" />
     <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />
     <Compile Include="Models\DataMapping\DataMappingDefinition.cs">

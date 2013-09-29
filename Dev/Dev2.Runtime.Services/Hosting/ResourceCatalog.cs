@@ -1076,7 +1076,7 @@ namespace Dev2.Runtime.Hosting
         //Sends the messages for effected resources
         void UpdateDependantResourceWithCompileMessages(Guid workspaceID, IResource resource, IList<CompileMessageTO> messages)
         {
-            var dependants = Instance.GetDependantsAsResourceForTrees(workspaceID, resource.ResourceName);
+            var dependants = Instance.GetDependentsAsResourceForTrees(workspaceID, resource.ResourceName);
             foreach(var dependant in dependants)
             {
                 var affectedResource = GetResource(workspaceID, dependant.ResourceName);
@@ -1351,7 +1351,8 @@ namespace Dev2.Runtime.Hosting
 
         ResourceCatalogResult UpdateResourceName(Guid workspaceID, IResource resource, string newName)
         {
-            RenameWhereUsed(GetDependantsAsResourceForTrees(workspaceID, resource.ResourceName), workspaceID, resource.ResourceName, newName);
+            //rename where used
+            RenameWhereUsed(GetDependentsAsResourceForTrees(workspaceID, resource.ResourceName), workspaceID, resource.ResourceName, newName);
 
             //rename resource
             var resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
@@ -1495,7 +1496,7 @@ namespace Dev2.Runtime.Hosting
             return GetResources(workspaceID).Where(filterResources);
         }
 
-        public List<ResourceForTree> GetDependantsAsResourceForTrees(Guid workspaceID, string resourceName)
+        public List<ResourceForTree> GetDependentsAsResourceForTrees(Guid workspaceID, string resourceName)
         {
             // ReSharper disable LocalizableElement
             if(string.IsNullOrEmpty(resourceName)) throw new ArgumentNullException("resourceName", "No resource name given.");

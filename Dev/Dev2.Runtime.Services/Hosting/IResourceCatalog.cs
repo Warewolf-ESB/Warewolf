@@ -101,6 +101,7 @@ namespace Dev2.Runtime.Hosting
         List<DynamicServiceObjectBase> GetDynamicObjects(IEnumerable<IResource> resources);
 
         List<string> GetDependants(Guid workspaceID, string resourceName);
-        List<ResourceForTree> GetDependantsAsResourceForTrees(Guid workspaceID, string resourceName);
+
+        List<ResourceForTree> GetDependentsAsResourceForTrees(Guid workspaceID, string resourceName);
     }
 }

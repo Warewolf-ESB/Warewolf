@@ -1393,6 +1393,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void ResourceCatalog_UnitTest_UpdateResourceNameValidArguments_ExpectFileContentsAndNameUpdatedBothResources()
         {
             //------------Setup for test-------------------------
+            var newName = "RenamedResource";
             var workspaceID = Guid.NewGuid();
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             var path = Path.Combine(workspacePath, "Services");
@@ -1408,28 +1409,31 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition--------------------
             Assert.AreEqual(2, result.Count);
             //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID.ToString(), "RenamedResource");
+            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID.ToString(), newName);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
-            Assert.AreEqual("<CompilerMessage>Renamed Resource 'ec636256-5f11-40ab-a044-10e731d87555' to 'RenamedResource'</CompilerMessage>", resourceCatalogResult.Message);
+            Assert.AreEqual("<CompilerMessage>Renamed Resource 'ec636256-5f11-40ab-a044-10e731d87555' to '"+newName+"'</CompilerMessage>", resourceCatalogResult.Message);
 
             //assert resource renamed
             string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID);
             XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
             XAttribute nameAttrib = xElement.Attribute("Name");
             Assert.IsNotNull(nameAttrib);
-            Assert.AreEqual("RenamedResource", nameAttrib.Value);
-            Assert.IsTrue(File.Exists(path + "\\RenamedResource.xml"));
+            Assert.AreEqual(newName, nameAttrib.Value);
+            Assert.IsTrue(File.Exists(path + "\\"+newName+".xml"));
 
             //assert rename where used
+            result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            depResource = result.FirstOrDefault(resource => resource.ResourceID.ToString() == depResourceID);
             resourceContents = rc.GetResourceContents(workspaceID, depResource.ResourceID);
             xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
             var actionElem = xElement.Element("Action");
             Assert.IsNotNull(actionElem);
             var xamlElem = actionElem.Element("XamlDefinition");
             Assert.IsNotNull(xamlElem);
-            Assert.IsTrue(xamlElem.ToString().Contains("DisplayName=\"RenamedResource\""), "Resource not renamed where used.");
+            Assert.IsTrue(xamlElem.ToString().Contains("DisplayName=\""+newName+"\""), "Resource not renamed where used.");
             Assert.IsFalse(xamlElem.ToString().Contains("DisplayName=\"Bug6619Dep\""), "Resource not renamed where used.");
+            Assert.AreEqual(depResource.Dependencies[0].ResourceName, newName, "Resource not renamed where used");
         }
 
         [TestMethod]
@@ -1978,7 +1982,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             //------------Execute Test---------------------------
-            var dependants = ResourceCatalog.Instance.GetDependantsAsResourceForTrees(workspaceID, resourceName);
+            var dependants = ResourceCatalog.Instance.GetDependentsAsResourceForTrees(workspaceID, resourceName);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, dependants.Count);
             Assert.AreEqual("Bug6619", dependants[0].ResourceName);
@@ -2007,7 +2011,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition-----------------
             Assert.AreEqual(1, result.Count);
             //------------Execute Test---------------------------
-            var dependants = ResourceCatalog.Instance.GetDependantsAsResourceForTrees(workspaceID, "WeatherFranceParis");
+            var dependants = ResourceCatalog.Instance.GetDependentsAsResourceForTrees(workspaceID, "WeatherFranceParis");
             //------------Assert Results-------------------------
             Assert.AreEqual(1, dependants.Count);
         }
@@ -2024,7 +2028,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition-----------------
             Assert.AreEqual(0, result.Count);
             //------------Execute Test---------------------------
-            var dependants = ResourceCatalog.Instance.GetDependantsAsResourceForTrees(workspaceID, resourceName);
+            var dependants = ResourceCatalog.Instance.GetDependentsAsResourceForTrees(workspaceID, resourceName);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dependants.Count);
         }
@@ -2047,7 +2051,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             //------------Execute Test---------------------------
-            var dependants = ResourceCatalog.Instance.GetDependantsAsResourceForTrees(workspaceID, "");
+            var dependants = ResourceCatalog.Instance.GetDependentsAsResourceForTrees(workspaceID, "");
             //------------Assert Results-------------------------
             //Exception thrown see attribute
         }
@@ -2071,7 +2075,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             //------------Execute Test---------------------------
-            var dependants = ResourceCatalog.Instance.GetDependantsAsResourceForTrees(workspaceID, "");
+            var dependants = ResourceCatalog.Instance.GetDependentsAsResourceForTrees(workspaceID, "");
             //------------Assert Results-------------------------
             //Exception thrown see attribute
         }
@@ -2093,7 +2097,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition-----------------
             Assert.AreEqual(1, result.Count);
             //------------Execute Test---------------------------
-            var dependants = ResourceCatalog.Instance.GetDependantsAsResourceForTrees(workspaceID, resourceName);
+            var dependants = ResourceCatalog.Instance.GetDependentsAsResourceForTrees(workspaceID, resourceName);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dependants.Count);
         }      

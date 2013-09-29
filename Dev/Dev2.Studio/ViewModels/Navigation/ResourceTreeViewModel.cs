@@ -17,6 +17,7 @@ using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -138,23 +139,40 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
-        protected void HandleRename(string value, Window mainView)
+        protected void HandleRename(string newName, Window mainView)
         {
             var resourceRepository = EnvironmentModel.ResourceRepository;
-            if(resourceRepository.All().Any(res => res.ResourceName == value))
+            if(resourceRepository.All().Any(res => res.ResourceName == newName))
             {
                 if(mainView != null)
                 {
-                    new RenameResourceDialog(DataContext, value, mainView).ShowDialog();
+                    new RenameResourceDialog(DataContext, newName, mainView).ShowDialog();
                 }
             }
             else
             {
-                resourceRepository.Rename(DataContext.ID.ToString(), value);
-                DataContext.ResourceName = value;
+                //update resource repository
+                resourceRepository.Rename(DataContext.ID.ToString(), newName);
+                //Update open instance of this resource
+                Logger.TraceInfo("Publish message of type - " + typeof(UpdateWorksurfaceDisplayName), GetType().Name);
+                _eventPublisher.Publish(new UpdateWorksurfaceDisplayName(DataContext.ID, DataContext.ResourceName, newName));
+                //update open dependant instances
+                var getDependants = new ResourceDependencyService();
+                var getUniqueDependents = getDependants.GetUniqueDependencies(DataContext).Where(res => res.ID != DataContext.ID);
+                foreach (var dependantResource in getUniqueDependents)
+                {
+                    var getDependantsID = dependantResource.ID;
+                    _eventPublisher.Publish(new UpdateWorksurfaceFlowNodeDisplayName(getDependantsID, DataContext.ResourceName, newName));
+                }
+                //update this data context
+                DataContext.ServiceDefinition = DataContext.ServiceDefinition
+                        .Replace("x:Class=\"" + DataContext.ResourceName, "x:Class=\"" + newName)
+                        .Replace("Name=\"" + DataContext.ResourceName, "Name=\"" + newName)
+                        .Replace("ToolboxFriendlyName=\"" + DataContext.ResourceName, "ToolboxFriendlyName=\"" + newName)
+                        .Replace("<DisplayName>" + DataContext.ResourceName + "</DisplayName>", "<DisplayName>" + newName + "</DisplayName>")
+                        .Replace("DisplayName=\"" + DataContext.ResourceName, "DisplayName=\"" + newName);
+                DataContext.ResourceName = newName;
                 NotifyOfPropertyChange(() => DisplayName);
-                Logger.TraceInfo("Publish message of type - " + typeof(UpdateWorksurfaceContext), GetType().Name);
-                _eventPublisher.Publish(new UpdateWorksurfaceContext(DataContext));
             }
         }
 
