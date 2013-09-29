@@ -599,7 +599,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                        (_deployCommand =
                         new RelayCommand(param =>
                         {
-                            Logger.TraceInfo("Publish message of type - " + typeof(DeployResourcesMessage), GetType().Name);
+                            Logger.TraceInfo("Publish message of type - " + typeof(DeployResourcesMessage));
                             _eventPublisher.Publish(new DeployResourcesMessage(this));
                         },
                             o => CanDeploy));
@@ -751,7 +751,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
 
             NotifyOfPropertyChange(() => IsChecked);
-            Logger.TraceInfo("Publish message of type - " + typeof(ResourceCheckedMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(ResourceCheckedMessage));
             _eventPublisher.Publish(new ResourceCheckedMessage());
         }
 

@@ -150,7 +150,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void Handle(EnvironmentConnectedMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             var e = Environments.FirstOrDefault(o => ReferenceEquals(o, message.EnvironmentModel));
             LoadEnvironmentResources(e);
         }
@@ -163,7 +163,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void Handle(EnvironmentDisconnectedMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             var e = Environments.FirstOrDefault(o => ReferenceEquals(o, message.EnvironmentModel));
 
             if(e == null)
@@ -190,13 +190,13 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void Handle(UpdateResourceMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             UpdateResource(message.ResourceModel);
         }
 
         public void Handle(RemoveNavigationResourceMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             var node = Root.FindChild(message.ResourceModel);
             if(node is AbstractTreeViewModel)
             {
@@ -455,7 +455,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         public void SetSelectedItemNull()
         {
-            Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedIContextualResourceModel), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedIContextualResourceModel));
             _eventPublisher.Publish(new SetSelectedIContextualResourceModel(null, false));
         }
 
@@ -772,7 +772,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             if(treeNodes.Count == 1 && treeNodes[0] is EnvironmentTreeViewModel)
             {
                 treeNodes[0].IsSelected = true;
-                Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage), GetType().Name);
+                Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
                 _eventPublisher.Publish(new SetActiveEnvironmentMessage(treeNodes[0].EnvironmentModel));
             }
         }

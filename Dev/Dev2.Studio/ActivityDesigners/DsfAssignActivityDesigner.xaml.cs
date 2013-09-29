@@ -88,7 +88,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
 
         public void Handle(DataListItemSelectedMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             Highlight(message.DataListItemModel);
         }
 

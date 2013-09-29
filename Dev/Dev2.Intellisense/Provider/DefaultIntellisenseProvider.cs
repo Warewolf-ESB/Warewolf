@@ -571,7 +571,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public void Handle(UpdateIntellisenseMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             OnUpdateIntellisense();
         }
 

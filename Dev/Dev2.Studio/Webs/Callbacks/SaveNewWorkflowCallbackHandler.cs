@@ -58,7 +58,7 @@ namespace Dev2.Studio.Webs.Callbacks
                 if (_resourceModel != null)
                 {
                     _resourceModel.IsNewWorkflow = false;
-                    Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage), GetType().Name);
+                    Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
                     _eventPublisher.Publish(new SaveResourceMessage(_resourceModel, true, false));
                     IContextualResourceModel newResourceModel =
                         ResourceModelFactory.CreateResourceModel(_resourceModel.Environment, "Workflow",
@@ -71,16 +71,16 @@ namespace Dev2.Studio.Webs.Callbacks
                     newResourceModel.DataList = _resourceModel.DataList;
                     newResourceModel.IsNewWorkflow = false;
 
-                    Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage), GetType().Name);
+                    Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
                     _eventPublisher.Publish(new UpdateResourceMessage(newResourceModel));
                     if (_addToTabManager)
                     {
-                        Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage), GetType().Name);
+                        Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
                         _eventPublisher.Publish(new AddWorkSurfaceMessage(newResourceModel));
                     }
-                    Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage), GetType().Name);
+                    Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
                     _eventPublisher.Publish(new SaveResourceMessage(newResourceModel, false, _addToTabManager));
-                    Logger.TraceInfo("Publish message of type - " + typeof(RemoveResourceAndCloseTabMessage), GetType().Name);
+                    Logger.TraceInfo("Publish message of type - " + typeof(RemoveResourceAndCloseTabMessage));
                     _eventPublisher.Publish(new RemoveResourceAndCloseTabMessage(_resourceModel));
 
                     NewWorkflowNames.Instance.Remove(_resourceModel.ResourceName);
@@ -92,7 +92,7 @@ namespace Dev2.Studio.Webs.Callbacks
             {
                 Exception e1 = new Exception("There was a problem saving. Please try again.", e);
 
-                StudioLogger.LogMessage(e.Message + Environment.NewLine + " Stacktrace : " + e.StackTrace + Environment.NewLine + " jsonObj: " + jsonObj.ToString());
+                Logger.TraceInfo(e.Message + Environment.NewLine + " Stacktrace : " + e.StackTrace + Environment.NewLine + " jsonObj: " + jsonObj.ToString());
 
                 throw e1;
             }

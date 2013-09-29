@@ -129,7 +129,7 @@ namespace Dev2.Studio.ViewModels.Explorer
             }
             NavigationViewModel.AddEnvironment(environmentModel);
             SaveEnvironment(environmentModel);
-            Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
             EventPublisher.Publish(new SetActiveEnvironmentMessage(environmentModel));
         }
 
@@ -178,7 +178,7 @@ namespace Dev2.Studio.ViewModels.Explorer
 
             // Load the default environment
             NavigationViewModel.AddEnvironment(EnvironmentRepository.Source);
-            Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
             EventPublisher.Publish(new SetActiveEnvironmentMessage(EnvironmentRepository.Source));
 
             //
@@ -240,7 +240,7 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public void Handle(SetSelectedItemInExplorerTree message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             List<ITreeNode> treeNodes = NavigationViewModel.Root.GetChildren(c => c.GetType() == typeof(EnvironmentTreeViewModel) && c.DisplayName.Contains(message.NodeNameToSelect)).ToList();
             if(treeNodes.Count == 1)
             {
@@ -250,19 +250,19 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public void Handle(RefreshExplorerMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             NavigationViewModel.UpdateWorkspaces();
         }
 
         public void Handle(UpdateExplorerMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             RefreshEnvironments(message.Update);
         }
 
         public void Handle(RemoveEnvironmentMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             if(Context == message.Context)
             {
                 RemoveEnvironment(message.EnvironmentModel);
@@ -271,7 +271,7 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public void Handle(AddServerToExplorerMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             if(message.Context == null || message.Context != Context)
             {
                 return;
@@ -281,7 +281,7 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public void Handle(EnvironmentDeletedMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             RemoveEnvironment(message.EnvironmentModel);
         }
 

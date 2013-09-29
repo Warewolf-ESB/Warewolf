@@ -196,7 +196,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views.WebsiteBuilder
 
         public void Handle(TabClosedMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             if(message.Context.Equals(this))
             {
                 EventPublishers.Aggregator.Unsubscribe(this);

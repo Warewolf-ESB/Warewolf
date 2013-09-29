@@ -6,7 +6,6 @@ namespace Dev2.Studio.Core.AppResources.Administration {
 
         public void CallbackNotification(string message) {
             SendMessage(message);
-            StudioLogger.LogMessage(message);
         }
 
         #endregion

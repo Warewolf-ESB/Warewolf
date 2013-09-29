@@ -123,12 +123,12 @@ namespace Dev2.Studio.ViewModels.Explorer
             //
             // Add the new server
             //
-            Logger.TraceInfo("Publish message of type - " + typeof(AddServerToDeployMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(AddServerToDeployMessage));
             _eventPublisher.Publish(new AddServerToDeployMessage(Server, IsSource, IsDestination));
             //
             // Signal the explorer to update loading any new servers
             //
-            Logger.TraceInfo("Publish message of type - " + typeof(UpdateExplorerMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(UpdateExplorerMessage));
             _eventPublisher.Publish(new UpdateExplorerMessage(false));
 
         }
@@ -341,7 +341,7 @@ namespace Dev2.Studio.ViewModels.Explorer
             get
             {
                 IEnvironmentModel getActiveEnvironment = null;
-                Logger.TraceInfo("Publish message of type - " + typeof(GetActiveEnvironmentCallbackMessage), GetType().Name);
+                Logger.TraceInfo("Publish message of type - " + typeof(GetActiveEnvironmentCallbackMessage));
                 _eventPublisher.Publish(new GetActiveEnvironmentCallbackMessage(env =>
                 {
                     getActiveEnvironment = env;

@@ -31,7 +31,7 @@ namespace Dev2.Studio.Webs.Callbacks
             dialog.ShowDialog();
             if (dialog.OpenDependencyGraph)
             {
-                Logger.TraceInfo("Publish message of type - " + typeof(ShowReverseDependencyVisualizer), GetType().Name);
+                Logger.TraceInfo("Publish message of type - " + typeof(ShowReverseDependencyVisualizer));
                 _eventPublisher.Publish(new ShowReverseDependencyVisualizer(resource));
             }
         }

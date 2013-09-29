@@ -155,7 +155,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
             catch (Exception)
             {
-                StudioLogger.LogMessage("Invalid user interface layout file encountered, reverting to default layout.");
+                Logger.TraceInfo("Invalid user interface layout file encountered, reverting to default layout.");
             }
         }
 
@@ -201,7 +201,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         public void Handle(IResetLayoutMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             if (!AssociatedObject.Equals(message.Context))
             {
                 return;

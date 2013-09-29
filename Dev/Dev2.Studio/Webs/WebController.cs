@@ -248,19 +248,19 @@ namespace Dev2.Studio.Webs
 
         public void Handle(ShowWebpartWizardMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             ShowWebpartWizard(message.LayoutObjectViewModel);
         }
 
         public void Handle(CloseWizardMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             CloseWizard();
         }
 
         public void Handle(SetActivePageMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             SetActivePage(message.LayoutObjectViewModel);
         }
         #endregion IHandle

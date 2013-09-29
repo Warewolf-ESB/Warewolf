@@ -218,7 +218,7 @@ namespace Dev2.Studio.ViewModels.Web
                 {
                     _openWebsiteCommand = new RelayCommand<string>(_ =>
                     {
-                        Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage), GetType().Name);
+                        Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
                         EventPublisher.Publish(new AddWorkSurfaceMessage(_resourceModel));
                     });
                 }
@@ -599,7 +599,7 @@ namespace Dev2.Studio.ViewModels.Web
 
         public void Deploy()
         {
-            Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
             EventPublisher.Publish(new SaveResourceMessage(_resourceModel, false));
         }
 
@@ -769,7 +769,7 @@ namespace Dev2.Studio.ViewModels.Web
         public void SetActiveCell(ILayoutObjectViewModel cell)
         {
             _activeCell = cell;
-            Logger.TraceInfo("Publish message of type - " + typeof(SetActivePageMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(SetActivePageMessage));
             EventPublisher.Publish(new SetActivePageMessage(cell));
             //Mediator.SendMessage(MediatorMessages.SetActivePage, cell);
         }
@@ -804,7 +804,7 @@ namespace Dev2.Studio.ViewModels.Web
             //Browser.Navigate(uri, string.Empty, postData.XmlString);
             WebBrowserNavigateRequestTO webBrowserNavigateRequestTO = new WebBrowserNavigateRequestTO(this, uri.AbsoluteUri, postData.XmlString);
             //Mediator.SendMessage(MediatorMessages.UpdateWebpagePreview, webBrowserNavigateRequestTO);
-            Logger.TraceInfo("Publish message of type - " + typeof(UpdateWebpagePreviewMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(UpdateWebpagePreviewMessage));
             EventPublisher.Publish(new UpdateWebpagePreviewMessage(webBrowserNavigateRequestTO));
         }
 

@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using Dev2.Common;
 using Dev2.Helpers;
+using Dev2.Providers.Logs;
 
 namespace Dev2.Studio.Core.Helpers
 {
@@ -53,7 +54,7 @@ namespace Dev2.Studio.Core.Helpers
                 }
                 catch(Exception ex)
                 {
-                    StudioLogger.LogMessage(string.Format("Get lastest version of '{0}' failed: {1}", uri, ex.Message));
+                    Logger.TraceInfo(string.Format("Get lastest version of '{0}' failed: {1}", uri, ex.Message));
                 }
             }
             RaiseInvoked();

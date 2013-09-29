@@ -718,13 +718,13 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         void OpenWizard()
         {
-            Logger.TraceInfo("Publish message of type - " + typeof(ShowActivityWizardMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(ShowActivityWizardMessage));
             _eventPublisher.Publish(new ShowActivityWizardMessage(_modelItem));
         }
 
         void OpenSettings()
         {
-            Logger.TraceInfo("Publish message of type - " + typeof(ShowActivitySettingsWizardMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(ShowActivitySettingsWizardMessage));
             _eventPublisher.Publish(new ShowActivitySettingsWizardMessage(_modelItem));
         }
 
@@ -733,7 +733,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
           
             if(HasHelpLink)
             {
-                Logger.TraceInfo("Publish message of type - " + typeof(ShowHelpTabMessage), GetType().Name);
+                Logger.TraceInfo("Publish message of type - " + typeof(ShowHelpTabMessage));
                 _eventPublisher.Publish(new ShowHelpTabMessage(HelpLink));
             }
         }
@@ -747,7 +747,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         {
             if(!IsDeleted)
             {
-                Logger.TraceInfo("Publish message of type - " + typeof(EditActivityMessage), GetType().Name);
+                Logger.TraceInfo("Publish message of type - " + typeof(EditActivityMessage));
                 _eventPublisher.Publish(new EditActivityMessage(_modelItem, RootModel.Environment.ID, null));
             }
         }

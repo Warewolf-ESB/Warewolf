@@ -502,7 +502,7 @@ namespace Dev2.Studio.Core.ViewModels
         {
             if(_webActivity != null && _webActivity.ResourceModel != null && _webActivity.ResourceModel.Environment != null)
             {
-                Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage), GetType().Name);
+                Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
                 EventPublisher.Publish(new SaveResourceMessage(_resource,false));
                 dynamic package = new UnlimitedObject();
                 package.Service = StringResources.Website_BootStrap_Service;
@@ -518,7 +518,7 @@ namespace Dev2.Studio.Core.ViewModels
 
         public void Close()
         {
-            Logger.TraceInfo("Publish message of type - " + typeof(CloseWizardMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(CloseWizardMessage));
             EventPublisher.Publish(new CloseWizardMessage(this));
         }
 
@@ -722,7 +722,7 @@ namespace Dev2.Studio.Core.ViewModels
 
         public void OpenPropertyEditor()
         {
-            Logger.TraceInfo("Publish message of type - " + typeof(ShowWebpartWizardMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(ShowWebpartWizardMessage));
             EventPublisher.Publish(new ShowWebpartWizardMessage(this));
         }
 

@@ -283,7 +283,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         public void CreateNewEmailSource()
         {
             _hasClickedSave = true;
-            Logger.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard));
             _eventPublisher.Publish(new ShowNewResourceWizard("EmailSource"));
             UpdateEnvironmentResources();
         }
@@ -291,7 +291,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         public void EditEmailSource()
         {
             Action<IEnvironmentModel> callback = EditEmailSource;
-            Logger.TraceInfo("Publish message of type - " + typeof(GetActiveEnvironmentCallbackMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(GetActiveEnvironmentCallbackMessage));
             _eventPublisher.Publish(new GetActiveEnvironmentCallbackMessage(callback));
         }
 
@@ -306,7 +306,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         private void UpdateEnvironmentResources()
         {
             Action<IEnvironmentModel> callback = UpdateEnvironmentResourcesCallback;
-            Logger.TraceInfo("Publish message of type - " + typeof(GetActiveEnvironmentCallbackMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(GetActiveEnvironmentCallbackMessage));
             _eventPublisher.Publish(new GetActiveEnvironmentCallbackMessage(callback));
         }
 
@@ -317,7 +317,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                 IResourceModel resourceModel = env.ResourceRepository.FindSingle(c => c.ResourceName == SelectedEmailSource.ResourceName);
                 if (resourceModel != null)
                 {
-                    Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage), GetType().Name);
+                    Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
                     _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
                 }
             }

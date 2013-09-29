@@ -160,7 +160,7 @@ namespace Dev2.Studio.Views.ResourceManagement
 
         public void Handle(UpdateResourceDesignerMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             IEqualityComparer<IResourceModel> equalityComparer = ResourceModelEqualityComparer.Current;
 
             var resourceModel = message.ResourceModel;

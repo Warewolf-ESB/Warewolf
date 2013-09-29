@@ -103,7 +103,6 @@
     <Compile Include="StringTokenizer\TokenOps\Dev2EoFOp.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2IndexOp.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2TokenOp.cs" />
-    <Compile Include="StudioLogger.cs" />
     <Compile Include="Utils\JSONUtils.cs" />
   </ItemGroup>
   <ItemGroup>

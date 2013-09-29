@@ -414,11 +414,11 @@ namespace Dev2.Studio.Core.Wizards
             {
                 resource.Category = string.Empty;
                 resource.DataList = wizardDataListString;
-                Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage), GetType().Name);
+                Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
                 _eventPublisher.Publish(new AddWorkSurfaceMessage(resource));
-                Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage), GetType().Name);
+                Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
                 _eventPublisher.Publish(new SaveResourceMessage(resource, false));
-                Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage), GetType().Name);
+                Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
                 _eventPublisher.Publish(new UpdateResourceMessage(resource));
             }
         }
@@ -470,9 +470,9 @@ namespace Dev2.Studio.Core.Wizards
                     IList<string> addedList = new List<string>();
                     IList<string> removedList = new List<string>();
                     resource.DataList = MergeWizardDataListsAndReturnDiffs(resource.DataList, parentDl, out addedList, out removedList);
-                    Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage), GetType().Name);
+                    Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
                     _eventPublisher.Publish(new AddWorkSurfaceMessage(resource));
-                    Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage), GetType().Name);
+                    Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
                     _eventPublisher.Publish(new SaveResourceMessage(resource, false));
 
                     string differencesString = Dev2MessageFactory.CreateStringFromListWithLabel("Added", addedList);
@@ -498,7 +498,7 @@ namespace Dev2.Studio.Core.Wizards
                 }
                 else if(IsSystemWizard(resource))
                 {
-                    Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage), GetType().Name);
+                    Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
                     _eventPublisher.Publish(new AddWorkSurfaceMessage(resource));
                 }
                 else

@@ -118,7 +118,7 @@ namespace Dev2.Studio.Core.Network
 
             if(DebugWriter == null)
             {
-                Logger.TraceInfo("Publish message of type - " + typeof(DebugWriterWriteMessage), GetType().Name);
+                Logger.TraceInfo("Publish message of type - " + typeof(DebugWriterWriteMessage));
                 DebugWriter = new DebugWriter(s => _serverEventPublisher.Publish(new DebugWriterWriteMessage { DebugState = s }));
             }
             if(_debugWriters.TryAdd(AccountID, DebugWriter))
@@ -337,7 +337,7 @@ namespace Dev2.Studio.Core.Network
 
         protected override void OnLoginFailed(Connection connection, OutboundAuthenticationBroker broker, AuthenticationResponse reason, bool expectDisconnect)
         {
-            StudioLogger.LogMessage("Login Failed To [ " + connection.Address + " ] because of [ " + reason.ToString() + " ]");
+            Logger.TraceInfo("Login Failed To [ " + connection.Address + " ] because of [ " + reason.ToString() + " ]");
             CancelLogin((TcpLoginBroker)broker, reason, expectDisconnect);
         }
 
@@ -372,7 +372,7 @@ namespace Dev2.Studio.Core.Network
 
             // DO NOT use publish as memo is of type object 
             // and hence won't find the correct subscriptions
-            Logger.TraceInfo("Publish message of type - " + typeof(Memo), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(Memo));
             _serverEventPublisher.PublishObject(memo);
         }
 
@@ -737,7 +737,7 @@ namespace Dev2.Studio.Core.Network
                 result.HasError = true;
                 result.ErrorMessage = errors.ToString();
 
-                StudioLogger.LogMessage(aex.Message);
+                Logger.TraceInfo(aex.Message);
             }
             catch(Exception allOthers)
             {
@@ -748,7 +748,7 @@ namespace Dev2.Studio.Core.Network
                 result.HasError = true;
                 result.ErrorMessage = errors.ToString();
 
-                StudioLogger.LogMessage(allOthers.Message);
+                Logger.TraceInfo(allOthers.Message);
             }
             finally
             {
@@ -774,7 +774,7 @@ namespace Dev2.Studio.Core.Network
                 message = Activator.CreateInstance<TMessage>();
                 message.HasError = true;
                 message.ErrorMessage = "An error occured while trying to interpret network message from the server. " + ex.Message;
-                StudioLogger.LogMessage(message.ErrorMessage);
+                Logger.TraceInfo(message.ErrorMessage);
             }
 
             TaskCompletionSource<INetworkMessage> tcs;
@@ -784,7 +784,7 @@ namespace Dev2.Studio.Core.Network
             }
             else
             {
-                StudioLogger.LogMessage("Message handle not found : " + message.Handle);
+                Logger.TraceInfo("Message handle not found : " + message.Handle);
             }
         }
 

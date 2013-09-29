@@ -9,6 +9,7 @@ using System.Security.Principal;
 using System.Windows;
 using Dev2.Common;
 using Dev2.DataList.Contract;
+using Dev2.Providers.Logs;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.ViewModels;
 
@@ -152,7 +153,7 @@ namespace Dev2.Studio.Core
             {
                 try
                 {
-                    StudioLogger.LogMessage("Using LDAP mode for studio");
+                    Logger.TraceInfo("Using LDAP mode for studio");
                     UseLdapAuth();
                 }
                 catch(Exception e)
@@ -194,7 +195,7 @@ namespace Dev2.Studio.Core
 
                 Array.Copy(offlineRoles, AllRoles, offlineRoles.Length);
                 Array.Copy(offlineRoles, Roles, offlineRoles.Length);
-                StudioLogger.LogMessage("Using Offline mode for studio");
+                Logger.TraceInfo("Using Offline mode for studio");
             }
             else
             {

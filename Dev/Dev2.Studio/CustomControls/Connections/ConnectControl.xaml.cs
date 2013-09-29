@@ -270,10 +270,10 @@ namespace Dev2.UI
                 if(server != null && _isSelectedFromDropDown)
                 {
                     InvokeCommands(server);
-                    Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedItemInExplorerTree), GetType().Name);
+                    Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedItemInExplorerTree));
                     _eventPublisher.Publish(new SetSelectedItemInExplorerTree(server.Environment.Name));
                     SelectedServer = server;
-                    Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage), GetType().Name);
+                    Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
                     _eventPublisher.Publish(new SetActiveEnvironmentMessage(server.Environment));
                 }
                 else
@@ -326,7 +326,7 @@ namespace Dev2.UI
 
         public void Handle(UpdateActiveEnvironmentMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             if(message.EnvironmentModel != null && BindToActiveEnvironment)
             {
                 _isSelectedFromDropDown = false;

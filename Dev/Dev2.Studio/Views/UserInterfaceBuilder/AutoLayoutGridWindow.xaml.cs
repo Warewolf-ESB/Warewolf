@@ -257,7 +257,7 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
 
         public void Handle(TabClosedMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             if(message.Context.Equals(this))
             {
                 Loaded -= AutoLayoutGridWindow_Loaded;
@@ -272,7 +272,7 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
 
         public void Handle(UpdateWebpagePreviewMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             UpdateWebpagePreview(message.WebBrowserNavigateRequestTo);
         }
 

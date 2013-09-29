@@ -153,7 +153,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             IResourceModel hydrateWizard = new ResourceModel(EnvironmentModel);
             hydrateWizard.Category = DisplayName;
             hydrateWizard.DisplayName = obj.ToString();
-            Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
             _eventPublisher.Publish(new ShowEditResourceWizardMessage(hydrateWizard));
         }
 
@@ -316,7 +316,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         void DeleteFolder(object obj)
         {
-            Logger.TraceInfo("Publish message of type - " + typeof(DeleteResourcesMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(DeleteResourcesMessage));
             _eventPublisher.Publish(new DeleteResourcesMessage(Children.Select(child =>
             {
                 var model = child as ResourceTreeViewModel;

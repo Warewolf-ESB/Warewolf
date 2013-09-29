@@ -645,7 +645,7 @@ namespace Unlimited.Framework
         {
             if(!string.IsNullOrEmpty(SelectedLayoutObject.WebpartServiceName))
             {
-                Logger.TraceInfo("Publish message of type - " + typeof(ShowWebpartWizardMessage), GetType().Name);
+                Logger.TraceInfo("Publish message of type - " + typeof(ShowWebpartWizardMessage));
                 _eventPublisher.Publish(new ShowWebpartWizardMessage(this));
             }
         }
@@ -752,7 +752,7 @@ namespace Unlimited.Framework
 
         public void Close()
         {
-            Logger.TraceInfo("Publish message of type - " + typeof(CloseWizardMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(CloseWizardMessage));
             _eventPublisher.Publish(new CloseWizardMessage(this));
         }
 

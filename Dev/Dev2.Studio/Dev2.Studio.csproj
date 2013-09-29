@@ -370,7 +370,6 @@
     <Compile Include="Diagnostics\DebugLine.cs" />
     <Compile Include="Diagnostics\DebugStyleSelector.cs" />
     <Compile Include="Diagnostics\AppExceptionHandler.cs" />
-    <Compile Include="Diagnostics\DoNothingListener.cs" />
     <Compile Include="Diagnostics\ErrorSeverity.cs" />
     <Compile Include="Diagnostics\IAppExceptionHandler.cs" />
     <Compile Include="Diagnostics\IAppExceptionPopupController.cs" />
@@ -1267,6 +1266,7 @@
     </Page>
     <None Include="Warewolf Studio.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Feedback\6601.cd" />
     <None Include="Feedback\6670.cd" />

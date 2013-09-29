@@ -533,7 +533,7 @@ namespace Dev2.Studio.Core.Models
             Version = resourceModel.Version;
             ConnectionString = resourceModel.ConnectionString;
             ID = resourceModel.ID;
-            Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceDesignerMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceDesignerMessage));
             _eventPublisher.Publish(new UpdateResourceDesignerMessage(this));
             _errors.Clear();
             if (resourceModel.Errors != null)

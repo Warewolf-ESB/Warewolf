@@ -164,7 +164,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             //
             if (SetActiveEnvironmentOnClick && treenode.EnvironmentModel != null)
             {
-                Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage), GetType().Name);
+                Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
                 _eventPublisher.Publish(new SetActiveEnvironmentMessage(treenode.EnvironmentModel));
             }
 
@@ -179,7 +179,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                     //
                     if (OpenOnDoubleClick && e.ClickCount == 2)
                     {
-                        Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedIContextualResourceModel), GetType().Name);
+                        Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedIContextualResourceModel));
                         _eventPublisher.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, true));
                         if (!DontAllowDoubleClick)
                         {                                
@@ -196,7 +196,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                     }
                     else if(OpenOnDoubleClick && e.ClickCount == 1)
                     {
-                        Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedIContextualResourceModel), GetType().Name);
+                        Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedIContextualResourceModel));
                         _eventPublisher.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, false)); 
                     }
 
@@ -204,7 +204,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
             else
             {
-                Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedIContextualResourceModel), GetType().Name);
+                Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedIContextualResourceModel));
                 _eventPublisher.Publish(new SetSelectedIContextualResourceModel(null,false));
             }
         }

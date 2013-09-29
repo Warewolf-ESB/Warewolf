@@ -335,13 +335,13 @@ namespace Dev2.Studio.ViewModels.Wizards
 
         public void Handle(EnvironmentDisconnectedMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             OnEnvironmentConnected(message.EnvironmentModel);
         }
 
         public void Handle(EnvironmentConnectedMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             OnEnvironmentDisconnected(message.EnvironmentModel);
         }
 

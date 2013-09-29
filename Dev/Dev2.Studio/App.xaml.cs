@@ -76,7 +76,6 @@ namespace Dev2.Studio
             //that popped up first time you focus an element inside an adorner
             //TODO: Remove this at some point when infragistics library has been updated
             Debug.Listeners.Clear();
-            Debug.Listeners.Add(new DoNothingListener());
         }
 
         protected override void OnExit(ExitEventArgs e)

@@ -105,9 +105,9 @@ namespace Dev2.Studio.Webs.Callbacks
             }
 
             CurrentEnvironmentRepository.Save(Server.Environment);
-            Logger.TraceInfo("Publish message of type - " + typeof(AddServerToExplorerMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(AddServerToExplorerMessage));
             _eventPublisher.Publish(new AddServerToExplorerMessage(Server.Environment, Context,true));
-            Logger.TraceInfo("Publish message of type - " + typeof(AddServerToDeployMessage), GetType().Name);
+            Logger.TraceInfo("Publish message of type - " + typeof(AddServerToDeployMessage));
             _eventPublisher.Publish(new AddServerToDeployMessage(Server, Context));
         }
 

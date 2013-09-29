@@ -24,6 +24,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -62,18 +63,18 @@
                 Visibility="{Binding HasServerLogAttachment, Converter={StaticResource BoolToVisConverter}}"
                 AutomationProperties.AutomationId="FeebackView_OpenAttachment"/>
         
-        <Button Content="This feedback has a studio log file. Browse..." Grid.Row="5" HorizontalAlignment="Left" 
+          <Label Content="{Binding ServerLogFileMessage}" Grid.Row="6" HorizontalAlignment="Left" Margin="5,4,0,0"
+                Visibility="{Binding HasServerLogAttachment, Converter={StaticResource BoolToVisibilityConverterNegative}}" Foreground="Red"/>
+        
+        <Button Content="This feedback has a studio log file. Browse..." Grid.Row="6" HorizontalAlignment="Left" 
                 Margin="15,2,0,5"
                 Style="{StaticResource LinkButton}" Command="{Binding OpenStudioLogAttachmentFolderCommand}"
                 Visibility="{Binding HasStudioLogAttachment, Converter={StaticResource BoolToVisConverter}}"
                 AutomationProperties.AutomationId="FeebackView_OpenAttachment"/>
 
-        <Label Content="{Binding ServerLogFileMessage}" Grid.Row="5" HorizontalAlignment="Left" Margin="5,4,0,0"
-                Visibility="{Binding HasServerLogAttachment, Converter={StaticResource BoolToVisibilityConverterNegative}}" Foreground="Red"/>
-
-        <Button Content="Cancel" MinWidth="100"  Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Top" Command="{Binding CancelCommand}" Margin="15,4,15,0"
+        <Button Content="Cancel" MinWidth="100"  Grid.Row="7" HorizontalAlignment="Left" VerticalAlignment="Top" Command="{Binding CancelCommand}" Margin="15,4,15,0"
                 AutomationProperties.AutomationId="FeebackView_Cancel"/>
-        <Button Content="Open default email" MinWidth="120"  Grid.Row="6" HorizontalAlignment="Right" 
+        <Button Content="Open default email" MinWidth="120"  Grid.Row="7" HorizontalAlignment="Right" 
                 Width="150"
                 VerticalAlignment="Top" Command="{Binding SendCommand}" Margin="0,5,15,15"
                 AutomationProperties.AutomationId="FeebackView_Send"/>
