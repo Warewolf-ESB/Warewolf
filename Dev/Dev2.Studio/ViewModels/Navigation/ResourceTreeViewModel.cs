@@ -154,7 +154,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 //update resource repository
                 resourceRepository.Rename(DataContext.ID.ToString(), newName);
                 //Update open instance of this resource
-                Logger.TraceInfo("Publish message of type - " + typeof(UpdateWorksurfaceDisplayName), GetType().Name);
+                Logger.TraceInfo("Publish message of type - " + typeof(UpdateWorksurfaceDisplayName));
                 _eventPublisher.Publish(new UpdateWorksurfaceDisplayName(DataContext.ID, DataContext.ResourceName, newName));
                 //update open dependant instances
                 var getDependants = new ResourceDependencyService();

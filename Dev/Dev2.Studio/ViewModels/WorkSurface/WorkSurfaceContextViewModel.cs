@@ -285,7 +285,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Handle(UpdateWorksurfaceDisplayName message)
         {
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            Logger.TraceInfo(message.GetType().Name);
             if(ContextualResourceModel != null && ContextualResourceModel.ID == message.WorksurfaceResourceID)
             {
                 //tab title
