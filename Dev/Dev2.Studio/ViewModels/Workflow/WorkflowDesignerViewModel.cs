@@ -1366,29 +1366,14 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
         {
             Logger.TraceInfo(message.GetType().Name, GetType().Name);
-            if(ResourceModel != null && ResourceModel.ID == message.WorkflowDesignerResourceID)
+            foreach(var modelItem in _modelService.Find(_modelService.Root, typeof(DsfActivity)))
             {
-                UpdateFlowNodeDisplayName(message.OldName, message.NewName);
+                var currentName = ModelItemUtils.GetProperty("ServiceName", modelItem);
+                if (currentName == message.OldName)
+                {
+                    ModelItemUtils.SetProperty("ServiceName", message.NewName, modelItem);
+                }
             }
-        }
-
-        public void UpdateFlowNodeDisplayName(string oldName, string newName)
-        {
-            throw new NotImplementedException();
-            //TODO add implimentation
-            //var findModelItem = _modelService.Find(_modelService.Root, typeof(DsfActivity)).All(model =>
-            //    {
-            //        var modelProperty  = model.Properties["ResourceName"];
-            //        return modelProperty != null && modelProperty.ComputedValue == oldName;
-            //    });
-            //ModelItemUtils.SetProperty("ResourceName", newName, findModelItem);
-            //ResourceModel.ServiceDefinition = ResourceModel.ServiceDefinition
-            //        .Replace("x:Class=\"" + oldName, "x:Class=\"" + message.NewName)
-            //        .Replace("Name=\"" + oldName, "Name=\"" + message.NewName)
-            //        .Replace("ToolboxFriendlyName=\"" + oldName, "ToolboxFriendlyName=\"" + message.NewName)
-            //        .Replace("<DisplayName>" + oldName + "</DisplayName>", "<DisplayName>" + message.NewName + "</DisplayName>")
-            //        .Replace("DisplayName=\"" + oldName, "DisplayName=\"" + message.NewName);
-            //NotifyOfPropertyChange("ResourceModel");
         }
 
         #endregion
