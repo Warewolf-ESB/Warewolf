@@ -71,37 +71,37 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
                     // I am going to look up all the different pieces then, push them together?!
                     foreach (var fedKey in fetchKeys.FetchAsList())
-                {
+                    {
                         BinaryDataListRow theRow;
                         _itemStorage.TryGetValue(fedKey.TheKey, colCnt, out theRow);
 
                         if (theRow != null)
-                    {
+                        {
 
                             var myCols = fedKey.ImpactedColumns;
-                    // Convert to _internalReturnValue format ;)
+                            // Convert to _internalReturnValue format ;)
                             if( myCols!= null && !theRow.IsEmpty)
-                    {
+                            {
 
                                 foreach (var col in myCols)
-                        {
+                                {
                                     // TODO : Fetch index value from
                                     var internalIdx = InternalFetchColumnIndex(col);
 
                                     IBinaryDataListItem tmp = _internalReturnValue[internalIdx];
 
-                            // normal object build
+                                    // normal object build
                                     tmp.UpdateValue(theRow.FetchValue(internalIdx, colCnt));
-                                tmp.UpdateIndex(key);
-                            }
+                                    tmp.UpdateIndex(key);
+                                }
 
-                        }
-                    else
-                    {
-                        // we have a scalar value we are dealing with ;)
-                        IBinaryDataListItem tmp = _internalReturnValue[0];
-                                tmp.UpdateValue(theRow.FetchValue(0,1));
-                    }
+                            }
+                            else
+                            {
+                                // we have a scalar value we are dealing with ;)
+                                IBinaryDataListItem tmp = _internalReturnValue[0];
+                                        tmp.UpdateValue(theRow.FetchValue(0,1));
+                            }
                         }
                     }
 
@@ -244,6 +244,9 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
             IBinaryDataListEntry masterEntry = null;
 
+            int aliasSearchRounds = 0;
+            BinaryDataListAlias binaryDataListAlias = null;
+
             while (searchID != Guid.Empty)
             {
                 ErrorResultTO invokeErrors;
@@ -261,14 +264,16 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                     {
                         var aliases = masterEntry.FetchAlias();
 
-                        BinaryDataListAlias tmpAlias;
-                        if (aliases.TryGetValue(masterCol, out tmpAlias))
+                        
+                        if (aliases.TryGetValue(masterCol, out binaryDataListAlias))
                         {
                             // we have a hit ;)
-                            masterID = tmpAlias.MasterKeyID;
+                            masterID = binaryDataListAlias.MasterKeyID;
                             searchID = masterID;
-                            masterRS = tmpAlias.MasterNamespace;
-                            masterCol = tmpAlias.MasterColumn;
+                            masterRS = binaryDataListAlias.MasterNamespace;
+                            masterCol = binaryDataListAlias.MasterColumn;
+                            //masterEntry = tmpEntry;
+                            aliasSearchRounds++;
                         }
                         else
                         {
@@ -282,12 +287,22 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
                                 IsEmtpy = false;
                             }
+
                             searchID = Guid.Empty; // signal end ;)
                         }
                     }
                     else
                     {
-                        throw new Exception("Missing Entry");
+                        if (aliasSearchRounds == 0)
+                        {
+                            throw new Exception("Missing Entry");
+                        }
+                        else
+                        {
+                            //// we hit the bottom earlier, handle it ;)
+                            masterEntry = binaryDataListAlias.MasterEntry;
+                            searchID = Guid.Empty; // signal end ;)
+                        }
                     }
 
                 }
@@ -446,16 +461,19 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         /// </summary>
         public int DisposeCache()
         {
+            _keyToAliasMap = null;
+            _strToColIdx = null;
+
             return _itemStorage.DisposeCache(DataListKey.ToString());
         }
 
         #endregion
 
         public bool ContainsRow(int idx)
-                        {
+        {
 
             if (IsEmtpy)
-                {
+            {
                 return false;
             }
 
@@ -509,14 +527,14 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                 if(_itemStorage.TryGetValue(sk, colCnt,out row))
                 {
                     if(payload.TryGetValue(i, out cols))
-                {
-                        foreach(IBinaryDataListItem c in cols)
                     {
-                        int idx = InternalFetchColumnIndex(c.FieldName);
-                            row.UpdateValue(c.TheValue, idx, colCnt);
-                    }
+                            foreach(IBinaryDataListItem c in cols)
+                            {
+                                int idx = InternalFetchColumnIndex(c.FieldName);
+                                    row.UpdateValue(c.TheValue, idx, colCnt);
+                            }
 
-                        _itemStorage.TrySetValue(sk, colCnt, row);
+                                _itemStorage.TrySetValue(sk, colCnt, row);
                     }
                 }
             }

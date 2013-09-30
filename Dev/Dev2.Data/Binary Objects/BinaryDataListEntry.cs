@@ -158,6 +158,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             DataListKey = dataListKey;
             _internalObj._appendIndex = -1;
             _internalObj.Init(cols.Count);
+            RegisterScope();
         }
 
         internal BinaryDataListEntry(string nameSpace, string description, bool isEditable, enDev2ColumnArgumentDirection ioDir, Guid dataListKey)
@@ -169,6 +170,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             DataListKey = dataListKey;
             _internalObj._appendIndex = -1;
             _internalObj.Init(1);
+            RegisterScope();
         }
 
         #endregion Ctors
