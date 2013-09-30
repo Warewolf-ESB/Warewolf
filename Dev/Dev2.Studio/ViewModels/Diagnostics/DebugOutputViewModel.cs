@@ -472,16 +472,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 DebugStatus = DebugStatus.Finished;
             }
 
-            //
-            //Juries - This is a dirty hack, naughty naughty.
-            //Hijacked current functionality to enable errors to be added to an item after its already been added to the tree
-            //
-//            if(content.StateType == StateType.Append)
-//            {
-//                AddErrorToParent(content);
-//                return;
-//            }
-
             if(QueuePending(content))
             {
                 return;
@@ -746,17 +736,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 {
                     _contentItemMap.Add(content.ID, child);
                 }
-
-//                var stateChild = child as DebugStateTreeViewItemViewModel;
-//                if(stateChild != null)
-//                {
-//                    if(stateChild.Content == null)
-//                    {
-//                        // we created it as a parent without content...
-//                        stateChild.Content = content;
-//                    }
-//                }
-
                 if(isRootItem)
                 {
                     RootItems.Add(child);
@@ -777,28 +756,15 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                         if(theParent == null)
                         {
                             return;
-                        }
+                }
                         theParent.AppendError(content.ErrorMessage);
                         theParent.HasError = true;                        
-                    }
-                }
+            }
+        }
             }
         }
 
         #endregion
-
-        void AddErrorToParent(IDebugState content)
-        {
-            IDebugTreeViewItemViewModel parentItem;
-            if(_contentItemMap.TryGetValue(content.ParentID, out parentItem))
-            {
-                var stateParentItem = parentItem as DebugStateTreeViewItemViewModel;
-                if(stateParentItem != null)
-                {
-                    stateParentItem.AppendError(content.ErrorMessage);
-                }
-            }
-        }
 
         #region QueuePending
 
