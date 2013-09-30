@@ -7,25 +7,25 @@
 
     <!-- ComboBox Brushes -->
     <SolidColorBrush x:Key="ComboBoxBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="ComboBoxBorderBrush" Color="{StaticResource Color_004b}" />
-    <SolidColorBrush x:Key="ComboBoxReadOnlyBorderBrush" Color="{StaticResource Color_004b}" />
-    <SolidColorBrush x:Key="ComboBoxHoverBackgroundBrush" Color="{StaticResource Color_007b}" />
-    <SolidColorBrush x:Key="ComboBoxHoverBorderBrush" Color="{StaticResource Color_003b}" />
-    <SolidColorBrush x:Key="ComboBoxFocusedBorderBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="ComboBoxDisabledBackgroundBrush" Color="{StaticResource Color_012b}" />
+    <SolidColorBrush x:Key="ComboBoxBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="ComboBoxReadOnlyBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="ComboBoxHoverBackgroundBrush" Color="{StaticResource Color_009b}" />
+    <SolidColorBrush x:Key="ComboBoxHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ComboBoxFocusedBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ComboBoxDisabledBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
     <SolidColorBrush x:Key="ComboBoxReadOnlyBackgroundBrush" Color="{StaticResource Color_014b}" />
     <SolidColorBrush x:Key="PopupBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="PopupBorderBrush" Color="{StaticResource Color_004b}" />
+    <SolidColorBrush x:Key="PopupBorderBrush" Color="{StaticResource WarewolfOrange}" />
 
     <!-- ComboBoxItem Brushes -->
-    <SolidColorBrush x:Key="ComboBoxItemHoverBackgroundBrush" Color="{StaticResource Color_006b}" />
-    <SolidColorBrush x:Key="ComboBoxItemHoverBorderBrush" Color="{StaticResource Color_003b}" />
-    <SolidColorBrush x:Key="ComboBoxItemPressedBackgroundBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="ComboBoxItemPressedBorderBrush" Color="{StaticResource Color_024b}" />
+    <SolidColorBrush x:Key="ComboBoxItemHoverBackgroundBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="ComboBoxItemHoverBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="ComboBoxItemPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="ComboBoxItemPressedBorderBrush" Color="{StaticResource WarewolfDarkGrey}" />
 
     <!-- ComboBoxToggleButton Brushes -->
-    <SolidColorBrush x:Key="ComboBoxToggleButtonBorderBrush" Color="{StaticResource Color_004b}" />
-    <SolidColorBrush x:Key="ComboBoxToggleButtonPressedBackgroundBrush" Color="{StaticResource Color_024b}" />
+    <SolidColorBrush x:Key="ComboBoxToggleButtonBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="ComboBoxToggleButtonPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
     <SolidColorBrush x:Key="ComboBoxToggleButtonDropDownSeparatorBackgroundBrush" Color="{StaticResource Color_006b}" />
     <SolidColorBrush x:Key="ComboBoxToggleButtonPressedBorderBrush" Color="{StaticResource Color_024b}" />
 

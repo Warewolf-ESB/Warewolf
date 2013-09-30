@@ -6,20 +6,20 @@
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Scrollbar Brushes -->
-    <SolidColorBrush x:Key="HScrollbarThumbBackgroundBrush" Color="{StaticResource Color_003b}" />
-    <SolidColorBrush x:Key="VScrollbarThumbBackgroundBrush" Color="{StaticResource Color_003b}" />
-    <SolidColorBrush x:Key="ScrollbarPageButtonArrowBackgroundBrush" Color="{StaticResource Color_003b}" />
-    <SolidColorBrush x:Key="ScrollbarPageButtonArrowPressedBackgroundBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="ScrollbarPageButtonArrowHoverBackgroundBrush" Color="{StaticResource Color_002b}" />
-    <SolidColorBrush x:Key="ScrollbarPageButtonArrowDisabledBackgroundBrush" Color="{StaticResource Color_005b}" />
-    <SolidColorBrush x:Key="VScrollbarThumbHoverBackgroundBrush" Color="{StaticResource Color_002b}" />
-    <SolidColorBrush x:Key="HScrollbarThumbHoverBackgroundBrush" Color="{StaticResource Color_002b}" />
-    <SolidColorBrush x:Key="VScrollbarThumbPressedBackgroundBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="HScrollbarThumbPressedBackgroundBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="VScrollbarThumbDisabledBackgroundBrush" Color="{StaticResource Color_005b}" />
-    <SolidColorBrush x:Key="HScrollbarThumbDisabledBackgroundBrush" Color="{StaticResource Color_005b}" />
+    <SolidColorBrush x:Key="HScrollbarThumbBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="VScrollbarThumbBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="ScrollbarPageButtonArrowBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="ScrollbarPageButtonArrowPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="ScrollbarPageButtonArrowHoverBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="ScrollbarPageButtonArrowDisabledBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="VScrollbarThumbHoverBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="HScrollbarThumbHoverBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="VScrollbarThumbPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="HScrollbarThumbPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="VScrollbarThumbDisabledBackgroundBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="HScrollbarThumbDisabledBackgroundBrush" Color="{StaticResource WarewolfLightGrey}" />
     <SolidColorBrush x:Key="ScrollbarDisabledBackgroundBrush" Color="{StaticResource Color_007b}" />
-    <SolidColorBrush x:Key="ScrollbarBackgroundBrush" Color="{StaticResource Color_005}" />
-    <SolidColorBrush x:Key="ScrollbarBorderBrush" Color="{StaticResource Color_003b}" />
+    <SolidColorBrush x:Key="ScrollbarBackgroundBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="ScrollbarBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
 
 </ResourceDictionary>

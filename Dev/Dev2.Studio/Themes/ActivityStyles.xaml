@@ -4,7 +4,7 @@
                     >
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityDesignerStyles.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityDesignerStyles.xaml" />               
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="ActivityComboBoxStyle" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">

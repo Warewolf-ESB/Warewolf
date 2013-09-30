@@ -54,6 +54,10 @@
     <system:Double x:Key="DefaultFontSize">12</system:Double>
     <FontFamily x:Key="DefaultFontFamily">Sans Serif MS</FontFamily>
     <FontWeight x:Key="DefaultFontWeight">Normal</FontWeight>
-    <SolidColorBrush x:Key="WorkflowSelectedBackgroundBrush" Color="{StaticResource Color_026b}" />
-    <SolidColorBrush x:Key="WorkflowSelectedBorderBrush" Color="{StaticResource Color_024b}" />
+    <SolidColorBrush x:Key="WorkflowBackgroundBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="WorkflowSelectedBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ShellBarViewBackground" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="DesignerBackground" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="SolidWhite" Color="{StaticResource WarewolfWhite}" />
+    
 </ResourceDictionary>

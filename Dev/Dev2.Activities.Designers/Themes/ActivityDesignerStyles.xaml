@@ -4,8 +4,10 @@
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                     xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                    x:Class="ArbitraryNameToEliminateBogusGenericsErrorActivityDesignerStyle">
+                    x:Class="ArbitraryNameToEliminateBogusGenericsErrorActivityDesignerStyle">    
 
+    
+    <!--Using of the actual color codes in this fine as we cant reference the Colors.xaml file in the studio-->
     <ControlTemplate x:Key="ActivityDesignerTemplate"
                      TargetType="{x:Type sap:ActivityDesigner}">
         <ControlTemplate.Resources>
@@ -82,23 +84,23 @@
                             <Setter Property="Border.BorderBrush"
                                     Value="{DynamicResource WorkflowViewElementBorderBrush}" />
                             <Setter Property="Border.Background"
-                                    Value="{DynamicResource WorkflowViewElementBackground}" />
+                                    Value="#C1C3C5" />
                             <Setter Property="Border.CornerRadius"
                                     Value="2,2,0,0" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Path=ModelItem.IsPrimarySelection,RelativeSource={RelativeSource TemplatedParent}}"
                                              Value="True">
                                     <Setter Property="Border.BorderBrush"
-                                            Value="{DynamicResource WorkflowViewElementSelectedBorder}" />
+                                            Value="#F3700D" />
                                     <Setter Property="Border.Background"
-                                            Value="{DynamicResource WorkflowViewElementSelectedBackground}" />
+                                            Value="#C1C3C5" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Path=ModelItem.IsSelection,RelativeSource={RelativeSource TemplatedParent}}"
                                              Value="True">
                                     <Setter Property="Border.BorderBrush"
-                                            Value="{DynamicResource WorkflowViewElementSelectedBorder}" />
+                                            Value="#F3700D" />
                                     <Setter Property="Border.Background"
-                                            Value="{DynamicResource WorkflowViewElementSelectedBackground}" />
+                                            Value="#C1C3C5" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Path=Content,RelativeSource={RelativeSource AncestorType={x:Type sap:WorkflowViewElement}}}"
                                              Value="{x:Null}">
@@ -252,12 +254,12 @@
                                 <DataTrigger Binding="{Binding Path=ModelItem.IsPrimarySelection,RelativeSource={RelativeSource TemplatedParent}}"
                                              Value="True">
                                     <Setter Property="Shape.Stroke"
-                                            Value="{DynamicResource WorkflowViewElementSelectedBorder}" />
+                                            Value="#F3700D" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Path=ModelItem.IsSelection,RelativeSource={RelativeSource TemplatedParent}}"
                                              Value="True">
                                     <Setter Property="Shape.Stroke"
-                                            Value="{DynamicResource WorkflowViewElementSelectedBorder}" />
+                                            Value="#F3700D" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

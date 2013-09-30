@@ -67,8 +67,8 @@
         <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="FontWeight" Value="Normal"/>
-        <Setter Property="MinHeight" Value="24" />
-        <Setter Property="Padding" Value="3,1,0,1" />
+        <Setter Property="MinHeight" Value="10" />
+        <Setter Property="Padding" Value="3,0,0,0" />
         <Setter Property="Margin" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -96,7 +96,7 @@
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Bd" Storyboard.TargetProperty="BorderBrush">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TreeViewItemHoverBorderBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                                        </ObjectAnimationUsingKeyFrames>                                        
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Disabled">
@@ -121,8 +121,8 @@
                                                     <Visibility>Visible</Visibility>
                                                 </DiscreteObjectKeyFrame.Value>
                                             </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
+                                        </ObjectAnimationUsingKeyFrames>                                        
+                                    </Storyboard>                                                                          
                                 </VisualState>
                                 <VisualState x:Name="SelectedUnfocused">
                                     <Storyboard>
@@ -199,6 +199,12 @@
                         </Trigger>
                         <Trigger Property="HasItems" Value="false">
                             <Setter Property="Visibility" TargetName="Expander" Value="Hidden"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value ="true">
+                            <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value ="true">
+                            <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}"></Setter>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -361,7 +367,7 @@
         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.FontWeight)">
             <DiscreteObjectKeyFrame KeyTime="0">
                 <DiscreteObjectKeyFrame.Value>
-                    <FontWeight>Normal</FontWeight>
+                    <FontWeight>Normal</FontWeight>                    
                 </DiscreteObjectKeyFrame.Value>
             </DiscreteObjectKeyFrame>
             <DiscreteObjectKeyFrame KeyTime="0:0:0.1">

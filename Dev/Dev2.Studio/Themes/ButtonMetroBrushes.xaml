@@ -6,11 +6,11 @@
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Button Brushes -->
-    <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="{StaticResource Color_008b}" />
-    <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource Color_004b}" />
-    <SolidColorBrush x:Key="ButtonHoverBackgroundBrush" Color="{StaticResource Color_006b}" />
-    <SolidColorBrush x:Key="ButtonHoverBorderBrush" Color="{StaticResource Color_003b}" />
-    <SolidColorBrush x:Key="ButtonPressedBackgroundBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="ButtonPressedBorderBrush" Color="{StaticResource Color_024b}" />
+    <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="{StaticResource Color_009b}" />
+    <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="ButtonHoverBackgroundBrush" Color="{StaticResource Color_009b}" />
+    <SolidColorBrush x:Key="ButtonHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ButtonPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="ButtonPressedBorderBrush" Color="{StaticResource WarewolfOrange}" />
 
 </ResourceDictionary>

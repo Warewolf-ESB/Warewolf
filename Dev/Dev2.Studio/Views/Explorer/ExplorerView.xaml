@@ -179,7 +179,7 @@
                                                     Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                                     AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID"/>                            
                             
-                            <Image Width="18" Height="18" Margin="3,1,3,1"
+                            <Image Width="15" Height="15" Margin="3,1,3,1"
                                     Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="PreviewMouseDown">

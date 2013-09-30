@@ -15,7 +15,7 @@ namespace Dev2.Studio.Views.Workflow
             InitializeComponent();
             this.PreviewDrop += DropPointOnDragEnter;
             this.PreviewDragOver += DropPointOnDragEnter;
-            _dragDropHelpers = new DragDropHelpers(this);
+            _dragDropHelpers = new DragDropHelpers(this);            
         }
 
         //a return from here without settings handled to true and DragDropEffects.None implies that the item drop is allowed

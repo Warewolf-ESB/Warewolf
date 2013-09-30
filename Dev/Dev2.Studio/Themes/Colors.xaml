@@ -2,6 +2,14 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- ********************************** THEME COLORS **********************************-->
+    
+    <!--Core Colors-->
+    <Color x:Key="WarewolfLightGrey">#C1C3C5</Color>
+    <Color x:Key="WarewolfDarkGrey">#7F7F7F</Color>
+    <Color x:Key="WarewolfOrange">#F3700D</Color>
+    <Color x:Key="WarewolfWhite">#FFFFFF</Color>
+    <Color x:Key="WarewolfBlack">#000000</Color>
+    
     <!--Base Colors-->
     <Color x:Key="Color_000b">#FF282828</Color>
     <Color x:Key="Color_001b">#FF3F3F3F</Color>
@@ -63,7 +71,7 @@
     <Color x:Key="Color_008">#FFF9F9F9</Color>
     <Color x:Key="Color_009">#FFFFFFFF</Color>
     <Color x:Key="Color_010">#FFB2E1EF</Color>
-    <Color x:Key="Color_011">#ffff8613</Color>
+    <Color x:Key="Color_011">#C1C3C5</Color>
     <Color x:Key="Color_012">#FFF55E7F</Color>
     <Color x:Key="Color_013">#FFD0284C</Color>
     <Color x:Key="Color_014">#00FFFFFF</Color>

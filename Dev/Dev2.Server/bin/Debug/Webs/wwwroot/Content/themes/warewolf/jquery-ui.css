@@ -684,16 +684,16 @@ html, body{background-color:#ffffff;}
 
 
 /* Tabs states */
-.ui-tabs-nav > .ui-state-default a{border-color:#ff8613;background:#ff8613;color:#ffffff;opacity: 0.7;}
-.ui-tabs-nav > .ui-state-active a{border-color:#ff8613 !important;background:#ffffff !important;color: #3f3f3f !important;opacity: 1.0}
-.ui-tabs-nav > .ui-state-hover a{background:#ff8613;border-color:#ff8613;color:#ffffff;opacity: 1.0}
+.ui-tabs-nav > .ui-state-default a{border-color:#C1C3C5;background:#C1C3C5;color:#ffffff;opacity: 0.7;}
+.ui-tabs-nav > .ui-state-active a{border-color:#C1C3C5 !important;background:#ffffff !important;color: #3f3f3f !important;opacity: 1.0}
+.ui-tabs-nav > .ui-state-hover a{background:#C1C3C5;border-color:#C1C3C5;color:#ffffff;opacity: 1.0}
 .ui-tabs-nav > .ui-state-focus a{background:#ffffff;border-color:;color:#3f3f3f;opacity: 1.0}
 .ui-tabs .ui-widget-content{border-color:transparent !important;background-color:#ffffff;}
-.ui-tabs-nav{border-color:#ff8613;background: #ff8613;}
+.ui-tabs-nav{border-color:#C1C3C5;background: #C1C3C5;}
 
 /* Dialog states */
-.ui-dialog{border-color:#ff8613;background-color:#ffffff !important;}
-.ui-dialog-titlebar{border-color:#ff8613;color:#ffffff;background-color:#ff8613;}
+.ui-dialog{border-color:#C1C3C5;background-color:#ffffff !important;}
+.ui-dialog-titlebar{border-color:#C1C3C5;color:#ffffff;background-color:#C1C3C5;}
 .ui-dialog-buttonpane{border-color:transparent !important;background-color:#ffffff;}
 .ui-dialog-content{background-color:#ffffff !important;}
 .ui-dialog-titlebar .ui-icon{background-image:url(images/ui-icons_ffffff_0.png);}

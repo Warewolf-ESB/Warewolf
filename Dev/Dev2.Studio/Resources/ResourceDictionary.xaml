@@ -22,7 +22,7 @@
 
 
     <SolidColorBrush x:Key="DebugItemLabelBrush" Color="Black" />
-    <SolidColorBrush x:Key="DebugItemValueBrush" Color="#009900" />
+    <SolidColorBrush x:Key="DebugItemValueBrush" Color="#05C47C" />
     <SolidColorBrush x:Key="DebugItemVariableBrush" Color="#7F1769" />
 
     <Storyboard x:Key="FlashingAnimationStoryBoard">

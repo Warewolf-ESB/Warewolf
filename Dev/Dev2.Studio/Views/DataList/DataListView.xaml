@@ -169,7 +169,7 @@
                             <ColumnDefinition Width="Auto" SharedSizeGroup="A" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBox x:Name="NameTxt" Grid.Column="0" LostFocus="Nametxt_FocusLost" TextChanged="Nametxt_TextChanged" HorizontalAlignment="Stretch" MinWidth="75"
+                        <TextBox x:Name="NameTxt" Grid.Column="0" LostFocus="Nametxt_FocusLost" Background="{StaticResource LightForegroundBrush}" TextChanged="Nametxt_TextChanged" HorizontalAlignment="Stretch" MinWidth="75"
                                 aprop:FocusAttachedProperty.IsFocused="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 ToolTip="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.ErrorMessage, UpdateSourceTrigger=PropertyChanged}" 
                                 Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -185,7 +185,8 @@
                                         </Setter.Value>
                                     </Setter>
                                     <Setter Property="Width" Value="Auto"/>
-                                    <Setter Property="Margin" Value="0,-1,0,-1"/>
+                                    <Setter Property="Height" Value="20"/>
+                                    
                                     <Setter Property="HorizontalAlignment" Value="Stretch"/>
                                     <Style.Triggers>
                                         <Trigger Property="Text" Value="">
@@ -214,12 +215,13 @@
                                   Visibility="{Binding IsUsed,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>                    
 
                         <Button Grid.Column="1" Grid.ColumnSpan="2"
-                                Click="ButtonBase_OnClick"
+                                Click="ButtonBase_OnClick"                                
                                 HorizontalAlignment="Center"
-                                Margin="0,-1,0,-1"
+                                MaxHeight="10"
+                                Margin="0,-2,0,-2"
                                 Visibility="{Binding IsUsed,Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                 Focusable="False">
-                            <Image Source="/Images/RemoveUnusedVariable-32.png" Width="12" Height="12"/>
+                            <Image Source="/Images/RemoveUnusedVariable-32.png" Width="11" Height="11"/>
                             <Button.ToolTip>
                                 <ToolTip ContentStringFormat="Remove [[{0}]] from the variable list">
                                     <Binding Path="DisplayName"/>
@@ -232,19 +234,20 @@
                             <TextBox.Style>
                                 <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
                                     <Setter Property="AutomationProperties.AutomationId" Value="{Binding Path=DataContext.Description,RelativeSource={RelativeSource Self},Converter={StaticResource StringToAutomationIdConverter} }"/>
+                                    <Setter Property="Height" Value="20"/>
                                     <Style.Triggers>
                                         <Trigger Property="Text" Value="">
                                             <Setter Property="Background" Value="{StaticResource DataListItemDescription}"/>
                                         </Trigger>
-                                    </Style.Triggers>
+                                    </Style.Triggers>                                    
                                 </Style>
                             </TextBox.Style>
                         </TextBox>
                     </Grid>
                 </HierarchicalDataTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type Models:DataListHeaderItemModel}" ItemsSource="{Binding Path=Children}">
-                    <StackPanel Background="{StaticResource BrushMouseOver}">
-                        <Grid Margin="5,0,0,0" Height="24">
+                    <StackPanel Background="{StaticResource BrushMouseOver}">                       
+                        <Grid Height="24">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition SharedSizeGroup="B" />

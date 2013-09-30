@@ -1090,11 +1090,19 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     {WorkflowDesignerColors.FontFamilyKey, Application.Current.Resources["DefaultFontFamily"]},
                     {WorkflowDesignerColors.FontSizeKey, Application.Current.Resources["DefaultFontSize"]},
-                    {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]}                    
+                    {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]},
+                    {WorkflowDesignerColors.RubberBandRectangleColorKey, Application.Current.Resources["DesignerBackground"]},
+                    {WorkflowDesignerColors.WorkflowViewElementBackgroundColorKey, Application.Current.Resources["WorkflowBackgroundBrush"]},
+                    {WorkflowDesignerColors.WorkflowViewElementSelectedBackgroundColorKey, Application.Current.Resources["WorkflowBackgroundBrush"]},
+                    {WorkflowDesignerColors.WorkflowViewElementSelectedBorderColorKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]},
+                    {WorkflowDesignerColors.DesignerViewShellBarControlBackgroundColorKey, Application.Current.Resources["ShellBarViewBackground"]},
+                    {WorkflowDesignerColors.DesignerViewShellBarColorGradientBeginKey, Application.Current.Resources["ShellBarViewBackground"]},
+                    {WorkflowDesignerColors.DesignerViewShellBarColorGradientEndKey, Application.Current.Resources["ShellBarViewBackground"]},
+                    {WorkflowDesignerColors.OutlineViewItemSelectedTextColorKey, Application.Current.Resources["SolidWhite"]},
+                    {WorkflowDesignerColors.OutlineViewItemHighlightBackgroundColorKey, Application.Current.Resources["DesignerBackground"]}
                 };
 
             _wd.PropertyInspectorFontAndColorData = XamlServices.Save(hashTable);
-
             // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade            
             var designerConfigService = _wd.Context.Services.GetService<DesignerConfigurationService>();
             if(designerConfigService != null)
@@ -1145,7 +1153,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             });
 
             _wd.Context.Items.Subscribe<Selection>(OnItemSelected);
-
             _wd.Context.Services.Publish(_designerManagementService);
 
             //Jurie.Smit 2013/01/03 - Added to disable the deleting of the root flowchart
@@ -1153,7 +1160,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             _wd.ModelChanged += WdOnModelChanged;
             //2013.06.26: Ashley Lewis for bug 9728 - event avoids focus loss after a delete
             CommandManager.AddPreviewExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
-            
+
             //2013.07.03: Ashley Lewis for bug 9637 - deselect flowchart after selection change (if more than one item selected)
             Selection.Subscribe(_wd.Context, SelectedItemChanged);
 
@@ -1162,7 +1169,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             //For Changing the icon of the flowchart.
             WorkflowDesignerIcons.Activities.Flowchart = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png")), new Rect(0, 0, 16, 16)));
-
+            WorkflowDesignerIcons.Activities.StartNode = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/StartNode.png")), new Rect(0, 0, 32, 32)));            
             SubscribeToDebugSelectionChanged();
         }
 
@@ -1316,12 +1323,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             var findActivityBuilderModel = _wd.Context.Services.GetService<ModelService>();
             if (findActivityBuilderModel != null)
             {
-                var activityBuilderModel = findActivityBuilderModel.Find(findActivityBuilderModel.Root, typeof(ActivityBuilder)).ToList();
-                if(activityBuilderModel.Count > 0)
-                {
-                    activityBuilderModel[0].Focus();
-                }
+            var activityBuilderModel = findActivityBuilderModel.Find(findActivityBuilderModel.Root, typeof(ActivityBuilder)).ToList();
+            if(activityBuilderModel.Count > 0)
+            {
+                activityBuilderModel[0].Focus();
             }
+        }
         }
 
         protected void WdOnModelChanged(object sender, EventArgs eventArgs)

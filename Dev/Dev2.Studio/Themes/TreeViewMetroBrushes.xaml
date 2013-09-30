@@ -8,14 +8,14 @@
     <!-- TreeView Brushes -->
     <SolidColorBrush x:Key="TreeViewBackgroundBrush" Color="{StaticResource Color_009b}" />
     <SolidColorBrush x:Key="TreeViewBorderBrush" Color="{StaticResource Color_004b}" />
-    <SolidColorBrush x:Key="TreeViewItemBackgroundBrush" Color="{StaticResource Color_016b}" />
-    <SolidColorBrush x:Key="TreeViewItemBorderBrush" Color="{StaticResource Color_016b}" />
-    <SolidColorBrush x:Key="TreeViewItemHoverBackgroundBrush" Color="{StaticResource Color_006b}" />
-    <SolidColorBrush x:Key="TreeViewItemHoverBorderBrush" Color="{StaticResource Color_003b}" />
-    <SolidColorBrush x:Key="TreeViewItemPressedBackgroundBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="TreeViewItemPressedBorderBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="TreeViewItemSelectedBackgroundBrush" Color="{StaticResource Color_026b}" />
-    <SolidColorBrush x:Key="TreeViewItemSelectedBorderBrush" Color="{StaticResource Color_024b}" />
+    <SolidColorBrush x:Key="TreeViewItemBackgroundBrush" Color="{StaticResource Color_009b}" />
+    <SolidColorBrush x:Key="TreeViewItemBorderBrush" Color="{StaticResource Color_009b}" />
+    <SolidColorBrush x:Key="TreeViewItemHoverBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="TreeViewItemHoverBorderBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="TreeViewItemPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="TreeViewItemPressedBorderBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="TreeViewItemSelectedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="TreeViewItemSelectedBorderBrush" Color="{StaticResource WarewolfDarkGrey}" />
     <SolidColorBrush x:Key="TreeViewArrowBackgroundBrush" Color="{StaticResource Color_050}"/>
     <SolidColorBrush x:Key="TreeViewArrowBorderBrush" Color="{StaticResource Color_003b}"/>
     <SolidColorBrush x:Key="TreeViewArrowCheckedBackgroundBrush" Color="{StaticResource Color_003b}"/>

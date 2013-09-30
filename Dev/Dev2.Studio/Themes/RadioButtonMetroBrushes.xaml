@@ -12,12 +12,12 @@
     <SolidColorBrush x:Key="RadioButtonFocusedBackgroundBrush" Color="{StaticResource Color_009b}" />
     <SolidColorBrush x:Key="RadioButtonInvalidUnfocusedBackgroundBrush" Color="{StaticResource Color_009b}" />
     <SolidColorBrush x:Key="RadioButtonInvalidFocusedBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="RadioButtonBorderBrush" Color="{StaticResource Color_004b}" />
-    <SolidColorBrush x:Key="RadioButtonHoverBorderBrush" Color="{StaticResource Color_003b}" />
-    <SolidColorBrush x:Key="RadioButtonPressedBorderBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="RadioButtonFocusedBorderBrush" Color="{StaticResource Color_024b}" />
+    <SolidColorBrush x:Key="RadioButtonBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="RadioButtonHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="RadioButtonPressedBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="RadioButtonFocusedBorderBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="RadioButtonInvalidUnfocusedBorderBrush" Color="{StaticResource Color_029b}" />
     <SolidColorBrush x:Key="RadioButtonInvalidFocusedBorderBrush" Color="{StaticResource Color_028b}" />
-    <SolidColorBrush x:Key="RadioButtonCheckBackgroundBrush" Color="{StaticResource Color_024b}" />
+    <SolidColorBrush x:Key="RadioButtonCheckBackgroundBrush" Color="{StaticResource Color_009b}" />
     
 </ResourceDictionary>
