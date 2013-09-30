@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
@@ -13,19 +14,31 @@ namespace Dev2.CustomControls.Behavior
         {
             base.OnAttached();
             AssociatedObject.Loaded += AssociatedObjectOnLoaded;
+            AssociatedObject.LoadingRow += AssociatedObjectOnLoadingRow;
+
             //AssociatedObject.InitializingNewItem += AssociatedObjectOnInitializingNewItem;
+        }
+
+        void AssociatedObjectOnLoadingRow(object sender, DataGridRowEventArgs args)
+        {
+            
         }
 
         protected override void OnDetaching()
         {
             base.OnDetaching();
             AssociatedObject.Loaded -= AssociatedObjectOnLoaded;
+            AssociatedObject.LoadingRow -= AssociatedObjectOnLoadingRow;
             //AssociatedObject.InitializingNewItem -= AssociatedObjectOnInitializingNewItem;
         }
 
         private void AssociatedObjectOnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
             var txtBox = AssociatedObject.Columns[1].GetCellContent(AssociatedObject.Items[0]);
+            if(txtBox == null)
+            {
+                return;
+            }
             var txt = txtBox.FindVisualChildren<TextBox>().FirstOrDefault();
             if(txt != null)
             {
