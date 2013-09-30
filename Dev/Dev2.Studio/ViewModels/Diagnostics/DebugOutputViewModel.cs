@@ -476,11 +476,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             //Juries - This is a dirty hack, naughty naughty.
             //Hijacked current functionality to enable errors to be added to an item after its already been added to the tree
             //
-            if(content.StateType == StateType.Append)
-            {
-                AddErrorToParent(content);
-                return;
-            }
+//            if(content.StateType == StateType.Append)
+//            {
+//                AddErrorToParent(content);
+//                return;
+//            }
 
             if(QueuePending(content))
             {
@@ -723,7 +723,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             else
             {
-                var isRootItem = content.ID == Guid.Empty || content.ParentID == Guid.Empty || content.ID == content.ParentID;
+                var isRootItem = content.ParentID == Guid.Empty || content.ID == content.ParentID;
 
                 IDebugTreeViewItemViewModel child;
 
@@ -738,21 +738,24 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     //
                     child = new DebugStateTreeViewItemViewModel(EnvironmentRepository) { Content = content };
                 }
-                else if(!_contentItemMap.TryGetValue(content.ID, out child))
+                else
                 {
                     child = new DebugStateTreeViewItemViewModel(EnvironmentRepository) { Content = content };
+                }
+                if(!_contentItemMap.ContainsKey(content.ID))
+                {
                     _contentItemMap.Add(content.ID, child);
                 }
 
-                var stateChild = child as DebugStateTreeViewItemViewModel;
-                if(stateChild != null)
-                {
-                    if(stateChild.Content == null)
-                    {
-                        // we created it as a parent without content...
-                        stateChild.Content = content;
-                    }
-                }
+//                var stateChild = child as DebugStateTreeViewItemViewModel;
+//                if(stateChild != null)
+//                {
+//                    if(stateChild.Content == null)
+//                    {
+//                        // we created it as a parent without content...
+//                        stateChild.Content = content;
+//                    }
+//                }
 
                 if(isRootItem)
                 {
@@ -768,6 +771,16 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     }
                     child.Parent = parent;
                     parent.Children.Add(child);
+                    if(child.HasError.GetValueOrDefault(false))
+                    {
+                        var theParent = parent as DebugStateTreeViewItemViewModel;
+                        if(theParent == null)
+                        {
+                            return;
+                        }
+                        theParent.AppendError(content.ErrorMessage);
+                        theParent.HasError = true;                        
+                    }
                 }
             }
         }

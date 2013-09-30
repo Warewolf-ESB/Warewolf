@@ -146,9 +146,10 @@ namespace Dev2.Core.Tests
             vm.Append(mock1.Object);
             vm.Append(mock2.Object);
 
-            Assert.IsTrue(vm.RootItems.Count == 1);
+            Assert.AreEqual(1,vm.RootItems.Count);
             var root = vm.RootItems.First() as DebugStateTreeViewItemViewModel;
-            Assert.IsTrue(root.HasError.Equals(true));
+            Assert.IsNotNull(root);
+            Assert.IsTrue(root.HasError.GetValueOrDefault(false));
         }
 
         [TestMethod]

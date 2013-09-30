@@ -130,20 +130,20 @@ namespace Dev2.Core.Tests
             }
         }
 
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("DebugOutputViewModel_Append")]
-        public void DebugOutputViewModel_Append_ContentIsDebugStateAndIDIsEmpty_ItemAddedAtRootAndIsNotExpanded()
-        {
-            DebugOutputViewModel_Append_ContentIsDebugState(contentID: Guid.Empty, contentParentID: Guid.NewGuid());
-        }
+//        [TestMethod]
+//        [Owner("Trevor Williams-Ros")]
+//        [TestCategory("DebugOutputViewModel_Append")]
+//        public void DebugOutputViewModel_Append_ContentIsDebugStateAndIDIsEmpty_ItemAddedAtRootAndIsNotExpanded()
+//        {
+//            DebugOutputViewModel_Append_ContentIsDebugState(contentID: Guid.Empty, contentParentID: Guid.NewGuid(), displayName: "Content");
+//        }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DebugOutputViewModel_Append")]
         public void DebugOutputViewModel_Append_ContentIsDebugStateAndParentIDIsEmpty_ItemAddedAtRootAndIsNotExpanded()
         {
-            DebugOutputViewModel_Append_ContentIsDebugState(contentID: Guid.NewGuid(), contentParentID: Guid.Empty);
+            DebugOutputViewModel_Append_ContentIsDebugState(contentID: Guid.NewGuid(), contentParentID: Guid.Empty, displayName: "Content");
         }
 
         [TestMethod]
@@ -152,16 +152,40 @@ namespace Dev2.Core.Tests
         public void DebugOutputViewModel_Append_ContentIsDebugStateAndIDDoesEqualParentID_ItemAddedAtRootAndIsNotExpanded()
         {
             var id = Guid.NewGuid();
-            DebugOutputViewModel_Append_ContentIsDebugState(contentID: id, contentParentID: id);
+            DebugOutputViewModel_Append_ContentIsDebugState(contentID: id, contentParentID: id, displayName: "Content");
         }
 
-        void DebugOutputViewModel_Append_ContentIsDebugState(Guid contentID, Guid contentParentID)
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DebugOutputViewModel_Append")]
+        public void DebugOutputViewModel_Append_ItemHasSameID_ShouldAddAsNewItemIntoTree()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid();
+            var envRepo = GetEnvironmentRepository();
+            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo);
+            var content = new DebugState { DisplayName = "Content", ID = id, ParentID = id, StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID };
+            viewModel.Append(content);
+            var content2 = new DebugState { DisplayName = "Content2", ID = id, ParentID = id, StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID };
+            //------------Execute Test---------------------------
+            viewModel.Append(content2);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, viewModel.RootItems.Count);
+            var child = viewModel.RootItems[0] as DebugStateTreeViewItemViewModel;
+            Assert.IsNotNull(child);
+            Assert.AreEqual("Content", child.Content.DisplayName);
+            var child2 = viewModel.RootItems[1] as DebugStateTreeViewItemViewModel;
+            Assert.IsNotNull(child2);
+            Assert.AreEqual("Content2", child2.Content.DisplayName);
+        }
+
+        void DebugOutputViewModel_Append_ContentIsDebugState(Guid contentID, Guid contentParentID, string displayName)
         {
             //------------Setup for test--------------------------
             var envRepo = GetEnvironmentRepository();
             var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo);
 
-            var content = new DebugState { DisplayName = "Content", ID = contentID, ParentID = contentParentID, StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID};
+            var content = new DebugState { DisplayName = displayName, ID = contentID, ParentID = contentParentID, StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID};
 
             //------------Execute Test---------------------------
             viewModel.Append(content);
@@ -176,60 +200,7 @@ namespace Dev2.Core.Tests
             Assert.IsFalse(child.IsExpanded);
         }
 
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("DebugOutputViewModel_Append")]
-        public void DebugOutputViewModel_Append_ContentIsDebugStateAndIDDoesNotEqualParentID_ItemAddedAsChildOfParent()
-        {
-            DebugOutputViewModel_Append_ContentIsDebugStateAndIDDoesNotEqualParentID(depth: 5);
-        }
-
-        void DebugOutputViewModel_Append_ContentIsDebugStateAndIDDoesNotEqualParentID(int depth)
-        {
-            //------------Setup for test--------------------------
-            var envRepo = GetEnvironmentRepository();
-            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo);
-
-            var contents = new List<DebugState>();
-
-            // Build a tree with only one branch to the expected depth
-            var parentID = Guid.Empty;
-            for(var i = 0; i < depth; i++)
-            {
-                var content = new DebugState { DisplayName = "Content" + i, ID = Guid.NewGuid(), ParentID = parentID, StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID};
-                parentID = content.ID;
-                contents.Add(content);
-            }
-
-            //------------Execute Test---------------------------
-            // MUST do append in reverse so that we test creating non-existing parents!
-            for(var i = contents.Count - 1; i >= 0; i--)
-            {
-                viewModel.Append(contents[i]);
-            }
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(depth, viewModel.ContentItemCount);
-            Assert.AreEqual(1, viewModel.RootItems.Count);
-
-            IDebugTreeViewItemViewModel parent = null;
-            IList<IDebugTreeViewItemViewModel> children = viewModel.RootItems;
-            for(var d = 0; d < depth; d++)
-            {
-                Assert.AreEqual(1, children.Count);
-                var item = (DebugStateTreeViewItemViewModel)children[0];
-
-                Assert.AreEqual(d, item.Depth);
-                Assert.AreSame(parent, item.Parent);
-
-                var expectedContent = contents[d];
-                Assert.AreSame(expectedContent, item.Content);
-
-                parent = item;
-                children = item.Children;
-            }
-        }
-
+       
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -245,14 +216,6 @@ namespace Dev2.Core.Tests
         public void DebugOutputViewModel_Append_ContentIsDebugStateWithErrors_ItemAddedWithErrors()
         {
             DebugOutputViewModel_Append_ContentIsDebugStateErrors(parentContentHasErrors: true, childContentHasErrors: true);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("DebugOutputViewModel_Append")]
-        public void DebugOutputViewModel_Append_ContentIsDebugStateWithNoParentErrorsAndChildErrors_ItemAddedWithNullErrors()
-        {
-            DebugOutputViewModel_Append_ContentIsDebugStateErrors(parentContentHasErrors: false, childContentHasErrors: true);
         }
 
         void DebugOutputViewModel_Append_ContentIsDebugStateErrors(bool parentContentHasErrors, bool childContentHasErrors)
