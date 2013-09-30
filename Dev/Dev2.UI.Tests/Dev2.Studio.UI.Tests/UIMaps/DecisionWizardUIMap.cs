@@ -40,7 +40,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
             #endregion
 
             // Click image
-            Mouse.Click(uIItemImage, new Point(760, 484));
+            Mouse.DoubleClick(uIItemImage, new Point(760, 484));
         }
 
         /// <summary>
