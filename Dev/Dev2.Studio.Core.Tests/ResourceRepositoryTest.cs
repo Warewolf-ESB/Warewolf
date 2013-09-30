@@ -1522,10 +1522,11 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepository_RenameResource_DashesInTheName_ExecuteCommandExecutesTheRightXmlPayload()
         // ReSharper restore InconsistentNaming
         {
+            var resourceID = Guid.NewGuid().ToString();
             var expected = @"<XmlData>
   <Service>RenameResourceService</Service>
   <NewName>New-Test-Name</NewName>
-  <ResourceID>Some-Guid</ResourceID>
+  <ResourceID>"+resourceID+@"</ResourceID>
 </XmlData>";
             //init conn
             var mockEnvironment = new Mock<IEnvironmentModel>();
@@ -1538,7 +1539,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var repo = new ResourceRepository(mockEnvironment.Object, new Mock<IWizardEngine>().Object, new Mock<IFrameworkSecurityContext>().Object);
 
             //exe rename
-            repo.Rename("Some-Guid", "New-Test-Name");
+            repo.Rename(resourceID, "New-Test-Name");
 
             //assert correct command sent to server
             mockEnvironmentConnection.Verify(connection => connection.ExecuteCommand(expected, It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
