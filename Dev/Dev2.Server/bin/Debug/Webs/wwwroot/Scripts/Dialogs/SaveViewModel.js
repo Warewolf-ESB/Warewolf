@@ -169,7 +169,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
         var isValid = name !== "" && self.isValidName(name);
         if (!self.isEditing() && isValid) {
             // check for duplicates
-            var matches = ko.utils.arrayFilter(self.resourceNames(), function (resourceName) {
+            var matches = ko.utils.arrayFilter(self.resourceNames(), function(resourceName) {
                 return resourceName.toLowerCase() === name;
             });
             if (matches.length == 0) {
@@ -177,7 +177,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
             } else {
                 isValid = false;
                 self.updateHelpText("DuplicateFound");
-        }
+            }
         }
         self.enableSaveButton(isValid);
         return isValid;

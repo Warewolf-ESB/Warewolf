@@ -130,14 +130,18 @@ utils.updateSaveValidationSpan = function (selectorText, helpText) {
         if ($standaloneHelp.length == 1) {
             $standaloneHelp[0].innerHTML = helpText;
         }
-    }
-    var $inPaneHelp = $("span#inButtonBarHelpSpan.inSaveButtonBarSpan");
-    if ($inPaneHelp.length == 1) {
-        $inPaneHelp[0].innerHTML = helpText;
     } else {
-        var $selectButtonBar = $(".ui-dialog:contains('" + selectorText + "') .ui-dialog-buttonpane");
-        if ($selectButtonBar.length == 1) { // only ever append to just one selected buttonbar
-            $selectButtonBar.append("<span id='inButtonBarHelpSpan' class='inSaveButtonBarSpan'>" + helpText + "</span>"); // append to buttonbar div
+        var $inPaneHelp = $(".ui-dialog:contains('" + selectorText + "') .ui-dialog-buttonpane:last");
+        var visible = $inPaneHelp.is(":visible");
+        if (visible) {
+            if ($inPaneHelp.length == 1) {
+                var there = $inPaneHelp.find("#inButtonBarHelpSpanStandalone").size() > 0;
+                if (there) {
+                    $inPaneHelp.find("#inButtonBarHelpSpanStandalone")[0].innerHTML = helpText;
+                } else {
+                    $inPaneHelp.append("<span id='inButtonBarHelpSpanStandalone' class='inSaveButtonBarSpan'>" + helpText + "</span>");
+                }
+            }
         }
     }
 };
