@@ -1,4 +1,5 @@
-﻿using Dev2.DataList.Contract;
+﻿using System.Collections.Generic;
+using Dev2.DataList.Contract;
 using System;
 using Dev2.Network.Messaging;
 
@@ -24,31 +25,49 @@ namespace Dev2
         /// <returns></returns>
         Guid ExecuteRequest(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors);
 
+        /// <summary>
+        /// Fetches the server model.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dataObject">The data object.</param>
+        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors);
 
         /// <summary>
-        /// Executes the transactionally scoped request.
+        /// Executes the sub request.
         /// </summary>
         /// <param name="dataObject">The data object.</param>
-        /// <param name="workspaceID">The workspace ID.</param>
+        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="inputDefs">The input defs.</param>
+        /// <param name="outputDefs">The output defs.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid ExecuteTransactionallyScopedRequest(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors);
+        Guid ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceID, string inputDefs, string outputDefs, out ErrorResultTO errors);
 
         /// <summary>
         /// Finds the service shape.
         /// </summary>
         /// <param name="workspaceID">The workspace unique identifier.</param>
         /// <param name="serviceName">Name of the service.</param>
-        /// <param name="serviceInputs">if set to <c>true</c> [service inputs].</param>
         /// <returns></returns>
-        string FindServiceShape(Guid workspaceID, string serviceName, bool serviceInputs);
+        string FindServiceShape(Guid workspaceID, string serviceName);
 
+        /// <summary>
+        /// Shapes for sub request.
+        /// </summary>
+        /// <param name="dataObject">The data object.</param>
+        /// <param name="inputDefs">The input defs.</param>
+        /// <param name="outputDefs">The output defs.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubRequest(IDSFDataObject dataObject, string inputDefs, string outputDefs, out ErrorResultTO errors);
     }
 
     public interface IEsbWorkspaceChannel : IEsbChannel
     {
-            
+        
     }
 
     public interface IEsbActivityChannel

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Network;
+using System.Threading;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Communication;
@@ -146,17 +148,32 @@ namespace Dev2.DynamicServices
         #region ExecuteRequest Handling
         protected override string OnExecuteCommand(StudioNetworkSession context, string payload, Guid datalistID)
         {
-            IDSFDataObject dataObject = null;
+            IDSFDataObject dataObject;
             ErrorResultTO errors;
 
             dataObject = new DsfDataObject(payload, datalistID);
 
+            // we need to assign new ThreadID to request coming from here, becasue it is a fixed connection and will not change ID on its own ;)
             if(!dataObject.Errors.HasErrors())
             {
-                string dlID = _channel.ExecuteRequest(dataObject, context.AccountID, out errors).ToString();
+
+                Guid dlID = Guid.Empty;
+                Thread t = new Thread(() =>
+                {
+                    dlID = _channel.ExecuteRequest(dataObject, context.AccountID, out errors);   
+                });
+
+                t.Start();
+
+                t.Join();
+
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-                string result = compiler.ConvertFrom(new Guid(dlID), DataListFormat.CreateFormat(GlobalConstants._XML),
+                string result = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML),
                                                      enTranslationDepth.Data, out errors);
+
+                // we really need to clean up chaps ;)
+                compiler.ForceDeleteDataListByID(dlID);
+
                 return result;
             }
             else return dataObject.Errors.MakeUserReady();

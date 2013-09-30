@@ -1,14 +1,13 @@
-﻿using System.Collections.ObjectModel;
-using Dev2.Common;
-using Dev2.Data.Binary_Objects;
-using Dev2.DataList.Contract.Binary_Objects;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using Dev2.Common;
+using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
 
 namespace Dev2.DataList.Contract
@@ -36,7 +35,7 @@ namespace Dev2.DataList.Contract
                                                          "<DL>","</DL>"
                                                        };
 
-        private static XmlReaderSettings _isXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto,DtdProcessing = DtdProcessing.Ignore};
+        private static XmlReaderSettings _isXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
 
         #endregion Class Members
 
@@ -45,7 +44,7 @@ namespace Dev2.DataList.Contract
         static DataListUtil()
         {
             // build system tags
-            foreach (Enum e in (Enum.GetValues(typeof(enSystemTag))))
+            foreach(Enum e in (Enum.GetValues(typeof(enSystemTag))))
             {
                 _sysTags.Add(e.ToString());
             }
@@ -61,7 +60,7 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public static string ReplaceStarWithFixedIndex(string exp, int idx)
         {
-            if (idx > 0)
+            if(idx > 0)
             {
                 return exp.Replace("(*)", "(" + idx + ")");    
             }
@@ -75,8 +74,10 @@ namespace Dev2.DataList.Contract
         /// <param name="transform">The transform.</param>
         /// <param name="rootServiceName">Name of the root service.</param>
         /// <returns></returns>
-        public static string BindEnvironmentVariables(string transform, string rootServiceName="") {
-            if (string.IsNullOrEmpty(transform)) {
+        public static string BindEnvironmentVariables(string transform, string rootServiceName = "")
+        {
+            if(string.IsNullOrEmpty(transform))
+            {
                 return transform;
             }
 
@@ -122,11 +123,11 @@ namespace Dev2.DataList.Contract
 
             XmlDocument xDoc = new XmlDocument();
             xDoc.LoadXml(dataList);
-            if (xDoc.HasChildNodes)
+            if(xDoc.HasChildNodes)
             {
                 XmlNodeList nodeList = xDoc.FirstChild.SelectNodes(@"./*[@IsEditable = ""False""]");
 
-                foreach (XmlNode node in nodeList)
+                foreach(XmlNode node in nodeList)
                 {
                     result += node.OuterXml;
                 }
@@ -148,11 +149,11 @@ namespace Dev2.DataList.Contract
 
             XmlDocument xDoc = new XmlDocument();
             xDoc.LoadXml(dataList);
-            if (xDoc.HasChildNodes)
+            if(xDoc.HasChildNodes)
             {
                 XmlNodeList nodeList = xDoc.FirstChild.SelectNodes(@"./*[@IsEditable = ""True""]");
 
-                foreach (XmlNode node in nodeList)
+                foreach(XmlNode node in nodeList)
                 {
                     result += node.OuterXml;
 
@@ -168,31 +169,48 @@ namespace Dev2.DataList.Contract
         /// <param name="right">The right.</param>
         /// <param name="errors">The errors.</param>
         /// <exception cref="System.ArgumentNullException">right</exception>
-        public static void AddMissingFromRight(IBinaryDataList left, IBinaryDataList right, out ErrorResultTO errors)
+        public static void MergeDataList(IBinaryDataList left, IBinaryDataList right, out ErrorResultTO errors)
         {
 
-            if (right == null)
+            if(right == null)
             {
                 throw new ArgumentNullException("right");
             }
 
-            errors = new ErrorResultTO();
-            IList<string> itemKeys = right.FetchAllUserKeys();
+            if (left == null)
+            {
+                throw new ArgumentException("left");
+            }
 
-            foreach (string key in itemKeys)
+            errors = new ErrorResultTO();
+            ErrorResultTO invokeErrors;
+            MergeOp(left, right, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+            MergeOp(right, left, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+            
+        }
+
+        private static void MergeOp(IBinaryDataList left, IBinaryDataList right, out ErrorResultTO errors)
+        {
+            IList<string> itemKeys = right.FetchAllUserKeys();
+            errors = new ErrorResultTO();
+
+            foreach(string key in itemKeys)
             {
                 IBinaryDataListEntry entry;
 
                 string error;
-                if (!left.TryGetEntry(key, out entry, out error))
+                if(!left.TryGetEntry(key, out entry, out error))
                 {
-                    errors.AddError(error);
+                    // NOTE : DO NOT ADD ERROR, IT IS A MISS AND WE ACCOUNT FOR THIS BELOW
+
                     // Left does not contain key, get it from the right and add ;)
-                    if (right.TryGetEntry(key, out entry, out error))
+                    if(right.TryGetEntry(key, out entry, out error))
                     {
                         errors.AddError(error);
                         // we found it add it to the left ;)
-                        if (entry.IsRecordset)
+                        if(entry.IsRecordset)
                         {
                             left.TryCreateRecordsetTemplate(entry.Namespace, entry.Description, entry.Columns, false,
                                                             true, out error);
@@ -207,22 +225,12 @@ namespace Dev2.DataList.Contract
                     }
                     else
                     {
-                        errors.AddError(error);
+                        errors.AddError(error);    
                     }
                 }
             }
         }
 
-
-        /// <summary>
-        /// Builds the binary data list system eval.
-        /// </summary>
-        /// <param name="tag">The tag.</param>
-        /// <returns></returns>
-        public static string BuildBinaryDataListSystemEval(enSystemTag tag)
-        {
-            return (GlobalConstants.SystemTagNamespace + "." + enSystemTag.Bookmark);
-        }
 
         /// <summary>
         /// Remove XMLData and other nesting junk from the ADL
@@ -234,10 +242,10 @@ namespace Dev2.DataList.Contract
             string result = payload;
             string[] veryNaughtyTags = naughtyTags;
 
-            if (payload != null && payload != string.Empty)
+            if(payload != null && payload != string.Empty)
             {
 
-                if (stripTags != null)
+                if(stripTags != null)
                 {
                     stripTags
                         .ToList()
@@ -247,7 +255,7 @@ namespace Dev2.DataList.Contract
                         });
                 }
 
-                if (veryNaughtyTags != null)
+                if(veryNaughtyTags != null)
                 {
                     result = CleanupNaughtyTags(veryNaughtyTags, result);
                 }
@@ -255,14 +263,14 @@ namespace Dev2.DataList.Contract
                 // we now need to remove non-valid chars from the stream
 
                 int start = result.IndexOf("<");
-                if (start >= 0)
+                if(start >= 0)
                 {
                     result = result.Substring((start));
                 }
 
-                if (result.Contains("<") && result.Contains(">"))
+                if(result.Contains("<") && result.Contains(">"))
                 {
-                    if (!DataListUtil.IsXml(result))
+                    if(!DataListUtil.IsXml(result))
                     {
                         result = result.Replace(string.Concat("<", _adlRoot, ">"), string.Empty).Replace(string.Concat("</", _adlRoot, ">"), "");
                         result = string.Concat("<", _adlRoot, ">", result, "</", _adlRoot, ">");
@@ -288,7 +296,7 @@ namespace Dev2.DataList.Contract
 
             string result = (GlobalConstants.SystemTagNamespace + "." + tag);
 
-            if (addBrackets)
+            if(addBrackets)
             {
                 result = "[[" + result + "]]";
             }
@@ -307,7 +315,7 @@ namespace Dev2.DataList.Contract
 
             string result = (GlobalConstants.SystemTagNamespace + "." + tag);
 
-            if (addBrackets)
+            if(addBrackets)
             {
                 result = "[[" + result + "]]";
             }
@@ -329,7 +337,7 @@ namespace Dev2.DataList.Contract
             XmlDocument xDoc = new XmlDocument();
             xDoc.LoadXml(payload);
             XmlNodeList nl = xDoc.GetElementsByTagName(tagName);
-            if (nl.Count > 0)
+            if(nl.Count > 0)
             {
                 result = nl[0].Attributes[attribute].Value;
             }
@@ -360,23 +368,23 @@ namespace Dev2.DataList.Contract
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.LoadXml(payload);
                 XmlNodeList nl = xDoc.GetElementsByTagName(tagName);
-                foreach (XmlNode n in nl)
+                foreach(XmlNode n in nl)
                 {
                     result.Append(MakeOpenTag(tagName));
-                    foreach (string atr in attribute)
+                    foreach(string atr in attribute)
                     {
                         string attrValue = n.Attributes[atr].Value;
                         result.Append(string.Concat(MakeOpenTag(atr), attrValue, MakeCloseTag(atr)));
                     }
                     // now fetch the extra tag names ;)
-                    if (childTags != null)
+                    if(childTags != null)
                     {
-                        foreach (string tag in childTags)
+                        foreach(string tag in childTags)
                         {
                             string innerXML = n.InnerXml;
                             // we have a match!
                             int idx = innerXML.IndexOf(MakeOpenTag(tag));
-                            if (idx >= 0)
+                            if(idx >= 0)
                             {
                                 // we have a match ;)
                                 int end = innerXML.IndexOf(MakeCloseTag(tag));
@@ -391,7 +399,7 @@ namespace Dev2.DataList.Contract
                 }
 
             }
-            catch (Exception ex) 
+            catch(Exception ex)
             {
                 ServerLogger.LogError(ex);
                 //TODO, EMPTY CATCH, Please add reasoning
@@ -418,9 +426,9 @@ namespace Dev2.DataList.Contract
             result = result.Replace(MakeOpenTag(nodeToRemove), "").Replace(MakeCloseTag(nodeToRemove), "").Replace(MakeSingleTag(nodeToRemove), "");
 
             bool isFragment;
-            if (IsXml(result, out isFragment))
+            if(IsXml(result, out isFragment))
             {
-                if (isFragment)
+                if(isFragment)
                 {
                     result = string.Concat(MakeOpenTag(_adlRoot), result, MakeCloseTag(_adlRoot));
                 }
@@ -428,7 +436,7 @@ namespace Dev2.DataList.Contract
                 {
                     XmlDocument xDoc = new XmlDocument();
                     xDoc.LoadXml(result);
-                    if (xDoc.DocumentElement.Name == StripBracketsFromValue(evalNode))
+                    if(xDoc.DocumentElement.Name == StripBracketsFromValue(evalNode))
                     {
                         result = string.Concat(MakeOpenTag(_adlRoot), result, MakeCloseTag(_adlRoot));
                     }
@@ -481,7 +489,7 @@ namespace Dev2.DataList.Contract
         {
             bool result = false;
 
-            if (value == "#text" || value == "#cdata-section")
+            if(value == "#text" || value == "#cdata-section")
             {
                 result = true;
             }
@@ -510,13 +518,13 @@ namespace Dev2.DataList.Contract
         {
             bool result = false;
 
-            if (dataList == null)
+            if(dataList == null)
             {
                 result = true;
             }
             else
             {
-                if (dataList == _emptyTag)
+                if(dataList == _emptyTag)
                 {
                     result = true;
                 }
@@ -529,12 +537,12 @@ namespace Dev2.DataList.Contract
 
                         XmlNode xn = x.FirstChild;
                         XmlNodeList xnl = xn.ChildNodes;
-                        if (xnl.Count == 0)
+                        if(xnl.Count == 0)
                         {
                             result = true;
                         }
                     }
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
                         ServerLogger.LogError(ex);
                         result = true;
@@ -554,7 +562,7 @@ namespace Dev2.DataList.Contract
         {
             bool result = false;
 
-            if (inputs == null)
+            if(inputs == null)
             {
                 result = true;
             }
@@ -568,12 +576,12 @@ namespace Dev2.DataList.Contract
 
                     XmlNode xn = x.FirstChild;
                     XmlNodeList xnl = xn.ChildNodes;
-                    if (xnl.Count == 0)
+                    if(xnl.Count == 0)
                     {
                         result = true;
                     }
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     ServerLogger.LogError(ex);
                     result = true;
@@ -609,11 +617,11 @@ namespace Dev2.DataList.Contract
 
             int start = adl.IndexOf(startTag);
 
-            if (start >= 0)
+            if(start >= 0)
             {
                 int end = adl.IndexOf(endTag);
 
-                if (end > start)
+                if(end > start)
                 {
                     int realStart = start + startTag.Length;
                     int len = (end - realStart);
@@ -623,6 +631,16 @@ namespace Dev2.DataList.Contract
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Removes the brackets.
+        /// </summary>
+        /// <param name="val">The value.</param>
+        /// <returns></returns>
+        public static string RemoveLanguageBrackets(string val)
+        {
+            return val.Replace("[", string.Empty).Replace("]",string.Empty);
         }
 
         /// <summary>
@@ -656,10 +674,10 @@ namespace Dev2.DataList.Contract
         {
             string result = value;
 
-            if (field.ToLower() == "fragment" || field.Equals("FormView"))
+            if(field.ToLower() == "fragment" || field.Equals("FormView"))
             {
                 // value.Replace("<", "&lt;").Replace(">", "&gt;")
-                if (!value.Contains(_cdataStart))
+                if(!value.Contains(_cdataStart))
                 {
                     result = string.Concat(_cdataStart, value, _cdataEnd);
                 }
@@ -678,7 +696,7 @@ namespace Dev2.DataList.Contract
             string result = value;
             result = result.Replace("&lt;", "<").Replace("&gt;", ">");
             result = result.Replace("&amp;lt;", "<").Replace("&amp;gt;", ">");
-            while (result.Contains("<![CDATA"))
+            while(result.Contains("<![CDATA"))
             {
                 result = result.Replace(_cdataStart, "");
                 result = result.Replace(_cdataEnd, "");
@@ -691,16 +709,14 @@ namespace Dev2.DataList.Contract
         /// </summary>
         /// <param name="tag"></param>
         /// <returns></returns>
-        public static bool isSystemTag(string tag)
+        public static bool IsSystemTag(string tag)
         {
 
-            // Transfer System Tags
-            bool result = false;
+            // Nasty junk that has been carried!
+            string[] nastyJunk = {"WebServerUrl","Dev2WebServer","PostData","Service"};
 
-            if (_sysTags.Contains(tag))
-            {
-                result = true;
-            }
+            // Transfer System Tags
+            bool result = _sysTags.Contains(tag) || nastyJunk.Contains(tag);
 
             return result;
         }
@@ -722,16 +738,16 @@ namespace Dev2.DataList.Contract
                 .ForEach(d =>
                 {
 
-                    if (d.IsRecordSet)
+                    if(d.IsRecordSet)
                     {
                         string tmp = string.Empty;
 
-                        if (rsMap.Keys.Contains(d.RecordSetName))
+                        if(rsMap.Keys.Contains(d.RecordSetName))
                         {
                             tmp = rsMap[d.RecordSetName];
                         }
                         string _name = string.Empty;
-                        if (d.Name.Contains("."))
+                        if(d.Name.Contains("."))
                         {
                             _name = d.Name.Split('.')[1];
                         }
@@ -739,7 +755,7 @@ namespace Dev2.DataList.Contract
                         {
                             _name = d.Name;
                         }
-                        if (withData)
+                        if(withData)
                         {
                             tmp = string.Concat(tmp, Environment.NewLine, "<", _name, ">", d.RawValue, "</", _name, ">");
                         }
@@ -753,7 +769,7 @@ namespace Dev2.DataList.Contract
                     }
                     else
                     {
-                        if (withData)
+                        if(withData)
                         {
                             result.Append(string.Concat("<", d.Name, ">", d.RawValue, "</", d.Name, ">"));
                         }
@@ -798,12 +814,12 @@ namespace Dev2.DataList.Contract
             bool isInput = false;
             errors = new ErrorResultTO();
 
-            if (typeOf == enDev2ArgumentType.Input)
+            if(typeOf == enDev2ArgumentType.Input)
             {
                 isInput = true;
             }
 
-            if (defs == null || defs.Count == 0)
+            if(defs == null || defs.Count == 0)
             {
                 errors.AddError(string.Concat("could not locate any data of type [ ", typeOf, " ]"));
             }
@@ -844,17 +860,17 @@ namespace Dev2.DataList.Contract
             bool isInput = false;
             errors = new ErrorResultTO();
 
-            if (typeOf == enDev2ArgumentType.Output)
+            if(typeOf == enDev2ArgumentType.Output)
             {
                 defs = DataListFactory.CreateOutputParser().Parse(arguments);
             }
-            else if (typeOf == enDev2ArgumentType.Input)
+            else if(typeOf == enDev2ArgumentType.Input)
             {
                 defs = DataListFactory.CreateInputParser().Parse(arguments);
                 isInput = true;
             }
 
-            if (defs == null || defs.Count == 0)
+            if(defs == null || defs.Count == 0)
             {
                 errors.AddError(string.Concat("could not locate any data of type [ ", typeOf, " ]"));
             }
@@ -869,7 +885,7 @@ namespace Dev2.DataList.Contract
                 result.Append(Environment.NewLine);
 
                 // do we want to do funky things ?!
-                if (flipGeneration)
+                if(flipGeneration)
                 {
                     isInput = flipGeneration;
                 }
@@ -899,9 +915,9 @@ namespace Dev2.DataList.Contract
         {
             bool result = false;
 
-            if (!string.IsNullOrEmpty(value))
+            if(!string.IsNullOrEmpty(value))
             {
-                if (value.Contains("(") && value.Contains(")"))
+                if(value.Contains("(") && value.Contains(")"))
                 {
                     result = true;
                 }
@@ -919,7 +935,7 @@ namespace Dev2.DataList.Contract
         {
             bool result = true;
 
-            if (expression == null)
+            if(expression == null)
             {
                 return false;
             }
@@ -928,7 +944,7 @@ namespace Dev2.DataList.Contract
             string[] closeParts = Regex.Split(expression, @"\]\]");
 
             //2013.05.31: Ashley lewis QA feedback on bug 9379 - count the number of opening and closing braces, they must both be more than one
-            if (expression.Contains("[[") && expression.Contains("]]") && openParts.Count() == closeParts.Count() && openParts.Count() > 2 && closeParts.Count() > 2)
+            if(expression.Contains("[[") && expression.Contains("]]") && openParts.Count() == closeParts.Count() && openParts.Count() > 2 && closeParts.Count() > 2)
             {
                 result = false;
             }
@@ -943,7 +959,7 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public static string ExtractRecordsetNameFromValue(string value)
         {
-            if (value == null)
+            if(value == null)
             {
                 return string.Empty;
             }
@@ -952,7 +968,7 @@ namespace Dev2.DataList.Contract
             string result = string.Empty;
 
             int openBracket = value.IndexOf("(", StringComparison.Ordinal);
-            if (openBracket > 0)
+            if(openBracket > 0)
             {
                 result = value.Substring(0, openBracket);
             }
@@ -970,7 +986,7 @@ namespace Dev2.DataList.Contract
             string result = string.Empty;
             value = StripBracketsFromValue(value);
             int dotIdx = value.IndexOf(".");
-            if (dotIdx > 0)
+            if(dotIdx > 0)
             {
                 result = value.Substring((dotIdx + 1));
             }
@@ -986,7 +1002,7 @@ namespace Dev2.DataList.Contract
         public static string StripBracketsFromValue(string value)
         {
             string result = string.Empty;
-            if (value != null)
+            if(value != null)
             {
                 result = value.Replace("[[", "").Replace("]]", "");
             }
@@ -1004,12 +1020,12 @@ namespace Dev2.DataList.Contract
         {
             string result = value;
 
-            if (result.StartsWith("[["))
+            if(result.StartsWith("[["))
             {
                 result = result.Substring(2, (result.Length - 2));
             }
 
-            if (result.EndsWith("]]"))
+            if(result.EndsWith("]]"))
             {
                 result = result.Substring(0, (result.Length - 2));
             }
@@ -1026,10 +1042,10 @@ namespace Dev2.DataList.Contract
         {
             string result;
 
-            if (!value.Contains("]]"))
+            if(!value.Contains("]]"))
             {
                 // missing both
-                if (!value.Contains("[["))
+                if(!value.Contains("[["))
                 {
                     result = string.Concat("[[", value, "]]");
                 }
@@ -1052,23 +1068,30 @@ namespace Dev2.DataList.Contract
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        public static string MakeValueIntoHighLevelRecordset(string value)
+        public static string MakeValueIntoHighLevelRecordset(string value, bool starNotation = false)
         {
             string result;
 
+            var inject = "()";
+
+            if(starNotation)
+            {
+                inject = "(*)";
+            }
+
             result = StripBracketsFromValue(value);
 
-            if (result.EndsWith("("))
+            if(result.EndsWith("("))
             {
                 result = string.Concat(result, ")");
             }
-            else if (result.EndsWith(")"))
+            else if(result.EndsWith(")"))
             {
-                result.Replace(")", "()");
+                result.Replace(")", inject);
             }
-            else if (!result.EndsWith("()"))
+            else if(!result.EndsWith("()"))
             {
-                result = string.Concat(result, "()");
+                result = string.Concat(result, inject);
             }
             return result;
         }
@@ -1083,10 +1106,10 @@ namespace Dev2.DataList.Contract
             string result = string.Empty;
 
             int start = rs.IndexOf("(");
-            if (start > 0)
+            if(start > 0)
             {
                 int end = rs.LastIndexOf(")");
-                if (end < 0)
+                if(end < 0)
                 {
                     end = rs.Length;
                 }
@@ -1110,7 +1133,7 @@ namespace Dev2.DataList.Contract
         {
             bool result = false;
 
-            if (payload.IndexOf("[[") >= 0)
+            if(payload.IndexOf("[[") >= 0)
             {
                 result = true;
             }
@@ -1128,7 +1151,7 @@ namespace Dev2.DataList.Contract
         {
             bool result = false;
 
-            if (serviceName.ToLower().EndsWith(".wiz") || parentServiceName.ToLower().EndsWith(".wiz"))
+            if(serviceName.ToLower().EndsWith(".wiz") || parentServiceName.ToLower().EndsWith(".wiz"))
             {
                 result = true;
             }
@@ -1147,7 +1170,7 @@ namespace Dev2.DataList.Contract
 
             int start = value.IndexOf("(");
 
-            if (start > 0)
+            if(start > 0)
             {
                 result = value.Substring(0, start);
             }
@@ -1167,10 +1190,10 @@ namespace Dev2.DataList.Contract
             bool result = true;
             // check for current resume region, if present, ingore addition
             var tmp = shapedDataList.GetElementsByTagName(enSystemTag.Dev2ResumeData.ToString());
-            if (tmp == null || tmp.Count == 0)
+            if(tmp == null || tmp.Count == 0)
             {
                 tmp = shapedDataList.GetElementsByTagName(enSystemTag.Resumption.ToString());
-                if (tmp == null || tmp.Count == 0)
+                if(tmp == null || tmp.Count == 0)
                 {
                     result = false;
                 }
@@ -1189,11 +1212,11 @@ namespace Dev2.DataList.Contract
         {
             enRecordsetIndexType result = enRecordsetIndexType.Error;
 
-            if (idx == "*")
+            if(idx == "*")
             {
                 result = enRecordsetIndexType.Star;
             }
-            else if (string.IsNullOrEmpty(idx))
+            else if(string.IsNullOrEmpty(idx))
             {
                 result = enRecordsetIndexType.Blank;
             }
@@ -1223,18 +1246,18 @@ namespace Dev2.DataList.Contract
             enRecordsetIndexType result = enRecordsetIndexType.Error;
 
             string idx = ExtractIndexRegionFromRecordset(expression);
-            if (idx == "*")
+            if(idx == "*")
             {
                 result = enRecordsetIndexType.Star;
             }
-            else if (string.IsNullOrEmpty(idx))
+            else if(string.IsNullOrEmpty(idx))
             {
                 result = enRecordsetIndexType.Blank;
             }
             else
             {
                 int convertIntTest = 0;
-                if (Int32.TryParse(idx, out convertIntTest))
+                if(Int32.TryParse(idx, out convertIntTest))
                 {
                     result = enRecordsetIndexType.Numeric;
                 }
@@ -1277,11 +1300,11 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public static bool IsBase64String(string value)
         {
-            if (string.IsNullOrEmpty(value))
+            if(string.IsNullOrEmpty(value))
             {
                 return false;
             }
-            else if (value.Any(c => !_base64Characters.Contains(c)))
+            else if(value.Any(c => !_base64Characters.Contains(c)))
             {
                 return false;
             }
@@ -1291,7 +1314,7 @@ namespace Dev2.DataList.Contract
                 Convert.FromBase64String(value);
                 return true;
             }
-            catch (FormatException fex)
+            catch(FormatException fex)
             {
                 ServerLogger.LogError(fex);
                 return false;
@@ -1328,7 +1351,7 @@ namespace Dev2.DataList.Contract
             isFragment = false;
             isHtml = false;
 
-            if (result)
+            if(result)
             {
                 TextReader tr = new StringReader(data);
                 XmlReader reader = XmlReader.Create(tr, _isXmlReaderSettings);
@@ -1336,19 +1359,19 @@ namespace Dev2.DataList.Contract
                 try
                 {
                     long nodeCount = 0;
-                    while (reader.Read() && !isHtml && !isFragment && result && reader.NodeType != XmlNodeType.Document)
+                    while(reader.Read() && !isHtml && !isFragment && result && reader.NodeType != XmlNodeType.Document)
                     {
                         nodeCount++;
 
-                        if (reader.NodeType != XmlNodeType.CDATA)
+                        if(reader.NodeType != XmlNodeType.CDATA)
                         {
-                            if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" && reader.Depth == 0)
+                            if(reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" && reader.Depth == 0)
                             {
                                 isHtml = true;
                                 result = false;
                             }
 
-                            if (reader.NodeType == XmlNodeType.Element && nodeCount > 1 && reader.Depth == 0)
+                            if(reader.NodeType == XmlNodeType.Element && nodeCount > 1 && reader.Depth == 0)
                             {
                                 isFragment = true;
                             }
@@ -1384,7 +1407,7 @@ namespace Dev2.DataList.Contract
             IDev2DataListEvaluateIterator expressionIterator = Dev2ValueObjectFactory.CreateEvaluateIterator(Entry);
             colItr.AddIterator(expressionIterator);
 
-            while (colItr.HasMoreData())
+            while(colItr.HasMoreData())
             {
                 result.Add(colItr.FetchNextRow(expressionIterator).TheValue);
             }
@@ -1404,7 +1427,7 @@ namespace Dev2.DataList.Contract
             // find the text before the next openregion
             List<string> regions = new List<string>() { expressionBuilder.ToString().Substring(0, expressionBuilder.ToString().IndexOf(openRegion)) };
             // if there are still regions
-            if (expressionBuilder.ToString().Contains(openRegion) && expressionBuilder.ToString().Contains(closeRegion))
+            if(expressionBuilder.ToString().Contains(openRegion) && expressionBuilder.ToString().Contains(closeRegion))
             {
                 regions.AddRange(GetRegionsFromExpression(expressionBuilder.ToString()));
             }
@@ -1425,11 +1448,11 @@ namespace Dev2.DataList.Contract
         {
             StringBuilder result = new StringBuilder();
 
-            for (int i = 0; i < scalarList.Count; i++)
+            for(int i = 0; i < scalarList.Count; i++)
             {
                 IDev2Definition def = scalarList[i];
 
-                if (isInput)
+                if(isInput)
                 {
                     result.Append(string.Concat("<", def.Name, "></", def.Name, ">"));
                 }
@@ -1454,29 +1477,29 @@ namespace Dev2.DataList.Contract
             bool foundOpen = false;
             string result = payload;
 
-            for (int i = 0; i < toRemove.Length; i++)
+            for(int i = 0; i < toRemove.Length; i++)
             {
                 string myTag = toRemove[i];
-                if (myTag.IndexOf("<") >= 0 && myTag.IndexOf("</") < 0)
+                if(myTag.IndexOf("<") >= 0 && myTag.IndexOf("</") < 0)
                 {
                     foundOpen = true;
                 }
-                else if (myTag.IndexOf("</") >= 0)
+                else if(myTag.IndexOf("</") >= 0)
                 {
                     // close tag
-                    if (foundOpen)
+                    if(foundOpen)
                     {
                         // remove data between
                         int loc = i - 1;
-                        if (loc >= 0)
+                        if(loc >= 0)
                         {
                             int start = result.IndexOf(toRemove[loc]);
                             int end = result.IndexOf(myTag);
-                            if (start < end && start >= 0)
+                            if(start < end && start >= 0)
                             {
                                 string canidate = result.Substring(start, ((end - start) + myTag.Length));
                                 string tmpResult = canidate.Replace(myTag, "").Replace(toRemove[loc], "");
-                                if (tmpResult.IndexOf("</") >= 0 || tmpResult.IndexOf("/>") >= 0)
+                                if(tmpResult.IndexOf("</") >= 0 || tmpResult.IndexOf("/>") >= 0)
                                 {
                                     // replace just the tags
                                     result = result.Replace(myTag, "").Replace(toRemove[loc], "");
@@ -1514,14 +1537,14 @@ namespace Dev2.DataList.Contract
 
             IList<IRecordSetDefinition> defs = recCol.RecordSets;
 
-            for (int i = 0; i < defs.Count; i++)
+            for(int i = 0; i < defs.Count; i++)
             {
                 IRecordSetDefinition tmp = defs[i];
                 // get DL recordset Name
-                if (tmp.Columns.Count > 0)
+                if(tmp.Columns.Count > 0)
                 {
                     string setName = DataListUtil.ExtractRecordsetNameFromValue(tmp.Columns[0].Value);
-                    if (isInput)
+                    if(isInput)
                     {
                         setName = tmp.SetName;
                     }
@@ -1530,10 +1553,10 @@ namespace Dev2.DataList.Contract
                     result.Append(Environment.NewLine);
 
                     IList<IDev2Definition> cols = tmp.Columns;
-                    for (int q = 0; q < cols.Count; q++)
+                    for(int q = 0; q < cols.Count; q++)
                     {
                         IDev2Definition tmpDef = cols[q];
-                        if (isInput)
+                        if(isInput)
                         {
                             result.Append(string.Concat("\t<", tmpDef.MapsTo, "></", tmpDef.MapsTo, ">"));
                         }
@@ -1574,7 +1597,7 @@ namespace Dev2.DataList.Contract
         {
             error = string.Empty;
             string result;
-            if (entry.IsRecordset)
+            if(entry.IsRecordset)
             {
                 result = entry.TryFetchIndexedRecordsetUpsertPayload(index, out error).TheValue;
             }
@@ -1594,18 +1617,18 @@ namespace Dev2.DataList.Contract
         {
             string result = datalist;
 
-            if (!string.IsNullOrEmpty(datalist))
+            if(!string.IsNullOrEmpty(datalist))
             {
 
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.LoadXml(datalist);
-                foreach (XmlNode root in xDoc.ChildNodes)
+                foreach(XmlNode root in xDoc.ChildNodes)
                 {
-                    if (root.HasChildNodes)
+                    if(root.HasChildNodes)
                     {
-                        foreach (XmlNode node in root.ChildNodes)
+                        foreach(XmlNode node in root.ChildNodes)
                         {
-                            foreach (XmlNode childnode in node.ChildNodes)
+                            foreach(XmlNode childnode in node.ChildNodes)
                             {
                                 XmlAttribute editableAtt3 = xDoc.CreateAttribute("IsEditable");
                                 editableAtt3.Value = "False";
@@ -1630,7 +1653,7 @@ namespace Dev2.DataList.Contract
         public static string ExtractInputDefinitionsFromServiceDefinition(string serviceDefintion)
         {
             string result = string.Empty;
-            if (!string.IsNullOrEmpty(serviceDefintion))
+            if(!string.IsNullOrEmpty(serviceDefintion))
             {
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.LoadXml(serviceDefintion);
@@ -1648,7 +1671,7 @@ namespace Dev2.DataList.Contract
         public static string ExtractOutputDefinitionsFromServiceDefinition(string serviceDefintion)
         {
             string result = string.Empty;
-            if (!string.IsNullOrEmpty(serviceDefintion))
+            if(!string.IsNullOrEmpty(serviceDefintion))
             {
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.LoadXml(serviceDefintion);

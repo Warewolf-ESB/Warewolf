@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using Dev2.Common;
 
 namespace Dev2.Services.Sql
 {
@@ -40,7 +41,9 @@ namespace Dev2.Services.Sql
             _command = _connection.CreateCommand();
             _command = new SqlCommand(commandText, _connection)
             {
-                CommandType = commandType
+                CommandType = commandType,
+                CommandTimeout  = (int)GlobalConstants.TransactionTimeout.TotalSeconds
+                
             };
             _connection.Open();
             return true;

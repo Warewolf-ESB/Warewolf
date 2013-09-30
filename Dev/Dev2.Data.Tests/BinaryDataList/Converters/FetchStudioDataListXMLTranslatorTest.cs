@@ -48,8 +48,6 @@ namespace Dev2.Tests.Runtime.BinaryDataList.Converters
             
             string result = _compiler.ConvertFrom(tmp, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
 
-            _compiler.DeleteDataListByID(tmp);
-
             const string expected = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Input"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></DataList>";
 
             var res = _compiler.HasErrors(tmp);
@@ -67,8 +65,6 @@ namespace Dev2.Tests.Runtime.BinaryDataList.Converters
             ErrorResultTO errors;
 
             string result = _compiler.ConvertFrom(tmp, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
-
-            _compiler.DeleteDataListByID(tmp);
 
             const string expected = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Output"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /></DataList>";
 
@@ -88,16 +84,11 @@ namespace Dev2.Tests.Runtime.BinaryDataList.Converters
 
             string result = _compiler.ConvertFrom(tmp, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
 
-            _compiler.DeleteDataListByID(tmp);
-
             const string expected = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Both"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></DataList>";
-
-            var res = _compiler.HasErrors(tmp);
 
             _compiler.ForceDeleteDataListByID(tmp);
 
             Assert.AreEqual(expected, result);
-            Assert.IsFalse(res);
         }
 
         #endregion

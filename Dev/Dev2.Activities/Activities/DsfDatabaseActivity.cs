@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Helpers;
 using Dev2.Services.Execution;
@@ -12,17 +15,30 @@ namespace Dev2.Activities
 
         #region Overrides of DsfActivity
 
-        protected override Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, out ErrorResultTO tmpErrors)
+        // Nasty that this is now outside the Esb Chanel and in the WF engine, this has resulted in duplicated execution logic ;(
+        protected override Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors)
         {
-            tmpErrors = new ErrorResultTO();
+            errors = new ErrorResultTO();
 
             var execErrors = new ErrorResultTO();
             var compiler = DataListFactory.CreateDataListCompiler();
-            CleanDataList(new RuntimeHelpers(), dataObject, dataObject.WorkspaceID, compiler, execErrors);
-            tmpErrors.MergeErrors(execErrors);
+            var oldID = dataObject.DataListID;
+
+            IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> remainingMappings = esbChannel.ShapeForSubRequest(dataObject, inputs, outputs, out errors);
+            errors.MergeErrors(execErrors);
 
             var result = ServiceExecution.Execute(out execErrors);
-            tmpErrors.MergeErrors(execErrors);
+            errors.MergeErrors(execErrors);
+
+            // Adjust the remaining output mappings ;)
+            compiler.SetParentID(dataObject.DataListID, oldID);
+            if (remainingMappings != null)
+            {
+                var outputMappings = remainingMappings.FirstOrDefault(c => c.Key == enDev2ArgumentType.Output);
+                compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputMappings.Value, out execErrors);
+                errors.MergeErrors(errors);
+            }
+
             return result;
         }
 
@@ -42,15 +58,6 @@ namespace Dev2.Activities
         }
 
         #endregion
-
-        #endregion
-
-        #region Protected Helper Functions
-
-        protected virtual void CleanDataList(RuntimeHelpers runtimeHelpers, IDSFDataObject dataObject, Guid workspaceID, IDataListCompiler compiler, ErrorResultTO tmpErrors)
-        {
-            runtimeHelpers.GetCorrectDataList(dataObject, workspaceID, tmpErrors, compiler);
-        }
 
         #endregion
     }

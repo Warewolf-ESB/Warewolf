@@ -74,7 +74,7 @@ namespace Dev2.DataList.Contract.Network
             byte[] datalistData = null;
             if(Datalist != null)
             {
-                DataListTranslatedPayloadTO dataListTranslatedPayloadTO = translator.ConvertFrom(Datalist, out tmpErrors);
+                DataListTranslatedPayloadTO dataListTranslatedPayloadTO = translator.ConvertFrom(Datalist,  out tmpErrors);
                 datalistData = dataListTranslatedPayloadTO.FetchAsByteArray();
             }
 

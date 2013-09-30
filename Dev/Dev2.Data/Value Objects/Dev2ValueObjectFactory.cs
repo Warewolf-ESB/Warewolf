@@ -9,7 +9,7 @@ namespace Dev2.DataList.Contract.Value_Objects
         /// <summary>
         /// Creates the evaluate iterator.
         /// </summary>
-        /// <param name="itm">The itm.</param>
+        /// <param name="entry">The entry.</param>
         /// <returns></returns>
         public static IDev2DataListEvaluateIterator CreateEvaluateIterator(IBinaryDataListEntry entry)
         {

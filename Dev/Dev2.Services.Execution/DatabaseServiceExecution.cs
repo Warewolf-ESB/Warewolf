@@ -113,9 +113,10 @@ namespace Dev2.Services.Execution
 
                     var dataSet = SqlServer.FetchDataTable(parameters.ToArray());
                     {
+
                         IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-                        var dlShape = compiler.ShapeDev2DefinitionsToDataList(Service.OutputSpecification, enDev2ArgumentType.Output, false, out errors);
-                        executeService = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dataSet, dlShape, out errors);
+
+                        executeService = compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dataSet, DataObj.DataListID, out errors);
                         return true;
                     }
                 }

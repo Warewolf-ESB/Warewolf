@@ -126,6 +126,11 @@ namespace Dev2.Server.DataList.Translators
             throw new NotImplementedException();
         }
 
+        public Guid Populate(object input, Guid targetDL, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Converts the and filter.
         /// </summary>

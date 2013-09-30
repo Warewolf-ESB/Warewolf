@@ -11,6 +11,7 @@ namespace Dev2.DataList.Contract
     public interface IDataListCompiler: IDisposable
     {
 
+
         // Travis.Frisinger : 29.10.2012 - Amend Compiler Interface for refactoring
         #region New External Methods
 
@@ -198,25 +199,25 @@ namespace Dev2.DataList.Contract
         Guid Upsert(Guid curDLID, IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> payload, out ErrorResultTO errors);
 
         /// <summary>
-        /// Shapes the definitions in string form to create/amended a DL.
+        /// Shapes for sub execution.
         /// </summary>
-        /// <param name="curDLID">The cur DL ID.</param>
-        /// <param name="typeOf">The type of.</param>
-        /// <param name="definitions">The definitions.</param>
+        /// <param name="parentDLID">The parent dlid.</param>
+        /// <param name="childDLID">The child dlid.</param>
+        /// <param name="inputDefs">The input defs.</param>
+        /// <param name="outputDefs">The output defs.</param>
         /// <param name="errors">The errors.</param>
-        /// <param name="masterShape">The master shape.</param>
         /// <returns></returns>
-        Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors, string masterShape);
+        IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubExecution(Guid parentDLID, Guid childDLID, string inputDefs, string outputDefs, out ErrorResultTO errors);
 
         /// <summary>
-        /// Shapes the definitions in string form to create/amended a DL.
+        /// Shapes the specified current dlid.
         /// </summary>
-        /// <param name="curDLID">The cur DL ID.</param>
+        /// <param name="curDLID">The current dlid.</param>
         /// <param name="typeOf">The type of.</param>
-        /// <param name="definitions">The definitions.</param>
+        /// <param name="inputDefinitions">The input definitions.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors);
+        Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string inputDefinitions, out ErrorResultTO errors);
 
         /// <summary>
         /// Shapes the definitions in binary form to create/amended a DL.
@@ -224,8 +225,10 @@ namespace Dev2.DataList.Contract
         /// <param name="curDLID">The cur DL ID.</param>
         /// <param name="typeOf">The type of.</param>
         /// <param name="definitions">The definitions.</param>
+        /// <param name="errors">The errors.</param>
         /// <returns></returns>
         Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, IList<IDev2Definition> definitions, out ErrorResultTO errors);
+
 
         /// <summary>
         /// Merges the specified left ID with the right ID
@@ -259,13 +262,6 @@ namespace Dev2.DataList.Contract
         /// <param name="val">The val.</param>
         /// <returns></returns>
         Guid UpsertSystemTag(Guid curDLID, enSystemTag tag, string val, out ErrorResultTO errors);
-
-        /// <summary>
-        /// Persists the resumable data list chain.
-        /// </summary>
-        /// <param name="baseChildID">The base child ID.</param>
-        /// <returns></returns>
-        bool PersistResumableDataListChain(Guid baseChildID);
 
         #endregion
 
@@ -311,6 +307,16 @@ namespace Dev2.DataList.Contract
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
         Guid ConvertTo(DataListFormat typeOf, object payload, string shape, out ErrorResultTO errors);
+
+        /// <summary>
+        /// Populates the data list.
+        /// </summary>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="input">The input.</param>
+        /// <param name="targetDLID">The target dlid.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        Guid PopulateDataList(DataListFormat typeOf, object input, Guid targetDLID, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts to selected Type from binary

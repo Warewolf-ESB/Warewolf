@@ -190,6 +190,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, outRes[0].FetchResultsList().Count);
             Assert.AreEqual("Passed Test", outRes[0].ResultsList[0].Value);
         }
+
         [TestMethod]
         public void DecisionGetDebugInputOutputWithTwoPopulatedColumnsBothOfThemStarredIndexedRecordsetsExpectedCorrectOutput()
         {
@@ -441,6 +442,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             ErrorResultTO errors;
             dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, shape, out errors);
+
+            // we need to set this now ;)
+            dataObject.ParentThreadID = 1;
 
             WorkflowHelper.Instance.CompileExpressions(workflow);
 

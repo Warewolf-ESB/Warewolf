@@ -2,6 +2,7 @@
 using Dev2.Data.Binary_Objects;
 using System;
 using System.Collections.Generic;
+using Dev2.Data.Storage.ProtocolBuffers;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {
@@ -84,11 +85,46 @@ namespace Dev2.DataList.Contract.Binary_Objects
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Adjusts for column disparity.
+        /// </summary>
+        /// <param name="parentEntry">The parent entry.</param>
+        void AdjustForColumnDisparity(IBinaryDataListEntry parentEntry);
+
+        /// <summary>
+        /// Adjusts the index view.
+        /// </summary>
+        /// <param name="gaps">The gaps.</param>
+        /// <param name="min">The minimum.</param>
+        /// <param name="max">The maximum.</param>
+        void AdjustIndexView(HashSet<int> gaps, int min, int max);
+
+        /// <summary>
+        /// Adjusts for io mapping.
+        /// </summary>
+        /// <param name="parentDLID">The parent dlid.</param>
+        /// <param name="parentColumn">The parent column.</param>
+        /// <param name="parentNamespace">The parent namespace.</param>
+        /// <param name="childColumn">The child column.</param>
+        /// <param name="errors">The errors.</param>
+        void AdjustForIOMapping(Guid parentDLID, string parentColumn, string parentNamespace, string childColumn, out ErrorResultTO errors);
+
         /// <summary>
         /// Return the number of rows in a recordset
         /// </summary>
         /// <returns></returns>
         int ItemCollectionSize();
+
+
+        /// <summary>
+        /// Fetches the row attribute.
+        /// </summary>
+        /// <param name="idx">The index.</param>
+        /// <param name="error">The error.</param>
+        /// <returns></returns>
+        IList<IBinaryDataListItem> FetchRowAt(int idx, out string error);
+
 
         /// <summary>
         /// Fetch a record at an index
@@ -105,7 +141,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <param name="field">The field.</param>
         /// <param name="error">The error.</param>
         /// <returns></returns>
-        IList<IBinaryDataListItem> FetchRecordAt(int idx, string field, out string error);
+        IList<IBinaryDataListItem> FetchRecordAt(int idx, string field, out string error, bool isEntireRow = false);
 
         /// <summary>
         /// Put a column value at an recordset index
@@ -268,6 +304,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <param name="filterCols">The filter cols.</param>
         /// <returns></returns>
         List<int> GetDistinctRows(List<string> filterCols);
+
+        /// <summary>
+        /// Fetches the alias.
+        /// </summary>
+        /// <returns></returns>
+        IDictionary<string, BinaryDataListAlias> FetchAlias();
 
         /// <summary>
         /// Disposes the cache.

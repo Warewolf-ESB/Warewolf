@@ -9,7 +9,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
     {
         #region Internal Struct
 
-        private SBinaryDataListItem _internalObj = new SBinaryDataListItem();
+        private SBinaryDataListItem _internalObj;
 
         #endregion
 

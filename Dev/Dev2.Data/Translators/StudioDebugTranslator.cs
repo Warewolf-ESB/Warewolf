@@ -110,7 +110,7 @@ namespace Dev2.Server.DataList.Translators
             string payload = Encoding.UTF8.GetString(input);
             string error = string.Empty;
 
-            IBinaryDataList result = new BinaryDataList();
+            IBinaryDataList result = null;
 
             // build shape
             if (targetShape == null)
@@ -180,7 +180,7 @@ namespace Dev2.Server.DataList.Translators
                                             }
                                         }
 
-                                        if (DataListUtil.isSystemTag(c.Name) && !hasCorrectIoDirection)
+                                        if (DataListUtil.IsSystemTag(c.Name) && !hasCorrectIoDirection)
                                         {
                                             continue;
                                         }
@@ -260,11 +260,16 @@ namespace Dev2.Server.DataList.Translators
             throw new NotImplementedException();
         }
 
+        public Guid Populate(object input, Guid targetDL, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
         public string ConvertAndFilter(IBinaryDataList payload, string filterShape, out ErrorResultTO errors)
         {
             if (payload == null)
             {
-                throw new ArgumentNullException("input");
+                throw new ArgumentNullException("payload");
             }
 
             StringBuilder result = new StringBuilder("<" + _rootTag + ">");
@@ -375,7 +380,7 @@ namespace Dev2.Server.DataList.Translators
                     {
                         XmlAttribute descAttribute = null;
                         XmlAttribute columnIODirection = null;
-                        if (!DataListUtil.isSystemTag(c.Name))
+                        if (!DataListUtil.IsSystemTag(c.Name))
                         {
                             if (c.HasChildNodes)
                             {

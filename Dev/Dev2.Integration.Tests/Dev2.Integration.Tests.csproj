@@ -210,11 +210,8 @@
       <SubType>
       </SubType>
     </Compile>
-    <Compile Include="Activities\GeneralWorkflowTest.cs" />
     <Compile Include="Bootstrap.cs" />
     <Compile Include="CommonTest\GetComputerNamesTests.cs" />
-    <Compile Include="DataTest\BinaryDataListStorageTest.cs" />
-    <Compile Include="Dev2.Activities.Designers\DsfGetWebRequest\GetWebRequestViewModelTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DecisionWFTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfBaseConvertActivityWFTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfCalculateActivityTest.cs" />
@@ -278,7 +275,6 @@
     <Compile Include="Internal Services\GetCurrentLogFileServicesTest.cs" />
     <Compile Include="Internal Services\GetDebugStateTests.cs" />
     <Compile Include="Internal Services\RenameResourceCategoryServicesTest.cs" />
-    <Compile Include="Internal Services\RenameResourceServiceTests.cs" />
     <Compile Include="Internal Services\SystemServicesTest.cs" />
     <Compile Include="Load Tests\LoadTest.cs" />
     <Compile Include="Mocks\MockConfigurationReader.cs" />
@@ -356,6 +352,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="DataTest\" />
     <Folder Include="locale\" />
   </ItemGroup>
   <ItemGroup>
@@ -388,10 +385,6 @@
     <ProjectReference Include="..\ConsoleAppToTestExecuteCommandLineActivity\ConsoleAppToTestExecuteCommandLineActivity.csproj">
       <Project>{df3ca7cd-16b7-465e-a7db-91951dfc330f}</Project>
       <Name>ConsoleAppToTestExecuteCommandLineActivity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
-      <Project>{b95b724a-b052-4e18-98a4-88072c8df2c2}</Project>
-      <Name>Dev2.Activities.Designers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>

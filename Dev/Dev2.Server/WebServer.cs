@@ -76,8 +76,6 @@ namespace Dev2
 
             bool isXmlData = false;
 
-            try
-            {
                 string baseStr = HttpUtility.UrlDecode(ctx.Request.Uri.ToString());
                 if (baseStr != null)
                 {
@@ -85,20 +83,17 @@ namespace Dev2
                     if (startIdx > 0)
                     {
 
-                        XmlDocument xDoc = new XmlDocument();
                         string payload = baseStr.Substring((startIdx + 1));
-                        xDoc.LoadXml(payload);
+
+                    if (payload.IsXml())
+                    {
+
                         formData = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(payload);
                         isXmlData = true;
+                    }
 
                     }
-                }
             }
-            catch (Exception ex)
-            {
-                ServerLogger.LogError(ex);
-            }
-
 
             if (!isXmlData)
             {

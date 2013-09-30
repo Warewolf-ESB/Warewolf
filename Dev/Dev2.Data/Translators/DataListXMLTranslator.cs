@@ -130,7 +130,7 @@ namespace Dev2.Server.DataList.Translators
                             if(!val.IsDeferredRead)
                             {
                                 // Dev2System.FormView is our html region, pass it by ;)
-                                if(!entry.IsManagmentServicePayload && !entry.Namespace.Equals("Dev2System.FormView"))
+                                if(!entry.IsManagmentServicePayload)
                                 {
                                     result.Append(tu.CleanForEmit(val.TheValue));
                                 }
@@ -201,7 +201,7 @@ namespace Dev2.Server.DataList.Translators
                             TryConvert(children, result, indexCache, errors);
                         }
 
-                        // Transfer System Tags
+                        //// Transfer System Tags
                         IBinaryDataListEntry sysEntry;
                         for(int i = 0; i < TranslationConstants.systemTags.Length; i++)
                         {
@@ -216,7 +216,7 @@ namespace Dev2.Server.DataList.Translators
                                 n = xDoc.SelectSingleNode(query);
                             }
 
-                            if(n != null)
+                            if(n != null && !string.IsNullOrEmpty(n.InnerXml))
                             {
                                 string bkey = DataListUtil.BuildSystemTagForDataList(key, false);
                                 string error;
@@ -245,13 +245,18 @@ namespace Dev2.Server.DataList.Translators
             throw new NotImplementedException();
         }
 
+        public Guid Populate(object input, Guid targetDL, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
         // BUG 9626 - 2013.06.11 - TWR: refectored for recursion
         static void TryConvert(XmlNodeList children, IBinaryDataList result, IDictionary<string, int> indexCache, ErrorResultTO errors, int level = 0)
         {
             // spin through each element in the XML
             foreach(XmlNode c in children)
             {
-                if(!DataListUtil.isSystemTag(c.Name) && c.Name != GlobalConstants.NaughtyTextNode)
+                if(!DataListUtil.IsSystemTag(c.Name) && c.Name != GlobalConstants.NaughtyTextNode)
                 {
                     // scalars and recordset fetch
                     IBinaryDataListEntry entry;
@@ -302,10 +307,10 @@ namespace Dev2.Server.DataList.Translators
                         {
                             errors.AddError(error);
                         }
-                    }
-                }
-            }
-        }
+                                            }
+                                            }
+                                        }
+                                }
 
         public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
         {

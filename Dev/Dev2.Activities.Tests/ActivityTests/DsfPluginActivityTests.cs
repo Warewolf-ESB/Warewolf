@@ -105,7 +105,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             context.ResourceID = It.IsAny<Guid>();
 
             //exe
-            pluginActivity.Object.MockExecutionImpl(It.IsAny<IEsbChannel>(), context, out errors);
+            pluginActivity.Object.MockExecutionImpl(It.IsAny<IEsbChannel>(), context, string.Empty, string.Empty, out errors);
 
             //assert
             Assert.IsFalse(errors.HasErrors(), "Errors where thrown while executing a plugin activity");

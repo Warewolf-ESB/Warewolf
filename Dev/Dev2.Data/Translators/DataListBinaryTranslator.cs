@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -34,7 +32,8 @@ namespace Dev2.Server.DataList.Translators
         /// Converts from a binary representation in the standard format to the specified <see cref="Format" />.
         /// </summary>
         /// <param name="input">The binary representation of the datalist.</param>
-        /// <param name="errors"></param>
+        /// <param name="depth">The depth.</param>
+        /// <param name="errors">The errors.</param>
         /// <returns>
         /// An array of bytes that represent the datalist in the specified <see cref="Format" />
         /// </returns>
@@ -91,6 +90,11 @@ namespace Dev2.Server.DataList.Translators
         }
 
         public IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Guid Populate(object input, Guid targetDL, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }

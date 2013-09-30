@@ -8,8 +8,6 @@ namespace Dev2.Data.DataListCache
     {
         bool WriteDataList(Guid datalistID, IBinaryDataList datalist, ErrorResultTO errors);
         IBinaryDataList ReadDatalist(Guid datalistID, ErrorResultTO errors);
-        void DeleteDataList(Guid id, bool onlyIfNotPersisted);
-        bool PersistChildChain(Guid id);
-        void InitPersistence();
+        bool DeleteDataList(Guid id, bool onlyIfNotPersisted);
     }
 }

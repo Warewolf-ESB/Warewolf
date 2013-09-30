@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Dev2.Data.Binary_Objects
 {
@@ -48,6 +49,11 @@ namespace Dev2.Data.Binary_Objects
         }
 
         public void RemoveGap(int idx)
+        {
+            throw new NotImplementedException();
+        }
+
+        public HashSet<int> FetchGaps()
         {
             throw new NotImplementedException();
         }

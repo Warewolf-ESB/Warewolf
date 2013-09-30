@@ -149,10 +149,11 @@ namespace Dev2.Data.Binary_Objects
             IndexList.Gaps.Remove(idx);
         }
 
-        /// <summary>
-        /// Clones this instance.
-        /// </summary>
-        /// <returns></returns>
+        public HashSet<int> FetchGaps()
+        {
+            return IndexList.Gaps;
+        }
+
         public IIndexIterator Clone()
         {
             HashSet<int> gaps = new HashSet<int>();

@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
+using Dev2.Data.Storage;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
-using Dev2.Network.Execution;
 using enActionType = Dev2.DataList.Contract.enActionType;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -191,7 +191,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             base.CacheMetadata(metadata);
         }
 
-        private bool _IsDebug = false;
         string _serviceUri;
         InArgument<string> _friendlySourceName;
         InArgument<Guid> _environmentID;
@@ -199,14 +198,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
 
-            context.Properties.ToObservableCollection(); /// ???? Why is this here....
+            /// ???? Why is this here....
+            context.Properties.ToObservableCollection(); 
 
-            bool createResumptionPoint = false;
             IEsbChannel esbChannel = context.GetExtension<IEsbChannel>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             ErrorResultTO allErrors = new ErrorResultTO();
 
             Guid datalistID = DataListExecutionID.Get(context);
@@ -224,13 +223,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 compiler.ClearErrors(dataObject.DataListID);
 
-                // Set Debug Mode Value
-                string debugMode = compiler.EvaluateSystemEntry(datalistID, enSystemTag.BDSDebugMode, out errors);
-                allErrors.MergeErrors(errors);
-
-                bool.TryParse(debugMode, out _IsDebug);
-
-                if(_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(dataObject.IsDebugMode())
                 {
                     if(ServiceServer != Guid.Empty)
                     {
@@ -291,36 +284,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             BeforeExecutionStart(dataObject, tmpErrors);
                             allErrors.MergeErrors(tmpErrors);
 
-                            // fetch the target shape ;)
-                            string targetShape = esbChannel.FindServiceShape(dataObject.WorkspaceID, ServiceName, true);
-
-                            // NOTE : This needs to be a mix of Input and Output mappings to make the target shape ;)
-                            Guid subExeID = compiler.Shape(datalistID, enDev2ArgumentType.Input, InputMapping, out tmpErrors, targetShape);
-                            allErrors.MergeErrors(tmpErrors);
-
-                            dataObject.DataListID = subExeID;
                             dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
                             dataObject.ResourceID = ResourceID.Expression==null?Guid.Empty:Guid.Parse(ResourceID.Expression.ToString());
 
                             // Execute Request
-                            var resultID = ExecutionImpl(esbChannel, dataObject, out tmpErrors);
+                            ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors);
                             allErrors.MergeErrors(tmpErrors);
-
-                            //if scoped reuse the same datalist from before execution
-                            if (dataObject.IsDataListScoped)
-                            {
-                                resultID = subExeID;
-                            }
-
-                            //  Do Output shaping ;)
-                            compiler.SetParentID(resultID, datalistID);
-                            compiler.Shape(resultID, enDev2ArgumentType.Output, OutputMapping, out tmpErrors);
-                            allErrors.MergeErrors(tmpErrors);
-
-                            if (!dataObject.IsDataListScoped)
-                            {
-                                compiler.DeleteDataListByID(resultID); // remove sub service DL  
-                            }
 
                             AfterExecutionCompleted(tmpErrors);
                             allErrors.MergeErrors(tmpErrors);
@@ -332,44 +301,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     bool whereErrors = compiler.HasErrors(datalistID);
 
-                    if(!whereErrors)
-                    {
-                        string entry = compiler.EvaluateSystemEntry(datalistID, enSystemTag.FormView, out errors);
-                        allErrors.MergeErrors(errors);
-
-                        if(entry != string.Empty)
-                        {
-                            createResumptionPoint = true;
-                            allErrors.MergeErrors(errors);
-                        }
-                    }
-
                     Result.Set(context, whereErrors);
                     HasError.Set(context, whereErrors);
                     IsValid.Set(context, whereErrors);
 
-                    if((IsWorkflow || IsUIStep) && createResumptionPoint && !_IsDebug)
-                    {
-                        dataObject.ServiceName = ServiceName;
-                        dataObject.ParentServiceName = ParentServiceName;
-                        dataObject.ParentInstanceID = ParentInstanceID.ToString();
-                        dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
-                        dataObject.WorkflowInstanceId = context.WorkflowInstanceId.ToString();
-                        dataObject.WorkflowResumeable = true;
-                        context.CreateBookmark("dsfResumption", Resumed);
-
-
-                        compiler.ConditionalMerge(DataListMergeFrequency.Always | DataListMergeFrequency.OnBookmark,
-                            dataObject.DatalistOutMergeID, dataObject.DataListID, dataObject.DatalistOutMergeFrequency, dataObject.DatalistOutMergeType, dataObject.DatalistOutMergeDepth);
-                        ExecutionStatusCallbackDispatcher.Instance.Post(dataObject.BookmarkExecutionCallbackID, ExecutionStatusCallbackMessageType.BookmarkedCallback);
-
-                        // Signal DataList server to persist the data ;)
-                        compiler.PersistResumableDataListChain(dataObject.DataListID);
-
-                        // INFO : In these cases resumption handles the delete and shape ;)
                     }
                 }
-            }
             finally
             {
                 dataObject.ResourceID = oldResourceID;
@@ -379,12 +316,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // Handle Errors
                     if(allErrors.HasErrors())
                     {
-                        DisplayAndWriteError("DsfBaseActivity", allErrors);
+                        DisplayAndWriteError("DsfActivity", allErrors);
                         compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                     }
                 }
 
-                if(_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context, StateType.After);
                 }
@@ -409,9 +346,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
-        protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, out ErrorResultTO tmpErrors)
+        protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
         {
-            var resultID = esbChannel.ExecuteTransactionallyScopedRequest(dataObject, dataObject.WorkspaceID, out tmpErrors);
+            ServerLogger.LogMessage("PRE-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB() + " MBs ]");
+            
+            var resultID = esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors);
+
+            ServerLogger.LogMessage("POST-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB() + " MBs ]");
+
             return resultID;
         }
 
@@ -439,8 +381,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO errors = new ErrorResultTO();
             invokeErrors = new ErrorResultTO();
             // Strip System Tags
-            compiler.UpsertSystemTag(executionID, enSystemTag.FormView, string.Empty, out errors);
-            invokeErrors.MergeErrors(errors);
 
             compiler.UpsertSystemTag(executionID, enSystemTag.InstanceId, string.Empty, out errors);
             invokeErrors.MergeErrors(errors);
@@ -452,9 +392,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             invokeErrors.MergeErrors(errors);
 
             compiler.UpsertSystemTag(executionID, enSystemTag.ParentServiceName, string.Empty, out errors);
-            invokeErrors.MergeErrors(errors);
-
-            compiler.UpsertSystemTag(executionID, enSystemTag.BDSDebugMode, string.Empty, out errors);
             invokeErrors.MergeErrors(errors);
 
             compiler.UpsertSystemTag(executionID, enSystemTag.ParentWorkflowInstanceId, workflowID, out errors);

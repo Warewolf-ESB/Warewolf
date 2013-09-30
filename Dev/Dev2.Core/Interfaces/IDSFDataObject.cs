@@ -57,8 +57,6 @@ namespace Dev2
 
         IDSFDataObject Clone();
 
-        bool IsInDebugMode();
-
         ExecutionOrigin ExecutionOrigin { get; set; }
         string ExecutionOriginDescription { get; set; }
         bool IsFromWebServer { get; set; }
@@ -68,7 +66,8 @@ namespace Dev2
         Guid EnvironmentID { get; set; }
         bool IsRemoteWorkflow { get; }
 
-        Guid DebugSessionID { get; set; }
+        int ParentThreadID { get; set; }
 
+        Guid DebugSessionID { get; set; }
     }
 }

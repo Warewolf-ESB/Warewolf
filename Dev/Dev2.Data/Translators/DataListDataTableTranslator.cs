@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using Dev2.Common;
 using Dev2.DataList.Contract;
@@ -29,7 +27,7 @@ namespace Dev2.Data.Translators
         public DataListFormat Format { get; private set; }
         public Encoding TextEncoding { get; private set; }
 
-        public DataListTranslatedPayloadTO ConvertFrom(IBinaryDataList input, out ErrorResultTO errors)
+        public DataListTranslatedPayloadTO ConvertFrom(IBinaryDataList input,out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }
@@ -39,9 +37,126 @@ namespace Dev2.Data.Translators
             throw new NotImplementedException();
         }
 
+       
         public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
+        }
+
+        public Guid Populate(object input, Guid targetDLID, out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO();
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO invokeErrors;
+            IBinaryDataList targetDL = compiler.FetchBinaryDataList(targetDLID, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+
+            DataTable dbData = (input as DataTable);
+
+            var tmp = targetDL.FetchAllEntries();
+
+            string rsName = string.Empty;
+
+            // pick the first recordset to deal with ;)
+            int rsCnt = 0;
+            foreach (var tt in tmp)
+            {
+                
+                if (tt.IsRecordset)
+                {
+                    if (rsCnt == 0)
+                    {
+                        rsName = tt.Namespace;
+                    }
+
+                    rsCnt++;
+                }
+            }
+
+            // ensure we only have a single recordset to map too ;)
+            if(string.IsNullOrEmpty(rsName) || rsCnt > 1)
+            {
+                throw new Exception("DataTable translator can only map to a single recordset!");
+            }
+
+            if(dbData != null)
+            {
+                IBinaryDataListEntry entry;
+
+                // build up the columns ;)
+                string error;
+                if(targetDL.TryGetEntry(rsName, out entry, out error))
+                {
+
+                    if(entry.IsRecordset)
+                    {
+                        var cols = entry.Columns;
+                        IDictionary<int, string> colMapping = BuildColumnNameToIndexMap(entry.Columns, dbData.Columns);
+
+                        // now convert to binary datalist ;)
+                        int rowIdx = entry.FetchAppendRecordsetIndex();
+
+                        foreach(DataRow row in dbData.Rows)
+                        {
+                            IList<IBinaryDataListItem> items = new List<IBinaryDataListItem>(cols.Count);
+                            // build up the row
+                            int idx = 0;
+
+                            foreach(var item in row.ItemArray)
+                            {
+                                string colName;
+
+                                if(colMapping.TryGetValue(idx, out colName))
+                                {
+                                    items.Add(new BinaryDataListItem(item.ToString(), rsName, colName, rowIdx));
+                                }
+
+                                idx++;
+                            }
+
+                            // add the row ;)
+                            entry.TryPutRecordRowAt(items, rowIdx, out error);
+
+                            errors.AddError(error);
+                            rowIdx++;
+                        }
+                    }
+                    else
+                    {
+                        // handle a scalar coming out ;)
+                        if(dbData.Rows != null && dbData.Rows.Count == 1)
+                        {
+                            var row = dbData.Rows[0].ItemArray;
+                            // Look up the correct index from the columns ;)
+
+                            int pos = 0;
+                            var cols = dbData.Columns;
+                            int idx = 0;
+
+                            while(pos < cols.Count && idx == -1)
+                            {
+                                if(cols[pos].ColumnName == entry.Namespace)
+                                {
+                                    idx = pos;
+                                }
+                                pos++;
+                            }
+
+                            entry.TryPutScalar(new BinaryDataListItem(row[idx].ToString(), entry.Namespace), out error);
+                            errors.AddError(error);
+                        }
+                    }
+                }
+                else
+                {
+                    errors.AddError(error);
+                }
+            }
+
+            compiler.PushBinaryDataList(targetDL.UID, targetDL, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+
+            return targetDL.UID;
         }
 
 
@@ -103,6 +218,7 @@ namespace Dev2.Data.Translators
 
                             // add the row ;)
                             entry.TryPutRecordRowAt(items, rowIdx, out error);
+
                             errors.AddError(error);
                             rowIdx++;
                         }

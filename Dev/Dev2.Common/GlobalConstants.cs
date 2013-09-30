@@ -85,17 +85,12 @@ namespace Dev2.Common
         public const string NaughtyTextNode = "#text";
         public const char EvaluationToken = '[';
 
-        public const string DefaultDataListCacheSizeLvl2MemoryPercentage = "85";
-
-        public const int DefaultDataListMaxCacheSizeLvl0 = 20000;
-        public const int DefaultDataListMaxCacheSizeLvl1 = 20000; // 20k rows in the 0 tier cache ;)
-        public const int DefaultDataListCreateCacheSizeLvl1 = 30000;
-        public const int DefaultBlobCreateCacheSizeLvl1 = 100;
-        public const int DefaultCachePageSizeLvl1 = 1100;
+        // Storage Cache Constants
         public const int DefaultColumnSizeLvl1 = 10;
-        public const int DefaultIntellisenseCacheLvl1 = 100;
-        public const int DefaultNamespaceSizeLvl1 = 10;
-        public const int DefaultConcurrentStorageAccsors = 4;
+        public const int DefaultStorageSegments = 8; 
+        public const int DefaultStorageSegmentSize = 64 * 1024 * 1024; // 64 MB default buffer size ;)
+        public const int DefaultAliasCacheSize = 32*1024; // 32KB of alias cache ;)
+        public const string DefaultStorageZipEntry = "Dev2Storage";
 
         public const string DataListIoColDirection = "ColumnIODirection";
 
@@ -188,5 +183,7 @@ namespace Dev2.Common
 
         // Query Network Computer Names
         public static readonly int NetworkComputerNameQueryFreq = 900000;
+
+        public static TimeSpan TransactionTimeout = new TimeSpan(1, 0, 0, 0);
     }
 }

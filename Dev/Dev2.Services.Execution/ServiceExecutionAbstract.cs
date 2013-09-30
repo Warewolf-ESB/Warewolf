@@ -59,7 +59,7 @@ namespace Dev2.Services.Execution
 
         void GetSource(ResourceCatalog catalog)
         {
-            Source = catalog.GetResource<TSource>(DataObj.WorkspaceID, Service.Source.ResourceID);
+                Source = catalog.GetResource<TSource>(DataObj.WorkspaceID, Service.Source.ResourceID);
             if(Source == null)
             {
                 Source = catalog.GetResource<TSource>(DataObj.WorkspaceID, Service.Source.ResourceName);
@@ -72,7 +72,7 @@ namespace Dev2.Services.Execution
 
         protected virtual bool GetService(ResourceCatalog catalog)
         {
-            Service = catalog.GetResource<TService>(DataObj.WorkspaceID, DataObj.ResourceID);
+                Service = catalog.GetResource<TService>(DataObj.WorkspaceID, DataObj.ResourceID);
             if(Service == null)
             {
                 Service = catalog.GetResource<TService>(DataObj.WorkspaceID, DataObj.ServiceName);
@@ -253,29 +253,10 @@ namespace Dev2.Services.Execution
                                enTranslationDepth.Data_With_Blank_OverWrite, false, out errors);
 
                 errors.MergeErrors(errors);
-                compiler.ForceDeleteDataListByID(tmpID); // clean up ;)
+
+                // NOTE : DO NOT DELETE tmpID this will cause chaos ;)
             }
-            else
-            {
-                Guid resultDLID;
 
-                if (Guid.TryParse(result.ToString(), out resultDLID))
-                {
-                    ErrorResultTO invokeErrors;
-
-                    //Attach a parent ID to the newly created datalist
-                    compiler.SetParentID(resultDLID, DataObj.DataListID);
-                    string convertFrom = compiler.ConvertFrom(DataObj.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors);
-                    if (String.IsNullOrEmpty(convertFrom)) return;
-                    // Merge each result into the datalist ;)
-
-                    compiler.Merge(DataObj.DataListID, resultDLID, enDataListMergeTypes.Union,
-                                   enTranslationDepth.Data_With_Blank_OverWrite, false, out invokeErrors);
-
-                    errors.MergeErrors(invokeErrors);
-                    compiler.ForceDeleteDataListByID(resultDLID); // clean up ;)
-                }
-            }
         }
 
         #endregion

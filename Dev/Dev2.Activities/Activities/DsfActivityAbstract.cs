@@ -118,12 +118,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 try {
 
-                    compiler.UpsertSystemTag(executionID, enSystemTag.Service, string.Empty, out tmpErrors);
-                    errors.MergeErrors(tmpErrors);
-
-                    compiler.UpsertSystemTag(executionID, enSystemTag.WebServerUrl, string.Empty, out tmpErrors);
-                    errors.MergeErrors(tmpErrors);
-
                     /* Now perform the shape.... */
 
                     // First set the parentID on executionID to rootID.. so the shape happens correctly ;)
@@ -233,8 +227,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             
             ErrorResultTO errors;
+            
             IBinaryDataList inputsAndOutputs = compiler.Merge(ActivityInputOutputUtils.GetSimpleInputs(this), ActivityInputOutputUtils.GetSimpleOutputs(this), enDataListMergeTypes.Union, enTranslationDepth.Data, true, out errors);
             return inputsAndOutputs;
+
+            return null;
         }
 
         #endregion Get Wizard Data

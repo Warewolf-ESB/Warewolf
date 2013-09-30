@@ -65,7 +65,7 @@ namespace Dev2.Data.Translators
                     foreach(XmlNode c in children)
                     {
                         XmlAttribute descAttribute = null;
-                        if(!DataListUtil.isSystemTag(c.Name))
+                        if(!DataListUtil.IsSystemTag(c.Name))
                         {
                             if(c.HasChildNodes)
                             {

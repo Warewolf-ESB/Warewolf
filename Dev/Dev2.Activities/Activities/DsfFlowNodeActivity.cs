@@ -85,7 +85,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            if (dataObject != null && (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID)) || dataObject.RemoteInvoke)
+            if (dataObject != null && dataObject.IsDebugMode())
             {
                 DispatchDebugState(context, StateType.Before);
             }
@@ -119,7 +119,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void OnFaulted(NativeActivityFaultContext faultContext, Exception propagatedException, ActivityInstance propagatedFrom)
         {
             IDSFDataObject dataObject = faultContext.GetExtension<IDSFDataObject>();
-            if (dataObject != null && (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID)) || dataObject.RemoteInvoke)
+            if (dataObject != null && dataObject.IsDebugMode())
             {
                 DispatchDebugState(faultContext, StateType.After);
             }

@@ -118,7 +118,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected));
+            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected), "Expected [ " + expected + "] Got [ " + ResponseData + " ]");
         }
 
         #endregion Scalar Tests

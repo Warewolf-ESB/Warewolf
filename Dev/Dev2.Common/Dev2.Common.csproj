@@ -79,12 +79,6 @@
     <Compile Include="Enums\enRandomType.cs" />
     <Compile Include="Enums\enScriptType.cs" />
     <Compile Include="ExtMethods\BaseEnumExtensions.cs" />
-    <Compile Include="ProtocolBuffers\AProtocolBuffer.cs" />
-    <Compile Include="ProtocolBuffers\BufferObject\BinaryStorageKey.cs" />
-    <Compile Include="ProtocolBuffers\BufferObject\IStringifyable.cs" />
-    <Compile Include="ProtocolBuffers\BufferObject\SampleObject.cs" />
-    <Compile Include="ProtocolBuffers\IDev2ProtocolBuffer.cs" />
-    <Compile Include="ProtocolBuffers\ProtocolBufferFactory.cs" />
     <Compile Include="ExtMethods\DirectoryInfoExtensionMethods.cs" />
     <Compile Include="ExtMethods\FieldInfoExtensionMethods.cs" />
     <Compile Include="ExtMethods\StringExtension.cs" />

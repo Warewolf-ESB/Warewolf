@@ -149,13 +149,9 @@ namespace Dev2.Server.DataList
             return _persistence.WriteDataList(id, data, errors);
         }
 
-        public void DeleteDataList(Guid id, bool onlyIfNotPersisted)
+        public bool DeleteDataList(Guid id, bool onlyIfNotPersisted)
         {
-            _persistence.DeleteDataList(id, onlyIfNotPersisted);
-        }
-
-        public bool PersistChildChain(Guid id) {
-            return _persistence.PersistChildChain(id);
+            return _persistence.DeleteDataList(id, onlyIfNotPersisted);
         }
 
     }

@@ -8,16 +8,28 @@ using Dev2.Runtime.Hosting;
 
 namespace Dev2.Runtime.Helpers
 {
+    /// <summary>
+    /// This class MUST GO. Fetch the EsbChannel from the context to keep logic where it belongs!
+    /// </summary>
     public class RuntimeHelpers
     {
+
+        /// <summary>
+        /// Gets the correct data list.
+        /// </summary>
+        /// <param name="dataObject">The data object.</param>
+        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="compiler">The compiler.</param>
+        /// <returns></returns>
+        /// WARNING : WHY THE FLIP DOES THIS LOGIC DUPLICATE THE ESB CHANNEL? 
         public virtual Guid GetCorrectDataList(IDSFDataObject dataObject, Guid workspaceID, ErrorResultTO errors, IDataListCompiler compiler)
         {
             string theShape;
             ErrorResultTO invokeErrors;
-            // Account for silly webpages...
 
             // If no DLID, we need to make it based upon the request ;)
-            if (dataObject.DataListID == GlobalConstants.NullDataListID)
+            if(dataObject.DataListID == GlobalConstants.NullDataListID)
             {
                 theShape = FindServiceShape(workspaceID, dataObject.ServiceName, true);
                 dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
@@ -38,11 +50,9 @@ namespace Dev2.Runtime.Helpers
             var right = compiler.FetchBinaryDataList(innerDatalistID, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
-            DataListUtil.AddMissingFromRight(left, right, out invokeErrors);
+            DataListUtil.MergeDataList(left, right, out invokeErrors);
             errors.MergeErrors(invokeErrors);
             compiler.PushBinaryDataList(left.UID, left, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
             errors.MergeErrors(invokeErrors);
 
             return innerDatalistID;
@@ -54,6 +64,7 @@ namespace Dev2.Runtime.Helpers
         /// <param name="workspaceID">The workspace ID.</param>
         /// <param name="serviceName">Name of the service.</param>
         /// <returns></returns>
+        /// WARNING : WHY THE FLIP IS THIS LOGIC IN TWO PLACES? REMOVE ONE!
         public string FindServiceShape(Guid workspaceID, string serviceName, bool serviceInputs)
         {
             var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceName);

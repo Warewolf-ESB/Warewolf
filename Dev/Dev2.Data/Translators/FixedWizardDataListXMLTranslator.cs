@@ -30,7 +30,7 @@ namespace Dev2.Server.DataList.Translators
         {
             if (payload == null)
             {
-                throw new ArgumentNullException("input");
+                throw new ArgumentNullException("payload");
             }
 
             StringBuilder result = new StringBuilder("<" + _rootTag + ">");
@@ -112,10 +112,10 @@ namespace Dev2.Server.DataList.Translators
         public IBinaryDataList ConvertTo(byte[] input, string targetShape, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            string payload = System.Text.Encoding.UTF8.GetString(input);
+            string payload = Encoding.UTF8.GetString(input);
             string error = string.Empty;
 
-            IBinaryDataList result = new BinaryDataList();
+            IBinaryDataList result = null;
 
             // build shape
             if (payload == null || targetShape == null)
@@ -147,7 +147,7 @@ namespace Dev2.Server.DataList.Translators
 
                             // spin through each element in the XML
                             foreach (XmlNode c in children) {
-                                if (!DataListUtil.isSystemTag(c.Name)) {
+                                if (!DataListUtil.IsSystemTag(c.Name)) {
                                     // scalars and recordset fetch
                                     if (result.TryGetEntry(c.Name, out entry, out error)) {
                                         if (entry.IsRecordset) {
@@ -197,7 +197,7 @@ namespace Dev2.Server.DataList.Translators
                             string query = String.Concat("//", key);
                             XmlNode n = xDoc.SelectSingleNode(query);
 
-                            if (n != null) {
+                            if (n != null && !string.IsNullOrEmpty(n.InnerXml)) {
                                 string bkey = GlobalConstants.SystemTagNamespace + "." + key;
                                 if (result.TryGetEntry(bkey, out sysEntry, out error)) {
                                     sysEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(n.InnerXml, bkey), out error);
@@ -218,6 +218,11 @@ namespace Dev2.Server.DataList.Translators
         }
 
         public IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Guid Populate(object input, Guid targetDL, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }
@@ -259,7 +264,7 @@ namespace Dev2.Server.DataList.Translators
                     foreach (XmlNode c in children)
                     {
                         XmlAttribute descAttribute = null;
-                        if (!DataListUtil.isSystemTag(c.Name))
+                        if (!DataListUtil.IsSystemTag(c.Name))
                         {
                             if (c.HasChildNodes)
                             {

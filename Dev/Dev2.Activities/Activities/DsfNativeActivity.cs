@@ -3,6 +3,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Xml;
 using Dev2;
 using Dev2.Activities;
@@ -128,6 +129,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
 
+            // we need to register this child thread with the DataListRegistar so we can scope correctly ;)
+            DataListRegistar.RegisterActivityThreadToParentId(dataObject.ParentThreadID, Thread.CurrentThread.ManagedThreadId);
+
             if(dataObject != null && compiler != null)
             {
                 string errorString = compiler.FetchErrors(dataObject.DataListID, true);
@@ -139,8 +143,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 DataListExecutionID.Set(context, dataObject.DataListID);
             }
-
-
 
             if(dataObject != null)
             {
@@ -268,8 +270,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 dataListExecutionID = dataObject.DataListID;
             }
-
-
             else if(dataObject.ForceDeleteAtNextNativeActivityCleanup)
             {
                 // Used for webpages to signal a foce delete after checks of what would become a zombie datalist ;)
@@ -532,11 +532,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             return (from s in strings
                 where !string.IsNullOrEmpty(s)
-                select new DsfForEachItem
-                {
+                                             select new DsfForEachItem
+                                             {
                     Name = s, Value = s
                 }).ToList();
-        }
+                        }
 
         #endregion
 

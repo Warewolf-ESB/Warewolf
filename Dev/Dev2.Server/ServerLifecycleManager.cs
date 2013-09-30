@@ -17,6 +17,8 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Reflection;
 using Dev2.Data;
+using Dev2.Data.Binary_Objects;
+using Dev2.Data.Storage;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
@@ -1399,6 +1401,16 @@ namespace Unlimited.Applications.DynamicServicesHost
                 result = false;
             }
 
+            // shutdown the storage layer ;)
+            try
+            {
+                BinaryDataListStorageLayer.Teardown();
+            }
+            catch (Exception e)
+            {
+                ServerLogger.LogError(e);
+            }
+
             TerminateGCManager();
 
             return result;
@@ -1572,14 +1584,17 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 CleanupServer();
             }
+            
             if(_timer != null)
             {
                 _timer.Dispose();
                 _timer = null;
             }
+
             _webserver = null;
             _esbEndpoint = null;
             _executionChannel = null;
+
         }
         #endregion
 
@@ -1736,6 +1751,11 @@ namespace Unlimited.Applications.DynamicServicesHost
             Write("Starting DataList Server...  ");
 
             DataListFactory.CreateServerDataListCompiler();
+            BinaryDataListStorageLayer.Setup();
+
+            var mbReserved = BinaryDataListStorageLayer.GetCapacityMemoryInMB();
+
+            Write(" [ Reserving " + mbReserved.ToString("#") + " MBs of cache ] ");
 
             Write("done.");
             WriteLine("");

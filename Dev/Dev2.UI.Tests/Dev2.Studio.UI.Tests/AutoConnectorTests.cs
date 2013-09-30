@@ -164,7 +164,7 @@ namespace Dev2.Studio.UI.Tests
             if (control != null)
             {
                 var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
-                ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
+            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
             }
             else
             {
@@ -194,7 +194,7 @@ namespace Dev2.Studio.UI.Tests
             if (control != null)
             {
                 var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
-                ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", point);
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", point);
             }
             else
             {
@@ -221,7 +221,7 @@ namespace Dev2.Studio.UI.Tests
             if (control != null)
             {
                 var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
-                ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
+            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
             }
             else
             {
@@ -232,9 +232,9 @@ namespace Dev2.Studio.UI.Tests
             {
                 DecisionWizardUIMap.ClickCancel();
                 var connectors = WorkflowDesignerUIMap.GetAllConnectors();
-                //Assert start auto connector worked
-                Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
-            }
+            //Assert start auto connector worked
+            Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
+        }
             else
             {
                 Assert.Fail("Decision dialog not shown after decision drop within the given timeout period.");
@@ -255,9 +255,9 @@ namespace Dev2.Studio.UI.Tests
             {
                 DecisionWizardUIMap.ClickCancel();
                 var connectors = WorkflowDesignerUIMap.GetAllConnectors();
-                //Assert start auto connector worked
-                Assert.AreEqual(1, connectors.Count, "Start auto connector doesnt work");
-            }
+            //Assert start auto connector worked
+            Assert.AreEqual(1, connectors.Count, "Start auto connector doesnt work");
+        }
             else
             {
                 Assert.Fail("Decision dialog not shown after decision drop within the given timeout period.");

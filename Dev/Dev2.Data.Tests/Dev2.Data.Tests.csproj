@@ -90,6 +90,7 @@
     </Compile>
     <Compile Include="BinaryDataList\IndexIteratorTest.cs" />
     <Compile Include="BinaryDataList\LoopedIndexIteratorTest.cs" />
+    <Compile Include="BinaryDataList\RecordsetGroupTest.cs" />
     <Compile Include="BinaryDataList\ServerDataListCompilerTest.cs" />
     <Compile Include="BinaryDataList\ServerTest.cs" />
     <Compile Include="BinaryDataList\BinaryDataListEntryTest.cs" />
@@ -104,8 +105,8 @@
     <Compile Include="Operations\Dev2MergeOperationsTests.cs" />
     <Compile Include="Operations\Dev2NumberFormatterTests.cs" />
     <Compile Include="Operations\Dev2ReplaceOperationTests.cs" />
-    <Compile Include="Persistence\BinaryDataListIndexStorageTest.cs" />
-    <Compile Include="Persistence\PersistedDictionaryTest.cs" />
+    <Compile Include="Persistence\Dev2BinaryStorageTest.cs" />
+    <Compile Include="Persistence\StorageSettingsManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemTemplates\DecisionTest.cs" />
     <Compile Include="TestStrings.Designer.cs">
@@ -140,6 +141,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TestStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

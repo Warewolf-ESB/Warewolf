@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Dev2.Diagnostics;
 
 namespace Dev2.Server.Datalist {
+
     public interface IServerDataListCompiler {
 
         #region Evaluation Operations
@@ -22,6 +23,20 @@ namespace Dev2.Server.Datalist {
         /// <param name="returnExpressionIfNoMatch">if set to <c>true</c> [return expression if no match].</param>
         /// <returns></returns>
         IBinaryDataListEntry Evaluate(NetworkContext ctx, Guid curDLID, enActionType typeOf, string expression, out ErrorResultTO errors, bool returnExpressionIfNoMatch = false);
+
+        /// <summary>
+        /// Builds the input expression extractor.
+        /// </summary>
+        /// <param name="typeOf">The type of.</param>
+        /// <returns></returns>
+        Func<IDev2Definition, string> BuildInputExpressionExtractor(enDev2ArgumentType typeOf);
+
+        /// <summary>
+        /// Builds the output expression extractor.
+        /// </summary>
+        /// <param name="typeOf">The type of.</param>
+        /// <returns></returns>
+        Func<IDev2Definition, string> BuildOutputExpressionExtractor(enDev2ArgumentType typeOf);
 
         #endregion
 
@@ -48,16 +63,20 @@ namespace Dev2.Server.Datalist {
         /// <summary>
         /// Upserts the value to the specified cur DL ID's expression.
         /// </summary>
+        /// <param name="ctx">The CTX.</param>
         /// <param name="curDLID">The cur DLID.</param>
         /// <param name="expression">The expression.</param>
         /// <param name="value">The value.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         Guid Upsert(NetworkContext ctx, Guid curDLID, string expression, IBinaryDataListEntry value, out ErrorResultTO errors);
 
         /// <summary>
         /// Upserts the specified cur DLID.
         /// </summary>
+        /// <param name="ctx">The CTX.</param>
         /// <param name="curDLID">The cur DLID.</param>
-        /// <param name="expressions">The expressions.</param>
+        /// <param name="expression">The expression.</param>
         /// <param name="values">The values.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
@@ -66,16 +85,18 @@ namespace Dev2.Server.Datalist {
         /// <summary>
         /// Upserts the values against the specified cur DL ID's expression list.
         /// </summary>
+        /// <param name="ctx">The CTX.</param>
         /// <param name="curDLID">The cur DLID.</param>
         /// <param name="expressions">The expressions.</param>
         /// <param name="values">The values.</param>
-        /// <param name="error">The error.</param>
+        /// <param name="errors">The errors.</param>
         /// <returns></returns>
         Guid Upsert(NetworkContext ctx, Guid curDLID, IList<string> expressions, IList<string> values, out ErrorResultTO errors);
 
         /// <summary>
         /// Upserts the specified cur DLID.
         /// </summary>
+        /// <param name="ctx">The CTX.</param>
         /// <param name="curDLID">The cur DLID.</param>
         /// <param name="payload">The payload.</param>
         /// <param name="errors">The errors.</param>
@@ -85,6 +106,7 @@ namespace Dev2.Server.Datalist {
         /// <summary>
         /// Upserts the specified cur DLID.
         /// </summary>
+        /// <param name="ctx">The CTX.</param>
         /// <param name="curDLID">The cur DLID.</param>
         /// <param name="payload">The payload.</param>
         /// <param name="errors">The errors.</param>
@@ -93,25 +115,47 @@ namespace Dev2.Server.Datalist {
 
 
         /// <summary>
+        /// Upserts the specified CTX.
+        /// </summary>
+        /// <param name="ctx">The CTX.</param>
+        /// <param name="curDLID">The current dlid.</param>
+        /// <param name="payload">The payload.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        Guid Upsert(NetworkContext ctx, Guid curDLID, IDev2DataListUpsertPayloadBuilder<List<string>> payload, out ErrorResultTO errors);
+
+        /// <summary>
         /// Shapes the definitions in string form to create/amended a DL.
         /// </summary>
         /// <param name="ctx">The CTX.</param>
         /// <param name="curDLID">The cur DL ID.</param>
         /// <param name="typeOf">The type of.</param>
-        /// <param name="definitions">The definitions.</param>
+        /// <param name="defs">The defs.</param>
         /// <param name="errors">The errors.</param>
-        /// <param name="masterShape">The master shape.</param>
         /// <returns></returns>
-        Guid Shape(NetworkContext ctx, Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors, string masterShape);
+        Guid Shape(NetworkContext ctx, Guid curDLID, enDev2ArgumentType typeOf, string defs, out ErrorResultTO errors);
 
         /// <summary>
-        /// Shapes the definitions in binary form to create/amended a DL.
+        /// Shapes the specified CTX.
         /// </summary>
-        /// <param name="curDLID">The cur DL ID.</param>
+        /// <param name="ctx">The CTX.</param>
+        /// <param name="curDLID">The current dlid.</param>
         /// <param name="typeOf">The type of.</param>
         /// <param name="definitions">The definitions.</param>
+        /// <param name="errors">The errors.</param>
         /// <returns></returns>
         Guid Shape(NetworkContext ctx, Guid curDLID, enDev2ArgumentType typeOf, IList<IDev2Definition> definitions, out ErrorResultTO errors);
+
+        /// <summary>
+        /// Shapes for sub execution.
+        /// </summary>
+        /// <param name="ctx">The CTX.</param>
+        /// <param name="parentDLID">The parent dlid.</param>
+        /// <param name="childDLID">The child dlid.</param>
+        /// <param name="inputDefs">The input defs.</param>
+        /// <param name="outputDefs">The output defs.</param>
+        /// <param name="errors">The errors.</param>
+        IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubExecution(NetworkContext ctx, Guid parentDLID, Guid childDLID, string inputDefs, string outputDefs, out ErrorResultTO errors);
 
         /// <summary>
         /// Merges the specified left ID with the right ID
@@ -123,6 +167,16 @@ namespace Dev2.Server.Datalist {
         /// <returns></returns>
         Guid Merge(NetworkContext ctx, Guid leftID, Guid rightID, enDataListMergeTypes mergeType, enTranslationDepth depth, bool createNewList, out ErrorResultTO errors);
 
+        /// <summary>
+        /// Conditionals the merge.
+        /// </summary>
+        /// <param name="ctx">The CTX.</param>
+        /// <param name="conditions">The conditions.</param>
+        /// <param name="destinationDatalistID">The destination datalist unique identifier.</param>
+        /// <param name="sourceDatalistID">The source datalist unique identifier.</param>
+        /// <param name="datalistMergeFrequency">The datalist merge frequency.</param>
+        /// <param name="datalistMergeType">Type of the datalist merge.</param>
+        /// <param name="datalistMergeDepth">The datalist merge depth.</param>
         void ConditionalMerge(NetworkContext ctx, DataListMergeFrequency conditions, Guid destinationDatalistID, Guid sourceDatalistID, DataListMergeFrequency datalistMergeFrequency, enDataListMergeTypes datalistMergeType, enTranslationDepth datalistMergeDepth);
 
         /// <summary>
@@ -135,22 +189,22 @@ namespace Dev2.Server.Datalist {
         /// <returns></returns>
         Guid TransferSystemTags(NetworkContext ctx, Guid parentDLID, Guid childDLID, bool parentToChild, out ErrorResultTO errors);
 
+        #endregion
+
+        #region External Translation
+
         /// <summary>
-        /// Internals the shape.
+        /// Populates the data list.
         /// </summary>
         /// <param name="ctx">The CTX.</param>
-        /// <param name="curDLID">The cur DLID.</param>
-        /// <param name="definitions">The definitions.</param>
         /// <param name="typeOf">The type of.</param>
+        /// <param name="input">The input.</param>
+        /// <param name="targetDLID">The target dlid.</param>
         /// <param name="errors">The errors.</param>
         /// <param name="masterShape">The master shape.</param>
         /// <param name="isTransactionallyScoped">if set to <c>true</c> [is transactionally scoped].</param>
         /// <returns></returns>
-        Guid InternalShape(NetworkContext ctx, Guid curDLID, IList<IDev2Definition> definitions, enDev2ArgumentType typeOf, out ErrorResultTO errors, string masterShape, bool isTransactionallyScoped);
-
-        #endregion
-
-        #region External Translation
+        Guid PopulateDataList(NetworkContext ctx, DataListFormat typeOf, object input, Guid targetDLID, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts from selected Type to binary
@@ -243,12 +297,6 @@ namespace Dev2.Server.Datalist {
         /// <param name="errors">The errors.</param>
         void SetParentUID(Guid curDLID, Guid parentID, out ErrorResultTO errors);
 
-        /// <summary>
-        /// Persists the resumable data list chain.
-        /// </summary>
-        /// <param name="childID">The child ID.</param>
-        /// <returns></returns>
-        bool PersistResumableDataListChain(Guid childID);
 
         /// <summary>
         /// Upserts the system tag.
@@ -271,6 +319,6 @@ namespace Dev2.Server.Datalist {
 
         #endregion
 
-        Guid Upsert(NetworkContext ctx, Guid curDLID, IDev2DataListUpsertPayloadBuilder<List<string>> payload, out ErrorResultTO errors);
+        
     }
 }

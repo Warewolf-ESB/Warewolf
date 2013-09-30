@@ -116,68 +116,6 @@ namespace Dev2.Tests
 
         }
 
-        [TestMethod]
-        public void UpdatingADeferedEntryWithANormalValueExpectedDeferedStatusIsRemoved()
-        {
-            string fieldName = "filedata";
-            string newFieldValue = "cake";
-            ErrorResultTO localErrors = new ErrorResultTO();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
-            IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> toUpsertDeferred = Dev2DataListBuilderFactory.CreateBinaryDataListUpsertBuilder(true);
-
-            // Create datalist
-            IBinaryDataList dataList = Dev2BinaryDataListFactory.CreateDataList();
-            string creationError;
-            dataList.TryCreateScalarTemplate(string.Empty, fieldName, string.Empty, true, out creationError);
-
-            if (!string.IsNullOrEmpty(creationError))
-            {
-                Assert.Fail("There was an error creating the datalist.");
-            }
-            
-            // Push datalist
-            compiler.PushBinaryDataList(dataList.UID, dataList, out localErrors);
-
-            if (localErrors.HasErrors())
-            {
-                Assert.Fail("There was an error pushing the datalist to the server.");
-            }
-
-            // Add defered entry
-            IBinaryDataListEntry deferredEntry = Dev2BinaryDataListFactory.CreateEntry(fieldName, string.Empty, dataList.UID);
-            deferredEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateFileSystemItem("", "", GlobalConstants.EvalautionScalar), out _error);
-            toUpsertDeferred.Add(DataListUtil.AddBracketsToValueIfNotExist(fieldName), deferredEntry);
-            compiler.Upsert(dataList.UID, toUpsertDeferred, out localErrors);
-
-            if (localErrors.HasErrors())
-            {
-                Assert.Fail("There was an error upserting the defered entry into the datalist.");
-            }
-
-            // Assign a new value to the defered entry
-            toUpsert.Add(DataListUtil.AddBracketsToValueIfNotExist(fieldName), newFieldValue);
-            compiler.Upsert(dataList.UID, toUpsert, out localErrors);
-
-            if (localErrors.HasErrors())
-            {
-                Assert.Fail("There was an error upserting the defered entry into the datalist.");
-            }
-
-            // Check the info in the datalist is correct
-            IList<IBinaryDataListEntry> entries = dataList.FetchAllEntries();
-            Assert.AreEqual(1, entries.Count, "There should be only one entry at this point.");
-
-            IBinaryDataListItem item = entries[0].FetchScalar();
-
-            var res = item.TheValue;
-            var isDef = item.IsDeferredRead;
-
-            Assert.IsNotNull(item, "Unable to fetch scalar value from the entry.");
-            Assert.IsFalse(isDef, "The entry is still set as defered.");
-            Assert.AreEqual(newFieldValue, res, "The value wasn't assigned correctly.");
-        }
-
         // Created by Michael for Bug 8597
         [TestMethod]
         public void HasErrors_Passed_Empty_GUID_Expected_No_NullReferenceException()
@@ -210,58 +148,6 @@ namespace Dev2.Tests
 
         }
 
-        [TestMethod]
-        [Ignore]
-        // No idea why we thought this was a good idea?
-        public void Iteration_Evaluation_Expect_Evaluation_For_2_Iterations()
-        {
-            // Iteration evaluation is tested via the shape method ;)
-            const string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[[[myScalar]]]]"" /></Inputs>";
-            Guid id = _compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out _errors);
-
-            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out _errors);
-
-            bdl.TryGetEntry("scalar1", out entry, out _error);
-
-            var res = entry.FetchScalar().TheValue;
-
-            Assert.AreEqual("[[testRegion]]", res);
-
-        }
-
-        [TestMethod]
-        public void Iteration_Evaluation_Expect_Evaluation_For_0_Iterations()
-        {
-            // Iteration evaluation is tested via the shape method ;)
-            string defs = @"<Inputs><Input Name=""scalar1"" Source=""foobar"" /></Inputs>"; ;
-            Guid id = _compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out _errors);
-
-            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out _errors);
-
-            bdl.TryGetEntry("scalar1", out entry, out _error);
-
-            var res = entry.FetchScalar().TheValue;
-
-            Assert.AreEqual("foobar", res);
-
-        }
-
-        [TestMethod]
-        public void Iteration_Evaluation_Recordset_Expect_Evaluation_For_2_Iterations()
-        {
-            // Iteration evaluation is tested via the shape method ;)
-            string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[recset([[idx]]).f1]]"" /></Inputs>"; ;
-            Guid id = _compiler.Shape(dl2.UID, enDev2ArgumentType.Input, defs, out _errors);
-
-            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out _errors);
-
-            bdl.TryGetEntry("scalar1", out entry, out _error);
-
-            var res = entry.FetchScalar().TheValue;
-
-            Assert.AreEqual("r1.f1.value", res);
-
-        }
 
         #region FixedWizardTest
         [TestMethod]

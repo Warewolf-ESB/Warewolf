@@ -168,6 +168,8 @@ namespace ActivityUnitTests
             }
             dataObject.IsDebug = isDebug;
 
+            // we now need to set a thread ID ;)
+            dataObject.ParentThreadID = 1; 
 
             if (isRemoteInvoke)
             {
@@ -181,7 +183,7 @@ namespace ActivityUnitTests
                 esbChannel = channel;
             }
             WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
-            
+
             errors.ClearErrors();
             dataObject.DataListID = wfec.Execute(out errors);
             
@@ -228,7 +230,10 @@ namespace ActivityUnitTests
             };
 
 
-            mockChannel.Setup(c=>c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors)).Verifiable();
+            // we need to set this now ;)
+            dataObject.ParentThreadID = 1;
+
+            mockChannel.Setup(c=>c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors)).Verifiable();
 
             WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
 
@@ -237,7 +242,6 @@ namespace ActivityUnitTests
 
             return mockChannel;
         }
-
 
         #endregion ForEach Execution
 

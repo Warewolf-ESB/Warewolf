@@ -165,30 +165,6 @@ namespace Dev2.DynamicServices.Test
 
         #endregion DeleteDataList Tests
 
-        #region PersistChildChain Tests
-
-        [TestMethod]
-        public void PersistChildChain_Expected_PersistChildChainRunAndTrueResult()
-        {
-            Mock<IServerNetworkMessageAggregator<StudioNetworkSession>> _serverNetworkMessageAggregator = Dev2MockFactory.SetupServerNetworkMessageAggregator();
-            Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker();
-            Mock<IDataListServer> _dataListServer = Dev2MockFactory.SetupDataListServer();
-
-            DataListServerChannel channel = new DataListServerChannel(_networkMessageBroker.Object, _serverNetworkMessageAggregator.Object, _dataListServer.Object);
-
-            bool expected = true;
-            bool actual = channel.PersistChildChain(Guid.Empty);
-
-            ErrorResultTO resultErrors = new ErrorResultTO();
-            _dataListServer.Verify(e => e.PersistChildChain(It.IsAny<Guid>()), Times.Exactly(1));
-
-            channel.Dispose();
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        #endregion PersistChildChain Tests
-
         #region Message Recieving
 
         [TestMethod]
@@ -335,56 +311,6 @@ namespace Dev2.DynamicServices.Test
 
             ErrorResultTO resultErrors = new ErrorResultTO();
             _dataListServer.Verify(e => e.DeleteDataList(It.IsAny<Guid>(), It.IsAny<bool>()), Times.Exactly(1));
-
-            channel.Dispose();
-
-            Assert.IsTrue(resultMessage.Errors.FetchErrors().Count > 0);
-        }
-
-
-        [TestMethod]
-        public void PersistChildChainMessage_Expected_DataListServerDeleteAndResultMessageSent()
-        {
-            ServerNetworkMessageAggregator<StudioNetworkSession> tmpServerNetworkMessageAggregator = new ServerNetworkMessageAggregator<StudioNetworkSession>();
-
-            Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker();
-            Mock<IDataListServer> _dataListServer = Dev2MockFactory.SetupDataListServer();
-            Mock<IServerNetworkChannelContext<StudioNetworkSession>> _context = Dev2MockFactory.SetupServerNetworkChannelContext();
-
-            DataListServerChannel channel = new DataListServerChannel(_networkMessageBroker.Object, tmpServerNetworkMessageAggregator, _dataListServer.Object);
-
-            ErrorResultTO errors = new ErrorResultTO();
-            tmpServerNetworkMessageAggregator.Publish(new PersistChildChainMessage(1, Guid.Empty), _context.Object, false);
-
-            ErrorResultTO resultErrors = new ErrorResultTO();
-            _dataListServer.Verify(e => e.PersistChildChain(It.IsAny<Guid>()), Times.Exactly(1));
-            _networkMessageBroker.Verify(e => e.Send<PersistChildChainResultMessage>(It.IsAny<PersistChildChainResultMessage>(), It.IsAny<INetworkOperator>()), Times.Exactly(1));
-
-            channel.Dispose();
-        }
-
-        [TestMethod]
-        public void PersistChildChainMessage_WhereDataListServerDeleteCausesException_Expected_ErrorsInReturnMessage()
-        {
-            ServerNetworkMessageAggregator<StudioNetworkSession> tmpServerNetworkMessageAggregator = new ServerNetworkMessageAggregator<StudioNetworkSession>();
-
-            Mock<INetworkMessageBroker> _networkMessageBroker = Dev2MockFactory.SetupNetworkMessageBroker();
-            Mock<IDataListServer> _dataListServer = Dev2MockFactory.SetupDataListServer(true, true, null, false, false, true);
-            Mock<IServerNetworkChannelContext<StudioNetworkSession>> _context = Dev2MockFactory.SetupServerNetworkChannelContext();
-
-            PersistChildChainResultMessage resultMessage = null;
-            _networkMessageBroker.Setup(e => e.Send<PersistChildChainResultMessage>(It.IsAny<PersistChildChainResultMessage>(), It.IsAny<INetworkOperator>())).Callback(new Action<PersistChildChainResultMessage, INetworkOperator>((a, b) =>
-            {
-                resultMessage = a;
-            }));
-
-            DataListServerChannel channel = new DataListServerChannel(_networkMessageBroker.Object, tmpServerNetworkMessageAggregator, _dataListServer.Object);
-
-            ErrorResultTO errors = new ErrorResultTO();
-            tmpServerNetworkMessageAggregator.Publish(new PersistChildChainMessage(1, Guid.Empty), _context.Object, false);
-
-            ErrorResultTO resultErrors = new ErrorResultTO();
-            _dataListServer.Verify(e => e.PersistChildChain(It.IsAny<Guid>()), Times.Exactly(1));
 
             channel.Dispose();
 

@@ -156,19 +156,6 @@ namespace Dev2.DynamicServices.Network.DataList
             _datalistServer.DeleteDataList(id, onlyIfNotPersisted);
         }
 
-        public bool PersistChildChain(Guid id)
-        {
-            lock (_disposeGuard)
-            {
-                if (_isDisposed)
-                {
-                    throw new InvalidOperationException("Channel is disposing.");
-                }
-            }
-
-            return _datalistServer.PersistChildChain(id);
-        }
-
         public Guid ServerID { get; private set; }
 
         #endregion Methods
@@ -183,7 +170,6 @@ namespace Dev2.DynamicServices.Network.DataList
             _readDataListMessageSubscriptionToken = _messageAggregator.Subscribe(new Action<ReadDataListMessage, IServerNetworkChannelContext<StudioNetworkSession>>(OnReadDataListMessageRecieved));
             _writeDataListMessageSubscriptionToken = _messageAggregator.Subscribe(new Action<WriteDataListMessage, IServerNetworkChannelContext<StudioNetworkSession>>(OnWriteDataListMessageRecieved));
             _deleteDataListMessageSubscriptionToken = _messageAggregator.Subscribe(new Action<DeleteDataListMessage, IServerNetworkChannelContext<StudioNetworkSession>>(OnDeleteDataListMessageRecieved));
-            _PersistChildChainMessageSubscriptionToken = _messageAggregator.Subscribe(new Action<PersistChildChainMessage, IServerNetworkChannelContext<StudioNetworkSession>>(OnPersistChildChainMessageRecieved));
             _networkContextDetachedMessageSubscriptionToken = _messageAggregator.Subscribe(new Action<NetworkContextDetachedMessage, IServerNetworkChannelContext<StudioNetworkSession>>(NetworkContextDetachedMessageRecieved));
         }
 
@@ -191,7 +177,6 @@ namespace Dev2.DynamicServices.Network.DataList
         /// Handler for recieving execution read messages
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
         private void OnReadDataListMessageRecieved(ReadDataListMessage message, IServerNetworkChannelContext<StudioNetworkSession> context)
         {
@@ -211,11 +196,6 @@ namespace Dev2.DynamicServices.Network.DataList
             {
                 ErrorResultTO errors = new ErrorResultTO();
                 IBinaryDataList dataList = ReadDatalist(message.DatalistID, errors);
-
-                if (errors == null)
-                {
-                    errors = new ErrorResultTO();
-                }
 
                 resultMessage = new ReadDataListResultMessage()
                 {
@@ -337,59 +317,6 @@ namespace Dev2.DynamicServices.Network.DataList
                 resultMessage = new DeleteDataListResultMessage()
                 {
                     Handle = message.Handle,
-                    Errors = errors,
-                };
-            }
-
-            _messageBroker.Send(resultMessage, context.NetworkContext);
-        }
-
-        /// <summary>
-        /// Handler for recieving persist child chain messages
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="server">The server.</param>
-        /// <param name="context">The context.</param>
-        private void OnPersistChildChainMessageRecieved(PersistChildChainMessage message, IServerNetworkChannelContext<StudioNetworkSession> context)
-        {
-            lock (_disposeGuard)
-            {
-                if (_isDisposed)
-                {
-                    return;
-                }
-            }
-
-            Context = context;
-
-            PersistChildChainResultMessage resultMessage;
-
-            try
-            {
-                ErrorResultTO errors = new ErrorResultTO();
-                bool result = PersistChildChain(message.ID);
-
-                if (errors == null)
-                {
-                    errors = new ErrorResultTO();
-                }
-
-                resultMessage = new PersistChildChainResultMessage()
-                {
-                    Handle = message.Handle,
-                    Result = result,
-                    Errors = errors,
-                };
-            }
-            catch (Exception e)
-            {
-                ErrorResultTO errors = new ErrorResultTO();
-                errors.AddError(e.Message);
-
-                resultMessage = new PersistChildChainResultMessage()
-                {
-                    Handle = message.Handle,
-                    Result = false,
                     Errors = errors,
                 };
             }

@@ -192,7 +192,7 @@ namespace Dev2.Server.DataList.Translators
 
                             // spin through each element in the XML
                             foreach (XmlNode c in children) {
-                                if (!DataListUtil.isSystemTag(c.Name) && c.Name != GlobalConstants.NaughtyTextNode) {
+                                if (!DataListUtil.IsSystemTag(c.Name) && c.Name != GlobalConstants.NaughtyTextNode) {
                                     // scalars and recordset fetch
                                     if (result.TryGetEntry(c.Name, out entry, out error)) {
                                         if (entry.IsRecordset) {
@@ -248,7 +248,7 @@ namespace Dev2.Server.DataList.Translators
                                 n = xDoc.SelectSingleNode(query);
                             }
 
-                            if (n != null) {
+                            if (n != null && !string.IsNullOrEmpty(n.InnerXml)) {
                                 string bkey = DataListUtil.BuildSystemTagForDataList(key, false);
                                 if (result.TryGetEntry(bkey, out sysEntry, out error)) {
                                     sysEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(n.InnerXml, bkey), out error);
@@ -269,6 +269,11 @@ namespace Dev2.Server.DataList.Translators
         }
 
         public IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Guid Populate(object input, Guid targetDL, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }

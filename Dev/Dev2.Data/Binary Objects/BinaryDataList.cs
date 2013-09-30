@@ -1,5 +1,8 @@
-﻿using Dev2.Common;
+﻿using System.Diagnostics;
+using System.Threading;
+using Dev2.Common;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Storage;
 using Dev2.Data.Util;
 using System;
 using System.Collections.Generic;
@@ -33,6 +36,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
             _intellisenseParts = new List<IDev2DataLanguageIntellisensePart>();
             _templateDict = new Dictionary<string, IBinaryDataListEntry>();
 
+            // registar with process ID for clean up via the EsbServiceEndpoint's ExecuteRequest ;)
+            RegisterScope();
+
+            
         }
 
         internal BinaryDataList()
@@ -213,18 +220,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         public IList<string> FetchAllUserKeys()
         {
-
-            IList<string> keys = new List<string>();
-
-            foreach (string key in _templateDict.Keys)
-            {
-                if (key.IndexOf(GlobalConstants.SystemTagNamespaceSearch) < 0)
-                {
-                    keys.Add(key);
-                }
-            }
-
-            return keys;
+            return _templateDict.Keys.Where(key => key.IndexOf(GlobalConstants.SystemTagNamespaceSearch, StringComparison.Ordinal) < 0).ToList();
         }
 
         public bool TryCreateScalarValue(string value, string fieldName, out string error)
@@ -453,6 +449,19 @@ namespace Dev2.DataList.Contract.Binary_Objects
         #endregion
 
         #region Private Methods
+
+
+        /// <summary>
+        /// Registers the scope.
+        /// </summary>
+        private void RegisterScope()
+        {
+            // Have to register with Thread ID, thread ID cha
+            DataListRegistar.RegisterDataListInScope(Thread.CurrentThread.ManagedThreadId, UID);
+
+            ServerLogger.LogTrace("CREATED DATALIST [ " + UID + " ] / MEMORY USAGE NOW AT [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB() + " MBs ]");
+
+        }
 
         /// <summary>
         /// Creates the intellisene result.
@@ -766,9 +775,25 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// </summary>
         public void Dispose()
         {
-            List<IBinaryDataListEntry> binaryDataListEntries = FetchAllEntries().ToList();
             // Changed from .Dispose() to .DisposeCache() ;)
-            binaryDataListEntries.ForEach(entry => entry.DisposeCache()); 
+            // since this silly thing ultimately looks up all entries with the same key we only need to call this once!
+            var entries = FetchAllEntries();
+
+            if (entries.Any())
+            {
+                var cleanEntry = entries.FirstOrDefault();
+                if (cleanEntry != null)
+                {
+                    int remainingEntryCnt = cleanEntry.DisposeCache();
+
+                    ServerLogger.LogTrace("There are [ " + remainingEntryCnt + " ] entries left for [ " + UID + " ]");
+
+                }
+                else
+                {
+                    ServerLogger.LogError("Null removal entry for [ " + UID + " ]");
+                }
+            }
         }
 
         #endregion

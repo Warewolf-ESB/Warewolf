@@ -814,8 +814,9 @@ namespace Dev2.Tests.Activities {
         ///      &lt;rec&gt;recVal5&lt;/rec&gt;
         ///      &lt;rec2 /&gt;
         ///    &lt;/recset&gt;
-        ///    &lt;Service&gt;NewForEachNumber&lt;/Service&gt;
-        ///    &lt;WebServerUrl&gt;http:// [rest of string was truncated]&quot;;.
+        ///    &lt;var&gt;Static_Scalar&lt;/var&gt;
+        ///    &lt;resultVar&gt;&lt;/resultVar&gt;
+        ///&lt;/ADL&gt;.
         /// </summary>
         internal static string ForEachCurrentDataList {
             get {

@@ -93,7 +93,7 @@ namespace Dev2.DataList.Contract.Persistence
         /// <param name="id">The datalist ID.</param>
         /// <param name="onlyIfNotPersisted">if set to <c>true</c> [only if not persisted].</param>
         /// <exception cref="System.InvalidOperationException">Provider is disposing.</exception>
-        public void DeleteDataList(Guid id, bool onlyIfNotPersisted)
+        public bool DeleteDataList(Guid id, bool onlyIfNotPersisted)
         {
             lock (_disposeGuard)
             {
@@ -104,24 +104,8 @@ namespace Dev2.DataList.Contract.Persistence
             }
 
             _dataListChannel.DeleteDataList(id, onlyIfNotPersisted);
-        }
 
-        /// <summary>
-        /// Persists the child chain.
-        /// </summary>
-        /// <param name="id">The id.</param>
-        /// <exception cref="System.InvalidOperationException">Provider is disposing.</exception>
-        public bool PersistChildChain(Guid id)
-        {
-            lock (_disposeGuard)
-            {
-                if (_isDisposed)
-                {
-                    throw new InvalidOperationException("Provider is disposing.");
-                }
-            }
-
-            return _dataListChannel.PersistChildChain(id);
+            return true;
         }
 
         /// <summary>
@@ -155,7 +139,6 @@ namespace Dev2.DataList.Contract.Persistence
         }
 
         #endregion Tear Down
-
 
         public bool ForceDeleteDataListChain(Guid id)
         {

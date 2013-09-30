@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Helpers;
@@ -18,26 +19,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         public TestContext TestContext { get; set; }
 
         #region Database Service Execution
-
-        [TestMethod]
-        [TestCategory("DsfDatabaseActivity_CleanDataList")]
-        [Description("DsfDatabaseActivity uses RuntimeHelpers to clean the datalist prior to execution")]
-        [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
-        public void DsfDatabaseActivity_UnitTest_CleanDataList_RuntimeHelperCallsGetCorrectDataList()
-        // ReSharper restore InconsistentNaming
-        {
-            //init
-            var databaseActivity = new MockDsfDatabaseActivity();
-            var mockRuntimeHelper = new Mock<RuntimeHelpers>();
-            mockRuntimeHelper.Setup(c => c.GetCorrectDataList(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<ErrorResultTO>(), It.IsAny<IDataListCompiler>()));
-
-            //exe
-            databaseActivity.MockCleanDataList(mockRuntimeHelper.Object, It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<IDataListCompiler>());
-
-            //assert
-            mockRuntimeHelper.Verify(c => c.GetCorrectDataList(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<ErrorResultTO>(), It.IsAny<IDataListCompiler>()), Times.Once());
-        }
 
         [TestMethod]
         [TestCategory("DsfDatabaseActivity_BeforeExecutionStart")]
@@ -77,11 +58,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var databaseActivity = new MockDsfDatabaseActivity(dbServiceExecution.Object);
 
-            databaseActivity.MockExecutionImpl(new Mock<IEsbChannel>().Object, dataObj.Object, out errors);
+            // ShapeForSubRequest
+            var mockEsb = new Mock<IEsbChannel>();
+            //mockEsb.Setup(s => s.ShapeForSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<string>(), It.IsAny<string>(), out errors)).Returns(new List<KeyValuePair<enDev2ArgumentType, List<IDev2Definition>>>());
+            databaseActivity.MockExecutionImpl(mockEsb.Object, dataObj.Object, string.Empty, string.Empty, out errors);
 
             //assert
-            Assert.IsFalse(errors.HasErrors(), "Errors where thrown while executing a database service");
-            Assert.AreEqual(1, databaseActivity.CleanDataListHitCount, "CleanDataList was not invoked.");
+            Assert.IsFalse(errors.HasErrors(), "Errors where thrown while executing a database servic");
             dbServiceExecution.Verify(s => s.Execute(out errors));
         }
 

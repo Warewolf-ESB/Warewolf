@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Interfaces;
 using Dev2.DataList.Contract.TO;
-using Dev2.Common;
-using Dev2.DataList.Contract.Value_Objects;
+using Dev2.Server.Datalist;
 
 namespace Dev2.Data.Builders
 {
@@ -28,7 +28,7 @@ namespace Dev2.Data.Builders
         {
             bool result = false;
 
-            if (val != null && exp != null && exp != string.Empty)
+            if(val != null && exp != null && exp != string.Empty)
             {
                 _cache.Add(new DataListPayloadFrameTO<T>(exp, val));
                 result = true;
@@ -60,7 +60,7 @@ namespace Dev2.Data.Builders
 
             var theKeys = _keys.Keys.ToArray();
 
-            foreach (var key in theKeys)
+            foreach(var key in theKeys)
             {
                 _keys[key]++;
             }
@@ -71,7 +71,7 @@ namespace Dev2.Data.Builders
             int result;
 
             // we need to init it on a cache miss ;)
-            if (!_keys.TryGetValue(key, out result))
+            if(!_keys.TryGetValue(key, out result))
             {
                 AddIfNotPresent(key);
                 result = 1;
@@ -87,7 +87,7 @@ namespace Dev2.Data.Builders
 
         private void AddIfNotPresent(string key)
         {
-            if (!ContainsKey(key))
+            if(!ContainsKey(key))
             {
                 _keys[key] = 1;
             }
@@ -147,12 +147,15 @@ namespace Dev2.Data.Builders
         // Fields used to achieve the ReplaceStarWithFixedIndex functionality
         private UpsertPayloadBuilderIndexIterator _idxScope;
         private bool _replaceStar;
-        public bool ReplaceStarWithFixedIndex { get { return _replaceStar; }
+        public bool ReplaceStarWithFixedIndex
+        {
+            get { return _replaceStar; }
 
-            set { 
+            set
+            {
 
                 _replaceStar = value; 
-                if (_idxScope == null)
+                if(_idxScope == null)
                 {
                     _idxScope = new UpsertPayloadBuilderIndexIterator();
                 } 
@@ -185,19 +188,19 @@ namespace Dev2.Data.Builders
         /// </summary>
         public void FlushIterationFrame(bool terminalFlush = false)
         {
-            if (!HasLiveFlushing)
+            if(!HasLiveFlushing)
             {
                 _data.Add(_scopedFrame);
                 _scopedFrame = new PayloadIterationFrame<T>();
             }
             else
             {
-                if (_flushIterator == null && LiveFlushingLocation != GlobalConstants.NullDataListID)
+                if(_flushIterator == null && LiveFlushingLocation != GlobalConstants.NullDataListID)
                 {
                     _flushIterator = new LiveFlushIterator(LiveFlushingLocation);
                 }
 
-                if (_flushIterator != null)
+                if(_flushIterator != null)
                 {
                     _flushIterator.FlushIterations((_scopedFrame as PayloadIterationFrame<string>), IsIterativePayload(),
                                                    terminalFlush);
@@ -211,7 +214,7 @@ namespace Dev2.Data.Builders
             }
 
             // move the internal index iterators ;)
-            if (ReplaceStarWithFixedIndex)
+            if(ReplaceStarWithFixedIndex)
             {
                 _idxScope.MoveIndexesForward();
             }
@@ -226,7 +229,7 @@ namespace Dev2.Data.Builders
         public bool Add(string exp, T val)
         {
             // In select cases is is important to replace (*) with (x) where X start @ 1 and moves up each flush ;)
-            if (ReplaceStarWithFixedIndex)
+            if(ReplaceStarWithFixedIndex)
             {
                 var idx = _idxScope.FetchCurrentIndex(exp);
                 exp = DataListUtil.ReplaceStarWithFixedIndex(exp, idx);
@@ -237,6 +240,11 @@ namespace Dev2.Data.Builders
             return result;
         }
 
+        public void Add(T recordSetGroup)
+        {
+            _scopedFrame.Add("XXX", recordSetGroup);
+        }
+
         /// <summary>
         /// Fetches the frames.
         /// </summary>
@@ -244,7 +252,7 @@ namespace Dev2.Data.Builders
         public IList<IDataListPayloadIterationFrame<T>> FetchFrames(bool forceFlush = true)
         {
             // Make sure to flush if we are getting the frames
-            if (_scopedFrame.HasData() && forceFlush)
+            if(_scopedFrame.HasData() && forceFlush)
             {
                 FlushIterationFrame();
             }
@@ -259,7 +267,7 @@ namespace Dev2.Data.Builders
         /// </returns>
         public bool HasData()
         {
-            return (_data.Count > 0);
+            return (_data.Count > 0 || _scopedFrame.HasData());
         }
 
         public bool IsIterativePayload()
@@ -269,7 +277,7 @@ namespace Dev2.Data.Builders
 
         public void PublishLiveIterationData()
         {
-            if (HasLiveFlushing && _flushIterator != null)
+            if(HasLiveFlushing && _flushIterator != null)
             {
                 _flushIterator.PublishLiveIterationData();
             }

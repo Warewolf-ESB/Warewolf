@@ -218,7 +218,7 @@ namespace Dev2.Session
                         error = errors.FetchErrors()[0]; // take the first error ;)
                     }
                     // Now remove it ;)
-                    _compiler.DeleteDataListByID(resultID);
+                    _compiler.ForceDeleteDataListByID(resultID);
                 }
             }
 

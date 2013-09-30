@@ -203,6 +203,8 @@ namespace Dev2.DynamicServices
         public IList<DebugState> RemoteDebugItems { get; set; }
         public string RemoteServiceType { get; set; }
 
+        public int ParentThreadID { get; set; }
+
         public bool WorkflowResumeable
         {
             get
@@ -243,16 +245,6 @@ namespace Dev2.DynamicServices
         public string ParentWorkflowXmlData { get; set; }
 
         public string DataList { get; set; }
-
-        public bool IsInDebugMode()
-        {
-            if (IsDebug || ServerLogger.ShouldLog(ResourceID) || RemoteInvoke)
-            {
-                return true;
-            }
-
-            return false;
-        }
 
         public ExecutionOrigin ExecutionOrigin { get; set; }
         public string ExecutionOriginDescription { get; set; }

@@ -16,7 +16,7 @@ namespace Dev2.Data.DataListCache {
                     if (_memoryProvider == null)
                     {
                         _memoryProvider = new DataListTemporalProvider();
-                        _memoryProvider.InitPersistence();
+                        //_memoryProvider.InitPersistence();
                     }
                 }
             }
@@ -27,7 +27,7 @@ namespace Dev2.Data.DataListCache {
         public static IDataListPersistenceProvider CreateServerProvider(INetworkDataListChannel channel)
         {
             IDataListPersistenceProvider provider = new DataListChannelProvider(channel);
-            provider.InitPersistence();
+
             return provider;
         }
     }

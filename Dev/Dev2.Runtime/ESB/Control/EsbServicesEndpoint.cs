@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
+using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
@@ -192,10 +195,10 @@ namespace Dev2.DynamicServices
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
             {
                 string theShape = null;
+
                 try
                 {
                     theShape = _runtimeHelpers.FindServiceShape(workspaceID, dataObject.ServiceName, true);
-
                 }
                 catch(Exception ex)
                 {
@@ -208,6 +211,11 @@ namespace Dev2.DynamicServices
                 dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), dataObject.RawPayload, theShape, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
                 dataObject.RawPayload = string.Empty;
+
+
+                // We need to create the parentID around the system ;)
+                dataObject.ParentThreadID = Thread.CurrentThread.ManagedThreadId;
+
             }
 
             try
@@ -221,12 +229,95 @@ namespace Dev2.DynamicServices
                 errors.MergeErrors(invokeErrors);
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 errors.AddError(ex.Message);
             }
+            finally
+            {
+                // clean up after the request has executed ;)
+                DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, resultID);
+            }
 
             return resultID;
+        }
+
+
+        /// <summary>
+        /// Executes the sub request.
+        /// </summary>
+        /// <param name="dataObject">The data object.</param>
+        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="inputDefs">The input defs.</param>
+        /// <param name="outputDefs">The output defs.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        public Guid ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceID, string inputDefs, string outputDefs, out ErrorResultTO errors)
+        {
+            IWorkspace theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
+            var invoker = new DynamicServicesInvoker(this, this, theWorkspace);
+            errors = new ErrorResultTO();
+            ErrorResultTO invokeErrors;
+            var oldID = dataObject.DataListID;
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+
+            IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> remainingMappings = ShapeForSubRequest(dataObject, inputDefs, outputDefs, out errors);
+
+            // local non-scoped execution ;)
+            bool isLocal = string.IsNullOrEmpty(dataObject.RemoteInvokerID);
+
+            EsbExecutionContainer executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal);
+            Guid result = dataObject.DataListID;
+
+            if(executionContainer != null)
+            {
+                result = executionContainer.Execute(out errors);
+            }
+            else
+            {
+                errors.AddError("Null container returned");
+            }
+
+
+            // Adjust the remaining output mappings ;)
+            compiler.SetParentID(dataObject.DataListID, oldID);
+            var outputMappings = remainingMappings.FirstOrDefault(c => c.Key == enDev2ArgumentType.Output);
+            compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputMappings.Value, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+
+            return result;
+        }
+
+
+        /// <summary>
+        /// Shapes for sub request. Returns a key valid pair with remaing output mappings to be processed later!
+        /// </summary>
+        /// <param name="dataObject">The data object.</param>
+        /// <param name="inputDefs">The input defs.</param>
+        /// <param name="outputDefs">The output defs.</param>
+        /// <param name="errors">The errors.</param>
+        public IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubRequest(IDSFDataObject dataObject, string inputDefs, string outputDefs, out ErrorResultTO errors)
+        {
+            // We need to make it based upon the request ;)
+            var oldID = dataObject.DataListID;
+            var compiler = DataListFactory.CreateDataListCompiler();
+
+            errors = new ErrorResultTO();
+
+            var theShape = FindServiceShape(dataObject.WorkspaceID, dataObject.ServiceName);
+            ErrorResultTO invokeErrors;
+            var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, theShape, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+            dataObject.RawPayload = string.Empty;
+
+            // Now ID flow through mappings ;)
+            IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> remainingMappings = compiler.ShapeForSubExecution(oldID, shapeID, inputDefs, outputDefs, out invokeErrors);
+
+            // set execution ID ;)
+            dataObject.DataListID = shapeID;
+
+            return remainingMappings;
+
         }
 
         public T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors)
@@ -250,7 +341,7 @@ namespace Dev2.DynamicServices
         /// <param name="workspaceID">The workspace ID.</param>
         /// <param name="serviceName">Name of the service.</param>
         /// <returns></returns>
-        public string FindServiceShape(Guid workspaceID, string serviceName, bool serviceInputs)
+        public string FindServiceShape(Guid workspaceID, string serviceName)
         {
             var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceName);
 
@@ -268,19 +359,33 @@ namespace Dev2.DynamicServices
                     var serviceDef = tmp.ResourceDefinition;
 
                     ErrorResultTO errors;
-                    if (!serviceInputs)
-                    {
+
                         var outputMappings = ServiceUtils.ExtractOutputMapping(serviceDef);
-                        result = DataListUtil.ShapeDefinitionsToDataList(outputMappings, enDev2ArgumentType.Output,
-                                                                         out errors);
-                    }
-                    else
-                    {
+                    var oDL = DataListUtil.ShapeDefinitionsToDataList(outputMappings, enDev2ArgumentType.Output, out errors);
+
                         var inputMappings = ServiceUtils.ExtractInputMapping(serviceDef);
-                        result = DataListUtil.ShapeDefinitionsToDataList(inputMappings, enDev2ArgumentType.Input,
-                                                                         out errors);
+                    var iDL = DataListUtil.ShapeDefinitionsToDataList(inputMappings, enDev2ArgumentType.Input, out errors);
+
+                    try
+        {
+                        // finally glue the two together ;)
+                        XmlDocument oDLXDoc = new XmlDocument();
+                        oDLXDoc.LoadXml(oDL);
+
+                        XmlDocument iDLXDoc = new XmlDocument();
+                        iDLXDoc.LoadXml(iDL);
+
+                        var oDLTxt = oDLXDoc.DocumentElement.InnerXml;
+                        var iDLTxt = iDLXDoc.DocumentElement.InnerXml;
+
+                        result = "<DataList>" + oDLTxt + iDLTxt + "</DataList>";
                     }
-                }
+                    catch (Exception e)
+            {
+                        ServerLogger.LogError(e);
+                        errors.AddError(e.Message);
+            }
+            }
             }
 
             if (string.IsNullOrEmpty(result))
@@ -291,89 +396,6 @@ namespace Dev2.DynamicServices
             return result;
         }
 
-
-        /// <summary>
-        /// Executes the transactionally scoped request, caller must delete datalist
-        /// </summary>
-        /// <param name="dataObject">The data object.</param>
-        /// <param name="workspaceID">The workspace ID.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        public Guid ExecuteTransactionallyScopedRequest(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors)
-        {
-
-            // ----------------- OLD FOREACH WORKING ;)
-            IWorkspace theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
-            var invoker = new DynamicServicesInvoker(this, this, theWorkspace);
-            errors = new ErrorResultTO();
-            string theShape;
-            Guid oldID = new Guid();
-            Guid innerDatalistID = new Guid();
-            ErrorResultTO invokeErrors;
-
-            // Account for silly webpages...
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            // If no DLID, we need to make it based upon the request ;)
-            if (dataObject.DataListID == GlobalConstants.NullDataListID)
-            {
-                theShape = FindServiceShape(workspaceID, dataObject.ServiceName, true);
-                dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
-                    dataObject.RawPayload, theShape, out invokeErrors);
-                errors.MergeErrors(invokeErrors);
-                dataObject.RawPayload = string.Empty;
-            }
-
-            // local non-scoped execution ;)
-            bool isLocal = string.IsNullOrEmpty(dataObject.RemoteInvokerID);
-
-            theShape = FindServiceShape(workspaceID, dataObject.ServiceName, true);
-            innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
-                                                 string.Empty, theShape, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
-
-
-            // Add left to right
-            var left = compiler.FetchBinaryDataList(dataObject.DataListID, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-            var right = compiler.FetchBinaryDataList(innerDatalistID, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
-            DataListUtil.AddMissingFromRight(left, right, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-            compiler.PushBinaryDataList(left.UID, left, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
-
-            EsbExecutionContainer executionContainer;
-            if (dataObject.ResourceID != Guid.Empty)
-            {
-                executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ResourceID, isLocal);
-            }
-            else
-            {
-                executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal);
-            }
-            Guid result = dataObject.DataListID;
-
-            if (executionContainer != null)
-            {
-                result = executionContainer.Execute(out errors);
-            }
-            else
-            {
-                errors.AddError("Null container returned");
-            }
-
-            if (!dataObject.IsDataListScoped)
-            {
-                compiler.ForceDeleteDataListByID(oldID);
-                compiler.ForceDeleteDataListByID(innerDatalistID);
-            }
-
-            return result;
-
-        }
 
         /// <summary>
         /// Fetches the execution payload.

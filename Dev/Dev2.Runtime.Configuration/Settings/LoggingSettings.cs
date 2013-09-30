@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using Dev2.Runtime.Configuration.ComponentModel;
 using System;
-using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace Dev2.Runtime.Configuration.Settings

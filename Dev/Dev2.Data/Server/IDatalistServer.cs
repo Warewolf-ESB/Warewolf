@@ -25,9 +25,7 @@ namespace Dev2.DataList.Contract
 
         bool WriteDataList(Guid id, IBinaryDataList data, out ErrorResultTO errors);
 
-        bool PersistChildChain(Guid id);
-
-        void DeleteDataList(Guid id, bool onlyIfNotPersisted);
+        bool DeleteDataList(Guid id, bool onlyIfNotPersisted);
 
         #endregion
     }

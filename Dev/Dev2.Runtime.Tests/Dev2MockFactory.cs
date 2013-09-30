@@ -37,15 +37,6 @@ namespace Dev2.DynamicServices.Test
                 mockDataListServer.Setup(e => e.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(writeResult);
             }
 
-            if (persistChildChainCausesException)
-            {
-                mockDataListServer.Setup(e => e.PersistChildChain(It.IsAny<Guid>())).Throws(new Exception());
-            }
-            else
-            {
-                mockDataListServer.Setup(e => e.PersistChildChain(It.IsAny<Guid>())).Verifiable();
-                mockDataListServer.Setup(e => e.PersistChildChain(It.IsAny<Guid>())).Returns(persistChildChainResult); 
-            }
 
             if (deleteCausesException)
             {

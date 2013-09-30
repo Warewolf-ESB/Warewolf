@@ -47,7 +47,7 @@ namespace Dev2.Data.Translators
                 if(payload.TryGetEntry(key, out entry, out error))
                 {
 
-                    if(entry.IsRecordset)
+                    if(entry.IsRecordset && !entry.IsEmpty())
                     {
 
                         var idxItr = entry.FetchRecordsetIndexes();
@@ -56,10 +56,8 @@ namespace Dev2.Data.Translators
                         {
                             var i = idxItr.FetchNextIndex();
                             IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
-                            if (error != string.Empty)
-                            {
                                 errors.AddError(error);
-                            }
+
                             result.Append("<");
                             result.Append(entry.Namespace);
                             result.Append(">");
@@ -81,8 +79,9 @@ namespace Dev2.Data.Translators
                             result.Append(entry.Namespace);
                             result.Append(">");
                         }
+
                     }
-                    else
+                    else if(!entry.IsRecordset)
                     {
                         string fName = entry.Namespace;
                         IBinaryDataListItem val = entry.FetchScalar();
@@ -114,7 +113,7 @@ namespace Dev2.Data.Translators
             string payload = Encoding.UTF8.GetString(input);
             string error;
 
-            IBinaryDataList result = new BinaryDataList();
+            IBinaryDataList result = null; 
 
             ErrorResultTO invokeErrors;
             TranslatorUtils tu = new TranslatorUtils();
@@ -178,7 +177,7 @@ namespace Dev2.Data.Translators
                                             }
                                         }
 
-                                        if(DataListUtil.isSystemTag(c.Name) && !hasCorrectIoDirection)
+                                        if(DataListUtil.IsSystemTag(c.Name) && !hasCorrectIoDirection)
                                         {
                                             continue;
                                         }
@@ -270,6 +269,11 @@ namespace Dev2.Data.Translators
             throw new NotImplementedException();
         }
 
+        public Guid Populate(object input, Guid targetDL, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
         public string ConvertAndFilter(IBinaryDataList payload, string filterShape, out ErrorResultTO errors)
         {
             if(payload == null)
@@ -331,7 +335,6 @@ namespace Dev2.Data.Translators
                                 }
                             }
 
-
                             result.Append("</");
                             result.Append(entry.Namespace);
                             result.Append(">");
@@ -341,6 +344,7 @@ namespace Dev2.Data.Translators
                     {
                         string fName = entry.Namespace;
                         IBinaryDataListItem val = entry.FetchScalar();
+
                         if(val != null)
                         {
                             result.Append("<");

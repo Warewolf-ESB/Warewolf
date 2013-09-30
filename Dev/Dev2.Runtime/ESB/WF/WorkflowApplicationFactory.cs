@@ -318,7 +318,7 @@ namespace Dev2.DynamicServices
                     debugState.ExecutionOriginDescription = dataObject.ExecutionOriginDescription;
                 }
 
-                if (dataObject.IsInDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     DebugDispatcher.Instance.Write(debugState);
                 }
@@ -331,7 +331,7 @@ namespace Dev2.DynamicServices
                     _instance.Cancel(new TimeSpan(0,0,0,0,1));
                 }
                 catch(TimeoutException e)
-                {
+            {
                     //Empty so that the exception does not bubble up. The timeout is set this way to ensure that the workflow stops immediately
                 }
                 ExecutableServiceRepository.Instance.Remove(this);

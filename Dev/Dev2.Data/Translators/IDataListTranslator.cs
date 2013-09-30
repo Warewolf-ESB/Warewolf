@@ -26,6 +26,7 @@ namespace Dev2.DataList.Contract
         /// Converts from a binary representation in the standard format to the specified <see cref="Format" />.
         /// </summary>
         /// <param name="input">The binary representation of the datalist.</param>
+        /// <param name="depth">The depth.</param>
         /// <param name="errors">The errors.</param>
         /// <returns>
         /// An array of bytes that represent the datalist in the specified <see cref="Format" />
@@ -33,11 +34,15 @@ namespace Dev2.DataList.Contract
         DataListTranslatedPayloadTO ConvertFrom(IBinaryDataList input, out ErrorResultTO errors);
 
         /// <summary>
-        /// Converts from a binary representation in the specified <see cref="Format"/> to the standard
+        /// Converts from a binary representation in the specified <see cref="Format" /> to the standard
         /// binary representation of a datalist.
         /// </summary>
-        /// <param name="input">The binary representation in the specifeid <see cref="Format"/></param>
-        /// <returns>An array of bytes that represent the datalist in the standard format.</returns>
+        /// <param name="input">The binary representation in the specifeid <see cref="Format" /></param>
+        /// <param name="shape">The shape.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns>
+        /// An array of bytes that represent the datalist in the standard format.
+        /// </returns>
         IBinaryDataList ConvertTo(byte[] input, string shape, out ErrorResultTO errors);
 
         /// <summary>
@@ -52,10 +57,23 @@ namespace Dev2.DataList.Contract
         /// </returns>
         IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors);
 
+
+        /// <summary>
+        /// Converts from a binary representation in the specified <see cref="Format" /> to the standard
+        /// binary representation of a datalist.
+        /// </summary>
+        /// <param name="input">The binary representation in the specifeid <see cref="Format" /></param>
+        /// <param name="targetDL">The target dialog.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns>
+        /// An array of bytes that represent the datalist in the standard format.
+        /// </returns>
+        Guid Populate(object input, Guid targetDL, out ErrorResultTO errors);
+
         /// <summary>
         /// Converts the and filter.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="input">The input.</param>
         /// <param name="filterShape">The filter shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>

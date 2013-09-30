@@ -17,9 +17,9 @@
             return ExecutePluginService(container);
         }
 
-        public System.Guid MockExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, out DataList.Contract.ErrorResultTO tmpErrors)
+        public System.Guid MockExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out DataList.Contract.ErrorResultTO tmpErrors)
         {
-            return base.ExecutionImpl(esbChannel, dataObject, out tmpErrors);
+            return base.ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors);
         }
     }
 }

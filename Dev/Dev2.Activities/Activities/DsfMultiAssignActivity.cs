@@ -119,16 +119,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             //2013.06.03: Ashley Lewis for bug 9498 - handle line breaks in multi assign
                             string[] openParts = Regex.Split(FieldsCollection[i].FieldName, @"\[\[");
                             string[] closeParts = Regex.Split(FieldsCollection[i].FieldName, @"\]\]");
-                            if(openParts.Count() == closeParts.Count() && openParts.Count() > 2 && closeParts.Count() > 2)
+                            if (openParts.Count() == closeParts.Count() && openParts.Count() > 2 &&
+                                closeParts.Count() > 2)
                             {
                                 foreach (var newFieldName in openParts)
                                 {
-                                    if(!string.IsNullOrEmpty(newFieldName))
+                                    if (!string.IsNullOrEmpty(newFieldName))
                                     {
                                         string cleanFieldName = null;
-                                        if(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2 < newFieldName.Length)
+                                        if (newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2 <
+                                            newFieldName.Length)
                                         {
-                                            cleanFieldName = "[[" + newFieldName.Remove(newFieldName.IndexOf("]]") + 2);
+                                            cleanFieldName = "[[" +
+                                                             newFieldName.Remove(
+                                                                 newFieldName.IndexOf("]]", StringComparison.Ordinal) +
+                                                                 2);
                                         }
                                         else
                                         {
@@ -147,12 +152,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     compiler.Upsert(executionID, toUpsert, out errors);
 
-                    if (dataObject.IsInDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
                         int innerCount = 0;
                         foreach (DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
                         {                            
-                            AddDebugItem(debugOutputTO.TargetEntry, FieldsCollection[innerCount].FieldValue, debugOutputTO.FromEntry, executionID, innerCount, debugOutputTO.UsedRecordsetIndex, dataObject, context);
+                            AddDebugItem(debugOutputTO.TargetEntry, FieldsCollection[innerCount].FieldValue,
+                                         debugOutputTO.FromEntry, executionID, innerCount,
+                                         debugOutputTO.UsedRecordsetIndex, dataObject, context);
                             innerCount++;
                             if (debugOutputTO.FromEntry != null)
                                 debugOutputTO.FromEntry.Dispose();
@@ -164,20 +171,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
             }
+            catch (Exception e)
+            {
+                ServerLogger.LogError(e);
+                allErrors.AddError(e.Message);
+            }
             finally
             {
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
-                    DisplayAndWriteError("DsfWebpageActivity", allErrors);
+                    DisplayAndWriteError("DsfAssignActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsInDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context, StateType.After);
                 }
             }
-
         }
 
         public override enFindMissingType GetFindMissingType()
@@ -187,8 +198,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-
-            foreach(Tuple<string, string> t in updates)
+            foreach (Tuple<string, string> t in updates)
             {
                 // locate all updates for this tuple
                 var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldValue) && c.FieldValue.Contains(t.Item1));
@@ -274,7 +284,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             foreach(var item in FieldsCollection)
             {
                 if(!string.IsNullOrEmpty(item.FieldValue) && item.FieldValue.Contains("[["))
-                {
+        {
                     result.Add(new DsfForEachItem { Name = item.FieldName, Value = item.FieldValue });
                 }
             }
@@ -289,7 +299,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             foreach(var item in FieldsCollection)
             {
                 if(!string.IsNullOrEmpty(item.FieldName) && item.FieldName.Contains("[["))
-                {
+        {
                     result.Add(new DsfForEachItem { Name = item.FieldValue, Value = item.FieldName });
                 }
             }

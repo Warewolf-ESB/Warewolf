@@ -16,9 +16,9 @@ namespace Dev2.Activities
             ServiceExecution = exection;
         }
 
-        public Guid MockExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, out ErrorResultTO tmpErrors)
+        public Guid MockExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
         {
-            return base.ExecutionImpl(esbChannel, dataObject, out tmpErrors);
+            return base.ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors);
         }
 
         public void MockBeforeExecutionStart(IDSFDataObject dsfDataObject)
@@ -33,16 +33,5 @@ namespace Dev2.Activities
             AfterExecutionCompleted(tmpErrors);
         }
 
-        public void MockCleanDataList(RuntimeHelpers runtimeHelpers, IDSFDataObject dataObject, Guid workspaceID, IDataListCompiler compiler)
-        {
-            var tmpErrors = new ErrorResultTO();
-            base.CleanDataList(runtimeHelpers, dataObject, workspaceID, compiler, tmpErrors);
-        }
-
-        public int CleanDataListHitCount { get; private set; }
-        protected override void CleanDataList(RuntimeHelpers runtimeHelpers, IDSFDataObject dataObject, Guid workspaceID, IDataListCompiler compiler, ErrorResultTO tmpErrors)
-        {
-            CleanDataListHitCount++;
-        }
     }
 }

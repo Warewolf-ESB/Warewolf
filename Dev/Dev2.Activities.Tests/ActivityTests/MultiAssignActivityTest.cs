@@ -94,7 +94,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(expected, actual);
 
-            
         }
 
         [TestMethod]
@@ -1334,6 +1333,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                     new ActivityDTO("[[Numeric(2).num]]", "[[CompanyName]]", 5),
                     new ActivityDTO("[[Numeric(3).num]]", "@Host", 6)
                 };
+
             DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
 
             List<DebugItem> inRes;

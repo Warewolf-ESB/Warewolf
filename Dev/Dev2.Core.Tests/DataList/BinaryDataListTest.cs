@@ -185,7 +185,6 @@ namespace Unlimited.UnitTest.Framework.DataList
             Guid mergeID = dl1.UID;
             dl1 = dl1.Merge(dl2, enDataListMergeTypes.Union, enTranslationDepth.Shape, false, out errors);
 
-
             IBinaryDataListEntry scalar;
             IBinaryDataListEntry rs;
             string error;

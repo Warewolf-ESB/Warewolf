@@ -98,9 +98,7 @@ namespace Dev2.Runtime.ESB
                 }
                 else
                 {
-                    // Place into a transactional scope
-                    using(var transactionScope = new TransactionScope())
-                    {
+
                         try
                         {
                             var sl = new ServiceLocator();
@@ -114,52 +112,53 @@ namespace Dev2.Runtime.ESB
                                 theService = sl.FindService(serviceID, _workspace.ID);
                             }
 
-                            if(theService == null)
-                            {
-                                errors.AddError("Service [ " + serviceName + " ] not found.");
-                            }
-                            else if(theService.Actions.Count <= 1)
-                            {
-                                #region Execute ESB container
-
-                                ServiceAction theStart = theService.Actions.FirstOrDefault();
-                                if((theStart.ActionType != enActionType.InvokeManagementDynamicService && theStart.ActionType != enActionType.Workflow) && dataObject.IsFromWebServer)
-                                {
-                                    throw new Exception("Can only execute workflows from web browser");
-                                }
-                                MapServiceActionDependencies(theStart, sl);
-
-                                ErrorResultTO invokeErrors = new ErrorResultTO();
-                                // Invoke based upon type ;)
-                                EsbExecutionContainer container = GenerateContainer(theStart, dataObject, _workspace);
-                                result = container.Execute(out invokeErrors);
-                                errors.MergeErrors(invokeErrors);
-
-                                // Ensure there are no errors so we can complete transaction
-                                if(!compiler.HasErrors(dataObject.DataListID) && result != GlobalConstants.NullDataListID && !invokeErrors.HasErrors())
-                                {
-                                    transactionScope.Complete();
-                                }
-
-                                #endregion
-                            }
-                            else
-                            {
-                                errors.AddError("Malformed Service [ " + serviceID + " ] it contains multiple actions");
-                            }
-                        }
-                        catch(Exception e)
+                        if (theService == null)
                         {
-                            errors.AddError(e.Message);
+                            errors.AddError("Service [ " + serviceName + " ] not found.");
                         }
-                        finally
+                        else if (theService.Actions.Count <= 1)
                         {
-                            ErrorResultTO tmpErrors;
-                            compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out tmpErrors);
-                            transactionScope.Dispose();
+                            #region Execute ESB container
+
+                            ServiceAction theStart = theService.Actions.FirstOrDefault();
+                        if ((theStart.ActionType != enActionType.InvokeManagementDynamicService &&
+                                theStart.ActionType != enActionType.Workflow) && dataObject.IsFromWebServer)
+                            {
+                                throw new Exception("Can only execute workflows from web browser");
+                            }
+                            MapServiceActionDependencies(theStart, sl);
+
+                            ErrorResultTO invokeErrors = new ErrorResultTO();
+                            // Invoke based upon type ;)
+                            EsbExecutionContainer container = GenerateContainer(theStart, dataObject, _workspace);
+                            result = container.Execute(out invokeErrors);
+                            errors.MergeErrors(invokeErrors);
+
+                            #endregion
+                        }
+                        else
+                        {
+                            errors.AddError("Malformed Service [ " + serviceID + " ] it contains multiple actions");
                         }
                     }
+                    catch (Exception e)
+                    {
+                        errors.AddError(e.Message);
+                    }
+                    finally
+                    {
+                        ErrorResultTO tmpErrors;
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error,
+                                                errors.MakeDataListReady(), out tmpErrors);
+                    //transactionScope.Dispose();
+                    ServerLogger.LogError(errors.MakeDisplayReady());
+                    }
+                    
+                    }
                 }
+            catch (Exception e)
+            {
+                throw e;
             }
             finally
             {
@@ -274,11 +273,11 @@ namespace Dev2.Runtime.ESB
 
         private void MapServiceActionDependencies(ServiceAction serviceAction, ServiceLocator serviceLocator)
         {
-
+            
             if (serviceAction.ServiceID == Guid.Empty)
             {
-                if(!string.IsNullOrWhiteSpace(serviceAction.ServiceName))
-                {
+            if(!string.IsNullOrWhiteSpace(serviceAction.ServiceName))
+            {
                     serviceAction.Service = serviceLocator.FindService(serviceAction.ServiceName, _workspace.ID);
                 }
             }

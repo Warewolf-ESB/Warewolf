@@ -14,10 +14,12 @@ namespace Dev2.Common
     /// <summary>
     /// A single common logging location ;)
     /// </summary>
-    public static partial class ServerLogger
+    public static class ServerLogger
     {
         
         #region private fields
+
+        private static object _lock = new object();
 
         private static LoggingSettings _loggingSettings;
         private static IDictionary<Guid, string> _workflowsToLog;
@@ -229,9 +231,12 @@ namespace Dev2.Common
             try
             {
     
+                lock (_lock)
+                {
                 File.AppendAllText(Path.Combine(EnvironmentVariables.ApplicationPath, "ServerLog.txt"),
-                                   string.Format("{0} :: {1} -> {2}{3}", DateTime.Now, typeOf, message, Environment.NewLine));
-
+                                       string.Format("{0} :: {1} -> {2}{3}", DateTime.Now, typeOf, message,
+                                                     Environment.NewLine));
+                }
 
             }
             catch

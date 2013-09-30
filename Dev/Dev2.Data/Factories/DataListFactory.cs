@@ -57,24 +57,12 @@ namespace Dev2.DataList.Contract
 
         public static IRecordSetCollection CreateRecordSetCollection(IList<IDev2Definition> parsedOutput)
         {
-            IRecordSetCollection result = null;
+            IRecordSetCollection result;
             RecordSetCollectionBuilder b = new RecordSetCollectionBuilder();
 
             b.setParsedOutput(parsedOutput);
 
             result = b.Generate();
-
-            return result;
-        }
-
-        public static IRecordSetDefinition CreateRecordSetDefinitionFromValueField(IRecordSetDefinition def)
-        {
-            IRecordSetDefinition result = null;
-            RecordSetDefintionMutator m = new RecordSetDefintionMutator();
-
-            m.setDefinition(def);
-
-            result = m.Generate();
 
             return result;
         }
@@ -98,11 +86,6 @@ namespace Dev2.DataList.Contract
         public static IDataValue CreateNewDataValue(string val, string tagName, bool isSystemRegion)
         {
             return new DataValue(val, tagName, isSystemRegion);
-        }
-
-        public static IRecordSetInstance CreateNewRecordSetInstance(IRecordSetDefinition def)
-        {
-            return new RecordSetInstance(def);
         }
 
         public static IDev2LanguageParser CreateOutputParser()

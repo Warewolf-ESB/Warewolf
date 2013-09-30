@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using System.Xml.Linq;
 
 namespace Dev2.DataList.Contract
 {
@@ -69,7 +68,7 @@ namespace Dev2.DataList.Contract
         {
             errors = new ErrorResultTO();
 
-            return _svrCompiler.Evaluate(null, curDLID, typeOf, expression, out errors, toRoot) ?? DataListConstants.baseEntry;
+            return _svrCompiler.Evaluate(null, curDLID, typeOf, expression, out errors, toRoot);
         }
 
         /// <summary>
@@ -350,32 +349,17 @@ namespace Dev2.DataList.Contract
         }
 
         /// <summary>
-        /// Shapes the definitions in string form to create/amended a DL.
-        /// </summary>
-        /// <param name="curDLID">The cur DL ID.</param>
-        /// <param name="typeOf">The type of.</param>
-        /// <param name="definitions">The definitions.</param>
-        /// <param name="errors">The errors.</param>
-        /// <param name="masterShape">The master shape.</param>
-        /// <returns></returns>
-        public Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors, string masterShape = "")
-        {
-            errors = new ErrorResultTO();
-            return _svrCompiler.Shape(null, curDLID, typeOf, definitions, out errors, masterShape);
-        }
-
-        /// <summary>
         /// Shapes the specified current dlid.
         /// </summary>
         /// <param name="curDLID">The current dlid.</param>
         /// <param name="typeOf">The type of.</param>
-        /// <param name="definitions">The definitions.</param>
+        /// <param name="defs">The defs.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors)
+        public Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string defs, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            return _svrCompiler.Shape(null, curDLID, typeOf, definitions, out errors, string.Empty);
+            return _svrCompiler.Shape(null, curDLID, typeOf, defs, out errors);
         }
 
         /// <summary>
@@ -391,6 +375,21 @@ namespace Dev2.DataList.Contract
             errors = new ErrorResultTO();
             return _svrCompiler.Shape(null, curDLID, typeOf, definitions, out errors);
         }
+
+        /// <summary>
+        /// Shapes for sub execution.
+        /// </summary>
+        /// <param name="parentDLID">The parent dlid.</param>
+        /// <param name="childDLID">The child dlid.</param>
+        /// <param name="inputDefs">The input defs.</param>
+        /// <param name="outputDefs">The output defs.</param>
+        /// <param name="errors">The errors.</param>
+        public IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubExecution(Guid parentDLID, Guid childDLID, string inputDefs, string outputDefs, out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO();
+            return _svrCompiler.ShapeForSubExecution(null, parentDLID, childDLID, inputDefs, outputDefs, out errors);
+        }
+
 
         /// <summary>
         /// Merges the specified left ID with the right ID
@@ -505,6 +504,20 @@ namespace Dev2.DataList.Contract
 
             errors = new ErrorResultTO();
             return _svrCompiler.ConvertTo(null, typeOf, payload, shape, out errors);
+        }
+
+        /// <summary>
+        /// Populates the data list.
+        /// </summary>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="input">The input.</param>
+        /// <param name="targetDLID">The target dlid.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        public Guid PopulateDataList(DataListFormat typeOf, object input, Guid targetDLID, out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO();
+            return _svrCompiler.PopulateDataList(null, typeOf, input, targetDLID, out errors);
         }
 
         /// <summary>
@@ -716,37 +729,6 @@ namespace Dev2.DataList.Contract
             return binaryDataListEntry.FetchScalar().TheValue;
         }
 
-        /// <summary>
-        /// Shapes the input.
-        /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
-        /// <param name="definitions">The definitions.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        public Guid ShapeInput(Guid curDLID, string definitions, out ErrorResultTO errors)
-        {
-            errors = new ErrorResultTO();
-            return _svrCompiler.Shape(null, curDLID, enDev2ArgumentType.Input, definitions, out errors, string.Empty);
-        }
-
-        public Guid ShapeInput(Guid curDLID, IList<IDev2Definition> definitions, out ErrorResultTO errors)
-        {
-            errors = new ErrorResultTO();
-            return _svrCompiler.Shape(null, curDLID, enDev2ArgumentType.Input, definitions, out errors);
-        }
-
-        public Guid ShapeOutput(Guid curDLID, string definitions, out ErrorResultTO errors)
-        {
-            errors = new ErrorResultTO();
-            return _svrCompiler.Shape(null, curDLID, enDev2ArgumentType.Output, definitions, out errors, string.Empty);
-        }
-
-        public Guid ShapeOutput(Guid curDLID, IList<IDev2Definition> definitions, out ErrorResultTO errors)
-        {
-            errors = new ErrorResultTO();
-            return _svrCompiler.Shape(null, curDLID, enDev2ArgumentType.Output, definitions, out errors);
-        }
-
         public IList<KeyValuePair<string, IBinaryDataListEntry>> FetchChanges(Guid id, StateType direction)
         {
             return _svrCompiler.FetchChanges(null, id, direction);
@@ -760,6 +742,7 @@ namespace Dev2.DataList.Contract
 
         public bool ForceDeleteDataListByID(Guid curDLID)
         {
+            // Do nothing for now, we scope it all ;)
             return _svrCompiler.DeleteDataListByID(curDLID, true);
         }
 
@@ -846,20 +829,6 @@ namespace Dev2.DataList.Contract
             {
                 result = false;
             }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Persists the resumable data list chain.
-        /// </summary>
-        /// <param name="baseChildID">The base child ID.</param>
-        /// <returns></returns>
-        public bool PersistResumableDataListChain(Guid baseChildID)
-        {
-            bool result = false;
-
-            result = _svrCompiler.PersistResumableDataListChain(baseChildID);
 
             return result;
         }

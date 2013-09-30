@@ -90,8 +90,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (!string.IsNullOrWhiteSpace(RecordsetName))
                 {
-
-
                     IBinaryDataList bdl = compiler.FetchBinaryDataList(executionId, out errors);
                     allErrors.MergeErrors(errors);
 
@@ -132,7 +130,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 {
                                     int cnt = recset.ItemCollectionSize();
                                     compiler.Upsert(executionId, region, cnt.ToString(CultureInfo.InvariantCulture), out errors);
-                                    if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                                    if(dataObject.IsDebugMode())
                                     {
                                         AddDebugOutputItem(region, cnt.ToString(CultureInfo.InvariantCulture), executionId);
                                     }

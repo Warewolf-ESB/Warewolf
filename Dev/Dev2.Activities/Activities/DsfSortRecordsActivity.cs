@@ -69,18 +69,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IBinaryDataList bdl = compiler.FetchBinaryDataList(executionID, out errors);
                     IBinaryDataListEntry rsData;
                     bdl.TryGetEntry(rawRecsetName, out rsData, out error);
-                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                    if (dataObject.IsDebugMode())
                     {
                         AddDebugInputItem(SortField, "Sort Field", rsData, executionID);
                     }
+
                     allErrors.AddError(error);
 
-                    if (errors.HasErrors())
-                    {
-                        allErrors.MergeErrors(errors);
-                    }
-                    else
-                    {
                         // Check for fields
                         if (rsData != null && rsData.HasField(sortField))
                         {
@@ -90,7 +85,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             // Push back against the datalist
                             compiler.PushBinaryDataList(executionID, bdl, out errors);
                             allErrors.MergeErrors(errors);
-                            if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                        if (dataObject.IsDebugMode())
                             {
                                 bdl.TryGetEntry(rawRecsetName, out rsData, out error);
                                 var itemToAdd = new DebugItem();
@@ -103,12 +98,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 itemToAdd.AddRange(CreateDebugItemsFromEntry(tmpExpression, rsData, executionID, enDev2ArgumentType.Output));
                                 _debugOutputs.Add(itemToAdd);
                             }
-
-                        }
-                        else
-                        {
-                            // no field, default behavior .... Do nothing
-                        }
                     }
                 }
                 else
@@ -124,7 +113,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfSortRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -187,15 +176,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if(updates != null)
             {
-                foreach (Tuple<string, string> t in updates)
-                {
+            foreach (Tuple<string, string> t in updates)
+            {
 
-                    if (t.Item1 == SortField)
-                    {
-                        SortField = t.Item2;
-                    }
+                if (t.Item1 == SortField)
+                {
+                    SortField = t.Item2;
                 }
             }
+        }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
@@ -204,12 +193,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 foreach(Tuple<string, string> t in updates)
                 {
-
+           
                     if(t.Item1 == SortField)
                     {
                         SortField = t.Item2;
                     }
-                }
+        }
             }
         }
 

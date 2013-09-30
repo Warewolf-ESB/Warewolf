@@ -49,7 +49,9 @@ namespace Dev2.Data.Decision
                     return tmp.TryFetchLastIndexedRecordsetUpsertPayload(out error).TheValue;
                 }
 
-                return tmp.FetchScalar().TheValue;
+                var scalar = tmp.FetchScalar();
+
+                return scalar.TheValue;
             }
 
             return string.Empty;

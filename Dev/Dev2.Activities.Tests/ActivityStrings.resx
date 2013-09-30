@@ -4783,11 +4783,8 @@ iiiiiiiiiiii</value>
       &lt;rec&gt;recVal5&lt;/rec&gt;
       &lt;rec2 /&gt;
     &lt;/recset&gt;
-    &lt;Service&gt;NewForEachNumber&lt;/Service&gt;
-    &lt;WebServerUrl&gt;http://localhost:1234/services/NewForEachNumber&lt;/WebServerUrl&gt;
     &lt;var&gt;Static_Scalar&lt;/var&gt;
     &lt;resultVar&gt;&lt;/resultVar&gt;
-  
 &lt;/ADL&gt;</value>
   </data>
   <data name="ForEachDataListShape" xml:space="preserve">

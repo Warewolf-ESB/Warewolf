@@ -58,6 +58,7 @@
     <Reference Include="Ionic.Zip.Reduced">
       <HintPath>..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Newtonsoft.Json.dll</HintPath>
@@ -65,6 +66,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Extensions" />
@@ -87,10 +89,14 @@
     <Compile Include="Binary Objects\BinaryDataListEntry.cs" />
     <Compile Include="Binary Objects\BinaryDataListFileSystemItem.cs" />
     <Compile Include="Binary Objects\BinaryDataListItem.cs" />
+    <Compile Include="Binary Objects\DataListRegistar.cs" />
     <Compile Include="Binary Objects\ListOfIndex.cs" />
     <Compile Include="Binary Objects\ReverseIndexIterator.cs" />
     <Compile Include="Binary Objects\ListIndexIterator.cs" />
+    <Compile Include="Binary Objects\Structs\InternalFederatedTO.cs" />
     <Compile Include="Compilers\EvaluateRuleSet.cs" />
+    <Compile Include="Compilers\RecordsetGroup.cs" />
+    <Compile Include="Compilers\TransientRecordsetProcessGroup.cs" />
     <Compile Include="Decisions\Operations\DecisionUtils.cs" />
     <Compile Include="Enums\CompileMessageType.cs" />
     <Compile Include="Enums\enForEachType.cs" />
@@ -111,26 +117,28 @@
     <Compile Include="ServiceModel\Resource.cs" />
     <Compile Include="ServiceModel\ResourceForTree.cs" />
     <Compile Include="ServiceModel\ResourceType.cs" />
-    <Compile Include="Storage\Dev2PersistantDictionary.cs" />
-    <Compile Include="Storage\IDev2PersistedDictionaryStorage.cs" />
+    <Compile Include="Storage\Binary Objects\FederatedStorageKey.cs" />
+    <Compile Include="Storage\Binary Objects\SBinaryKeyAlias.cs" />
+    <Compile Include="Storage\Binary Objects\StorageKey.cs" />
+    <Compile Include="Storage\BinaryDataListKeyAliasManager.cs" />
+    <Compile Include="Storage\Dev2BinaryStorage.cs" />
+    <Compile Include="Storage\Dev2DistributedCache.cs" />
     <Compile Include="Storage\IndexMemoryRanageAllocator.cs" />
     <Compile Include="Storage\Binary Objects\SBinaryDataListIndex.cs" />
-    <Compile Include="Storage\BinaryDataListBlob.cs" />
-    <Compile Include="Storage\BinaryDataListIndexStorage.cs" />
-    <Compile Include="Storage\BinaryDataListRow.cs" />
+    <Compile Include="Storage\ProtocolBuffers\BinaryDataListAlias.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Storage\ProtocolBuffers\BinaryDataListRow.cs" />
     <Compile Include="Binary Objects\BinaryDataListUtil.cs" />
     <Compile Include="Binary Objects\DataListItem.cs" />
     <Compile Include="Binary Objects\Dev2BinaryDataListFactory.cs" />
-    <Compile Include="Storage\BinaryDataListStorageRoot.cs" />
-    <Compile Include="Storage\BinaryDataListStorage.cs" />
+    <Compile Include="Storage\BinaryDataListStorageLayer.cs" />
     <Compile Include="Binary Objects\Dev2Column.cs" />
     <Compile Include="Binary Objects\enDev2ColumnArgumentDirection.cs" />
     <Compile Include="Binary Objects\IBinaryDataList.cs" />
     <Compile Include="Binary Objects\IBinaryDataListEntry.cs" />
     <Compile Include="Binary Objects\IBinaryDataListItem.cs" />
     <Compile Include="Binary Objects\BinaryDataListEntryBuilder.cs" />
-    <Compile Include="Storage\IBinaryDataListIndexStorage.cs" />
-    <Compile Include="DataListCache\IBinaryDataListRow.cs" />
     <Compile Include="Binary Objects\IIndexIterator.cs" />
     <Compile Include="Binary Objects\IndexIterator.cs" />
     <Compile Include="Binary Objects\IndexList.cs" />
@@ -180,7 +188,6 @@
     <Compile Include="Decisions\Operations\IsStartsWith.cs" />
     <Compile Include="Decisions\Operations\IsText.cs" />
     <Compile Include="Decisions\Operations\IsXml.cs" />
-    <Compile Include="LanguageValidation\Dev2DataLanguageRegionValidator.cs" />
     <Compile Include="PathOperations\ActivityIOFactory.cs" />
     <Compile Include="PathOperations\Dev2ActivityIOBroker.cs" />
     <Compile Include="PathOperations\Dev2ActivityIOPath.cs" />
@@ -209,7 +216,9 @@
     <Compile Include="PathOperations\TO\Dev2PutRawOperationTO.cs" />
     <Compile Include="PathOperations\TO\Dev2UnZipOperationTO.cs" />
     <Compile Include="PathOperations\TO\Dev2ZipOperationTO.cs" />
-    <Compile Include="Storage\IBinaryDataListStorage.cs" />
+    <Compile Include="Storage\ProtocolBuffers\AProtocolBuffer.cs" />
+    <Compile Include="Storage\ProtocolBuffers\SampleObject.cs" />
+    <Compile Include="Storage\StorageSettingManager.cs" />
     <Compile Include="SystemTemplates\Models\Dev2DecisionMode.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -231,10 +240,7 @@
     <Compile Include="Enums\enTranslationDepth.cs" />
     <Compile Include="Enums\enTranslationTypes.cs" />
     <Compile Include="EqualityComparers\Dev2ColumnComparer.cs" />
-    <Compile Include="Exceptions\DataListMutationException.cs" />
     <Compile Include="Exceptions\Dev2DataLanguageParseError.cs" />
-    <Compile Include="Exceptions\ExtractionException.cs" />
-    <Compile Include="Exceptions\InsertException.cs" />
     <Compile Include="Exceptions\RecordsetNotFoundException.cs" />
     <Compile Include="Extensions\ErrorResultTOExtensionMethods.cs" />
     <Compile Include="Factories\DataListFactory.cs" />
@@ -266,7 +272,6 @@
     <Compile Include="Interfaces\IIntellisenseResult.cs" />
     <Compile Include="Interfaces\IRecordSetCollection.cs" />
     <Compile Include="Interfaces\IRecordSetDefinition.cs" />
-    <Compile Include="Interfaces\IRecordSetInstance.cs" />
     <Compile Include="Interfaces\IRecordsetScopingObject.cs" />
     <Compile Include="Interfaces\IRecordsetTO.cs" />
     <Compile Include="Interfaces\IRecsetSearch.cs" />
@@ -333,13 +338,10 @@
     <Compile Include="TO\ParseTO.cs" />
     <Compile Include="TO\RecordSetCollection.cs" />
     <Compile Include="TO\RecordSetDefinition.cs" />
-    <Compile Include="TO\RecordSetInstance.cs" />
     <Compile Include="TO\RecordSetSearchPayload.cs" />
     <Compile Include="TO\SearchTO.cs" />
-    <Compile Include="TO\ShapedInputTO.cs" />
     <Compile Include="TO\SystemTag.cs" />
     <Compile Include="TO\SystemTagsTO.cs" />
-    <Compile Include="TO\TransientInputTO.cs" />
     <Compile Include="TO\UpsertTO.cs" />
     <Compile Include="TO\WizardDataListMergeTO.cs" />
     <Compile Include="Translators\DataListDataTableTranslator.cs" />
@@ -363,7 +365,6 @@
     <Compile Include="Util\GCWriter.cs" />
     <Compile Include="Util\Scrubber.cs" />
     <Compile Include="Util\ScrubType.cs" />
-    <Compile Include="Util\ValueExtractor.cs" />
     <Compile Include="Util\XmlHelper.cs" />
     <Compile Include="Value Objects\Dev2DataListEvaluateIterator.cs" />
     <Compile Include="Value Objects\Dev2IteratorCollection.cs" />

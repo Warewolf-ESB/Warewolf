@@ -10,6 +10,7 @@ namespace Dev2.Studio.Core.Models
         public Guid DebugSessionID { get; set; }
         public Guid EnvironmentID { get; set; }
         public bool IsRemoteWorkflow { get { return EnvironmentID != Guid.Empty; } }
+        public int ParentThreadID { get; set; }
 
         public string CurrentBookmarkName { get; set; }
         public string ParentServiceName { get; set; }
