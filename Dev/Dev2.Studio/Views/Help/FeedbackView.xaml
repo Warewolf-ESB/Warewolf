@@ -63,7 +63,7 @@
                 Visibility="{Binding HasServerLogAttachment, Converter={StaticResource BoolToVisConverter}}"
                 AutomationProperties.AutomationId="FeebackView_OpenAttachment"/>
         
-          <Label Content="{Binding ServerLogFileMessage}" Grid.Row="6" HorizontalAlignment="Left" Margin="5,4,0,0"
+         <Label Content="{Binding ServerLogFileMessage}" Grid.Row="5" HorizontalAlignment="Left" Margin="5,4,0,0"
                 Visibility="{Binding HasServerLogAttachment, Converter={StaticResource BoolToVisibilityConverterNegative}}" Foreground="Red"/>
         
         <Button Content="This feedback has a studio log file. Browse..." Grid.Row="6" HorizontalAlignment="Left" 

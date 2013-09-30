@@ -1,4 +1,5 @@
 ﻿using Dev2.Common;
+using Dev2.Providers.Logs;
 
 namespace Dev2.Studio.Core.AppResources.Administration {
     public class BDSAdminChannel : IFrameworkDuplexCallbackChannel, IApplicationMessage {
@@ -6,6 +7,7 @@ namespace Dev2.Studio.Core.AppResources.Administration {
 
         public void CallbackNotification(string message) {
             SendMessage(message);
+           Logger.TraceInfo(message);
         }
 
         #endregion
