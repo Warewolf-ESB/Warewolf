@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,30 +10,11 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
     [TestClass]
     public class DBServiceTest
     {
-        public DBServiceTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         readonly string WebserverURI = ServerSettings.WebserverURI;
 
@@ -82,6 +61,25 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
 
+            StringAssert.Contains(ResponseData, expected);
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DatabaseService_Mapping")]
+        public void DatabaseService_MappedOutputsFetchedInInnerWorkflow_WhenFetchedWithDiffernedColumnsThanFetched_DataReturned()
+        {
+
+            //------------Setup for test--------------------------
+            string PostData = String.Format("{0}{1}", WebserverURI, "Bug 10475 Outer WF");
+            string expected = @"<Rows><ID>1</ID></Rows>";
+
+            //------------Execute Test---------------------------
+            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+
+
+            //------------Assert Results-------------------------
             StringAssert.Contains(ResponseData, expected);
 
         }
