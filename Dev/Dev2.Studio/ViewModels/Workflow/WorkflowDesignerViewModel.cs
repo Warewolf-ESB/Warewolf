@@ -533,8 +533,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                             environmentModel.Connect();
                             environmentModel.LoadResources();
                         }
-                        var resource =
-                    environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceID);
+                        IResourceModel resource;
+                        if (resourceID != Guid.Empty)
+                        {
+                            resource = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceID);
+                        }
+                        else
+                        {
+                            var resourceName = ModelItemUtils.GetProperty("ServiceName", modelItem) as string;
+                            resource = environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == resourceName);
+                        }
 
                         WorkflowDesignerUtils.EditResource(resource, EventPublisher);
                     }
