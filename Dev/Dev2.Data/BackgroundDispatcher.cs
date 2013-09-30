@@ -99,6 +99,7 @@ namespace Dev2.Data
                 if (_binaryDataListQueue.TryDequeue(out binaryDataList))
                 {
                     binaryDataList.Dispose();
+                    binaryDataList = null;
                 }
 
                 lock (_waitHandleGuard)

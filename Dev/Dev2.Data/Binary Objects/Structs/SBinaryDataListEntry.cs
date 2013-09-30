@@ -71,37 +71,37 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
                     // I am going to look up all the different pieces then, push them together?!
                     foreach (var fedKey in fetchKeys.FetchAsList())
-                {
+                    {
                         BinaryDataListRow theRow;
                         _itemStorage.TryGetValue(fedKey.TheKey, colCnt, out theRow);
 
                         if (theRow != null)
-                    {
+                        {
 
                             var myCols = fedKey.ImpactedColumns;
-                    // Convert to _internalReturnValue format ;)
+                            // Convert to _internalReturnValue format ;)
                             if( myCols!= null && !theRow.IsEmpty)
-                    {
+                            {
 
                                 foreach (var col in myCols)
-                        {
+                                {
                                     // TODO : Fetch index value from
                                     var internalIdx = InternalFetchColumnIndex(col);
 
                                     IBinaryDataListItem tmp = _internalReturnValue[internalIdx];
 
-                            // normal object build
+                                    // normal object build
                                     tmp.UpdateValue(theRow.FetchValue(internalIdx, colCnt));
-                                tmp.UpdateIndex(key);
-                            }
+                                    tmp.UpdateIndex(key);
+                                }
 
-                        }
-                    else
-                    {
-                        // we have a scalar value we are dealing with ;)
-                        IBinaryDataListItem tmp = _internalReturnValue[0];
-                                tmp.UpdateValue(theRow.FetchValue(0,1));
-                    }
+                            }
+                            else
+                            {
+                                // we have a scalar value we are dealing with ;)
+                                IBinaryDataListItem tmp = _internalReturnValue[0];
+                                        tmp.UpdateValue(theRow.FetchValue(0,1));
+                            }
                         }
                     }
 
@@ -295,8 +295,8 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                     {
                         if (aliasSearchRounds == 0)
                         {
-                        throw new Exception("Missing Entry");
-                    }
+                            throw new Exception("Missing Entry");
+                        }
                         else
                         {
                             //// we hit the bottom earlier, handle it ;)
@@ -470,10 +470,10 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         #endregion
 
         public bool ContainsRow(int idx)
-                        {
+        {
 
             if (IsEmtpy)
-                {
+            {
                 return false;
             }
 
@@ -527,14 +527,14 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                 if(_itemStorage.TryGetValue(sk, colCnt,out row))
                 {
                     if(payload.TryGetValue(i, out cols))
-                {
-                        foreach(IBinaryDataListItem c in cols)
                     {
-                        int idx = InternalFetchColumnIndex(c.FieldName);
-                            row.UpdateValue(c.TheValue, idx, colCnt);
-                    }
+                            foreach(IBinaryDataListItem c in cols)
+                            {
+                                int idx = InternalFetchColumnIndex(c.FieldName);
+                                    row.UpdateValue(c.TheValue, idx, colCnt);
+                            }
 
-                        _itemStorage.TrySetValue(sk, colCnt, row);
+                                _itemStorage.TrySetValue(sk, colCnt, row);
                     }
                 }
             }

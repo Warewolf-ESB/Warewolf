@@ -294,13 +294,13 @@ namespace Dev2.Data.Decision
                         // ensure we have the correct indexing ;)
                         if (reStackIndex < stack.TheStack.Count)
                         {
-                            stack.TheStack[reStackIndex++] = newDecision;
-                        }
-                        else
-                        {
-                            stack.TheStack.Insert(reStackIndex++, newDecision);
-                        }
+                        stack.TheStack[reStackIndex++] = newDecision;
                     }
+                    else
+                    {
+                        stack.TheStack.Insert(reStackIndex++, newDecision);
+                    }
+                }
                     else
                     {
                         stack.TheStack.Insert(reStackIndex++, newDecision);
@@ -327,13 +327,13 @@ namespace Dev2.Data.Decision
                         // ensure we have the correct indexing ;)
                         if(reStackIndex < stack.TheStack.Count)
                         {
-                            stack.TheStack[reStackIndex++] = newDecision;
-                        }
-                        else
-                        {
-                            stack.TheStack.Insert(reStackIndex++, newDecision);
-                        }
+                        stack.TheStack[reStackIndex++] = newDecision;
                     }
+                    else
+                    {
+                        stack.TheStack.Insert(reStackIndex++, newDecision);
+                    }
+                }
                     else
                     {
                         stack.TheStack.Insert(reStackIndex++, newDecision);
