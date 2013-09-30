@@ -1,8 +1,8 @@
 ﻿
 using System;
 using System.Windows;
+using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Preview;
-using Dev2.Activities.QuickVariableInput;
 using Dev2.Studio.Core.ViewModels.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -46,7 +46,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [Owner("Hagashen Naidu")]
         [TestCategory("QuickVariableInputViewModel_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void QuickVariableInputViewModel_Constructor_NullArguments_ExceptionThrown()
+        public void QuickVariableInputViewModel_Constructor_NullAddToCollectionArguments_ExceptionThrown()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
@@ -61,12 +61,11 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object);
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { });
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(qviViewModel);
-            Assert.IsInstanceOfType(qviViewModel,typeof(ObservableObject));
-            Assert.IsInstanceOfType(qviViewModel,typeof(IHasActivityViewModelBase));
+            Assert.IsInstanceOfType(qviViewModel,typeof(DependencyObject));
             Assert.AreEqual(string.Empty, qviViewModel.SplitToken);
             Assert.AreEqual(string.Empty, qviViewModel.VariableListString);
             Assert.AreEqual(string.Empty, qviViewModel.Prefix);

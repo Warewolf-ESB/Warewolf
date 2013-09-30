@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Activities.QuickVariableInput;
+using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Providers.Errors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -36,16 +36,13 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             List<string> actualListToAdd = null;
             var actualOverwrite = false;
 
-            var collectionViewModel = new Mock<IActivityCollectionViewModel>();
-            collectionViewModel.Setup(m => m.AddListToCollection(It.IsAny<IEnumerable<string>>(), It.IsAny<bool>()))
-                               .Callback((IEnumerable<string> listToAdd, bool overwrite) =>
-                               {
-                                   actualListToAdd = listToAdd.ToList();
-                                   actualOverwrite = overwrite;
-                               })
-                               .Verifiable();
+            var addListToCollection = new Action<IEnumerable<string>, bool>((source, overwrite) =>
+            {
+                actualListToAdd = source.ToList();
+                actualOverwrite = overwrite;
+            });
 
-            var qviViewModel = new QuickVariableInputViewModel(collectionViewModel.Object)
+            var qviViewModel = new QuickVariableInputViewModel(addListToCollection)
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -57,7 +54,6 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 
             qviViewModel.AddCommand.Execute(null);
 
-            collectionViewModel.Verify(m => m.AddListToCollection(It.IsAny<IEnumerable<string>>(), It.IsAny<bool>()));
             Assert.IsNotNull(actualListToAdd);
             Assert.AreEqual(3, actualListToAdd.Count());
 
@@ -89,46 +85,13 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("QuickVariableInputViewModel_AddCommand")]
-        public void QuickVariableInputViewModel_AddCommand_ValidationErrorsCountNotZero_DoesNotAddListToPreviewInputs()
+        public void QuickVariableInputViewModel_AddCommand_DoesNotValidate()
         {
             var qviViewModel = new QuickVariableInputViewModelMock();
-            qviViewModel.ValidationErrorsValue.Add(new ErrorInfo());
-
-            var previewViewModelInputsCollectionChanged = false;
-            qviViewModel.PreviewViewModel.Inputs.CollectionChanged += (sender, args) => { previewViewModelInputsCollectionChanged = true; };
-
+            qviViewModel.Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() };
+            
             qviViewModel.AddCommand.Execute(null);
-
-            Assert.IsFalse(previewViewModelInputsCollectionChanged);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("QuickVariableInputViewModel_AddCommand")]
-        public void QuickVariableInputViewModel_AddCommand_ValidationErrorsCountNotZero_DoesNotAddListToActivityCollectionViewModel()
-        {
-            var collectionViewModel = new Mock<IActivityCollectionViewModel>();
-            collectionViewModel.Setup(m => m.AddListToCollection(It.IsAny<IEnumerable<string>>(), It.IsAny<bool>())).Verifiable();
-
-            var qviViewModel = new QuickVariableInputViewModelMock(collectionViewModel.Object);
-            qviViewModel.ValidationErrorsValue.Add(new ErrorInfo());
-
-            qviViewModel.AddCommand.Execute(null);
-
-            collectionViewModel.Verify(m => m.AddListToCollection(It.IsAny<IEnumerable<string>>(), It.IsAny<bool>()), Times.Never());
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("QuickVariableInputViewModel_AddCommand")]
-        public void QuickVariableInputViewModel_AddCommand_ValidationErrorsCountNotZero_DoesNotInvokeDoClear()
-        {
-            var qviViewModel = new QuickVariableInputViewModelMock();
-            qviViewModel.ValidationErrorsValue.Add(new ErrorInfo());
-
-            qviViewModel.AddCommand.Execute(null);
-
-            Assert.AreEqual(0, qviViewModel.DoClearHitCount);
+            Assert.AreEqual(0, qviViewModel.ValidateHitCount);
         }
 
         [TestMethod]
@@ -136,7 +99,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_AddCommand")]
         public void QuickVariableInputViewModel_AddCommand_IncompleteVariableList_CorrectResultsReturned()
         {
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -158,7 +121,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_AddCommand")]
         public void QuickVariableInputViewModel_AddCommand_SplitTypeWithChars_CorrectResultsReturned()
         {
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -180,7 +143,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_AddCommand")]
         public void QuickVariableInputViewModel_AddCommand_SplitTypeWithChars_SplitTokenSpace_CorrectResultsReturned()
         {
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -205,7 +168,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_AddCommand")]
         public void QuickVariableInputViewModel_AddCommand_SplitTypeWithIndex_CorrectResultsReturned()
         {
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -242,7 +205,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_AddCommand")]
         public void QuickVariableInputViewModel_AddCommand_SplitTypeWithSpace_CorrectResultsReturned()
         {
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -265,7 +228,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_AddCommand")]
         public void QuickVariableInputViewModel_AddCommand_SplitTypeWithTab_CorrectResultsReturned()
         {
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -296,7 +259,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
                 expectedPreviewOutput += string.Format("{0}2 [[Customer().LName]]{0}3 [[Customer().TelNo]]{0}...", Environment.NewLine);
             }
 
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
             {
                 Suffix = "",
                 Prefix = "Customer().",

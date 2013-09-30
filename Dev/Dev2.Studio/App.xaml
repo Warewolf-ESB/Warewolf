@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DataTemplates.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/MetroTheme.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Resources/ResourceDictionary.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/ActivityStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
                 <!--<ResourceDictionary Source="/PresentationFramework.Aero;component/themes/Aero.NormalColor.xaml"/>-->

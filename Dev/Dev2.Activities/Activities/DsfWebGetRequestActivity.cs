@@ -48,7 +48,7 @@ namespace Dev2.Activities
         public new string Result { get; set; }
 
         public DsfWebGetRequestActivity()
-            : base("Web Request Activity")
+            : base("Web Request")
         {
             Method = "GET";
         }

@@ -1,4 +1,5 @@
-﻿using Dev2.Activities.QuickVariableInput;
+﻿using System.Collections.Generic;
+using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Providers.Errors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -20,7 +21,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             qviViewModel.PreviewViewModel.PreviewCommand.Execute(null);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, qviViewModel.ValidationErrorsHitCount);
+            Assert.AreEqual(1, qviViewModel.ValidateHitCount);
             Assert.AreEqual(string.Empty, qviViewModel.PreviewViewModel.Output);
         }
 
@@ -30,7 +31,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         public void QuickVariableInputViewModel_PreviewRequested_ValidationErrorsCountNotZero_DoesNotGetPreviewOutput()
         {
             var qviViewModel = new QuickVariableInputViewModelMock();
-            qviViewModel.ValidationErrorsValue.Add(new ErrorInfo());
+            qviViewModel.Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() };
 
             qviViewModel.PreviewViewModel.PreviewCommand.Execute(null);
 
@@ -55,7 +56,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         public void QuickVariableInputViewModel_PreviewRequested_ValidationErrorsReturnsEmpty_PreviewRequestedArgsOutputIsEmpty()
         {
             //------------Setup for test--------------------------
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object);
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} );
 
             //------------Execute Test---------------------------
             qviViewModel.PreviewViewModel.PreviewCommand.Execute(null);
@@ -73,7 +74,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 2 [[Customer().LName]]
 3 [[Customer().TelNo]]";
 
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -97,7 +98,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 2 [[Customer().LName]]
 3 [[Customer().TelNo]]";
 
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -121,7 +122,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 3 [[Customer().TelNo]]
 ...";
 
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
             {
                 Suffix = "",
                 Prefix = "Customer().",

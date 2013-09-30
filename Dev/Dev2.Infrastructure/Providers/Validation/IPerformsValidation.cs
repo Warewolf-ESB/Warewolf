@@ -8,6 +8,9 @@ namespace Dev2.Providers.Validation
     public interface IPerformsValidation : IDataErrorInfo
     {
         Dictionary<string, List<IActionableErrorInfo>> Errors { get; set; }
+
         bool Validate(string propertyName, RuleSet ruleSet);
+
+        bool Validate(string propertyName);
     }
 }

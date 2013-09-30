@@ -1,7 +1,6 @@
-﻿using System;
-using System.Activities.Presentation.Model;
+﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using Dev2.Activities.Designers.DsfDateTime;
+using Dev2.Activities.Designers2.DateTime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
@@ -34,7 +33,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
             mockModel.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
             //exe
-            new DsfDateTimeActivityViewModel(mockModel.Object) { SelectedTimeModifierType = expected };
+            new DateTimeDesignerViewModel(mockModel.Object) { SelectedTimeModifierType = expected };
 
             //assert
             prop.Verify(c => c.SetValue(expected), Times.Once(), "Find Records ViewModel does not clear the match data property of the model item when it's no longer needed");
@@ -63,7 +62,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
             mockModel.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
             //exe
-            new DsfDateTimeActivityViewModel(mockModel.Object) { SelectedTimeModifierType = expected };
+            new DateTimeDesignerViewModel(mockModel.Object) { SelectedTimeModifierType = expected };
 
             //assert
             prop.Verify(c => c.SetValue(expected), Times.Never(), "Find Records ViewModel does not clear the match data property of the model item when it's no longer needed");

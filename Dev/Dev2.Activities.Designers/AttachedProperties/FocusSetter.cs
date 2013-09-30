@@ -45,8 +45,9 @@ namespace Dev2.Activities.AttachedProperties
             {
                 fe.IsVisibleChanged += FeIsVisibleChanged;
             }
-            
-            if((bool)e.NewValue)
+
+            var isFocused = e.NewValue is Boolean && (bool)e.NewValue;
+            if(isFocused)
             {
                 fe.Focus();
                 Keyboard.Focus(fe);

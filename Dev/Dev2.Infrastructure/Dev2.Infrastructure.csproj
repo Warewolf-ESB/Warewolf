@@ -83,6 +83,7 @@
     <Compile Include="Hosting\IHostContext.cs" />
     <Compile Include="Providers\Logs\CustomTraceListener.cs" />
     <Compile Include="Providers\Logs\Logger.cs" />
+    <Compile Include="Providers\Validation\IErrorsSource.cs" />
     <Compile Include="Providers\Validation\IValidator.cs" />
     <Compile Include="Providers\Validation\IPerformsValidation.cs" />
     <Compile Include="Providers\Validation\Rules\Rule.cs" />

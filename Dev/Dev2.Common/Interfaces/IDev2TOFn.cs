@@ -1,6 +1,8 @@
-﻿namespace Dev2.Interfaces
+﻿using System.ComponentModel;
+
+namespace Dev2.Interfaces
 {
-    public interface IDev2TOFn
+    public interface IDev2TOFn:INotifyPropertyChanged
     {
         bool CanRemove();
         bool CanAdd();

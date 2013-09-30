@@ -1,17 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Preview;
-using Dev2.Activities.QuickVariableInput;
 using Dev2.Providers.Errors;
-using Moq;
 
 namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 {
     public class QuickVariableInputViewModelMock : QuickVariableInputViewModel
     {
-        public QuickVariableInputViewModelMock(IActivityCollectionViewModel activityCollectionViewModel = null)
-            : base(activityCollectionViewModel ?? new Mock<IActivityCollectionViewModel>().Object)
+        public QuickVariableInputViewModelMock(Action<IEnumerable<string>, bool> addToCollection = null, Action<List<IActionableErrorInfo>> setErrors = null)
+            : base(addToCollection ?? ((source, overwrite) => { }))
         {
-            ValidationErrorsValue = new List<IErrorInfo>();
         }
 
         public int DoAddHitCount { get; private set; }
@@ -51,14 +50,11 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             return base.GetPreviewOutput();
         }
 
-        public int ValidationErrorsHitCount { get; private set; }
-        public List<IErrorInfo> ValidationErrorsValue { get; private set; }
+        public int ValidateHitCount { get; private set; }
 
-        public override IEnumerable<IErrorInfo> ValidationErrors()
+        public override void Validate()
         {
-            ValidationErrorsHitCount++;
-            return ValidationErrorsValue;
+            ValidateHitCount++;
         }
-
     }
 }

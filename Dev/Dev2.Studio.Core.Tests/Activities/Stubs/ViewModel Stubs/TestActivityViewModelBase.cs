@@ -1,24 +1,17 @@
 using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using Dev2.Activities.Designers;
-using Dev2.Providers.Errors;
+using Dev2.Activities.Designers2.Core;
 
 namespace Dev2.Core.Tests.Activities
 {
-    class TestActivityViewModelBase : ActivityViewModelBase
+    class TestActivityViewModelBase : ActivityDesignerViewModel
     {
         public TestActivityViewModelBase(ModelItem modelItem)
             : base(modelItem)
         {
         }
 
-        #region Overrides of ActivityViewModelBase
-
-        public override IEnumerable<IErrorInfo> ValidationErrors()
+        public override void Validate()
         {
-            yield break;
         }
-
-        #endregion
     }
 }

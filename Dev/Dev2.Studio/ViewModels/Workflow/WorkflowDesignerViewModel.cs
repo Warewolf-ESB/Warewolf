@@ -1372,8 +1372,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (currentName == message.OldName)
                 {
                     ModelItemUtils.SetProperty("ServiceName", message.NewName, modelItem);
-                }
             }
+        }
         }
 
         #endregion
@@ -1480,22 +1480,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             var isWorkflow = e.Data.GetData("WorkflowItemTypeNameFormat") as string;
             if(isWorkflow != null)
             {
-
-
-                if(isWorkflow.Contains("DsfMultiAssignActivity") || isWorkflow.Contains("DsfWebGetRequestActivity"))
-                {
-                    var overlayService = _wd.Context.Services.GetService<OverlayService>();
-                    if(overlayService == null)
-                    {
-                        overlayService = new OverlayService { OnLoadOverlayType = OverlayType.LargeView };
-                        _wd.Context.Services.Publish(overlayService);
-                    }
-                    else
-                    {
-                        overlayService.OnLoadOverlayType = OverlayType.LargeView;
-                    }
-                }
-
                 _vm = DsfActivityDropUtils.DetermineDropActivityType(isWorkflow);
 
                 if(_vm != null)

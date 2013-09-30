@@ -1,7 +1,6 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using Dev2.Activities.Adorners;
-using Dev2.Activities.Designers.DsfGetWebRequest;
+using Dev2.Activities.Designers2.GetWebRequest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
@@ -15,8 +14,8 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Designers.DsfGetWebRequest
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DsfGetWebRequestActivityViewModel_ExecutePreview")]
-        public void DsfGetWebRequestActivityViewModel_ExecutePreviewWhenUrlIsValid_WebRequestIsInvoked()
+        [TestCategory("GetWebRequestDesignerViewModel_ExecutePreview")]
+        public void GetWebRequestDesignerViewModel_ExecutePreviewWhenUrlIsValid_WebRequestIsInvoked()
         {
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
@@ -29,21 +28,20 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Designers.DsfGetWebRequest
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new DsfGetWebRequestActivityViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
 
-            sut.HelpViewModel = new HelpViewModel();
             sut.Url = "";
 
             sut.PreviewViewModel.PreviewCommand.Execute(null);
 
             Assert.IsFalse(string.IsNullOrWhiteSpace(sut.PreviewViewModel.Output));
-            Assert.IsTrue(sut.HelpViewModel.Errors.Count == 0);
+            Assert.IsNull(sut.Errors);
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DsfGetWebRequestActivityViewModel_ExecutePreview")]
-        public void DsfGetWebRequestActivityViewModel_ExecutePreviewWhenUrlIsValidButDoesNotExist_WebRequestIsInvoked()
+        [TestCategory("GetWebRequestDesignerViewModel_ExecutePreview")]
+        public void GetWebRequestDesignerViewModel_ExecutePreviewWhenUrlIsValidButDoesNotExist_WebRequestIsInvoked()
         {
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
@@ -56,15 +54,14 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Designers.DsfGetWebRequest
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new DsfGetWebRequestActivityViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
 
-            sut.HelpViewModel = new HelpViewModel();
             sut.Url = "";
 
             sut.PreviewViewModel.PreviewCommand.Execute(null);
 
             Assert.IsTrue(string.IsNullOrWhiteSpace(sut.PreviewViewModel.Output));
-            Assert.IsTrue(sut.HelpViewModel.Errors.Count == 1);
+            Assert.IsTrue(sut.Errors.Count == 1);
         }
 
 

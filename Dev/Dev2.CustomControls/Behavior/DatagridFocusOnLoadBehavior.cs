@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
@@ -17,12 +13,14 @@ namespace Dev2.CustomControls.Behavior
         {
             base.OnAttached();
             AssociatedObject.Loaded += AssociatedObjectOnLoaded;
+            //AssociatedObject.InitializingNewItem += AssociatedObjectOnInitializingNewItem;
         }
 
         protected override void OnDetaching()
         {
             base.OnDetaching();
             AssociatedObject.Loaded -= AssociatedObjectOnLoaded;
+            //AssociatedObject.InitializingNewItem -= AssociatedObjectOnInitializingNewItem;
         }
 
         private void AssociatedObjectOnLoaded(object sender, RoutedEventArgs routedEventArgs)
@@ -39,6 +37,16 @@ namespace Dev2.CustomControls.Behavior
                             _count++;
                         }
                     };
+            }
+        }
+
+        void AssociatedObjectOnInitializingNewItem(object sender, InitializingNewItemEventArgs args)
+        {
+            var txtBox = AssociatedObject.Columns[0].GetCellContent(args.NewItem);
+            var txt = txtBox.FindVisualChildren<TextBox>().FirstOrDefault();
+            if(txt != null)
+            {
+                txt.Focus();
             }
         }
     }

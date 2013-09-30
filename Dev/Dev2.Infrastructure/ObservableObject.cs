@@ -8,13 +8,15 @@ namespace Dev2
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged<T>(string propertyName, ref T propertyValue, T newValue)
+        protected bool OnPropertyChanged<T>(ref T propertyValue, T newValue, [CallerMemberName] string propertyName = null)
         {
-            if(!EqualityComparer<T>.Default.Equals(propertyValue, newValue))
+            var propertyChanged = !EqualityComparer<T>.Default.Equals(propertyValue, newValue);
+            if(propertyChanged)
             {
                 propertyValue = newValue;
                 OnPropertyChanged(propertyName);
             }
+            return propertyChanged;
         }
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

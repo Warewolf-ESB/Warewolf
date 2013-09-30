@@ -1,14 +1,12 @@
 using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using Dev2.Activities.Designers;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Interfaces;
-using Dev2.Providers.Errors;
-using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Providers.Validation;
 
 namespace Dev2.Core.Tests.Activities
 {
-    class TestActivityCollectionViewModelBase<TDev2TOFn> : ActivityCollectionViewModelBase<TDev2TOFn>
-        where TDev2TOFn : class, IDev2TOFn, new()
+    class TestActivityCollectionViewModelBase<TDev2TOFn> : ActivityCollectionDesignerViewModel<TDev2TOFn>
+        where TDev2TOFn : class, IDev2TOFn, IPerformsValidation, new()
     {
 
         public TestActivityCollectionViewModelBase(ModelItem modelItem)
@@ -16,25 +14,12 @@ namespace Dev2.Core.Tests.Activities
         {
         }
 
-        #region Overrides of ActivityCollectionViewModelBase
-
         protected override string CollectionName
         {
             get
             {
-                return ModelItemUtils.GetProperty("CollectionName",ModelItem).ToString();
+                return GetProperty<string>();
             }
         }
-
-        #endregion
-
-        #region Overrides of ActivityViewModelBase
-
-        public override IEnumerable<IErrorInfo> ValidationErrors()
-        {
-            yield break;
-        }
-
-        #endregion
     }
 }

@@ -67,95 +67,87 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adorners\AbstractOptionsAdorner.cs" />
-    <Compile Include="Adorners\ActivityAdorner.cs" />
-    <Compile Include="Adorners\AdornerAutomationIdAttribute.cs" />
-    <Compile Include="Adorners\AdornerCollection.cs" />
-    <Compile Include="Adorners\AdornerPosition.cs" />
-    <Compile Include="Adorners\AdornerPresenterBase.cs" />
-    <Compile Include="Adorners\AdornerToggleButton.cs" />
-    <Compile Include="Adorners\AutomationIdExtensions.cs" />
-    <Compile Include="Adorners\ButtonSelectionChangedEventArgs.cs" />
-    <Compile Include="Adorners\CommandAdornerPresenter.cs" />
-    <Compile Include="Adorners\AdornerButton.cs" />
-    <Compile Include="Adorners\IOverlayManager.cs" />
-    <Compile Include="Adorners\HelpCommandAdornerPresenter.cs" />
-    <Compile Include="Adorners\LargeViewOverlayAdornerPresenter.cs" />
-    <Compile Include="Adorners\OverlayButtonsBar.cs" />
-    <Compile Include="Adorners\OverlayTemplate.xaml.cs">
-      <DependentUpon>OverlayTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers\DsfGetWebRequest\DsfGetWebRequestActivityDesigner.xaml.cs">
-      <DependentUpon>DsfGetWebRequestActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers\DsfGetWebRequest\DsfGetWebRequestActivityOverlayTemplate.xaml.cs">
-      <DependentUpon>DsfGetWebRequestActivityOverlayTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers\DsfGetWebRequest\DsfGetWebRequestActivityTemplate.xaml.cs">
-      <DependentUpon>DsfGetWebRequestActivityTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers\DsfGetWebRequest\DsfGetWebRequestActivityViewModel.cs" />
-    <Compile Include="Designers\DsfFindRecordsMultipleCriteria\DsfFindRecordsMultipleCriteriaDesigner.xaml.cs">
-      <DependentUpon>DsfFindRecordsMultipleCriteriaDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers\DsfFindRecordsMultipleCriteria\DsfFindRecordsMultipleCriteriaTemplate.xaml.cs">
-      <DependentUpon>DsfFindRecordsMultipleCriteriaTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers\DsfFindRecordsMultipleCriteria\DsfFindRecordsMultipleCriteriaViewModel.cs" />
-    <Compile Include="Designers\IActivityCollectionViewModel.cs" />
-    <Compile Include="Designers\IActivityViewModelBase.cs" />
-    <Compile Include="QuickVariableInput\QuickVariableInputAdornerPresenter.cs" />
-    <Compile Include="Adorners\UpdateCompletedEventArgs.cs" />
-    <Compile Include="DataGridFocusTextOnLoadBehavior.cs" />
-    <Compile Include="Designers\ActivityCollectionViewModelBase.cs" />
-    <Compile Include="Designers\CollectionActivityTemplate.cs" />
-    <Compile Include="Designers\ActivityTemplate.cs" />
-    <Compile Include="Designers\DsfMultiAssign\DsfMultiAssignActivityOverlayTemplate.xaml.cs">
-      <DependentUpon>DsfMultiAssignActivityOverlayTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers\DsfMultiAssign\DsfMultiAssignActivityDesigner.xaml.cs">
-      <DependentUpon>DsfMultiAssignActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers\DsfMultiAssign\DsfMultiAssignActivityTemplate.xaml.cs">
-      <DependentUpon>DsfMultiAssignActivityTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers\DsfMultiAssign\DsfMultiAssignActivityViewModel.cs" />
-    <Compile Include="ErrorsDictionaryToListConverter.cs" />
-    <Compile Include="Help\Converters\ForeachSelectedValueToHelpTextConverter.cs" />
-    <Compile Include="AttachedProperties\FocusSetter.cs" />
-    <Compile Include="Help\HelpView.xaml.cs">
-      <DependentUpon>HelpView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Help\HelpViewModel.cs" />
-    <Compile Include="Adorners\IAdornerPresenter.cs" />
-    <Compile Include="Adorners\OptionsAdorner.cs" />
-    <Compile Include="Adorners\OverlayAdorner.cs" />
-    <Compile Include="Adorners\OverlayAdornerPresenter.cs" />
-    <Compile Include="Adorners\OverlayType.cs" />
-    <Compile Include="Help\HelpTextAttachedProperty.cs" />
-    <Compile Include="Adorners\AbstractOverlayAdorner.cs" />
-    <Compile Include="Designers\ActivityDesignerBase.cs" />
-    <Compile Include="Designers\ActivityViewModelAttribute.cs" />
-    <Compile Include="AttachedProperties\WizardEngineAttachedProperties.cs" />
-    <Compile Include="Designers\ActivityViewModelBase.cs" />
-    <Compile Include="Designers\ActivityDesignerCollectionBase.cs" />
-    <Compile Include="Designers\DsfDateTime\DsfDateTimeActivityDesigner.xaml.cs">
-      <DependentUpon>DsfDateTimeActivityDesigner.xaml</DependentUpon>
+    <Compile Include="Adorners\AdornerToggleButton.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers\DsfDateTime\DsfDateTimeActivityTemplate.xaml.cs">
-      <DependentUpon>DsfDateTimeActivityTemplate.xaml</DependentUpon>
+    <Compile Include="Designers2\Core\ActivityCollectionDesigner.cs" />
+    <Compile Include="Designers2\Core\ActivityCollectionDesignerViewModel_TDev2TO.cs" />
+    <Compile Include="Designers2\Core\ActivityCollectionDesignerViewModel.cs" />
+    <Compile Include="Designers2\Core\ActivityDesignerTemplate.cs" />
+    <Compile Include="Designers2\Core\ActivityDesignerToggle.cs" />
+    <Compile Include="Designers2\Core\Adorners\AdornerUtils.cs" />
+    <Compile Include="Designers2\Core\Errors\ErrorsAdorner.xaml.cs">
+      <DependentUpon>ErrorsAdorner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers\DsfDateTime\DsfDateTimeActivityViewModel.cs" />
-    <Compile Include="Designers\IActivityDesigner.cs" />
-    <Compile Include="Designers\IActivityViewModel.cs" />
-    <Compile Include="Designers\UIElementHelper.cs" />
-    <Compile Include="Help\HelpTextResources.Designer.cs">
+    <Compile Include="Designers2\Core\Help\HelpAdorner.xaml.cs">
+      <DependentUpon>HelpAdorner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\Adorners\AdornerControl.cs" />
+    <Compile Include="Designers2\Core\ActivityDesignerButton.cs" />
+    <Compile Include="Designers2\Core\ActivityDesignerToggleButton.cs" />
+    <Compile Include="Designers2\Core\Converters\NegateBooleanConverter.cs" />
+    <Compile Include="Designers2\Core\Errors\ErrorsSetter.cs" />
+    <Compile Include="Designers2\Core\Help\HelpSetter.cs" />
+    <Compile Include="Designers2\Core\Help\HelpTextResources.Designer.cs">
+      <DependentUpon>HelpTextResources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>HelpTextResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="OverlayService.cs" />
+    <Compile Include="Designers2\Core\Help\IHelpSource.cs" />
+    <Compile Include="Designers2\Core\IClosable.cs" />
+    <Compile Include="Designers2\Core\ZIndexPosition.cs" />
+    <Compile Include="Designers2\DateTime\DateTimeDesigner.xaml.cs">
+      <DependentUpon>DateTimeDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTime\DateTimeDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTime\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaDesigner.xaml.cs">
+      <DependentUpon>FindRecordsMultipleCriteriaDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\FindRecordsMultipleCriteria\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequestDesigner.xaml.cs">
+      <DependentUpon>GetWebRequestDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequestDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\MultiAssign\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MultiAssign\MultiAssignDesigner.xaml.cs">
+      <DependentUpon>MultiAssignDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\ActivityDesigner.cs" />
+    <Compile Include="Designers2\Core\ActivityDesignerViewModel.cs" />
+    <Compile Include="Designers2\MultiAssign\MultiAssignDesignerViewModel.cs" />
+    <Compile Include="Designers2\MultiAssign\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Behaviors\DataGridFocusTextOnLoadBehavior.cs" />
+    <Compile Include="AttachedProperties\FocusSetter.cs" />
+    <Compile Include="AttachedProperties\WizardEngineAttachedProperties.cs" />
     <Compile Include="Preview\PreviewRequestedEventArgs.cs" />
     <Compile Include="Preview\PreviewView.xaml.cs">
       <DependentUpon>PreviewView.xaml</DependentUpon>
@@ -175,13 +167,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="QuickVariableInput\QuickVariableInputView.xaml.cs">
+    <Compile Include="Designers2\Core\QuickVariableInput\QuickVariableInputView.xaml.cs">
       <DependentUpon>QuickVariableInputView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="QuickVariableInput\QuickVariableInputViewModel.cs" />
+    <Compile Include="Designers2\Core\QuickVariableInput\QuickVariableInputViewModel.cs" />
     <Compile Include="Utils\ActivityDesignerLanuageNotationConverter.cs" />
     <Compile Include="Utils\ForeachActivityDesignerUtils.cs" />
-    <EmbeddedResource Include="Help\HelpTextResources.resx">
+    <EmbeddedResource Include="Designers2\Core\Help\HelpTextResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>HelpTextResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
@@ -252,73 +244,67 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="..\Dev2.Studio\Themes\Brushes.xaml">
-      <Link>Themes\Brushes.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="..\Dev2.Studio\Themes\Colors.xaml">
-      <Link>Themes\Colors.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Adorners\OverlayTemplate.xaml">
+    <Page Include="Designers2\Core\Errors\ErrorsAdorner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers\DsfDateTime\DsfDateTimeActivityDesigner.xaml">
+    <Page Include="Designers2\Core\Help\HelpAdorner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers\DsfDateTime\DsfDateTimeActivityTemplate.xaml">
+    <Page Include="Designers2\DateTime\DateTimeDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers\DsfActivityResources.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers\DsfFindRecordsMultipleCriteria\DsfFindRecordsMultipleCriteriaDesigner.xaml">
+    <Page Include="Designers2\DateTime\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers\DsfFindRecordsMultipleCriteria\DsfFindRecordsMultipleCriteriaTemplate.xaml">
+    <Page Include="Designers2\FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers\DsfGetWebRequest\DsfGetWebRequestActivityDesigner.xaml">
+    <Page Include="Designers2\FindRecordsMultipleCriteria\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers\DsfGetWebRequest\DsfGetWebRequestActivityOverlayTemplate.xaml">
+    <Page Include="Designers2\GetWebRequest\GetWebRequestDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers\DsfGetWebRequest\DsfGetWebRequestActivityTemplate.xaml">
+    <Page Include="Designers2\GetWebRequest\Large.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers\DsfMultiAssign\DsfMultiAssignActivityOverlayTemplate.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers\DsfMultiAssign\DsfMultiAssignActivityDesigner.xaml">
+    <Page Include="Designers2\GetWebRequest\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers\DsfMultiAssign\DsfMultiAssignActivityTemplate.xaml">
+    <Page Include="Designers2\MultiAssign\Large.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Help\HelpView.xaml">
+    <Page Include="Designers2\MultiAssign\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\ActivityDesignerStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\MultiAssign\MultiAssignDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\ActivityResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Preview\PreviewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="QuickVariableInput\QuickVariableInputView.xaml">
+    <Page Include="Designers2\Core\QuickVariableInput\QuickVariableInputView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -372,14 +358,7 @@
   <ItemGroup>
     <Resource Include="Images\ToolDataSplit-32.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Designers\DsfBaseConvert\" />
-    <Folder Include="Designers\DsfCalculate\" />
-    <Folder Include="Designers\DsfComment\" />
-    <Folder Include="Designers\DsfCountRecords\" />
-    <Folder Include="Designers\DsfDataSplit\" />
-    <Folder Include="Designers\DsfForEach\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\HelpTextCollapser-16.png" />
     <Resource Include="Images\HelpTextExpander-16.png" />

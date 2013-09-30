@@ -1,57 +1,41 @@
 ﻿using System;
 using System.Activities.Presentation.View;
-using System.Windows.Controls.Primitives;
-using Dev2.Activities.Adorners;
-using Dev2.Activities.Designers;
+using Dev2.Activities.Designers2.Core;
 
 namespace Dev2.Core.Tests.Activities
 {
 
-    public class testActivityDesigner : ActivityDesignerBase<TestActivityViewModel>
+    public class testActivityDesigner : ActivityDesigner<TestActivityViewModel>
     {
-        public void SetOptionsAdorner(AbstractOptionsAdorner adorner)
-        {
-            OptionsAdorner = adorner;
-        }
-
-        public void SetOverlaydorner(AbstractOverlayAdorner adorner)
-        {
-            OverlayAdorner = adorner;
-        }
 
         public void SetWorkflowSelection(Selection selection)
         {
-            WorkflowDesignerSelection = selection;
+            //WorkflowDesignerSelection = selection;
         }
 
         public void CallSelectionChange(Selection item)
         {
-          SelectionChanged(item);  
-        }
-
-        public void CallShowContent(ButtonBase selectedOption)
-        {
-            ShowContent(selectedOption);
+            //SelectionChanged(item);
         }
 
         public void TestRestoreAllRequested()
         {
-            DesignerManagementService_RestoreAllRequested(null, new EventArgs());
+            OnDesignerManagementServiceRestoreAllRequested(null, new EventArgs());
         }
 
         public void TestExpandAllRequested()
         {
-            DesignerManagementService_ExpandAllRequested(null, new EventArgs());
+            OnDesignerManagementServiceExpandAllRequested(null, new EventArgs());
         }
 
         public void TestCollapseAllRequested()
         {
-            DesignerManagementService_CollapseAllRequested(null, new EventArgs());
+            OnDesignerManagementServiceCollapseAllRequested(null, new EventArgs());
         }
 
         public void TestInit()
         {
-            InitializeViewModel();
+            OnLoaded();
         }
     }
 }

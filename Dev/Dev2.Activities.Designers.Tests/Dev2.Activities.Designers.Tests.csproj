@@ -71,20 +71,21 @@
     <Compile Include="..\Dev2.Core.Tests\TestUtils.cs">
       <Link>TestUtils.cs</Link>
     </Compile>
-    <Compile Include="BaseViewModelTests\ActivityBaseClassTests.cs" />
-    <Compile Include="BaseViewModelTests\Stubs\testActivity.cs" />
-    <Compile Include="BaseViewModelTests\Stubs\testActivityDesigner.cs" />
-    <Compile Include="BaseViewModelTests\Stubs\TestActivityViewModel.cs" />
+    <Compile Include="Designers2\Core\Stubs\ActivityDesignerCollectionViewModelDerived.cs" />
+    <Compile Include="Designers2\Core\ActivityDesignerViewModelTests.cs" />
+    <Compile Include="Designers2\Core\Stubs\TestActivity.cs" />
+    <Compile Include="Designers2\Core\Stubs\TestActivityDesigner.cs" />
+    <Compile Include="Designers2\Core\Stubs\TestActivityDesignerViewModel.cs" />
     <Compile Include="Behaviour Stubs\testDataGridFocusTextOnLoadBehavior.cs" />
     <Compile Include="BehaviourTests.cs" />
-    <Compile Include="CollectionBaseViewModelTests\ActivityCollectionViewModelBaseTests.cs" />
-    <Compile Include="CollectionBaseViewModelTests\Stubs\TestActivityCollectionViewModelBase.cs" />
+    <Compile Include="Designers2\Core\Stubs\TestActivityCollectionDesignerViewModel.cs" />
     <Compile Include="DateTimeTests\DateTimeViewModelTests.cs" />
+    <Compile Include="Designers2\Core\ActivityDesignerTests.cs" />
+    <Compile Include="Designers2\Core\ActivityCollectionDesignerViewModelTests.cs" />
+    <Compile Include="Designers2\Core\ActivityDesignerButtonTests.cs" />
     <Compile Include="GetWebRequestTests\GetWebRequestViewModelTests.cs" />
-    <Compile Include="HelpViewModelTests\HelpViewModelTests.cs" />
     <Compile Include="MultiAssignTests\MultiAssignViewModelTests.cs" />
-    <Compile Include="MultiAssignTests\ViewModel Stub\testDsfMultiAssignActivityViewModel.cs" />
-    <Compile Include="Adorners\AdornerButtonTests.cs" />
+    <Compile Include="MultiAssignTests\Stubs\TestMultiAssignDesignerViewModel.cs" />
     <Compile Include="Preview\PreviewViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuickVariableInput\QuickVariableInputViewModelTests.ValidationErrors.cs" />
@@ -93,9 +94,7 @@
     <Compile Include="QuickVariableInput\QuickVariableInputViewModelTests.AddCommand.cs" />
     <Compile Include="QuickVariableInput\QuickVariableInputViewModelTests.Preview.cs" />
     <Compile Include="QuickVariableInput\QuickVariableInputViewModelTests.ClearCommand.cs" />
-    <Compile Include="QuickVariableInput\QuickVariableInputAdornerPresenterTests.cs" />
     <Compile Include="UtilTests\ForEachDesignerUtilsTests.cs" />
-    <Compile Include="UtilTests\HelpTextAttachedPropertyTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">

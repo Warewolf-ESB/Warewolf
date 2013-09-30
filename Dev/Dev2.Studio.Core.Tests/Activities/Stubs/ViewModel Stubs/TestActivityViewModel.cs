@@ -1,27 +1,17 @@
-﻿using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dev2.Activities.Designers;
-using Dev2.Providers.Errors;
+﻿using System.Activities.Presentation.Model;
+using Dev2.Activities.Designers2.Core;
 
 namespace Dev2.Core.Tests.Activities
 {
-    public class TestActivityViewModel : ActivityViewModelBase
+    public class TestActivityViewModel : ActivityDesignerViewModel
     {
-        public TestActivityViewModel(ModelItem modelItem) : base(modelItem)
+        public TestActivityViewModel(ModelItem modelItem)
+            : base(modelItem)
         {
         }
 
-        #region Overrides of ActivityViewModelBase
-
-        public override IEnumerable<IErrorInfo> ValidationErrors()
+        public override void Validate()
         {
-            yield break;
         }
-
-        #endregion
     }
 }

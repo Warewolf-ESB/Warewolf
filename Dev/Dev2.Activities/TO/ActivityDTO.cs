@@ -185,15 +185,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return false;
         }
 
-        /// <summary>
-        /// Validates the property name with the default rule set in <value>ActivityDTO</value>
-        /// </summary>
-        /// <param name="property"></param>
-        /// <returns></returns>
-        public bool Validate(Expression<Func<string>> property)
+        public bool Validate(string propertyName)
         {
             RuleSet ruleSet = null;
-            var propertyName = GetPropertyName(property);
             switch(propertyName)
             {
                 case "FieldName":
@@ -203,6 +197,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     break;
             }
             return Validate(propertyName, ruleSet);
+        }
+
+        /// <summary>
+        /// Validates the property name with the default rule set in <value>ActivityDTO</value>
+        /// </summary>
+        /// <param name="property"></param>
+        /// <returns></returns>
+        public bool Validate(Expression<Func<string>> property)
+        {
+            var propertyName = GetPropertyName(property);
+            return Validate(propertyName);
         }
 
         /// <summary>
@@ -231,8 +236,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get
             {
                 //This is commented out as it is an example of how to do on the fly validation. This is probably be used when we implement the validation rules for this class.
-//                string item;
-//                if(PerformPropertyValidation(columnName, out item)) return item;
+                //                string item;
+                //                if(PerformPropertyValidation(columnName, out item)) return item;
                 Errors = new Dictionary<string, List<IActionableErrorInfo>>();
                 return null;
             }

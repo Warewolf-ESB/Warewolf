@@ -1,9 +1,5 @@
-﻿using System.Linq;
-using Dev2.Activities.Adorners;
-using Dev2.Activities.QuickVariableInput;
-using Dev2.Providers.Errors;
+﻿using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 {
@@ -14,7 +10,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_ValidationErrors")]
         public void QuickVariableInputViewModel_ValidationErrors_ErrorInPrefix_ContainsError()
         {
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
             {
                 Suffix = "",
                 Prefix = "Custo@mer().",
@@ -33,7 +29,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_ValidationErrors")]
         public void QuickVariableInputViewModel_ValidationErrors_InvalidCharsInPrefixTwoDots_ContainsError()
         {
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
             {
                 Suffix = "",
                 Prefix = "Customer()..",
@@ -52,7 +48,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_ValidationErrors")]
         public void QuickVariableInputViewModel_ValidationErrors_InvalidCharsInPrefix_ContainsError()
         {
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
             {
                 Suffix = "",
                 Prefix = "Cust<>omer().",
@@ -91,7 +87,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_ValidationErrors")]
         public void QuickVariableInputViewModel_ValidationErrors_InvalidCharsInSuffix_ContainsError()
         {
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
             {
                 Suffix = "@",
                 Prefix = "Customer().",
@@ -120,7 +116,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_ValidationErrors")]
         public void QuickVariableInputViewModel_ValidationErrors_NegativeNumberForIndexSplit_ContainsError()
         {
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -139,7 +135,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_ValidationErrors")]
         public void QuickVariableInputViewModel_ValidationErrors_DecimalNumberForIndexSplit_ContainsError()
         {
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -158,7 +154,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_ValidationErrors")]
         public void QuickVariableInputViewModel_ValidationErrors_TextForIndexSplit_ContainsError()
         {
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -177,7 +173,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_ValidationErrors")]
         public void QuickVariableInputViewModel_ValidationErrors_BlankValueForCharSplit_ContainsError()
         {
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -196,7 +192,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_ValidationErrors")]
         public void QuickVariableInputViewModel_ValidationErrors_BlankValueInVariableList_ContainsError()
         {
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -215,7 +211,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_ValidationErrors")]
         public void QuickVariableInputViewModel_ValidationErrors_FunnyRecordsetNotationInPrefix_ContainsError()
         {
-            var qviViewModel = new QuickVariableInputViewModel(new Mock<IActivityCollectionViewModel>().Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
             {
                 Suffix = "",
                 Prefix = "Customer().Other<>text",
@@ -234,12 +230,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_ValidationErrors")]
         public void QuickVariableInputViewModel_ValidationErrors_SetsHelpErrors()
         {
-            var helpViewModel = new HelpViewModel();
-
-            var activityViewModel = new Mock<IActivityCollectionViewModel>();
-            activityViewModel.Setup(m => m.HelpViewModel).Returns(helpViewModel);
-
-            var qviViewModel = new QuickVariableInputViewModel(activityViewModel.Object)
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
             {
                 Suffix = "",
                 Prefix = "Customer().Other<>text",
@@ -249,17 +240,15 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
                 Overwrite = false
             };
 
-            qviViewModel.AddCommand.Execute(null);
-            var errors = qviViewModel.ValidationErrors().Cast<IActionableErrorInfo>().ToList();
-
-            CollectionAssert.AreEqual(errors, helpViewModel.Errors);
+            qviViewModel.Validate();
+            Assert.IsNotNull(qviViewModel.Errors);
         }
 
 
         static void VerifyValidationErrors(QuickVariableInputViewModel qviViewModel, string message)
         {
-            qviViewModel.AddCommand.Execute(null);
-            var errors = qviViewModel.ValidationErrors().Cast<IActionableErrorInfo>().ToList();
+            qviViewModel.Validate();
+            var errors = qviViewModel.Errors;
             Assert.AreEqual(1, errors.Count);
 
             var error = errors[0];

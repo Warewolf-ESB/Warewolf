@@ -1,12 +1,12 @@
-﻿using Dev2.Activities;
-using Dev2.Activities.Designers.DsfDateTime;
-using Dev2.Activities.Designers.DsfFindRecordsMultipleCriteria;
-using Dev2.Activities.Designers.DsfGetWebRequest;
-using Dev2.Activities.Designers.DsfMultiAssign;
+﻿using System;
+using System.Collections.Generic;
+using Dev2.Activities;
+using Dev2.Activities.Designers2.DateTime;
+using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
+using Dev2.Activities.Designers2.GetWebRequest;
+using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Studio.ActivityDesigners.Scripting;
 using Dev2.Studio.ViewModels.Workflow;
-using System;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Studio.ActivityDesigners
@@ -17,6 +17,11 @@ namespace Dev2.Studio.ActivityDesigners
         {
             var designerAttributes = new Dictionary<Type, Type>
                 {
+                    {typeof (DsfMultiAssignActivity), typeof (MultiAssignDesigner)},
+                    {typeof (DsfDateTimeActivity), typeof (DateTimeDesigner)},
+                    {typeof (DsfWebGetRequestActivity), typeof (GetWebRequestDesigner)},
+                    {typeof (DsfFindRecordsMultipleCriteriaActivity), typeof (FindRecordsMultipleCriteriaDesigner)},
+
                     {typeof (DsfActivity), typeof (DsfActivityDesigner)},
                     {typeof (DsfDatabaseActivity), typeof (DsfActivityDesigner)},
                     {typeof (DsfCommentActivity), typeof (DsfCommentActivityDesigner)},
@@ -27,7 +32,6 @@ namespace Dev2.Studio.ActivityDesigners
                     {typeof (DsfWebSiteActivity), typeof (DsfWebSiteActivityDesigner)},
                     {typeof (DsfCountRecordsetActivity), typeof (DsfCountRecordsetActivityDesigner)},
                     {typeof (DsfSortRecordsActivity), typeof (DsfSortRecordsActivityDesigner)},
-                    {typeof (DsfMultiAssignActivity), typeof (DsfMultiAssignActivityDesigner)},
                     {typeof (DsfDataSplitActivity), typeof (DsfDataSplitActivityDesigner)},
                     {typeof (DsfPathCreate), typeof (DsfPathCreateDesigner)},
                     {typeof (DsfFileRead), typeof (DsfFileReadDesigner)},
@@ -39,7 +43,6 @@ namespace Dev2.Studio.ActivityDesigners
                     {typeof (DsfPathRename), typeof (DsfPathRenameDesigner)},
                     {typeof (DsfZip), typeof (DsfZipDesigner)},
                     {typeof (DsfUnZip), typeof (DsfUnzipDesigner)},
-                    {typeof (DsfDateTimeActivity), typeof (DsfDateTimeActivityDesigner)},
                     {typeof (DsfCalculateActivity), typeof (DsfCalculateActivityDesigner)},
                     {typeof (DsfDateTimeDifferenceActivity), typeof (DsfDateTimeDifferenceActivityDesigner)},
                     {typeof (DsfCaseConvertActivity), typeof (DsfCaseConvertActivityDesigner)},
@@ -54,7 +57,6 @@ namespace Dev2.Studio.ActivityDesigners
 //                    {typeof (DsfFileForEachActivity), typeof (DsfFileForEachActivityDesigner)},
 //                    {typeof (DsfCheckpointActivity), typeof (DsfCheckpointActivityDesigner)},
                     {typeof (DsfFindRecordsActivity), typeof (DsfFindRecordsActivityDesigner)},
-                    {typeof (DsfFindRecordsMultipleCriteriaActivity), typeof (DsfFindRecordsMultipleCriteriaDesigner)},
                     {typeof (DsfNumberFormatActivity), typeof (DsfNumberFormatActivityDesigner)},
                     {typeof (DsfExecuteCommandLineActivity), typeof (DsfExecuteCommandLineActivityDesigner)},
                     {typeof (DsfGatherSystemInformationActivity), typeof (DsfGatherSystemInformationActivityDesigner)},
@@ -64,7 +66,6 @@ namespace Dev2.Studio.ActivityDesigners
                     {typeof (DsfScriptingActivity), typeof (DsfScriptingActivityDesigner)},
                     {typeof (DsfXPathActivity), typeof (DsfXPathActivityDesigner)},
                     {typeof (DsfUniqueActivity), typeof (DsfUniqueActivityDesigner)},
-                    {typeof (DsfWebGetRequestActivity), typeof (DsfGetWebRequestActivityDesigner)}
                     // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
                 };
 

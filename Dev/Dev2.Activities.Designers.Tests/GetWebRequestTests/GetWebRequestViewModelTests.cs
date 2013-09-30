@@ -1,8 +1,7 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
-using Dev2.Activities.Adorners;
-using Dev2.Activities.Designers.DsfGetWebRequest;
+using Dev2.Activities.Designers2.GetWebRequest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
@@ -12,22 +11,20 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
     [TestClass]
     public class GetWebRequestViewModelTests
     {
-        #region Constructor
-
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DsfGetWebRequestActivityViewModel_Constructor")]
-        public void DsfGetWebRequestActivityViewModel_Constructor_PreviewViewModel_NotNull()
+        [TestCategory("GetWebRequestDesignerViewModel_Constructor")]
+        public void GetWebRequestDesignerViewModel_Constructor_PreviewViewModel_NotNull()
         {
             var modelItemMock = new Mock<ModelItem>();
-            var sut = new DsfGetWebRequestActivityViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
             Assert.IsNotNull(sut.PreviewViewModel);
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DsfGetWebRequestActivityViewModel_UrlSet")]
-        public void DsfGetWebRequestActivityViewModel_SetUrl_EmptyString_CanPreviewIsFalse()
+        [TestCategory("GetWebRequestDesignerViewModel_UrlSet")]
+        public void GetWebRequestDesignerViewModel_SetUrl_EmptyString_CanPreviewIsFalse()
         {
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
@@ -40,7 +37,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new DsfGetWebRequestActivityViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
             sut.Url = "";
 
             Assert.IsFalse(sut.PreviewViewModel.CanPreview);
@@ -48,8 +45,8 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DsfGetWebRequestActivityViewModel_UrlSet")]
-        public void DsfGetWebRequestActivityViewModel_SetUrl_StringWithoutVariables_CanPreviewIsTrueButPreviewInputsCountIsZero()
+        [TestCategory("GetWebRequestDesignerViewModel_UrlSet")]
+        public void GetWebRequestDesignerViewModel_SetUrl_StringWithoutVariables_CanPreviewIsTrueButPreviewInputsCountIsZero()
         {
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
@@ -62,7 +59,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new DsfGetWebRequestActivityViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
             sut.Url = "";
 
             Assert.IsTrue(sut.PreviewViewModel.CanPreview);
@@ -72,8 +69,8 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DsfGetWebRequestActivityViewModel_UrlSet")]
-        public void DsfGetWebRequestActivityViewModel_SetUrl_StringWithTwoVariables_CanPreviewIsTrueAndPreviewInputsCountIsTwo()
+        [TestCategory("GetWebRequestDesignerViewModel_UrlSet")]
+        public void GetWebRequestDesignerViewModel_SetUrl_StringWithTwoVariables_CanPreviewIsTrueAndPreviewInputsCountIsTwo()
         {
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
@@ -86,7 +83,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new DsfGetWebRequestActivityViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
             sut.Url = "";
 
             Assert.IsTrue(sut.PreviewViewModel.CanPreview);
@@ -96,8 +93,8 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DsfGetWebRequestActivityViewModel_HeadersSet")]
-        public void DsfGetWebRequestActivityViewModel_SetHeaders_EmptyString_CanPreviewIsFalse()
+        [TestCategory("GetWebRequestDesignerViewModel_HeadersSet")]
+        public void GetWebRequestDesignerViewModel_SetHeaders_EmptyString_CanPreviewIsFalse()
         {
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
@@ -110,7 +107,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new DsfGetWebRequestActivityViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
             sut.Headers = "";
 
             Assert.IsFalse(sut.PreviewViewModel.CanPreview);
@@ -118,8 +115,8 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DsfGetWebRequestActivityViewModel_HeadersSet")]
-        public void DsfGetWebRequestActivityViewModel_SetHeaders_StringWithoutVariables_PreviewInputsCountIsZero()
+        [TestCategory("GetWebRequestDesignerViewModel_HeadersSet")]
+        public void GetWebRequestDesignerViewModel_SetHeaders_StringWithoutVariables_PreviewInputsCountIsZero()
         {
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
@@ -132,7 +129,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new DsfGetWebRequestActivityViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
             sut.Headers = "";
 
             Assert.IsTrue(sut.PreviewViewModel.Inputs.Count == 0);
@@ -141,8 +138,8 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DsfGetWebRequestActivityViewModel_HeadersSet")]
-        public void DsfGetWebRequestActivityViewModel_SetHeaders_StringWithOneVariables_PreviewInputsCountIsOne()
+        [TestCategory("GetWebRequestDesignerViewModel_HeadersSet")]
+        public void GetWebRequestDesignerViewModel_SetHeaders_StringWithOneVariables_PreviewInputsCountIsOne()
         {
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
@@ -155,7 +152,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new DsfGetWebRequestActivityViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
             sut.Headers = "";
 
             Assert.IsTrue(sut.PreviewViewModel.Inputs.Count == 1);
@@ -164,8 +161,8 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DsfGetWebRequestActivityViewModel_ExecutePreview")]
-        public void DsfGetWebRequestActivityViewModel_ExecutePreviewWhenUrlIsValid_WebRequestIsInvoked()
+        [TestCategory("GetWebRequestDesignerViewModel_ExecutePreview")]
+        public void GetWebRequestDesignerViewModel_ExecutePreviewWhenUrlIsValid_WebRequestIsInvoked()
         {
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
@@ -178,9 +175,8 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new DsfGetWebRequestActivityViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
 
-            sut.HelpViewModel = new HelpViewModel();
             sut.WebInvoke = (m, u) => { return "Was Called"; };
             sut.Url = "";
 
@@ -188,13 +184,13 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
 
             Assert.IsFalse(string.IsNullOrWhiteSpace(sut.PreviewViewModel.Output));
             Assert.AreEqual(sut.PreviewViewModel.Output, "Was Called");
-            Assert.IsTrue(sut.HelpViewModel.Errors.Count == 0);
+            Assert.IsNull(sut.Errors);
         }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("DsfGetWebRequestActivityViewModel_ExecutePreview")]
-        public void DsfGetWebRequestActivityViewModel_ExecutePreviewWhenUrlIsValidWithoutHttpPrefix_WebRequestIsInvoked()
+        [TestCategory("GetWebRequestDesignerViewModel_ExecutePreview")]
+        public void GetWebRequestDesignerViewModel_ExecutePreviewWhenUrlIsValidWithoutHttpPrefix_WebRequestIsInvoked()
         {
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
@@ -207,9 +203,8 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-            var sut = new DsfGetWebRequestActivityViewModel(modelItemMock.Object);
+            var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
 
-            sut.HelpViewModel = new HelpViewModel();
             sut.WebInvoke = (m, u) => { return "Was Called"; };
             sut.Url = "";
 
@@ -217,28 +212,18 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
 
             Assert.IsFalse(string.IsNullOrWhiteSpace(sut.PreviewViewModel.Output));
             Assert.AreEqual(sut.PreviewViewModel.Output, "Was Called");
-            Assert.IsTrue(sut.HelpViewModel.Errors.Count == 0);
+            Assert.IsNull(sut.Errors);
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DsfGetWebRequestActivityViewModel_ExecutePreview")]
-        public void DsfGetWebRequestActivityViewModel_ExecutePreviewWhenUrlIsNull_WebRequestIsNotInvoked()
+        [TestCategory("GetWebRequestDesignerViewModel_ExecutePreview")]
+        public void GetWebRequestDesignerViewModel_ExecutePreviewWhenUrlIsNull_WebRequestIsNotInvoked()
         {
-            var properties = new Dictionary<string, Mock<ModelProperty>>();
-            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var modelItem = GenerateMockModelItem(string.Empty);
 
-            var url = new Mock<ModelProperty>();
-            url.Setup(p => p.ComputedValue).Returns(string.Empty);
-            properties.Add("Url", url);
-            propertyCollection.Protected().Setup<ModelProperty>("Find", "Url", true).Returns(url.Object);
+            var sut = new GetWebRequestDesignerViewModel(modelItem.Object);
 
-            var modelItemMock = new Mock<ModelItem>();
-            modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
-
-            var sut = new DsfGetWebRequestActivityViewModel(modelItemMock.Object);
-
-            sut.HelpViewModel = new HelpViewModel();
             var isInvoked = false;
             sut.WebInvoke = (m, u) =>
             {
@@ -251,9 +236,96 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
 
             Assert.IsTrue(string.IsNullOrWhiteSpace(sut.PreviewViewModel.Output));
             Assert.IsFalse(isInvoked);
-            Assert.IsTrue(sut.HelpViewModel.Errors.Count > 0);
+            Assert.AreEqual(1, sut.Errors.Count);
         }
 
-        #endregion
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("GetWebRequestDesignerViewModel_Validate")]
+        public void GetWebRequestDesignerViewModel_Validate_InvalidExpression_IsValidFalse()
+        {
+            //------------Setup for test--------------------------
+            var modelItem = GenerateMockModelItem("[[asdf]asdf]]asdf]]");
+
+            var viewModel = new GetWebRequestDesignerViewModel(modelItem.Object);
+
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(viewModel.IsValid);
+            Assert.AreEqual(1, viewModel.Errors.Count);
+            Assert.AreEqual("Invalid expression: opening and closing brackets don't match.", viewModel.Errors[0].Message);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("GetWebRequestDesignerViewModel_Validate")]
+        public void GetWebRequestDesignerViewModel_Validate_ValidExpression_IsValidTrue()
+        {
+            //------------Setup for test--------------------------
+            var modelItem = GenerateMockModelItem("http://[[asdf]]?[[asdf]]");
+
+            var viewModel = new GetWebRequestDesignerViewModel(modelItem.Object);
+
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.IsValid);
+            Assert.IsNull(viewModel.Errors);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("GetWebRequestDesignerViewModel_Validate")]
+        public void GetWebRequestDesignerViewModel_Validate_ValidString_IsValidTrue()
+        {
+            //------------Setup for test--------------------------
+            var modelItem = GenerateMockModelItem("http://www.search.com?p=5");
+
+            var viewModel = new GetWebRequestDesignerViewModel(modelItem.Object);
+
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.IsValid);
+            Assert.IsNull(viewModel.Errors);
+        }
+
+        static Mock<ModelItem> GenerateMockModelItem(string urlValue, string headersValue = null, string resultValue = null)
+        {
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+
+
+            var url = new Mock<ModelProperty>();
+            url.Setup(p => p.ComputedValue).Returns(urlValue);
+            properties.Add("Url", url);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Url", true).Returns(url.Object);
+
+            var headers = new Mock<ModelProperty>();
+            headers.Setup(p => p.ComputedValue).Returns(headersValue);
+            properties.Add("Headers", url);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Headers", true).Returns(headers.Object);
+
+            var result = new Mock<ModelProperty>();
+            result.Setup(p => p.ComputedValue).Returns(resultValue);
+            properties.Add("Result", url);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Result", true).Returns(result.Object);
+
+            var displayName = new Mock<ModelProperty>();
+            displayName.Setup(p => p.ComputedValue).Returns("Web Request");
+            properties.Add("DisplayName", displayName);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "DisplayName", true).Returns(displayName.Object);
+
+            var mockModelItem = new Mock<ModelItem>();
+            mockModelItem.Setup(mi => mi.ItemType).Returns(typeof(DsfWebGetRequestActivity));
+            mockModelItem.Setup(s => s.Properties).Returns(propertyCollection.Object);
+
+            return mockModelItem;
+        }
+
     }
 }

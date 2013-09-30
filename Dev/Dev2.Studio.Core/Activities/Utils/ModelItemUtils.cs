@@ -2,12 +2,16 @@
 using System.Activities;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
-using Dev2.Network.Messaging.Messages;
 
 namespace Dev2.Studio.Core.Activities.Utils
 {
     public static class ModelItemUtils
     {
+        public static void SetProperty<T>(this ModelItem modelItem, string propertyName, T value)
+        {
+            SetProperty(propertyName, value, modelItem);
+        }
+
         public static void SetProperty<T>(string propertyName, T value, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties[propertyName];
@@ -33,7 +37,7 @@ namespace Dev2.Studio.Core.Activities.Utils
 
             return mtm.Root;
         }
-        
+
         public static ModelItem CreateModelItem()
         {
             return CreateModelItem(new object());
@@ -80,7 +84,7 @@ namespace Dev2.Studio.Core.Activities.Utils
             var resourceIDArg = modelItem.Properties["ResourceID"];
             if(resourceIDArg != null && resourceIDArg.ComputedValue != null)
             {
-                if (resourceIDArg.ComputedValue is InArgument<Guid>)
+                if(resourceIDArg.ComputedValue is InArgument<Guid>)
                 {
                     var resourceIDStr = (resourceIDArg.ComputedValue as InArgument<Guid>).Expression;
                     return Guid.Parse(resourceIDStr.ToString());

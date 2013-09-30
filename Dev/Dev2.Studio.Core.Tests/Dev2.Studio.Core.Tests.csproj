@@ -145,7 +145,6 @@
     <Compile Include="Activities\Stubs\ViewModel Stubs\TestActivityViewModelBase.cs" />
     <Compile Include="Activities\Stubs\Behaviour Stubs\testDataGridFocusTextOnLoadBehavior.cs" />
     <Compile Include="Activities\Stubs\ViewModel Stubs\TestDsfMultiAssignActivityViewModel.cs" />
-    <Compile Include="Activities\ActivityViewModelBaseTest.cs" />
     <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehaviorTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserHandlerTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserPopupControllerTests.cs" />

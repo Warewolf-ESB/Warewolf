@@ -4,11 +4,14 @@ using System.ComponentModel;
 using System.Linq;
 using Dev2.DataList;
 using Dev2.Interfaces;
+using Dev2.Providers.Errors;
+using Dev2.Providers.Validation;
+using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public class FindRecordsTO : INotifyPropertyChanged, IDev2TOFn
+    public class FindRecordsTO : INotifyPropertyChanged, IDev2TOFn, IPerformsValidation
     {
         int _indexNum;
         string _searchType;
@@ -17,6 +20,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         readonly IList<string> _requiresSearchCriteria = new List<string> { "Not Contains" ,"Contains" ,"Equal" ,"Not Equal" ,"Ends With" ,"Starts With" ,"Regex" ,">" ,"<","<=",">=" };
 
         string _searchCriteria;
+        Dictionary<string, List<IActionableErrorInfo>> _errors = new Dictionary<string, List<IActionableErrorInfo>>();
 
         public FindRecordsTO()
             : this("Match On", "Equal", 0)
@@ -134,6 +138,56 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         public bool Inserted { get; set; }
+
+        #endregion
+
+        #region Implementation of IDataErrorInfo
+
+        /// <summary>
+        /// Gets the error message for the property with the given name.
+        /// </summary>
+        /// <returns>
+        /// The error message for the property. The default is an empty string ("").
+        /// </returns>
+        /// <param name="columnName">The name of the property whose error message to get. </param>
+        public string this[string columnName] { get { return null; } }
+
+        /// <summary>
+        /// Gets an error message indicating what is wrong with this object.
+        /// </summary>
+        /// <returns>
+        /// An error message indicating what is wrong with this object. The default is an empty string ("").
+        /// </returns>
+        public string Error { get; private set; }
+
+        #endregion
+
+        #region Implementation of IPerformsValidation
+
+        public Dictionary<string, List<IActionableErrorInfo>> Errors
+        {
+            get
+            {
+                return _errors;
+            }
+            set
+            {
+                _errors = value;
+                OnPropertyChanged("Errors");
+            }
+        }
+
+        public bool Validate(string propertyName, RuleSet ruleSet)
+        {
+            // TODO: Implement Validate(string propertyName, RuleSet ruleSet) - see ActivityDTO
+            return true;
+        }
+
+        public bool Validate(string propertyName)
+        {
+            // TODO: Implement Validate(string propertyName) - see ActivityDTO
+            return Validate(propertyName, new RuleSet());
+        }
 
         #endregion
     }
