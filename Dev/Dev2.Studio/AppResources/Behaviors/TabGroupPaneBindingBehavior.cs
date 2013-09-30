@@ -1,28 +1,28 @@
-﻿using System;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
-using Infragistics.Windows.DockManager;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interactivity;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
+using Dev2.Studio.ViewModels;
+using Infragistics.Windows.DockManager;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
     public class TabGroupPaneBindingBehavior : Behavior<TabGroupPane>
     {
         #region Private Methods
-        /// <summary>
-        /// Gets all tab group panes which are descendents of the DocumentHost
-        /// </summary>
-        private List<TabGroupPane> GetAllTabGroupPanes()
-        {
-            List<TabGroupPane> tabGroupPanes = new List<TabGroupPane>();
 
-            if (DocumentHost == null)
+        /// <summary>
+        ///     Gets all tab group panes which are descendents of the DocumentHost
+        /// </summary>
+        List<TabGroupPane> GetAllTabGroupPanes()
+        {
+            var tabGroupPanes = new List<TabGroupPane>();
+
+            if(DocumentHost == null)
             {
-                if (AssociatedObject != null)
+                if(AssociatedObject != null)
                 {
                     tabGroupPanes.Add(AssociatedObject);
                 }
@@ -32,36 +32,35 @@ namespace Dev2.Studio.AppResources.Behaviors
             tabGroupPanes.AddRange(DocumentHost.GetDescendents().OfType<TabGroupPane>());
             return tabGroupPanes;
         }
+
         #endregion Private Methods
 
         #region Dependency Properties
 
         #region DocumentHost
 
-        public DocumentContentHost DocumentHost
-        {
-            get { return (DocumentContentHost)GetValue(DocumentHostProperty); }
-            set { SetValue(DocumentHostProperty, value); }
-        }
-
         // Using a DependencyProperty as the backing store for ItemTemplate.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DocumentHostProperty =
             DependencyProperty.Register("DocumentHost", typeof(DocumentContentHost), typeof(TabGroupPaneBindingBehavior), new PropertyMetadata(null, DocumentHostChangedCallback));
+        public DocumentContentHost DocumentHost { get { return (DocumentContentHost)GetValue(DocumentHostProperty); } set { SetValue(DocumentHostProperty, value); } }
 
-        private static void DocumentHostChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        static void DocumentHostChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            TabGroupPaneBindingBehavior itemsControlBindingBehavior = dependencyObject as TabGroupPaneBindingBehavior;
-            if (itemsControlBindingBehavior == null) return;
+            var itemsControlBindingBehavior = dependencyObject as TabGroupPaneBindingBehavior;
+            if(itemsControlBindingBehavior == null)
+            {
+                return;
+            }
 
-            DocumentContentHost oldValue = e.OldValue as DocumentContentHost;
-            DocumentContentHost newValue = e.NewValue as DocumentContentHost;
+            var oldValue = e.OldValue as DocumentContentHost;
+            var newValue = e.NewValue as DocumentContentHost;
 
-            if (oldValue != null)
+            if(oldValue != null)
             {
                 oldValue.ActiveDocumentChanged -= itemsControlBindingBehavior.DocumentHostOnActiveDocumentChanged;
             }
 
-            if (newValue != null)
+            if(newValue != null)
             {
                 newValue.ActiveDocumentChanged -= itemsControlBindingBehavior.DocumentHostOnActiveDocumentChanged;
                 newValue.ActiveDocumentChanged += itemsControlBindingBehavior.DocumentHostOnActiveDocumentChanged;
@@ -72,29 +71,28 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #region SelectedItem
 
-        public object SelectedItem
-        {
-            get { return (object)GetValue(SelectedItemProperty); }
-            set { SetValue(SelectedItemProperty, value); }
-        }
-
         // Using a DependencyProperty as the backing store for SelectedItem.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedItemProperty =
             DependencyProperty.Register("SelectedItem", typeof(object), typeof(TabGroupPaneBindingBehavior), new UIPropertyMetadata(null, SelectedItemChangedCallback));
+        public object SelectedItem { get { return GetValue(SelectedItemProperty); } set { SetValue(SelectedItemProperty, value); } }
 
-        private static void SelectedItemChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        static void SelectedItemChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            TabGroupPaneBindingBehavior itemsControlBindingBehavior = dependencyObject as TabGroupPaneBindingBehavior;
-            if (itemsControlBindingBehavior == null) return;
-
-            foreach (TabGroupPane tabGroupPane in itemsControlBindingBehavior.GetAllTabGroupPanes())
+            var itemsControlBindingBehavior = dependencyObject as TabGroupPaneBindingBehavior;
+            if(itemsControlBindingBehavior == null)
             {
-                bool found = false;
+                return;
+            }
 
-                for (int i = 0; i < tabGroupPane.Items.Count; i++)
+            foreach(var tabGroupPane in itemsControlBindingBehavior.GetAllTabGroupPanes())
+            {
+                FocusManager.AddGotFocusHandler(tabGroupPane, GotFocusHandler);
+                var found = false;
+
+                for(var i = 0; i < tabGroupPane.Items.Count; i++)
                 {
-                    FrameworkElement frameworkElement = tabGroupPane.Items[i] as FrameworkElement;
-                    if (frameworkElement != null && frameworkElement.DataContext == e.NewValue)
+                    var frameworkElement = tabGroupPane.Items[i] as FrameworkElement;
+                    if(frameworkElement != null && frameworkElement.DataContext == e.NewValue)
                     {
                         tabGroupPane.SelectedIndex = i;
                         found = true;
@@ -102,7 +100,28 @@ namespace Dev2.Studio.AppResources.Behaviors
                     }
                 }
 
-                if (found) break;
+                if(found)
+                {
+                    break;
+                }
+            }
+        }
+
+        static void GotFocusHandler(object sender, RoutedEventArgs routedEventArgs)
+        {
+            RefreshActiveEnvironment(sender);
+        }
+
+        static void RefreshActiveEnvironment(object sender)
+        {
+            var frameworkElement = sender as FrameworkElement;
+            if(frameworkElement != null && frameworkElement.DataContext != null)
+            {
+                var vm = frameworkElement.DataContext as MainViewModel;
+                if(vm != null)
+                {
+                    vm.RefreshActiveEnvironment();
+                }
             }
         }
 
@@ -112,9 +131,9 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #region Event Handlers
 
-        private void DocumentHostOnActiveDocumentChanged(object sender, RoutedPropertyChangedEventArgs<ContentPane> routedPropertyChangedEventArgs)
+        void DocumentHostOnActiveDocumentChanged(object sender, RoutedPropertyChangedEventArgs<ContentPane> routedPropertyChangedEventArgs)
         {
-            if (routedPropertyChangedEventArgs.NewValue == null)
+            if(routedPropertyChangedEventArgs.NewValue == null)
             {
                 SelectedItem = null;
             }

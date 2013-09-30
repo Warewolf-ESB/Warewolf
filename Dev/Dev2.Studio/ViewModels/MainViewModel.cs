@@ -565,6 +565,16 @@ namespace Dev2.Studio.ViewModels
             Logger.TraceInfo(message.GetType().Name);
             ShowNewResourceWizard(message.ResourceType);
         }
+
+        public void RefreshActiveEnvironment()
+        {
+            if(ActiveItem != null && ActiveItem.Environment != null)
+            {
+                Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
+                _eventPublisher.Publish(new SetActiveEnvironmentMessage(ActiveItem.Environment));
+            }
+        }
+
         #endregion
 
         #region Private Methods
@@ -878,6 +888,7 @@ namespace Dev2.Studio.ViewModels
             GC.WaitForPendingFinalizers();
             GC.Collect(2);
             base.ChangeActiveItem(newItem, closePrevious);
+            RefreshActiveEnvironment();
         }
 
         #endregion
