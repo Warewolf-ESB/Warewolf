@@ -225,6 +225,32 @@ namespace Dev2.Data.Decision
 
         }
 
+        /// <summary>
+        /// Fetches the stack value.
+        /// </summary>
+        /// <param name="stack">The stack.</param>
+        /// <param name="stackIndex">Index of the stack.</param>
+        /// <param name="columnIndex">Index of the column.</param>
+        /// <returns></returns>
+        private string FetchStackValue(Dev2DecisionStack stack, int stackIndex, int columnIndex)
+        {
+            // if out of bounds return an empty string ;)
+            if(stackIndex >= stack.TheStack.Count)
+            {
+                return string.Empty;
+            }
+
+            if (columnIndex == 1)
+            {
+                return stack.TheStack[stackIndex].Col1;
+            }else if (columnIndex == 2)
+            {
+                return stack.TheStack[stackIndex].Col2;
+            }
+
+            return string.Empty;
+        }
+
         Dev2DecisionStack ResolveAllRecords(Guid id, Dev2DecisionStack stack, Dev2Decision decision, bool[] effectedCols, out ErrorResultTO errors)
         {
             int stackIndex = stack.TheStack.IndexOf(decision);
@@ -259,13 +285,21 @@ namespace Dev2.Data.Decision
                 while (colItr.HasMoreData())
                 {
                     var newDecision = new Dev2Decision();
-                    newDecision.Col1 = stack.TheStack[reStackIndex].Col1;
+                    newDecision.Col1 = FetchStackValue(stack, reStackIndex, 1);
                     newDecision.Col2 = colItr.FetchNextRow(col2Iterator).TheValue;
                     newDecision.Col3 = decision.Col3;
                     newDecision.EvaluationFn = decision.EvaluationFn;
                     if(effectedCols[0])
                     {
-                        stack.TheStack[reStackIndex++] = newDecision;
+                        // ensure we have the correct indexing ;)
+                        if (reStackIndex < stack.TheStack.Count)
+                        {
+                            stack.TheStack[reStackIndex++] = newDecision;
+                        }
+                        else
+                        {
+                            stack.TheStack.Insert(reStackIndex++, newDecision);
+                        }
                     }
                     else
                     {
@@ -284,13 +318,21 @@ namespace Dev2.Data.Decision
                 while (colItr.HasMoreData())
                 {
                     var newDecision = new Dev2Decision();
-                    newDecision.Col1 = stack.TheStack[reStackIndex].Col1;
-                    newDecision.Col2 = stack.TheStack[reStackIndex].Col2;
+                    newDecision.Col1 = FetchStackValue(stack, reStackIndex, 1);
+                    newDecision.Col2 = FetchStackValue(stack, reStackIndex, 2);
                     newDecision.Col3 = colItr.FetchNextRow(col3Iterator).TheValue;
                     newDecision.EvaluationFn = decision.EvaluationFn;
                     if (effectedCols[0] || effectedCols[1])
                     {
-                        stack.TheStack[reStackIndex++] = newDecision;
+                        // ensure we have the correct indexing ;)
+                        if(reStackIndex < stack.TheStack.Count)
+                        {
+                            stack.TheStack[reStackIndex++] = newDecision;
+                        }
+                        else
+                        {
+                            stack.TheStack.Insert(reStackIndex++, newDecision);
+                        }
                     }
                     else
                     {

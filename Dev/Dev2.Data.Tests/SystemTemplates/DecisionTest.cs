@@ -86,7 +86,88 @@ namespace Dev2.Data.Tests.SystemTemplates
         #endregion
 
         #region Execution Test
-        // Sashen: 31-01-2012 : No expected outcome from the test - FIXED
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Dev2DecisionStack_Evaluate")]
+        public void Dev2DecisionStack_Evaluate_WhenTwoRecordsetsCountsDoNotBalance_NoExceptionThrown()
+        {
+            //------------Setup for test--------------------------
+
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+
+            string error;
+            ErrorResultTO errors;
+
+            bdl.TryCreateRecordsetTemplate("Recset", "Test recordset", new List<Dev2Column> { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetTemplate("MyRec", "Test recordset", new List<Dev2Column> { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+
+            // add data to Recset
+            bdl.TryCreateRecordsetValue("a", "field", "Recset", 1, out error);
+            bdl.TryCreateRecordsetValue("b", "field", "Recset", 2, out error);
+
+            // add data to MyRec
+            bdl.TryCreateRecordsetValue("a", "field", "MyRec", 1, out error);
+
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            c.PushBinaryDataList(bdl.UID, bdl, out errors);
+
+            // ExecuteDecisionStack
+            string payload = @"{""TheStack"":[{""Col1"":""[[MyRec(*).field]]"",""Col2"":""[[Recset(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+
+            //------------Execute Test---------------------------
+            bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
+
+            c.DeleteDataListByID(bdl.UID); // clean up ;)
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Dev2DecisionStack_Evaluate")]
+        public void Dev2DecisionStack_Evaluate_WhenThreeRecordsetsCountsDoNotBalance_NoExceptionThrown()
+        {
+            //------------Setup for test--------------------------
+
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+
+            string error;
+            ErrorResultTO errors;
+
+            bdl.TryCreateRecordsetTemplate("Recset", "Test recordset", new List<Dev2Column> { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetTemplate("MyRec", "Test recordset", new List<Dev2Column> { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetTemplate("TheRec", "Test recordset", new List<Dev2Column> { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+
+            // add data to Recset
+            bdl.TryCreateRecordsetValue("a", "field", "Recset", 1, out error);
+            bdl.TryCreateRecordsetValue("b", "field", "Recset", 2, out error);
+
+            // add data to MyRec
+            bdl.TryCreateRecordsetValue("a", "field", "MyRec", 1, out error);
+
+            // add data to TheRec
+            bdl.TryCreateRecordsetValue("a", "field", "TheRec", 1, out error);
+            bdl.TryCreateRecordsetValue("b", "field", "TheRec", 2, out error);
+            bdl.TryCreateRecordsetValue("c", "field", "TheRec", 3, out error);
+
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            c.PushBinaryDataList(bdl.UID, bdl, out errors);
+
+            // ExecuteDecisionStack
+            string payload = @"{""TheStack"":[{""Col1"":""[[MyRec(*).field]]"",""Col2"":""[[Recset(*).field]]"",""Col3"":""[[TheRec(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsBetween""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+
+            //------------Execute Test---------------------------
+            bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
+
+            c.DeleteDataListByID(bdl.UID); // clean up ;)
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+
+        }
 
         /// <summary>
         /// Travis.Frisinger - Can push a system model into the Data List

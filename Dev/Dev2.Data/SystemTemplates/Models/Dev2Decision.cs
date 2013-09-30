@@ -136,7 +136,16 @@ namespace Dev2.Data.SystemTemplates.Models
                         {
                             allCol2Values.Add(null);
                         }
-                        expandStarredIndices.Append(" " + mode + " " + allCol1Values[i] + " " + fn + " " + allCol2Values[i]);
+
+                        try
+                        {
+                            expandStarredIndices.Append(" " + mode + " " + allCol1Values[i] + " " + fn + " " +
+                                                        allCol2Values[i]);
+                        }
+                        catch (IndexOutOfRangeException)
+                        {
+                            errors.AddError("You appear to have recordsets of differnt sizes");
+                        }
                     }
                     return "If " + expandStarredIndices;
 
