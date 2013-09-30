@@ -434,7 +434,7 @@ namespace Dev2.DynamicServices
                 }
                 finally
                 {
-                    _waitHandle.Set();
+                    if (_waitHandle != null) _waitHandle.Set();
                     ExecutableServiceRepository.Instance.Remove(this);
                     DispatchDebugState(DataTransferObject, StateType.End, _runTime);
                     DataTransferObject.NumberOfSteps = _previousNumberOfSteps;
