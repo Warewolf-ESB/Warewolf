@@ -1430,6 +1430,12 @@ namespace Dev2.Runtime.Hosting
                         File.Delete(dependantResource.FilePath);
                     }
                 }
+                //update dependancies
+                var renameDependent = dependantResource.Dependencies.FirstOrDefault(dep => dep.ResourceName == oldName);
+                if (renameDependent != null)
+                {
+                    renameDependent.ResourceName = newName;
+                }
                 //re-create, resign and save to file system the new resource
                 SaveImpl(workspaceID, dependantResource, resourceElement.ToString());
             }

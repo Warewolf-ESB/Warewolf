@@ -31,6 +31,7 @@ using Dev2.DataList.Contract;
 using Dev2.Enums;
 using Dev2.Factories;
 using Dev2.Interfaces;
+using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.ActivityDesigners;
@@ -72,7 +73,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                                              IHandle<AddStringListToDataListMessage>,
                                              IHandle<ShowActivityWizardMessage>,
                                              IHandle<ShowActivitySettingsWizardMessage>,
-                                             IHandle<EditActivityMessage>, IWorkflowDesignerViewModel
+                                             IHandle<EditActivityMessage>,
+                                             IHandle<UpdateWorksurfaceFlowNodeDisplayName>, IWorkflowDesignerViewModel
     {
         static readonly Type[] DecisionSwitchTypes = { typeof(FlowSwitch<string>), typeof(FlowDecision) };
 
@@ -481,7 +483,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IEnvironmentModel contextEnv)
         {
-            if(resource.ResourceType == ResourceType.WorkflowService)
+            if(resource.ResourceType == ResourceType.WorkflowService && contextEnv != null)
             {
                 if(contextEnv.ID != resource.Environment.ID)
                 {
@@ -1351,6 +1353,34 @@ namespace Dev2.Studio.ViewModels.Workflow
                 IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
                 DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields);
             }
+        }
+
+        public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
+        {
+            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            if(ResourceModel != null && ResourceModel.ID == message.WorkflowDesignerResourceID)
+            {
+                UpdateFlowNodeDisplayName(message.OldName, message.NewName);
+            }
+        }
+
+        public void UpdateFlowNodeDisplayName(string oldName, string newName)
+        {
+            throw new NotImplementedException();
+            //TODO add implimentation
+            //var findModelItem = _modelService.Find(_modelService.Root, typeof(DsfActivity)).All(model =>
+            //    {
+            //        var modelProperty  = model.Properties["ResourceName"];
+            //        return modelProperty != null && modelProperty.ComputedValue == oldName;
+            //    });
+            //ModelItemUtils.SetProperty("ResourceName", newName, findModelItem);
+            //ResourceModel.ServiceDefinition = ResourceModel.ServiceDefinition
+            //        .Replace("x:Class=\"" + oldName, "x:Class=\"" + message.NewName)
+            //        .Replace("Name=\"" + oldName, "Name=\"" + message.NewName)
+            //        .Replace("ToolboxFriendlyName=\"" + oldName, "ToolboxFriendlyName=\"" + message.NewName)
+            //        .Replace("<DisplayName>" + oldName + "</DisplayName>", "<DisplayName>" + message.NewName + "</DisplayName>")
+            //        .Replace("DisplayName=\"" + oldName, "DisplayName=\"" + message.NewName);
+            //NotifyOfPropertyChange("ResourceModel");
         }
 
         #endregion

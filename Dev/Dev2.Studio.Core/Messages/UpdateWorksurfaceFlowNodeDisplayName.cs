@@ -4,15 +4,15 @@ namespace Dev2.Messages
 {
     public class UpdateWorksurfaceFlowNodeDisplayName
     {
-        public UpdateWorksurfaceFlowNodeDisplayName(Guid worksurfaceResourceID, string oldName, string newName)
+        public UpdateWorksurfaceFlowNodeDisplayName(Guid workflowDesignerResourceID, string oldName, string newName)
         {
-            WorksurfaceResourceID = worksurfaceResourceID;
+            WorkflowDesignerResourceID = workflowDesignerResourceID;
             OldName = oldName;
             NewName = newName;
         }
 
         public string OldName { get; set; }
         public string NewName { get; set; }
-        public Guid WorksurfaceResourceID { get; set; }
+        public Guid WorkflowDesignerResourceID { get; set; }
     }
 }

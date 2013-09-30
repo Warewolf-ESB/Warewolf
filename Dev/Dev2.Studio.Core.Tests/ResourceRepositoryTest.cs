@@ -1452,9 +1452,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
         [TestMethod]
         [TestCategory("ResourceRepositoryUnitTest")]
-        [Description(
-            "Test for ResourceRepository's rename function: Rename is called and connection is expected to be open with correct package to the server"
-            )]
+        [Description("Test for ResourceRepository's rename function: Rename is called and connection is expected to be open with correct package to the server")]
         [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void
@@ -1473,7 +1471,7 @@ namespace BusinessDesignStudio.Unit.Tests
   <ResourceID>" + resID + @"</ResourceID>
 </XmlData>";
             mockEnvironmentConnection.Setup(c => c.ExecuteCommand(expected, It.IsAny<Guid>(), It.IsAny<Guid>()))
-                                     .Returns(string.Format("<XmlData>Success</XmlData>")).Verifiable();
+                                     .Returns(string.Format("<XmlData>Renamed Resource</XmlData>")).Verifiable();
             mockEnvironment.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
             var vm = new ResourceRepository(mockEnvironment.Object, new Mock<IWizardEngine>().Object,
                                             new Mock<IFrameworkSecurityContext>().Object);

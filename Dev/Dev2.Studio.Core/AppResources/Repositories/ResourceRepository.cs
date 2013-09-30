@@ -217,7 +217,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 package.Service = "RenameResourceService";
                 package.NewName = newName;
                 package.ResourceID = resourceID;
-                if (ExecuteCommand(_environmentModel, package, false).Contains("Success"))
+                var executeCommand = ExecuteCommand(_environmentModel, package, false);
+                if(executeCommand.Contains("Renamed Resource"))
                 {
                     var findInLocalRepo = _resourceModels.FirstOrDefault(res => res.ID == Guid.Parse(resourceID));
                     if (findInLocalRepo != null)

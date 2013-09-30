@@ -156,14 +156,14 @@ namespace Dev2.Studio.ViewModels.Navigation
                 //Update open instance of this resource
                 Logger.TraceInfo("Publish message of type - " + typeof(UpdateWorksurfaceDisplayName));
                 _eventPublisher.Publish(new UpdateWorksurfaceDisplayName(DataContext.ID, DataContext.ResourceName, newName));
-                //update open dependant instances
-                var getDependants = new ResourceDependencyService();
-                var getUniqueDependents = getDependants.GetUniqueDependencies(DataContext).Where(res => res.ID != DataContext.ID);
-                foreach (var dependantResource in getUniqueDependents)
-                {
-                    var getDependantsID = dependantResource.ID;
-                    _eventPublisher.Publish(new UpdateWorksurfaceFlowNodeDisplayName(getDependantsID, DataContext.ResourceName, newName));
-                }
+                //TODO: update open dependant instances
+                //var getDependants = new ResourceDependencyService();
+                //var getUniqueDependents = getDependants.GetUniqueDependencies(DataContext).Where(res => res.ID != DataContext.ID);
+                //foreach (var dependantResource in getUniqueDependents)
+                //{
+                //    var getDependantsID = dependantResource.ID;
+                //    _eventPublisher.Publish(new UpdateWorksurfaceFlowNodeDisplayName(getDependantsID, DataContext.ResourceName, newName));
+                //}
                 //update this data context
                 if(DataContext.ServiceDefinition != null)
                 {
