@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using Caliburn.Micro;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Events;
-using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
-using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -276,6 +272,47 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(1, workflowInputDataViewModel.SendExecuteRequestHitCount);
             Assert.IsNotNull(workflowInputDataViewModel.SendExecuteRequestPayload);
 
+            var payload = XElement.Parse(workflowInputDataViewModel.DebugTO.XmlData);
+            payload.Add(new XElement("BDSDebugMode", workflowInputDataViewModel.DebugTO.IsDebugMode));
+            payload.Add(new XElement("DebugSessionID", workflowInputDataViewModel.DebugTO.SessionID));
+            payload.Add(new XElement("EnvironmentID", Guid.Empty));
+
+            var expectedPayload = payload.ToString(SaveOptions.None);
+            var actualPayload = workflowInputDataViewModel.SendExecuteRequestPayload.ToString(SaveOptions.None);
+            Assert.AreEqual(expectedPayload, actualPayload);
+        }
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("WorkflowInputDataViewModel_Save")]
+        public void WorkflowInputDataViewModel_Save_WithScalarVariable_DoesNotThrowException()
+        {
+            //------------Setup for test--------------------------
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.WorkflowXaml).Returns(StringResourcesTest.DebugInputWindow_WorkflowXaml);
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns("<DataList><a Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" /></DataList>");
+            rm.Setup(r => r.Environment.DsfChannel).Returns(new Mock<IStudioClientContext>().Object);
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = "<DataList></DataList>"
+            };
+
+            var debugOutputViewModel = CreateDebugOutputViewModel();
+            var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel);
+            workflowInputDataViewModel.LoadWorkflowInputs();
+
+            //------------Execute Test---------------------------
+            workflowInputDataViewModel.Save();
+
+            //------------Assert Results-------------------------
             var payload = XElement.Parse(workflowInputDataViewModel.DebugTO.XmlData);
             payload.Add(new XElement("BDSDebugMode", workflowInputDataViewModel.DebugTO.IsDebugMode));
             payload.Add(new XElement("DebugSessionID", workflowInputDataViewModel.DebugTO.SessionID));
