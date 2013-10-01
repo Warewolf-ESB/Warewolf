@@ -2,8 +2,8 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Network;
-using Caliburn.Micro;
 using Dev2.Providers.Events;
+using Dev2.Providers.Logs;
 
 namespace Dev2.Studio.Core.Network
 {
@@ -14,12 +14,14 @@ namespace Dev2.Studio.Core.Network
         public TcpClientHost(IEventPublisher eventPublisher, bool isAuxiliary = false)
             : base(eventPublisher, isAuxiliary)
         {
+            this.TraceInfo();
         }
 
         #region Ping
 
         public override bool Ping(EndPoint endPoint)
         {
+            this.TraceInfo(string.Format("endPoint={0}", endPoint == null ? "null" : endPoint.AddressFamily.ToString()));
             if(endPoint == null)
             {
                 return false;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Network;
 using System.Threading;
@@ -160,7 +159,7 @@ namespace Dev2.DynamicServices
                 Guid dlID = Guid.Empty;
                 Thread t = new Thread(() =>
                 {
-                    dlID = _channel.ExecuteRequest(dataObject, context.AccountID, out errors);   
+                    dlID = _channel.ExecuteRequest(dataObject, context.AccountID, out errors);
                 });
 
                 t.Start();
@@ -259,8 +258,21 @@ namespace Dev2.DynamicServices
         #endregion
 
         #region Disposal Handling
+
+        #region Overrides of TCPServer<StudioNetworkSession>
+
+        protected override void OnConnectionDisposed(Connection connection)
+        {
+            this.LogTrace(string.Format("Address={0}, Socket={1}", connection.Address, connection.Socket));
+
+            base.OnConnectionDisposed(connection);
+        }
+
+        #endregion
+
         protected override void OnDisposing(bool disposing)
         {
+            this.LogTrace(string.Format("disposing={0}", disposing));
             base.OnDisposing(disposing);
 
             if(disposing)
@@ -296,6 +308,7 @@ namespace Dev2.DynamicServices
 
             protected override NetworkAccount ResolveAccount(string account)
             {
+                this.LogTrace(string.Format("account={0}", account));
                 return _server._accountProvider.GetAccount(account);
             }
         }
@@ -410,6 +423,7 @@ namespace Dev2.DynamicServices
             {
                 return;
             }
+            this.LogTrace(string.Format("TMemo={0}, messageArray.Length={1}", typeof(TMemo), messageArray.Length));
 
             // we need to broadcast per service and per unique ID messages
             var serviceGroupings = messageArray.GroupBy(to => to.ServiceID);

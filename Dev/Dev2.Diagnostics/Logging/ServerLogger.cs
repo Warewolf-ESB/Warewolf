@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Serialization;
 using Dev2.Diagnostics;
@@ -16,7 +17,7 @@ namespace Dev2.Common
     /// </summary>
     public static class ServerLogger
     {
-        
+
         #region private fields
 
         private static object _lock = new object();
@@ -47,7 +48,7 @@ namespace Dev2.Common
         }
 
         private static IDictionary<Guid, StreamWriter> CurrentLogStreams
-    {
+        {
             get
             {
                 return _currentLogStreams ??
@@ -119,7 +120,7 @@ namespace Dev2.Common
         /// <param name="message">The message.</param>
         public static void LogMessage(string message)
         {
-            if (EnableInfoOutput)
+            if(EnableInfoOutput)
             {
                 InternalLogMessage(message, "INFO");
             }
@@ -132,9 +133,9 @@ namespace Dev2.Common
         /// <param name="message">The message.</param>
         public static void LogDebug(string message)
         {
-            if (EnableDebugOutput)
+            if(EnableDebugOutput)
             {
-               InternalLogMessage(message, "DEBUG"); 
+                InternalLogMessage(message, "DEBUG");
             }
         }
 
@@ -144,7 +145,7 @@ namespace Dev2.Common
         /// <param name="message">The message.</param>
         public static void LogTrace(string message)
         {
-            if (EnableTraceOutput)
+            if(EnableTraceOutput)
             {
                 InternalLogMessage(message, "TRACE");
             }
@@ -156,7 +157,7 @@ namespace Dev2.Common
         /// <param name="message">The message.</param>
         public static void LogError(string message)
         {
-            if (EnableErrorOutput)
+            if(EnableErrorOutput)
             {
                 InternalLogMessage(message, "ERROR");
             }
@@ -164,7 +165,7 @@ namespace Dev2.Common
 
         public static void LogError(Exception e)
         {
-            if (EnableErrorOutput)
+            if(EnableErrorOutput)
             {
                 InternalLogMessage(e.Message + Environment.NewLine + e.StackTrace, "ERROR");
             }
@@ -173,9 +174,9 @@ namespace Dev2.Common
         public static LoggingSettings LoggingSettings
         {
             get { return _loggingSettings; }
-            set 
-            { 
-                if (_loggingSettings == value)
+            set
+            {
+                if(_loggingSettings == value)
                 {
                     return;
                 }
@@ -190,7 +191,7 @@ namespace Dev2.Common
         #endregion public properties
 
         #region public methods
-       
+
 
         public static void UpdateSettings(LoggingSettings loggingSettings)
         {
@@ -199,20 +200,20 @@ namespace Dev2.Common
             EnableLogOutput = LoggingSettings.IsLoggingEnabled;
 
             //Unnecessary to continue if logging is turned off
-            if (!EnableLogOutput)
+            if(!EnableLogOutput)
             {
                 return;
             }
 
             var dirPath = GetDirectoryPath(LoggingSettings);
             var dirExists = Directory.Exists(dirPath);
-            if (!dirExists)
+            if(!dirExists)
             {
                 Directory.CreateDirectory(dirPath);
             }
 
             _workflowsToLog = new Dictionary<Guid, string>();
-            foreach (var wf in LoggingSettings.Workflows)
+            foreach(var wf in LoggingSettings.Workflows)
             {
                 _workflowsToLog.Add(Guid.Parse(wf.ResourceID), wf.ResourceName);
             }
@@ -230,12 +231,12 @@ namespace Dev2.Common
         {
             try
             {
-    
-                lock (_lock)
+
+                lock(_lock)
                 {
-                File.AppendAllText(Path.Combine(EnvironmentVariables.ApplicationPath, "ServerLog.txt"),
-                                       string.Format("{0} :: {1} -> {2}{3}", DateTime.Now, typeOf, message,
-                                                     Environment.NewLine));
+                    File.AppendAllText(Path.Combine(EnvironmentVariables.ApplicationPath, "ServerLog.txt"),
+                                           string.Format("{0} :: {1} -> {2}{3}", DateTime.Now, typeOf, message,
+                                                         Environment.NewLine));
                 }
 
             }
@@ -251,18 +252,18 @@ namespace Dev2.Common
 
         public static void LogDebug(IDebugState idebugState)
         {
-            if (!ShouldLog(idebugState)) return;
+            if(!ShouldLog(idebugState)) return;
 
             var debugState = (DebugState)idebugState;
 
             string workflowName = GetWorkflowName(debugState);
 
-            if (String.IsNullOrWhiteSpace(workflowName))
+            if(String.IsNullOrWhiteSpace(workflowName))
             {
                 throw new NoNullAllowedException("Only workflows with valid names can be logged");
             }
 
-            switch (debugState.StateType)
+            switch(debugState.StateType)
             {
                 case StateType.Start:
                     Initialize(debugState, workflowName);
@@ -301,12 +302,12 @@ namespace Dev2.Common
         private static void Serialize(DebugState debugState, string workflowName, StateType state)
         {
             //Check nesting levels - if zero this is not applicable
-            if (LoggingSettings.NestedLevelCount > 0)
+            if(LoggingSettings.NestedLevelCount > 0)
             {
-                switch (state)
+                switch(state)
                 {
                     case StateType.Before:
-                        if (CheckAndAdjustLevel(debugState, +1))
+                        if(CheckAndAdjustLevel(debugState, +1))
                         {
                             return;
                         }
@@ -315,7 +316,7 @@ namespace Dev2.Common
                         break;
 
                     case StateType.After:
-                        if (CheckAndAdjustLevel(debugState, -1))
+                        if(CheckAndAdjustLevel(debugState, -1))
                         {
                             return;
                         }
@@ -335,7 +336,7 @@ namespace Dev2.Common
         private static void UnNestThis(DebugState debugState)
         {
             GuidTree lastNested = LastNested[debugState.OriginalInstanceID];
-            if (lastNested != null)
+            if(lastNested != null)
             {
                 LastNested[debugState.OriginalInstanceID] = lastNested.Parent;
             }
@@ -370,14 +371,14 @@ namespace Dev2.Common
             LastNested.TryGetValue(debugState.OriginalInstanceID, out lastNested);
 
             //Only log if lastNested should log children
-            if (lastNested != null && !lastNested.LogChildren)
+            if(lastNested != null && !lastNested.LogChildren)
             {
                 return;
             }
 
             //Get appropriate stream
             var logPath = GetLogPath(workflowName, debugState);
-            var writer = GetLogStream(logPath, debugState); 
+            var writer = GetLogStream(logPath, debugState);
 
             SerializeToXML(debugState, writer, new[] { typeof(DebugItem) });
         }
@@ -404,7 +405,7 @@ namespace Dev2.Common
                 Indent = true
             };
 
-            using (var writer = XmlWriter.Create(streamWriter, settings))
+            using(var writer = XmlWriter.Create(streamWriter, settings))
             {
                 serializer.Serialize(writer, toSerialize);
                 writer.WriteRaw(Environment.NewLine);
@@ -416,7 +417,7 @@ namespace Dev2.Common
         #region Initialization
         private static void Initialize(DebugState debugState, string workflowName)
         {
-            if (!debugState.IsFirstStep())
+            if(!debugState.IsFirstStep())
             {
                 return;
             }
@@ -439,7 +440,7 @@ namespace Dev2.Common
                 workflowName, dateTime));
 
             //now cache this file for reuse with any other executions of this instance id
-            CurrentExecutionLogs.Add(debugState.OriginalInstanceID, logPath);        
+            CurrentExecutionLogs.Add(debugState.OriginalInstanceID, logPath);
             return logPath;
         }
 
@@ -458,44 +459,44 @@ namespace Dev2.Common
         private static void Finalize(DebugState debugState, string workflowName)
         {
             //Remove the stored information if it is final step
-            if (debugState.IsFinalStep())
+            if(debugState.IsFinalStep())
             {
                 DateTime startTime;
                 var exists = StartTimes.TryGetValue(debugState.OriginalInstanceID, out startTime);
-                if (exists)
+                if(exists)
                 {
                     debugState.StartTime = StartTimes[debugState.OriginalInstanceID];
                     var logPath = GetLogPath(workflowName, debugState);
                     var writer = GetLogStream(logPath, debugState);
 
-                    SerializeToXML(debugState, writer, new[] {typeof (DebugItem)});
+                    SerializeToXML(debugState, writer, new[] { typeof(DebugItem) });
                 }
 
                 RunPostWorkflow(debugState.OriginalInstanceID, debugState.OriginatingResourceID);
                 Remove(debugState);
             }
         }
-         
+
         private static void RunPostWorkflow(Guid originaInstanceID, Guid originatingResourceID)
         {
-            if (!LoggingSettings.RunPostWorkflow)
+            if(!LoggingSettings.RunPostWorkflow)
             {
                 return;
             }
 
-            if (LoggingSettings.PostWorkflow == null)
+            if(LoggingSettings.PostWorkflow == null)
             {
                 return;
             }
 
             //Dont run postworkflow if it is the originating resource (would cause recursive loop)
-            if (LoggingSettings.PostWorkflow.ResourceID == originatingResourceID.ToString())
+            if(LoggingSettings.PostWorkflow.ResourceID == originatingResourceID.ToString())
             {
                 return;
             }
 
             string input = string.Empty;
-            if (!string.IsNullOrWhiteSpace(LoggingSettings.ServiceInput))
+            if(!string.IsNullOrWhiteSpace(LoggingSettings.ServiceInput))
             {
                 input += LoggingSettings.ServiceInput;
                 input += "=";
@@ -532,7 +533,7 @@ namespace Dev2.Common
         public static bool CheckAndAdjustLevel(DebugState debugState, int i)
         {
             var currentLevel = NestedLevels[debugState.OriginalInstanceID];
-            
+
             //check - if i is positive, it is before and we need to take equal into account
             // if i is negative it is being decrease and equal shouldnt be logged
             var isAboveLimit = (i >= 0)
@@ -556,7 +557,7 @@ namespace Dev2.Common
         public static bool ShouldLog(IDebugState iDebugState)
         {
             var debugState = iDebugState as DebugState;
-            if (debugState == null)
+            if(debugState == null)
             {
                 return false;
             }
@@ -567,7 +568,7 @@ namespace Dev2.Common
         public static bool ShouldLog(Guid resourceID)
         {
             //Unnecessary to continue if logging is turned off
-            if (!EnableLogOutput)
+            if(!EnableLogOutput)
             {
                 return false;
             }
@@ -582,7 +583,7 @@ namespace Dev2.Common
         {
             string name;
             _workflowsToLog.TryGetValue(debugState.OriginatingResourceID, out name);
-            if (string.IsNullOrWhiteSpace(name))
+            if(string.IsNullOrWhiteSpace(name))
             {
                 _workflowsToLog[debugState.OriginatingResourceID] = debugState.DisplayName;
                 return debugState.DisplayName;
@@ -590,16 +591,16 @@ namespace Dev2.Common
             return name;
         }
 
-        
+
         public static StreamWriter GetLogStream(string logPath, IDebugState debugState)
         {
             StreamWriter currentStream;
             CurrentLogStreams.TryGetValue(debugState.OriginalInstanceID, out currentStream);
-            if (currentStream != null)
+            if(currentStream != null)
             {
                 return currentStream;
             }
-            
+
             throw new Exception("Logstream not found, check initialization or early disposal.");
         }
 
@@ -607,7 +608,7 @@ namespace Dev2.Common
         {
             string currentPath;
             CurrentExecutionLogs.TryGetValue(debugState.OriginalInstanceID, out currentPath);
-            if (!String.IsNullOrWhiteSpace(currentPath))
+            if(!String.IsNullOrWhiteSpace(currentPath))
             {
                 return currentPath;
             }
@@ -619,7 +620,7 @@ namespace Dev2.Common
         {
             var dirPath = loggingSettings.LogFileDirectory;
 
-            if (string.IsNullOrWhiteSpace(dirPath))
+            if(string.IsNullOrWhiteSpace(dirPath))
             {
                 dirPath = GetDefaultLogDirectoryPath();
             }
@@ -635,6 +636,24 @@ namespace Dev2.Common
         #endregion
 
         #endregion LogDebug
+
+        public static void LogError(this object obj, string message = null, [CallerMemberName] string methodName = null)
+        {
+            LogError(CreateMessage(obj, message, methodName));
+        }
+
+        public static void LogTrace(this object obj, string message = null, [CallerMemberName] string methodName = null)
+        {
+            LogTrace(CreateMessage(obj, message, methodName));
+        }
+
+        static string CreateMessage(object obj, string message, string methodName)
+        {
+            return string.Format("{0} {1} : {2}",
+                obj == null ? string.Empty : obj.GetType().Name,
+                methodName,
+                message);
+        }
     }
 
     internal class GuidTree

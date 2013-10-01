@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Network;
+using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
@@ -118,7 +119,7 @@ namespace Dev2.Studio.Core.Network
 
             if(DebugWriter == null)
             {
-                Logger.TraceInfo("Publish message of type - " + typeof(DebugWriterWriteMessage));
+                this.TraceInfo("Publish message of type - " + typeof(DebugWriterWriteMessage));
                 DebugWriter = new DebugWriter(s => _serverEventPublisher.Publish(new DebugWriterWriteMessage { DebugState = s }));
             }
             if(_debugWriters.TryAdd(AccountID, DebugWriter))
@@ -337,7 +338,7 @@ namespace Dev2.Studio.Core.Network
 
         protected override void OnLoginFailed(Connection connection, OutboundAuthenticationBroker broker, AuthenticationResponse reason, bool expectDisconnect)
         {
-            Logger.TraceInfo("Login Failed To [ " + connection.Address + " ] because of [ " + reason.ToString() + " ]");
+            this.TraceInfo("Login Failed To [ " + connection.Address + " ] because of [ " + reason + " ]");
             CancelLogin((TcpLoginBroker)broker, reason, expectDisconnect);
         }
 
@@ -367,12 +368,13 @@ namespace Dev2.Studio.Core.Network
         protected void OnEventProviderClientMessageReceived(INetworkOperator op, ByteBuffer reader)
         {
             var envelope = reader.ReadString();
+            this.TraceInfo(string.Format("envelope={0}", envelope));
 
             var memo = Memo.Parse(_serializer, envelope);
 
             // DO NOT use publish as memo is of type object 
             // and hence won't find the correct subscriptions
-            Logger.TraceInfo("Publish message of type - " + typeof(Memo));
+            this.TraceInfo("Publish message of type - " + typeof(Memo));
             _serverEventPublisher.PublishObject(memo);
         }
 
@@ -383,6 +385,7 @@ namespace Dev2.Studio.Core.Network
             ServerID = reader.ReadGuid();
             AccountID = reader.ReadGuid();
 
+            this.TraceInfo(string.Format("ServerID={0}, AccountID={1}", ServerID, AccountID));
             if(!IsAuxiliary)
             {
                 AddDebugWriter();
@@ -392,11 +395,13 @@ namespace Dev2.Studio.Core.Network
         void OnLogoutReceived(INetworkOperator op, ByteBuffer reader)
         {
             var reason = (AuthenticationResponse)reader.ReadByte();
+            this.TraceInfo(string.Format("reason={0}", reason));
             RaiseLoginStateChanged(reason);
         }
 
         void OnDebugWriterWrite(INetworkOperator op, ByteBuffer reader)
         {
+            this.TraceInfo();
             IDebugWriter writer;
             if(_debugWriters.TryGetValue(AccountID, out writer) && writer != null)
             {
@@ -407,6 +412,7 @@ namespace Dev2.Studio.Core.Network
 
         void OnExecuteCommandReceived(INetworkOperator op, ByteBuffer reader)
         {
+            this.TraceInfo();
             CompleteSendReceive(delegate
             {
                 var message = new ExecuteCommandMessage { Handle = -1 };
@@ -418,6 +424,7 @@ namespace Dev2.Studio.Core.Network
 
         void OnNetworkMessageReceived(INetworkOperator op, ByteBuffer reader)
         {
+            this.TraceInfo();
             CompleteSendReceive(delegate
             {
                 var message = _messageBroker.Receive(reader);
@@ -428,6 +435,7 @@ namespace Dev2.Studio.Core.Network
 
         void OnAuxiliaryConnectionReply(INetworkOperator op, ByteBuffer reader)
         {
+            this.TraceInfo();
             if(IsAuxiliary)
             {
                 throw new InvalidOperationException("Auxiliary connections cannot receive this packet.");
@@ -441,6 +449,7 @@ namespace Dev2.Studio.Core.Network
 
         protected void RaiseServerStateChanged(ServerState state)
         {
+            this.TraceInfo(string.Format("ServerState={0}", state));
             if(ServerStateChanged != null)
             {
                 ServerStateChanged(this, new ServerStateEventArgs(state));
@@ -453,6 +462,7 @@ namespace Dev2.Studio.Core.Network
 
         protected void RaiseLoginStateChanged(AuthenticationResponse response, bool expectDisconnect = false)
         {
+            this.TraceInfo(string.Format("AuthenticationResponse={0}, expectDisconnect={1}", response, expectDisconnect));
             _isLoggedIn = response == AuthenticationResponse.Success;
             if(LoginStateChanged != null)
             {
@@ -462,6 +472,7 @@ namespace Dev2.Studio.Core.Network
 
         protected void RaiseNetworkStateChanged(NetworkState toState, bool isError = false, string message = "")
         {
+            this.TraceInfo(string.Format("NetworkState={0}, isError={1}, message={2}", toState, isError, message));
             if(_networkState != toState)
             {
                 var fromState = _networkState;
@@ -510,6 +521,7 @@ namespace Dev2.Studio.Core.Network
 
         Task<bool> ConnectAsyncImpl(string hostNameOrAddress, int port)
         {
+            this.TraceInfo(string.Format("hostNameOrAddress={0}, port={1}", hostNameOrAddress, port));
             RaiseNetworkStateChanged(NetworkState.Connecting);
 
             var tcs = new TaskCompletionSource<bool>();
@@ -575,6 +587,7 @@ namespace Dev2.Studio.Core.Network
 
         void TryConnect(TaskCompletionSource<bool> tcs, IPAddress address, int port)
         {
+            this.TraceInfo(string.Format("address={0}, port={1}", address, port));
             Socket socket = null;
             try
             {
@@ -632,12 +645,14 @@ namespace Dev2.Studio.Core.Network
 
         void CancelConnect(TaskCompletionSource<bool> tcs, string message)
         {
+            this.TraceInfo(string.Format("message={0}", message));
             RaiseNetworkStateChanged(NetworkState.Offline, true, message);
             tcs.TrySetResult(false);
         }
 
         void CompleteConnect(TaskCompletionSource<bool> tcs)
         {
+            this.TraceInfo();
             RaiseNetworkStateChanged(NetworkState.Online);
             tcs.TrySetResult(true);
         }
@@ -648,6 +663,7 @@ namespace Dev2.Studio.Core.Network
 
         Task<bool> LoginAsyncImpl(string userName, string password)
         {
+            this.TraceInfo(string.Format("userName={0}", userName));
             // TcpLoginBroker invokes the following methods of this class:
             //
             // - this.OnLoginFailed();
@@ -665,6 +681,7 @@ namespace Dev2.Studio.Core.Network
 
         void CancelLogin(TcpLoginBroker broker, AuthenticationResponse reason, bool expectDisconnect)
         {
+            this.TraceInfo(string.Format("reason={0}, expectDisconnect={1}", reason, expectDisconnect));
             if(reason == AuthenticationResponse.Success)
             {
                 reason = AuthenticationResponse.Unspecified;
@@ -675,6 +692,7 @@ namespace Dev2.Studio.Core.Network
 
         void CompleteLogin(TcpLoginBroker broker)
         {
+            this.TraceInfo();
             RaiseLoginStateChanged(AuthenticationResponse.Success);
             broker.TaskCompletionSource.TrySetResult(true);
         }
@@ -686,6 +704,7 @@ namespace Dev2.Studio.Core.Network
         TMessage SendReceive<TMessage>(TMessage message, PacketTemplate template, bool writeMessageTypeBeforeHandle = false)
             where TMessage : INetworkMessage
         {
+            this.TraceInfo(string.Format("TMessage={0}, writeMessageTypeBeforeHandle={1}", typeof(TMessage), writeMessageTypeBeforeHandle));
             ValidateState();
 
             var handle = Interlocked.Increment(ref _nextMessageHandle);
@@ -737,7 +756,7 @@ namespace Dev2.Studio.Core.Network
                 result.HasError = true;
                 result.ErrorMessage = errors.ToString();
 
-                Logger.TraceInfo(aex.Message);
+                this.TraceInfo(aex.Message);
             }
             catch(Exception allOthers)
             {
@@ -748,7 +767,7 @@ namespace Dev2.Studio.Core.Network
                 result.HasError = true;
                 result.ErrorMessage = errors.ToString();
 
-                Logger.TraceInfo(allOthers.Message);
+                this.TraceInfo(allOthers.Message);
             }
             finally
             {
@@ -764,6 +783,7 @@ namespace Dev2.Studio.Core.Network
         void CompleteSendReceive<TMessage>(Func<TMessage> read)
             where TMessage : INetworkMessage
         {
+            this.TraceInfo(string.Format("TMessage={0}", typeof(TMessage)));
             TMessage message;
             try
             {
@@ -774,7 +794,7 @@ namespace Dev2.Studio.Core.Network
                 message = Activator.CreateInstance<TMessage>();
                 message.HasError = true;
                 message.ErrorMessage = "An error occured while trying to interpret network message from the server. " + ex.Message;
-                Logger.TraceInfo(message.ErrorMessage);
+                this.TraceInfo(message.ErrorMessage);
             }
 
             TaskCompletionSource<INetworkMessage> tcs;
@@ -784,7 +804,7 @@ namespace Dev2.Studio.Core.Network
             }
             else
             {
-                Logger.TraceInfo("Message handle not found : " + message.Handle);
+                this.TraceInfo("Message handle not found : " + message.Handle);
             }
         }
 
@@ -794,6 +814,7 @@ namespace Dev2.Studio.Core.Network
 
         protected Socket CreateSocket()
         {
+            this.TraceInfo();
             return new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
 
@@ -807,6 +828,7 @@ namespace Dev2.Studio.Core.Network
 
         protected override void OnConnectionDisposed(Connection connection)
         {
+            this.TraceInfo(string.Format("Address={0}, IsDisconnecting={1}", connection.Address, _isDisconnecting));
             base.OnConnectionDisposed(connection);
 
             RaiseServerStateChanged(ServerState.Offline);
@@ -822,6 +844,7 @@ namespace Dev2.Studio.Core.Network
 
         public Task StartReconnectHeartbeat(string hostNameOrAddress, int port)
         {
+            this.TraceInfo(string.Format("hostNameOrAddress={0}, port={1}", hostNameOrAddress, port));
             var task = TryGetIPAddress(hostNameOrAddress);
 
             return task.ContinueWith(ipAddress =>
@@ -862,6 +885,7 @@ namespace Dev2.Studio.Core.Network
 
         public virtual void StopReconnectHeartbeat()
         {
+            this.TraceInfo();
             if(_reconnectHeartbeat != null)
             {
                 _reconnectHeartbeat.Stop();
@@ -877,6 +901,7 @@ namespace Dev2.Studio.Core.Network
 
         void OnReconnectHeartbeatElapsed(object sender, ElapsedEventArgs args)
         {
+            this.TraceInfo();
             var connected = Ping(_reconnectEndPoint);
             if(connected)
             {
