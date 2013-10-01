@@ -839,6 +839,7 @@ namespace Dev2.DataList.Contract
         /// <param name="wizardDL"></param>
         /// <param name="serviceDL"></param>
         /// <returns></returns>
+        /// NOTE: This method is not production safe. It does not clean up data list and since it returns entries this is a BIG ISSUE!
         public WizardDataListMergeTO MergeFixedWizardDataList(string wizardDL, string serviceDL)
         {
             WizardDataListMergeTO result = new WizardDataListMergeTO();

@@ -142,58 +142,57 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                         throw new Exception("Fatal Internal DataList Storage Error");
                     }
 
-
                         // we got the row object, now update it ;)
                         foreach (IBinaryDataListItem itm in value)
                         {
-                        if (itm.FieldName != string.Empty)
-                        {
-                            int idx = InternalFetchColumnIndex(itm.FieldName); // Fetch correct index 
-                            BinaryDataListAlias keyAlias;
-
-                            // adjust if there is a mapping ;)
-                            if (_keyToAliasMap.TryGetValue(itm.FieldName, out keyAlias))
+                            if (!string.IsNullOrEmpty(itm.FieldName))
                             {
-                                var parentColumns = keyAlias.MasterEntry.Columns;
-                                var parentColumn = keyAlias.MasterColumn;
+                                int idx = InternalFetchColumnIndex(itm.FieldName); // Fetch correct index 
+                                BinaryDataListAlias keyAlias;
 
-                                idx = InternalParentFetchColumnIndex(parentColumn, parentColumns);
-
-                                colCnt = (short) parentColumns.Count;
-                            }
-
-                            if (idx == -1 && !IsRecordset)
-                            {
-                                idx = 0; // adjust for scalar
-                            }
-
-                            if (idx >= 0)
-                            {
-                                // it is an alias mapping ;)
-                                if (keyAlias != null)
+                                // adjust if there is a mapping ;)
+                                if (_keyToAliasMap.TryGetValue(itm.FieldName, out keyAlias))
                                 {
-                                    // alias update, use row 1
-                                    parentRow.UpdateValue(itm.TheValue, idx, colCnt);
+                                    var parentColumns = keyAlias.MasterEntry.Columns;
+                                    var parentColumn = keyAlias.MasterColumn;
+
+                                    idx = InternalParentFetchColumnIndex(parentColumn, parentColumns);
+
+                                    colCnt = (short) parentColumns.Count;
+                                }
+
+                                if (idx == -1 && !IsRecordset)
+                                {
+                                    idx = 0; // adjust for scalar
+                                }
+
+                                if (idx >= 0)
+                                {
+                                    // it is an alias mapping ;)
+                                    if (keyAlias != null)
+                                    {
+                                        // alias update, use row 1
+                                        parentRow.UpdateValue(itm.TheValue, idx, colCnt);
+                                }
+                                    else
+                                {
+                                        // normal update ;)
+                                        childRow.UpdateValue(itm.TheValue, idx, colCnt);
+                                }
                             }
-                                else
-                            {
-                                    // normal update ;)
-                                    childRow.UpdateValue(itm.TheValue, idx, colCnt);
-                            }
-                        }
                         }
                     }
 
                         // adjust correctly ;)
                     if ((parentRow != null && !parentRow.IsEmpty) || (!childRow.IsEmpty))
-                        {
-                            _myKeys.SetMaxValue(key, IsEmtpy);
-                        }
-                        else
-                        {
-                        //we removed it?!
-                            _myKeys.AddGap(key);
-                        }
+                    {
+                        _myKeys.SetMaxValue(key, IsEmtpy);
+                    }
+                    else
+                    {
+                    //we removed it?!
+                        _myKeys.AddGap(key);
+                    }
                         
                     // update federated values ;)
                     if (parentRow != null)
@@ -272,13 +271,11 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                             searchID = masterID;
                             masterRS = binaryDataListAlias.MasterNamespace;
                             masterCol = binaryDataListAlias.MasterColumn;
-                            //masterEntry = tmpEntry;
                             aliasSearchRounds++;
                         }
                         else
                         {
-                            // ensure we copy over the alias entry's keys ;)\
-                            // Add && !masterEntry.IsEmpty() in for blank first record ;)
+                            // ensure we copy over the alias entry's keys ;)
                             if(IsEmtpy)
                             {
                                 var keyItr = masterEntry.FetchRecordsetIndexes();
@@ -299,7 +296,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                         }
                         else
                         {
-                            //// we hit the bottom earlier, handle it ;)
+                            // we hit the bottom earlier, handle it ;)
                             masterEntry = binaryDataListAlias.MasterEntry;
                             searchID = Guid.Empty; // signal end ;)
                         }
@@ -353,7 +350,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public IDictionary<string, BinaryDataListAlias> FetchAlias()
         {
             return _keyToAliasMap;
-                }
+        }
 
         /// <summary>
         /// Inits this instance.
@@ -461,9 +458,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         /// </summary>
         public int DisposeCache()
         {
-            _keyToAliasMap = null;
-            _strToColIdx = null;
-
             return _itemStorage.DisposeCache(DataListKey.ToString());
         }
 

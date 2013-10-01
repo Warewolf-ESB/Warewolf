@@ -19,7 +19,7 @@ namespace Dev2.Tests
     {
 
 
-        private IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
+        //private IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
         private IBinaryDataList dl1;
         private IBinaryDataList dl2;
         private ErrorResultTO _errors = new ErrorResultTO();
@@ -38,6 +38,8 @@ namespace Dev2.Tests
         public void MyTestInitialize()
         {
             string error;
+
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
 
             dl1 = Dev2BinaryDataListFactory.CreateDataList();
             dl1.TryCreateScalarTemplate(string.Empty, "myScalar", "A scalar", true, out error);
@@ -70,7 +72,7 @@ namespace Dev2.Tests
             dl1.TryCreateRecordsetValue("r4.f2.value", "f2", "recset", 4, out error);
             dl1.TryCreateRecordsetValue("r4.f3.value", "f3", "recset", 4, out error);
 
-            _compiler.PushBinaryDataList(dl1.UID, dl1, out _errors);
+            dataListCompiler.PushBinaryDataList(dl1.UID, dl1, out _errors);
             //_compiler.UpsertSystemTag(dl1.UID, enSystemTag.EvaluateIteration, "true", out errors);
 
             /*  list 2 */
@@ -88,7 +90,7 @@ namespace Dev2.Tests
             dl2.TryCreateRecordsetValue("r2.f2.value", "f2", "recset", 2, out error);
             dl2.TryCreateRecordsetValue("r2.f3.value", "f3", "recset", 2, out error);
 
-            _compiler.PushBinaryDataList(dl2.UID, dl2, out _errors);
+            dataListCompiler.PushBinaryDataList(dl2.UID, dl2, out _errors);
             //_compiler.UpsertSystemTag(dl2.UID, enSystemTag.EvaluateIteration, "true", out errors);
         }
 
@@ -121,9 +123,12 @@ namespace Dev2.Tests
         public void HasErrors_Passed_Empty_GUID_Expected_No_NullReferenceException()
         {
             Guid id = Guid.Empty;
+
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
+
             try
             {
-                _compiler.HasErrors(id);
+                dataListCompiler.HasErrors(id);
             }
             catch (NullReferenceException)
             {
@@ -135,10 +140,11 @@ namespace Dev2.Tests
         public void Iteration_Evaluation_Expect_Evaluation_For_1_Iteration()
         {
             // Iteration evaluation is tested via the shape method ;)
+            var compiler = DataListFactory.CreateDataListCompiler();
             const string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[myScalar]]"" /></Inputs>"; ;
-            Guid id = _compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out _errors);
+            Guid id = compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out _errors);
 
-            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out _errors);
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(id, out _errors);
 
             bdl.TryGetEntry("scalar1", out entry, out _error);
 
@@ -150,6 +156,7 @@ namespace Dev2.Tests
 
 
         #region FixedWizardTest
+
         [TestMethod]
         public void FixedWizardScalar_Converter_Expected_FixedDataListPortion()
         {
@@ -181,7 +188,9 @@ namespace Dev2.Tests
 ";
             const string expected = @"<DataList><Movember IsEditable=""False"" ></Movember><Port IsEditable=""False"" ></Port><From IsEditable=""False"" ></From><To IsEditable=""False"" ></To><Subject IsEditable=""False"" ></Subject><BodyType IsEditable=""False"" ></BodyType><Body IsEditable=""False"" ></Body><Attachment IsEditable=""False"" ></Attachment><FailureMessage IsEditable=""False"" ></FailureMessage><Message IsEditable=""False"" ></Message></DataList>";
 
-            WizardDataListMergeTO result = _compiler.MergeFixedWizardDataList(wizDL, serviceDL);
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
+
+            WizardDataListMergeTO result = dataListCompiler.MergeFixedWizardDataList(wizDL, serviceDL);
 
             var res1 = result.AddedRegions[0].FetchScalar().FieldName;
             var res2 = result.RemovedRegions[0].FetchScalar().FieldName;
@@ -225,7 +234,9 @@ namespace Dev2.Tests
             const string expected = @"<DataList><Movember IsEditable=""False"" ></Movember><Recordset IsEditable=""False"" ><FirstName IsEditable=""False"" ></FirstName></Recordset><Port IsEditable=""False"" ></Port><From IsEditable=""False"" ></From><To IsEditable=""False"" ></To><Subject IsEditable=""False"" ></Subject><BodyType IsEditable=""False"" ></BodyType><Body IsEditable=""False"" ></Body><Attachment IsEditable=""False"" ></Attachment><FailureMessage IsEditable=""False"" ></FailureMessage><Message IsEditable=""False"" ></Message></DataList>";
             string error;
 
-            WizardDataListMergeTO result = _compiler.MergeFixedWizardDataList(wizDL, serviceDL);
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
+
+            WizardDataListMergeTO result = dataListCompiler.MergeFixedWizardDataList(wizDL, serviceDL);
 
             Assert.AreEqual(expected, result.IntersectedDataList);
             Assert.AreEqual("Movember", result.AddedRegions[0].FetchScalar().FieldName);
@@ -242,11 +253,13 @@ namespace Dev2.Tests
         public void GenerateDefsFromDataListWhereDataListExpectResultsToMatchIODirectionForInput()
         {
             //------------Setup for test--------------------------
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
+
             var dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
                                      "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
                                      "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"Output\" /></recset></DataList>";
             //------------Execute Test---------------------------
-            var generateDefsFromDataList = _compiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Input);
+            var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Input);
             //------------Assert Results-------------------------
             Assert.AreEqual(5,generateDefsFromDataList.Count);
         }
@@ -255,11 +268,12 @@ namespace Dev2.Tests
         public void GenerateDefsFromDataListWhereDataListExpectResultsToMatchIODirectionForOutput()
         {
             //------------Setup for test--------------------------
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
             var dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
                                      "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
                                      "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"Output\" /></recset></DataList>";
             //------------Execute Test---------------------------
-            var generateDefsFromDataList = _compiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Output);
+            var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Output);
             //------------Assert Results-------------------------
             Assert.AreEqual(6,generateDefsFromDataList.Count);
         }
@@ -268,11 +282,12 @@ namespace Dev2.Tests
         public void GenerateDefsFromDataListWhereDataListExpectResultsToMatchIODirectionForBoth()
         {
             //------------Setup for test--------------------------
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
             var dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
                                      "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
                                      "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"Output\" /></recset></DataList>";
             //------------Execute Test---------------------------
-            var generateDefsFromDataList = _compiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Both);
+            var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Both);
             //------------Assert Results-------------------------
             Assert.AreEqual(4,generateDefsFromDataList.Count);
         }
@@ -281,11 +296,12 @@ namespace Dev2.Tests
         public void GenerateDefsFromDataListWhereDataListExpectResultsToMatchIODirectionForRecsetHasNone()
         {
             //------------Setup for test--------------------------
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
             var dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
                                      "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
                                      "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"None\" /></recset></DataList>";
             //------------Execute Test---------------------------
-            var generateDefsFromDataList = _compiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Output);
+            var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Output);
             //------------Assert Results-------------------------
             Assert.AreEqual(5,generateDefsFromDataList.Count);
         }
@@ -297,9 +313,10 @@ namespace Dev2.Tests
         [TestMethod]
         public void GenerateWizardDataListFromDefs_Outputs_Expected_Correct_DataList()
         {
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
             string defstring = ParserStrings.dlOutputMappingOutMapping;
             ErrorResultTO errors;
-            string acctual = _compiler.GenerateWizardDataListFromDefs(defstring, enDev2ArgumentType.Output, false, out errors, true);
+            string acctual = dataListCompiler.GenerateWizardDataListFromDefs(defstring, enDev2ArgumentType.Output, false, out errors, true);
 
             Assert.IsTrue(acctual.Contains(@"<ADL><required></required><validationClass></validationClass><cssClass>[[cssClass]]</cssClass><Dev2customStyle></Dev2customStyle>
 </ADL>"));
@@ -308,9 +325,10 @@ namespace Dev2.Tests
         [TestMethod]
         public void GenerateWizardDataListFromDefs_Inputs_Expected_Correct_DataList()
         {
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
             string defstring = ParserStrings.dlInputMapping;
             ErrorResultTO errors;
-            string acctual = _compiler.GenerateWizardDataListFromDefs(defstring, enDev2ArgumentType.Input, false, out errors, true);
+            string acctual = dataListCompiler.GenerateWizardDataListFromDefs(defstring, enDev2ArgumentType.Input, false, out errors, true);
 
             Assert.IsTrue(acctual.Contains(@"<ADL><reg></reg><asdfsad>registration223</asdfsad><number></number>
 </ADL>"));
@@ -319,9 +337,10 @@ namespace Dev2.Tests
         [TestMethod]
         public void GenerateDataListFromDefs_Outputs_Expected_Correct_DataList()
         {
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
             string defstring = ParserStrings.dlOutputMappingOutMapping;
             ErrorResultTO errors;
-            string acctual = _compiler.GenerateDataListFromDefs(defstring, enDev2ArgumentType.Output, false, out errors);
+            string acctual = dataListCompiler.GenerateDataListFromDefs(defstring, enDev2ArgumentType.Output, false, out errors);
 
             Assert.IsTrue(acctual.Contains(@"<ADL><required/><validationClass/><cssClass/><Dev2customStyle/>
 </ADL>"));
@@ -330,9 +349,10 @@ namespace Dev2.Tests
         [TestMethod]
         public void GenerateDataListFromDefs_Inputs_Expected_Correct_DataList()
         {
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
             string defstring = ParserStrings.dlInputMapping;
             ErrorResultTO errors;
-            string acctual = _compiler.GenerateDataListFromDefs(defstring, enDev2ArgumentType.Input, false, out errors);
+            string acctual = dataListCompiler.GenerateDataListFromDefs(defstring, enDev2ArgumentType.Input, false, out errors);
 
             Assert.IsTrue(acctual.Contains(@"<ADL><reg/><asdfsad/><number/>
 </ADL>"));
@@ -414,8 +434,9 @@ namespace Dev2.Tests
         [TestMethod]
         public void Can_Sub_Recordset_With_Index_Expect()
         {
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors = new ErrorResultTO();
-            IBinaryDataListEntry entry = _compiler.Evaluate(dl2.UID, enActionType.User, "[[recset(1).f1]]", false, out errors);
+            IBinaryDataListEntry entry = dataListCompiler.Evaluate(dl2.UID, enActionType.User, "[[recset(1).f1]]", false, out errors);
 
             Assert.AreEqual("r1.f1.value", entry.FetchScalar().TheValue);
         }
