@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Newtonsoft.Json.Linq;
 using Unlimited.Framework.Converters.Graph.Interfaces;
+using Unlimited.Framework.Converters.Graph.Poco;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 
@@ -27,7 +28,14 @@ namespace Unlimited.Framework.Converters.Graph.String
             }
             else
             {
-                mapper = null;
+                if(data is string)
+                {
+                    mapper = new PocoMapper();
+                }
+                else
+                {
+                    mapper = null;
+                }
             }
 
             return mapper;
@@ -49,6 +57,10 @@ namespace Unlimited.Framework.Converters.Graph.String
             else if (pathType == typeof(JsonPath))
             {
                 navigator = new JsonNavigator(data);
+            }           
+            else if (pathType == typeof(PocoPath))
+            {
+                navigator = new PocoNavigator(data);
             }
             else
             {

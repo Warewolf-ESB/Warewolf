@@ -48,7 +48,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                 //
                 // Handle if the poco mapper is used to map to a raw primitive
                 //
-                paths.Add(new PocoPath(PocoPath.SeperatorSymbol, PocoPath.SeperatorSymbol));
+                paths.Add(new PocoPath(PocoPath.SeperatorSymbol, PocoPath.SeperatorSymbol,PocoPath.SeperatorSymbol,data.ToString()));
             }
             else
             {

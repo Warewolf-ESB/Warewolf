@@ -345,12 +345,9 @@ namespace Dev2.Services.Execution
                 return outputFormatter.Format(result ?? string.Empty).ToString();
             }
                 // BUG 9619 - 2013.06.05 - TWR - Added
-            else
-            {
-                var errorResult = new XElement("Error");
-                errorResult.Add("Output format in service action is invalid");
-                return errorResult.ToString();
-            }
+            var errorResult = new XElement("Error");
+            errorResult.Add("Output format in service action is invalid");
+            return errorResult.ToString();
         }
 
         #region Private Method
