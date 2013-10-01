@@ -105,14 +105,6 @@ namespace Dev2.Data.Binary_Objects
                         _activityThreadToParentThreadID.TryRemove(transactionScopeID, out dummyInt);
                     }
                 }
-
-                //Thread.Sleep(5000);
-
-                //foreach(var kk in BinaryDataListStorageLayer.LevelOneCache.Keys)
-                //{
-                //    ServerLogger.LogTrace(kk + "->" + BinaryDataListStorageLayer.LevelOneCache[kk]);
-                //}
-
             }
         }
 

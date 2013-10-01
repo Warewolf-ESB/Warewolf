@@ -1025,15 +1025,6 @@ namespace Dev2.Server.Datalist
             return _dlServer.FetchTranslatorTypes();
         }
 
-        //public bool PersistResumableDataListChain(Guid childID)
-        //{
-        //    bool result = false;
-
-        //    result = _dlServer.PersistChildChain(childID);
-
-        //    return result;
-        //}
-
         public Guid UpsertSystemTag(Guid curDLID, enSystemTag tag, string val, out ErrorResultTO errors)
         {
 
