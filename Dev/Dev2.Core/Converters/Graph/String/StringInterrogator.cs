@@ -28,16 +28,8 @@ namespace Unlimited.Framework.Converters.Graph.String
             }
             else
             {
-                if(data is string)
-                {
-                    mapper = new PocoMapper();
-                }
-                else
-                {
-                    mapper = null;
-                }
-            }
-
+                mapper = data.GetType().IsPrimitive ? new PocoMapper() : null;
+            }            
             return mapper;
         }
 
@@ -57,7 +49,7 @@ namespace Unlimited.Framework.Converters.Graph.String
             else if (pathType == typeof(JsonPath))
             {
                 navigator = new JsonNavigator(data);
-            }           
+            }
             else if (pathType == typeof(PocoPath))
             {
                 navigator = new PocoNavigator(data);
