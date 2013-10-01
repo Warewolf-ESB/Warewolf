@@ -1,16 +1,13 @@
-﻿using Dev2;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using Dev2;
 using Dev2.Activities;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
-using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.PathOperations;
-using System;
-using System.Activities;
-using System.Collections.Generic;
 using Dev2.Util;
-using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -25,7 +22,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
 
         public DsfUnZip()
-            : base("UnZip")
+            : base("Unzip")
         {
             ArchivePassword = string.Empty;
             InputPath = string.Empty;
@@ -72,7 +69,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
-            if (dataObject.IsDebug || dataObject.RemoteInvoke)
+            if(dataObject.IsDebug || dataObject.RemoteInvoke)
             {
                 AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);
                 AddDebugInputItem(OutputPath, "Output Path", outputPathEntry, executionId);
@@ -81,7 +78,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugInputItem(ArchivePassword, "Archive Password", archPassEntry, executionId);
             }
 
-            while (colItr.HasMoreData())
+            while(colItr.HasMoreData())
             {
 
                 string error = string.Empty;
@@ -110,7 +107,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     outputs[0].OutputStrings.Add(result);
 
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     allErrors.AddError(e.Message);
                 }
@@ -169,26 +166,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+            foreach(Tuple<string, string> t in updates)
             {
-                if (t.Item1 == ArchivePassword)
+                if(t.Item1 == ArchivePassword)
                 {
                     ArchivePassword = t.Item2;
                 }
 
-                if (t.Item1 == Overwrite.ToString())
+                if(t.Item1 == Overwrite.ToString())
                 {
                     bool tmpOverwrite;
                     bool.TryParse(t.Item2, out tmpOverwrite);
                     Overwrite = tmpOverwrite;
                 }
 
-                if (t.Item1 == InputPath)
+                if(t.Item1 == InputPath)
                 {
                     InputPath = t.Item2;
                 }
 
-                if (t.Item1 == OutputPath)
+                if(t.Item1 == OutputPath)
                 {
                     OutputPath = t.Item2;
                 }
@@ -197,7 +194,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates.Count == 1)
+            if(updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }

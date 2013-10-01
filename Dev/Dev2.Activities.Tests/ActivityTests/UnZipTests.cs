@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -36,7 +36,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(inputs.UID);
 
-            Assert.AreEqual(7,res);
+            Assert.AreEqual(7, res);
         }
 
         [TestMethod]
@@ -51,7 +51,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(outputs.UID);
 
-            Assert.AreEqual(1,res);
+            Assert.AreEqual(1, res);
         }
 
         #endregion Get Input/Output Tests
@@ -68,9 +68,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             List<string> fileNames = new List<string>();
             var guid = Guid.NewGuid();
-            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, guid+ "Dev2.txt"));            
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, guid + "Dev2.txt"));
 
-            foreach (string fileName in fileNames)
+            foreach(string fileName in fileNames)
             {
                 File.WriteAllText(fileName, @"TestData");
             }
@@ -86,7 +86,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            foreach (string fileName in fileNames)
+            foreach(string fileName in fileNames)
             {
                 File.Delete(fileName);
             }
@@ -105,7 +105,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[3].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
-            
+
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
         }
@@ -130,7 +130,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                     Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".zip")
                 };
 
-            foreach (string fileName in fileNames)
+            foreach(string fileName in fileNames)
             {
                 File.WriteAllText(fileName, @"TestData");
             }
@@ -138,9 +138,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             recsetList.Add(fileNames);
             recsetList.Add(zipfileNames);
 
-            List<string> recsetnames = new List<string> {"FileNames", "ZipNames"};
+            List<string> recsetnames = new List<string> { "FileNames", "ZipNames" };
 
-            List<string> fieldnames = new List<string> {"Name", "Zips"};
+            List<string> fieldnames = new List<string> { "Name", "Zips" };
 
             string dataListWithData;
             string dataListShape;
@@ -158,7 +158,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            foreach (string fileName in fileNames)
+            foreach(string fileName in fileNames)
             {
                 File.Delete(fileName);
             }
@@ -177,11 +177,25 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[3].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
-            
+
             Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);          
+            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
         }
 
         #endregion
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DsfUnZip_Constructor")]
+        public void DsfUnZip_Constructor_DisplayName_Unzip()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var dsfUnZip = new DsfUnZip();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Unzip", dsfUnZip.DisplayName);
+        }
     }
 }
