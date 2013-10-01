@@ -1465,11 +1465,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                 }
             }
-            
-            var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
-            if(mvm != null && mvm.ActiveItem != null)
+
+            if(Application.Current != null)
             {
-                mvm.RefreshActiveEnvironment();
+                var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                if(mvm != null && mvm.ActiveItem != null)
+                {
+                    mvm.RefreshActiveEnvironment();
+                }
             }
 
             return false;
