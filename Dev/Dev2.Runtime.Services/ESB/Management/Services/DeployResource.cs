@@ -28,7 +28,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataContractException("Roles or ResourceDefinition missing");
             }
             resourceDefinition = resourceDefinition.Unescape();
-            string result = WorkspaceRepository.Instance.ServerWorkspace.Save(resourceDefinition, roles);
+            var result = ResourceCatalog.Instance.SaveResource(WorkspaceRepository.ServerWorkspaceID, resourceDefinition, roles);
             WorkspaceRepository.Instance.RefreshWorkspaces();
             Guid resourceID;
             var xml = XElement.Parse(resourceDefinition);
@@ -36,7 +36,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 ResourceCatalog.Instance.FireUpdateMessage(resourceID);
             }
-            return result;
+            return result.ToString();
         }
 
         public DynamicService CreateServiceEntry()

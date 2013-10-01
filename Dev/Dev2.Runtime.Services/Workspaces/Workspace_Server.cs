@@ -9,32 +9,6 @@ namespace Dev2.Workspaces
 {
     public partial class Workspace
     {
-
-        #region Save
-
-        /// <summary>
-        /// Saves the specified object - does not load into.
-        /// </summary>
-        /// <param name="objectXml">The object's definition XML.</param>
-        /// <param name="roles">The roles.</param>
-        /// <exception cref="System.ArgumentNullException">objectXml</exception>
-        public string Save(string objectXml, string roles = null)
-        {
-            if(string.IsNullOrEmpty(objectXml))
-            {
-                throw new ArgumentNullException("objectXml");
-            }
-
-            if(roles == null)
-            {
-                roles = string.Empty;
-            }
-            var result = ResourceCatalog.Instance.SaveResource(ID, objectXml, roles);
-            return result.Message;
-        }
-
-        #endregion
-
         #region Update
 
         /// <summary>
@@ -78,12 +52,6 @@ namespace Dev2.Workspaces
                     if (!isLocalSave)
                     {
                         Copy(this, WorkspaceRepository.Instance.ServerWorkspace, workspaceItem, roles);
-                    }
-                    else
-                    {
-                        XElement xElement = workspaceItem.ToXml();
-                        string s = xElement.ToString();
-                        Save(s, null);
                     }
                     break;
             }

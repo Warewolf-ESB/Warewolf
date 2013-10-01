@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,6 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
-using System.Collections.Generic;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -36,16 +36,16 @@ namespace Dev2.Runtime.Hosting
 
         public void BuildCatalogFromWorkspace(string workspacePath, params string[] folders)
         {
-            if (string.IsNullOrEmpty(workspacePath))
+            if(string.IsNullOrEmpty(workspacePath))
             {
                 throw new ArgumentNullException("workspacePath");
             }
-            if (folders == null)
+            if(folders == null)
             {
                 throw new ArgumentNullException("folders");
             }
 
-            if (folders.Length == 0 || !Directory.Exists(workspacePath))
+            if(folders.Length == 0 || !Directory.Exists(workspacePath))
             {
                 return;
             }
@@ -55,20 +55,20 @@ namespace Dev2.Runtime.Hosting
             try
             {
 
-                foreach (var path in folders.Where(f => !string.IsNullOrEmpty(f)).Select(f => Path.Combine(workspacePath, f)))
+                foreach(var path in folders.Where(f => !string.IsNullOrEmpty(f)).Select(f => Path.Combine(workspacePath, f)))
                 {
-                    if (!Directory.Exists(path))
+                    if(!Directory.Exists(path))
                     {
                         continue;
                     }
 
                     var files = Directory.GetFiles(path, "*.xml");
-                    foreach (var file in files)
+                    foreach(var file in files)
                     {
 
                         FileAttributes fa = File.GetAttributes(file);
 
-                        if ((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                        if((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                         {
                             ServerLogger.LogMessage("Removed READONLY Flag from [ " + file + " ]");
                             File.SetAttributes(file, FileAttributes.Normal);
@@ -77,13 +77,13 @@ namespace Dev2.Runtime.Hosting
                         // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  
                         // In many cases, this will avoid blocking a ThreadPool thread.  
                         var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, true);
-                        streams.Add(new ResourceBuilderTO(){FilePath = file, FileStream = sourceStream});
+                        streams.Add(new ResourceBuilderTO() { FilePath = file, FileStream = sourceStream });
 
                     }
                 }
 
                 // Use the parallel task library to process file system ;)
-                Parallel.ForEach(streams.ToArray(), currentItem => 
+                Parallel.ForEach(streams.ToArray(), currentItem =>
                 {
 
                     XElement xml = null;
@@ -92,13 +92,13 @@ namespace Dev2.Runtime.Hosting
                     {
                         xml = XElement.Load(currentItem.FileStream);
                     }
-                    catch (Exception e)
+                    catch(Exception e)
                     {
                         ServerLogger.LogError("Resource [ " + currentItem.FilePath + " ] caused " + e.Message);
                     }
 
                     var isValid = xml != null && HostSecurityProvider.Instance.VerifyXml(xml.ToString(SaveOptions.None));
-                    if (isValid)
+                    if(isValid)
                     {
                         var resource = new Resource(xml)
                         {
@@ -106,14 +106,13 @@ namespace Dev2.Runtime.Hosting
                         };
 
                         //2013.08.26: Prevent duplicate unassigned folder in save dialog and studio explorer tree by interpreting 'unassigned' as blank
-                        if (resource.ResourcePath.ToUpper() == "UNASSIGNED")
+                        if(resource.ResourcePath.ToUpper() == "UNASSIGNED")
                         {
                             resource.ResourcePath = string.Empty;
-                            xml = resource.ToXml();
-                            resource.IsUpgraded = true;
+                            // DON'T FORCE A SAVE HERE - EVER!!!!
                         }
 
-                        if (resource.IsUpgraded)
+                        if(resource.IsUpgraded)
                         {
                             // Must close the source stream first and then add a new target stream 
                             // otherwise the file will be remain locked
@@ -124,13 +123,13 @@ namespace Dev2.Runtime.Hosting
                             var encodedText = Encoding.UTF8.GetBytes(signedXml);
 
                             // 4096
-                            using (var targetStream = new FileStream(currentItem.FilePath, FileMode.Open, FileAccess.Write, FileShare.ReadWrite, 4096, true))
+                            using(var targetStream = new FileStream(currentItem.FilePath, FileMode.Open, FileAccess.Write, FileShare.ReadWrite, 4096, true))
                             {
                                 targetStream.Write(encodedText, 0, encodedText.Length);
                             }
                         }
 
-                        lock (addLock)
+                        lock(addLock)
                         {
                             AddResource(resource, currentItem.FilePath);
                         }
@@ -140,7 +139,7 @@ namespace Dev2.Runtime.Hosting
                         ServerLogger.LogError(string.Format("'{0}' wasn't loaded because it isn't signed or has modified since it was signed.", currentItem.FilePath));
                     }
 
-                    
+
                 });
             }
             finally
@@ -148,7 +147,7 @@ namespace Dev2.Runtime.Hosting
                 // Close all FileStream instances in a finally block after the tasks are complete. 
                 // If each FileStream was instead created in a using statement, the FileStream 
                 // might be disposed of before the task was complete
-                foreach (var stream in streams)
+                foreach(var stream in streams)
                 {
                     stream.FileStream.Close();
                 }
@@ -162,7 +161,7 @@ namespace Dev2.Runtime.Hosting
         /// <param name="filePath">The file path.</param>
         private void AddResource(IResource res, string filePath)
         {
-            if (!_addedResources.Contains(res.ResourceName))
+            if(!_addedResources.Contains(res.ResourceName))
             {
                 _resources.Add(res);
                 _addedResources.Add(res.ResourceName);
@@ -170,7 +169,7 @@ namespace Dev2.Runtime.Hosting
             else
             {
                 var dupRes = _resources.Find(c => c.ResourceName == res.ResourceName);
-                if (dupRes != null)
+                if(dupRes != null)
                 {
                     ServerLogger.LogError(
                         string.Format(
