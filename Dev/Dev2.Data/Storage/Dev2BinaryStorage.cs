@@ -147,7 +147,7 @@ namespace Dev2.Data.Storage
         private static readonly string DataListPersistPath = Path.Combine(RootPath, _savePath);
 
         private static object _dirLock = new object();
-        private static bool startupCleaned = false;
+        private static bool startupCleaned;
 
         #region Fields
 

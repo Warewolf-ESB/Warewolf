@@ -23,7 +23,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         // Travis.Frisinger - 01.02.2013 : Bug 8579
         private bool _isStandardUpsert = true;
-        private string _deferredLoc = string.Empty;
 
         internal string DefferedReadFileContents = string.Empty;
 
@@ -82,15 +81,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                 toUpsert.Add(region, value);
                                             }
                                         }
-                                        else
-                                        {
-                                            // deferred read ;)
-                                            string error;
-                                            IBinaryDataListEntry deferredEntry = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.EvalautionScalar, string.Empty, dlID);
-                                            deferredEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateFileSystemItem(value, _deferredLoc, GlobalConstants.EvalautionScalar), out error);
-                                            allErrors.AddError(error);
-                                            toUpsertDeferred.Add(output.OutPutDescription, deferredEntry);
-                                        }
+
                                         iterationCount++;
                                     }
 
@@ -165,8 +156,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>
         public void MakeDeferredAction(string deferredLoc)
         {
-            _isStandardUpsert = false;
-            _deferredLoc = deferredLoc;
+           // Do nothing ;)
         }
 
         /// <summary>

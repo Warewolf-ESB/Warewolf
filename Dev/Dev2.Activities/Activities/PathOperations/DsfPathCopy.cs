@@ -36,10 +36,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             
             IList<OutputTO> outputs = new List<OutputTO>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             Guid executionId = dataObject.DataListID;
             IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
@@ -76,8 +75,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             while (colItr.HasMoreData())
             {
-
-                string error = string.Empty;
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
                 Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(Overwrite);
 

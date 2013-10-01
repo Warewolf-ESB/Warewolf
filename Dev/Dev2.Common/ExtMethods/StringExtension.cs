@@ -26,7 +26,7 @@ namespace Dev2.Common.ExtMethods
                 doc.LoadXml(payload);
                 return doc.InnerXml;
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 string xml = string.Format("<dummycake>{0}</dummycake>", payload);
                 doc.LoadXml(xml);

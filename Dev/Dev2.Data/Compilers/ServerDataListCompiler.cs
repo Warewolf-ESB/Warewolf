@@ -538,7 +538,6 @@ namespace Dev2.Server.Datalist
                     childDL.TryGetEntry(def.RecordSetName, out entry, out error);
                     errors.AddError(error);
 
-
                     if (entry != null && !string.IsNullOrEmpty(rsName) && !string.IsNullOrEmpty(rsCol))
                     {
                         entry.AdjustForIOMapping(parentDLID, rsCol, rsName, def.Name, out invokeErrors);
