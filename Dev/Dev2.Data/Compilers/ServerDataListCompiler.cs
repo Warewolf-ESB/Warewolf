@@ -483,7 +483,6 @@ namespace Dev2.Server.Datalist
                                 errors.AddError(error);
 
                                 // adjust the column view so it propagates down to row ;)
-                                entry.AdjustForColumnDisparity(parentEntry);
                                 entry.AdjustForIOMapping(parentDLID, rsCol, rsName, def.Name, out invokeErrors);
                                 errors.MergeErrors(invokeErrors);
                                 outputRemoveIdx.Add(oPos);

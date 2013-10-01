@@ -87,12 +87,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
         #region Methods
 
         /// <summary>
-        /// Adjusts for column disparity.
-        /// </summary>
-        /// <param name="parentEntry">The parent entry.</param>
-        void AdjustForColumnDisparity(IBinaryDataListEntry parentEntry);
-
-        /// <summary>
         /// Adjusts the index view.
         /// </summary>
         /// <param name="gaps">The gaps.</param>

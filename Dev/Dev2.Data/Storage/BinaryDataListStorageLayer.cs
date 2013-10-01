@@ -30,44 +30,6 @@ namespace Dev2.Data.Storage
 
         public short ColumnSize { get; set; }
 
-        //private int _myCount;
-
-        //public int Count
-        //{
-        //    get
-        //    {
-        //        return _myCount;
-        //    }
-        //}
-
-        #endregion
-
-        #region Index
-
-        //public BinaryDataListRow this[int key]
-        //{
-        //    get
-        //    {
-        //        StorageKey sk = new StorageKey(_uid, GetUniqueKey(key));
-
-        //        BinaryDataListRow v = LevelZeroCache[sk];
-
-        //        if(v == null && key >= 0)
-        //        {
-        //            // correct miss ;)
-        //            v = new BinaryDataListRow(ColumnSize);
-        //            LevelZeroCache[sk] = v;
-        //        }
-
-        //        return v;
-        //    }
-        //    set
-        //    {
-        //        StorageKey sk = new StorageKey(_uid, GetUniqueKey(key));
-        //        LevelZeroCache[sk] = value;
-        //    }
-        //}
-
         #endregion
 
         #region Disposal 

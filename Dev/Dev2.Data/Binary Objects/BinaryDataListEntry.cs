@@ -196,25 +196,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
         #endregion
 
         /// <summary>
-        /// Adjusts for column disparity.
-        /// </summary>
-        /// <param name="parentEntry">The parent entry.</param>
-        public void AdjustForColumnDisparity(IBinaryDataListEntry parentEntry)
-        {
-            //var childColumnCount = Columns.Count;
-            //var parentColumnCount = parentEntry.Columns.Count;
-
-            //if (childColumnCount < parentColumnCount)
-            //{
-            //    // increase the number of columns ;)
-            //    for (int i = childColumnCount; i < parentColumnCount; i++)
-            //    {
-            //        Columns.a
-            //    }
-            //}
-        }
-
-        /// <summary>
         ///     Fetch the number of records present
         /// </summary>
         /// <returns></returns>
