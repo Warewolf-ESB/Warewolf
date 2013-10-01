@@ -84,5 +84,24 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
         }
 
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DatabaseService_Mapping")]
+        public void DatabaseService_WithInputsAndNoOutputs_WhenInsertingFromDataList_SameDataReturned()
+        {
+
+            //------------Setup for test--------------------------
+            string PostData = String.Format("{0}{1}", WebserverURI, "DB Service With No Output");
+            string expected = @"<Result>PASS</Result>";
+
+            //------------Execute Test---------------------------
+            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(ResponseData, expected);
+
+        }
+
     }
 }

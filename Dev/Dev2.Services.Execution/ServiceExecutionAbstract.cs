@@ -137,14 +137,6 @@ namespace Dev2.Services.Execution
                             toInject = sai.DefaultValue;
                         }
 
-
-                        var datalist = compiler.ConvertFrom(DataObj.DataListID,
-                                                            DataListFormat.CreateFormat(
-                                                                GlobalConstants._XML_Without_SystemTags),
-                                                            enTranslationDepth.Data, out invokeErrors);
-
-                        datalist += "";
-
                         var expressionEntry = compiler.Evaluate(DataObj.DataListID, enActionType.User, toInject, false, out invokeErrors);
                         errors.MergeErrors(invokeErrors);
                         var expressionIterator = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionEntry);

@@ -360,10 +360,10 @@ namespace Dev2.DynamicServices
 
                     ErrorResultTO errors;
 
-                    var outputMappings = ServiceUtils.ExtractOutputMapping(serviceDef);
+                        var outputMappings = ServiceUtils.ExtractOutputMapping(serviceDef);
                     var oDL = DataListUtil.ShapeDefinitionsToDataList(outputMappings, enDev2ArgumentType.Output, out errors);
 
-                    var inputMappings = ServiceUtils.ExtractInputMapping(serviceDef);
+                        var inputMappings = ServiceUtils.ExtractInputMapping(serviceDef);
                     var iDL = DataListUtil.ShapeDefinitionsToDataList(inputMappings, enDev2ArgumentType.Input, out errors);
 
                     var outputFragment = string.Empty;
@@ -371,11 +371,11 @@ namespace Dev2.DynamicServices
 
                     if (!string.IsNullOrEmpty(oDL))
                     {
-                        try
-                        {
-                            // finally glue the two together ;)
-                            XmlDocument oDLXDoc = new XmlDocument();
-                            oDLXDoc.LoadXml(oDL);
+                    try
+        {
+                        // finally glue the two together ;)
+                        XmlDocument oDLXDoc = new XmlDocument();
+                        oDLXDoc.LoadXml(oDL);
 
                             outputFragment = oDLXDoc.DocumentElement.InnerXml;
 
@@ -393,20 +393,20 @@ namespace Dev2.DynamicServices
                         try
                         {
                             // finally glue the two together ;)
-                            XmlDocument iDLXDoc = new XmlDocument();
-                            iDLXDoc.LoadXml(iDL);
+                        XmlDocument iDLXDoc = new XmlDocument();
+                        iDLXDoc.LoadXml(iDL);
 
                             inputFragment = iDLXDoc.DocumentElement.InnerXml;
-                        }
-                        catch (Exception e)
-                        {
-                            ServerLogger.LogError(e);
-                            errors.AddError(e.Message);
-                        }
+                    }
+                    catch (Exception e)
+            {
+                        ServerLogger.LogError(e);
+                        errors.AddError(e.Message);
+            }
                     }
 
                     result = "<DataList>" + outputFragment + inputFragment + "</DataList>";
-                }
+            }
             }
 
             if (string.IsNullOrEmpty(result))

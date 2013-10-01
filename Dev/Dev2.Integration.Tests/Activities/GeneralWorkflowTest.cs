@@ -14,9 +14,9 @@ namespace Dev2.Integration.Tests.Activities
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("RecoredsetMapping_NestedWorkflows")]
+        [TestCategory("RecordsetMapping_NestedWorkflows")]
         // Ensure we can map portions of a recordset as input and other portionas as output
-        public void RecoredsetMapping_NestedWorkflows_MixedInputAndOutput_ExpectValidResult()
+        public void RecordsetMapping_NestedWorkflows_MixedInputAndOutput_ExpectValidResult()
         {
 
             //------------Setup for test--------------------------
