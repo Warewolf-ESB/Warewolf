@@ -259,36 +259,6 @@ namespace Dev2.Studio.Core.ViewModels
                     Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
                     _eventPublisher.Publish(new AddWorkSurfaceMessage(_resource));
                 }
-
-                //if (!savedByWizard && newResource)
-                //{
-                //    _resource.Environment.Resources.Save(_resource);
-                //    if (_resource.ResourceType == ResourceType.WorkflowService)
-                //    {
-                //        Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, _resource);
-                //    }
-                //    else
-                //    {
-                //        Mediator.SendMessage(MediatorMessages.AddResourceDocument, _resource);
-                //    }
-                //    _eventPublisher.Publish(new UpdateResourceMessage(_resource));
-                //}
-                //else if (!savedByWizard && !newResource)
-                //{
-                //    _resource.Environment.Resources.Save(_resource);
-                //    _eventPublisher.Publish(new UpdateResourceMessage(_resource));
-                //}
-                //else if (savedByWizard)
-                //{
-                //    //
-                //    // Reload resource call
-                //    //
-                //    List<IResourceModel> effectedResources = _resource.Environment.Resources.ReloadResource(_resource.ResourceName, _resource.ResourceType, ResourceModelEqualityComparer.Current);
-                //    foreach (IResourceModel resource in effectedResources)
-                //    {
-                //        _eventPublisher.Publish(new UpdateResourceMessage(resource));
-                //    }
-                //}
             }
 
             Close();
