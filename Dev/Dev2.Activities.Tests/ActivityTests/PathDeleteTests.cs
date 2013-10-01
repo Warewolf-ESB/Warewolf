@@ -88,6 +88,35 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
         }
 
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDelete_Execute")]
+        public void DsfDelete_Execute_WhenHasNullAsResultValue_ShouldStillCompleteExecution()
+        {
+            //------------Setup for test--------------------------
+            File.WriteAllText(Path.Combine(TestContext.TestRunDirectory, "Dev2.txt"), "TestData");
+
+            DsfPathDelete act = new DsfPathDelete { InputPath = string.Concat(TestContext.TestRunDirectory, "\\", "[[CompanyName]].txt"), Result = null };
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+            
+            //------------Execute Test---------------------------
+            var result = CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            //------------Assert Results-------------------------
+            DataListRemoval(result.DataListID);
+
+            Assert.AreEqual(3, inRes.Count);
+            Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[1].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
+
+            Assert.AreEqual(0, outRes.Count);
+        }
+
         /// <summary>
         /// Author : Massimo Guerrera Bug 8104 
         /// </summary>

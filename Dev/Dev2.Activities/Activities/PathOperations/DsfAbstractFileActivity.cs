@@ -120,14 +120,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         if (dataObject.IsDebug || dataObject.RemoteInvoke)
                         {
                             ErrorResultTO error = new ErrorResultTO();
-                            string tmpRes = Result;
-                            if(tmpRes.Contains("()."))
+                            if(!String.IsNullOrEmpty(Result))
                             {
-                                tmpRes = tmpRes.Replace("().", "(*).");
+                                string tmpRes = Result;
+                                if(tmpRes.Contains("()."))
+                                {
+                                    tmpRes = tmpRes.Replace("().", "(*).");
+                                }
+                                IBinaryDataListEntry binaryDataListEntry = compiler.Evaluate(dlID, enActionType.User, tmpRes, true, out error);
+                                allErrors.MergeErrors(error);
+                                AddDebugOutputItem(tmpRes, string.Empty, binaryDataListEntry, dlID);
                             }
-                            IBinaryDataListEntry binaryDataListEntry = compiler.Evaluate(dlID, enActionType.User, tmpRes, true, out error);
-                            allErrors.MergeErrors(error);
-                            AddDebugOutputItem(tmpRes, string.Empty, binaryDataListEntry, dlID);
                         }
 
                         allErrors.MergeErrors(errors);
