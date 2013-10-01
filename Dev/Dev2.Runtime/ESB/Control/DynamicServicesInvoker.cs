@@ -99,29 +99,29 @@ namespace Dev2.Runtime.ESB
                 else
                 {
 
-                        try
+                    try
+                    {
+                        var sl = new ServiceLocator();
+                        DynamicService theService;
+                        if(serviceID == Guid.Empty)
                         {
-                            var sl = new ServiceLocator();
-                            DynamicService theService;
-                            if (serviceID == Guid.Empty)
-                            {
-                                theService = sl.FindService(serviceName, _workspace.ID);
-                            }
-                            else
-                            {
-                                theService = sl.FindService(serviceID, _workspace.ID);
-                            }
+                            theService = sl.FindService(serviceName, _workspace.ID);
+                        }
+                        else
+                        {
+                            theService = sl.FindService(serviceID, _workspace.ID);
+                        }
 
-                        if (theService == null)
+                        if(theService == null)
                         {
                             errors.AddError("Service [ " + serviceName + " ] not found.");
                         }
-                        else if (theService.Actions.Count <= 1)
+                        else if(theService.Actions.Count <= 1)
                         {
                             #region Execute ESB container
 
                             ServiceAction theStart = theService.Actions.FirstOrDefault();
-                        if ((theStart.ActionType != enActionType.InvokeManagementDynamicService &&
+                            if((theStart.ActionType != enActionType.InvokeManagementDynamicService &&
                                 theStart.ActionType != enActionType.Workflow) && dataObject.IsFromWebServer)
                             {
                                 throw new Exception("Can only execute workflows from web browser");
@@ -141,21 +141,23 @@ namespace Dev2.Runtime.ESB
                             errors.AddError("Malformed Service [ " + serviceID + " ] it contains multiple actions");
                         }
                     }
-                    catch (Exception e)
+                    catch(Exception e)
                     {
                         errors.AddError(e.Message);
                     }
                     finally
                     {
                         ErrorResultTO tmpErrors;
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error,
-                                                errors.MakeDataListReady(), out tmpErrors);
-                    //transactionScope.Dispose();
-                    ServerLogger.LogError(errors.MakeDisplayReady());
-                    }
-                    
+                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error,
+                            errors.MakeDataListReady(), out tmpErrors);
+                        //transactionScope.Dispose();
+                        if(errors.HasErrors())
+                        {
+                            ServerLogger.LogError(errors.MakeDisplayReady());
+                        }
                     }
                 }
+            }
             catch (Exception e)
             {
                 throw e;
@@ -165,7 +167,6 @@ namespace Dev2.Runtime.ESB
                 // BUG 9706 - 2013.06.22 - TWR : added
                 DispatchDebugErrors(errors, dataObject, StateType.After);
             }
-
             return result;
         }
 

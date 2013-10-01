@@ -38,7 +38,7 @@ namespace Dev2.Providers.Logs
 
            if(maxFileSize > 0)
            {
-               if(_traceWriter.BaseStream.Length > maxFileSize)
+               if(_traceWriter.BaseStream.Length > maxFileSize && _traceWriter.BaseStream.CanWrite)
                {
                    _traceWriter.Close();
                    _traceWriter = new StreamWriter(_fileName, false);
