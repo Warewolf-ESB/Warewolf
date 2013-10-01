@@ -207,8 +207,8 @@ namespace Dev2.Studio.UI.Tests
             //Drag a control to the design surface
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign", requiredPoint);
             //Get Adorner buttons
-            var buttonControl = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign(DsfMultiAssignActivityDesigner)",
-                                                                        "AdornerHelpButton");
+            var buttonControl = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "MultiAssignDesigner",
+                                                                        "Open Help");
             Mouse.Click(buttonControl);
 
             UITestControl waitForTabToOpen = null;

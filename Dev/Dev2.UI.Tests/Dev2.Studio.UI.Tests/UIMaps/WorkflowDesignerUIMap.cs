@@ -610,8 +610,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             {
                 #region Search Criteria
 
-                this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DsfMultiAssignActivityDesigner";
-                this.SearchProperties["AutomationId"] = "Assign(DsfMultiAssignActivityDesigner)";
+                this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.MultiAssignDesigner";
+                this.SearchProperties["AutomationId"] = "MultiAssignDesigner";
                 this.WindowTitles.Add("Warewolf");
 
                 #endregion

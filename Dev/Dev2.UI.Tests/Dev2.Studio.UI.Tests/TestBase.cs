@@ -82,10 +82,10 @@ namespace Dev2.CodedUI.Tests
             ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
 
             //click done
-            WorkflowDesignerUIMap.Adorner_ClickDoneButton(theTab, "Assign(DsfMultiAssignActivityDesigner)");
+            WorkflowDesignerUIMap.Adorner_ClickDoneButton(theTab, "MultiAssignDesigner");
 
             //Get Mappings button
-            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign", "QuickVariableInputToggle");
+            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign", "Open Quick Variable Input");
 
             // Click it
             Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));

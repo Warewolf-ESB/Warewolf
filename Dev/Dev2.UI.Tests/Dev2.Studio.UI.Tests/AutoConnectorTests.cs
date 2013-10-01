@@ -155,9 +155,9 @@ namespace Dev2.Studio.UI.Tests
             //Drag a tool to the design surface
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("Auto Connector Resource");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Auto Connector Resource");
-            UITestControl control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "DsfMultiAssignActivityDesigner");
+            ExplorerUIMap.EnterExplorerSearchText("AutoConnectorResource");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "AutoConnectorResource");
+            UITestControl control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "MultiAssignDesigner");
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             //Drag a tool to the design surface
             //Note that this point is a position relative to the multi assign on the design surface. This is to ensure that the tool is dropped exactly on the line
@@ -168,7 +168,7 @@ namespace Dev2.Studio.UI.Tests
             }
             else
             {
-                throw new Exception("DsfMultiAssignActivityDesigner not found on active tab");
+                throw new Exception("MultiAssignDesigner not found on active tab");
             }
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert that the line was split
@@ -183,9 +183,9 @@ namespace Dev2.Studio.UI.Tests
             //Drag an activity to the design surface
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("Auto Connector Resource");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Auto Connector Resource");
-            var control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "DsfMultiAssignActivityDesigner");
+            ExplorerUIMap.EnterExplorerSearchText("AutoConnectorResource");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "AutoConnectorResource");
+            var control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "MultiAssignDesigner");
             // Drag another service to over the line between two connectors
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
@@ -198,7 +198,7 @@ namespace Dev2.Studio.UI.Tests
             }
             else
             {
-                throw new Exception("DsfMultiAssignActivityDesigner not found on active tab");
+                throw new Exception("MultiAssignDesigner not found on active tab");
             }
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
@@ -212,9 +212,9 @@ namespace Dev2.Studio.UI.Tests
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("Auto Connector Resource");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Auto Connector Resource");
-            var control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "DsfMultiAssignActivityDesigner");
+            ExplorerUIMap.EnterExplorerSearchText("AutoConnectorResource");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "AutoConnectorResource");
+            var control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "MultiAssignDesigner");
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             //Drag a decision to the design surface
             //Note that this point is a position relative to the multi assign on the design surface. This is to ensure that the tool is dropped exactly on the line
@@ -225,7 +225,7 @@ namespace Dev2.Studio.UI.Tests
             }
             else
             {
-                throw new Exception("DsfMultiAssignActivityDesigner not found on active tab");
+                throw new Exception("MultiAssignDesigner not found on active tab");
             }
 
             if (DecisionWizardUIMap.WaitForDialog(5000))

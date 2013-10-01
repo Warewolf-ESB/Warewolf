@@ -446,9 +446,9 @@ namespace Dev2.Studio.UI.Tests
             var thePoint = new Point(theStartButton.BoundingRectangle.X + 30, theStartButton.BoundingRectangle.Y + 100);
             ToolboxUIMap.DragControlToWorkflowDesigner("MultiAssign", thePoint);
 
-            WorkflowDesignerUIMap.Adorner_ClickDoneButton(theTab, "Assign(DsfMultiAssignActivityDesigner)");
+            WorkflowDesignerUIMap.Adorner_ClickDoneButton(theTab, "MultiAssignDesigner");
 
-            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign(DsfMultiAssignActivityDesigner)", 0);
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "MultiAssignDesigner", 0);
 
             //Set up multi assign
             Keyboard.SendKeys("[[AssignThis]]{TAB}Some Data");
@@ -554,7 +554,7 @@ namespace Dev2.Studio.UI.Tests
 
             //Pre-assert the activity is not visible
             var testVisible = new Point();
-            var activity = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Assign (3)(DsfMultiAssignActivityDesigner)");
+            var activity = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Assign (3)(MultiAssignDesigner)");
             Assert.IsNull(activity, "Workflow openned with the scroll not at the top, test cannot continue");
 
             //Click last step
@@ -564,7 +564,7 @@ namespace Dev2.Studio.UI.Tests
 
             //Assert the activity is now visible
             DocManagerUIMap.ClickOpenTabPage("Explorer");//close output tab without disturbing selected item
-            activity = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Assign (3)(DsfMultiAssignActivityDesigner)");
+            activity = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Assign (3)(MultiAssignDesigner)");
             Assert.IsTrue(activity.TryGetClickablePoint(out testVisible), "Selecting a step on the design surface does not scroll to the activity");
 
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
@@ -584,19 +584,19 @@ namespace Dev2.Studio.UI.Tests
             var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             Point thePoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign", thePoint);
-            if(!WorkflowDesignerUIMap.GetHelpTextArea(theTab, "Assign(DsfMultiAssignActivityDesigner)", 0).Exists)
+            if(!WorkflowDesignerUIMap.GetHelpTextArea(theTab, "MultiAssignDesigner", 0).Exists)
             {
-                Mouse.Click(WorkflowDesignerUIMap.GetCollapseHelpButton(theTab, "Assign(DsfMultiAssignActivityDesigner)"));
-                Assert.IsTrue(WorkflowDesignerUIMap.GetHelpTextArea(theTab, "Assign(DsfMultiAssignActivityDesigner)", 0).TryGetClickablePoint(out checkVisibility));
+                Mouse.Click(WorkflowDesignerUIMap.GetCollapseHelpButton(theTab, "MultiAssignDesigner"));
+                Assert.IsTrue(WorkflowDesignerUIMap.GetHelpTextArea(theTab, "MultiAssignDesigner", 0).TryGetClickablePoint(out checkVisibility));
                 ToolboxUIMap.DragControlToWorkflowDesigner("Assign", new Point(thePoint.X, thePoint.Y + 200));
-                Assert.IsTrue(WorkflowDesignerUIMap.GetHelpTextArea(theTab, "Assign(DsfMultiAssignActivityDesigner)", 1).TryGetClickablePoint(out checkVisibility));
+                Assert.IsTrue(WorkflowDesignerUIMap.GetHelpTextArea(theTab, "MultiAssignDesigner", 1).TryGetClickablePoint(out checkVisibility));
             }
             else
             {
-                Mouse.Click(WorkflowDesignerUIMap.GetCollapseHelpButton(theTab, "Assign(DsfMultiAssignActivityDesigner)"));
-                Assert.IsFalse(WorkflowDesignerUIMap.GetHelpTextArea(theTab, "Assign(DsfMultiAssignActivityDesigner)", 0).TryGetClickablePoint(out checkVisibility));
+                Mouse.Click(WorkflowDesignerUIMap.GetCollapseHelpButton(theTab, "MultiAssignDesigner"));
+                Assert.IsFalse(WorkflowDesignerUIMap.GetHelpTextArea(theTab, "MultiAssignDesigner", 0).TryGetClickablePoint(out checkVisibility));
                 ToolboxUIMap.DragControlToWorkflowDesigner("Assign", new Point(thePoint.X, thePoint.Y + 200));
-                Assert.IsFalse(WorkflowDesignerUIMap.GetHelpTextArea(theTab, "Assign(DsfMultiAssignActivityDesigner)", 1).TryGetClickablePoint(out checkVisibility));
+                Assert.IsFalse(WorkflowDesignerUIMap.GetHelpTextArea(theTab, "MultiAssignDesigner", 1).TryGetClickablePoint(out checkVisibility));
             }
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
