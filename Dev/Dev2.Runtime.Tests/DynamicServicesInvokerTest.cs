@@ -332,7 +332,7 @@ namespace Dev2.DynamicServices.Test
                         break;
                     case 1:
                         Assert.AreEqual("Error: Service was not specified", actualStates[i].ErrorMessage);
-                        Assert.AreEqual(StateType.After, actualStates[i].StateType);
+                        Assert.AreEqual(StateType.End, actualStates[i].StateType);
                         break;
                     default:
                         Assert.Fail("Too many DebugDispatcher.Write invocations");

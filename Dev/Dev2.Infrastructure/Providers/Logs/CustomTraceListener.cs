@@ -10,7 +10,8 @@ namespace Dev2.Providers.Logs
         readonly string _fileName;
         StreamWriter _traceWriter;
         AppSettingsReader _appSettingsReader;
-        
+        bool _disposing = false;
+
         public CustomTextWriter(string fileName)
         {
             _fileName = fileName;
@@ -38,7 +39,7 @@ namespace Dev2.Providers.Logs
 
            if(maxFileSize > 0)
            {
-               if(_traceWriter.BaseStream.Length > maxFileSize && _traceWriter.BaseStream.CanWrite)
+               if(_traceWriter.BaseStream.Length > maxFileSize && !_disposing)
                {
                    _traceWriter.Close();
                    _traceWriter = new StreamWriter(_fileName, false);
@@ -50,6 +51,7 @@ namespace Dev2.Providers.Logs
         {
             if(disposing)
             {
+                _disposing = true;
                 _traceWriter.Close();
             }
         }

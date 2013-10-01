@@ -165,7 +165,7 @@ namespace Dev2.Runtime.ESB
             finally
             {
                 // BUG 9706 - 2013.06.22 - TWR : added
-                DispatchDebugErrors(errors, dataObject, StateType.After);
+                DispatchDebugErrors(errors, dataObject, StateType.End);                
             }
             return result;
         }

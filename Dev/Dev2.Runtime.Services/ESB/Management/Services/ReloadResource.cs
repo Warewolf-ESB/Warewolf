@@ -16,14 +16,13 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
             string resourceID;
             string resourceType;
 
             values.TryGetValue("ResourceID", out resourceID);
             values.TryGetValue("ResourceType", out resourceType);
-
 
             try
             {
@@ -38,26 +37,25 @@ namespace Dev2.Runtime.ESB.Management.Services
                     // Ugly conversion between studio resource type and server resource type
                     //
                     enDynamicServiceObjectType serviceType;
+                    switch(resourceType)
+                    {
+                        case "HumanInterfaceProcess":
+                        case "Website":
+                        case "WorkflowService":
+                            serviceType = enDynamicServiceObjectType.WorkflowActivity;
+                            break;
+                        case "Service":
+                            serviceType = enDynamicServiceObjectType.DynamicService;
+                            break;
+                        case "Source":
+                            serviceType = enDynamicServiceObjectType.Source;
+                            break;
+                        default:
+                            throw new Exception("Unexpected resource type '" + resourceType + "'.");
+                    }
                     Guid getID;
                     if(resourceID != null && Guid.TryParse(resourceID, out getID))
                     {
-                        switch(resourceType)
-                        {
-                            case "HumanInterfaceProcess":
-                            case "Website":
-                            case "WorkflowService":
-                                serviceType = enDynamicServiceObjectType.WorkflowActivity;
-                                break;
-                            case "Service":
-                                serviceType = enDynamicServiceObjectType.DynamicService;
-                                break;
-                            case "Source":
-                                serviceType = enDynamicServiceObjectType.Source;
-                                break;
-                            default:
-                                throw new Exception("Unexpected resource type '" + resourceType + "'.");
-                        }
-
                         //
                         // Copy the file from the server workspace into the current workspace
                         //
@@ -68,16 +66,24 @@ namespace Dev2.Runtime.ESB.Management.Services
                                     IsWorkflowSaved = true,
                                     ServiceType = serviceType.ToString()
                                 }, false);
-                        //
-                        // Reload resources
-                        //
-                        ResourceCatalog.Instance.LoadWorkspace(theWorkspace.ID);
-                        result.Append(string.Concat("'", resourceID, "' Reloaded..."));
-                    }
+                            
+                    }                      
                     else
                     {
-                        throw new ArgumentException("ResourceID must be a Guid.");
+                        theWorkspace.Update(
+                            new WorkspaceItem(theWorkspace.ID, HostSecurityProvider.Instance.ServerID, Guid.Empty, Guid.Empty)
+                            {
+                                Action = WorkspaceItemAction.Edit,
+                                ServiceName = resourceID,
+                                IsWorkflowSaved = true,
+                                ServiceType = serviceType.ToString()
+                            }, false);
                     }
+                    //
+                    // Reload resources
+                    //
+                    ResourceCatalog.Instance.LoadWorkspace(theWorkspace.ID);
+                    result.Append(string.Concat("'", resourceID, "' Reloaded..."));
                 }
             }
             catch(Exception ex)
@@ -93,13 +99,12 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             return "ReloadResourceService";
         }
-
-
+        
         public DynamicService CreateServiceEntry()
         {
             DynamicService reloadResourceServicesBinder = new DynamicService();
             reloadResourceServicesBinder.Name = HandlesType();
-            reloadResourceServicesBinder.DataListSpecification = "<DataList><ResourceName/><ResourceType/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            reloadResourceServicesBinder.DataListSpecification = "<DataList><ResourceID/><ResourceType/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
 
             ServiceAction reloadResourceServiceActionBinder = new ServiceAction();
             reloadResourceServiceActionBinder.Name = HandlesType();
