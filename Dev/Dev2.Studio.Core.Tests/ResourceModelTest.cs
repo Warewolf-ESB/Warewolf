@@ -156,7 +156,7 @@ namespace Dev2.Core.Tests
             _resourceModel.DataList = newDataList;
 
             string result = _resourceModel.DataList;
-            Assert.AreEqual(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(_resourceModel.ServiceDefinition).GetValue("DataList"), result);
+            Assert.AreEqual(new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(_resourceModel.ServiceDefinition).GetValue("DataList"), result);
 
         }
 

@@ -108,7 +108,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         #region Constructor
 
         public WorkflowDesignerViewModel(IContextualResourceModel resource, bool createDesigner = true)
-            : this(resource, WorkflowHelper.Instance, createDesigner)
+            : this(resource, new WorkflowHelper(), createDesigner)
         {
         }
 

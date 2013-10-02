@@ -85,7 +85,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                             {
                                 string output = ResourceHelper.Get(uri);
 
-                                UnlimitedObject resourceList = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(output);
+                                UnlimitedObject resourceList = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(output);
                                 if(!resourceList.HasError)
                                 {
                                     var files = resourceList.GetAllElements("File");
@@ -126,7 +126,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             string result = ResourceHelper.Post(uri, filePathData.Inner());
 
-            var validate = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
+            var validate = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(result);
 
             if(validate.HasError)
             {
@@ -158,7 +158,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             string uri = string.Format("{0}services/{1}", _resource.Environment.Connection.WebServerUri.AbsoluteUri, StringResources.Services_Add_Resource);
             string result = ResourceHelper.Post(uri, xml.XmlString);
-            var validate = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
+            var validate = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(result);
 
             if(validate.HasError)
             {

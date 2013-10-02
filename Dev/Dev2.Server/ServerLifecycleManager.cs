@@ -1036,6 +1036,8 @@ namespace Unlimited.Applications.DynamicServicesHost
                     LoadReferences(loaded, inspected);
                 }
             }
+
+            allReferences = null;
         }
 
         /// <summary>
@@ -1449,7 +1451,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                         builder.AppendLine("</XmlData>");
                     }
 
-                    string requestXML = UnlimitedObject.GenerateServiceRequest(entry.Name, null, new List<string>(new string[] { builder.ToString() }), null);
+                    string requestXML = new UnlimitedObject().GenerateServiceRequest(entry.Name, null, new List<string>(new string[] { builder.ToString() }), null);
                     Guid result;
 
                     try

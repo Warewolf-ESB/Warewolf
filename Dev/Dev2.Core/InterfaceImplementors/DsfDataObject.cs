@@ -36,7 +36,7 @@ namespace Dev2.DynamicServices
         {
             if (!string.IsNullOrEmpty(xmldata))
             {
-                dynamic dataObject = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(xmldata);
+                dynamic dataObject = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(xmldata);
 
                 if (!dataObject.HasError)
                 {

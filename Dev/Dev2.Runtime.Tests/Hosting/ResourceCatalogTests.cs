@@ -1322,7 +1322,7 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             //init
             var ds = new DynamicService();
-            dynamic invalidAction = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(
+            dynamic invalidAction = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(
                 "<Action Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\">"+
                     "<Type />"+
                 "</Action>");

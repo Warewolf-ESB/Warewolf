@@ -113,7 +113,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             test.ResourceName = ResourceModel.ResourceName;
             test.GetDependsOnMe = GetDependsOnMe;
             var workspaceID = ((IStudioClientContext)ResourceModel.Environment.DsfChannel).WorkspaceID;
-            dynamic data = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(ResourceModel.Environment.DsfChannel.ExecuteCommand(test.XmlString, workspaceID, GlobalConstants.NullDataListID));
+            dynamic data = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(ResourceModel.Environment.DsfChannel.ExecuteCommand(test.XmlString, workspaceID, GlobalConstants.NullDataListID));
 
             if (data == null)
             {

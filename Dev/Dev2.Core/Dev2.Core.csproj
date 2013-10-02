@@ -215,6 +215,7 @@
     <Compile Include="Converters\Graph\String\Xml\XmlPath.cs" />
     <Compile Include="Converters\Graph\String\Xml\XmlPathSegment.cs" />
     <Compile Include="Common\TypeExtensionMethods.cs" />
+    <Compile Include="DynamicServices\Objects\Dev2XamlLoader.cs" />
     <Compile Include="ExtMethods\StringExtension.cs">
       <SubType>Code</SubType>
     </Compile>

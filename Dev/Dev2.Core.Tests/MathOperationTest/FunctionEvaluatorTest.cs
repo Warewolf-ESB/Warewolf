@@ -284,7 +284,7 @@ namespace Unlimited.UnitTest.Framework.MathOperationTest {
             string expression = @"Sum(Average(Abs(-100), Min(10,20,2,30,200)), Max(200,300,400)) + 250";
             string result = string.Empty;
             string error = string.Empty;
-            bool hasSucceeded = FunctionEvaluator.TryEvaluateAtomicFunction(expression, out result, out error);
+            bool hasSucceeded = new FunctionEvaluator().TryEvaluateAtomicFunction(expression, out result, out error);
 
 
             if(hasSucceeded) {
@@ -304,7 +304,7 @@ namespace Unlimited.UnitTest.Framework.MathOperationTest {
             string expression = @"";
             string result = string.Empty;
             string error = string.Empty;
-            bool hasSucceeded = FunctionEvaluator.TryEvaluateAtomicFunction(expression, out result, out error);
+            bool hasSucceeded = new FunctionEvaluator().TryEvaluateAtomicFunction(expression, out result, out error);
 
             Assert.IsTrue(!string.IsNullOrEmpty(error));
 
@@ -318,7 +318,7 @@ namespace Unlimited.UnitTest.Framework.MathOperationTest {
             string expression = @"abcdefg";
             string result = string.Empty;
             string error = string.Empty;
-            bool hasSucceeded = FunctionEvaluator.TryEvaluateAtomicFunction(expression, out result, out error);
+            bool hasSucceeded = new FunctionEvaluator().TryEvaluateAtomicFunction(expression, out result, out error);
 
             Assert.IsTrue(!string.IsNullOrEmpty(error));
 

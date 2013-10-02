@@ -122,7 +122,7 @@ namespace Dev2.Tests
 </Dev2ServiceInput3>
 ";
 
-            UnlimitedObject d = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(del);
+            UnlimitedObject d = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(del);
             d.RemoveElementsByTagName("Dev2ServiceInput");
             var dev2ServiceInput = d.GetElement("Dev2ServiceInput") as UnlimitedObject;
             Assert.IsNotNull(dev2ServiceInput);
@@ -237,7 +237,7 @@ namespace Dev2.Tests
   </DynamicServiceFrameworkMessage>
 </Dev2ServiceInput3>
 ";
-            UnlimitedObject target = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(xml);
+            UnlimitedObject target = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(xml);
             const string elementName = "Dev2ServiceInput";
             var actual = target.ElementExists(elementName);
             Assert.IsTrue(actual);
@@ -296,7 +296,7 @@ namespace Dev2.Tests
   </DynamicServiceFrameworkMessage>
 </Dev2ServiceInput3>
 ";
-            UnlimitedObject target = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(xml);
+            UnlimitedObject target = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(xml);
             const string elementName = "Hello";
             var actual = target.ElementExists(elementName);
             Assert.IsFalse(actual);
@@ -328,7 +328,7 @@ namespace Dev2.Tests
             };
             
             const string expected = "<Dev2ServiceInput>\r\n  <XmlData>\r\n    <XmlData>\r\n      <InputData>\r\n        <Dev2BoundServiceName>resumetest</Dev2BoundServiceName>\r\n        <Dev2RowDelimiter>Pet</Dev2RowDelimiter>\r\n        <Dev2BoundFields>\r\n          <Dev2Field>id</Dev2Field>\r\n          <Dev2Field>type</Dev2Field>\r\n        </Dev2BoundFields>\r\n        <callback>__embeddedFn__</callback>\r\n      </InputData>\r\n    </XmlData>\r\n  </XmlData>\r\n  <Resumption>\r\n    <ParentWorkflowInstanceId>5b230ddc-ff62-4f31-9e7d-09c1a9178c74</ParentWorkflowInstanceId>\r\n    <ParentServiceName>JSON Binder</ParentServiceName>\r\n  </Resumption>\r\n  <Service>resumeTest</Service>\r\n</Dev2ServiceInput>";
-            var actual = UnlimitedObject.GenerateServiceRequest(serviceName, null, dataSources, null);
+            var actual = new UnlimitedObject().GenerateServiceRequest(serviceName, null, dataSources, null);
             Assert.AreEqual(expected,actual);
         }
 
@@ -386,7 +386,7 @@ namespace Dev2.Tests
   </DynamicServiceFrameworkMessage>
 </Dev2ServiceInput3>
 ";
-            UnlimitedObject actual = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(xml);
+            UnlimitedObject actual = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(xml);
             Assert.IsNotNull(actual);
             Assert.AreEqual("Dev2ServiceInput3", actual.RootName);
         }
@@ -621,7 +621,7 @@ namespace Dev2.Tests
 	        </DataList>
         </Dev2ServiceInput>
 ";
-            UnlimitedObject actual = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(xml);
+            UnlimitedObject actual = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(xml);
             return actual;
         }
         
@@ -648,7 +648,7 @@ namespace Dev2.Tests
 	        </DataList>
         </Dev2ServiceInput>
 ";
-            UnlimitedObject actual = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(xml);
+            UnlimitedObject actual = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(xml);
             return actual;
         }
         

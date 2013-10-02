@@ -88,7 +88,7 @@ namespace Dev2
                     if (payload.IsXml())
                     {
 
-                        formData = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(payload);
+                        formData = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(payload);
                         isXmlData = true;
                     }
 
@@ -432,6 +432,8 @@ namespace Dev2
             }
             
             ctx.Send(GetFile(ctx,toFetch,"text/html"));
+
+           
         }
 
         private void GET_POST_CLIENT_SERVICES_Handler(HttpServer sender, ICommunicationContext ctx)
@@ -806,7 +808,7 @@ namespace Dev2
             if (!string.IsNullOrEmpty(data))
             {
                 d.PostData = data;
-                d.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(data));
+                d.Add(new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(data));
             }
 
             return CreateForm(d, serviceName, clientID,ctx.FetchHeaders());
@@ -840,7 +842,7 @@ namespace Dev2
 
             if (!string.IsNullOrEmpty(xml))
             {
-                formData = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(xml);
+                formData = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(xml);
             }
 
             d.Service = serviceName;

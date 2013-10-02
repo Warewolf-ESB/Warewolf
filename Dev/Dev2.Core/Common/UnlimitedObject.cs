@@ -34,9 +34,6 @@ namespace Unlimited.Framework
     public class UnlimitedObject : DynamicObject
     {
 
-        #region Attributes
-
-        #endregion
 
         #region Properties
         /// <summary>
@@ -1040,7 +1037,7 @@ namespace Unlimited.Framework
         /// <param name="ambientDataList">A List of UnlimitedObjects to search for parameter values</param>
         /// <param name="parentRequest"></param>
         /// <returns>String xml data containing a request that can be executed in the DSF</returns>
-        public static string GenerateServiceRequest(string serviceName, dynamic dataTags, List<string> ambientDataList, IDSFDataObject parentRequest)
+        public string GenerateServiceRequest(string serviceName, dynamic dataTags, List<string> ambientDataList, IDSFDataObject parentRequest)
         {
             dynamic input = new UnlimitedObject("Dev2ServiceInput");
 
@@ -1071,7 +1068,7 @@ namespace Unlimited.Framework
         /// Sanitizes the specified data to sanitize.
         /// </summary>
         /// <param name="dataToSanitize">The data to sanitize.</param>
-        public static void Sanitize(UnlimitedObject dataToSanitize)
+        public void Sanitize(UnlimitedObject dataToSanitize)
         {
             dataToSanitize.RemoveElementsByTagName("Service");
         }
@@ -1082,7 +1079,7 @@ namespace Unlimited.Framework
         /// <param name="tagName">The name of the element to return the value of</param>
         /// <param name="unlimitedObjectSource">The UnlimitedObject that contains the element to to return the value of</param>
         /// <returns>A string that represents the value of element that we searched for</returns>
-        public static string GetDataValueFromUnlimitedObject(string tagName, dynamic unlimitedObjectSource)
+        public string GetDataValueFromUnlimitedObject(string tagName, dynamic unlimitedObjectSource)
         {
             dynamic dataValue = string.Empty;
 
@@ -1107,7 +1104,7 @@ namespace Unlimited.Framework
                         if(!string.IsNullOrEmpty(ambientDataItem))
                         {
 
-                            dataValue = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(ambientDataItem).GetValue(tagName);
+                            dataValue = GetStringXmlDataAsUnlimitedObject(ambientDataItem).GetValue(tagName);
                             if(!string.IsNullOrEmpty(dataValue))
                             {
                                 break;
@@ -1133,7 +1130,7 @@ namespace Unlimited.Framework
         /// <param name="tagName">The name of the element to return the value of.</param>
         /// <param name="searchUnlimitedObjects">A list of UnlimitedObject data sources to seach</param>
         /// <returns>A string that represents the value of element that we searched for</returns>
-        public static string GetDataValueFromUnlimitedObject(string tagName, List<dynamic> searchUnlimitedObjects)
+        public string GetDataValueFromUnlimitedObject(string tagName, List<dynamic> searchUnlimitedObjects)
         {
             bool gotValue = false;
 
@@ -1167,7 +1164,7 @@ namespace Unlimited.Framework
         /// </summary>
         /// <param name="xmlData">The string xml data</param>
         /// <returns>UnlimiteObject that wraps the xml string data</returns>
-        public static dynamic GetStringXmlDataAsUnlimitedObject(string xmlData)
+        public dynamic GetStringXmlDataAsUnlimitedObject(string xmlData)
         {
             if(string.IsNullOrEmpty(xmlData))
             {

@@ -810,9 +810,13 @@ namespace Dev2.Runtime.Hosting
 
         static T GetResource<T>(string resourceContents) where T : Resource, new()
         {
-            XElement resourceElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
-            object[] args = { resourceElement };
-            return (T)Activator.CreateInstance(typeof(T), args);
+            using (var stringReader = new StringReader(resourceContents))
+            {
+                XElement resourceElement = XElement.Load(stringReader, LoadOptions.None);
+                object[] args = { resourceElement };
+                return (T)Activator.CreateInstance(typeof(T), args);    
+            }
+            
         }
 
         public T GetResource<T>(Guid workspaceID, string resourceName) where T : Resource, new()
@@ -1106,18 +1110,22 @@ namespace Dev2.Runtime.Hosting
 
         void UpdateXMLToDisk(IResource resource, IList<CompileMessageTO> compileMessagesTO, string resourceContents)
         {
-            var resourceElement = XElement.Load(new StringReader(resourceContents));
-            if(compileMessagesTO.Count > 0)
+            using (var stringReader = new StringReader(resourceContents))
             {
-                SetErrors(resourceElement, compileMessagesTO);
-                UpdateIsValid(resourceElement);
+                var resourceElement = XElement.Load(stringReader);
+                if(compileMessagesTO.Count > 0)
+                {
+                    SetErrors(resourceElement, compileMessagesTO);
+                    UpdateIsValid(resourceElement);
+                }
+                else
+                {
+                    UpdateIsValid(resourceElement);
+                }
+                var contents = resourceElement.ToString(SaveOptions.DisableFormatting);
+                File.WriteAllText(resource.FilePath, contents, Encoding.UTF8);
             }
-            else
-            {
-                UpdateIsValid(resourceElement);
-            }
-            var contents = resourceElement.ToString(SaveOptions.DisableFormatting);
-            File.WriteAllText(resource.FilePath, contents, Encoding.UTF8);
+            
         }
 
         void SetErrors(XElement resourceElement, IList<CompileMessageTO> compileMessagesTO)
@@ -1265,7 +1273,7 @@ namespace Dev2.Runtime.Hosting
         List<DynamicServiceObjectBase> GenerateObjectGraph(IResource resource)
         {
             var xml = GetResourceContents(resource);
-            return !string.IsNullOrEmpty(xml) ? DynamicObjectHelper.GenerateObjectGraphFromString(xml) : null;
+            return !string.IsNullOrEmpty(xml) ? new DynamicObjectHelper().GenerateObjectGraphFromString(xml) : null;
         }
 
         #endregion
@@ -1356,49 +1364,54 @@ namespace Dev2.Runtime.Hosting
 
             //rename resource
             var resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
-            var resourceElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
-            //xml name attibute
-            var nameAttrib = resourceElement.Attribute("Name");
-            string oldName = null;
-            if(nameAttrib == null)
+
+            using (var stringReader =new StringReader(resourceContents))
             {
-                resourceElement.Add(new XAttribute("Name", newName));
-            }
-            else
-            {
-                oldName = nameAttrib.Value;
-                nameAttrib.SetValue(newName);
-            }
-            //xaml
-            var actionElement = resourceElement.Element("Action");
-            if(actionElement != null)
-            {
-                var xaml = actionElement.Element("XamlDefinition");
-                if(xaml != null)
+                var resourceElement = XElement.Load(stringReader, LoadOptions.None);
+                //xml name attibute
+                var nameAttrib = resourceElement.Attribute("Name");
+                string oldName = null;
+                if(nameAttrib == null)
                 {
-                    xaml.SetValue(xaml.Value
-                        .Replace("x:Class=\"" + oldName, "x:Class=\"" + newName)
-                        .Replace("ToolboxFriendlyName=\"" + oldName, "ToolboxFriendlyName=\"" + newName)
-                        .Replace("DisplayName=\"" + oldName, "DisplayName=\"" + newName));
+                    resourceElement.Add(new XAttribute("Name", newName));
                 }
-            }
-            //xml display name element
-            var displayNameElement = resourceElement.Element("DisplayName");
-            displayNameElement.SetValue(newName);
-            //object name
-            resource.ResourceName = newName;
-            //delete old resource in local workspace without updating dependants with compile messages
-            if (File.Exists(resource.FilePath))
-            {
-                lock (GetFileLock(resource.FilePath))
+                else
                 {
-                    File.Delete(resource.FilePath);
+                    oldName = nameAttrib.Value;
+                    nameAttrib.SetValue(newName);
                 }
+                //xaml
+                var actionElement = resourceElement.Element("Action");
+                if(actionElement != null)
+                {
+                    var xaml = actionElement.Element("XamlDefinition");
+                    if(xaml != null)
+                    {
+                        xaml.SetValue(xaml.Value
+                            .Replace("x:Class=\"" + oldName, "x:Class=\"" + newName)
+                            .Replace("ToolboxFriendlyName=\"" + oldName, "ToolboxFriendlyName=\"" + newName)
+                            .Replace("DisplayName=\"" + oldName, "DisplayName=\"" + newName));
+                    }
+                }
+                //xml display name element
+                var displayNameElement = resourceElement.Element("DisplayName");
+                displayNameElement.SetValue(newName);
+                //object name
+                resource.ResourceName = newName;
+                //delete old resource in local workspace without updating dependants with compile messages
+                if (File.Exists(resource.FilePath))
+                {
+                    lock (GetFileLock(resource.FilePath))
+                    {
+                        File.Delete(resource.FilePath);
+                    }
+                }
+                //update file path
+                resource.FilePath = resource.FilePath.Replace(oldName, newName);
+                //re-create, resign and save to file system the new resource
+                return SaveImpl(workspaceID, resource, resourceElement.ToString(SaveOptions.DisableFormatting));
             }
-            //update file path
-            resource.FilePath = resource.FilePath.Replace(oldName, newName);
-            //re-create, resign and save to file system the new resource
-            return SaveImpl(workspaceID, resource, resourceElement.ToString(SaveOptions.DisableFormatting));
+            
         }
 
         private void RenameWhereUsed(List<ResourceForTree> dependants, Guid workspaceID, string oldName, string newName)
@@ -1408,36 +1421,41 @@ namespace Dev2.Runtime.Hosting
                 var dependantResource = GetResource(workspaceID, dependant.ResourceID);
                 //rename where used
                 var resourceContents = GetResourceContents(workspaceID, dependantResource.ResourceID);
-                var resourceElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
-                //in the xaml only
-                var actionElement = resourceElement.Element("Action");
-                if(actionElement != null)
+
+                using (var stringReader = new StringReader(resourceContents))
                 {
-                    var xaml = actionElement.Element("XamlDefinition");
-                    if(xaml != null)
+                    var resourceElement = XElement.Load(stringReader, LoadOptions.None);
+                    //in the xaml only
+                    var actionElement = resourceElement.Element("Action");
+                    if(actionElement != null)
                     {
-                        xaml.SetValue(xaml.Value
-                            .Replace("DisplayName=\"" + oldName, "DisplayName=\"" + newName)
-                            .Replace("ServiceName=\"" + oldName, "ServiceName=\"" + newName)
-                            .Replace("ToolboxFriendlyName=\"" + oldName, "ToolboxFriendlyName=\"" + newName));
+                        var xaml = actionElement.Element("XamlDefinition");
+                        if(xaml != null)
+                        {
+                            xaml.SetValue(xaml.Value
+                                .Replace("DisplayName=\"" + oldName, "DisplayName=\"" + newName)
+                                .Replace("ServiceName=\"" + oldName, "ServiceName=\"" + newName)
+                                .Replace("ToolboxFriendlyName=\"" + oldName, "ToolboxFriendlyName=\"" + newName));
+                        }
                     }
-                }
-                //delete old resource
-                if(File.Exists(dependantResource.FilePath))
-                {
-                    lock(GetFileLock(dependantResource.FilePath))
+                    //delete old resource
+                    if(File.Exists(dependantResource.FilePath))
                     {
-                        File.Delete(dependantResource.FilePath);
+                        lock(GetFileLock(dependantResource.FilePath))
+                        {
+                            File.Delete(dependantResource.FilePath);
+                        }
                     }
+                    //update dependancies
+                    var renameDependent = dependantResource.Dependencies.FirstOrDefault(dep => dep.ResourceName == oldName);
+                    if (renameDependent != null)
+                    {
+                        renameDependent.ResourceName = newName;
+                    }
+                    //re-create, resign and save to file system the new resource
+                    SaveImpl(workspaceID, dependantResource, resourceElement.ToString());
                 }
-                //update dependancies
-                var renameDependent = dependantResource.Dependencies.FirstOrDefault(dep => dep.ResourceName == oldName);
-                if (renameDependent != null)
-                {
-                    renameDependent.ResourceName = newName;
-                }
-                //re-create, resign and save to file system the new resource
-                SaveImpl(workspaceID, dependantResource, resourceElement.ToString());
+
             }
         }
 
@@ -1480,21 +1498,26 @@ namespace Dev2.Runtime.Hosting
         {
             
             string resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
-            XElement resourceElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
-            XElement categoryElement = resourceElement.Element("Category");
-            if(categoryElement == null)
+
+            using (var stringReader = new StringReader(resourceContents))
             {
-                resourceElement.Add(new XElement("Category", newCategory));
+                XElement resourceElement = XElement.Load(stringReader, LoadOptions.None);
+                XElement categoryElement = resourceElement.Element("Category");
+                if(categoryElement == null)
+                {
+                    resourceElement.Add(new XElement("Category", newCategory));
+                }
+                else
+                {
+                    categoryElement.SetValue(newCategory);
+                }
+                lock(GetFileLock(resource.FilePath))
+                {
+                    File.WriteAllText(resource.FilePath, resourceElement.ToString(SaveOptions.DisableFormatting), Encoding.UTF8);
+                }
+                resource.ResourcePath = newCategory;
             }
-            else
-            {
-                categoryElement.SetValue(newCategory);
-            }
-            lock(GetFileLock(resource.FilePath))
-            {
-                File.WriteAllText(resource.FilePath, resourceElement.ToString(SaveOptions.DisableFormatting), Encoding.UTF8);
-            }
-            resource.ResourcePath = newCategory;
+
         }
 
         IEnumerable<IResource> GetResources(Guid workspaceID, Func<IResource, bool> filterResources)

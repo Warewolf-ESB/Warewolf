@@ -143,7 +143,7 @@ namespace Dev2.DynamicServices {
                 });
             }
             else {
-                returnData.AddResponse(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(
+                returnData.AddResponse(new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(
                     string.Format("<CompilerMessage>Build of {0} '{1}' Succeeded</CompilerMessage>", 
                     Enum.GetName(typeof(enDynamicServiceObjectType), this.ObjectType), this.Name)));
             }

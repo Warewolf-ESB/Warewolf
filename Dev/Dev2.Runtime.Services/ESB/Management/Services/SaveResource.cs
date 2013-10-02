@@ -34,7 +34,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var errorMessage = string.Format("<{0}>{1}</{0}>", "Result", Resources.CompilerMessage_BuildFailed);
             try
             {
-                compiledResources = DynamicObjectHelper.GenerateObjectGraphFromString(resourceDefinition);
+                compiledResources = new DynamicObjectHelper().GenerateObjectGraphFromString(resourceDefinition);
                 if (compiledResources.Count == 0)
                 {
                     CompileMessageRepo.Instance.AddMessage(theWorkspace.ID, new List<CompileMessageTO>

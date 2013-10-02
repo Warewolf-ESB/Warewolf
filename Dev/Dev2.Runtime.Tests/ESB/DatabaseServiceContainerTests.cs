@@ -262,7 +262,7 @@ namespace Dev2.Tests.Runtime.ESB
             }
 
             var serviceXml = service.ToXml();
-            var graph = DynamicObjectHelper.GenerateObjectGraphFromString(serviceXml.ToString());
+            var graph = new DynamicObjectHelper().GenerateObjectGraphFromString(serviceXml.ToString());
 
             var ds = (DynamicService)graph[0];
             var sa = ds.Actions[0];

@@ -134,7 +134,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views.WebsiteBuilder
 
                         if(!string.IsNullOrEmpty(viewModel.Html))
                         {
-                            dynamic data = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(viewModel.Html);
+                            dynamic data = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(viewModel.Html);
                             if(!data.HasError)
                             {
                                 dynamic tags = data.Dev2HTML;

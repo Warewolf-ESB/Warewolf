@@ -5,7 +5,7 @@ namespace Dev2.Util
     /// <summary>
     /// Used to clean the XAML def upon changes
     /// </summary>
-    public static class Dev2XamlCleaner
+    public class Dev2XamlCleaner
     {
 
         public static readonly string[] badNamespaces = {
@@ -34,7 +34,7 @@ namespace Dev2.Util
         /// </summary>
         /// <param name="def">The def.</param>
         /// <returns></returns>
-        public static string CleanServiceDef(string def)
+        public string CleanServiceDef(string def)
         {
             string result = StripNaughtyNamespaces(def);
 
@@ -49,7 +49,7 @@ namespace Dev2.Util
         /// </summary>
         /// <param name="def">The def.</param>
         /// <returns></returns>
-        private static string ReplaceChangedNamespaces(string def)
+        private string ReplaceChangedNamespaces(string def)
         {
             string result = def;
             for(int i = 0; i < (replaceNamespaces.Length/2); i++)
@@ -65,7 +65,7 @@ namespace Dev2.Util
         /// </summary>
         /// <param name="def">The def.</param>
         /// <returns></returns>
-        private static string StripNaughtyNamespaces(string def)
+        private string StripNaughtyNamespaces(string def)
         {
             string result = def;
             foreach (string ns in badNamespaces)

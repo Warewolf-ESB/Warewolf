@@ -141,7 +141,7 @@ namespace Unlimited.Framework
                 _xmlConfig = value;
 
                 var displayNameNodeMatch =
-                    UnlimitedObject.GetStringXmlDataAsUnlimitedObject(value).xmlData as XElement;
+                    new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(value).xmlData as XElement;
 
                 //Attempt to retrieve this layout object (cell) display name from the xml configuration
                 //only if we are dealing with a webpage. 
@@ -683,7 +683,7 @@ namespace Unlimited.Framework
                             break;
 
                         case "text/xml":
-                            UnlimitedObject xmlResult = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(response.Content);
+                            UnlimitedObject xmlResult = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(response.Content);
 
                             if(xmlResult.HasError)
                             {
@@ -849,7 +849,7 @@ namespace Unlimited.Framework
         private string GetValueByElementName(string elementName, string xmlData)
         {
             string returnValue = string.Empty;
-            var displayNameNodeMatch = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(xmlData).xmlData as XElement;
+            var displayNameNodeMatch = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(xmlData).xmlData as XElement;
             string displayNameNodeName = elementName;
             if(displayNameNodeMatch != null)
             {

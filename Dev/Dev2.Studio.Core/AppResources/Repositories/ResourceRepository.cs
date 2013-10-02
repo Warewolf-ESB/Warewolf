@@ -745,7 +745,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 foreach(var item in items)
                 {
-                    var itemObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(item.XmlString);
+                    var itemObj = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(item.XmlString);
                     result.Add(itemObj);
                 }
             }
@@ -771,7 +771,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             if(convertResultToUnlimitedObject)
             {
                 // PBI : 7913 -  Travis
-                var resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
+                var resultObj = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(result);
                 if(resultObj.HasError)
                 {
                     throw new Exception(resultObj.Error);

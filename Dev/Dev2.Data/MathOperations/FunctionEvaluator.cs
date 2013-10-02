@@ -12,13 +12,13 @@ namespace Dev2.MathOperations {
     public class FunctionEvaluator : IFunctionEvaluator {
 
         #region Private Members
-        private static IDev2CalculationManager _manager;
+        private IDev2CalculationManager _manager;
 
         #endregion Private Members
 
         #region Ctor
 
-        internal FunctionEvaluator() {
+        public FunctionEvaluator() {
             _manager = new Dev2CalculationManager();
         }
 
@@ -280,13 +280,15 @@ namespace Dev2.MathOperations {
         /// Evaluate the expression according to the operation specified and pass this to the CalculationManager
         //  If something goes wrong during the execution, the error field will be populated and the method will
         //  return false.
+        /// <summary>
+        /// Tries the evaluate function.
         /// </summary>
-        /// <param name="expressionTO"></param>
-        /// <param name="evalution"></param>
-        /// <param name="error"></param>
+        /// <param name="expressionTO">The expression automatic.</param>
+        /// <param name="evaluation">The evaluation.</param>
+        /// <param name="error">The error.</param>
         /// <returns></returns>
         public bool TryEvaluateFunction(IEvaluationFunction expressionTO, out string evaluation, out string error) {
-            bool isSuccessfulEvaluation = false;
+            bool isSuccessfulEvaluation;
             error = string.Empty;
             evaluation = string.Empty;
 
@@ -295,6 +297,7 @@ namespace Dev2.MathOperations {
                     CalculationValue calcVal = _manager.CalculateFormula(expressionTO.Function);
                     evaluation = calcVal.GetResolvedValue().ToString();
                     isSuccessfulEvaluation = true;
+                    calcVal = null;
                 } catch (Exception ex) {
                     error = ex.Message;
                     isSuccessfulEvaluation = false;
@@ -303,18 +306,17 @@ namespace Dev2.MathOperations {
                 error = "Unable to evaluate empty function";
                 isSuccessfulEvaluation = false;
             }
+
             return isSuccessfulEvaluation;
         }
 
 
         /// <summary>
         /// Evaluate the expression according to the operation specified and pass this to the CalculationManager
-        //  If something goes wrong during the execution, the error field will be populated and the method will
-        //  return false.
         /// </summary>
-        /// <param name="expression"></param>
-        /// <param name="evalution"></param>
-        /// <param name="error"></param>
+        /// <param name="expression">The expression.</param>
+        /// <param name="evaluation">The evaluation.</param>
+        /// <param name="error">The error.</param>
         /// <returns></returns>
         public bool TryEvaluateFunction(string expression, out string evaluation, out string error) {
             bool evaluationState = false;
@@ -392,7 +394,7 @@ namespace Dev2.MathOperations {
 
         #region Statics
 
-        public static bool TryEvaluateAtomicFunction(string expression, out string evaluation, out string error) {
+        public bool TryEvaluateAtomicFunction(string expression, out string evaluation, out string error) {
             bool evaluationState = false;
             error = String.Empty;
             evaluation = String.Empty;

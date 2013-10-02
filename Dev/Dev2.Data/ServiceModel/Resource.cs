@@ -458,40 +458,46 @@ namespace Dev2.Runtime.ServiceModel.Data
                 return;
             }
 
-            var textReader = new StringReader(loadXml[0].Value);
-            var errors = new StringBuilder();
-            try
+            using (var textReader = new StringReader(loadXml[0].Value))
             {
-                var elementToUse = loadXml[0].HasElements ? loadXml[0] : XElement.Load(textReader, LoadOptions.None);
-                var dependenciesFromXml = from desc in elementToUse.Descendants()
-                                          where (desc.Name.LocalName.Contains("DsfDatabaseActivity") || desc.Name.LocalName.Contains("DsfPluginActivity") || desc.Name.LocalName.Contains("DsfActivity")) && desc.Attribute("UniqueID") != null
-                                          select desc;
-                var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
-                var count = xElements.Count();
-                if(count > 0)
+                var errors = new StringBuilder();
+                try
                 {
-                    Dependencies = new List<ResourceForTree>();
-                    xElements.ForEach(element =>
+                    var elementToUse = loadXml[0].HasElements ? loadXml[0] : XElement.Load(textReader, LoadOptions.None);
+                    var dependenciesFromXml = from desc in elementToUse.Descendants()
+                                              where
+                                                  (desc.Name.LocalName.Contains("DsfDatabaseActivity") ||
+                                                   desc.Name.LocalName.Contains("DsfPluginActivity") ||
+                                                   desc.Name.LocalName.Contains("DsfActivity")) &&
+                                                  desc.Attribute("UniqueID") != null
+                                              select desc;
+                    var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
+                    var count = xElements.Count();
+                    if (count > 0)
                     {
-                        var uniqueIDAsString = element.AttributeSafe("UniqueID");
-                        var resourceIDAsString = element.AttributeSafe("ResourceID");
-                        var resourceName = element.AttributeSafe("ServiceName");
-                        var actionTypeStr = element.AttributeSafe("Type");
-                        var resourceType = GetResourceTypeFromString(actionTypeStr);
-                        Guid uniqueID;
-                        Guid.TryParse(uniqueIDAsString, out uniqueID);
-                        Guid resID;
-                        Guid.TryParse(resourceIDAsString, out resID);
-                        Dependencies.Add(CreateResourceForTree(resID, uniqueID, resourceName, resourceType));
-                        AddRemoteServerDependencies(element);
-                    });
+                        Dependencies = new List<ResourceForTree>();
+                        xElements.ForEach(element =>
+                            {
+                                var uniqueIDAsString = element.AttributeSafe("UniqueID");
+                                var resourceIDAsString = element.AttributeSafe("ResourceID");
+                                var resourceName = element.AttributeSafe("ServiceName");
+                                var actionTypeStr = element.AttributeSafe("Type");
+                                var resourceType = GetResourceTypeFromString(actionTypeStr);
+                                Guid uniqueID;
+                                Guid.TryParse(uniqueIDAsString, out uniqueID);
+                                Guid resID;
+                                Guid.TryParse(resourceIDAsString, out resID);
+                                Dependencies.Add(CreateResourceForTree(resID, uniqueID, resourceName, resourceType));
+                                AddRemoteServerDependencies(element);
+                            });
+                    }
+                    AddEmailSources(elementToUse);
                 }
-                AddEmailSources(elementToUse);
-            }
-            catch(Exception e)
-            {
-                var resName = xml.AttributeSafe("Name");
-                errors.AppendLine("Loading dependencies for [ " + resName + " ] caused " + e.Message);
+                catch (Exception e)
+                {
+                    var resName = xml.AttributeSafe("Name");
+                    errors.AppendLine("Loading dependencies for [ " + resName + " ] caused " + e.Message);
+                }
             }
         }
 
@@ -543,38 +549,43 @@ namespace Dev2.Runtime.ServiceModel.Data
                 return;
             }
 
-            var textReader = new StringReader(loadXml[0].Value);
-            var errors = new StringBuilder();
-            try
+            using (var textReader = new StringReader(loadXml[0].Value))
             {
-                var elementToUse = loadXml[0].HasElements ? loadXml[0] : XElement.Load(textReader, LoadOptions.None);
-                var dependenciesFromXml = from desc in elementToUse.Descendants()
-                                          where desc.Name.LocalName.Contains("Action") && desc.Attribute("SourceID") != null
-                                          select desc;
-                var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
-                var count = xElements.Count();
-                if(count > 0)
+
+                var errors = new StringBuilder();
+                try
                 {
-                    Dependencies = new List<ResourceForTree>();
-                    xElements.ForEach(element =>
+                    var elementToUse = loadXml[0].HasElements ? loadXml[0] : XElement.Load(textReader, LoadOptions.None);
+                    var dependenciesFromXml = from desc in elementToUse.Descendants()
+                                              where
+                                                  desc.Name.LocalName.Contains("Action") &&
+                                                  desc.Attribute("SourceID") != null
+                                              select desc;
+                    var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
+                    var count = xElements.Count();
+                    if (count > 0)
                     {
-                        var uniqueIDAsString = element.AttributeSafe("SourceID");
-                        var resourceIDAsString = element.AttributeSafe("ResourceID");
-                        var resourceName = element.AttributeSafe("SourceName");
-                        var actionTypeStr = element.AttributeSafe("Type");
-                        var resourceType = GetResourceTypeFromString(actionTypeStr);
-                        Guid uniqueID;
-                        Guid.TryParse(uniqueIDAsString, out uniqueID);
-                        Guid resID;
-                        Guid.TryParse(resourceIDAsString, out resID);
-                        Dependencies.Add(CreateResourceForTree(resID, uniqueID, resourceName, resourceType));
-                    });
+                        Dependencies = new List<ResourceForTree>();
+                        xElements.ForEach(element =>
+                            {
+                                var uniqueIDAsString = element.AttributeSafe("SourceID");
+                                var resourceIDAsString = element.AttributeSafe("ResourceID");
+                                var resourceName = element.AttributeSafe("SourceName");
+                                var actionTypeStr = element.AttributeSafe("Type");
+                                var resourceType = GetResourceTypeFromString(actionTypeStr);
+                                Guid uniqueID;
+                                Guid.TryParse(uniqueIDAsString, out uniqueID);
+                                Guid resID;
+                                Guid.TryParse(resourceIDAsString, out resID);
+                                Dependencies.Add(CreateResourceForTree(resID, uniqueID, resourceName, resourceType));
+                            });
+                    }
                 }
-            }
-            catch(Exception e)
-            {
-                var resName = xml.AttributeSafe("Name");
-                errors.AppendLine("Loading dependencies for [ " + resName + " ] caused " + e.Message);
+                catch (Exception e)
+                {
+                    var resName = xml.AttributeSafe("Name");
+                    errors.AppendLine("Loading dependencies for [ " + resName + " ] caused " + e.Message);
+                }
             }
         }
 

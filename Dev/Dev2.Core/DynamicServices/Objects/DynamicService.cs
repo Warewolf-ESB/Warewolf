@@ -63,7 +63,7 @@ namespace Dev2.DynamicServices
         {
             get
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
             set
             {

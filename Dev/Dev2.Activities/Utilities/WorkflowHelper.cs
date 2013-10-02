@@ -32,33 +32,9 @@ namespace Dev2.Utilities
         // completes before the instance variable can be accessed. Lastly, this approach uses a syncRoot 
         // instance to lock on, rather than locking on the type itself, to avoid deadlocks.
         //
-        static volatile WorkflowHelper _instance;
-        static readonly object SyncRoot = new Object();
 
-        /// <summary>
-        /// Gets the instance.
-        /// </summary>
-        public static WorkflowHelper Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    lock (SyncRoot)
-                    {
-                        if (_instance == null)
-                        {
-                            _instance = new WorkflowHelper();
-                        }
-                    }
-                }
-                return _instance;
-            }
-        }
+        // NOTE : This singleton instance causes memory leaks ;)
 
-        WorkflowHelper()
-        {
-        }
 
         #endregion
 
@@ -133,7 +109,7 @@ namespace Dev2.Utilities
             return builder;
         }
 
-        static void EnsureImplementation(ActivityBuilder builder, Flowchart chart)
+        void EnsureImplementation(ActivityBuilder builder, Flowchart chart)
         {
             SetProperties(builder.Properties);
             FixExpressions(chart);
@@ -161,7 +137,7 @@ namespace Dev2.Utilities
             }
         }
 
-        static void FixAndCompileExpressions(Activity dynamicActivity)
+        void FixAndCompileExpressions(Activity dynamicActivity)
         {
             // NOTE: DO NOT set properties or variables!
             SetNamespaces(dynamicActivity);
@@ -171,6 +147,8 @@ namespace Dev2.Utilities
                 FixExpressions(chart);
             }
 
+            chart = null;
+
             CompileExpressionsImpl(dynamicActivity);
         }
 
@@ -178,7 +156,9 @@ namespace Dev2.Utilities
 
         #region CompileExpressionsImpl
 
-        static void CompileExpressionsImpl(Activity dynamicActivity)
+
+        // NOTE : Static method here causes memory leak in the TextExpressioncCompiler ;)
+        void CompileExpressionsImpl(Activity dynamicActivity)
         {
             // http://msdn.microsoft.com/en-us/library/jj591618.aspx
 
@@ -206,7 +186,11 @@ namespace Dev2.Utilities
             };
 
             // Compile the C# expression.
-            var results = new TextExpressionCompiler(settings).Compile();
+
+            var compiler = new TextExpressionCompiler(settings);
+            var results = compiler.Compile();
+            compiler = null;
+
             if (results.HasErrors)
             {
                 var err = new StringBuilder("Compilation failed.\n");
@@ -226,7 +210,7 @@ namespace Dev2.Utilities
 
         #region SetProperties
 
-        public static void SetProperties(ICollection<DynamicActivityProperty> properties)
+        public  void SetProperties(ICollection<DynamicActivityProperty> properties)
         {
             if (properties == null)
             {
@@ -244,7 +228,7 @@ namespace Dev2.Utilities
 
         #region SetVariables
 
-        public static void SetVariables(Collection<Variable> variables)
+        public void SetVariables(Collection<Variable> variables)
         {
             if (variables == null)
             {
@@ -266,7 +250,7 @@ namespace Dev2.Utilities
 
         #region SetNamespaces
 
-        public static void SetNamespaces(object target)
+        public void SetNamespaces(object target)
         {
             var dev2ActivitiesAssembly = typeof(WorkflowHelper).Assembly;
             var dev2CommonAssembly = typeof(GlobalConstants).Assembly;
@@ -316,7 +300,7 @@ namespace Dev2.Utilities
 
         #region FixExpressions
 
-        static void FixExpressions(Flowchart chart)
+         void FixExpressions(Flowchart chart)
         {
             foreach (var node in chart.Nodes)
             {
@@ -335,7 +319,7 @@ namespace Dev2.Utilities
             }
         }
 
-        static void TryFixExpression<TResult>(DsfFlowNodeActivity<TResult> activity, string oldExpr, string newExpr)
+         void TryFixExpression<TResult>(DsfFlowNodeActivity<TResult> activity, string oldExpr, string newExpr)
         {
             if (activity != null)
             {
@@ -365,7 +349,7 @@ namespace Dev2.Utilities
 
         #region RemoveNodeValue
 
-        static string RemoveNodeValue(string xml, string nodeName)
+        string RemoveNodeValue(string xml, string nodeName)
         {
             if (string.IsNullOrEmpty(xml))
             {
@@ -386,7 +370,7 @@ namespace Dev2.Utilities
 
         #region ToNamespaceType
 
-        public static string ToNamespaceTypeString(Type activityType)
+        public  string ToNamespaceTypeString(Type activityType)
         {
             // Name must be in the form Namespace.Type (and does not have to be related to the actual activity!)
             return string.Format("{0}.{1}", activityType.Namespace, activityType.Name.Replace("`", ""));

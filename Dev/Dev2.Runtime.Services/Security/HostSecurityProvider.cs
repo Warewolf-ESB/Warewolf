@@ -116,9 +116,15 @@ namespace Dev2.Runtime.Security
 
             signedXml.LoadXml((XmlElement)nodeList[0]);
 
-            // Check if signed by the server or the system
-            return (serverID == ServerID && signedXml.CheckSignature(_serverKey)) ||
+            
+            var result = (serverID == ServerID && signedXml.CheckSignature(_serverKey)) ||
                 (serverID != InternalServerID == signedXml.CheckSignature(_systemKey));
+
+            // avoid leak ;)
+            signedXml = null;
+
+            // Check if signed by the server or the system
+            return result;
         }
 
         #endregion

@@ -11,7 +11,8 @@ using Unlimited.Framework;
 
 namespace Dev2.Runtime.Hosting
 {
-    public static class DynamicObjectHelper
+    // NOTE : Static instance causing memory leaks
+    public class DynamicObjectHelper
     {
 
         #region Generate an object graph from the domain specific language string for the DSF
@@ -20,7 +21,7 @@ namespace Dev2.Runtime.Hosting
         /// </summary>
         /// <param name="serviceDefinitionsXml">The service definitions XML.</param>
         /// <returns></returns>
-        public static List<DynamicServiceObjectBase> GenerateObjectGraphFromString(string serviceDefinitionsXml)
+        public List<DynamicServiceObjectBase> GenerateObjectGraphFromString(string serviceDefinitionsXml)
         {
             Exceptions.ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString("serviceDefinitionXml", serviceDefinitionsXml);
 
@@ -28,7 +29,7 @@ namespace Dev2.Runtime.Hosting
             //which represents the services that were successfully loaded
             List<DynamicServiceObjectBase> objectsLoaded = new List<DynamicServiceObjectBase>();
 
-            dynamic dslObject = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(serviceDefinitionsXml);
+            dynamic dslObject = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(serviceDefinitionsXml);
 
             #region Create MetatData about this resource
             string authorRoles = string.Empty;
@@ -339,13 +340,14 @@ namespace Dev2.Runtime.Hosting
 
                     objectsLoaded.Add(ds);
                 }
+
             }
             #endregion
 
             return objectsLoaded;
         }
 
-        public static ServiceAction AddServiceAction(dynamic action, DynamicService ds)
+        public ServiceAction AddServiceAction(dynamic action, DynamicService ds)
         {
             ServiceAction sa = new ServiceAction();
             if(action.Type is string)
@@ -448,7 +450,7 @@ namespace Dev2.Runtime.Hosting
 
         #region SetID
 
-        static void SetID(IDynamicServiceObject dso, dynamic resource)
+        void SetID(IDynamicServiceObject dso, dynamic resource)
         {
             Guid id = new Guid();
             UnlimitedObject unlimitedObject = resource as UnlimitedObject;

@@ -248,7 +248,7 @@ namespace Dev2.Studio.Core.ViewModels
 
             string xmlConfig = _webActivity.XMLConfiguration;
 
-            UnlimitedObject d = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(xmlConfig);
+            UnlimitedObject d = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(xmlConfig);
             d.GetElement(propertyName).SetValue(propertyValue);
 
             _webActivity.XMLConfiguration = d.XmlString;
@@ -256,7 +256,7 @@ namespace Dev2.Studio.Core.ViewModels
 
         private string ReadFromModelItemDataProperty(string propertyName)
         {
-            dynamic data = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(_webActivity.XMLConfiguration);
+            dynamic data = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(_webActivity.XMLConfiguration);
 
             return data.GetValue(propertyName);
         }
@@ -567,7 +567,7 @@ namespace Dev2.Studio.Core.ViewModels
 
                 try
                 {
-                    tags = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(Html.ToLower());
+                    tags = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(Html.ToLower());
                 }
                 catch { IsValidMarkup = false; return; }
 
@@ -798,7 +798,7 @@ namespace Dev2.Studio.Core.ViewModels
         private void SetConfigFragment(string webPartElementName, dynamic xmlConfiguration)
         {
             string configuration = WebActivity.XMLConfiguration;
-            UnlimitedObject configData = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(configuration);
+            UnlimitedObject configData = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(configuration);
 
             if(configData.ElementExists(webPartElementName.ToLower()))
             {

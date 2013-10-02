@@ -1,5 +1,6 @@
 ﻿using Dev2.Common;
 using Dev2.DataList.Contract;
+using Dev2.DynamicServices.Objects;
 using Dev2.Util;
 using System;
 using System.Activities;
@@ -12,6 +13,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace Dev2.DynamicServices {
+
 
     #region Service Action Class - Represents a single action within a service
     /// <summary>
@@ -38,12 +40,13 @@ namespace Dev2.DynamicServices {
 
         #region Public Properties
         public int CommandTimeout {
+            
             get {
                 return _commandTimeout;
             }
+
             set {
                 _commandTimeout = value;
-
             }
 
         }
@@ -83,30 +86,11 @@ namespace Dev2.DynamicServices {
                     // Default operation
                     _xamlDefinition = value;
 
-                    // Travis.Frisinger : 13.11.2012 - Remove bad namespaces
-                    if (GlobalConstants.runtimeNamespaceClean) {
-
-                        _xamlDefinition = Dev2XamlCleaner.CleanServiceDef(_xamlDefinition);
-                    } 
-                    // End Mods
-
-                    if (string.IsNullOrEmpty(value))
-                    {
-                        throw new ArgumentNullException("XamlDefinition");
-                    }
-
-                    _workflowActivity = ActivityXamlServices.Load(_xamlStream = new MemoryStream(Encoding.UTF8.GetBytes(XamlDefinition)));
-                    _xamlStream.Seek(0, SeekOrigin.Begin);
-                    _workflowPool.Clear();
-
-                    _generation++;
-
-                    for (int i = 0; i < GlobalConstants._xamlPoolSize; i++)
-                    {
-                        Activity activity = ActivityXamlServices.Load(_xamlStream);
-                        _xamlStream.Seek(0, SeekOrigin.Begin);
-                        _workflowPool.Enqueue(new PooledServiceActivity(_generation, activity));
-                    }
+                    // now load it all up ;)
+                    // extracted to avoid memory leak in MS utilities and root references 
+                    var xamlLoader = new Dev2XamlLoader();
+                    xamlLoader.Load(value, ref _xamlStream, ref _workflowPool, ref _workflowActivity);
+                    xamlLoader = null;
                 }
             }
 

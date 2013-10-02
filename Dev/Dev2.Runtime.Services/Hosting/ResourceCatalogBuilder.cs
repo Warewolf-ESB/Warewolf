@@ -139,6 +139,8 @@ namespace Dev2.Runtime.Hosting
                         ServerLogger.LogError(string.Format("'{0}' wasn't loaded because it isn't signed or has modified since it was signed.", currentItem.FilePath));
                     }
 
+                    xml = null;
+
 
                 });
             }

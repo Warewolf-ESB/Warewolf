@@ -2549,7 +2549,7 @@ namespace Dev2.Core.Tests
 
         static WorkflowDesignerViewModel CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(IContextualResourceModel resourceModel, IEventAggregator eventPublisher = null)
         {
-            var wf = CreateWorkflowDesignerViewModel(eventPublisher, resourceModel, WorkflowHelper.Instance, false);
+            var wf = CreateWorkflowDesignerViewModel(eventPublisher, resourceModel, new WorkflowHelper(), false);
 
             var designerAttributes = new Dictionary<Type, Type> { { typeof(DsfActivity), typeof(DsfActivityDesigner) }, { typeof(DsfMultiAssignActivity), typeof(Dev2.Activities.Designers2.MultiAssign.MultiAssignDesigner) }, { typeof(DsfAssignActivity), typeof(DsfAssignActivityDesigner) },{ typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner) }, { typeof(DsfCountRecordsetActivity), typeof(DsfCountRecordsetActivityDesigner) } };
 

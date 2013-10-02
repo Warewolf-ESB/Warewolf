@@ -203,6 +203,8 @@ namespace Dev2.DynamicServices
 
                     Interlocked.Decrement(ref Balance);
                     dataTransferObject = run.DataTransferObject;
+                    // avoid memory leak ;)
+                    run.Dispose();
                 }
             }
             else

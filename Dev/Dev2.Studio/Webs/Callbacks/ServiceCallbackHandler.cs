@@ -3,6 +3,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.DataList.Contract;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
@@ -36,29 +37,38 @@ namespace Dev2.Studio.Webs.Callbacks
         protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
             Guid resourceID;
-            if (Guid.TryParse(jsonObj.ResourceID.Value, out resourceID))
+
+            // NOTE : When using dynamics be very careful!
+            try
             {
-                _environmentModel = environmentModel;
-                var getDynamicResourceType = jsonObj.ResourceType.Value;
-                if (getDynamicResourceType != null)
+                if (Guid.TryParse(jsonObj.ResourceID.Value, out resourceID))
                 {
-                    //2013.04.29: Ashley Lewis - PBI 8721 database source and plugin source wizards can be called from with their respective service wizards
-                    if (getDynamicResourceType == Data.ServiceModel.ResourceType.DbSource.ToString() ||
-                        getDynamicResourceType == Data.ServiceModel.ResourceType.PluginSource.ToString() ||
-                        getDynamicResourceType == Data.ServiceModel.ResourceType.WebSource.ToString())
+                    _environmentModel = environmentModel;
+                    var getDynamicResourceType = jsonObj.ResourceType.Value;
+                    if (getDynamicResourceType != null)
                     {
-                        //2013.03.12: Ashley Lewis - BUG 9208
-                        ReloadResource(environmentModel, resourceID, ResourceType.Source);
+                        //2013.04.29: Ashley Lewis - PBI 8721 database source and plugin source wizards can be called from with their respective service wizards
+                        if (getDynamicResourceType == Data.ServiceModel.ResourceType.DbSource.ToString() ||
+                            getDynamicResourceType == Data.ServiceModel.ResourceType.PluginSource.ToString() ||
+                            getDynamicResourceType == Data.ServiceModel.ResourceType.WebSource.ToString())
+                        {
+                            //2013.03.12: Ashley Lewis - BUG 9208
+                            ReloadResource(environmentModel, resourceID, ResourceType.Source);
+                        }
+                        else
+                        {
+                            ReloadResource(environmentModel, resourceID, ResourceType.Service);
+                        }
                     }
                     else
                     {
                         ReloadResource(environmentModel, resourceID, ResourceType.Service);
                     }
                 }
-                else
-                {
-                    ReloadResource(environmentModel, resourceID, ResourceType.Service);
-                }
+            }
+            catch (Exception e)
+            {
+               Logger.Error(e.Message);
             }
         }
 

@@ -6,7 +6,6 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Threading;
 using ActivityUnitTests;
-using ActivityUnitTests.ActivityTests;
 using Dev2.Common;
 using Dev2.Data.Decision;
 using Dev2.Data.Decisions.Operations;
@@ -428,12 +427,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             var workflow = new DynamicActivity<TResult>
             {
-                Name = WorkflowHelper.ToNamespaceTypeString(activity.GetType()),
+                Name = new WorkflowHelper().ToNamespaceTypeString(activity.GetType()),
                 Implementation = () => flowchart
             };
 
-            WorkflowHelper.SetProperties(workflow.Properties);
-            WorkflowHelper.SetVariables(flowchart.Variables);
+            new WorkflowHelper().SetProperties(workflow.Properties);
+            new WorkflowHelper().SetVariables(flowchart.Variables);
 
         #endregion
 
@@ -446,7 +445,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // we need to set this now ;)
             dataObject.ParentThreadID = 1;
 
-            WorkflowHelper.Instance.CompileExpressions(workflow);
+            new WorkflowHelper().CompileExpressions(workflow);
 
             var actual = string.Empty;
             var reset = new AutoResetEvent(false);

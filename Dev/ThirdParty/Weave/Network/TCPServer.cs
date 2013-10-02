@@ -163,6 +163,7 @@ namespace System.Network
         #endregion
 
         #region Context Handling
+
         protected override void OnConnectionDisposed(Connection connection)
         {
             if(connection.WasAlive)

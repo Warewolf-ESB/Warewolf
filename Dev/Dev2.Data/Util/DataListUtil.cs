@@ -270,7 +270,7 @@ namespace Dev2.DataList.Contract
 
                 if(result.Contains("<") && result.Contains(">"))
                 {
-                    if(!DataListUtil.IsXml(result))
+                    if(!IsXml(result))
                     {
                         result = result.Replace(string.Concat("<", _adlRoot, ">"), string.Empty).Replace(string.Concat("</", _adlRoot, ">"), "");
                         result = string.Concat("<", _adlRoot, ">", result, "</", _adlRoot, ">");
@@ -1353,38 +1353,42 @@ namespace Dev2.DataList.Contract
 
             if(result)
             {
-                TextReader tr = new StringReader(data);
-                XmlReader reader = XmlReader.Create(tr, _isXmlReaderSettings);
-
-                try
+                using (TextReader tr = new StringReader(data))
                 {
-                    long nodeCount = 0;
-                    while(reader.Read() && !isHtml && !isFragment && result && reader.NodeType != XmlNodeType.Document)
+                    XmlReader reader = XmlReader.Create(tr, _isXmlReaderSettings);
+
+                    try
                     {
-                        nodeCount++;
-
-                        if(reader.NodeType != XmlNodeType.CDATA)
+                        long nodeCount = 0;
+                        while (reader.Read() && !isHtml && !isFragment && result &&
+                               reader.NodeType != XmlNodeType.Document)
                         {
-                            if(reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" && reader.Depth == 0)
-                            {
-                                isHtml = true;
-                                result = false;
-                            }
+                            nodeCount++;
 
-                            if(reader.NodeType == XmlNodeType.Element && nodeCount > 1 && reader.Depth == 0)
+                            if (reader.NodeType != XmlNodeType.CDATA)
                             {
-                                isFragment = true;
+                                if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" &&
+                                    reader.Depth == 0)
+                                {
+                                    isHtml = true;
+                                    result = false;
+                                }
+
+                                if (reader.NodeType == XmlNodeType.Element && nodeCount > 1 && reader.Depth == 0)
+                                {
+                                    isFragment = true;
+                                }
                             }
                         }
                     }
-                }
-                catch(Exception ex)
-                {
-                    ServerLogger.LogError(ex);
-                    tr.Close();
-                    reader.Close();
-                    isFragment = false;
-                    result = false;
+                    catch (Exception ex)
+                    {
+                        ServerLogger.LogError(ex);
+                        tr.Close();
+                        reader.Close();
+                        isFragment = false;
+                        result = false;
+                    }
                 }
             }
 

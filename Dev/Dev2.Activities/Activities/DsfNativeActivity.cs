@@ -492,7 +492,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                resultObj.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(dataList));
+                resultObj.Add(new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(dataList));
                 var tmp = DataListUtil.CDATAWrapText(ex.Message);
                 resultObj.GetElement("Error").SetValue(tmp);
             }

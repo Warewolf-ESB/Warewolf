@@ -53,7 +53,7 @@ namespace Dev2.Tests.Activities
         [ExpectedException(typeof(ArgumentNullException))]
         public void WorkflowHelperCreateWorkflowWithNullDisplayNameExpectedThrowsArgumentNullException()
         {
-            var result = WorkflowHelper.Instance.CreateWorkflow((string)null);
+            var result = new WorkflowHelper().CreateWorkflow((string)null);
         }
 
         [TestMethod]
@@ -61,7 +61,7 @@ namespace Dev2.Tests.Activities
         {
             const string DisplayName = "TestResource";
 
-            var result = WorkflowHelper.Instance.CreateWorkflow(DisplayName);
+            var result = new WorkflowHelper().CreateWorkflow(DisplayName);
 
             Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result.Implementation, typeof(Flowchart));
@@ -77,7 +77,7 @@ namespace Dev2.Tests.Activities
         [TestMethod]
         public void WorkflowHelperSerializeWorkflowWithNullModelServiceExpectedReturnsEmptyString()
         {
-            var result = WorkflowHelper.Instance.SerializeWorkflow(null);
+            var result = new WorkflowHelper().SerializeWorkflow(null);
             Assert.AreEqual(string.Empty, result);
         }
 
@@ -86,7 +86,7 @@ namespace Dev2.Tests.Activities
         {
             var modelService = CreateModelService();
 
-            var result = WorkflowHelper.Instance.SerializeWorkflow(modelService.Object);
+            var result = new WorkflowHelper().SerializeWorkflow(modelService.Object);
 
             Assert.IsFalse(result.Contains("<?xml version=\"1.0\" encoding=\"utf-16\"?>"));
 
@@ -135,7 +135,7 @@ namespace Dev2.Tests.Activities
         public void WorkflowHelperCompileExpressionsWithActivityExpectedSetsNamespaces()
         {
             var activity = new DynamicActivity();
-            WorkflowHelper.Instance.CompileExpressions(activity);
+            new WorkflowHelper().CompileExpressions(activity);
 
             var impl = new AttachableMemberIdentifier(typeof(TextExpression), "NamespacesForImplementation");
 
@@ -183,7 +183,7 @@ namespace Dev2.Tests.Activities
                 Implementation = () => chart
             };
 
-            WorkflowHelper.Instance.CompileExpressions(workflow);
+            new WorkflowHelper().CompileExpressions(workflow);
 
             Assert.AreEqual(GlobalConstants.InjectedSwitchDataFetch + ExpressionParams, fsa.ExpressionText);
             Assert.AreEqual(GlobalConstants.InjectedDecisionHandler + ExpressionParams, fda.ExpressionText);
@@ -215,7 +215,7 @@ namespace Dev2.Tests.Activities
                 Implementation = () => chart
             };
 
-            WorkflowHelper.Instance.CompileExpressions(workflow);
+            new WorkflowHelper().CompileExpressions(workflow);
 
             // No exception thrown means compilation worked
 
@@ -236,7 +236,7 @@ namespace Dev2.Tests.Activities
                 }
             };
 
-            WorkflowHelper.Instance.CompileExpressions(workflow);
+            new WorkflowHelper().CompileExpressions(workflow);
         }
 
         #endregion
@@ -246,7 +246,7 @@ namespace Dev2.Tests.Activities
         static Mock<ModelService> CreateModelService()
         {
             var root = new Mock<ModelItem>();
-            root.Setup(r => r.GetCurrentValue()).Returns(WorkflowHelper.Instance.CreateWorkflow("TestWorkflow"));
+            root.Setup(r => r.GetCurrentValue()).Returns(new WorkflowHelper().CreateWorkflow("TestWorkflow"));
 
             var modelService = new Mock<ModelService>();
             modelService.Setup(s => s.Root).Returns(root.Object);
@@ -261,14 +261,14 @@ namespace Dev2.Tests.Activities
         [ExpectedException(typeof(ArgumentNullException))]
         public void WorkflowHelperSetPropertiesWithNullExpectedThrowsArgumentNullException()
         {
-            WorkflowHelper.SetProperties(null);
+            new WorkflowHelper().SetProperties(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WorkflowHelperSetVariablesWithNullExpectedThrowsArgumentNullException()
         {
-            WorkflowHelper.SetVariables(null);
+            new WorkflowHelper().SetVariables(null);
         }
     }
 

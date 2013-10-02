@@ -465,7 +465,7 @@ namespace Dev2.Studio.ViewModels.Web
             }
 
 
-            dynamic xmlConfig = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(XmlConfiguration);
+            dynamic xmlConfig = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(XmlConfiguration);
 
             if(xmlConfig.Rows is UnlimitedObject)
             {
@@ -504,7 +504,7 @@ namespace Dev2.Studio.ViewModels.Web
         {
             if(!string.IsNullOrEmpty(_webPageModelItem.XMLConfiguration))
             {
-                dynamic xmlconfig = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(_webPageModelItem.XMLConfiguration);
+                dynamic xmlconfig = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(_webPageModelItem.XMLConfiguration);
                 dynamic objWebpartList = xmlconfig.WebPart;
                 //IF WEBPARTS EXIST THEN REBIND GRID
                 if(objWebpartList.GetType() != typeof(UnlimitedObject))
@@ -788,7 +788,7 @@ namespace Dev2.Studio.ViewModels.Web
 
         public void Navigate()
         {
-            dynamic postData = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(XmlConfiguration);
+            dynamic postData = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(XmlConfiguration);
             postData.RemoveElementsByTagName("WebsiteServiceName");
             if(SelectedWebsite != null)
             {

@@ -209,13 +209,13 @@ namespace Dev2.DynamicServices.Test
 
             var resources = findResourcesEndPoint.Execute(data, workspace.Object);
 
-            var resourcesObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(resources);
+            var resourcesObj = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(resources);
             var actualCount = 0;
             if(resourcesObj.Source != null)
             {
                 foreach(var source in resourcesObj.Source)
                 {
-                    var sourceObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(source.XmlString);
+                    var sourceObj = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(source.XmlString);
                     if(guids.Any(g => g.Equals(sourceObj.ID as string, StringComparison.InvariantCultureIgnoreCase)))
                     {
                         actualCount++;
@@ -263,7 +263,7 @@ namespace Dev2.DynamicServices.Test
 
             var resources = endpoint.Execute(data, workspace.Object);
 
-            var resourcesObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(resources);
+            var resourcesObj = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(resources);
             var actualCount = 0;
             if(resourcesObj.Source != null)
             {

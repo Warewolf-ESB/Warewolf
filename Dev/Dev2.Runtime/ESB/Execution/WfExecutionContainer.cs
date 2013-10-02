@@ -17,7 +17,7 @@ namespace Dev2.Runtime.ESB.Execution
         readonly IWorkflowHelper _workflowHelper;
 
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
-            : this(sa, dataObj, theWorkspace, esbChannel, WorkflowHelper.Instance)
+            : this(sa, dataObj, theWorkspace, esbChannel, new WorkflowHelper())
         {
 
         }

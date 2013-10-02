@@ -20,12 +20,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
 
             UnlimitedObject bindingContext = null;
             if (!string.IsNullOrEmpty(bindingData)) {
-                bindingContext = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(bindingData);
+                bindingContext = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(bindingData);
             }
 
             string replacedHtml = html;
 
-            UnlimitedObject tags = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(html.ToLower());
+            UnlimitedObject tags = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(html.ToLower());
 
             replacedHtml = tags.XmlString.ToLower();
 
@@ -49,13 +49,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
                     if (!exclusions.Contains(type.ToLower())) {
                         if ((bindingContext != null) && !string.IsNullOrEmpty(name)) {
                             if (!string.IsNullOrEmpty(type)) {
-                                string instruction = UnlimitedObject.GenerateServiceRequest(
+                                string instruction = new UnlimitedObject().GenerateServiceRequest(
                                         type,
                                         string.Empty,
                                         new List<string> { bindingContext.GetElement(name).XmlString }
                                 );
 
-                                UnlimitedObject result = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(dsfChannel.ExecuteCommand(instruction));
+                                UnlimitedObject result = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(dsfChannel.ExecuteCommand(instruction));
                                 if (!result.HasError) {
                                     replacedHtml = replacedHtml.Replace(tag.XmlString, result.XPath("//Fragment/text()").Inner());
                                 }
