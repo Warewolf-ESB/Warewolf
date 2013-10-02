@@ -463,31 +463,31 @@ namespace Dev2.DynamicServices
             {
                 XDocument xDoc = XDocument.Load(stringReader);
 
-                XElement rootEl = xDoc.Element("DataList");
-                if(rootEl == null) return xDoc.ToString();
+            XElement rootEl = xDoc.Element("DataList");
+            if(rootEl == null) return xDoc.ToString();
 
-                rootEl.Elements().Where(el =>
-                {
-                    var firstOrDefault = el.Attributes("ColumnIODirection").FirstOrDefault();
+            rootEl.Elements().Where(el =>
+            {
+                var firstOrDefault = el.Attributes("ColumnIODirection").FirstOrDefault();
                     var removeCondition = firstOrDefault != null &&
                                           (firstOrDefault.Value == enDev2ColumnArgumentDirection.Input.ToString() ||
                                            firstOrDefault.Value == enDev2ColumnArgumentDirection.None.ToString());
-                    return (removeCondition && !el.HasElements);
-                }).Remove();
+                return (removeCondition && !el.HasElements);
+            }).Remove();
 
-                var xElements = rootEl.Elements().Where(el => el.HasElements);
-                var enumerable = xElements as IList<XElement> ?? xElements.ToList();
-                enumerable.Elements().Where(element =>
-                {
-                    var xAttribute = element.Attributes("ColumnIODirection").FirstOrDefault();
+            var xElements = rootEl.Elements().Where(el => el.HasElements);
+            var enumerable = xElements as IList<XElement> ?? xElements.ToList();
+            enumerable.Elements().Where(element =>
+            {
+                var xAttribute = element.Attributes("ColumnIODirection").FirstOrDefault();
                     var removeCondition = xAttribute != null &&
                                           (xAttribute.Value == enDev2ColumnArgumentDirection.Input.ToString() ||
                                            xAttribute.Value == enDev2ColumnArgumentDirection.None.ToString());
-                    return removeCondition;
-                }).Remove();
-                enumerable.Where(element => !element.HasElements).Remove();
-                return xDoc.ToString();
-            }    
+                return removeCondition;
+            }).Remove();
+            enumerable.Where(element => !element.HasElements).Remove();
+            return xDoc.ToString();
+        }
         }
 
     }

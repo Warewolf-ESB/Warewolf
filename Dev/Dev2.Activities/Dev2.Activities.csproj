@@ -198,7 +198,6 @@
     <Compile Include="Dev2HTMLObject.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Dev2HTMLParser.cs" />
     <Compile Include="ImageConverter.cs" />
     <Compile Include="LayoutObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
