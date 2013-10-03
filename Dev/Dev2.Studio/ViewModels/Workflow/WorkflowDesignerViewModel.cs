@@ -1466,7 +1466,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             }
 
-            if(Application.Current != null)
+            if(Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess())
             {
                 var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
                 if(mvm != null && mvm.ActiveItem != null)

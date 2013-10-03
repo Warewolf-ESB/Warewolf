@@ -545,7 +545,7 @@ namespace Dev2.Studio.ViewModels
             var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DeployResources);
 
             var exist = ActivateWorkSurfaceIfPresent(key);
-
+            DeployResource = message.ViewModel;
             var abstractTreeViewModel = (message.ViewModel as AbstractTreeViewModel);
             if(exist)
             {
@@ -559,6 +559,8 @@ namespace Dev2.Studio.ViewModels
             Logger.TraceInfo("Publish message of type - " + typeof(SelectItemInDeployMessage));
             _eventPublisher.Publish(new SelectItemInDeployMessage(message.ViewModel.DisplayName, abstractTreeViewModel.EnvironmentModel));
         }
+
+        public SimpleBaseViewModel DeployResource { get; set; }
 
         public void Handle(ShowNewResourceWizard message)
         {
@@ -1178,7 +1180,7 @@ namespace Dev2.Studio.ViewModels
         {
             WorkSurfaceKey key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DeployResources);
             bool exist = ActivateWorkSurfaceIfPresent(key);
-
+            DeployResource = input as SimpleBaseViewModel;
             if(exist)
             {
                 if (input is IContextualResourceModel)
@@ -1343,7 +1345,7 @@ namespace Dev2.Studio.ViewModels
                 var ctx = Items[index];
                 if(ctx.IsEnvironmentConnected())
                 {
-                ctx.Save(true);
+                    ctx.Save(true);
                 }
                 if(index == Items.Count-1)
                 {

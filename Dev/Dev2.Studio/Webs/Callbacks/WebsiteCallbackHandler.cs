@@ -226,7 +226,7 @@ namespace Dev2.Studio.Webs.Callbacks
                 //2013.07.29: Ashley Lewis for bug 10199 - Don't show dependancy viewer dialog on source type callback
                 if (resource.ResourceType != ResourceType.Source)
                 {
-                    ShowDependencyProvider.ShowDependencyViewer(resource, numberOfDependants);
+                    ShowDependencyProvider.ShowDependencyViewer(resource, compileMessageList.Dependants);
                 }
             }
         }

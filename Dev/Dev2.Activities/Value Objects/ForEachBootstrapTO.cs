@@ -160,7 +160,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                     break;
                 default:
 
-                    if (numberOfExecutes.Contains("(*)"))
+                    if (numberOfExecutes != null && numberOfExecutes.Contains("(*)"))
                     {
                         errors.AddError("The Star notation is not accepted in the Numbers field.");
                         break;

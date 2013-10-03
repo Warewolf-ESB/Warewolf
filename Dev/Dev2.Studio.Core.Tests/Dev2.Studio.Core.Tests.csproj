@@ -155,6 +155,7 @@
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverterTests.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryHelperMethods.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryTests.cs" />
+    <Compile Include="Custom Dev2 Controls\ConnectControlTests.cs" />
     <Compile Include="ConverterTests\EmptyStringToVisibilityConverterTests.cs" />
     <Compile Include="ConverterTests\EmptyStringToBoolConverterTests.cs" />
     <Compile Include="ConverterTests\MathFunctionToDoubleConverterTests.cs" />

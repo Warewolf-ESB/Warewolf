@@ -14,7 +14,10 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels;
+using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.Webs;
 using Action = System.Action;
 
@@ -352,13 +355,34 @@ namespace Dev2.UI
 
         void OnLoaded(object sender, RoutedEventArgs e)
         {
-            // Moved code incorrectly put into ConnectViewModel back here
-            var activeEnvironment = ((IMainViewModel)Application.Current.MainWindow.DataContext).ActiveEnvironment;
-            _viewModel = new ConnectControlViewModel(activeEnvironment);
-
+            _viewModel = BuildConnectControlViewModel(((IMainViewModel)Application.Current.MainWindow.DataContext).DeployResource, ((IMainViewModel)Application.Current.MainWindow.DataContext).ActiveEnvironment);
             // 2013.09.02 - BUG 10221 - set default server selection
             SelectedServer = _viewModel.GetSelectedServer(Servers, LabelText);
             Loaded -= OnLoaded;
+        }
+
+        public static ConnectControlViewModel BuildConnectControlViewModel(SimpleBaseViewModel deployResource, IEnvironmentModel mainViewModelActiveEnvironment)
+        {
+            // Moved code incorrectly put into ConnectViewModel back here
+            var abstractTreeViewModel = deployResource as AbstractTreeViewModel;
+            IEnvironmentModel activeEnvironment = null;
+            if(abstractTreeViewModel != null)
+            {
+                activeEnvironment = abstractTreeViewModel.EnvironmentModel;
+            }
+            else
+            {
+                var resourceModel = deployResource as ResourceModel;
+                if(resourceModel != null)
+                {
+                    activeEnvironment = resourceModel.Environment;
+                }
+            }
+            if(activeEnvironment == null)
+            {
+                activeEnvironment = mainViewModelActiveEnvironment;                 
+            }
+            return new ConnectControlViewModel(activeEnvironment);
         }
     }
 }

@@ -238,7 +238,7 @@
                 </Grid>
                 <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Orientation="Horizontal">
                     <Button AutomationProperties.AutomationId="UI_SelectDepbtn_AutoID" 
-                    Content="Select All Depandencies" HorizontalAlignment="Right" Background="Transparent" 
+                    Content="Select All Dependencies" HorizontalAlignment="Right" Background="Transparent" 
                     BorderBrush="Transparent" Command="{Binding SelectAllDependanciesCommand}" />
                 </StackPanel>
                 <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">

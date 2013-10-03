@@ -10,7 +10,7 @@ namespace Dev2.Providers.Logs
         readonly string _fileName;
         StreamWriter _traceWriter;
         AppSettingsReader _appSettingsReader;
-        bool _disposing = false;
+        bool _streamClosed = false;
 
         public CustomTextWriter(string fileName)
         {
@@ -39,20 +39,33 @@ namespace Dev2.Providers.Logs
 
            if(maxFileSize > 0)
            {
-               if(_traceWriter.BaseStream.Length > maxFileSize && !_disposing)
+               try
                {
-                   _traceWriter.Close();
-                   _traceWriter = new StreamWriter(_fileName, false);
+                   if(_traceWriter.BaseStream.Length > maxFileSize && !_streamClosed)
+                   {
+                       CloseTraceWriter();
+                       _traceWriter = new StreamWriter(_fileName, false);
+                       _streamClosed = false;
+                   }
+               }
+               catch(ObjectDisposedException e)
+               {
+                   //ignore this exception
                }
            }
+        }
+
+        void CloseTraceWriter()
+        {
+            _traceWriter.Close();
+            _streamClosed = true;
         }
 
         protected override void Dispose(bool disposing)
         {
             if(disposing)
             {
-                _disposing = true;
-                _traceWriter.Close();
+                CloseTraceWriter();
             }
         }
     }

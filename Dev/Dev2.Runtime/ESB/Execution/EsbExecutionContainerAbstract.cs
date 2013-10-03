@@ -210,7 +210,7 @@ namespace Dev2.Runtime.ESB.Execution
             compiler.Merge(DataObject.DataListID, tmpID, enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite, false, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
-            compiler.ForceDeleteDataListByID(tmpID); // clean up 
+            //compiler.ForceDeleteDataListByID(tmpID); // clean up 
         }
 
         #endregion

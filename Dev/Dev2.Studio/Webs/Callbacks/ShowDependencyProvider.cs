@@ -1,16 +1,14 @@
+using System.Collections.Generic;
 using Caliburn.Micro;
-using Dev2.Data.Enums;
-using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Views.ResourceManagement;
+using Dev2.Utils;
 
 namespace Dev2.Studio.Webs.Callbacks
 {
     public class ShowDependencyProvider:IShowDependencyProvider
     {
-        readonly IEventAggregator _eventPublisher;
+        readonly ShowResourceChangedUtil _showResourceChangedUtil;
 
         public ShowDependencyProvider()
             : this(EventPublishers.Aggregator)
@@ -19,21 +17,15 @@ namespace Dev2.Studio.Webs.Callbacks
 
         public ShowDependencyProvider(IEventAggregator eventPublisher)
         {
+            _showResourceChangedUtil = new ShowResourceChangedUtil(eventPublisher);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            _eventPublisher = eventPublisher;
         }
 
         #region Implementation of IShowDependencyProvider
 
-        public void ShowDependencyViewer(IContextualResourceModel resource, int numberOfDependants)
+        public void ShowDependencyViewer(IContextualResourceModel resource, IList<string> numberOfDependants)
         {
-            var dialog = new ResourceChangedDialog(resource, numberOfDependants, StringResources.MappingChangedWarningDialogTitle);
-            dialog.ShowDialog();
-            if (dialog.OpenDependencyGraph)
-            {
-                Logger.TraceInfo("Publish message of type - " + typeof(ShowReverseDependencyVisualizer));
-                _eventPublisher.Publish(new ShowReverseDependencyVisualizer(resource));
-            }
+            _showResourceChangedUtil.ShowResourceChanged(resource, numberOfDependants);
         }
 
         #endregion

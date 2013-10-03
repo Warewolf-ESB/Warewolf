@@ -35,6 +35,8 @@ using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Studio.Webs;
+using Dev2.Studio.Webs.Callbacks;
+using Dev2.Utils;
 using Newtonsoft.Json;
 using Unlimited.Framework;
 
@@ -492,8 +494,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             if(!isLocalSave)
             {
-                CheckForServerMessages(resource);
-                
+                CheckForServerMessages(resource);                
             }
 
             var result = _workspaceItemRepository.UpdateWorkspaceItem(resource, isLocalSave);
@@ -536,13 +537,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 return;
             }
             var numberOfDependants = compileMessageList.Dependants.Count;
-            var dialog = new ResourceChangedDialog(resource, numberOfDependants, StringResources.MappingChangedWarningDialogTitle);
-            dialog.ShowDialog();
-            if(dialog.OpenDependencyGraph)
-            {
-                Logger.TraceInfo("Publish message of type - " + typeof(ShowReverseDependencyVisualizer));
-                EventPublisher.Publish(new ShowReverseDependencyVisualizer(resource));
-            }
+            var showResourceChangedUtil = new ShowResourceChangedUtil(EventPublisher);
+            showResourceChangedUtil.ShowResourceChanged(resource, compileMessageList.Dependants);            
         }
 
         void DisplaySaveResult(string result, IContextualResourceModel resource)

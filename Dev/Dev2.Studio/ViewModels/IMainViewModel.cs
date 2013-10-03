@@ -14,5 +14,6 @@ namespace Dev2.Studio.ViewModels
         ICommand ExitCommand { get; }
         RelayCommand<string> NewResourceCommand { get; }
         IEnvironmentModel ActiveEnvironment { get; set; }
+        SimpleBaseViewModel DeployResource { get; set; }
     }
 }

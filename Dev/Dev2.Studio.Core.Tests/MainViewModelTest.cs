@@ -1633,7 +1633,8 @@ namespace Dev2.Core.Tests
                 envRepo.Setup(r => r.All()).Returns(new[] { env.Object });
                 envRepo.Setup(e => e.Source).Returns(env.Object);
                 envRepo.Setup(r => r.ReadSession()).Returns(new[] { env.Object.ID });
-                var viewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
+                Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+                var viewModel = new MainViewModelPersistenceMock(envRepo.Object,asyncWorker.Object, false);
                 viewModel.Items.Add(contextViewModel);
 
                 viewModel.TestClose();

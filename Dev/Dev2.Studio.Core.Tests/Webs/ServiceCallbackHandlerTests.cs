@@ -119,7 +119,7 @@ namespace Dev2.Core.Tests.Webs
             //------------------------------Execute -------------------------------------------------
             handler.TestSave(envModel.Object, jsonObj);
             //------------------------------Assert Result -------------------------------------------------
-            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), 1), Times.Once());
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), new List<string>{""}), Times.Once());
         }
 
         static Mock<IEnvironmentConnection> SetupConnectionWithCompileMessageList(List<CompileMessageTO> compileMessageTos, List<string> deps)
@@ -157,7 +157,7 @@ namespace Dev2.Core.Tests.Webs
             //------------------------------Execute -------------------------------------------------
             handler.TestSave(envModel.Object, jsonObj);
             //------------------------------Assert Result -------------------------------------------------
-            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), 1), Times.Never());
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(),  new List<string>{""}), Times.Never());
         }
 
         static IResourceModel SetupObjects(out Mock<IShowDependencyProvider> showDependencyProvider, out Mock<IResourceRepository> resourceRepo, Guid resourceID, ResourceType type = ResourceType.WorkflowService)
@@ -209,7 +209,7 @@ namespace Dev2.Core.Tests.Webs
             //------------------------------Execute -------------------------------------------------
             handler.TestCheckForServerMessages(envModel.Object, ResourceID, workspace.Object);
             //------------------------------Assert Result -------------------------------------------------
-            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), It.IsAny<int>()), Times.Never());
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), new List<string> { "" }), Times.Never());
         }
 
         [TestMethod]
@@ -240,7 +240,7 @@ namespace Dev2.Core.Tests.Webs
             //------------------------------Execute -------------------------------------------------
             handler.TestSave(envModel.Object, jsonObj);
             //------------------------------Assert Result -------------------------------------------------
-            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), 2), Times.Once());
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), new List<string> { "","" }), Times.Once());
         }
 
         [TestMethod]
@@ -255,7 +255,7 @@ namespace Dev2.Core.Tests.Webs
             Guid ResourceID = Guid.NewGuid();
             SetupObjects(out showDependencyProvider, out resourceRepo, ResourceID, ResourceType.Source);
             showDependencyProvider.Setup(
-                c => c.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), It.IsAny<int>()));
+                c => c.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), new List<string> { "" }));
 
             var compileMessageTos = new List<CompileMessageTO> { new CompileMessageTO() };
 
@@ -275,7 +275,7 @@ namespace Dev2.Core.Tests.Webs
             //------------------------------Execute -------------------------------------------------
             handler.TestCheckForServerMessages(envModel.Object, ResourceID, workspace.Object);
             //------------------------------Assert Result -------------------------------------------------
-            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), It.IsAny<int>()), Times.Never());
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), new List<string> { "" }), Times.Never());
         }
 
         [TestMethod]
@@ -290,7 +290,7 @@ namespace Dev2.Core.Tests.Webs
             Guid ResourceID = Guid.NewGuid();
             SetupObjects(out showDependencyProvider, out resourceRepo, ResourceID, ResourceType.Source);
             showDependencyProvider.Setup(
-                c => c.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), It.IsAny<int>()));
+                c => c.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), new List<string> { "" }));
 
             var compileMessageTos = new List<CompileMessageTO> { new CompileMessageTO() };
 
@@ -310,7 +310,7 @@ namespace Dev2.Core.Tests.Webs
             //------------------------------Execute -------------------------------------------------
             handler.TestCheckForServerMessages(envModel.Object, ResourceID, workspace.Object);
             //------------------------------Assert Result -------------------------------------------------
-            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), It.IsAny<int>()), Times.Never());
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), new List<string> { "" }), Times.Never());
         }
 
         [TestMethod]
@@ -325,7 +325,7 @@ namespace Dev2.Core.Tests.Webs
             Guid ResourceID = Guid.NewGuid();
             SetupObjects(out showDependencyProvider, out resourceRepo, ResourceID, ResourceType.Source);
             showDependencyProvider.Setup(
-                c => c.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), It.IsAny<int>()));
+                c => c.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), new List<string> { "" }));
 
             var compileMessageTos = new List<CompileMessageTO> { new CompileMessageTO() };
 
@@ -345,7 +345,7 @@ namespace Dev2.Core.Tests.Webs
             //------------------------------Execute -------------------------------------------------
             handler.TestCheckForServerMessages(envModel.Object, ResourceID, workspace.Object);
             //------------------------------Assert Result -------------------------------------------------
-            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), It.IsAny<int>()), Times.Never());
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), new List<string> { "" }), Times.Never());
         }
 
         #endregion
