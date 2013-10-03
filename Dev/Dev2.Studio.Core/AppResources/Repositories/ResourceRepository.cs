@@ -206,8 +206,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 _resourceModels.Add(instanceObj);
             }
             return SaveResource(_environmentModel, instanceObj.ToServiceDefinition(),_securityContext.Roles, _environmentModel.Connection.WorkspaceID);
-        } 
-        
+        }
+
         public string SaveToServer(IResourceModel instanceObj)
         {
             var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase));

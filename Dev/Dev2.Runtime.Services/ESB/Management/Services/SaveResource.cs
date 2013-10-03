@@ -74,7 +74,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             StringBuilder result = new StringBuilder();
             foreach(var dynamicServiceObjectBase in compiledResources)
             {
-                var saveResult = ResourceCatalog.Instance.SaveResource(workspaceID, dynamicServiceObjectBase.ResourceDefinition);
+                var saveResult = ResourceCatalog.Instance.SaveResource(theWorkspace.ID, dynamicServiceObjectBase.ResourceDefinition);
+                // TMP FIX
+                ResourceCatalog.Instance.SaveResource(Guid.Empty, dynamicServiceObjectBase.ResourceDefinition);
                 result.Append(saveResult.Message);
             }
             return result.ToString();

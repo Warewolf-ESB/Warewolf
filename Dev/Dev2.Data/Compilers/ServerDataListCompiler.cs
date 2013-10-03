@@ -1317,7 +1317,7 @@ namespace Dev2.Server.Datalist
                     Guid pushToId = childDL.UID;
 
                     if(typeOf != enDev2ArgumentType.Input)
-                        {
+                    {
                         // swap extract from and pushTo around for output shaping
                         extractFromId = childDL.UID;
                         pushToId = childDL.ParentUID;
@@ -1337,13 +1337,13 @@ namespace Dev2.Server.Datalist
                     // Merge System tags too ;)
                     // exctractFromID, pushToID
                     foreach(enSystemTag t in TranslationConstants.systemTags)
-                            {
+                    {
                         IBinaryDataListEntry sysVal = Evaluate(ctx, extractFromId, enActionType.System, t.ToString(), out errors);
                         allErrors.MergeErrors(errors);
                         // TRAVIS
 
                         if(sysVal == null)
-                                {
+                        {
                             string errorTmp;
                             sysVal = DataListConstants.baseEntry.Clone(enTranslationDepth.Shape, pushToId, out errorTmp);
                         }
@@ -1353,13 +1353,13 @@ namespace Dev2.Server.Datalist
 
                     }
                 }
-                                }
+            }
 
             // assign errors so they are returned ;)
             errors = allErrors;
 
             return result;
-                            }
+        }
 
         /// <summary>
         /// Processes the scalars.

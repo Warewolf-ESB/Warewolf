@@ -23,11 +23,10 @@ namespace Dev2.Runtime.ESB.Execution
 
         public Guid MasterDataListID { get; private set; }
 
-        protected EsbExecutionContainerAbstract(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, Guid masterDataListID, bool handlesOutputFormatting = true)
+        protected EsbExecutionContainerAbstract(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, bool handlesOutputFormatting = true)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
             HandlesOutputFormatting = handlesOutputFormatting;
-            MasterDataListID = masterDataListID;
         }
 
         public override Guid Execute(out ErrorResultTO errors)
@@ -204,21 +203,26 @@ namespace Dev2.Runtime.ESB.Execution
             errors.MergeErrors(invokeErrors);
 
             // Push formatted data into a datalist using the shape from the service action outputs
-            var tmpID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), formattedPayload, dlShape, out invokeErrors);
+            var shapeDataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), formattedPayload, dlShape, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
-            // Attach a parent ID to the newly created datalist
-            //compiler.SetParentID(tmpID, DataObject.DataListID);
+            // This merge op is killing the alias data....
+            // We need to account for alias ops too ;)
+            compiler.SetParentID(shapeDataListID, DataObject.DataListID);
 
-            // TODO : Populate into MasterDataListID ;)
-            compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), tmpID, MasterDataListID, out invokeErrors);
+            compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), ServiceAction.OutputSpecification, shapeDataListID, out invokeErrors);
             errors.MergeErrors(invokeErrors);
+
+
+
+            //compiler.Shape(shapeDataListID, enDev2ArgumentType.Output, ServiceAction.OutputSpecification, out invokeErrors);
+            //errors.MergeErrors(invokeErrors);
 
             // Merge each result into the datalist ;)
-            compiler.Merge(DataObject.DataListID, tmpID, enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite, false, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
+            //compiler.Merge(DataObject.DataListID, tmpID, enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite, false, out invokeErrors);
+            //errors.MergeErrors(invokeErrors);
 
-            //compiler.ForceDeleteDataListByID(tmpID); // clean up 
+            compiler.ForceDeleteDataListByID(shapeDataListID); // clean up 
         }
 
         #endregion

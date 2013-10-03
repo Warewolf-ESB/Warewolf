@@ -31,7 +31,6 @@ namespace Dev2.DynamicServices
 
         #region IFrameworkDuplexDataChannel Members
         Dictionary<string, IFrameworkDuplexCallbackChannel> _users = new Dictionary<string, IFrameworkDuplexCallbackChannel>();
-        private RuntimeHelpers _runtimeHelpers = new RuntimeHelpers();
         public void Register(string userName)
         {
             if(_users.ContainsKey(userName))
@@ -198,7 +197,7 @@ namespace Dev2.DynamicServices
 
                 try
                 {
-                    theShape = _runtimeHelpers.FindServiceShape(workspaceID, dataObject.ServiceName, true);
+                    theShape = FindServiceShape(workspaceID, dataObject.ServiceName);
                 }
                 catch(Exception ex)
                 {
@@ -277,7 +276,6 @@ namespace Dev2.DynamicServices
             {
                 errors.AddError("Null container returned");
             }
-
 
             // Adjust the remaining output mappings ;)
             compiler.SetParentID(dataObject.DataListID, oldID);
@@ -428,7 +426,7 @@ namespace Dev2.DynamicServices
         public string FetchExecutionPayload(IDSFDataObject dataObj, DataListFormat targetFormat, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            string targetShape = _runtimeHelpers.FindServiceShape(dataObj.WorkspaceID, dataObj.ServiceName, false);
+            string targetShape = FindServiceShape(dataObj.WorkspaceID, dataObj.ServiceName);
             string result = string.Empty;
 
             if(!string.IsNullOrEmpty(targetShape))
@@ -463,31 +461,31 @@ namespace Dev2.DynamicServices
             {
                 XDocument xDoc = XDocument.Load(stringReader);
 
-                XElement rootEl = xDoc.Element("DataList");
-                if(rootEl == null) return xDoc.ToString();
+            XElement rootEl = xDoc.Element("DataList");
+            if(rootEl == null) return xDoc.ToString();
 
-                rootEl.Elements().Where(el =>
-                {
-                    var firstOrDefault = el.Attributes("ColumnIODirection").FirstOrDefault();
+            rootEl.Elements().Where(el =>
+            {
+                var firstOrDefault = el.Attributes("ColumnIODirection").FirstOrDefault();
                     var removeCondition = firstOrDefault != null &&
                                           (firstOrDefault.Value == enDev2ColumnArgumentDirection.Input.ToString() ||
                                            firstOrDefault.Value == enDev2ColumnArgumentDirection.None.ToString());
-                    return (removeCondition && !el.HasElements);
-                }).Remove();
+                return (removeCondition && !el.HasElements);
+            }).Remove();
 
-                var xElements = rootEl.Elements().Where(el => el.HasElements);
-                var enumerable = xElements as IList<XElement> ?? xElements.ToList();
-                enumerable.Elements().Where(element =>
-                {
-                    var xAttribute = element.Attributes("ColumnIODirection").FirstOrDefault();
+            var xElements = rootEl.Elements().Where(el => el.HasElements);
+            var enumerable = xElements as IList<XElement> ?? xElements.ToList();
+            enumerable.Elements().Where(element =>
+            {
+                var xAttribute = element.Attributes("ColumnIODirection").FirstOrDefault();
                     var removeCondition = xAttribute != null &&
                                           (xAttribute.Value == enDev2ColumnArgumentDirection.Input.ToString() ||
                                            xAttribute.Value == enDev2ColumnArgumentDirection.None.ToString());
-                    return removeCondition;
-                }).Remove();
-                enumerable.Where(element => !element.HasElements).Remove();
-                return xDoc.ToString();
-            }    
+                return removeCondition;
+            }).Remove();
+            enumerable.Where(element => !element.HasElements).Remove();
+            return xDoc.ToString();
+        }
         }
 
     }

@@ -193,6 +193,17 @@ namespace Dev2.DataList.Contract.Binary_Objects
             _internalObj.AddAlias(parentDLID, parentColumn, parentNamespace, childColumn, out errors);
         }
 
+        /// <summary>
+        /// Adjusts the alias operation for external service populate.
+        /// </summary>
+        public void AdjustAliasOperationForExternalServicePopulate()
+        {
+            if (!_internalObj.IsEmtpy && FetchAlias().Count > 0)
+            {
+                _internalObj.IsEmtpy = true;
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -423,7 +434,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
             if(depth == enTranslationDepth.Data || depth == enTranslationDepth.Data_With_Blank_OverWrite)
             {
-                
                 // clone _items
                 if(IsRecordset)
                 {

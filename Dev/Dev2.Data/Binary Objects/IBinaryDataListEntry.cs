@@ -105,6 +105,11 @@ namespace Dev2.DataList.Contract.Binary_Objects
         void AdjustForIOMapping(Guid parentDLID, string parentColumn, string parentNamespace, string childColumn, out ErrorResultTO errors);
 
         /// <summary>
+        /// Adjusts the alias operation for external service populate.
+        /// </summary>
+        void AdjustAliasOperationForExternalServicePopulate();
+
+        /// <summary>
         /// Return the number of rows in a recordset
         /// </summary>
         /// <returns></returns>

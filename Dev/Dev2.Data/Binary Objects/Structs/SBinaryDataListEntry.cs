@@ -204,7 +204,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                         if (me != null)
                         {
                             me.AdjustIndexView(_myKeys.Gaps, _myKeys.GetMinIndex(), _myKeys.GetMaxIndex());
-                    }
+                        }
 
                         _itemStorage.TrySetValue(fetchKeys.ParentKey.TheKey, colCnt, parentRow);
                     }

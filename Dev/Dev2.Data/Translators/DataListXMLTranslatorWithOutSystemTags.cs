@@ -271,7 +271,31 @@ namespace Dev2.Data.Translators
 
         public Guid Populate(object input, Guid targetDL, out ErrorResultTO errors)
         {
-            throw new NotImplementedException();
+            // input is a string of output mappings ;)
+            var compiler = DataListFactory.CreateDataListCompiler();
+            var outputDefinitions = (input as string);
+            errors = new ErrorResultTO();
+            ErrorResultTO invokeErrors;
+
+            // get sneeky and use the output shape operation for now,
+            // as this should only every be called from external service containers all is good
+            // if this is ever not the case, be afraid, be very afraid!
+            
+            var targetDataList = compiler.FetchBinaryDataList(targetDL, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+            var parentDataList = compiler.FetchBinaryDataList(targetDataList.ParentUID, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+
+            // as a result we need to re-set some alias operations that took place in the parent DataList where they happended ;)
+            foreach(var entry in parentDataList.FetchRecordsetEntries())
+            {
+                entry.AdjustAliasOperationForExternalServicePopulate();
+            }
+
+            Guid result = compiler.Shape(targetDL, enDev2ArgumentType.Output, outputDefinitions, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+
+            return result;
         }
 
         public string ConvertAndFilter(IBinaryDataList payload, string filterShape, out ErrorResultTO errors)
