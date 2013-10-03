@@ -5,7 +5,6 @@ using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Test.XML;
-using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
@@ -27,15 +26,6 @@ namespace Dev2.Tests.Runtime.ESB
         static readonly XElement WebServiceWithoutInputsResponseXml = XmlResource.Fetch("WebServiceWithoutInputsResponse");
 
         #region HandlesOutputFormatting
-
-        [TestMethod]
-        public void WebServiceContainerHandlesOutputFormattingExpectedReturnsTrue()
-        {
-            var sa = CreateServiceAction(WebServiceWithInputsXml, WebSourceWithInputsXml);
-            var container = new WebServiceContainer(sa, null, null, null);
-            Assert.IsTrue(container.HandlesOutputFormatting);
-        }
-
         [TestMethod]
         public void WebServiceContainerServiceInputsExpectedServiceActionWithInputs()
         {

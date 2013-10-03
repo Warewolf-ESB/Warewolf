@@ -21,10 +21,13 @@ namespace Dev2.Runtime.ESB.Execution
         // and NOT here otherwise serialization issues occur!
         public bool HandlesOutputFormatting { get; private set; }
 
-        protected EsbExecutionContainerAbstract(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, bool handlesOutputFormatting = true)
+        public Guid MasterDataListID { get; private set; }
+
+        protected EsbExecutionContainerAbstract(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, Guid masterDataListID, bool handlesOutputFormatting = true)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
             HandlesOutputFormatting = handlesOutputFormatting;
+            MasterDataListID = masterDataListID;
         }
 
         public override Guid Execute(out ErrorResultTO errors)
@@ -144,6 +147,7 @@ namespace Dev2.Runtime.ESB.Execution
                 return;
             }
 
+            
             MergeResultIntoDataList(response, outputFormatter, compiler, out invokeErrors);
             errors.MergeErrors(invokeErrors);
         }
@@ -200,11 +204,15 @@ namespace Dev2.Runtime.ESB.Execution
             errors.MergeErrors(invokeErrors);
 
             // Push formatted data into a datalist using the shape from the service action outputs
-            var tmpID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), formattedPayload, dlShape, out invokeErrors);
+            var tmpID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), formattedPayload, dlShape, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
             // Attach a parent ID to the newly created datalist
-            compiler.SetParentID(tmpID, DataObject.DataListID);
+            //compiler.SetParentID(tmpID, DataObject.DataListID);
+
+            // TODO : Populate into MasterDataListID ;)
+            compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), tmpID, MasterDataListID, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
 
             // Merge each result into the datalist ;)
             compiler.Merge(DataObject.DataListID, tmpID, enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite, false, out invokeErrors);

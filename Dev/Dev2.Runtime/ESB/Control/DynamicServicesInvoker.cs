@@ -70,10 +70,10 @@ namespace Dev2.Runtime.ESB
         /// <summary>
         /// Invokes the specified service as per the dataObject against theHost
         /// </summary>
-        /// <param name="theHost">The host.</param>
         /// <param name="dataObject">The data object.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
+        /// <exception cref="System.Exception">Can only execute workflows from web browser</exception>
         public Guid Invoke(IDSFDataObject dataObject, out ErrorResultTO errors)
         {
             Guid result = GlobalConstants.NullDataListID;
@@ -126,6 +126,7 @@ namespace Dev2.Runtime.ESB
                             {
                                 throw new Exception("Can only execute workflows from web browser");
                             }
+
                             MapServiceActionDependencies(theStart, sl);
 
                             ErrorResultTO invokeErrors = new ErrorResultTO();
@@ -174,10 +175,11 @@ namespace Dev2.Runtime.ESB
         /// Generates the invoke container.
         /// </summary>
         /// <param name="dataObject">The data object.</param>
-        /// <param name="serviceID"></param>
-        /// <param name="isLocalInvoke"></param>
+        /// <param name="serviceID">The service unique identifier.</param>
+        /// <param name="isLocalInvoke">if set to <c>true</c> [is local invoke].</param>
+        /// <param name="masterDataListID">The master data list unique identifier.</param>
         /// <returns></returns>
-        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceID, bool isLocalInvoke)
+        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceID, bool isLocalInvoke, Guid masterDataListID = default(Guid))
         {
             if(isLocalInvoke)
             {
@@ -207,10 +209,11 @@ namespace Dev2.Runtime.ESB
         /// Generates the invoke container.
         /// </summary>
         /// <param name="dataObject">The data object.</param>
-        /// <param name="serviceName"></param>
-        /// <param name="isLocalInvoke"></param>
+        /// <param name="serviceName">Name of the service.</param>
+        /// <param name="isLocalInvoke">if set to <c>true</c> [is local invoke].</param>
+        /// <param name="masterDataListID">The master data list unique identifier.</param>
         /// <returns></returns>
-        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, String serviceName, bool isLocalInvoke)
+        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, String serviceName, bool isLocalInvoke, Guid masterDataListID = default(Guid))
         {
             if(isLocalInvoke)
             {

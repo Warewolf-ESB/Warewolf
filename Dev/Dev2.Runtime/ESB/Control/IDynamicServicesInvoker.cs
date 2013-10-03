@@ -1,7 +1,6 @@
 ﻿using System;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ESB.Execution;
-using Dev2.Workspaces;
 
 namespace Dev2.DynamicServices {
     public interface IDynamicServicesInvoker {
@@ -18,9 +17,10 @@ namespace Dev2.DynamicServices {
         /// Generates the invoke container.
         /// </summary>
         /// <param name="dataObject">The data object.</param>
-        /// <param name="serviceID"></param>
+        /// <param name="serviceID">The service unique identifier.</param>
         /// <param name="isLocal">if set to <c>true</c> [is local].</param>
+        /// <param name="masterDataListID">The master data list unique identifier.</param>
         /// <returns></returns>
-        EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceID, bool isLocal);
+        EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceID, bool isLocal, Guid masterDataListID);
     }
 }
