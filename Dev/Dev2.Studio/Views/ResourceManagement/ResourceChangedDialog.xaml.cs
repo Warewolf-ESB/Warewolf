@@ -22,7 +22,7 @@ namespace Dev2.Studio.Views.ResourceManagement
             if(numOfDependances <=1)
             {
                 tbDisplay.Text = String.Format("{0} is used by another workflow. That instance needs to be updated.", model.ResourceName);
-                button3.Content = "Show Affected Workflow";
+                button3.Content = "Open Affected Workflow";
             }
             else
             {

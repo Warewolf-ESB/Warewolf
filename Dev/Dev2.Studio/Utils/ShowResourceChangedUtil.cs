@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Providers.Logs;
+using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Utils;
 using Dev2.Studio.Views.ResourceManagement;
 
 namespace Dev2.Utils
@@ -23,7 +25,11 @@ namespace Dev2.Utils
             {
                 if(numberOfDependants.Count == 1)
                 {
-
+                    var resourceModel = resource.Environment.ResourceRepository.FindSingle(model => model.ResourceName == numberOfDependants[0]);
+                    if(resourceModel != null)
+                    {
+                        WorkflowDesignerUtils.EditResource(resourceModel, _eventPublisher);
+                    }
                 }
                 else
                 {

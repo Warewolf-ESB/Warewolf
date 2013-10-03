@@ -504,10 +504,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 }
                 var saveResult = resource.Environment.ResourceRepository.SaveToServer(resource);
                 DispatchServerDebugMessage(saveResult, resource);
-                Logger.TraceInfo("Publish message of type - " + typeof(UpdateDeployMessage));
-                EventPublisher.Publish(new UpdateDeployMessage());
                 resource.IsWorkflowSaved = true;
             }
+            Logger.TraceInfo("Publish message of type - " + typeof(UpdateDeployMessage));
+            EventPublisher.Publish(new UpdateDeployMessage());
         }
 
         void CheckForServerMessages(IContextualResourceModel resource)

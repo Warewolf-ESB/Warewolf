@@ -119,7 +119,7 @@ namespace Dev2.Core.Tests.Webs
             //------------------------------Execute -------------------------------------------------
             handler.TestSave(envModel.Object, jsonObj);
             //------------------------------Assert Result -------------------------------------------------
-            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), new List<string>{""}), Times.Once());
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), It.IsAny<IList<string>>()), Times.Once());
         }
 
         static Mock<IEnvironmentConnection> SetupConnectionWithCompileMessageList(List<CompileMessageTO> compileMessageTos, List<string> deps)
@@ -240,7 +240,7 @@ namespace Dev2.Core.Tests.Webs
             //------------------------------Execute -------------------------------------------------
             handler.TestSave(envModel.Object, jsonObj);
             //------------------------------Assert Result -------------------------------------------------
-            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), new List<string> { "","" }), Times.Once());
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), It.IsAny<IList<string>>()), Times.Once());
         }
 
         [TestMethod]
