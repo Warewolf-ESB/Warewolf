@@ -492,28 +492,22 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             FindMissing();
             BindToModel();
 
-            if(!isLocalSave)
-            {
-                CheckForServerMessages(resource);                
-            }
-
             var result = _workspaceItemRepository.UpdateWorkspaceItem(resource, isLocalSave);
-
+            resource.Environment.ResourceRepository.Save(resource);
+            DisplaySaveResult(result, resource);
             if(!isLocalSave)
             {
-                DisplaySaveResult(result, resource);
                 if(_hasMappingChange)
                 {
                     CheckForServerMessages(resource);
                     _hasMappingChange = false;
                 }
+                var saveResult = resource.Environment.ResourceRepository.SaveToServer(resource);
+                DispatchServerDebugMessage(saveResult, resource);
+                Logger.TraceInfo("Publish message of type - " + typeof(UpdateDeployMessage));
+                EventPublisher.Publish(new UpdateDeployMessage());
+                resource.IsWorkflowSaved = true;
             }
-
-            var saveResult = resource.Environment.ResourceRepository.Save(resource);
-            DispatchServerDebugMessage(saveResult, resource);
-            Logger.TraceInfo("Publish message of type - " + typeof(UpdateDeployMessage));
-            EventPublisher.Publish(new UpdateDeployMessage());
-            resource.IsWorkflowSaved = true;
         }
 
         void CheckForServerMessages(IContextualResourceModel resource)

@@ -102,7 +102,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             package.EditedItemsXml = rootElement.ToString();
             package.Roles = string.Join(",", _securityContext.Roles);
 
-            ExecuteCommand(_environmentModel, package);
+            ExecuteCommand(_environmentModel, package, _environmentModel.Connection.WorkspaceID);
 
             IsLoaded = false;
             Load();
@@ -116,14 +116,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             reloadPayload.ResourceID = resourceID.ToString();
             reloadPayload.ResourceType = Enum.GetName(typeof(Enums.ResourceType), resourceType);
 
-            ExecuteCommand(_environmentModel, reloadPayload);
+            ExecuteCommand(_environmentModel, reloadPayload, _environmentModel.Connection.WorkspaceID);
 
             dynamic findPayload = new UnlimitedObject();
             findPayload.Service = "FindResourcesByID";
             findPayload.GuidCsv = resourceID.ToString();
             findPayload.Type = Enum.GetName(typeof(Enums.ResourceType), resourceType);
 
-            var findResultObj = ExecuteCommand(_environmentModel, findPayload);
+            var findResultObj = ExecuteCommand(_environmentModel, findPayload, _environmentModel.Connection.WorkspaceID);
 
             var effectedResources = new List<IResourceModel>();
             var wfServices = (resourceType == Enums.ResourceType.Source) ? findResultObj.Source : findResultObj.Service;
@@ -205,7 +205,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 _resourceModels.Add(instanceObj);
             }
-            return SaveResource(_environmentModel, instanceObj.ToServiceDefinition(),_securityContext.Roles);
+            return SaveResource(_environmentModel, instanceObj.ToServiceDefinition(),_securityContext.Roles, _environmentModel.Connection.WorkspaceID);
+        } 
+        
+        public string SaveToServer(IResourceModel instanceObj)
+        {
+            var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase));
+            if(workflow == null)
+            {
+                _resourceModels.Add(instanceObj);
+            }
+            return SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), _securityContext.Roles, GlobalConstants.ServerWorkspaceID);
         }
 
         public void Rename(string resourceID, string newName)
@@ -217,7 +227,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 package.Service = "RenameResourceService";
                 package.NewName = newName;
                 package.ResourceID = resourceID;
-                var executeCommand = ExecuteCommand(_environmentModel, package, false);
+                var executeCommand = ExecuteCommand(_environmentModel, package, _environmentModel.Connection.WorkspaceID, false);
                 if(executeCommand.Contains("Renamed Resource"))
                 {
                     var findInLocalRepo = _resourceModels.FirstOrDefault(res => res.ID == Guid.Parse(resourceID));
@@ -240,7 +250,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             package.OldCategory = oldCategory == StringResources.Navigation_Category_Unassigned ? "" : oldCategory;
             package.NewCategory = newCategory;
             package.ResourceType = resourceType.ToString();
-            ExecuteCommand(_environmentModel, package, false);
+            ExecuteCommand(_environmentModel, package, _environmentModel.Connection.WorkspaceID, false);
         }
 
         public void DeployResource(IResourceModel resource)
@@ -263,7 +273,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             var package = BuildUnlimitedPackage(resource);
 
-            ExecuteCommand(_environmentModel, package, false);
+            ExecuteCommand(_environmentModel, package, _environmentModel.Connection.WorkspaceID, false);
         }
 
         public void Save(ICollection<IResourceModel> instanceObjs)
@@ -372,7 +382,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             request.ResourceType = resource.ResourceType.ToString();
             request.Roles = String.Join(",", _securityContext.Roles ?? new string[0]);
 
-            return ExecuteCommand(resource.Environment, request);
+            IEnvironmentModel targetEnvironment = resource.Environment;
+            return ExecuteCommand(targetEnvironment, request, targetEnvironment.Connection.WorkspaceID);
         }
 
         //Juries TODO - Refactor to popupProvider
@@ -552,7 +563,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dataObj.ResourceType = string.Empty;
             dataObj.Roles = string.Join(",", _securityContext.Roles);
 
-            var resultObj = ExecuteCommand(_environmentModel, dataObj);
+            var resultObj = ExecuteCommand(_environmentModel, dataObj, _environmentModel.Connection.WorkspaceID);
             HydrateResourceModels(resultObj.Source as List<UnlimitedObject>);
             HydrateResourceModels(resultObj.Service as List<UnlimitedObject>);
 
@@ -643,16 +654,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             string sourceDefinition = environment.ToSourceDefinition();
             string[] securityRoles = environment.Connection.SecurityContext.Roles;
-            SaveResource(targetEnvironment, sourceDefinition, securityRoles);
+            SaveResource(targetEnvironment, sourceDefinition, securityRoles, targetEnvironment.Connection.WorkspaceID);
         }
 
-        static string SaveResource(IEnvironmentModel targetEnvironment, string resourceDefinition, string[] securityRoles)
+        static string SaveResource(IEnvironmentModel targetEnvironment, string resourceDefinition, string[] securityRoles, Guid workspaceID)
         {
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = "SaveResourceService";
             dataObj.ResourceXml = resourceDefinition;
+            dataObj.WorkspaceID = workspaceID;
             dataObj.Roles = string.Join(",", securityRoles);
-            return ExecuteCommand(targetEnvironment, dataObj, false) as string;
+            return ExecuteCommand(targetEnvironment, dataObj, workspaceID, false) as string;
         }
 
         public static void RemoveEnvironment(IEnvironmentModel targetEnvironment, IEnvironmentModel environment)
@@ -672,7 +684,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dataObj.ResourceType = Enums.ResourceType.Source.ToString();
             dataObj.Roles = string.Join(",", environment.Connection.SecurityContext.Roles);
 
-            ExecuteCommand(targetEnvironment, dataObj, false);
+            ExecuteCommand(targetEnvironment, dataObj, targetEnvironment.Connection.WorkspaceID, false);
         }
 
         #endregion
@@ -703,7 +715,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dataObj.GuidCsv = string.Join(",", guids); // BUG 9276 : TWR : 2013.04.19 - reintroduced to all filtering
             dataObj.Type = Enum.GetName(typeof(Enums.ResourceType), resourceType);
 
-            var resourcesObj = ExecuteCommand(targetEnvironment, dataObj);
+            var resourcesObj = ExecuteCommand(targetEnvironment, dataObj, targetEnvironment.Connection.WorkspaceID);
 
             var result = new List<UnlimitedObject>();
             AddItems(result, resourceType == Enums.ResourceType.Source ? resourcesObj.Source : resourcesObj.Service);
@@ -727,7 +739,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dataObj.Service = "FindSourcesByType";
             dataObj.Type = Enum.GetName(typeof(enSourceType), sourceType);
 
-            var resourcesObj = ExecuteCommand(targetEnvironment, dataObj);
+            var resourcesObj = ExecuteCommand(targetEnvironment, dataObj, targetEnvironment.Connection.WorkspaceID);
 
             var result = new List<UnlimitedObject>();
             AddItems(result, resourcesObj.Source);
@@ -755,10 +767,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         #region ExecuteCommand
 
-        private static dynamic ExecuteCommand(IEnvironmentModel targetEnvironment, UnlimitedObject dataObj,
+        private static dynamic ExecuteCommand(IEnvironmentModel targetEnvironment, UnlimitedObject dataObj, Guid workspaceID,
                                               bool convertResultToUnlimitedObject = true)
         {
-            var workspaceID = targetEnvironment.Connection.WorkspaceID;
             var result = targetEnvironment.Connection.ExecuteCommand(dataObj.XmlString, workspaceID,
                                                                      GlobalConstants.NullDataListID);
 

@@ -20,10 +20,16 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             string roles;
             string resourceDefinition;
+            string workspaceIDString;
 
             values.TryGetValue("Roles", out roles);
             values.TryGetValue("ResourceXml", out resourceDefinition);
-
+            values.TryGetValue("WorkspaceID", out workspaceIDString);
+            Guid workspaceID;
+            if(!Guid.TryParse(workspaceIDString, out workspaceID))
+            {
+                workspaceID = theWorkspace.ID;
+            }
             resourceDefinition = resourceDefinition.Unescape();
 
             if(string.IsNullOrEmpty(roles) || string.IsNullOrEmpty(resourceDefinition))
@@ -37,7 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 compiledResources = new DynamicObjectHelper().GenerateObjectGraphFromString(resourceDefinition);
                 if (compiledResources.Count == 0)
                 {
-                    CompileMessageRepo.Instance.AddMessage(theWorkspace.ID, new List<CompileMessageTO>
+                    CompileMessageRepo.Instance.AddMessage(workspaceID, new List<CompileMessageTO>
                     {
                         new CompileMessageTO
                         {
@@ -51,7 +57,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                CompileMessageRepo.Instance.AddMessage(theWorkspace.ID, new List<CompileMessageTO>
+                CompileMessageRepo.Instance.AddMessage(workspaceID, new List<CompileMessageTO>
                     {
                         new CompileMessageTO
                         {
@@ -68,7 +74,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             StringBuilder result = new StringBuilder();
             foreach(var dynamicServiceObjectBase in compiledResources)
             {
-                var saveResult = ResourceCatalog.Instance.SaveResource(theWorkspace.ID, dynamicServiceObjectBase.ResourceDefinition);
+                var saveResult = ResourceCatalog.Instance.SaveResource(workspaceID, dynamicServiceObjectBase.ResourceDefinition);
                 result.Append(saveResult.Message);
             }
             return result.ToString();
@@ -78,7 +84,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService newDs = new DynamicService();
             newDs.Name = HandlesType();
-            newDs.DataListSpecification = "<DataList><Roles/><ResourceXml/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            newDs.DataListSpecification = "<DataList><Roles/><ResourceXml/><WorkspaceID/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
             ServiceAction sa = new ServiceAction();
             sa.Name = HandlesType();
             sa.ActionType = enActionType.InvokeManagementDynamicService;
