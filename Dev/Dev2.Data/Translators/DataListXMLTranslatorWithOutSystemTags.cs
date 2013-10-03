@@ -269,6 +269,7 @@ namespace Dev2.Data.Translators
             throw new NotImplementedException();
         }
 
+        // NOTE : This will be tested by the related WebServices and Plugin Integration Test
         public Guid Populate(object input, Guid targetDL, out ErrorResultTO errors)
         {
             // input is a string of output mappings ;)
@@ -279,7 +280,7 @@ namespace Dev2.Data.Translators
 
             // get sneeky and use the output shape operation for now,
             // as this should only every be called from external service containers all is good
-            // if this is ever not the case, be afraid, be very afraid!
+            // if this is ever not the case be afraid, be very afraid!
             
             var targetDataList = compiler.FetchBinaryDataList(targetDL, out invokeErrors);
             errors.MergeErrors(invokeErrors);

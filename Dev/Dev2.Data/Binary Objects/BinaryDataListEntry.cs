@@ -198,7 +198,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// </summary>
         public void AdjustAliasOperationForExternalServicePopulate()
         {
-            if (!_internalObj.IsEmtpy && FetchAlias().Count > 0)
+            if (!_internalObj.IsEmtpy && FetchAlias().Count > 0 && _internalObj.IsRecordset && _internalObj.Keys.Count == 1)
             {
                 _internalObj.IsEmtpy = true;
             }

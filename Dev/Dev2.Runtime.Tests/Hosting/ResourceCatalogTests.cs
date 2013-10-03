@@ -1328,7 +1328,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 "</Action>");
 
             //exe
-            DynamicObjectHelper.AddServiceAction(invalidAction, ds);
+            new DynamicObjectHelper().AddServiceAction(invalidAction, ds);
 
             //assert
             Assert.AreEqual(0, ds.Actions.Count, "AddServiceAction added an invalid ServiceAction to the DynamicService");
