@@ -478,6 +478,19 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             SendKeys.SendWait("{DELETE}");
         }
 
+        public void ConnectToAllServers(WpfComboBox comboBox)
+        {
+            for(int itemIdx = 1; itemIdx <= comboBox.Items.Count; itemIdx++)
+            {
+                Microsoft.VisualStudio.TestTools.UITesting.Mouse.Click(comboBox);
+                for(int findItm = 0; findItm < itemIdx; findItm++)
+                {
+                    Keyboard.SendKeys("{DOWN}");
+                }
+                Keyboard.SendKeys("{ENTER}");
+            }
+        }
+
         public UITestControlCollection GetCategoryItems()
         {
             UITestControlCollection workflows = GetNavigationItemCategories();
@@ -570,33 +583,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             }
             return serviceTypeReturn;
         }
-
-
-        /// ConnectBtnClick
-        /// </summary>
-        /*
-        public void ConnectBtnClick()
-        {
-            #region Variable Declarations
-            //WpfButton uIConnectButton = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UIConnectButton;
-            #endregion
-
-            // Click 'Connect' button
-            //Mouse.Click(uIConnectButton, new Point(35, 11));
-        }
-         */
-
-        /// <summary>
-        /// Environment_Explorer_AnotherServer_Exists
-        /// </summary>
-        //public void CheckForPartnerServer_Exists() {
-        //    #region Variable Declarations
-        //    WpfTreeItem uIUI_SashensServerhttpTreeItem = this.UIBusinessDesignStudioWindow.UINavigationViewUserCoCustom.UITvExplorerTree.UIUI_SashensServerhttpTreeItem;
-        //    #endregion
-
-        //    // Verify that the 'AutomationId' property of 'UI_Sashens Server (http://rsaklfsashennai:77/dsf)_...' tree item is not equal to 'null'
-        //    Assert.IsNotNull(uIUI_SashensServerhttpTreeItem.AutomationId);
-        //}
 
         #region Properties
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow

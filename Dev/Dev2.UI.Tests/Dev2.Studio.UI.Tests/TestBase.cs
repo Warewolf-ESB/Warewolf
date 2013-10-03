@@ -1089,7 +1089,6 @@ namespace Dev2.CodedUI.Tests
             Keyboard.SendKeys("{F5}{F5}");
             //RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");
             Playback.Wait(1000);
-            DebugUIMap.ExecuteDebug();
             DocManagerUIMap.ClickOpenTabPage("Output");
             UITestControl control = OutputUIMap.GetStatusBar();
 

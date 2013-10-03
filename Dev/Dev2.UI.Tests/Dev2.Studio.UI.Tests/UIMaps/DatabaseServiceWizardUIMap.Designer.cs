@@ -77,12 +77,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         /// </summary>
         public void ClickOK()
         {
-            #region Variable Declarations
-            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            #endregion
+            //#region Variable Declarations
+            //UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            //#endregion
 
-            // Click image
-            Mouse.Click(uIItemImage, new Point(767, 523));
+            //// Click image
+            //Mouse.Click(uIItemImage, new Point(767, 523));
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{ENTER}");
         }
 
         /// <summary>

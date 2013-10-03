@@ -71,6 +71,24 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
             Keyboard.SendKeys(buildCommand.ToString());
             buildCommand.Clear();
         }
+
+        public void ClickTestConnection()
+        {
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+        }
+
+        public void ClickSaveEmailSource()
+        {
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+        }
+
+        public void EnterEmailAddressAndSend()
+        {
+            Keyboard.SendKeys("^AThorLocal@norsegods.com{TAB}");
+            Keyboard.SendKeys("dev2warewolf@gmail.com{TAB}");
+            Keyboard.SendKeys("{ENTER}");
+            Playback.Wait(10000);
+        }
     }
 
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]

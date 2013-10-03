@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 
 namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
@@ -15,26 +16,24 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
     public partial class ExplorerUIMap
     {
-        public void ClickNewServerButton()
+        public UITestControl ClickConnectControl(string controlType)
         {
-            UITestControl window = UIBusinessDesignStudioWindow.UIExplorerCustom;
-            var findDocManager = window.GetChildren();
-            UITestControl docManager = findDocManager.FirstOrDefault(c=>c.FriendlyName == "Explorer" &&c.ControlType.Name == "Custom");
-            if(docManager != null)
+            var uiControl = UIBusinessDesignStudioWindow.GetChildren()
+                                                        .First(c => c.FriendlyName == "UI_DocManager_AutoID" && c.ControlType.Name == "Custom")
+                                                        .GetChildren()
+                                                        .First(c => c.FriendlyName == "Explorer")
+                                                        .GetChildren()
+                                                        .SelectMany(c => c.GetChildren())
+                                                        .SelectMany(c => c.GetChildren())
+                                                        .FirstOrDefault(c => c.ControlType.Name == controlType);
+
+            if(uiControl == null)
             {
-                var findSplitPane = docManager.GetChildren();
-                UITestControl splitPane = findSplitPane.FirstOrDefault(c=>c.FriendlyName=="ConnectUserControl");
-                if(splitPane != null)
-                {
-                    var findExplorerPane = splitPane.GetChildren();
-            
-                    UITestControl explorerPane = findExplorerPane.FirstOrDefault(c=>c.ControlType.Name=="Button");
-                    
-                    //var findNewServerButton = explorerPane.GetChildren()[0].GetChildren();
-                    //UITestControl browseButton = findNewServerButton[2];
-                    Mouse.Click(explorerPane, new Point(5, 5));
-                }
+                string message = string.Format("control with type name  {0} was not found on the connect control", controlType);
+                throw new Exception(message);
             }
+
+            return uiControl;
         }
 
         public void ClickRefreshButton()
@@ -132,6 +131,22 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                     break;
                 }
             }
+        }
+
+        public string SelectedSeverName()
+        {
+            UITestControl ddlBase = GetServerDDL();
+          
+            var theDdl = new WpfComboBox(ddlBase);
+            var firstItemInDdl = theDdl.Items[theDdl.SelectedIndex] as WpfListItem;
+
+            if(firstItemInDdl == null)
+            {
+                string message = string.Format("No selected server name where found on the explorer server combo box");
+                throw new Exception(message);
+            }
+
+            return firstItemInDdl.AutomationId.Replace("U_UI_ExplorerServerCbx_AutoID_", "");
         }
 
         public int CountServers()

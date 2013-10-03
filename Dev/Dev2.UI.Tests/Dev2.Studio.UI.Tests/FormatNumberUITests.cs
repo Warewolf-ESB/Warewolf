@@ -171,7 +171,7 @@ namespace Dev2.Studio.UI.Tests
             //VariablesUIMap.UpdateDataList();
 
             RibbonUIMap.ClickRibbonMenuItem("Debug");
-            DebugUIMap.ExecuteDebug();
+           
             DocManagerUIMap.ClickOpenTabPage("Output");
             UITestControlCollection outputWindow = OutputUIMap.GetOutputWindow();
             UITestControlCollection formatNumberStep = OutputUIMap.GetInputDetailsDetails(outputWindow[1]);

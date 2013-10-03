@@ -61,16 +61,25 @@
             }
         }
 
-        public void ExecuteDebug()
-        {
-            SendKeys.SendWait("{F5}");
-        }
-
         public void ClickXMLTab()
         {
             WpfWindow uIDebugWindow = this.UIDebugWindow;
             WpfTabPage XMLTabPage = (WpfTabPage)uIDebugWindow.GetChildren()[1].GetChildren()[1];
             Mouse.Click(XMLTabPage, new Point(5, 5));
         }
+
+        public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
+        {
+            get
+            {
+                if((_uiBusinessDesignStudioWindow == null))
+                {
+                    _uiBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
+                }
+                return _uiBusinessDesignStudioWindow;
+            }
+        }
+
+        UIBusinessDesignStudioWindow _uiBusinessDesignStudioWindow;
     }
 }

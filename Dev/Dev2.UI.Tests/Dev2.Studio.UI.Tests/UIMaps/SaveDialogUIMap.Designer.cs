@@ -93,12 +93,14 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
         /// </summary>
         public void ClickSave()
         {
-            #region Variable Declarations
-            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            #endregion
+            //#region Variable Declarations
 
-            // Click image
-            Mouse.Click(uIItemImage, new Point(456, 427));
+            //var children = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren();
+            //UITestControl uIItemImage = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            //#endregion
+            //// Click image
+            //Mouse.Click(uIItemImage, new Point(478, 432));
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{ENTER}");
         }
         
         #region Properties

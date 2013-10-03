@@ -63,7 +63,7 @@
       <HintPath>..\..\Dev2.Core\bin\Debug\Dev2.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\..\Binaries\Moq.dll</HintPath>
@@ -121,6 +121,7 @@
     </Compile>
     <Compile Include="Bootstrap\UIBootstrap.cs" />
     <Compile Include="AutoConnectorTests.cs" />
+    <Compile Include="RemoteServerUITests.cs" />
     <Compile Include="MenuUITests.cs" />
     <Compile Include="FormatNumberUITests.cs" />
     <Compile Include="ExplorerUITests.cs" />

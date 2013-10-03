@@ -42,6 +42,17 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses
             Keyboard.SendKeys("{TAB}{TAB}{TAB}{ENTER}");
         }
         
+          
+        /// <summary>
+        /// ClickSave
+        /// </summary>
+        public void ClickSaveConnection()
+        {
+            Thread.Sleep(150);
+            // Click image
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+        }
+        
         #region Properties
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
         {

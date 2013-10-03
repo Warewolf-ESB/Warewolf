@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Studio.UI.Tests
 {
     /// <summary>
-    ///     Summary description for CodedUITest1
+    ///    These are UI tests around the auto connectors
     /// </summary>
     [CodedUITest]
     public class AutoConnectorTests

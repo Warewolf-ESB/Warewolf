@@ -34,6 +34,15 @@ namespace Dev2.Studio.UI.Tests.UIMaps.PluginSourceMapClasses
         /// </summary>
         public void ClickCancel()
         {
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{ENTER}");
+        }
+
+
+        /// <summary>
+        /// ClickSave
+        /// </summary>
+        public void ClickSavePlugin()
+        {
             Keyboard.SendKeys("{TAB}{TAB}{TAB}{ENTER}");
         }
         

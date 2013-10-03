@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using Dev2.CodedUI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -51,7 +52,9 @@ namespace Dev2.Studio.UI.Tests
             var secondNewServer = Guid.NewGuid().ToString().Substring(0, 5);          
 
             //Create first server.
-            ExplorerUIMap.ClickNewServerButton();
+            var explorerPane = ExplorerUIMap.ClickConnectControl("Button");
+            Mouse.Click(explorerPane, new Point(5, 5));
+
             System.Threading.Thread.Sleep(100);
             connectionWizard.ClickNewServerAddress();
             Keyboard.SendKeys(@"http://RSAKLFDEV02:77/dsf{TAB}{TAB}{ENTER}");
@@ -63,7 +66,9 @@ namespace Dev2.Studio.UI.Tests
             Keyboard.SendKeys("{TAB}{TAB}{TAB}" + firstNewServer + "{ENTER}");
 
             //Try create second server
-            ExplorerUIMap.ClickNewServerButton();
+            explorerPane = ExplorerUIMap.ClickConnectControl("Button");
+            Mouse.Click(explorerPane, new Point(5, 5));
+
             System.Threading.Thread.Sleep(100);
             connectionWizard.ClickNewServerAddress();
             Keyboard.SendKeys(@"http://RSAKLFASHLEY:77/dsf{TAB}{TAB}{ENTER}");

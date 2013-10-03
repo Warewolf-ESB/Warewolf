@@ -44,6 +44,21 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
             Mouse.Click(uIItemImage, new Point(874, 533));
         }
 
+        public void ClickTestAndOk()
+        {
+            Playback.Wait(200);
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            Keyboard.SendKeys("test string");
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            Playback.Wait(200);
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+        }
+
+        public void ClickOK()
+        {
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{ENTER}");
+        }
+
         #region Properties
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
         {

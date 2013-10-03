@@ -88,25 +88,20 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         {
             bool isFirst = true;
             int openTabs = GetTabCount();
-            while (openTabs != 0)
+            while(openTabs != 0)
             {
                 string theTab = GetActiveTabName();
-                if (isFirst)
-                {
-                    // Click in the middle of the screen and wait, incase a side menu is open (Which covers the tabs "X")
-                    UITestControl zeTab = FindTabByName(theTab);
-                    Mouse.Click(new Point(zeTab.BoundingRectangle.X + 500, zeTab.BoundingRectangle.Y + 500));
-                    Playback.Wait(2500);
-                    isFirst = false;
-                }
-                //CloseTab(theTab);
+
+                UITestControl zeTab = FindTabByName(theTab);
+                Mouse.Click(new Point(zeTab.BoundingRectangle.X, zeTab.BoundingRectangle.Y + 500));
+                Playback.Wait(2500);
+
                 CloseTab_Click_No(theTab);
                 SendKeys.SendWait("n");
 
-                SendKeys.SendWait("{DELETE}");     // 
-                SendKeys.SendWait("{BACKSPACE}");  // Incase it was actually typed
+                SendKeys.SendWait("{DELETE}"); // 
+                SendKeys.SendWait("{BACKSPACE}"); // Incase it was actually typed
                 //
-
                 openTabs = GetTabCount();
             }
         }
