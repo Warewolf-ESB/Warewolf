@@ -6,15 +6,13 @@
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:system="clr-namespace:System;assembly=mscorlib"
                                xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
-                               xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
-                               xmlns:attachedProperties1="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-                               xmlns:cal="http://www.caliburnproject.org"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                MinWidth="350"
                                Width="350"
                                MaxWidth="600"
@@ -40,32 +38,27 @@
         </core:ActivityDesignerButton>
     </core:ActivityDesignerTemplate.RightButtons>
 
-    <Grid>
+    <Grid x:Name="ContentGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="60" />
         </Grid.RowDefinitions>
-        <DataGrid Grid.Row="0"
-                  x:Name="DataGrid"
-                  MinHeight="60"
-                  MaxHeight="500"
-                  Height="Auto"
-                  ItemsSource="{Binding Items, 
-                  Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                  AutoGenerateColumns="False"
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch"
-                  HeadersVisibility="Column"
-                  CanUserReorderColumns="False"
-                  attachedProperties1:WizardEngineAttachedProperties.DontOpenWizard="True"
-                  Style="{StaticResource SpacedActivityDataGridStyle}"
-                  SelectedValue="{Binding SelectedValue}"
-                  SelectedIndex="{Binding SelectedIndex}"
-                  CanUserResizeRows="True"
-                  cal:Message.Attach="[Event SelectionChanged] = [Action UpdateRows]; 
-                  [Event KeyUp] = [Action AddRows($EventArgs)]">
+
+        <controls:Dev2DataGrid x:Name="LargeDataGrid"
+                               Grid.Row="0"
+                               MinHeight="60"
+                               MaxHeight="500"
+                               Height="Auto"
+                               ItemsSource="{Binding ModelItem.FieldsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               HeadersVisibility="Column"
+                               CanUserReorderColumns="False"
+                               Style="{StaticResource SpacedActivityDataGridStyle}"
+                               CanUserResizeRows="True">
+
+            <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+
             <i:Interaction.Behaviors>
-                <behavior:DatagridFocusOnLoadBehavior />
+                <controls:DatagridFocusOnLoadBehavior />
                 <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                     <behaviors:DataGridWatermarkModifier.WatermarkText>
                         <system:String>[[Variable1]]</system:String>
@@ -114,12 +107,19 @@
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.MultiAssignVariableHelpText}"
-                                                      DataContext="{Binding DataContext, ElementName=DataGrid}" />
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="FieldName"
                                                          SourcePropertyValue="{Binding FieldName, UpdateSourceTrigger=PropertyChanged}"
-                                                         Target="{Binding DataContext, ElementName=DataGrid}" />
+                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                 </i:Interaction.Behaviors>
+                                <AutomationProperties.AutomationId>
+                                    <MultiBinding StringFormat="UI_{0}_Row{1}_FieldName_AutoID">
+                                        <Binding Path="DataContext.ModelItem.AutomationID"
+                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                        <Binding Path="IndexNumber" />
+                                    </MultiBinding>
+                                </AutomationProperties.AutomationId>
                             </ui:IntellisenseTextBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -153,21 +153,30 @@
                                                     MaxHeight="50"
                                                     Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
                                                         Converter={StaticResource ModelTextConverter}, ConverterParameter=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
-                                                    IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}">
+                                                    IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.MultiAssignNewValueHelpText}"
-                                                      DataContext="{Binding DataContext, ElementName=DataGrid}" />
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="FieldValue"
                                                          SourcePropertyValue="{Binding FieldValue, UpdateSourceTrigger=PropertyChanged}"
-                                                         Target="{Binding DataContext, ElementName=DataGrid}" />
+                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                 </i:Interaction.Behaviors>
+                                <AutomationProperties.AutomationId>
+                                    <MultiBinding StringFormat="UI_{0}_Row{1}_FieldValue_AutoID">
+                                        <Binding Path="DataContext.ModelItem.AutomationID"
+                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                        <Binding Path="IndexNumber" />
+                                    </MultiBinding>
+                                </AutomationProperties.AutomationId>
                             </ui:IntellisenseTextBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
-        </DataGrid>
+        </controls:Dev2DataGrid>
+
         <StackPanel HorizontalAlignment="Center"
                     Margin="0,10,0,0"
                     Orientation="Vertical"

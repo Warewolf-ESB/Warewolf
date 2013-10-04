@@ -57,17 +57,17 @@
                                 DefaultText="http://mywebpage.com"
                                 Focusable="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Text="{Binding Path=Url, Mode=TwoWay,  NotifyOnTargetUpdated=True,
+                                Text="{Binding Path=ModelItem.Url, Mode=TwoWay,  NotifyOnTargetUpdated=True,
                                   Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsUrlFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}"
                                 Loaded="UrlOnLoaded">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.WebRequestURIHelpText}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Url"
-                                     SourcePropertyValue="{Binding Url, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyValue="{Binding ModelItem.Url, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
@@ -80,14 +80,14 @@
                                 Grid.Row="1"
                                 DefaultText="Host etc."
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Text="{Binding Path=Headers, Mode=TwoWay,  NotifyOnTargetUpdated=True}"
-                                AutomationProperties.AutomationId="{Binding AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}">
+                                Text="{Binding Path=ModelItem.Headers, Mode=TwoWay,  NotifyOnTargetUpdated=True}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.WebRequestHeaderHelpText}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Headers"
-                                     SourcePropertyValue="{Binding Headers, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyValue="{Binding ModelItem.Headers, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
@@ -101,14 +101,14 @@
                                 DefaultText="[[HTML]]"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Text="{Binding Path=Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}"
-                                AutomationProperties.AutomationId="{Binding AutomationID, StringFormat=UI_{0}_InputFormattxt_AutoID}">
+                                Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InputFormattxt_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.WebRequestResultHelpText}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
-                                     SourcePropertyValue="{Binding Result, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>

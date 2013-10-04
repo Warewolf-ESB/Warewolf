@@ -76,6 +76,12 @@
     <Compile Include="Designers2\Core\ActivityDesignerTemplate.cs" />
     <Compile Include="Designers2\Core\ActivityDesignerToggle.cs" />
     <Compile Include="Designers2\Core\Adorners\AdornerUtils.cs" />
+    <Compile Include="Designers2\Core\Controls\DatagridFocusOnLoadBehavior.cs" />
+    <Compile Include="Designers2\Core\Controls\Dev2DataGrid.xaml.cs">
+      <DependentUpon>Dev2DataGrid.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Core\Controls\Dev2DataGridMouseScrollBehavior.cs" />
     <Compile Include="Designers2\Core\Errors\ErrorsAdorner.xaml.cs">
       <DependentUpon>ErrorsAdorner.xaml</DependentUpon>
     </Compile>
@@ -176,6 +182,7 @@
     <EmbeddedResource Include="Designers2\Core\Help\HelpTextResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>HelpTextResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -243,6 +250,10 @@
       <Link>Themes\ActivityStyles.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Core\Controls\Dev2DataGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\Core\Errors\ErrorsAdorner.xaml">
       <SubType>Designer</SubType>

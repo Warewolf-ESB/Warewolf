@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Dev2.Activities.Designers2.Core.Controls;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Models.QuickVariableInput;
 using Dev2.UI;
@@ -250,7 +251,7 @@ namespace Dev2.Studio.ActivityDesigners
 
         void Resultsdg_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Resultsdg.RemoveRow();
+            Resultsdg.RemoveFirstDuplicateBlankRow();
 
             SetName();
         }

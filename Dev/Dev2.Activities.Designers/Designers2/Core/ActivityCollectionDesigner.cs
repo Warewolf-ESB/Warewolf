@@ -2,8 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
-using Caliburn.Micro;
-using EventTrigger = System.Windows.Interactivity.EventTrigger;
+using Dev2.Activities.Designers2.Core.Controls;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -13,6 +12,15 @@ namespace Dev2.Activities.Designers2.Core
     {
         MenuItem _insertRowMenuItem;
         MenuItem _deleteRowMenuItem;
+
+        Dev2DataGrid TheGrid
+        {
+            get
+            {
+                var activityDesignerTemplate = (ActivityDesignerTemplate)Content;
+                return activityDesignerTemplate.DataGrid;
+            }
+        }
 
         protected override void OnLoaded()
         {
@@ -43,13 +51,11 @@ namespace Dev2.Activities.Designers2.Core
         {
             var ctxMenu = new ContextMenu();
 
-            _insertRowMenuItem = CreateMenuItem("Insert Row");
-            var insertEvtTrigger = CreateEventTrigger("InsertItem");
-            Interaction.GetTriggers(_insertRowMenuItem).Add(insertEvtTrigger);
+            _insertRowMenuItem = new MenuItem { Header = "Insert Row" };
+            _insertRowMenuItem.Click += InsertDataGridRow;
 
-            _deleteRowMenuItem = CreateMenuItem("Delete Row");
-            var deleteEvtTrigger = CreateEventTrigger("DeleteItem");
-            Interaction.GetTriggers(_deleteRowMenuItem).Add(deleteEvtTrigger);
+            _deleteRowMenuItem = new MenuItem { Header = "Delete Row" };
+            _deleteRowMenuItem.Click += DeleteDataGridRow;
 
             ctxMenu.Items.Add(_insertRowMenuItem);
             ctxMenu.Items.Add(_deleteRowMenuItem);
@@ -57,28 +63,34 @@ namespace Dev2.Activities.Designers2.Core
             ContextMenu = ctxMenu;
         }
 
-        static EventTrigger CreateEventTrigger(string methodName)
+        protected void DeleteDataGridRow(object sender, RoutedEventArgs e)
         {
-            var m = new ActionMessage
+            var theGrid = TheGrid;
+            if(theGrid != null)
             {
-                MethodName = methodName
-            };
-            var evtTrigger = new EventTrigger
-            {
-                EventName = "Click"
-            };
-            evtTrigger.Actions.Add(m);
-            return evtTrigger;
+                theGrid.RemoveRow(TheGrid.SelectedIndex);
+                ViewModel.UpdateDisplayName();
+            }
         }
 
-        static MenuItem CreateMenuItem(string header)
+        protected void InsertDataGridRow(object sender, RoutedEventArgs e)
         {
-            var menuItem = new MenuItem
+            var theGrid = TheGrid;
+            if(theGrid != null)
             {
-                Header = header
-            };
+                theGrid.InsertRow(TheGrid.SelectedIndex);
+                ViewModel.UpdateDisplayName();
+            }
+        }
 
-            return menuItem;
+        protected void AddDataGridRow(object sender, RoutedEventArgs e)
+        {
+            var theGrid = TheGrid;
+            if(theGrid != null)
+            {
+                theGrid.AddRow();
+                ViewModel.UpdateDisplayName();
+            }
         }
     }
 }

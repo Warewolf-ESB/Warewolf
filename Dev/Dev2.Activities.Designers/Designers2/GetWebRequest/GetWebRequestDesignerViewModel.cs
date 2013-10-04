@@ -2,6 +2,7 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
@@ -37,9 +38,9 @@ namespace Dev2.Activities.Designers2.GetWebRequest
         public static readonly DependencyProperty IsUrlFocusedProperty =
             DependencyProperty.Register("IsUrlFocused", typeof(bool), typeof(GetWebRequestDesignerViewModel), new PropertyMetadata(false));
 
-        public string Url { get { return GetProperty<string>(); } set { SetProperty(value); ExtractVariables(); } }
-        public string Headers { get { return GetProperty<string>(); } set { SetProperty(value); ExtractVariables(); } }
-        public string Result { get { return GetProperty<string>(); } set { SetProperty(value); } }
+        // DO NOT bind to these properties - these are here for convenience only!!!
+        string Url { get { return GetProperty<string>(); } }
+        string Headers { get { return GetProperty<string>(); } }
 
         public override void Validate()
         {
@@ -54,6 +55,21 @@ namespace Dev2.Activities.Designers2.GetWebRequest
                 ValidateUrl(url);
             }
         }
+
+        #region Overrides of ActivityDesignerViewModel
+
+        protected override void OnModelItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch(e.PropertyName)
+            {
+                case "Url":
+                case "Headers":
+                    ExtractVariables();
+                    break;
+            }
+        }
+
+        #endregion
 
         void ExtractVariables()
         {
@@ -124,7 +140,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             {
                 if(v != null)
                 {
-                    var s = string.Empty;
+                    string s;
                     if(inputs != null)
                     {
                         var input = inputs.FirstOrDefault(p => p.Key == v);

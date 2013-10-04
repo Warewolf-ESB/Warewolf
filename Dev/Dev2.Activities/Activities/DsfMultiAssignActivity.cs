@@ -1,4 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Dev2;
 using Dev2.Activities;
@@ -10,11 +15,6 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Enums;
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -45,7 +45,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set
             {
                 _fieldsCollection = value;
-                OnPropertyChanged("FieldsCollection");
             }
         }
 
@@ -71,30 +70,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _fieldsCollection = new List<ActivityDTO>();
         }
 
-        #endregion        
+        #endregion
 
         #region Overridden NativeActivity Methods
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
-            base.CacheMetadata(metadata);            
+            base.CacheMetadata(metadata);
         }
 
         protected override void OnExecute(NativeActivityContext context)
         {
             _debugOutputs.Clear();
 
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();            
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             // 2012.11.05 : Travis.Frisinger - Added for Binary DataList -- Shape Input
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             toUpsert.IsDebug = (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke);
             toUpsert.ResourceID = dataObject.ResourceID;
-            
-            if (dataObject.IsDebug || dataObject.RemoteInvoke)
+
+            if(dataObject.IsDebug || dataObject.RemoteInvoke)
             {
-            DispatchDebugState(context, StateType.Before);
+                DispatchDebugState(context, StateType.Before);
             }
 
             ErrorResultTO errors = new ErrorResultTO();
@@ -103,15 +102,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                if (!errors.HasErrors())
+                if(!errors.HasErrors())
                 {
-                    for (int i = 0; i < FieldsCollection.Count; i++)
+                    for(int i = 0; i < FieldsCollection.Count; i++)
                     {
-                        if (!string.IsNullOrEmpty(FieldsCollection[i].FieldName))
+                        if(!string.IsNullOrEmpty(FieldsCollection[i].FieldName))
                         {
                             string eval = FieldsCollection[i].FieldValue;
 
-                            if (eval.StartsWith("@"))
+                            if(eval.StartsWith("@"))
                             {
                                 eval = GetEnviromentVariable(dataObject, context, eval);
                             }
@@ -119,15 +118,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             //2013.06.03: Ashley Lewis for bug 9498 - handle line breaks in multi assign
                             string[] openParts = Regex.Split(FieldsCollection[i].FieldName, @"\[\[");
                             string[] closeParts = Regex.Split(FieldsCollection[i].FieldName, @"\]\]");
-                            if (openParts.Count() == closeParts.Count() && openParts.Count() > 2 &&
+                            if(openParts.Count() == closeParts.Count() && openParts.Count() > 2 &&
                                 closeParts.Count() > 2)
                             {
-                                foreach (var newFieldName in openParts)
+                                foreach(var newFieldName in openParts)
                                 {
-                                    if (!string.IsNullOrEmpty(newFieldName))
+                                    if(!string.IsNullOrEmpty(newFieldName))
                                     {
                                         string cleanFieldName = null;
-                                        if (newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2 <
+                                        if(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2 <
                                             newFieldName.Length)
                                         {
                                             cleanFieldName = "[[" +
@@ -152,26 +151,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     compiler.Upsert(executionID, toUpsert, out errors);
 
-                    if (dataObject.IsDebugMode())
+                    if(dataObject.IsDebugMode())
                     {
                         int innerCount = 0;
-                        foreach (DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
-                        {                            
+                        foreach(DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
+                        {
                             AddDebugItem(debugOutputTO.TargetEntry, FieldsCollection[innerCount].FieldValue,
                                          debugOutputTO.FromEntry, executionID, innerCount,
                                          debugOutputTO.UsedRecordsetIndex, dataObject, context);
                             innerCount++;
-                            if (debugOutputTO.FromEntry != null)
+                            if(debugOutputTO.FromEntry != null)
                                 debugOutputTO.FromEntry.Dispose();
-                            if (debugOutputTO.TargetEntry != null)
+                            if(debugOutputTO.TargetEntry != null)
                                 debugOutputTO.TargetEntry.Dispose();
-                        }                                            
+                        }
                     }
                     allErrors.MergeErrors(errors);
                 }
 
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 ServerLogger.LogError(e);
                 allErrors.AddError(e.Message);
@@ -179,12 +178,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
                 // Handle Errors
-                if (allErrors.HasErrors())
+                if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfAssignActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context, StateType.After);
                 }
@@ -198,7 +197,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+            foreach(Tuple<string, string> t in updates)
             {
                 // locate all updates for this tuple
                 var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldValue) && c.FieldValue.Contains(t.Item1));
@@ -227,7 +226,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        #endregion        
+        #endregion
 
         #region Overridden ActivityAbstact Methods
 
@@ -237,7 +236,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
             string recordsetName = "FieldsCollection";
             result.TryCreateRecordsetTemplate(recordsetName, string.Empty, new List<Dev2Column>() { DataListFactory.CreateDev2Column("FieldName", string.Empty), DataListFactory.CreateDev2Column("FieldValue", string.Empty) }, true, out error);
-            foreach (ActivityDTO item in FieldsCollection)
+            foreach(ActivityDTO item in FieldsCollection)
             {
                 result.TryCreateRecordsetValue(item.FieldName, "FieldName", recordsetName, item.IndexNumber, out error);
                 result.TryCreateRecordsetValue(item.FieldValue, "FieldValue", recordsetName, item.IndexNumber, out error);
@@ -257,7 +256,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             IList<IDebugItem> invalidDebugItems = new List<IDebugItem>();
-            foreach (IDebugItem debugOutput in _debugOutputs)
+            foreach(IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
                 if(string.IsNullOrEmpty(debugOutput.FetchResultsList()[1].Value))
@@ -274,7 +273,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Get Inputs/Outputs
-       
+
         #region GetForEachInputs/Outputs
 
         public override IList<DsfForEachItem> GetForEachInputs()
@@ -284,7 +283,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             foreach(var item in FieldsCollection)
             {
                 if(!string.IsNullOrEmpty(item.FieldValue) && item.FieldValue.Contains("[["))
-        {
+                {
                     result.Add(new DsfForEachItem { Name = item.FieldName, Value = item.FieldValue });
                 }
             }
@@ -299,7 +298,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             foreach(var item in FieldsCollection)
             {
                 if(!string.IsNullOrEmpty(item.FieldName) && item.FieldName.Contains("[["))
-        {
+                {
                     result.Add(new DsfForEachItem { Name = item.FieldValue, Value = item.FieldName });
                 }
             }
@@ -314,17 +313,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public void RemoveItem()
         {
             List<int> BlankCount = new List<int>();
-            foreach (dynamic item in FieldsCollection)
+            foreach(dynamic item in FieldsCollection)
             {
-                if (String.IsNullOrEmpty(item.FieldName) && String.IsNullOrEmpty(item.FieldValue))
+                if(String.IsNullOrEmpty(item.FieldName) && String.IsNullOrEmpty(item.FieldValue))
                 {
                     BlankCount.Add(item.IndexNumber);
                 }
             }
-            if (BlankCount.Count > 1 && FieldsCollection.Count > 2)
+            if(BlankCount.Count > 1 && FieldsCollection.Count > 2)
             {
                 FieldsCollection.Remove(FieldsCollection[BlankCount[0] - 1]);
-                for (int i = BlankCount[0] - 1; i < FieldsCollection.Count; i++)
+                for(int i = BlankCount[0] - 1; i < FieldsCollection.Count; i++)
                 {
                     dynamic tmp = FieldsCollection[i] as dynamic;
                     tmp.IndexNumber = i + 1;
@@ -338,12 +337,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private string GetEnviromentVariable(IDSFDataObject dataObject, NativeActivityContext context, string eval)
         {
-            if (dataObject != null)
+            if(dataObject != null)
             {
                 string bookmarkName = Guid.NewGuid().ToString();
                 eval = eval.Replace("@Service", dataObject.ServiceName).Replace("@Instance", context.WorkflowInstanceId.ToString()).Replace("@Bookmark", bookmarkName).Replace("@AppPath", Directory.GetCurrentDirectory());
                 Uri hostUri = null;
-                if (Uri.TryCreate(ServiceHost, UriKind.Absolute, out hostUri))
+                if(Uri.TryCreate(ServiceHost, UriKind.Absolute, out hostUri))
                 {
                     eval = eval.Replace("@Host", ServiceHost);
                 }
@@ -354,14 +353,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void AddDebugItem(IBinaryDataListEntry fieldEntry, string fieldValue, IBinaryDataListEntry valueEntry, Guid executionId, int indexNumToUse, int rsIdx, IDSFDataObject dataObject, NativeActivityContext context)
         {
-            if (valueEntry != null)
+            if(valueEntry != null)
             {
-                if (fieldValue.Contains("@"))
+                if(fieldValue.Contains("@"))
                 {
                     string eval = GetEnviromentVariable(dataObject, context, fieldValue);
                     var results = CreateDebugItemsFromString(FieldsCollection[indexNumToUse].FieldName, FieldsCollection[indexNumToUse].FieldValue, DataListExecutionID.Get(context), indexNumToUse, enDev2ArgumentType.Output);
                     var itemToAdd = new DebugItem();
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexNumToUse+1).ToString(CultureInfo.InvariantCulture) });
+                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexNumToUse + 1).ToString(CultureInfo.InvariantCulture) });
                     results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
                     results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = eval });
                     itemToAdd.AddRange(results);
@@ -370,13 +369,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 else
                 {
                     var itemToAdd = new DebugItem();
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexNumToUse+1).ToString(CultureInfo.InvariantCulture) });
+                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexNumToUse + 1).ToString(CultureInfo.InvariantCulture) });
                     string fieldName = FieldsCollection[indexNumToUse].FieldName;
-                    if(fieldEntry != null && fieldEntry.IsRecordset && 
-                        (DataListUtil.GetRecordsetIndexType(FieldsCollection[indexNumToUse].FieldName) 
+                    if(fieldEntry != null && fieldEntry.IsRecordset &&
+                        (DataListUtil.GetRecordsetIndexType(FieldsCollection[indexNumToUse].FieldName)
                         == enRecordsetIndexType.Blank))
                     {
-                        fieldName = fieldName.Replace("().", string.Concat("(",rsIdx.ToString(CultureInfo.InvariantCulture),")."));
+                        fieldName = fieldName.Replace("().", string.Concat("(", rsIdx.ToString(CultureInfo.InvariantCulture), ")."));
                     }
                     itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = fieldName });
                     itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });

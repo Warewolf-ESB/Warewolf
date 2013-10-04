@@ -31,27 +31,12 @@ namespace Dev2.Activities.Designers2.Core
             });
         }
 
-        public abstract ICommand DeleteItemCommand { get; }
+        public abstract void UpdateDisplayName();
 
-        protected abstract string CollectionName { get; }
+        public abstract string CollectionName { get; }
 
-        public object SelectedValue
-        {
-            get { return GetValue(SelectedValueProperty); }
-            set { SetValue(SelectedValueProperty, value); }
-        }
+        protected abstract void AddToCollection(IEnumerable<string> source, bool overWrite);
 
-        public static readonly DependencyProperty SelectedValueProperty =
-            DependencyProperty.Register("SelectedValue", typeof(object), typeof(ActivityCollectionDesignerViewModel), new PropertyMetadata(null));
-
-        public int SelectedIndex
-        {
-            get { return (int)GetValue(SelectedIndexProperty); }
-            set { SetValue(SelectedIndexProperty, value); }
-        }
-
-        public static readonly DependencyProperty SelectedIndexProperty =
-            DependencyProperty.Register("SelectedIndex", typeof(int), typeof(ActivityCollectionDesignerViewModel), new PropertyMetadata(-1));
         public QuickVariableInputViewModel QuickVariableInputViewModel
         {
             get { return (QuickVariableInputViewModel)GetValue(QuickVariableInputViewModelProperty); }
@@ -70,7 +55,7 @@ namespace Dev2.Activities.Designers2.Core
         public static readonly DependencyProperty ShowQuickVariableInputProperty =
             DependencyProperty.Register("ShowQuickVariableInput", typeof(bool), typeof(ActivityCollectionDesignerViewModel), new PropertyMetadata(false, OnTitleBarToggleChanged));
 
-        protected override bool ShowSmall
+        public override bool ShowSmall
         {
             get
             {
@@ -133,7 +118,5 @@ namespace Dev2.Activities.Designers2.Core
                 );
             TitleBarToggles.Add(toggle);
         }
-
-        protected abstract void AddToCollection(IEnumerable<string> source, bool overWrite);
     }
 }

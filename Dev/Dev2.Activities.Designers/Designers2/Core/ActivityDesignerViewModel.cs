@@ -13,14 +13,18 @@ using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Utils;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    public abstract class ActivityDesignerViewModel : DependencyObject, INotifyPropertyChanged, IClosable, IHelpSource, IValidator, IErrorsSource
+    /// <summary>
+    /// <remarks>
+    /// <strong>DO NOT</strong> bind to properties that use <see cref="GetProperty{T}"/> and <see cref="SetProperty{T}"/>.
+    /// Rather bind to <see cref="ModelItem"/>.PropertyName - this will ensure that the built-in undo/redo framework just works.
+    /// </remarks>
+    /// </summary>
+    public abstract class ActivityDesignerViewModel : DependencyObject, IClosable, IHelpSource, IValidator, IErrorsSource
     {
         static Action<Type> CreateShowExampleWorkflowAction()
         {
@@ -40,6 +44,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             VerifyArgument.IsNotNull("modelItem", modelItem);
             _modelItem = modelItem;
+            _modelItem.PropertyChanged += OnModelItemPropertyChanged;
 
             VerifyArgument.IsNotNull("showExampleWorkflow", showExampleWorkflow);
 
@@ -64,6 +69,8 @@ namespace Dev2.Activities.Designers2.Core
                 Converter = new NegateBooleanConverter()
             });
         }
+
+        public ModelItem ModelItem { get { return _modelItem; } }
 
         public ICommand ShowItemHelpCommand { get; private set; }
 
@@ -210,25 +217,6 @@ namespace Dev2.Activities.Designers2.Core
 
         public string PreviousView { get; set; }
 
-        public string DisplayName { get { return GetProperty<string>(); } set { SetProperty(value); } }
-
-        public string AutomationID { get { return GetProperty<string>(); } set { SetProperty(value); } }
-
-        #region PropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if(handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
-
         public void Expand()
         {
             ShowLarge = true;
@@ -242,6 +230,10 @@ namespace Dev2.Activities.Designers2.Core
         public virtual void Restore()
         {
             ShowLarge = PreviousView == ShowLargeProperty.Name;
+        }
+
+        protected virtual void OnModelItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
         }
 
         protected void AddTitleBarHelpToggle()
@@ -274,7 +266,7 @@ namespace Dev2.Activities.Designers2.Core
 
         bool IsSelectedOrMouseOver { get { return IsSelected || IsMouseOver; } }
 
-        protected virtual bool ShowSmall { get { return !ShowLarge; } }
+        public virtual bool ShowSmall { get { return !ShowLarge; } }
 
         protected static void OnTitleBarToggleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -304,21 +296,26 @@ namespace Dev2.Activities.Designers2.Core
             ZIndexPosition = isSelectedOrMouseOver ? ZIndexPosition.Front : ZIndexPosition.Back;
         }
 
+        protected string DisplayName { get { return GetProperty<string>(); } set { SetProperty(value); } }
+
         #region Get/SetProperty
 
+        /// <summary>
+        /// <remarks><strong>DO NOT</strong> bind to properties that use this - use <see cref="ModelItem"/>.PropertyName instead!</remarks>
+        /// </summary>
         protected T GetProperty<T>([CallerMemberName] string propertyName = null)
             where T : class
         {
             return _modelItem.GetProperty(propertyName) as T;
         }
 
+        /// <summary>
+        /// <remarks><strong>DO NOT</strong> bind to properties that use this - use <see cref="ModelItem"/>.PropertyName instead!</remarks>
+        /// </summary>
         protected void SetProperty<T>(T value, [CallerMemberName] string propertyName = null)
             where T : class
         {
             _modelItem.SetProperty(propertyName, value);
-            // ReSharper disable ExplicitCallerInfoArgument
-            OnPropertyChanged(propertyName);
-            // ReSharper restore ExplicitCallerInfoArgument
         }
 
         #endregion

@@ -140,7 +140,7 @@
                               AutomationProperties.Name="DisplayName"
                               AutomationProperties.AutomationId="DisplayNameBox"
                               Visibility="Collapsed"
-                              Text="{Binding DisplayName}"
+                              Text="{Binding ModelItem.DisplayName}"
                               MaxWidth="{Binding Path=ActualWidth,ElementName=DisplayNameWidthSetter}"
                               Background="{x:Null}"
                               BorderBrush="{x:Null}">
@@ -156,8 +156,8 @@
                                  IsTabStop="True">
                         <TextBlock MinWidth="20"
                                    MaxWidth="{Binding Path=ActualWidth,ElementName=DisplayNameWidthSetter}"
-                                   Text="{Binding DisplayName}"
-                                   ToolTip="{Binding DisplayName}"
+                                   Text="{Binding ModelItem.DisplayName}"
+                                   ToolTip="{Binding ModelItem.DisplayName}"
                                    TextTrimming="CharacterEllipsis"
                                    TextWrapping="NoWrap"
                                    Background="{x:Null}" />
@@ -341,4 +341,6 @@
             <Trigger Property="IsEnabled" Value="True" />
         </Style.Triggers>
     </Style>
+    
+ 
 </ResourceDictionary>

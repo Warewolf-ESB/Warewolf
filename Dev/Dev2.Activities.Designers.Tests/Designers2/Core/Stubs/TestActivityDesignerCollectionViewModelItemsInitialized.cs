@@ -5,11 +5,13 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.Designers2.Core.Stubs
 {
-    public class ActivityDesignerCollectionViewModelDerived : ActivityCollectionDesignerViewModel<ActivityDTO>
+    public class TestActivityDesignerCollectionViewModelItemsInitialized: ActivityCollectionDesignerViewModel<ActivityDTO>
     {
-        public ActivityDesignerCollectionViewModelDerived(ModelItem modelItem)
+        public TestActivityDesignerCollectionViewModelItemsInitialized(ModelItem modelItem)
             : base(modelItem)
         {
+            dynamic mi = ModelItem;
+            InitializeItems(mi.FieldsCollection);
         }
 
         public override string CollectionName { get { return "FieldsCollection"; } }
@@ -19,5 +21,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Stubs
             AddTitleBarQuickVariableInputToggle();
         }
 
+        public void TestAddToCollection(IEnumerable<string> source, bool overwrite)
+        {
+            AddToCollection(source, overwrite);
+        }
     }
 }

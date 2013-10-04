@@ -3,7 +3,6 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Data;
-using Caliburn.Micro;
 using Dev2.Activities.Designers.Tests.Designers2.Core.Stubs;
 using Dev2.Activities.Designers2.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -435,28 +434,6 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             //------------Assert Results-------------------------
             Assert.IsNotNull(showExampleType);
             Assert.AreEqual(mockModelItem.Object.ItemType, showExampleType);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ActivityDesignerViewModel_SetProperty")]
-        public void ActivityDesignerViewModel_SetProperty_FiresPropertyChangedWithCallerMemberName()
-        {
-            //------------Setup for test--------------------------
-            string propertyName = null;
-            var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
-
-            viewModel.PropertyChanged += (sender, args) =>
-            {
-                propertyName = args.PropertyName;
-            };
-
-            //------------Execute Test---------------------------
-            viewModel.DisplayName = "test";
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual("DisplayName", propertyName);
         }
 
         static Mock<ModelItem> GenerateMockModelItem()

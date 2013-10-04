@@ -138,13 +138,6 @@
   <ItemGroup>
     <Compile Include="Account\UserAccountProviderTests.cs" />
     <Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
-    <Compile Include="Activities\Stubs\TestActivity.cs" />
-    <Compile Include="Activities\Stubs\ViewModel Stubs\TestActivityCollectionViewModelBase.cs" />
-    <Compile Include="Activities\Stubs\Designer Stubs\testActivityDesigner.cs" />
-    <Compile Include="Activities\Stubs\ViewModel Stubs\TestActivityViewModel.cs" />
-    <Compile Include="Activities\Stubs\ViewModel Stubs\TestActivityViewModelBase.cs" />
-    <Compile Include="Activities\Stubs\Behaviour Stubs\testDataGridFocusTextOnLoadBehavior.cs" />
-    <Compile Include="Activities\Stubs\ViewModel Stubs\TestDsfMultiAssignActivityViewModel.cs" />
     <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehaviorTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserHandlerTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserPopupControllerTests.cs" />
@@ -402,7 +395,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Account\NewFolder1\" />
-    <Folder Include="Activities\Stubs\Template Stubs\" />
     <Folder Include="Diagnostics\Debug\" />
   </ItemGroup>
   <ItemGroup>

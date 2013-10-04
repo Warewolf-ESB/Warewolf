@@ -6,6 +6,7 @@ namespace Dev2.Activities.Designers2.MultiAssign
         public Large()
         {
             InitializeComponent();
+            DataGrid = LargeDataGrid;
         }
     }
 }

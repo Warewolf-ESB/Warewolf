@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using Dev2.DataList;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
@@ -11,13 +9,13 @@ using Dev2.Util;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public class FindRecordsTO : INotifyPropertyChanged, IDev2TOFn, IPerformsValidation
+    public class FindRecordsTO : IDev2TOFn, IPerformsValidation
     {
         int _indexNum;
         string _searchType;
         bool _isSearchCriteriaEnabled;
         [NonSerialized]
-        readonly IList<string> _requiresSearchCriteria = new List<string> { "Not Contains" ,"Contains" ,"Equal" ,"Not Equal" ,"Ends With" ,"Starts With" ,"Regex" ,">" ,"<","<=",">=" };
+        readonly IList<string> _requiresSearchCriteria = new List<string> { "Not Contains", "Contains", "Equal", "Not Equal", "Ends With", "Starts With", "Regex", ">", "<", "<=", ">=" };
 
         string _searchCriteria;
         Dictionary<string, List<IActionableErrorInfo>> _errors = new Dictionary<string, List<IActionableErrorInfo>>();
@@ -26,6 +24,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             : this("Match On", "Equal", 0)
         {
         }
+
+        // TODO: Remove WhereOptionList property - DO NOT USE FOR BINDING, USE VIEWMODEL PROPERTY INSTEAD!
         public IList<string> WhereOptionList { get; set; }
         public FindRecordsTO(string searchCriteria, string searchType, int indexNum, bool include = false, bool inserted = false)
         {
@@ -34,7 +34,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             SearchType = searchType;
             IndexNumber = indexNum;
             IsSearchCriteriaEnabled = false;
-            WhereOptionList = FindRecsetOptions.FindAll().Select(c => c.HandlesType()).OrderBy(c => c).ToList();
         }
 
         [FindMissing]
@@ -110,7 +109,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
+            if(PropertyChanged != null)
             {
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -118,7 +117,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanRemove()
         {
-            if (string.IsNullOrEmpty(SearchCriteria) && string.IsNullOrEmpty(SearchType))
+            if(string.IsNullOrEmpty(SearchCriteria) && string.IsNullOrEmpty(SearchType))
             {
                 return true;
             }

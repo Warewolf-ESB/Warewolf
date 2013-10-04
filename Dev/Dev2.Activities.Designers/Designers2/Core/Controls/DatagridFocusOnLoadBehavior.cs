@@ -1,35 +1,24 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 using Dev2.Studio.AppResources.ExtensionMethods;
 
-namespace Dev2.CustomControls.Behavior
+namespace Dev2.Activities.Designers2.Core.Controls
 {
     public class DatagridFocusOnLoadBehavior : Behavior<DataGrid>
     {
-        private int _count = 0;
+        private int _count;
         protected override void OnAttached()
         {
             base.OnAttached();
             AssociatedObject.Loaded += AssociatedObjectOnLoaded;
-            AssociatedObject.LoadingRow += AssociatedObjectOnLoadingRow;
-
-            //AssociatedObject.InitializingNewItem += AssociatedObjectOnInitializingNewItem;
-        }
-
-        void AssociatedObjectOnLoadingRow(object sender, DataGridRowEventArgs args)
-        {
-            
         }
 
         protected override void OnDetaching()
         {
             base.OnDetaching();
             AssociatedObject.Loaded -= AssociatedObjectOnLoaded;
-            AssociatedObject.LoadingRow -= AssociatedObjectOnLoadingRow;
-            //AssociatedObject.InitializingNewItem -= AssociatedObjectOnInitializingNewItem;
         }
 
         private void AssociatedObjectOnLoaded(object sender, RoutedEventArgs routedEventArgs)
@@ -50,16 +39,6 @@ namespace Dev2.CustomControls.Behavior
                             _count++;
                         }
                     };
-            }
-        }
-
-        void AssociatedObjectOnInitializingNewItem(object sender, InitializingNewItemEventArgs args)
-        {
-            var txtBox = AssociatedObject.Columns[0].GetCellContent(args.NewItem);
-            var txt = txtBox.FindVisualChildren<TextBox>().FirstOrDefault();
-            if(txt != null)
-            {
-                txt.Focus();
             }
         }
     }

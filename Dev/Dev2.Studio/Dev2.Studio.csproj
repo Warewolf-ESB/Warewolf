@@ -312,7 +312,6 @@
     <Compile Include="AppResources\Behaviors\BringIntoViewWhenSelectedBehavior.cs" />
     <Compile Include="AppResources\Behaviors\ButtonPopupWorkaroundBehavior.cs" />
     <Compile Include="AppResources\Behaviors\TextboxSetFocusOnCreationBehavior.cs" />
-    <Compile Include="AppResources\Behaviors\DataGridMouseScrollBehavior.cs" />
     <Compile Include="AppResources\Behaviors\NavigationItemViewModelDeployHighlightingBehavior.cs" />
     <Compile Include="AppResources\Behaviors\NavigationItemViewModelDragDropBehavior.cs" />
     <Compile Include="AppResources\Behaviors\NavigationItemViewModelMouseDownBehavior.cs" />
@@ -346,9 +345,6 @@
     <Compile Include="Controller\ProcessController.cs" />
     <Compile Include="CustomControls\Connections\ConnectControlViewModel.cs" />
     <Compile Include="CustomControls\Connections\IConnectControl.cs" />
-    <Compile Include="CustomControls\Dev2DataGrid.xaml.cs">
-      <DependentUpon>Dev2DataGrid.xaml</DependentUpon>
-    </Compile>
     <Compile Include="CustomControls\Dev2StatusBar.cs" />
     <Compile Include="CustomControls\Progress\Dev2WebClient.cs" />
     <Compile Include="CustomControls\Progress\IDev2WebClient.cs" />
@@ -841,10 +837,6 @@
     <Page Include="CustomControls\Connections\ConnectControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControls\Dev2DataGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="CustomControls\Progress\ProgressDialog.xaml">
       <SubType>Designer</SubType>

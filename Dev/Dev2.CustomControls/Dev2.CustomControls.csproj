@@ -81,7 +81,6 @@
     <Compile Include="Adorners\DragAdorner.cs" />
     <Compile Include="Behavior\DataGridColumnSizeSynchronizationBehavior.cs" />
     <Compile Include="Behavior\DataGridWatermarkModifier.cs" />
-    <Compile Include="Behavior\DatagridFocusOnLoadBehavior.cs" />
     <Compile Include="Behavior\ThumbResizeBehavior.cs" />
     <Compile Include="Behavior\VisibilityChangedToFocusBehavior.cs" />
     <Compile Include="Converters\EmptyStringToBoolConverter.cs" />

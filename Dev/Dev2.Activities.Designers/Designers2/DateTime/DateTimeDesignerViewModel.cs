@@ -41,12 +41,9 @@ namespace Dev2.Activities.Designers2.DateTime
             viewModel.TimeModifierType = value;
         }
 
-        public string DateTime { get { return GetProperty<string>(); } set { SetProperty(value); } }
-        public string InputFormat { get { return GetProperty<string>(); } set { SetProperty(value); } }
-        public string TimeModifierType { get { return GetProperty<string>(); } set { SetProperty(value); } }
-        public string TimeModifierAmountDisplay { get { return GetProperty<string>(); } set { SetProperty(value); } }
-        public string OutputFormat { get { return GetProperty<string>(); } set { SetProperty(value); } }
-        public string Result { get { return GetProperty<string>(); } set { SetProperty(value); } }
+        // DO NOT bind to these properties - these are here for convenience only!!!
+        string TimeModifierType { set { SetProperty(value); } }
+        string TimeModifierAmountDisplay { set { SetProperty(value); } }
 
         public override void Validate()
         {

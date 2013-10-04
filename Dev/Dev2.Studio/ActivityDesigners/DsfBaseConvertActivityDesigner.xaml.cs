@@ -1,12 +1,4 @@
-﻿using Dev2;
-using Dev2.Common;
-using Dev2.Converters;
-using Dev2.Interfaces;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.Models.QuickVariableInput;
-using Dev2.UI;
-using System;
+﻿using System;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.View;
@@ -16,6 +8,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Dev2;
+using Dev2.Activities.Designers2.Core.Controls;
+using Dev2.Common;
+using Dev2.Converters;
+using Dev2.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Models.QuickVariableInput;
+using Dev2.UI;
 using Dev2.Util.ExtensionMethods;
 using Dev2.ViewModels.QuickVariableInput;
 
@@ -107,14 +107,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             Context.Items.Subscribe<Selection>(SelectionChanged);
 
-            if (!_isRegistered)
+            if(!_isRegistered)
             {
                 //mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.DataListItemSelected, input => Highlight(input as IDataListItemModel));
             }
             _convertCollection = newItem;
             activity = newItem as ModelItem;
 
-            if (_convertCollection.ConvertCollection == null || _convertCollection.ConvertCollection.Count <= 0)
+            if(_convertCollection.ConvertCollection == null || _convertCollection.ConvertCollection.Count <= 0)
             {
                 _convertCollection.ConvertCollection.Add(new BaseConvertTO("", "Text", "Base 64", "", 1));
                 _convertCollection.ConvertCollection.Add(new BaseConvertTO("", "Text", "Base 64", "", 2));
@@ -123,9 +123,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             ModelItem parent = activity.Parent;
 
-            while (parent != null)
+            while(parent != null)
             {
-                if (parent.Properties["Argument"] != null)
+                if(parent.Properties["Argument"] != null)
                 {
                     break;
                 }
@@ -185,9 +185,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         string createDisplayName()
         {
             string currentName = activity.Properties["DisplayName"].ComputedValue as string;
-            if (currentName.Contains("(") && currentName.Contains(")"))
+            if(currentName.Contains("(") && currentName.Contains(")"))
             {
-                if (currentName.Contains(" ("))
+                if(currentName.Contains(" ("))
                 {
                     currentName = currentName.Remove(currentName.IndexOf(" ("));
                 }
@@ -213,17 +213,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void SetValuetxt_KeyUp(object sender, KeyEventArgs e)
         {
             List<BaseConvertTO> collection = ModelItem.Properties["ConvertCollection"].ComputedValue as List<BaseConvertTO>;
-            if (collection != null)
+            if(collection != null)
             {
                 int result = -1;
                 BaseConvertTO lastItem = collection.LastOrDefault(c => c.FromExpression != string.Empty);
-                if (lastItem != null)
+                if(lastItem != null)
                 {
                     result = collection.IndexOf(lastItem) + 2;
 
-                    if (result > -1)
+                    if(result > -1)
                     {
-                        while (collection.Count > result)
+                        while(collection.Count > result)
                         {
                             Resultsdg.RemoveRow(collection.Count - 1);
                         }
@@ -240,9 +240,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ComboBox cbx = sender as ComboBox;
             dynamic temp = cbx.DataContext;
             string selectedVal = temp.ConvertType;
-            if (cbx != null)
+            if(cbx != null)
             {
-                if (cbx.Items.Count == 0)
+                if(cbx.Items.Count == 0)
                 {
                     cbx.ItemsSource = Dev2EnumConverter.ConvertEnumsTypeToStringList<enDev2BaseConvertType>();
                 }
@@ -263,7 +263,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void ContextMenu_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
-            if (e.Source.GetType() == typeof(Dev2DataGrid))
+            if(e.Source.GetType() == typeof(Dev2DataGrid))
             {
                 ShowRightClickOptions = true;
             }
@@ -284,14 +284,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             IInputElement inputElement = sender as IInputElement;
-            if (inputElement == null)
+            if(inputElement == null)
             {
                 return;
             }
 
             Mouse.Capture(sender as IInputElement, CaptureMode.SubTree);
 
-            if (_workflowDesignerSelection != null && _workflowDesignerSelection.SelectedObjects.FirstOrDefault() != ModelItem)
+            if(_workflowDesignerSelection != null && _workflowDesignerSelection.SelectedObjects.FirstOrDefault() != ModelItem)
             {
                 Selection.SelectOnly(Context, ModelItem);
             }
@@ -304,7 +304,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void UIElement_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             IInputElement inputElement = sender as IInputElement;
-            if (inputElement == null)
+            if(inputElement == null)
             {
                 return;
             }
@@ -317,7 +317,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void UIElement_OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
             IInputElement inputElement = sender as IInputElement;
-            if (inputElement == null)
+            if(inputElement == null)
             {
                 return;
             }
@@ -326,7 +326,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             double xDelta = Math.Abs(tempPoint.X - _mousedownPoint.X);
             double yDelta = Math.Abs(tempPoint.Y - _mousedownPoint.Y);
 
-            if (e.LeftButton == MouseButtonState.Pressed && _startManualDrag && Math.Max(xDelta, yDelta) >= 5)
+            if(e.LeftButton == MouseButtonState.Pressed && _startManualDrag && Math.Max(xDelta, yDelta) >= 5)
             {
                 DragDropHelper.DoDragMove(this, e.GetPosition(this));
                 _startManualDrag = false;
@@ -351,14 +351,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             //BringToFront();
             ShowAdorners = true;
-            }
+        }
 
         private void BringToFront()
         {
             try
             {
                 var fElement = VisualTreeHelper.GetParent(this) as FrameworkElement;
-                if (fElement != null)
+                if(fElement != null)
                 {
                     fElement.BringToFront();
                 }
@@ -370,27 +370,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void HideAdorners(bool forceHide = false)
         {
-            if ((!IsAdornerOpen || forceHide) && !IsSelected)
-        {
-            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
-            if (uiElement != null)
+            if((!IsAdornerOpen || forceHide) && !IsSelected)
             {
-                Panel.SetZIndex(uiElement, int.MinValue);
-            }
+                UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+                if(uiElement != null)
+                {
+                    Panel.SetZIndex(uiElement, int.MinValue);
+                }
 
-            ShowAdorners = false;
+                ShowAdorners = false;
                 IsAdornerOpen = false;
             }
         }
 
         void DsfBaseConvertActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if(e.LeftButton == MouseButtonState.Pressed)
             {
                 HideAdorners(true);
-        }
+            }
             else
-                {
+            {
                 ShowAllAdorners();
             }
         }
@@ -399,9 +399,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             _workflowDesignerSelection = item;
 
-            if (_workflowDesignerSelection != null)
+            if(_workflowDesignerSelection != null)
             {
-                if (_workflowDesignerSelection.PrimarySelection == ModelItem)
+                if(_workflowDesignerSelection.PrimarySelection == ModelItem)
                 {
                     IsSelected = true;
                     BringToFront();

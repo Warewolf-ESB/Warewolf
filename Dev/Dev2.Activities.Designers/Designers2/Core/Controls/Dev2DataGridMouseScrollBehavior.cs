@@ -1,14 +1,13 @@
-﻿using Dev2.Studio.CustomControls;
-using Dev2.UI;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
+using Dev2.UI;
 
-namespace Dev2.Studio.AppResources.Behaviors
+namespace Dev2.Activities.Designers2.Core.Controls
 {
-    public class DataGridMouseScrollBehavior : Behavior<Dev2DataGrid>
+    public class Dev2DataGridMouseScrollBehavior : Behavior<Dev2DataGrid>
     {
         #region Override Methods
 
@@ -48,7 +47,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         // Using a DependencyProperty as the backing store for TargetElement.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TargetElementProperty =
-            DependencyProperty.Register("TargetElement", typeof(FrameworkElement), typeof(DataGridMouseScrollBehavior), new PropertyMetadata(null));
+            DependencyProperty.Register("TargetElement", typeof(FrameworkElement), typeof(Dev2DataGridMouseScrollBehavior), new PropertyMetadata(null));
 
         #endregion TargetElement
 
@@ -65,10 +64,10 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         void AssociatedObject_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is Dev2DataGrid)
+            if(sender is Dev2DataGrid)
             {
-                Dev2DataGrid grid = (sender as Dev2DataGrid);
-                if (grid.SelectedItem != null && grid.SelectedIndex != -1)
+                var grid = (sender as Dev2DataGrid);
+                if(grid.SelectedItem != null && grid.SelectedIndex != -1)
                 {
                     grid.Dispatcher.BeginInvoke(
                         new Action(() =>
@@ -76,9 +75,9 @@ namespace Dev2.Studio.AppResources.Behaviors
                                 grid.UpdateLayout();
                                 try
                                 {
-                                    if (e.RemovedItems != null && e.AddedItems != null && !Equals(e.RemovedItems, e.AddedItems)) grid.ScrollIntoView(grid.SelectedItem);
+                                    if(e.RemovedItems != null && e.AddedItems != null && !Equals(e.RemovedItems, e.AddedItems)) grid.ScrollIntoView(grid.SelectedItem);
                                 }
-                                catch (NullReferenceException)
+                                catch(NullReferenceException)
                                 {
                                     //Todo log exception
                                     //throw subtypedexception - ExpectedException or something
@@ -90,19 +89,19 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void AssociatedObject_doCustomScroll(object sender, MouseWheelEventArgs e)
         {
-            Dev2DataGrid theGrid = (sender as Dev2DataGrid);
+            var theGrid = (sender as Dev2DataGrid);
 
-            if (theGrid == null)
+            if(theGrid == null)
             {
                 return;
             }
 
-            if (e.Delta > 0 && theGrid.SelectedIndex >= 0)
+            if(e.Delta > 0 && theGrid.SelectedIndex >= 0)
             {
                 theGrid.Focus();
                 theGrid.SelectedIndex--;
             }
-            else if (e.Delta < 0 && theGrid.SelectedIndex < theGrid.Items.Count)
+            else if(e.Delta < 0 && theGrid.SelectedIndex < theGrid.Items.Count)
             {
                 theGrid.Focus();
                 theGrid.SelectedIndex++;
@@ -112,8 +111,8 @@ namespace Dev2.Studio.AppResources.Behaviors
                 // Mouse was not scrolled
                 return;
             }
-            if (theGrid.SelectedIndex < 0) theGrid.SelectedIndex = 0;
-            else if (theGrid.SelectedIndex > theGrid.Items.Count) theGrid.SelectedIndex = theGrid.Items.Count;// Out of bounds not allowed
+            if(theGrid.SelectedIndex < 0) theGrid.SelectedIndex = 0;
+            else if(theGrid.SelectedIndex > theGrid.Items.Count) theGrid.SelectedIndex = theGrid.Items.Count;// Out of bounds not allowed
         }
 
         #endregion Event Handlers

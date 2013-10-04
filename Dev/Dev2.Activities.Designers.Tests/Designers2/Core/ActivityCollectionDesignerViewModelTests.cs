@@ -1,10 +1,10 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Windows;
 using System.Windows.Data;
 using Dev2.Activities.Designers.Tests.Designers2.Core.Stubs;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Providers.Errors;
+using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
@@ -23,28 +23,28 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         // ReSharper restore InconsistentNaming
         {
             //init
-            const string ExpectedCollectionName = "FieldsCollection";
-            var collectionNameProp = new Mock<ModelProperty>();
-            var dtoListProp = new Mock<ModelProperty>();
-            var displayNameProp = new Mock<ModelProperty>();
-            var properties = new Dictionary<string, Mock<ModelProperty>>();
-            var propertyCollection = new Mock<ModelPropertyCollection>();
-            var mockModel = new Mock<ModelItem>();
+            //const string ExpectedCollectionName = "FieldsCollection";
+            //var collectionNameProp = new Mock<ModelProperty>();
+            //var dtoListProp = new Mock<ModelProperty>();
+            //var displayNameProp = new Mock<ModelProperty>();
+            //var properties = new Dictionary<string, Mock<ModelProperty>>();
+            //var propertyCollection = new Mock<ModelPropertyCollection>();
+            //var mockModel = new Mock<ModelItem>();
 
-            collectionNameProp.Setup(p => p.ComputedValue).Returns(ExpectedCollectionName);
-            dtoListProp.Setup(p => p.ComputedValue).Returns(new List<ActivityDTO>());
-            displayNameProp.Setup(p => p.ComputedValue).Returns("Test Display Name");
-            properties.Add("CollectionName", collectionNameProp);
-            propertyCollection.Protected().Setup<ModelProperty>("Find", "CollectionName", true).Returns(collectionNameProp.Object);
-            propertyCollection.Protected().Setup<ModelProperty>("Find", ExpectedCollectionName, true).Returns(dtoListProp.Object);
-            propertyCollection.Protected().Setup<ModelProperty>("Find", "DisplayName", true).Returns(displayNameProp.Object);
-            mockModel.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            //collectionNameProp.Setup(p => p.ComputedValue).Returns(ExpectedCollectionName);
+            //dtoListProp.Setup(p => p.ComputedValue).Returns(new List<ActivityDTO>());
+            //displayNameProp.Setup(p => p.ComputedValue).Returns("Test Display Name");
+            //properties.Add("CollectionName", collectionNameProp);
+            //propertyCollection.Protected().Setup<ModelProperty>("Find", "CollectionName", true).Returns(collectionNameProp.Object);
+            //propertyCollection.Protected().Setup<ModelProperty>("Find", ExpectedCollectionName, true).Returns(dtoListProp.Object);
+            //propertyCollection.Protected().Setup<ModelProperty>("Find", "DisplayName", true).Returns(displayNameProp.Object);
+            //mockModel.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
             //exe
-            var vm = new TestActivityCollectionDesignerViewModel<ActivityDTO>(mockModel.Object);
+            var vm = new TestActivityDesignerCollectionViewModelItemsInitialized(CreateModelItem(0));
 
             //assert
-            Assert.AreEqual(2, vm.Items.Count, "Collection view model base cannot initialized 2 blank rows from a model item with no rows");
+            Assert.AreEqual(2, vm.ItemCount, "Collection view model base cannot initialized 2 blank rows from a model item with no rows");
             Assert.IsInstanceOfType(vm, typeof(ActivityCollectionDesignerViewModel), "Collection view model base cannot initialize");
         }
 
@@ -58,119 +58,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Assert.IsNotNull(collectionsViewModel.QuickVariableInputViewModel);
         }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ActivityCollectionDesignerViewModel_Constructor")]
-        public void ActivityCollectionDesignerViewModel_Constructor_ValidModelItem_TwoItemsAreAddedToBackingCollection()
-        {
-            var mockModelItem = GenerateMockModelItem();
-            var collectionsViewModel = new ActivityDesignerCollectionViewModelDerived(mockModelItem.Object);
-            Assert.AreEqual(2, collectionsViewModel.Items.Count);
-        }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ActivityCollectionDesignerViewModel_AddRows")]
-        public void ActivityCollectionDesignerViewModel_AddRows_FieldNameAndFieldValueAreNotNull_ItemsCountIsIncremented()
-        {
-            var mockModelItem = GenerateMockModelItem();
-            var collectionsViewModel = new ActivityDesignerCollectionViewModelDerived(mockModelItem.Object);
-            collectionsViewModel.AddRows(new RoutedEventArgs());
-            Assert.AreEqual(3, collectionsViewModel.Items.Count);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ActivityCollectionDesignerViewModel_DeleteItem")]
-        public void ActivityCollectionDesignerViewModel_DeleteItem_NothingIsSelected_NothingIsDeleted()
-        {
-            var mockModelItem = GenerateMockModelItem();
-            var collectionsViewModel = new ActivityDesignerCollectionViewModelDerived(mockModelItem.Object);
-            collectionsViewModel.AddRow();
-            var count = collectionsViewModel.Items.Count;
-            collectionsViewModel.SelectedIndex = -1;
-            collectionsViewModel.DeleteItem();
-            Assert.AreEqual(3, count);
-            Assert.AreEqual(3, collectionsViewModel.Items.Count);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ActivityCollectionDesignerViewModel_DeleteItem")]
-        public void ActivityCollectionDesignerViewModel_DeleteItem_AnItemIsSelected_AnItemIsDeleted()
-        {
-            var mockModelItem = GenerateMockModelItem();
-            var collectionsViewModel = new ActivityDesignerCollectionViewModelDerived(mockModelItem.Object);
-            collectionsViewModel.AddRow();
-            var count = collectionsViewModel.Items.Count;
-            collectionsViewModel.SelectedIndex = 1;
-            collectionsViewModel.DeleteItem();
-            Assert.AreEqual(3, count);
-            Assert.AreEqual(2, collectionsViewModel.Items.Count);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ActivityCollectionDesignerViewModel_DeleteItem")]
-        public void ActivityCollectionDesignerViewModel_DeleteItem_DeletesItemAndAddAnEmptyRow()
-        {
-            var mockModelItem = GenerateMockModelItem();
-            var collectionsViewModel = new ActivityDesignerCollectionViewModelDerived(mockModelItem.Object);
-            var count = collectionsViewModel.Items.Count;
-            collectionsViewModel.SelectedIndex = 0;
-            collectionsViewModel.DeleteItem();
-            Assert.AreEqual(2, count);
-            Assert.AreEqual(2, collectionsViewModel.Items.Count);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ActivityCollectionDesignerViewModel_DeleteCommand")]
-        public void ActivityCollectionDesignerViewModel_DeleteItemCommand_ExecutedWithAValidIndex_AnItemAtSpecificiedIndexIsRemoved()
-        {
-            var mockModelItem = GenerateMockModelItem();
-            var collectionsViewModel = new ActivityDesignerCollectionViewModelDerived(mockModelItem.Object);
-            collectionsViewModel.AddRow();
-            var count = collectionsViewModel.Items.Count;
-            collectionsViewModel.DeleteItemCommand.Execute(1);
-            Assert.AreEqual(3, count);
-            Assert.AreEqual(2, collectionsViewModel.Items.Count);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ActivityCollectionDesignerViewModel_InsertItem")]
-        public void ActivityCollectionDesignerViewModel_InsertItem_FieldNameAndFieldValueAreNotNull_ItemsCountIsIncremented()
-        {
-            var mockModelItem = GenerateMockModelItem();
-            var collectionsViewModel = new ActivityDesignerCollectionViewModelDerived(mockModelItem.Object);
-            collectionsViewModel.SelectedIndex = 1;
-            collectionsViewModel.InsertItem();
-            Assert.AreEqual(3, collectionsViewModel.Items.Count);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ActivityCollectionDesignerViewModel_RomoveRow")]
-        public void ActivityCollectionDesignerViewModel_RemoveRow_NotBlankRow_NothingIsDeleted()
-        {
-            var mockModelItem = GenerateMockModelItem();
-            var collectionsViewModel = new ActivityDesignerCollectionViewModelDerived(mockModelItem.Object);
-            collectionsViewModel.RemoveRow();
-            Assert.AreEqual(2, collectionsViewModel.Items.Count);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ActivityCollectionDesignerViewModel_UpdateRows")]
-        public void ActivityCollectionDesignerViewModel_UpdateRows_NotBlankRow_NothingIsDeleted()
-        {
-            const int itemsCount = 4;
-            var mockModelItem = GenerateMockModelItem(itemsCount);
-            var collectionsViewModel = new ActivityDesignerCollectionViewModelDerived(mockModelItem.Object);
-            collectionsViewModel.UpdateRows();
-            Assert.AreEqual(itemsCount, collectionsViewModel.Items.Count);
-        }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -178,8 +66,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void ActivityCollectionDesignerViewModel_Validate_NoErrorsFound_IsValidIsTrue()
         {
             const int itemsCount = 4;
-            var mockModelItem = GenerateMockModelItem(itemsCount);
-            var collectionsViewModel = new ActivityDesignerCollectionViewModelDerived(mockModelItem.Object);
+            var collectionsViewModel = new TestActivityDesignerCollectionViewModelItemsInitialized(CreateModelItem(itemsCount, false, false, false, true));
             collectionsViewModel.Validate();
             Assert.IsTrue(collectionsViewModel.IsValid);
         }
@@ -232,10 +119,10 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             var collectionsViewModel = new ActivityDesignerCollectionViewModelDerived(mockModelItem.Object);
 
             collectionsViewModel.ShowQuickVariableInput = true;
-            Assert.IsFalse(collectionsViewModel.IsSmallViewActive);
+            Assert.IsFalse(collectionsViewModel.ShowSmall);
             Assert.IsFalse(collectionsViewModel.ShowLarge);
             collectionsViewModel.ShowQuickVariableInput = false;
-            Assert.IsTrue(collectionsViewModel.IsSmallViewActive);
+            Assert.IsTrue(collectionsViewModel.ShowSmall);
             Assert.IsFalse(collectionsViewModel.ShowLarge);
         }
 
@@ -247,10 +134,10 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             var mockModelItem = GenerateMockModelItem();
             var collectionsViewModel = new ActivityDesignerCollectionViewModelDerived(mockModelItem.Object);
             collectionsViewModel.ShowLarge = true;
-            Assert.IsFalse(collectionsViewModel.IsSmallViewActive);
+            Assert.IsFalse(collectionsViewModel.ShowSmall);
             Assert.IsFalse(collectionsViewModel.ShowQuickVariableInput);
             collectionsViewModel.ShowLarge = false;
-            Assert.IsTrue(collectionsViewModel.IsSmallViewActive);
+            Assert.IsTrue(collectionsViewModel.ShowSmall);
             Assert.IsFalse(collectionsViewModel.ShowQuickVariableInput);
         }
 
@@ -283,72 +170,6 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         }
 
         [TestMethod]
-        [TestCategory("ActivityCollectionDesignerViewModel_UnitTest")]
-        [Description("Collection view model base can delete rows from the datagrid")]
-        [Owner("Ashley Lewis")]
-        public void ActivityCollectionDesignerViewModel_DeleteRow_RowAllowsDelete_RowDeleted()
-        {
-            //init
-            const string ExpectedCollectionName = "FieldsCollection";
-            var collectionNameProp = new Mock<ModelProperty>();
-            var dtoListProp = new Mock<ModelProperty>();
-            var displayNameProp = new Mock<ModelProperty>();
-            var properties = new Dictionary<string, Mock<ModelProperty>>();
-            var propertyCollection = new Mock<ModelPropertyCollection>();
-            var mockModel = new Mock<ModelItem>();
-
-            collectionNameProp.Setup(p => p.ComputedValue).Returns(ExpectedCollectionName);
-            dtoListProp.Setup(p => p.ComputedValue).Returns(new List<ActivityDTO> { new ActivityDTO(), new ActivityDTO(), new ActivityDTO(), new ActivityDTO() });
-            displayNameProp.Setup(p => p.ComputedValue).Returns("Test Display Name");
-            properties.Add("CollectionName", collectionNameProp);
-            propertyCollection.Protected().Setup<ModelProperty>("Find", "CollectionName", true).Returns(collectionNameProp.Object);
-            propertyCollection.Protected().Setup<ModelProperty>("Find", ExpectedCollectionName, true).Returns(dtoListProp.Object);
-            propertyCollection.Protected().Setup<ModelProperty>("Find", "DisplayName", true).Returns(displayNameProp.Object);
-            mockModel.Setup(s => s.Properties).Returns(propertyCollection.Object);
-            var vm = new TestActivityCollectionDesignerViewModel<ActivityDTO>(mockModel.Object) { SelectedIndex = 2 };
-
-            //exe
-            Assert.AreEqual(4, vm.Items.Count, "Collection view model base did not initialize as expected");
-            vm.DeleteItem();
-
-            //assert
-            Assert.AreEqual(3, vm.Items.Count, "Collection view model base cannot delete datagrid rows");
-        }
-
-        [TestMethod]
-        [TestCategory("ActivityCollectionDesignerViewModel_UnitTest")]
-        [Description("Collection view model base can insert rows into the datagrid")]
-        [Owner("Ashley Lewis")]
-        public void ActivityCollectionDesignerViewModel_InsertRow_BlankRow_RowInserted()
-        {
-            //init
-            const string ExpectedCollectionName = "FieldsCollection";
-            var collectionNameProp = new Mock<ModelProperty>();
-            var dtoListProp = new Mock<ModelProperty>();
-            var displayNameProp = new Mock<ModelProperty>();
-            var properties = new Dictionary<string, Mock<ModelProperty>>();
-            var propertyCollection = new Mock<ModelPropertyCollection>();
-            var mockModel = new Mock<ModelItem>();
-
-            collectionNameProp.Setup(p => p.ComputedValue).Returns(ExpectedCollectionName);
-            dtoListProp.Setup(p => p.ComputedValue).Returns(new List<ActivityDTO> { new ActivityDTO(), new ActivityDTO(), new ActivityDTO() });
-            displayNameProp.Setup(p => p.ComputedValue).Returns("Test Display Name");
-            properties.Add("CollectionName", collectionNameProp);
-            propertyCollection.Protected().Setup<ModelProperty>("Find", "CollectionName", true).Returns(collectionNameProp.Object);
-            propertyCollection.Protected().Setup<ModelProperty>("Find", ExpectedCollectionName, true).Returns(dtoListProp.Object);
-            propertyCollection.Protected().Setup<ModelProperty>("Find", "DisplayName", true).Returns(displayNameProp.Object);
-            mockModel.Setup(s => s.Properties).Returns(propertyCollection.Object);
-            var vm = new TestActivityCollectionDesignerViewModel<ActivityDTO>(mockModel.Object) { SelectedIndex = 2 };
-
-            //exe
-            Assert.AreEqual(3, vm.Items.Count, "Collection view model base did not initialize as expected");
-            vm.InsertItem();
-
-            //assert
-            Assert.AreEqual(4, vm.Items.Count, "Collection view model base cannot insert datagrid rows");
-        }
-
-        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ActivityCollectionDesignerViewModel_Collapse")]
         public void ActivityCollectionDesignerViewModel_Collapse_SmallViewActive()
@@ -364,7 +185,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             viewModel.Collapse();
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(viewModel.IsSmallViewActive);
+            Assert.IsTrue(viewModel.ShowSmall);
         }
 
         [TestMethod]
@@ -424,7 +245,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             viewModel.Restore();
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(viewModel.IsSmallViewActive);
+            Assert.IsTrue(viewModel.ShowSmall);
         }
 
         [TestMethod]
@@ -457,6 +278,155 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Assert.AreEqual(BindingMode.TwoWay, binding.Mode);
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ActivityCollectionDesignerViewModel_UpdateDisplayName")]
+        public void ActivityCollectionDesignerViewModel_UpdateDisplayName_OldDisplayNameHasOpeningAndClosingBrackets_BracketsRemovedAndReadded()
+        {
+            //------------Setup for test--------------------------
+            const int ItemCount = 3;
+
+            var modelItem = CreateModelItem(ItemCount, new bool[ItemCount]);
+            modelItem.SetProperty("DisplayName", "Activity (12)");
+            var viewModel = new TestActivityDesignerCollectionViewModelItemsInitialized(modelItem);
+
+            //------------Execute Test---------------------------
+            viewModel.UpdateDisplayName();
+
+            //------------Assert Results-------------------------
+            var actual = viewModel.ModelItem.GetProperty("DisplayName");
+
+            Assert.AreEqual(string.Format("Activity ({0})", ItemCount - 1), actual);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ActivityCollectionDesignerViewModel_AddToCollection")]
+        public void ActivityCollectionDesignerViewModel_AddToCollection_OverwriteTrue_CollectionClearedAndNewItemsAdded()
+        {
+            //------------Setup for test--------------------------
+            const int ItemCount = 3;
+
+            var modelItem = CreateModelItem(ItemCount, new bool[ItemCount]);
+            modelItem.SetProperty("DisplayName", "Activity");
+            var viewModel = new TestActivityDesignerCollectionViewModelItemsInitialized(modelItem);
+
+            const int ExpectedItemCount = 5;
+            var source = new List<string>();
+            for(var i = 0; i < ExpectedItemCount; i++)
+            {
+                source.Add("NewField" + i);
+            }
+
+            //------------Execute Test---------------------------
+            viewModel.TestAddToCollection(source, true);
+
+            //------------Assert Results-------------------------
+            // ReSharper disable PossibleNullReferenceException
+            var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
+            // ReSharper restore PossibleNullReferenceException
+
+            // Extra blank row is also added
+            Assert.AreEqual(ExpectedItemCount + 1, viewModel.ItemCount);
+            Assert.AreEqual(string.Format("Activity ({0})", ExpectedItemCount), viewModel.ModelItem.GetProperty("DisplayName"));
+
+            for(var i = 0; i < mic.Count; i++)
+            {
+                var dto = (ActivityDTO)mic[i].GetCurrentValue();
+                if(i == ExpectedItemCount)
+                {
+                    // last row is blank
+                    Assert.AreEqual("", dto.FieldName);
+                }
+                else
+                {
+                    Assert.AreEqual("NewField" + i, dto.FieldName);
+                }
+            }
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ActivityCollectionDesignerViewModel_AddToCollection")]
+        public void ActivityCollectionDesignerViewModel_AddToCollection_OverwriteFalseAndSomeNonBlankRows_ItemsInserted()
+        {
+            //------------Setup for test--------------------------
+            var modelItem = CreateModelItem(3, false, true, true);  // 2 blank rows
+            modelItem.SetProperty("DisplayName", "Activity");
+            var viewModel = new TestActivityDesignerCollectionViewModelItemsInitialized(modelItem);
+
+            var source = new List<string>();
+            for(var i = 0; i < 2; i++)
+            {
+                source.Add("NewField" + (i + 1));
+            }
+
+            const int ExpectedItemCount = 5;  // 3 old + 2 new
+
+            //------------Execute Test---------------------------
+            viewModel.TestAddToCollection(source, false);
+
+            //------------Assert Results-------------------------
+            // ReSharper disable PossibleNullReferenceException
+            var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
+
+            // Extra blank row is also added
+            Assert.AreEqual(ExpectedItemCount, viewModel.ItemCount);
+
+            VerifyItem(mic[0], 1, "field1", "value1");
+            VerifyItem(mic[1], 2, "NewField1", "");
+            VerifyItem(mic[2], 3, "NewField2", "");
+            VerifyItem(mic[3], 3, "", "");
+            VerifyItem(mic[4], 4, "", "");
+            // ReSharper restore PossibleNullReferenceException
+
+            Assert.AreEqual(string.Format("Activity ({0})", ExpectedItemCount - 1), viewModel.ModelItem.GetProperty("DisplayName"));
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ActivityCollectionDesignerViewModel_AddToCollection")]
+        public void ActivityCollectionDesignerViewModel_AddToCollection_OverwriteFalseAndAllBlankRows_ItemsAdded()
+        {
+            //------------Setup for test--------------------------
+            var modelItem = CreateModelItem(2, true, true); // all blank rows
+            modelItem.SetProperty("DisplayName", "Activity");
+            var viewModel = new TestActivityDesignerCollectionViewModelItemsInitialized(modelItem);
+
+            var source = new List<string>();
+            for(var i = 0; i < 2; i++)
+            {
+                source.Add("NewField" + (i + 1));
+            }
+
+            const int ExpectedItemCount = 3;  
+
+            //------------Execute Test---------------------------
+            viewModel.TestAddToCollection(source, false);
+
+            //------------Assert Results-------------------------
+            // ReSharper disable PossibleNullReferenceException
+            var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
+
+            // Extra blank row is also added
+            Assert.AreEqual(ExpectedItemCount, viewModel.ItemCount);
+
+            VerifyItem(mic[0], 1, "NewField1", "");
+            VerifyItem(mic[1], 2, "NewField2", "");
+            VerifyItem(mic[2], 3, "", "");
+            // ReSharper restore PossibleNullReferenceException
+
+            Assert.AreEqual(string.Format("Activity ({0})", ExpectedItemCount - 1), viewModel.ModelItem.GetProperty("DisplayName"));
+        }
+
+        static void VerifyItem(ModelItem modelItem, int indexNumber, string fieldName, string fieldValue)
+        {
+            var dto = (ActivityDTO)modelItem.GetCurrentValue();
+            Assert.AreEqual(indexNumber, dto.IndexNumber);
+            Assert.AreEqual(fieldName, dto.FieldName);
+            Assert.AreEqual(fieldValue, dto.FieldValue);
+        }
+
         static Mock<ModelItem> GenerateMockModelItem(int noOfActivitiesInModelItem = 2)
         {
             var properties = new Dictionary<string, Mock<ModelProperty>>();
@@ -487,6 +457,25 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             mockModelItem.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
             return mockModelItem;
+        }
+
+        static ModelItem CreateModelItem(int itemCount, params bool[] blankFieldAndValues)
+        {
+            var modelItem = ModelItemUtils.CreateModelItem(new DsfMultiAssignActivity());
+            // ReSharper disable PossibleNullReferenceException
+            var modelItemCollection = modelItem.Properties["FieldsCollection"].Collection;
+            for(var i = 0; i < itemCount; i++)
+            {
+                var indexNumber = i + 1;
+                var dto = blankFieldAndValues[i]
+                    ? new ActivityDTO("", "", indexNumber)
+                    : new ActivityDTO("field" + indexNumber, "value" + indexNumber, indexNumber, i == 0);
+
+                modelItemCollection.Add(dto);
+            }
+
+            // ReSharper restore PossibleNullReferenceException
+            return modelItem;
         }
     }
 }

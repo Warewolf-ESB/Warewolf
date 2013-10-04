@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers2.Core
             _helpAdorner = new HelpAdorner(this);
             _errorsAdorner = new ErrorsAdorner(this);
 
-            Loaded += (sender, args) => OnLoaded();
+            Loaded += (sender, args) => OnLoaded();            
         }
 
         public TViewModel ViewModel { get { return DataContext as TViewModel; } }

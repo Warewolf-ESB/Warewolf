@@ -42,6 +42,7 @@
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Moq">
       <HintPath>..\Binaries\Moq.dll</HintPath>
     </Reference>
@@ -71,21 +72,21 @@
     <Compile Include="..\Dev2.Core.Tests\TestUtils.cs">
       <Link>TestUtils.cs</Link>
     </Compile>
+    <Compile Include="Designers2\Core\Controls\Dev2DataGridTests.cs" />
     <Compile Include="Designers2\Core\Stubs\ActivityDesignerCollectionViewModelDerived.cs" />
     <Compile Include="Designers2\Core\ActivityDesignerViewModelTests.cs" />
     <Compile Include="Designers2\Core\Stubs\TestActivity.cs" />
     <Compile Include="Designers2\Core\Stubs\TestActivityDesigner.cs" />
+    <Compile Include="Designers2\Core\Stubs\TestActivityDesignerCollectionViewModelItemsInitialized.cs" />
     <Compile Include="Designers2\Core\Stubs\TestActivityDesignerViewModel.cs" />
     <Compile Include="Behaviour Stubs\testDataGridFocusTextOnLoadBehavior.cs" />
     <Compile Include="BehaviourTests.cs" />
-    <Compile Include="Designers2\Core\Stubs\TestActivityCollectionDesignerViewModel.cs" />
     <Compile Include="DateTimeTests\DateTimeViewModelTests.cs" />
     <Compile Include="Designers2\Core\ActivityDesignerTests.cs" />
     <Compile Include="Designers2\Core\ActivityCollectionDesignerViewModelTests.cs" />
     <Compile Include="Designers2\Core\ActivityDesignerButtonTests.cs" />
     <Compile Include="GetWebRequestTests\GetWebRequestViewModelTests.cs" />
     <Compile Include="MultiAssignTests\MultiAssignViewModelTests.cs" />
-    <Compile Include="MultiAssignTests\Stubs\TestMultiAssignDesignerViewModel.cs" />
     <Compile Include="Preview\PreviewViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuickVariableInput\QuickVariableInputViewModelTests.ValidationErrors.cs" />
@@ -126,7 +127,9 @@
       <Name>Dev2.Studio.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="MultiAssignTests\Stubs\" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

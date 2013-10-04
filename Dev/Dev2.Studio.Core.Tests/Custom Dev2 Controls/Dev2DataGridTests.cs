@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Collections.Generic;
 using System.Windows;
+using Dev2.Activities.Designers2.Core.Controls;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -1,5 +1,6 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using Dev2.Activities.Designers2.GetWebRequest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,7 +31,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var propertyCollection = new Mock<ModelPropertyCollection>();
 
             var url = new Mock<ModelProperty>();
-            url.Setup(p => p.ComputedValue).Returns("");
+            url.SetupProperty(p => p.ComputedValue, "xxxxx"); // start "tracking" sets/gets to this property
             properties.Add("Url", url);
             propertyCollection.Protected().Setup<ModelProperty>("Find", "Url", true).Returns(url.Object);
 
@@ -38,7 +39,8 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
             var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
-            sut.Url = "";
+            url.Object.ComputedValue = "";
+            modelItemMock.Raise(mi => mi.PropertyChanged += null, new PropertyChangedEventArgs("Url"));
 
             Assert.IsFalse(sut.PreviewViewModel.CanPreview);
         }
@@ -52,7 +54,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var propertyCollection = new Mock<ModelPropertyCollection>();
 
             var url = new Mock<ModelProperty>();
-            url.Setup(p => p.ComputedValue).Returns("http://www.google.com");
+            url.SetupProperty(p => p.ComputedValue, ""); // start "tracking" sets/gets to this property
             properties.Add("Url", url);
             propertyCollection.Protected().Setup<ModelProperty>("Find", "Url", true).Returns(url.Object);
 
@@ -60,7 +62,8 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
             var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
-            sut.Url = "";
+            url.Object.ComputedValue = "http://www.google.com";
+            modelItemMock.Raise(mi => mi.PropertyChanged += null, new PropertyChangedEventArgs("Url"));
 
             Assert.IsTrue(sut.PreviewViewModel.CanPreview);
             Assert.IsTrue(sut.PreviewViewModel.Inputs.Count == 0);
@@ -76,7 +79,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var propertyCollection = new Mock<ModelPropertyCollection>();
 
             var url = new Mock<ModelProperty>();
-            url.Setup(p => p.ComputedValue).Returns("http://www.[[mysite]].com?[[queryString]]");
+            url.SetupProperty(p => p.ComputedValue, ""); // start "tracking" sets/gets to this property
             properties.Add("Url", url);
             propertyCollection.Protected().Setup<ModelProperty>("Find", "Url", true).Returns(url.Object);
 
@@ -84,7 +87,8 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
             var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
-            sut.Url = "";
+            url.Object.ComputedValue = "http://www.[[mysite]].com?[[queryString]]";
+            modelItemMock.Raise(mi => mi.PropertyChanged += null, new PropertyChangedEventArgs("Url"));
 
             Assert.IsTrue(sut.PreviewViewModel.CanPreview);
             Assert.IsTrue(sut.PreviewViewModel.Inputs.Count == 2);
@@ -99,16 +103,17 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
 
-            var url = new Mock<ModelProperty>();
-            url.Setup(p => p.ComputedValue).Returns("");
-            properties.Add("Headers", url);
-            propertyCollection.Protected().Setup<ModelProperty>("Find", "Headers", true).Returns(url.Object);
+            var headers = new Mock<ModelProperty>();
+            headers.SetupProperty(p => p.ComputedValue, ""); // start "tracking" sets/gets to this property
+            properties.Add("Headers", headers);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Headers", true).Returns(headers.Object);
 
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
             var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
-            sut.Headers = "";
+            headers.Object.ComputedValue = "";
+            modelItemMock.Raise(mi => mi.PropertyChanged += null, new PropertyChangedEventArgs("Headers"));
 
             Assert.IsFalse(sut.PreviewViewModel.CanPreview);
         }
@@ -121,16 +126,17 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
 
-            var url = new Mock<ModelProperty>();
-            url.Setup(p => p.ComputedValue).Returns("ContentType=text/xml");
-            properties.Add("Headers", url);
-            propertyCollection.Protected().Setup<ModelProperty>("Find", "Headers", true).Returns(url.Object);
+            var headers = new Mock<ModelProperty>();
+            headers.SetupProperty(p => p.ComputedValue, ""); // start "tracking" sets/gets to this property
+            properties.Add("Headers", headers);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Headers", true).Returns(headers.Object);
 
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
             var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
-            sut.Headers = "";
+            headers.Object.ComputedValue = "ContentType=text/xml";
+            modelItemMock.Raise(mi => mi.PropertyChanged += null, new PropertyChangedEventArgs("Headers"));
 
             Assert.IsTrue(sut.PreviewViewModel.Inputs.Count == 0);
             Assert.AreEqual(sut.PreviewViewModel.InputsVisibility, Visibility.Collapsed);
@@ -141,19 +147,22 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
         [TestCategory("GetWebRequestDesignerViewModel_HeadersSet")]
         public void GetWebRequestDesignerViewModel_SetHeaders_StringWithOneVariables_PreviewInputsCountIsOne()
         {
+
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
 
-            var url = new Mock<ModelProperty>();
-            url.Setup(p => p.ComputedValue).Returns("ContentType=[[contenttype]]");
-            properties.Add("Headers", url);
-            propertyCollection.Protected().Setup<ModelProperty>("Find", "Headers", true).Returns(url.Object);
+            var headers = new Mock<ModelProperty>();
+            headers.SetupProperty(p => p.ComputedValue, ""); // start "tracking" sets/gets to this property
+            properties.Add("Headers", headers);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Headers", true).Returns(headers.Object);
 
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
             var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
-            sut.Headers = "";
+
+            headers.Object.ComputedValue = "ContentType=[[contenttype]]";
+            modelItemMock.Raise(mi => mi.PropertyChanged += null, new PropertyChangedEventArgs("Headers"));
 
             Assert.IsTrue(sut.PreviewViewModel.Inputs.Count == 1);
             Assert.AreEqual(sut.PreviewViewModel.InputsVisibility, Visibility.Visible);
@@ -168,7 +177,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var propertyCollection = new Mock<ModelPropertyCollection>();
 
             var url = new Mock<ModelProperty>();
-            url.Setup(p => p.ComputedValue).Returns("http://www.google.com");
+            url.SetupProperty(p => p.ComputedValue, "http://www.google.com"); // start "tracking" sets/gets to this property
             properties.Add("Url", url);
             propertyCollection.Protected().Setup<ModelProperty>("Find", "Url", true).Returns(url.Object);
 
@@ -178,7 +187,6 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
 
             sut.WebInvoke = (m, u) => { return "Was Called"; };
-            sut.Url = "";
 
             sut.PreviewViewModel.PreviewCommand.Execute(null);
 
@@ -196,7 +204,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var propertyCollection = new Mock<ModelPropertyCollection>();
 
             var url = new Mock<ModelProperty>();
-            url.Setup(p => p.ComputedValue).Returns("www.google.com");
+            url.SetupProperty(p => p.ComputedValue, "www.google.com"); // start "tracking" sets/gets to this property
             properties.Add("Url", url);
             propertyCollection.Protected().Setup<ModelProperty>("Find", "Url", true).Returns(url.Object);
 
@@ -206,7 +214,6 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
 
             sut.WebInvoke = (m, u) => { return "Was Called"; };
-            sut.Url = "";
 
             sut.PreviewViewModel.PreviewCommand.Execute(null);
 
@@ -230,7 +237,6 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
                 isInvoked = true;
                 return "Was Called";
             };
-            sut.Url = "";
 
             sut.PreviewViewModel.PreviewCommand.Execute(null);
 

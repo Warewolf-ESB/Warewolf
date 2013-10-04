@@ -33,7 +33,8 @@
     <Style x:Key="DatagridIntellisenseTextBoxStyle"
            TargetType="{x:Type ui:IntellisenseTextBox}"
            BasedOn="{StaticResource ActivityIntellisenseTextBoxStyle}">
-        <!--<Setter Property="attachedProperties:WizardEngineAttachedProperties.DontOpenWizard" Value="true"/>-->
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
         <Setter Property="Padding"
                 Value="2,6,0,0" />
         <Setter Property="Margin"

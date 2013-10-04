@@ -12,8 +12,11 @@ namespace Dev2.Activities.Designers2.MultiAssign
             AddTitleBarLargeToggle();
             AddTitleBarQuickVariableInputToggle();
             AddTitleBarHelpToggle();
+
+            dynamic mi = ModelItem;
+            InitializeItems(mi.FieldsCollection);
         }
 
-        protected override string CollectionName { get { return "FieldsCollection"; } }
+        public override string CollectionName { get { return "FieldsCollection"; } }
     }
 }

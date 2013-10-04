@@ -6,15 +6,13 @@
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
-                               xmlns:cal="http://www.caliburnproject.org"
                                xmlns:system="clr-namespace:System;assembly=mscorlib"
-                               xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.MultiAssign"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
-                               xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
+                               xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                Width="230"
                                MaxWidth="230"
                                mc:Ignorable="d"
@@ -27,118 +25,126 @@
                             Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
     </core:ActivityDesignerTemplate.Resources>
 
-    <Grid>
-        <DataGrid x:Name="DataGrid"
-                  ItemsSource="{Binding Items, 
-                  Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                  AutoGenerateColumns="False"
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch"
-                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
-                  Style="{StaticResource SpacedActivityDataGridStyle}"
-                  SelectedValue="{Binding SelectedValue}"
-                  SelectedIndex="{Binding SelectedIndex}"
-                  cal:Message.Attach="[Event SelectionChanged] = [Action UpdateRows]; 
-                  [Event KeyUp] = [Action AddRows($EventArgs)]"
-                  MinHeight="56">
-            <i:Interaction.Behaviors>
-                <behavior:DatagridFocusOnLoadBehavior /> 
-                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
-                    <behaviors:DataGridWatermarkModifier.WatermarkText>
-                        <system:String>[[Variable1]]</system:String>
-                        <system:String>[[Variable2]]</system:String>
-                    </behaviors:DataGridWatermarkModifier.WatermarkText>
-                    <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                        <system:Int32>0</system:Int32>
-                        <system:Int32>1</system:Int32>
-                    </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                </behaviors:DataGridWatermarkModifier>
-                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextValue">
-                    <behaviors:DataGridWatermarkModifier.WatermarkText>
-                        <system:String>Value</system:String>
-                        <system:String>Value</system:String>
-                    </behaviors:DataGridWatermarkModifier.WatermarkText>
-                    <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                        <system:Int32>0</system:Int32>
-                        <system:Int32>1</system:Int32>
-                    </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                </behaviors:DataGridWatermarkModifier>
-            </i:Interaction.Behaviors>
+    <controls:Dev2DataGrid x:Name="SmallDataGrid"
+                           ItemsSource="{Binding ModelItem.FieldsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                           
+                           Style="{StaticResource SpacedActivityDataGridStyle}"
+                           MinHeight="56">
+        
+        <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+        
+        <i:Interaction.Behaviors>
+            <controls:DatagridFocusOnLoadBehavior />
+            <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
+                <behaviors:DataGridWatermarkModifier.WatermarkText>
+                    <system:String>[[Variable1]]</system:String>
+                    <system:String>[[Variable2]]</system:String>
+                </behaviors:DataGridWatermarkModifier.WatermarkText>
+                <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                    <system:Int32>0</system:Int32>
+                    <system:Int32>1</system:Int32>
+                </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+            </behaviors:DataGridWatermarkModifier>
+            <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextValue">
+                <behaviors:DataGridWatermarkModifier.WatermarkText>
+                    <system:String>Value</system:String>
+                    <system:String>Value</system:String>
+                </behaviors:DataGridWatermarkModifier.WatermarkText>
+                <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                    <system:Int32>0</system:Int32>
+                    <system:Int32>1</system:Int32>
+                </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+            </behaviors:DataGridWatermarkModifier>
+        </i:Interaction.Behaviors>       
 
-            <DataGrid.Columns>
-                <DataGridTemplateColumn Width="25"
-                                        IsReadOnly="True">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Label Content="{Binding IndexNumber}"
-                                   VerticalAlignment="Center" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+        <DataGrid.Columns>
+            <DataGridTemplateColumn Width="25"
+                                    d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}"
+                                    IsReadOnly="True">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding IndexNumber}"
+                               VerticalAlignment="Center" />
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="*"
-                                        d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ui:IntellisenseTextBox AllowUserInsertLine="False"
-                                                    VerticalAlignment="Center"
-                                                    DefaultText="{Binding WatermarkTextVariable}"
-                                                    WrapInBrackets="True"
-                                                    Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
-                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
-                                <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.MultiAssignVariableHelpText}"
-                                                     DataContext="{Binding DataContext, ElementName=DataGrid}" />
-                                    <errors:ErrorsSetter Source="{Binding}"
-                                                         SourcePropertyName="FieldName"
-                                                         SourcePropertyValue="{Binding FieldName, UpdateSourceTrigger=PropertyChanged}"
-                                                         Target="{Binding DataContext, ElementName=DataGrid}" />
-                                </i:Interaction.Behaviors>
-                            </ui:IntellisenseTextBox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+            <DataGridTemplateColumn Width="*"
+                                    d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <ui:IntellisenseTextBox AllowUserInsertLine="False"
+                                                VerticalAlignment="Center"
+                                                DefaultText="{Binding WatermarkTextVariable}"
+                                                WrapInBrackets="True"
+                                                Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+                                                Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
+                            <i:Interaction.Behaviors>
+                                <help:HelpSetter Text="{x:Static help:HelpTextResources.MultiAssignVariableHelpText}"
+                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                <errors:ErrorsSetter Source="{Binding}"
+                                                     SourcePropertyName="FieldName"
+                                                     SourcePropertyValue="{Binding FieldName, UpdateSourceTrigger=PropertyChanged}"
+                                                     Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                            </i:Interaction.Behaviors>
+                            <AutomationProperties.AutomationId>
+                                <MultiBinding StringFormat="UI_{0}_Row{1}_FieldName_AutoID">
+                                    <Binding Path="DataContext.ModelItem.AutomationID"
+                                             RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                    <Binding Path="IndexNumber" />
+                                </MultiBinding>
+                            </AutomationProperties.AutomationId>
+                        </ui:IntellisenseTextBox>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn IsReadOnly="True"
-                                        Width="20">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Label Content="="
-                                   VerticalAlignment="Center" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+            <DataGridTemplateColumn IsReadOnly="True"
+                                    Width="20">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Label Content="="
+                               VerticalAlignment="Center" />
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="*"
-                                        d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextValue}"
-                                                    AllowMultilinePaste="True"
-                                                    AllowUserCalculateMode="True"
-                                                    AllowUserInsertLine="True"
-                                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                    VerticalScrollBarVisibility="Auto"
-                                                    TextWrapping="Wrap"
-                                                    AcceptsReturn="True"
-                                                    MaxHeight="52"
-                                                    Padding="3"
-                                                    Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
-                                                    IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}">
-                                <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.MultiAssignNewValueHelpText}"
-                                                     DataContext="{Binding DataContext, ElementName=DataGrid}" />
-                                    <errors:ErrorsSetter Source="{Binding}"
-                                                         SourcePropertyName="FieldValue"
-                                                         SourcePropertyValue="{Binding FieldValue, UpdateSourceTrigger=PropertyChanged}"
-                                                         Target="{Binding DataContext, ElementName=DataGrid}" />
-                                </i:Interaction.Behaviors>
-                            </ui:IntellisenseTextBox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-    </Grid>
+            <DataGridTemplateColumn Width="*"
+                                    d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextValue}"
+                                                AllowMultilinePaste="True"
+                                                AllowUserCalculateMode="True"
+                                                AllowUserInsertLine="True"
+                                                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                VerticalScrollBarVisibility="Auto"
+                                                TextWrapping="Wrap"
+                                                AcceptsReturn="True"
+                                                MaxHeight="52"
+                                                Padding="3"
+                                                Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
+                                                IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+                                                Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
+                            <i:Interaction.Behaviors>
+                                <help:HelpSetter Text="{x:Static help:HelpTextResources.MultiAssignNewValueHelpText}"
+                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                <errors:ErrorsSetter Source="{Binding}"
+                                                     SourcePropertyName="FieldValue"
+                                                     SourcePropertyValue="{Binding FieldValue, UpdateSourceTrigger=PropertyChanged}"
+                                                     Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                            </i:Interaction.Behaviors>
+                            <AutomationProperties.AutomationId>
+                                <MultiBinding StringFormat="UI_{0}_Row{1}_FieldValue_AutoID">
+                                    <Binding Path="DataContext.ModelItem.AutomationID"
+                                             RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                    <Binding Path="IndexNumber" />
+                                </MultiBinding>
+                            </AutomationProperties.AutomationId>
+                        </ui:IntellisenseTextBox>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </DataGrid.Columns>
+    </controls:Dev2DataGrid>
 </core:ActivityDesignerTemplate>

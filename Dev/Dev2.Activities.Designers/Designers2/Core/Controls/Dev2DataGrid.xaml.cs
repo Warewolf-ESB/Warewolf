@@ -1,52 +1,68 @@
-﻿using System.Activities.Presentation.Model;
+﻿using System;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Interfaces;
 using Dev2.UI;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace Dev2.UI
+namespace Dev2.Activities.Designers2.Core.Controls
 {
     /// <summary>
     /// Interaction logic for Dev2DataGrid.xaml
     /// </summary>
     public partial class Dev2DataGrid
     {
+        readonly Func<DataGridRow, FrameworkElement> _getVisualChild;
 
         public Dev2DataGrid()
+            : this(GetVisualChild<IntellisenseTextBox>)
         {
+
+        }
+
+        public Dev2DataGrid(Func<DataGridRow, FrameworkElement> getVisualChild)
+        {
+            VerifyArgument.IsNotNull("getVisualChild", getVisualChild);
+            _getVisualChild = getVisualChild;
+
             InitializeComponent();
         }
 
-        public void RemoveRow()
+        public void RemoveFirstDuplicateBlankRow()
         {
-            List<int> BlankCount = new List<int>();
-            ModelItemCollection itemList = Items.SourceCollection as ModelItemCollection;
-            foreach (dynamic item in itemList)
+            var blankCount = new List<int>();
+            var itemList = Items.SourceCollection as ModelItemCollection;
+            var modelItem = SelectedValue as ModelItem;
+            if(itemList == null || modelItem == null)
             {
-                var currentVal = item.GetCurrentValue();
-                ModelItem modelItem = SelectedValue as ModelItem;
-                if (modelItem != null && currentVal != modelItem.GetCurrentValue())
+                return;
+            }
+
+            if(itemList.Count > 2)
+            {
+                foreach(dynamic item in itemList)
                 {
-                    if (currentVal.CanRemove())
+                    var currentVal = item.GetCurrentValue();
+                    if(currentVal != modelItem.GetCurrentValue())
                     {
-                        BlankCount.Add(item.IndexNumber);
+                        if(currentVal.CanRemove())
+                        {
+                            blankCount.Add(item.IndexNumber);
+                        }
                     }
                 }
-            }
-            if (BlankCount.Count > 1 && itemList.Count > 2)
-            {
-                itemList.Remove(Items[BlankCount[0] - 1]);
-                for (int i = BlankCount[0] - 1; i < itemList.Count; i++)
+                if(blankCount.Count > 1)
                 {
-                    dynamic tmp = itemList[i];
-                    tmp.IndexNumber = i + 1;
+                    itemList.Remove(Items[blankCount[0] - 1]);
+                    for(var i = blankCount[0] - 1; i < itemList.Count; i++)
+                    {
+                        dynamic tmp = itemList[i];
+                        tmp.IndexNumber = i + 1;
+                    }
                 }
             }
         }
@@ -55,15 +71,15 @@ namespace Dev2.UI
         {
             dynamic itemList = Items.SourceCollection as ModelItemCollection;
 
-            if (itemList == null)
+            if(itemList == null)
             {
                 return;
             }
 
-            if (itemList.Count > 2)
+            if(itemList.Count > 2)
             {
                 itemList.RemoveAt(indexNum);
-                for (var i = indexNum; i < itemList.Count; i++)
+                for(var i = indexNum; i < itemList.Count; i++)
                 {
                     dynamic tmp = itemList[i];
                     tmp.IndexNumber--;
@@ -83,15 +99,15 @@ namespace Dev2.UI
         {
             var canAdd = true;
             dynamic itemList = Items.SourceCollection;
-            foreach (var item in itemList)
+            foreach(var item in itemList)
             {
                 var currentVal = item.GetCurrentValue();
-                if (!currentVal.CanAdd())
+                if(!currentVal.CanAdd())
                 {
                     canAdd = false;
                 }
             }
-            if (canAdd)
+            if(canAdd)
             {
                 var newVal = DTOFactory.CreateNewDTO(itemList[0].GetCurrentValue());
                 newVal.IndexNumber = itemList.Count + 1;
@@ -104,10 +120,10 @@ namespace Dev2.UI
             index++;
             dynamic itemList = Items.SourceCollection;
             var newVal = DTOFactory.CreateNewDTO(itemList[0].GetCurrentValue(), 0, true);
-            foreach (dynamic item in itemList)
+            foreach(dynamic item in itemList)
             {
                 int i = item.IndexNumber;
-                if (i >= index)
+                if(i >= index)
                 {
                     item.IndexNumber++;
                 }
@@ -122,42 +138,43 @@ namespace Dev2.UI
             return Items.SourceCollection.Cast<ModelItem>().Count();
         }
 
-        void EventSetter_OnHandler(object sender, RoutedEventArgs e)
+        public bool SetFocus(DataGridRow row)
         {
-            DataGridRow dgr = sender as DataGridRow;
-
-            if (dgr != null)
+            if(row != null)
             {
-                ModelItem modelItem = dgr.DataContext as ModelItem;
+                var modelItem = row.DataContext as ModelItem;
 
-                if (modelItem != null)
+                if(modelItem != null)
                 {
-                    IDev2TOFn toFn = modelItem.GetCurrentValue() as IDev2TOFn;
-                    if (toFn != null && toFn.Inserted)
+                    var toFn = modelItem.GetCurrentValue() as IDev2TOFn;
+                    if(toFn != null && toFn.Inserted)
                     {
-                        IntellisenseTextBox intellisenseTextBox = GetVisualChild<IntellisenseTextBox>(dgr);
-                        if (intellisenseTextBox != null)
+                        var visualChild = _getVisualChild(row);
+                        if(visualChild != null)
                         {
-                            intellisenseTextBox.Focus();
+                            visualChild.Focus();
+                            return true;
                         }
                     }
                 }
             }
+            return false;
+        }
+
+        void OnDataGridRowLoaded(object sender, RoutedEventArgs e)
+        {
+            //SetFocus(sender as DataGridRow);
         }
 
         public static T GetVisualChild<T>(Visual parent) where T : Visual
         {
-            T child = default(T);
-            int numVisuals = VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < numVisuals; i++)
+            var child = default(T);
+            var numVisuals = VisualTreeHelper.GetChildrenCount(parent);
+            for(var i = 0; i < numVisuals; i++)
             {
-                Visual v = (Visual)VisualTreeHelper.GetChild(parent, i);
-                child = v as T;
-                if (child == null)
-                {
-                    child = GetVisualChild<T>(v);
-                }
-                if (child != null)
+                var v = (Visual)VisualTreeHelper.GetChild(parent, i);
+                child = v as T ?? GetVisualChild<T>(v);
+                if(child != null)
                 {
                     break;
                 }

@@ -2,7 +2,6 @@
 using System.Activities.Presentation.Model;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.MultiAssign;
-using Dev2.Core.Tests.Activities;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Studio.Core.Activities.Utils;
@@ -55,10 +54,10 @@ namespace Dev2.Activities.Designers.Tests.MultiAssignTests
             mockModel.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
             //exe
-            var vm = new TestMultiAssignDesignerViewModel(mockModel.Object);
+            var vm = CreateDsfMultiAssignActivityViewModel();
 
             //assert
-            Assert.AreEqual(ExpectedCollectionName, vm.GetCollectionName(), "Collection Name not initialized on Multi Assign load");
+            Assert.AreEqual(ExpectedCollectionName, vm.CollectionName, "Collection Name not initialized on Multi Assign load");
         }
 
         [TestMethod]
@@ -75,9 +74,9 @@ namespace Dev2.Activities.Designers.Tests.MultiAssignTests
         }
 
 
-        static MultiAssignDesignerViewModel CreateDsfMultiAssignActivityViewModel()
+        public static MultiAssignDesignerViewModel CreateDsfMultiAssignActivityViewModel()
         {
-            var dsfMultiAssignActivityViewModel = new MultiAssignDesignerViewModel(ModelItemUtils.CreateModelItem(new object()));
+            var dsfMultiAssignActivityViewModel = new MultiAssignDesignerViewModel(ModelItemUtils.CreateModelItem(new DsfMultiAssignActivity()));
             return dsfMultiAssignActivityViewModel;
         }
     }
