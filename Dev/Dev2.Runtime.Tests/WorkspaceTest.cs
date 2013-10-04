@@ -31,18 +31,6 @@ namespace Dev2.DynamicServices.Test
         readonly static object SyncRoot = new object();
         readonly static object MonitorLock = new object();
 
-        //static string _testDir;
-
-        //#region ClassInitialize
-
-        //[ClassInitialize]
-        //public static void ClassInitialize(TestContext testContext)
-        //{      
-        //    _testDir = testContext.TestDeploymentDir;
-        //}
-
-        //#endregion
-
         #region TestInitialize/Cleanup
 
         [TestInitialize]

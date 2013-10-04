@@ -23,9 +23,7 @@ using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Network;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
-using ServiceStack.Common.Utils;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -395,7 +393,6 @@ namespace Dev2.Runtime.Hosting
         } 
 
         #endregion
-
 
         #region CopyResource
 
@@ -1280,7 +1277,25 @@ namespace Dev2.Runtime.Hosting
 
         public async Task LoadFrequentlyUsedServices()
         {
-            // do we really need this still?
+            // do we really need this still - YES WE DO ELSE THERE ARE INSTALL ISSUES ;)
+
+            var serviceNames = new[]
+            {
+                "XXX"
+            };
+
+            foreach(var serviceName in serviceNames)
+            {
+                var resourceName = serviceName;
+                var theTask = new Task(() =>
+                {
+                    var resource = GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
+                    var objects = GenerateObjectGraph(resource);
+                    _frequentlyUsedServices.TryAdd(resourceName, objects);
+                });
+                theTask.Start();
+                await theTask;
+            }
         }
 
         public List<string> GetDependants(Guid workspaceID, string resourceName)
