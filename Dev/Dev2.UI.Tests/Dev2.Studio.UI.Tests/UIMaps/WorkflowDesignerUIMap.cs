@@ -218,6 +218,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         /// Clicks a control on the Workflow Designer
         /// </summary>
         /// <param name="theControl">A control from WorkflowDesignerUIMap.FindControlByAutomationID</param>
+        public void DoubleClickControl(UITestControl theControl)
+        {
+            Point p = new Point(theControl.BoundingRectangle.X + 25, theControl.BoundingRectangle.Y + 25);
+            Mouse.DoubleClick();
+        }
+
+        /// <summary>
+        /// Clicks a control on the Workflow Designer
+        /// </summary>
+        /// <param name="theControl">A control from WorkflowDesignerUIMap.FindControlByAutomationID</param>
         public void DoubleClickControlBar(UITestControl theControl)
         {
             Point p = new Point(theControl.BoundingRectangle.X + 5, theControl.BoundingRectangle.Y + 5);

@@ -1,4 +1,6 @@
-﻿using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
+﻿using System.Activities.Statements;
+using System.Threading;
+using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
@@ -14,6 +16,7 @@ using Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
 using Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses;
@@ -536,6 +539,101 @@ namespace Dev2.CodedUI.Tests
 
         #endregion
 
+        #region Decision Wizard
+
+        private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DecisionWizard_Save")]
+        public void DecisionWizard_Save_WhenMouseUsedToSelect2ndAnd3rdInputFields_FieldDataSavedCorrectly()
+        {
+            //------------Setup for test--------------------------
+
+            CreateWorkflow();
+
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+
+            //------------Execute Test---------------------------
+
+            DocManagerUIMap.ClickOpenTabPage("Variables");
+            VariablesUIMap.ClickVariableName(0);
+            Keyboard.SendKeys("VariableName");
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            var decision = ToolboxUIMap.FindControl("Decision");
+            ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
+            _decisionWizardUiMap.SendTabs(4);
+            _decisionWizardUiMap.SelectMenuItem(37); // select between ;)
+
+            _decisionWizardUiMap.SendTabs(11);
+            _decisionWizardUiMap.GetFirstIntellisense("[[V",false, new Point(610,420));
+
+            _decisionWizardUiMap.SendTabs(2);
+            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(940, 420));
+            _decisionWizardUiMap.SendTabs(1);
+            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(1110, 420));
+
+            _decisionWizardUiMap.SendTabs(6);
+            Keyboard.SendKeys("{ENTER}");
+
+
+            Keyboard.SendKeys("{TAB}");
+            Keyboard.SendKeys("^A");
+            Thread.Sleep(250);
+            Keyboard.SendKeys("^C");
+            var displayValue = Clipboard.GetData(DataFormats.Text);
+
+            //------------Assert Results-------------------------
+
+            var expected = "If [[VariableName]] Is Between [[VariableName]] and [[VariableName]]";
+
+            Assert.AreEqual(expected, displayValue);
+
+            //Cleanup
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
+        }
+
+        //Bug 9339 + Bug 9378
+        [TestMethod]
+        public void SaveDecisionWithBlankFieldsExpectedDecisionSaved()
+        {
+            //Initialize
+            CreateWorkflow();
+
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+
+            //Set variable
+            DocManagerUIMap.ClickOpenTabPage("Variables");
+            VariablesUIMap.ClickVariableName(0);
+            Keyboard.SendKeys("VariableName");
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            var decision = ToolboxUIMap.FindControl("Decision");
+            ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
+            _decisionWizardUiMap.SendTabs(4);
+            _decisionWizardUiMap.SelectMenuItem(20);
+            //Assert intellisense works
+            _decisionWizardUiMap.SendTabs(10);
+            _decisionWizardUiMap.GetFirstIntellisense("[[V", true);
+            var actual = Clipboard.GetData(DataFormats.Text);
+            Assert.AreEqual("[[VariableName]]", actual, "Decision intellisense doesn't work");
+            _decisionWizardUiMap.SendTabs(2);
+            _decisionWizardUiMap.GetFirstIntellisense("[[V", true);
+            actual = Clipboard.GetData(DataFormats.Text);
+            Assert.AreEqual("[[VariableName]]", actual, "Decision intellisense doesn't work");
+            _decisionWizardUiMap.SendTabs(6);
+            Keyboard.SendKeys("{ENTER}");
+
+            //Assert can save blank decision
+            decision = new WorkflowDesignerUIMap().FindControlByAutomationId(theTab, "FlowDecisionDesigner");
+            Point point;
+            Assert.IsTrue(decision.TryGetClickablePoint(out point));
+            Assert.IsNotNull(point);
+
+            //Cleanup
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
+        }
+
+        #endregion
 
         /*
          * There is an issue with one of these test can I need to address.

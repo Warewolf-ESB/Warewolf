@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
@@ -82,19 +83,33 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         /// <summary>
         /// Gets the first intellisense result
         /// </summary>
-        public void GetFirstIntellisense(string startWith)
+        public void GetFirstIntellisense(string startWith, bool deleteText = false, Point mousePoint = default(Point))
         {
-            Keyboard.SendKeys("[[V");
+            Keyboard.SendKeys(startWith);
             Thread.Sleep(250);
-            Keyboard.SendKeys("{DOWN}");
-            Thread.Sleep(250);
-            Keyboard.SendKeys("{ENTER}");
-            Thread.Sleep(250);
-            Keyboard.SendKeys("^A");
-            Thread.Sleep(250);
-            Keyboard.SendKeys("^C");
-            Thread.Sleep(250);
-            Keyboard.SendKeys("{DELETE}");
+
+            if (mousePoint != default(Point) )
+            {
+                // nasty fixed sizing, but no other real choice to test what  I need to ;(
+                Mouse.Click(mousePoint);
+            }
+            else
+            {
+                Keyboard.SendKeys("{DOWN}");
+                Thread.Sleep(250);
+                Keyboard.SendKeys("{ENTER}");     
+            }
+
+            if (deleteText)
+            {
+                Thread.Sleep(250);
+                Keyboard.SendKeys("^A");
+                Thread.Sleep(250);
+                Keyboard.SendKeys("^C");
+
+                Thread.Sleep(250);
+                Keyboard.SendKeys("{DELETE}");
+            }
         }
 
         /// <summary>
