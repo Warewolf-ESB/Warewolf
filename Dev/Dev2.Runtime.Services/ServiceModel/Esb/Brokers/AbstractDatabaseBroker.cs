@@ -154,9 +154,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 }
             }
             dtCloned.TableName = "Table";
-            var stringWriter = new StringWriter();
-            dtCloned.WriteXml(stringWriter);
-            return stringWriter.ToString();
+            using (var stringWriter = new StringWriter())
+            {
+                dtCloned.WriteXml(stringWriter);
+                return stringWriter.ToString();
+            }
         }
 
         #endregion

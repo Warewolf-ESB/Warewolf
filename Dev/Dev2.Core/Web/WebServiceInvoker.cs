@@ -170,11 +170,13 @@ namespace Dev2.DynamicServices {
                 if (String.IsNullOrEmpty(webServiceUri.ToString()))
                     throw new Exception("Web Service Not Found");
 
-                XmlTextReader xmlreader = new XmlTextReader(webServiceUri.ToString() + "?wsdl");
+                using (XmlTextReader xmlreader = new XmlTextReader(webServiceUri + "?wsdl"))
+                {
 
-                ServiceDescriptionImporter descriptionImporter = BuildServiceDescriptionImporter(xmlreader);
+                    ServiceDescriptionImporter descriptionImporter = BuildServiceDescriptionImporter(xmlreader);
 
-                return CompileAssembly(descriptionImporter);
+                    return CompileAssembly(descriptionImporter);
+                }
             }
 
             private Assembly webServiceAssembly;

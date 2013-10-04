@@ -1355,39 +1355,41 @@ namespace Dev2.DataList.Contract
             {
                 using (TextReader tr = new StringReader(data))
                 {
-                    XmlReader reader = XmlReader.Create(tr, _isXmlReaderSettings);
-
-                    try
+                    using (XmlReader reader = XmlReader.Create(tr, _isXmlReaderSettings))
                     {
-                        long nodeCount = 0;
-                        while (reader.Read() && !isHtml && !isFragment && result &&
-                               reader.NodeType != XmlNodeType.Document)
+
+                        try
                         {
-                            nodeCount++;
-
-                            if (reader.NodeType != XmlNodeType.CDATA)
+                            long nodeCount = 0;
+                            while (reader.Read() && !isHtml && !isFragment && result &&
+                                   reader.NodeType != XmlNodeType.Document)
                             {
-                                if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" &&
-                                    reader.Depth == 0)
-                                {
-                                    isHtml = true;
-                                    result = false;
-                                }
+                                nodeCount++;
 
-                                if (reader.NodeType == XmlNodeType.Element && nodeCount > 1 && reader.Depth == 0)
+                                if (reader.NodeType != XmlNodeType.CDATA)
                                 {
-                                    isFragment = true;
+                                    if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" &&
+                                        reader.Depth == 0)
+                                    {
+                                        isHtml = true;
+                                        result = false;
+                                    }
+
+                                    if (reader.NodeType == XmlNodeType.Element && nodeCount > 1 && reader.Depth == 0)
+                                    {
+                                        isFragment = true;
+                                    }
                                 }
                             }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        ServerLogger.LogError(ex);
-                        tr.Close();
-                        reader.Close();
-                        isFragment = false;
-                        result = false;
+                        catch (Exception ex)
+                        {
+                            ServerLogger.LogError(ex);
+                            tr.Close();
+                            reader.Close();
+                            isFragment = false;
+                            result = false;
+                        }
                     }
                 }
             }

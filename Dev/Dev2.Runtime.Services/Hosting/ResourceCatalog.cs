@@ -1287,6 +1287,7 @@ namespace Dev2.Runtime.Hosting
             foreach(var serviceName in serviceNames)
             {
                 var resourceName = serviceName;
+                
                 var theTask = new Task(() =>
                 {
                     var resource = GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
@@ -1295,7 +1296,9 @@ namespace Dev2.Runtime.Hosting
                 });
                 theTask.Start();
                 await theTask;
+                theTask.Dispose();
             }
+
         }
 
         public List<string> GetDependants(Guid workspaceID, string resourceName)

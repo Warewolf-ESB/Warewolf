@@ -380,16 +380,21 @@ namespace Dev2.Runtime.ServiceModel
             {
                 result = tmp.DataListSpecification;
             }
-            var dataListSpec = XElement.Load(new StringReader(result));
-            if(dataListSpec.HasElements)
+
+            using (var sr = new StringReader(result))
             {
-                var validElements = new List<DataListVariable>();
-                var xElements = dataListSpec.Elements();
-                xElements.ForEach(element => GetInputElements(element, validElements));
-                var dataListInputVariables = JsonConvert.SerializeObject(validElements);
-                return dataListInputVariables;
+
+                var dataListSpec = XElement.Load(sr);
+                if (dataListSpec.HasElements)
+                {
+                    var validElements = new List<DataListVariable>();
+                    var xElements = dataListSpec.Elements();
+                    xElements.ForEach(element => GetInputElements(element, validElements));
+                    var dataListInputVariables = JsonConvert.SerializeObject(validElements);
+                    return dataListInputVariables;
+                }
+                return "";
             }
-            return "";
         }
 
         static void GetInputElements(XElement element, List<DataListVariable> validElements)

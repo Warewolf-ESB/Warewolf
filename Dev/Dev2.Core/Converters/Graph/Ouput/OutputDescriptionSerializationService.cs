@@ -37,15 +37,21 @@ namespace Unlimited.Framework.Converters.Graph.Output
         public string Serialize(IOutputDescription outputDescription)
         {
             DataContractSerializer dataContractSerializer = new DataContractSerializer(typeof(IOutputDescription), _knownTypes);
-            
-            StringWriter stringWriter = new StringWriter();
-            XmlTextWriter xmlTextWriter = new XmlTextWriter(stringWriter);
-            dataContractSerializer.WriteObject(xmlTextWriter, outputDescription);
 
-            string data = stringWriter.GetStringBuilder().ToString();
+            string data;
 
-            xmlTextWriter.Close();
-            stringWriter.Close();
+            using (StringWriter stringWriter = new StringWriter())
+            {
+                using (XmlTextWriter xmlTextWriter = new XmlTextWriter(stringWriter))
+                {
+                    dataContractSerializer.WriteObject(xmlTextWriter, outputDescription);
+
+                    data = stringWriter.GetStringBuilder().ToString();
+
+                    xmlTextWriter.Close();
+                    stringWriter.Close();
+                }
+            }
 
             return data;
         }
@@ -63,22 +69,23 @@ namespace Unlimited.Framework.Converters.Graph.Output
                 data = data.Replace("]]>", "");
 
                 DataContractSerializer dataContractSerializer = new DataContractSerializer(typeof(IOutputDescription), _knownTypes);
-                string a = "";
 
-                StringReader stringReader = new StringReader(StripKnownLegacyTags(data));
-                XmlTextReader xmlTextReader = new XmlTextReader(stringReader);
-
-                try
+                using (StringReader stringReader = new StringReader(StripKnownLegacyTags(data)))
                 {
-                    outputDescription = dataContractSerializer.ReadObject(xmlTextReader) as IOutputDescription;
-                }
-                catch(Exception ex)
-                {
-                    ServerLogger.LogError(ex);
-                    // we want to return null                    
-                }
+                    using (XmlTextReader xmlTextReader = new XmlTextReader(stringReader))
+                    {
 
-                string b = a;
+                        try
+                        {
+                            outputDescription = dataContractSerializer.ReadObject(xmlTextReader) as IOutputDescription;
+                        }
+                        catch (Exception ex)
+                        {
+                            ServerLogger.LogError(ex);
+                            // we want to return null                    
+                        }
+                    }
+                }
             }
 
             return outputDescription;

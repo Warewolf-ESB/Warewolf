@@ -43,28 +43,33 @@ namespace Dev2.Data.Parsers
                 {
                     throw new Exception("Input XML is not valid.");
                 }
-                var stringReader = new StringReader(xmlData);
-                XmlReaderSettings settings = new XmlReaderSettings();
-                settings.IgnoreWhitespace = true;
-                settings.DtdProcessing = DtdProcessing.Ignore;
-                settings.ConformanceLevel =ConformanceLevel.Auto;
-                XmlReader reader = XmlReader.Create(stringReader, settings);
-                reader.Read();
-                if(reader.NodeType == XmlNodeType.XmlDeclaration || reader.NodeType==XmlNodeType.Whitespace)
+                using (var stringReader = new StringReader(xmlData))
                 {
-                    reader.Skip();
+                    XmlReaderSettings settings = new XmlReaderSettings();
+                    settings.IgnoreWhitespace = true;
+                    settings.DtdProcessing = DtdProcessing.Ignore;
+                    settings.ConformanceLevel = ConformanceLevel.Auto;
+                    using (XmlReader reader = XmlReader.Create(stringReader, settings))
+                    {
+                        reader.Read();
+                        if (reader.NodeType == XmlNodeType.XmlDeclaration || reader.NodeType == XmlNodeType.Whitespace)
+                        {
+                            reader.Skip();
+                        }
+                        if (xPath.StartsWith("/" + reader.Name) || xPath.StartsWith("//" + reader.Name))
+                        {
+                            xPath = xPath.Replace("/" + reader.Name, "");
+                        }
+                        XNode xNode = XNode.ReadFrom(reader);
+                        IEnumerable<object> xdmValue = xNode.XPath2Select(xPath);
+                        var list = xdmValue.Select(element =>
+                            {
+                                return element.ToString();
+                            }).ToList();
+
+                        return list;
+                    }
                 }
-                if(xPath.StartsWith("/" + reader.Name) || xPath.StartsWith("//"+reader.Name))
-                {
-                    xPath = xPath.Replace("/" + reader.Name, "");
-                }
-                XNode xNode = XNode.ReadFrom(reader);
-                IEnumerable<object> xdmValue = xNode.XPath2Select(xPath);
-                var list = xdmValue.Select(element =>
-                {
-                    return element.ToString();
-                }).ToList();
-                return list;
             }
             catch(Exception exception)
             {

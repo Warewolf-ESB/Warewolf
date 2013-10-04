@@ -47,10 +47,12 @@ namespace Dev2.Utilities
             if (builder != null)
             {
                 var sb = new StringBuilder();
-                var sw = new StringWriter(sb);
-                var xw = ActivityXamlServices.CreateBuilderWriter(new XamlXmlWriter(sw, new XamlSchemaContext()));
-                XamlServices.Save(xw, builder);
-                text = sb.Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "").ToString();
+                using (var sw = new StringWriter(sb))
+                {
+                    var xw = ActivityXamlServices.CreateBuilderWriter(new XamlXmlWriter(sw, new XamlSchemaContext()));
+                    XamlServices.Save(xw, builder);
+                    text = sb.Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "").ToString();
+                }
             }
             text = SanitizeXaml(text);
 
@@ -141,6 +143,7 @@ namespace Dev2.Utilities
         {
             // NOTE: DO NOT set properties or variables!
             SetNamespaces(dynamicActivity);
+            // MS Memory Leak ;(
             var chart = WorkflowInspectionServices.GetActivities(dynamicActivity).FirstOrDefault() as Flowchart;
             if (chart != null)
             {
@@ -188,7 +191,7 @@ namespace Dev2.Utilities
             // Compile the C# expression.
 
             var compiler = new TextExpressionCompiler(settings);
-            var results = compiler.Compile();
+            var results = compiler.Compile(); // Nasty MS memory leak ;(
             compiler = null;
 
             if (results.HasErrors)
