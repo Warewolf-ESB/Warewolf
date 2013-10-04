@@ -25,7 +25,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Utilities
         {
             string error = string.Empty;
             IBinaryDataList binaryDL = Dev2BinaryDataListFactory.CreateDataList();
-            //IList<IDev2Definition> result = new List<IDev2Definition>();
             Type sourceType = obj.GetType();
             foreach (PropertyInfo pi in sourceType.GetProperties())
             {

@@ -111,7 +111,7 @@ namespace Dev2.Data.Decision
 
                                         if(!result && dds.Mode == Dev2DecisionMode.AND)
                                         {
-                                            // Naughty stuff, we have a false in AND mode... break;
+                                            // Naughty stuff, we have a false in AND mode... break
                                             return false;
                                         }
 

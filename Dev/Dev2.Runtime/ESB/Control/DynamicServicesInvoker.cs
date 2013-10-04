@@ -150,8 +150,8 @@ namespace Dev2.Runtime.ESB
                     {
                         ErrorResultTO tmpErrors;
                         compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error,
-                            errors.MakeDataListReady(), out tmpErrors);
-                        //transactionScope.Dispose();
+                        errors.MakeDataListReady(), out tmpErrors);
+                        
                         if(errors.HasErrors())
                         {
                             ServerLogger.LogError(errors.MakeDisplayReady());

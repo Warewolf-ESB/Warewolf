@@ -102,7 +102,6 @@ namespace Dev2.Network.Messaging
                 {
                     if (_dispatcherFrame != null && _dispatcherFrame.Continue)
                     {
-                        //SetResponse(new ErrorMessage(_handle, "Send message timeout."));
                         SetResponse(_timeoutResult);
                     }
                 }

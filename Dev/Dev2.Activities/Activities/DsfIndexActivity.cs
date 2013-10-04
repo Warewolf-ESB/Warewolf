@@ -105,7 +105,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDev2IndexFinder indexFinder = new Dev2IndexFinder();
             ErrorResultTO allErrors = new ErrorResultTO();

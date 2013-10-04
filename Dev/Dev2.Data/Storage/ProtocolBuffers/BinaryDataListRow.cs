@@ -115,7 +115,6 @@ namespace Dev2.Data.Storage.ProtocolBuffers
 
             // unpack _storageCapacity
             offSet += 2;
-            //var intBytes = new byte[sizeof(int)];
             Buffer.BlockCopy(bytes, offSet, intBytes, 0, 4);
             _storageCapacity = BitConverter.ToInt32(intBytes, 0);
 

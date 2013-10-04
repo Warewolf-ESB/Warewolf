@@ -22,10 +22,6 @@ namespace Dev2.Data.Storage.ProtocolBuffers
 
             Buffer.BlockCopy(Encoding.UTF8.GetBytes(TheString), 0, result, 4, strLen);
 
-            //Array.ConstrainedCopy(BitConverter.GetBytes(TheInt), 0, result, 0, 4);
-
-            //Array.ConstrainedCopy(Encoding.UTF8.GetBytes(TheString), 0, result, 4, strLen);
-
             return result;
         }
 
@@ -36,13 +32,11 @@ namespace Dev2.Data.Storage.ProtocolBuffers
 
             Buffer.BlockCopy(bytes, 0, intBuffer, 0, 4);
 
-            //Array.ConstrainedCopy(bytes, 0, intBuffer, 0, 4);
-
-            this.TheInt = BitConverter.ToInt32(intBuffer, 0);
+            TheInt = BitConverter.ToInt32(intBuffer, 0);
 
             int strLen = (bytes.Length - 4);
 
-            this.TheString = Encoding.UTF8.GetString(bytes, 4, strLen);
+            TheString = Encoding.UTF8.GetString(bytes, 4, strLen);
 
         }
 

@@ -55,12 +55,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         bool IsUpgraded { get; set; }
 
         /// <summary>
-        /// Saves this resource to the specified workspace.
-        /// </summary>
-        /// <param name="workspaceID">The workspace ID.</param>
-        //void Save(Guid workspaceID);
-
-        /// <summary>
         /// Gets the XML representation of this resource.
         /// </summary>
         /// <returns>The XML representation of this resource.</returns>

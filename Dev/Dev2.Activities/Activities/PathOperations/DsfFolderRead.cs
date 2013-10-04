@@ -37,7 +37,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             allErrors = new ErrorResultTO();
             IList<OutputTO> outputs = new List<OutputTO>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
+
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO errors = new ErrorResultTO();

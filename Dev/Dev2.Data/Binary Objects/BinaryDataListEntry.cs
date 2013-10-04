@@ -250,7 +250,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
             if(IsRecordset)
             {
-                //if(idx <= FetchLastRecordsetIndex() && _internalObj.TryGetValue(myIdx, out dummy) && dummy.Any())
                 if(idx <= FetchLastRecordsetIndex() && _internalObj.ContainsRow(myIdx))
                 {
                     // entry already exist, so update the row ;)

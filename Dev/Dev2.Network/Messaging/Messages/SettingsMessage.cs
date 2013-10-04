@@ -34,7 +34,6 @@ namespace Dev2.Network.Messaging.Messages
             }
             catch(Exception ex)
             {
-                //ServerLogger.LogError(ex);
                 //TODO 1018 Decide on empty xml
                 ConfigurationXml = new XElement("NoData");
             }

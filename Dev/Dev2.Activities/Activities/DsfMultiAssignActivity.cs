@@ -84,8 +84,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs.Clear();
 
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            // 2012.11.05 : Travis.Frisinger - Added for Binary DataList -- Shape Input
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             toUpsert.IsDebug = (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke);

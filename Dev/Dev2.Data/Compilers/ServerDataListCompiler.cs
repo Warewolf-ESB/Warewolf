@@ -1140,7 +1140,6 @@ namespace Dev2.Server.Datalist
                             }
                         }
 
-                        //var item = sourceItems.FirstOrDefault(i => i.FieldName == inputFieldName);
                         if(item != null)
                         {
                             IBinaryDataListItem binaryDataListItem = item.Clone();
@@ -1149,7 +1148,7 @@ namespace Dev2.Server.Datalist
                         }
 
                         idxType = targetDef.Value.IdxType;
-                    }
+                    }//st
 
                     // flush the last bits or entire operation ;)
                     FlushToEntry(isRS, targetEntry, targetItems, targetIndex, out tmpErrors);
@@ -1998,7 +1997,7 @@ namespace Dev2.Server.Datalist
 
                             IBinaryDataListEntry tmpItem = InternalDataListEvaluateV2(ers);
                             allErrors.MergeErrors(ers.Errors);
-                            errors.ClearErrors();//starPopIdx.Remove(idx);
+                            errors.ClearErrors();
 
                             // now find the correct token based upon the eval
                             if(tmpItem != null)

@@ -72,7 +72,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var outputindexCounter = 0;
 
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();

@@ -129,7 +129,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                         indexList.MinValue = intFrom;
                         indexList.MaxValue = intTo;
                         ReverseIndexIterator revIdxItr = new ReverseIndexIterator(new HashSet<int>(), 0);
-                        //localIndexIterator = new IndexIterator(new HashSet<int>(), 0);
                         revIdxItr.IndexList = indexList;
                         IndexIterator = revIdxItr;
                     }
