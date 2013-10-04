@@ -66,7 +66,7 @@ namespace QueueBuild
                 }
 
             }
-            else
+            if(args == null || args.Length < 3)
             {
                 string argsPayload = string.Empty;
                 foreach (string str in args)
