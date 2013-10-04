@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,7 +13,6 @@ using Dev2.Data.ServiceModel.Helper;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ESB;
 using Dev2.Runtime.ESB.Execution;
-using Dev2.Runtime.Helpers;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
@@ -221,12 +219,13 @@ namespace Dev2.DynamicServices
             {
                 ErrorResultTO invokeErrors;
                 // Setup the invoker endpoint ;)
-                var invoker = new DynamicServicesInvoker(this, this, theWorkspace);
+                using (var invoker = new DynamicServicesInvoker(this, this, theWorkspace))
+                {
 
-                // Should return the top level DLID
-                resultID = invoker.Invoke(dataObject, out invokeErrors);
-                errors.MergeErrors(invokeErrors);
-
+                    // Should return the top level DLID
+                    resultID = invoker.Invoke(dataObject, out invokeErrors);
+                    errors.MergeErrors(invokeErrors);
+                }
             }
             catch (Exception ex)
             {
