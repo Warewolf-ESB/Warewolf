@@ -28,22 +28,19 @@
                             <label class="decision-if-text">
 								If: 
 							</label>
-                                    <!--<textarea Name="Col1" id="Col1" draggable="false" 
-                                                  data-bind="hasfocus: ko.observable(true), visible: PopulatedColumnCnt > 0, value: Col1, valueUpdate: 'afterkeydown', event: { keydown: $parent.onKeyDown }"
-                                                  class="veryShortField required noResizeTextArea topAlign"></textarea>-->
                                     <input type="text"  name="Col1" id="Col1" data-bind="value: Col1, valueUpdate: 'blur', visible: PopulatedColumnCnt() > 0" class="veryShortField" style="margin-top: 2px; height: 16px" />                              
 
                                     <select data-bind="options: $parent.data.decisionFunctions, value: EvaluationFn,optionsText: 'displayValue', optionsValue: 'optionValue', event:{ change: $parent.rowChanged}" class="shortField required topAlign">
                                     </select>
 
                                     <textarea name="Col2" id="Col2" draggable="false" 
-                                              data-bind="hasfocus: PopulatedColumnCnt() == 2, visible: PopulatedColumnCnt() == 2, value: Col2, valueUpdate: 'afterkeydown', event: { keydown: $parent.onKeyDown }"
+                                              data-bind="hasfocus: PopulatedColumnCnt() == 2, visible: PopulatedColumnCnt() == 2, value: Col2, valueUpdate: 'blur', event: { keydown: $parent.onKeyDown }"
                                               class="wideField noResizeTextArea topAlign" ></textarea>
 
                                     <span data-bind="visible: PopulatedColumnCnt() == 3" class="topAlign fixedHeight">
                                         <input style="margin-left: 1px; height: 16px" type="text" name="Col2a" id="Col2a" data-bind="value: Col2, valueUpdate: 'afterkeydown'" class="veryShortField" />
                                         <span style="margin-top: 2px">&nbsp;And&nbsp;</span>
-                                        <input style="height: 16px" type="text" name="Col3" id="Col3" data-bind="value: Col3, valueUpdate: 'afterkeydown'" class="veryShortField" />
+                                        <input style="height: 16px" type="text" name="Col3" id="Col3" data-bind="value: Col3, valueUpdate: 'blur'" class="veryShortField" />
                                     </span>
 
                                     <span class="floatRight topAlign">
