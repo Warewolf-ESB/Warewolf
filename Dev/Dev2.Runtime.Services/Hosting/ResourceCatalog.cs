@@ -1277,7 +1277,7 @@ namespace Dev2.Runtime.Hosting
 
         public async Task LoadFrequentlyUsedServices()
         {
-            // do we really need this still - YES WE DO ELSE THERE ARE INSTALL ISSUES ;)
+            // do we really need this still - YES WE DO ELSE THERE ARE INSTALL ISSUES WHEN LOADING FROM FRESH ;)
 
             var serviceNames = new[]
             {

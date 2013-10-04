@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Utils;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
@@ -75,6 +76,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 var service = DeserializeService(args);
                 _resourceCatalog.SaveResource(workspaceID, service);
+
                 if(workspaceID != GlobalConstants.ServerWorkspaceID)
                 {
                     _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, service);
