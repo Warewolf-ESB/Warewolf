@@ -23,49 +23,6 @@ namespace QueueBuild
         {
             DateTime buildTS = DateTime.Now;
 
-            if (args != null && args.Length == 3)
-            {
-                string server = args[0].Trim();
-                string project = args[1].Trim();
-                string def = args[2].Trim();
-
-                BuildQueuer qb = new BuildQueuer();
-
-                File.WriteAllText(LogFile(), buildTS + " :: Queuing Build With Args { Server : '" + server + "', Project : '" + project +
-                                  "', Definition : '" + def + "'}");
-
-                try
-                {
-                    return qb.Run(server, project, def, string.Empty);
-                }
-                catch(Exception e)
-                {
-                    File.WriteAllText(LogFile(), buildTS + " :: Execution Errors { " + e.Message + " }" );
-                }
-
-            }
-            if (args != null && args.Length == 4)
-            {
-                string server = args[0].Trim();
-                string project = args[1].Trim();
-                string def = args[2].Trim();
-                string shelveSet = args[3].Trim();
-
-                BuildQueuer qb = new BuildQueuer();
-
-                File.WriteAllText(LogFile(), buildTS + " :: Queuing Build With Args { Server : '" + server + "', Project : '" + project +
-                                  "', Definition : '" + def + "','" + shelveSet + "'}");
-
-                try
-                {
-                    return qb.Run(server, project, def, shelveSet);
-                }
-                catch (Exception e)
-                {
-                    File.WriteAllText(LogFile(), buildTS + " :: Execution Errors { " + e.Message + " }");
-                }
-
-            }
             if(args == null || args.Length < 3)
             {
                 string argsPayload = string.Empty;
@@ -74,6 +31,25 @@ namespace QueueBuild
                     argsPayload += str + ", ";
                 }
                 File.WriteAllText(LogFile(), buildTS + " :: *** Arguments Error With {  " + argsPayload + " }");
+            }
+
+            string server = args[0].Trim();
+            string project = args[1].Trim();
+            string def = args[2].Trim();
+            string shelveSet = args[3].Trim();
+
+            BuildQueuer qb = new BuildQueuer();
+
+            File.WriteAllText(LogFile(), buildTS + " :: Queuing Build With Args { Server : '" + server + "', Project : '" + project +
+                                "', Definition : '" + def + "','" + shelveSet + "'}");
+
+            try
+            {
+                return qb.Run(server, project, def, shelveSet);
+            }
+            catch (Exception e)
+            {
+                File.WriteAllText(LogFile(), buildTS + " :: Execution Errors { " + e.Message + " }");
             }
 
             return -1; // 
