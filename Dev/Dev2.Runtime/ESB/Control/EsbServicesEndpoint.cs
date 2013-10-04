@@ -368,8 +368,8 @@ namespace Dev2.DynamicServices
 
                     if (!string.IsNullOrEmpty(oDL))
                     {
-                    try
-        {
+                        try
+                        {
                         // finally glue the two together ;)
                         XmlDocument oDLXDoc = new XmlDocument();
                         oDLXDoc.LoadXml(oDL);
@@ -390,20 +390,20 @@ namespace Dev2.DynamicServices
                         try
                         {
                             // finally glue the two together ;)
-                        XmlDocument iDLXDoc = new XmlDocument();
-                        iDLXDoc.LoadXml(iDL);
+                            XmlDocument iDLXDoc = new XmlDocument();
+                            iDLXDoc.LoadXml(iDL);
 
                             inputFragment = iDLXDoc.DocumentElement.InnerXml;
-                    }
-                    catch (Exception e)
-            {
-                        ServerLogger.LogError(e);
-                        errors.AddError(e.Message);
-            }
+                        }
+                        catch (Exception e)
+                        {
+                            ServerLogger.LogError(e);
+                            errors.AddError(e.Message);
+                        }
                     }
 
                     result = "<DataList>" + outputFragment + inputFragment + "</DataList>";
-            }
+                }
             }
 
             if (string.IsNullOrEmpty(result))
@@ -442,6 +442,50 @@ namespace Dev2.DynamicServices
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Gets the correct data list.
+        /// </summary>
+        /// <param name="dataObject">The data object.</param>
+        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="compiler">The compiler.</param>
+        /// <returns></returns>
+        public Guid CorrectDataList(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors, IDataListCompiler compiler)
+        {
+            string theShape;
+            ErrorResultTO invokeErrors;
+            errors = new ErrorResultTO(); 
+
+            // If no DLID, we need to make it based upon the request ;)
+            if(dataObject.DataListID == GlobalConstants.NullDataListID)
+            {
+                theShape = FindServiceShape(workspaceID, dataObject.ServiceName);
+                dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
+                    dataObject.RawPayload, theShape, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
+                dataObject.RawPayload = string.Empty;
+            }
+
+            // force all items to exist in the DL ;)
+            theShape = FindServiceShape(workspaceID, dataObject.ServiceName);
+            var innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
+                string.Empty, theShape, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+
+            // Add left to right
+            var left = compiler.FetchBinaryDataList(dataObject.DataListID, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+            var right = compiler.FetchBinaryDataList(innerDatalistID, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+
+            DataListUtil.MergeDataList(left, right, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+            compiler.PushBinaryDataList(left.UID, left, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+
+            return innerDatalistID;
         }
 
         #endregion

@@ -2,7 +2,6 @@
 using Dev2.Activities;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
-using Dev2.Runtime.Helpers;
 using Dev2.Services.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -20,26 +19,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         public TestContext TestContext { get; set; }
 
         #region Plugin Service Execution
-
-        [TestMethod]
-        [TestCategory("UnitTest")]
-        [Description("Test 'CleanDataList' for 'DsfPluginActivity': DsfPluginActivity uses RuntimeHelpers to clean the datalist prior to execution")]
-        [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
-        public void DsfPluginActivity_DsfPluginActivityUnitTest_CleanDataList_RuntimeHelperCallsGetCorrectDataList()
-        // ReSharper restore InconsistentNaming
-        {
-            //init
-            var pluginActivity = new MockDsfPluginActivity();
-            var mockRuntimeHelper = new Mock<RuntimeHelpers>();
-            mockRuntimeHelper.Setup(c => c.GetCorrectDataList(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<ErrorResultTO>(), It.IsAny<IDataListCompiler>()));
-
-            //exe
-            pluginActivity.MockCleanDataList(mockRuntimeHelper.Object, It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<ErrorResultTO>(), It.IsAny<IDataListCompiler>());
-
-            //assert
-            mockRuntimeHelper.Verify(c => c.GetCorrectDataList(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<ErrorResultTO>(), It.IsAny<IDataListCompiler>()), Times.Once());
-        }
 
         [TestMethod]
         [TestCategory("UnitTest")]
@@ -82,36 +61,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             //assert
             Assert.IsFalse(errors.HasErrors(), "Errors where thrown while executing a plugin service");
             mockContainer.Verify(c => c.Execute(out errors), Times.Once());
-        }
-
-        [TestMethod]
-        [TestCategory("UnitTest")]
-        [Description("Test for Execution of 'DsfPluginActivity': A valid plugin activity is executed with mocks injected")]
-        [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
-        public void DsfPluginActivity_DsfPluginActivityUnitTest_ExecutionImpl_PluginActivityExecutes()
-        // ReSharper restore InconsistentNaming
-        {
-            //init
-            ErrorResultTO errors;
-            var pluginActivity = new Mock<MockDsfPluginActivity>();
-            pluginActivity.Protected().Setup("CleanDataList", ItExpr.IsAny<RuntimeHelpers>(), ItExpr.IsAny<IDSFDataObject>(), ItExpr.IsAny<Guid>(), ItExpr.IsAny<IDataListCompiler>()).Verifiable();
-            pluginActivity.Protected().Setup<PluginServiceExecution>("GetNewPluginServiceExecution", ItExpr.IsAny<IDSFDataObject>()).Verifiable();
-            pluginActivity.Protected().Setup<PluginServiceExecution>("GetNewPluginServiceExecution", ItExpr.IsAny<IDSFDataObject>()).Returns(It.IsAny<PluginServiceExecution>());
-            pluginActivity.Protected().Setup<Guid>("ExecutePluginService", ItExpr.IsAny<PluginServiceExecution>()).Verifiable();
-            pluginActivity.Protected().Setup<Guid>("ExecutePluginService", ItExpr.IsAny<PluginServiceExecution>()).Returns(It.IsAny<Guid>());
-            IDSFDataObject context = new DsfDataObject(It.IsAny<string>(), It.IsAny<Guid>());
-            context.WorkspaceID = It.IsAny<Guid>();
-            context.ResourceID = It.IsAny<Guid>();
-
-            //exe
-            pluginActivity.Object.MockExecutionImpl(It.IsAny<IEsbChannel>(), context, string.Empty, string.Empty, out errors);
-
-            //assert
-            Assert.IsFalse(errors.HasErrors(), "Errors where thrown while executing a plugin activity");
-            pluginActivity.Protected().Verify("CleanDataList", Times.Once(), ItExpr.IsAny<RuntimeHelpers>(), ItExpr.IsAny<IDSFDataObject>(), ItExpr.IsAny<Guid>(), ItExpr.IsAny<IDataListCompiler>());
-            pluginActivity.Protected().Verify<PluginServiceExecution>("GetNewPluginServiceExecution", Times.Once(), ItExpr.IsAny<IDSFDataObject>());
-            pluginActivity.Protected().Verify<Guid>("ExecutePluginService", Times.Once(), ItExpr.IsAny<PluginServiceExecution>());
         }
         
         #endregion

@@ -1,7 +1,5 @@
 ﻿using System;
 using Dev2.DataList.Contract;
-using Dev2.Runtime.Helpers;
-using Dev2.Runtime.Hosting;
 using Dev2.Services.Execution;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -17,7 +15,10 @@ namespace Dev2.Activities
         {
             _errorsTo = new ErrorResultTO();
             var compiler = DataListFactory.CreateDataListCompiler();
-            CleanDataList(new RuntimeHelpers(), dataObject, dataObject.WorkspaceID, compiler);
+
+            ErrorResultTO invokeErrors;
+            esbChannel.CorrectDataList(dataObject, dataObject.WorkspaceID, out invokeErrors, compiler);
+            _errorsTo.MergeErrors(invokeErrors);
             var pluginServiceExecution = GetNewPluginServiceExecution(dataObject);
             tmpErrors = new ErrorResultTO();
             tmpErrors.MergeErrors(_errorsTo);
@@ -36,11 +37,6 @@ namespace Dev2.Activities
         protected virtual PluginServiceExecution GetNewPluginServiceExecution(IDSFDataObject context)
         {
             return new PluginServiceExecution(context, false);
-        }
-
-        protected virtual void CleanDataList(RuntimeHelpers runtimeHelpers, IDSFDataObject dataObject, Guid workspaceID, IDataListCompiler compiler)
-        {
-            runtimeHelpers.GetCorrectDataList(dataObject, workspaceID, _errorsTo, compiler);
         }
 
         #endregion

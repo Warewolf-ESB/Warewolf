@@ -63,6 +63,16 @@ namespace Dev2
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
         IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubRequest(IDSFDataObject dataObject, string inputDefs, string outputDefs, out ErrorResultTO errors);
+
+        /// <summary>
+        /// Gets the correct data list.
+        /// </summary>
+        /// <param name="dataObject">The data object.</param>
+        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="compiler">The compiler.</param>
+        /// <returns></returns>
+        Guid CorrectDataList(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors, IDataListCompiler compiler);
     }
 
     public interface IEsbWorkspaceChannel : IEsbChannel

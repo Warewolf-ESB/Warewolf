@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Common;
 using Dev2.DataList.Contract;
-using Dev2.Runtime.Helpers;
 using Dev2.Services.Execution;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -15,7 +13,6 @@ namespace Dev2.Activities
 
         #region Overrides of DsfActivity
 
-        // Nasty that this is now outside the Esb Chanel and in the WF engine, this has resulted in duplicated execution logic ;(
         protected override Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
