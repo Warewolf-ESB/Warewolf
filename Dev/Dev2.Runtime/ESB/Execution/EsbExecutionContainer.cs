@@ -29,7 +29,6 @@ namespace Dev2.Runtime.ESB.Execution
         {
         }
 
-
         public abstract Guid Execute(out ErrorResultTO errors);
     }
 }

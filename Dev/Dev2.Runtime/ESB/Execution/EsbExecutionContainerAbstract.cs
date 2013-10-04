@@ -213,15 +213,6 @@ namespace Dev2.Runtime.ESB.Execution
             compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), ServiceAction.OutputSpecification, shapeDataListID, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
-
-
-            //compiler.Shape(shapeDataListID, enDev2ArgumentType.Output, ServiceAction.OutputSpecification, out invokeErrors);
-            //errors.MergeErrors(invokeErrors);
-
-            // Merge each result into the datalist ;)
-            //compiler.Merge(DataObject.DataListID, tmpID, enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite, false, out invokeErrors);
-            //errors.MergeErrors(invokeErrors);
-
             compiler.ForceDeleteDataListByID(shapeDataListID); // clean up 
         }
 

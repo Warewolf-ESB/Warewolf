@@ -17,7 +17,7 @@ namespace Dev2.Runtime.ESB.Execution
         public PluginServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
-            _pluginServiceExecution = new PluginServiceExecution(dataObj,false);
+            _pluginServiceExecution = new PluginServiceExecution(dataObj,true);
         }
 
         public PluginServiceContainer(IServiceExecution pluginServiceExecution):base(pluginServiceExecution)
