@@ -9,10 +9,9 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             InitializeComponent();
         }
 
-        private void UrlOnLoaded(object sender, RoutedEventArgs e)
+        protected override IInputElement GetInitialFocusElement()
         {
-            var element = (FrameworkElement)sender;
-            element.Focus();
+            return InitialFocusElement;
         }
     }
 }

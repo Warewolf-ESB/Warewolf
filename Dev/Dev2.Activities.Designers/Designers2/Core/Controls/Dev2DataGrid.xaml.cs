@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Dev2.Interfaces;
 using Dev2.UI;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -16,7 +18,7 @@ namespace Dev2.Activities.Designers2.Core.Controls
     /// </summary>
     public partial class Dev2DataGrid
     {
-        readonly Func<DataGridRow, FrameworkElement> _getVisualChild;
+        readonly Func<Visual, FrameworkElement> _getVisualChild;
 
         public Dev2DataGrid()
             : this(GetVisualChild<IntellisenseTextBox>)
@@ -24,7 +26,7 @@ namespace Dev2.Activities.Designers2.Core.Controls
 
         }
 
-        public Dev2DataGrid(Func<DataGridRow, FrameworkElement> getVisualChild)
+        public Dev2DataGrid(Func<Visual, FrameworkElement> getVisualChild)
         {
             VerifyArgument.IsNotNull("getVisualChild", getVisualChild);
             _getVisualChild = getVisualChild;
@@ -138,32 +140,69 @@ namespace Dev2.Activities.Designers2.Core.Controls
             return Items.SourceCollection.Cast<ModelItem>().Count();
         }
 
-        public bool SetFocus(DataGridRow row)
+        public bool SetFocusToInserted(DataGridRow row)
         {
-            if(row != null)
+            var modelItem = row.DataContext as ModelItem;
+            if(modelItem != null)
             {
-                var modelItem = row.DataContext as ModelItem;
-
-                if(modelItem != null)
+                var toFn = modelItem.GetCurrentValue() as IDev2TOFn;
+                if(toFn != null && toFn.Inserted)
                 {
-                    var toFn = modelItem.GetCurrentValue() as IDev2TOFn;
-                    if(toFn != null && toFn.Inserted)
-                    {
-                        var visualChild = _getVisualChild(row);
-                        if(visualChild != null)
-                        {
-                            visualChild.Focus();
-                            return true;
-                        }
-                    }
+                    return SetFocus(row);
                 }
             }
             return false;
         }
 
+        public IInputElement GetFocusElement(int rowIndex)
+        {
+            if(rowIndex >= 0 && rowIndex < Items.Count)
+            {
+                var row = GetRow(rowIndex);
+                return GetFocusElement(row);
+            }
+            return null;
+        }
+
+        public IInputElement GetFocusElement(DataGridRow row)
+        {
+            return GetVisualChild(row);
+        }
+
+        bool SetFocus(Visual row)
+        {
+            // Wait for the UI to be fully rendered BEFORE trying to set the focus
+            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() =>
+            {
+                var visualChild = GetVisualChild(row);
+                if(visualChild != null)
+                {
+                    Keyboard.Focus(visualChild);
+                }
+            }));
+            return true;
+            //var visualChild = GetVisualChild(row);
+            //if(visualChild != null)
+            //{
+            //    Keyboard.Focus(visualChild);
+            //    return true;
+            //}
+            //return false;
+        }
+
+        FrameworkElement GetVisualChild(Visual row)
+        {
+            return row != null ? _getVisualChild(row) : null;
+        }
+
+        DataGridRow GetRow(int rowIndex)
+        {
+            return (DataGridRow)ItemContainerGenerator.ContainerFromItem(Items[rowIndex]);
+        }
+
         void OnDataGridRowLoaded(object sender, RoutedEventArgs e)
         {
-            //SetFocus(sender as DataGridRow);
+            SetFocusToInserted(sender as DataGridRow);
         }
 
         public static T GetVisualChild<T>(Visual parent) where T : Visual

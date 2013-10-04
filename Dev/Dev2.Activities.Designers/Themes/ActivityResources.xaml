@@ -3,8 +3,8 @@
                     xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                     xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                     xmlns:converters3="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
-                    xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
-                    xmlns:activities="clr-namespace:Dev2.Activities"
+                    xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"                    
+                    xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                     x:Class="ArbitraryNameToEliminateBogusGenericsErrorDsfActivityResources">
 
     <ResourceDictionary.MergedDictionaries>
@@ -60,4 +60,12 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    
+     <Style x:Key="SpacedActivityDataGridStyle" BasedOn="{StaticResource ActivityDataGridStyle}" TargetType="{x:Type controls:Dev2DataGrid}">
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="RowStyle" Value="{StaticResource SpacedDataGridRowStyle}"/>  
+    </Style>   
 </ResourceDictionary>

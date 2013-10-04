@@ -10,10 +10,9 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             InitializeComponent();
         }
 
-        void FocusedTextBox_OnLoaded(object sender, RoutedEventArgs args)
+        protected override IInputElement GetInitialFocusElement()
         {
-            var element = (FrameworkElement)sender;
-            element.Focus();
-        }      
+            return InitialFocusElement;
+        }
     }
 }

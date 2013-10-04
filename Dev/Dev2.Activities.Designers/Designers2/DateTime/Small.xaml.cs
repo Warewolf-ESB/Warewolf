@@ -1,4 +1,6 @@
 ﻿
+using System.Windows;
+
 namespace Dev2.Activities.Designers2.DateTime
 {
     public partial class Small
@@ -6,6 +8,11 @@ namespace Dev2.Activities.Designers2.DateTime
         public Small()
         {
             InitializeComponent();
+        }
+
+        protected override IInputElement GetInitialFocusElement()
+        {
+            return InitialFocusElement;
         }
     }
 }

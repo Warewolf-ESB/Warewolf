@@ -44,16 +44,15 @@
         <Label Grid.Column="0"
                Grid.Row="0"
                Content="In Field(s)" />
-        <ui:IntellisenseTextBox  Grid.Column="1"
-                                 Grid.Row="0"
-                                 DefaultText="[[Recordset().Field]]"
-                                 FilterType="RecordsetFields"                                 
-                                 Text="{Binding Path=ModelItem.FieldsToSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="0,2"   
-                                 Loaded="FocusedTextBoxOnLoaded"
-                                 LostFocus="FocusedTextBoxOnLostFocus"
-                                 IsUndoEnabled="True"
-                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FieldsToSearch_AutoID}">
+        <ui:IntellisenseTextBox x:Name="InitialFocusElement"
+                                Grid.Column="1"
+                                Grid.Row="0"
+                                DefaultText="[[Recordset().Field]]"
+                                FilterType="RecordsetFields"
+                                Text="{Binding Path=ModelItem.FieldsToSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Margin="0,2"
+                                IsUndoEnabled="True"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FieldsToSearch_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsFieldsToSearchHelpText}"
                                  DataContext="{Binding}" />
@@ -94,6 +93,11 @@
                                       Margin="0,0,2,0"
                                       ItemsSource="{Binding DataContext.WhereOptions, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       SelectedValue="{Binding SearchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding DataContext.AddRowCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsSearchTypeHelpText}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />

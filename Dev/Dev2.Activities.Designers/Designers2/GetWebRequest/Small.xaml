@@ -36,12 +36,10 @@
                VerticalAlignment="Bottom" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="0"
-                                Name="FocusedTextBox"
+                                Name="InitialFocusElement"
                                 DefaultText="http://mywebpage.com"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Text="{Binding Path=ModelItem.Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
-                                  Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
-                                Loaded="FocusedTextBox_OnLoaded"
+                                Text="{Binding Path=ModelItem.Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"                                
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.WebRequestURIHelpText}"

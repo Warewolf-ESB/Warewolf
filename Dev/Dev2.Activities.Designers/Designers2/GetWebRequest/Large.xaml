@@ -52,16 +52,15 @@
                Grid.Row="0"
                Content="URL"
                VerticalAlignment="Bottom" />
-        <ui:IntellisenseTextBox Grid.Column="1"
+        <ui:IntellisenseTextBox x:Name="InitialFocusElement"
+                                Grid.Column="1"
                                 Grid.Row="0"
                                 DefaultText="http://mywebpage.com"
                                 Focusable="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Text="{Binding Path=ModelItem.Url, Mode=TwoWay,  NotifyOnTargetUpdated=True,
-                                  Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
+                                Text="{Binding Path=ModelItem.Url, Mode=TwoWay,  NotifyOnTargetUpdated=True, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsUrlFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}"
-                                Loaded="UrlOnLoaded">
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.WebRequestURIHelpText}"
                                  DataContext="{Binding}" />

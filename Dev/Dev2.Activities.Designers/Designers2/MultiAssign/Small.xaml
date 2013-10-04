@@ -33,7 +33,6 @@
         <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
         
         <i:Interaction.Behaviors>
-            <controls:DatagridFocusOnLoadBehavior />
             <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                 <behaviors:DataGridWatermarkModifier.WatermarkText>
                     <system:String>[[Variable1]]</system:String>
@@ -123,9 +122,14 @@
                                                 AcceptsReturn="True"
                                                 MaxHeight="52"
                                                 Padding="3"
-                                                Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
+                                                Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"                                                
                                                 IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
                                                 Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="KeyUp" >
+                                    <i:InvokeCommandAction Command="{Binding DataContext.AddRowCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
                             <i:Interaction.Behaviors>
                                 <help:HelpSetter Text="{x:Static help:HelpTextResources.MultiAssignNewValueHelpText}"
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />

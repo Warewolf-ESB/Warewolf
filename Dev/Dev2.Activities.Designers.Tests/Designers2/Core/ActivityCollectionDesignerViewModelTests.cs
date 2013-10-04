@@ -1,5 +1,6 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Windows.Data;
 using Dev2.Activities.Designers.Tests.Designers2.Core.Stubs;
 using Dev2.Activities.Designers2.Core;
@@ -22,24 +23,6 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void ActivityCollectionDesignerViewModel_Constructor_NoRows_ViewModelConstructed()
         // ReSharper restore InconsistentNaming
         {
-            //init
-            //const string ExpectedCollectionName = "FieldsCollection";
-            //var collectionNameProp = new Mock<ModelProperty>();
-            //var dtoListProp = new Mock<ModelProperty>();
-            //var displayNameProp = new Mock<ModelProperty>();
-            //var properties = new Dictionary<string, Mock<ModelProperty>>();
-            //var propertyCollection = new Mock<ModelPropertyCollection>();
-            //var mockModel = new Mock<ModelItem>();
-
-            //collectionNameProp.Setup(p => p.ComputedValue).Returns(ExpectedCollectionName);
-            //dtoListProp.Setup(p => p.ComputedValue).Returns(new List<ActivityDTO>());
-            //displayNameProp.Setup(p => p.ComputedValue).Returns("Test Display Name");
-            //properties.Add("CollectionName", collectionNameProp);
-            //propertyCollection.Protected().Setup<ModelProperty>("Find", "CollectionName", true).Returns(collectionNameProp.Object);
-            //propertyCollection.Protected().Setup<ModelProperty>("Find", ExpectedCollectionName, true).Returns(dtoListProp.Object);
-            //propertyCollection.Protected().Setup<ModelProperty>("Find", "DisplayName", true).Returns(displayNameProp.Object);
-            //mockModel.Setup(s => s.Properties).Returns(propertyCollection.Object);
-
             //exe
             var vm = new TestActivityDesignerCollectionViewModelItemsInitialized(CreateModelItem(0));
 
@@ -399,7 +382,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
                 source.Add("NewField" + (i + 1));
             }
 
-            const int ExpectedItemCount = 3;  
+            const int ExpectedItemCount = 3;
 
             //------------Execute Test---------------------------
             viewModel.TestAddToCollection(source, false);
@@ -418,6 +401,66 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
             Assert.AreEqual(string.Format("Activity ({0})", ExpectedItemCount - 1), viewModel.ModelItem.GetProperty("DisplayName"));
         }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ActivityCollectionDesignerViewModel_AddRowCommand")]
+        public void ActivityCollectionDesignerViewModel_AddRowCommand_LastRowIsNotBlank_RowAdded()
+        {
+            //------------Setup for test--------------------------
+            const int StartItemCount = 2;
+            var modelItem = CreateModelItem(StartItemCount, false, false);
+            modelItem.SetProperty("DisplayName", "Activity");
+            var viewModel = new TestActivityDesignerCollectionViewModelItemsInitialized(modelItem);
+
+
+            //------------Execute Test---------------------------
+            viewModel.AddRowCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            // ReSharper disable PossibleNullReferenceException
+            var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
+
+            // Extra blank row is also added
+            Assert.AreEqual(StartItemCount + 1, viewModel.ItemCount);
+
+            VerifyItem(mic[0], 1, "field1", "value1");
+            VerifyItem(mic[1], 2, "field2", "value2");
+            VerifyItem(mic[2], 3, "", "");
+            // ReSharper restore PossibleNullReferenceException
+
+            Assert.AreEqual(string.Format("Activity ({0})", StartItemCount), viewModel.ModelItem.GetProperty("DisplayName"));
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ActivityCollectionDesignerViewModel_AddRowCommand")]
+        public void ActivityCollectionDesignerViewModel_AddRowCommand_LastRowIsBlank_RowNotAdded()
+        {
+            //------------Setup for test--------------------------
+            const int StartItemCount = 2;
+            var modelItem = CreateModelItem(StartItemCount, false, true);
+            modelItem.SetProperty("DisplayName", "Activity");
+            var viewModel = new TestActivityDesignerCollectionViewModelItemsInitialized(modelItem);
+
+
+            //------------Execute Test---------------------------
+            viewModel.AddRowCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            // ReSharper disable PossibleNullReferenceException
+            var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
+
+            // Extra blank row is also added
+            Assert.AreEqual(StartItemCount, viewModel.ItemCount);
+
+            VerifyItem(mic[0], 1, "field1", "value1");
+            VerifyItem(mic[1], 2, "", "");
+            // ReSharper restore PossibleNullReferenceException
+
+            Assert.AreEqual(string.Format("Activity ({0})", StartItemCount - 1), viewModel.ModelItem.GetProperty("DisplayName"));
+        }
+
 
         static void VerifyItem(ModelItem modelItem, int indexNumber, string fieldName, string fieldValue)
         {

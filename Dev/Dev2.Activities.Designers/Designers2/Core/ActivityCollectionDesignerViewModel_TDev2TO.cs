@@ -1,9 +1,11 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
+using Dev2.Studio.Core.ViewModels.Base;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.Core
@@ -16,7 +18,10 @@ namespace Dev2.Activities.Designers2.Core
         protected ActivityCollectionDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
+            AddRowCommand = new RelayCommand(o => AddBlankRow(), o => true);
         }
+
+        public ICommand AddRowCommand { get; private set; }
 
         public int ItemCount { get { return _modelItemCollection.Count; } }
 
@@ -25,7 +30,7 @@ namespace Dev2.Activities.Designers2.Core
             _modelItemCollection = modelItemCollection;
             if(modelItemCollection != null && modelItemCollection.Count <= 0)
             {
-                modelItemCollection.Add(DTOFactory.CreateNewDTO(new TDev2TOFn { Inserted = true }, 1));
+                modelItemCollection.Add(DTOFactory.CreateNewDTO(new TDev2TOFn(), 1, true));
                 modelItemCollection.Add(DTOFactory.CreateNewDTO(new TDev2TOFn(), 2));
             }
 
@@ -127,6 +132,23 @@ namespace Dev2.Activities.Designers2.Core
             mic.Add(DTOFactory.CreateNewDTO(new TDev2TOFn(), startIndex + 1, true));
 
             UpdateDisplayName();
+        }
+
+        void AddBlankRow()
+        {
+            var lastRow = _modelItemCollection[_modelItemCollection.Count - 1];
+            var lastRowValue = lastRow.GetCurrentValue() as TDev2TOFn;
+            if(lastRowValue == null)
+            {
+                return;
+            }
+
+            var isLastRowBlank = lastRowValue.CanRemove();
+            if(!isLastRowBlank)
+            {
+                _modelItemCollection.Add(DTOFactory.CreateNewDTO(new TDev2TOFn(), lastRowValue.IndexNumber + 1));
+                UpdateDisplayName();
+            }
         }
     }
 }

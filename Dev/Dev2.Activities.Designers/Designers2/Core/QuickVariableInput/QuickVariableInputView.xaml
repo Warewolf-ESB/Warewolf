@@ -74,6 +74,7 @@
                    Content="Variable List :"></Label>
             <TextBox Grid.Row="1"
                      Grid.Column="1"
+                     x:Name="InitialFocusElement"
                      Text="{Binding VariableListString}"
                      Style="{StaticResource ActivityTextBoxStyle}"
                      Height="Auto"
@@ -83,8 +84,7 @@
                      VerticalContentAlignment="Top"
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                      VerticalScrollBarVisibility="Auto"
-                     TextWrapping="Wrap"
-                     Loaded="VarialbeListOnLoaded"
+                     TextWrapping="Wrap"                    
                      attached:FocusSetter.IsFocused="{Binding IsVariableListFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableVariableListHelpText}"

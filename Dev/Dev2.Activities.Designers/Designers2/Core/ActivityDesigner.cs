@@ -17,6 +17,7 @@ namespace Dev2.Activities.Designers2.Core
     public class ActivityDesigner<TViewModel> : ActivityDesigner
         where TViewModel : ActivityDesignerViewModel
     {
+        bool _isInitialFocusDone;
         readonly AdornerControl _helpAdorner;
         readonly AdornerControl _errorsAdorner;
         IDesignerManagementService _designerManagementService;
@@ -26,10 +27,12 @@ namespace Dev2.Activities.Designers2.Core
             _helpAdorner = new HelpAdorner(this);
             _errorsAdorner = new ErrorsAdorner(this);
 
-            Loaded += (sender, args) => OnLoaded();            
+            Loaded += (sender, args) => OnLoaded();
         }
 
         public TViewModel ViewModel { get { return DataContext as TViewModel; } }
+
+        public ActivityDesignerTemplate ContentDesignerTemplate { get { return (ActivityDesignerTemplate)Content; } }
 
         //DONT TAKE OUT... This has been done so that the drill down doesnt happen when you double click.
         protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
@@ -39,6 +42,26 @@ namespace Dev2.Activities.Designers2.Core
                 e.Handled = true;
             }
             base.OnPreviewMouseDoubleClick(e);
+        }
+
+        //protected override void OnGotFocus(RoutedEventArgs e)
+        //{
+        //    base.OnGotFocus(e);
+
+        //    // WORKAROUND: FlowchartDesigner.DoFlowchartGridDrop issues a 
+        //    // Keyboard.Focus() on the activity designer which steals the 
+        //    // focus from the first element on first drop!
+        //    if(!_isInitialFocusDone)
+        //    {
+        //        ContentDesignerTemplate.SetInitialFocus();
+        //        _isInitialFocusDone = true;
+        //    }
+        //}
+
+        protected override void OnContentChanged(object oldContent, object newContent)
+        {
+            base.OnContentChanged(oldContent, newContent);
+            ContentDesignerTemplate.SetInitialFocus();
         }
 
         protected virtual void OnLoaded()
@@ -83,7 +106,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        void OnZIndexPositionChanged(object sender, EventArgs eventArgs)
+        void OnZIndexPositionChanged(object sender, EventArgs args)
         {
             var viewModel = (TViewModel)sender;
 

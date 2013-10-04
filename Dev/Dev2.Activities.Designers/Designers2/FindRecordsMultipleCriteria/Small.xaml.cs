@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿
+using System.Windows;
 
 namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
 {
@@ -11,18 +11,9 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
             DataGrid = SmallDataGrid;
         }
 
-        void FocusedTextBoxOnLoaded(object sender, RoutedEventArgs args)
+        protected override IInputElement GetInitialFocusElement()
         {
-            var element = (FrameworkElement)sender;
-            Keyboard.Focus(element);
-        }
-
-        void FocusedTextBoxOnLostFocus(object sender, RoutedEventArgs e)
-        {
-            var focus = FocusManager.GetFocusedElement(this.Parent);
-            if(focus != null)
-            {
-            }
+            return InitialFocusElement;
         }
     }
 }

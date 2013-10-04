@@ -39,7 +39,8 @@
         <Label Grid.Column="0"
                Grid.Row="0"
                Content="Input" />
-        <ui:IntellisenseTextBox Grid.ColumnSpan="2"
+        <ui:IntellisenseTextBox x:Name="InitialFocusElement"
+                                Grid.ColumnSpan="2"
                                 Grid.Column="1"
                                 Grid.Row="0"
                                 DefaultText="Date Time"

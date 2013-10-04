@@ -11,7 +11,6 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Controls
     [TestClass]
     public class Dev2DataGridTests
     {
-
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("Dev2DataGrid_RemoveFirstDuplicateBlankRow")]
@@ -283,8 +282,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Controls
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("Dev2DataGrid_SetFocus")]
-        public void Dev2DataGrid_SetFocus_ItemIsInserted_InvokesFocusOnGridRowChild()
+        [TestCategory("Dev2DataGrid_SetFocusToInserted")]
+        public void Dev2DataGrid_SetFocusToInserted_ItemIsInserted_InvokesFocusOnGridRowChild()
         {
             //------------Setup for test--------------------------      
             var element = new FrameworkElement();
@@ -294,7 +293,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Controls
             dataGridRow.DataContext = dataGrid.Items[0]; // First item is not flagged as inserted
 
             //------------Execute Test---------------------------
-            var result = dataGrid.SetFocus(dataGridRow);
+            var result = dataGrid.SetFocusToInserted(dataGridRow);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
@@ -302,8 +301,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Controls
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("Dev2DataGrid_SetFocus")]
-        public void Dev2DataGrid_SetFocus_ItemIsNotInserted_DoesNotInvokeFocusOnGridRowChild()
+        [TestCategory("Dev2DataGrid_SetFocusToInserted")]
+        public void Dev2DataGrid_SetFocusToInserted_ItemIsNotInserted_DoesNotInvokeFocusOnGridRowChild()
         {
             //------------Setup for test--------------------------      
             var element = new FrameworkElement();
@@ -313,11 +312,45 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Controls
             dataGridRow.DataContext = dataGrid.Items[1];    // Second item is not flagged as inserted
 
             //------------Execute Test---------------------------
-            var result = dataGrid.SetFocus(dataGridRow);
+            var result = dataGrid.SetFocusToInserted(dataGridRow);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("Dev2DataGrid_GetFocusElement")]
+        public void Dev2DataGrid_GetFocusElement_RowIsNotNull_GetVisualChildResult()
+        {
+            //------------Setup for test--------------------------      
+            var element = new FrameworkElement();
+            var dataGrid = new Dev2DataGrid(r => element) { ItemsSource = CreateModelItemCollection(3, false, false, false) };
+            var dataGridRow = new DataGridRow();
+
+            //------------Execute Test---------------------------
+            var result = dataGrid.GetFocusElement(dataGridRow);
+
+            //------------Assert Results-------------------------
+            Assert.AreSame(element, result);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("Dev2DataGrid_GetFocusElement")]
+        public void Dev2DataGrid_GetFocusElement_RowIsNull_Null()
+        {
+            //------------Setup for test--------------------------      
+            var element = new FrameworkElement();
+            var dataGrid = new Dev2DataGrid(r => element) { ItemsSource = CreateModelItemCollection(3, false, false, false) };
+
+            //------------Execute Test---------------------------
+            var result = dataGrid.GetFocusElement(null);
+
+            //------------Assert Results-------------------------
+            Assert.IsNull(result);
+        }
+
 
         static void VerifyItem(dynamic item, int oldIndexNumber, int newIndexNumber, bool isBlank = false)
         {
