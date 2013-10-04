@@ -36,7 +36,7 @@ namespace QueueBuild
             string server = args[0].Trim();
             string project = args[1].Trim();
             string def = args[2].Trim();
-            string shelveSet = args[3].Trim();
+            string shelveSet = args.Length > 3 ? args[3].Trim() : string.Empty;
 
             BuildQueuer qb = new BuildQueuer();
 
