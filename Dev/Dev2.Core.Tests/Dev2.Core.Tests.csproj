@@ -123,6 +123,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Runtime.DurableInstancing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Services" />
@@ -194,6 +195,7 @@
     <Compile Include="TestModelItemFactory.cs" />
     <Compile Include="TestModelItemUtil.cs" />
     <Compile Include="TestUtils.cs" />
+    <Compile Include="DataObjectTest.cs" />
     <Compile Include="Utils\JSONUtilsTests.cs" />
     <Compile Include="Weave\MockByteReaderWriter.cs" />
     <Compile Include="ExecutionStatusCallbackDispatcherTests.cs" />

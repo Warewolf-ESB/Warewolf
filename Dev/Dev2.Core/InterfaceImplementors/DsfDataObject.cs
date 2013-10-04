@@ -267,7 +267,9 @@ namespace Dev2.DynamicServices
         {
             IDSFDataObject result = new DsfDataObject();
 
+            result.BookmarkExecutionCallbackID = BookmarkExecutionCallbackID;
             result.CurrentBookmarkName = CurrentBookmarkName;
+            result.DebugSessionID = DebugSessionID;
             result.DataList = DataList;
             result.DataListID = DataListID;
             result.DatalistOutMergeDepth = DatalistOutMergeDepth;
@@ -277,23 +279,36 @@ namespace Dev2.DynamicServices
             result.DatalistInMergeDepth = DatalistInMergeDepth;
             result.DatalistInMergeID = DatalistInMergeID;
             result.DatalistInMergeType = DatalistInMergeType;
+            result.EnvironmentID = EnvironmentID;
+            result.Errors = Errors;
             result.ExecutionCallbackID = ExecutionCallbackID;
-            result.BookmarkExecutionCallbackID = BookmarkExecutionCallbackID;
+            result.ExecutionOrigin = ExecutionOrigin;
+            result.ExecutionOriginDescription = ExecutionOriginDescription;
+            result.ForceDeleteAtNextNativeActivityCleanup = ForceDeleteAtNextNativeActivityCleanup;
+            result.IsDataListScoped = IsDataListScoped;
             result.IsDebug = IsDebug;
+            result.IsOnDemandSimulation = IsOnDemandSimulation;
+            result.IsFromWebServer = IsFromWebServer;
+            result.IsWebpage = IsWebpage;
+            result.NumberOfSteps = NumberOfSteps;
+            result.OriginalInstanceID = OriginalInstanceID;
+            result.ParentInstanceID = ParentInstanceID;
             result.ParentServiceName = ParentServiceName;
+            result.ParentThreadID = ParentThreadID;
             result.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
+            result.RawPayload = RawPayload;
+            result.RemoteDebugItems = RemoteDebugItems;
+            result.RemoteInvoke = RemoteInvoke;
+            result.RemoteInvokeResultShape = RemoteInvokeResultShape;
+            result.RemoteInvokerID = RemoteInvokerID;
+            result.RemoteServiceType = RemoteServiceType;
+            result.ResourceID = ResourceID;
+            result.ReturnType = ReturnType;
+            result.ServerID = ServerID;
             result.ServiceName = ServiceName;
             result.WorkflowInstanceId = WorkflowInstanceId;
             result.WorkflowResumeable = WorkflowResumeable;
             result.WorkspaceID = WorkspaceID;
-            result.IsDataListScoped = IsDataListScoped;
-            result.ServerID = ServerID;
-            result.ResourceID = ResourceID;
-            result.OriginalInstanceID = OriginalInstanceID;
-            result.NumberOfSteps = NumberOfSteps;
-            result.ExecutionOrigin = ExecutionOrigin;
-            result.ExecutionOriginDescription = ExecutionOriginDescription;
-            result.EnvironmentID = EnvironmentID;
 
             return result;
         }
