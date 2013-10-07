@@ -320,7 +320,7 @@ namespace Dev2.Studio.UI.Tests
                 Keyboard.SendKeys(wizardWindow, "{TAB}");
                 Keyboard.SendKeys(wizardWindow, "{DEL}");
                 // Save
-                DatabaseServiceWizardUIMap.ClickOK();
+                DatabaseServiceWizardUIMap.KeyboardOK();
                 Keyboard.SendKeys("{TAB}utility");
                 DatabaseServiceWizardUIMap.SaveDialogClickFirstFolder();
                 Keyboard.SendKeys(wizardWindow, "{TAB}{ENTER}");
@@ -337,7 +337,7 @@ namespace Dev2.Studio.UI.Tests
                     Keyboard.SendKeys(wizardWindow, "{TAB}");
                     Keyboard.SendKeys(wizardWindow, "Column1");
                     // Save
-                    DatabaseServiceWizardUIMap.ClickOK();
+                    DatabaseServiceWizardUIMap.KeyboardOK();
                     Keyboard.SendKeys("{TAB}utility");
                     DatabaseServiceWizardUIMap.SaveDialogClickFirstFolder();
                     Keyboard.SendKeys(wizardWindow, "{TAB}{ENTER}");
@@ -396,7 +396,7 @@ namespace Dev2.Studio.UI.Tests
                 Keyboard.SendKeys(wizardWindow, "{TAB}");
                 Keyboard.SendKeys(wizardWindow, "{SPACE}");
                 // Save
-                DatabaseServiceWizardUIMap.ClickOK();
+                DatabaseServiceWizardUIMap.KeyboardOK();
                 Keyboard.SendKeys("{TAB}utility");
                 DatabaseServiceWizardUIMap.SaveDialogClickFirstFolder();
                 Keyboard.SendKeys(wizardWindow, "{TAB}{ENTER}");

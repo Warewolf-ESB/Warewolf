@@ -13,6 +13,7 @@ using Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.PluginSourceMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests
@@ -218,8 +219,8 @@ namespace Dev2.Studio.UI.Tests
             const string TextToSearchWith = "DBSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
             DatabaseSourceUiMap.ClickSaveConnection();
-            SaveDialogUiMap.ClickSave();
-            //Not sure how to assert here
+            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            if (child != null) Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
         }
 
         [TestMethod]
@@ -230,8 +231,8 @@ namespace Dev2.Studio.UI.Tests
             const string TextToSearchWith = "DBService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
             DatabaseServiceWizardUiMap.ClickOK();
-            SaveDialogUiMap.ClickSave();
-            //Not sure how to assert here
+            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            if(child != null) Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
         }
 
         [TestMethod]
@@ -241,11 +242,9 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "EmailSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            EmailSourceWizardUiMap.ClickTestConnection();
-            EmailSourceWizardUiMap.EnterEmailAddressAndSend();
-            EmailSourceWizardUiMap.ClickSaveEmailSource();
-            SaveDialogUiMap.ClickSave();
-            //Not sure how to assert here
+            EmailSourceWizardUiMap.ClickCancel();
+            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            if(child != null) Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
         }
 
         [TestMethod]
@@ -255,9 +254,9 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "PluginSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            PluginSourceMap.ClickSavePlugin();
-            SaveDialogUiMap.ClickSave();
-            //Not sure how to assert here
+            PluginSourceMap.ClickSave();
+            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            if(child != null) Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
         }
 
         [TestMethod]
@@ -267,9 +266,9 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "PluginService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            PluginServiceWizardUiMap.ClickTestAndOk();
-            SaveDialogUiMap.ClickSave();
-            //Not sure how to assert here
+            PluginServiceWizardUiMap.ClickSave();
+            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            if(child != null) Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
         }
 
         #endregion
@@ -296,5 +295,20 @@ namespace Dev2.Studio.UI.Tests
         }
 
         #endregion
+
+        public UIMap UIMap
+        {
+            get
+            {
+                if((this.map == null))
+                {
+                    this.map = new UIMap();
+                }
+
+                return this.map;
+            }
+        }
+
+        private UIMap map;
     }
 }

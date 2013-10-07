@@ -104,7 +104,6 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public void CloseAllTabs()
         {
-            bool isFirst = true;
             int openTabs = GetTabCount();
             while(openTabs != 0)
             {

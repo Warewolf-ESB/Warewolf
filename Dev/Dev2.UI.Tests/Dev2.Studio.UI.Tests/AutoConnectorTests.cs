@@ -129,6 +129,8 @@ namespace Dev2.Studio.UI.Tests
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
+            var middle = new Point(DocManagerUIMap.UIBusinessDesignStudioWindow.Left + DocManagerUIMap.UIBusinessDesignStudioWindow.Width / 2, DocManagerUIMap.UIBusinessDesignStudioWindow.Top + DocManagerUIMap.UIBusinessDesignStudioWindow.Height / 4);
+            Mouse.Click(DocManagerUIMap.UIBusinessDesignStudioWindow, middle);
             TabManagerUIMap.CloseAllTabs();
         }
 
@@ -190,7 +192,6 @@ namespace Dev2.Studio.UI.Tests
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert that the line was split
             Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
-            TabManagerUIMap.CloseActiveTab(false);
         }
 
         [TestMethod]
@@ -221,7 +222,6 @@ namespace Dev2.Studio.UI.Tests
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
             Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
-            TabManagerUIMap.CloseActiveTab(false);
         }
 
         [TestMethod]
@@ -253,7 +253,6 @@ namespace Dev2.Studio.UI.Tests
                 var connectors = WorkflowDesignerUIMap.GetAllConnectors();
                 //Assert start auto connector worked
                 Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
-                TabManagerUIMap.CloseActiveTab(false);
             }
             else
             {

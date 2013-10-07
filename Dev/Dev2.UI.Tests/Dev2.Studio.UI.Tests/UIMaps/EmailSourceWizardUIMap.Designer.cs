@@ -84,10 +84,23 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
 
         public void EnterEmailAddressAndSend()
         {
-            Keyboard.SendKeys("^AThorLocal@norsegods.com{TAB}");
+            Keyboard.SendKeys(new DocManagerUIMap().UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0], "^AThorLocal@norsegods.com{TAB}");
             Keyboard.SendKeys("dev2warewolf@gmail.com{TAB}");
             Keyboard.SendKeys("{ENTER}");
             Playback.Wait(10000);
+        }
+
+        /// <summary>
+        /// Click Cancel
+        /// </summary>
+        public void ClickCancel()
+        {
+            #region Variable Declarations
+            var uIItemImage = new DocManagerUIMap().UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            #endregion
+
+            //Click Cancel
+            Mouse.Click(uIItemImage, new Point(638, 459));
         }
     }
 

@@ -73,9 +73,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         }
         
         /// <summary>
-        /// ClickOK
+        /// Tab to OK and press enter
         /// </summary>
-        public void ClickOK()
+        public void KeyboardOK()
         {
             //#region Variable Declarations
             //UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
@@ -84,6 +84,20 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             //// Click image
             //Mouse.Click(uIItemImage, new Point(767, 523));
             Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{ENTER}");
+        }
+
+        /// <summary>
+        /// Click OK
+        /// </summary>
+        public void ClickOK()
+        {
+            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+
+            // Click OK
+            Mouse.Click(uIItemImage, new Point(767, 523));
+
+            // Click Save
+            Mouse.Click(uIItemImage, new Point(611, 474));
         }
 
         /// <summary>
@@ -133,7 +147,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             //DbService
             ClickFirstAction();
             ClickTestAction();
-            ClickOK();
+            KeyboardOK();
             Keyboard.SendKeys("{ENTER}");
             Playback.Wait(10);
             Keyboard.SendKeys(serverAndSourceCategoryName);
