@@ -45,6 +45,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
         // Bug 7820
         [TestMethod]
+        [Ignore] // Pick up when Wizards are corrected
         public void TestPluginsReturningPathsFromXML()
         {
             string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "PluginsReturningPathsFromXML");
@@ -72,6 +73,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
         // Bug 8378
         [TestMethod]
+        [Ignore] // Pick up when Wizards are corrected
         public void TestPluginsReturningXMLFromComplexType()
         {
             string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "PluginsReturningXMLFromComplexType");
@@ -79,7 +81,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
             string responseData = TestHelper.PostDataToWebserver(postData);
 
-            Assert.IsTrue(responseData.IndexOf(expected, StringComparison.Ordinal) >= 0);            
+            Assert.IsTrue(responseData.IndexOf(expected, StringComparison.Ordinal) >= 0, "Got [ " + responseData + " ]");            
         }
 
         // Bug 8378

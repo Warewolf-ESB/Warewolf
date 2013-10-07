@@ -62,6 +62,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         }
 
         [TestMethod]
+        [Ignore] // Plugin No Longer In Source Control
         public void TestPluginNull_Expected_AnonymousSend()
         {
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestPluginEmptyToNull", "testType=nullActive&sender=");
