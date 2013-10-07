@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Dev2.Common.ExtMethods;
 using Dev2.DynamicServices;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
@@ -95,7 +96,8 @@ namespace Dev2.Runtime.ServiceModel.Data
         #region CreateInputsMethod
 
         // BUG 9626 - 2013.06.11 - TWR : refactored
-        protected static ServiceMethod CreateInputsMethod(XElement action)
+        // BUG 10532 - Removed static and made public for testing ;)
+        public ServiceMethod CreateInputsMethod(XElement action)
         {
             var result = new ServiceMethod { Name = action.AttributeSafe("SourceMethod"), Parameters = new List<MethodParameter>() };
             foreach(var input in action.Descendants("Input"))
@@ -107,13 +109,26 @@ namespace Dev2.Runtime.ServiceModel.Data
                 XElement validator;
                 bool emptyToNull;
                 var typeName = input.AttributeSafe("NativeType", true);
+
+                Type tmpType;
+
+                if (string.IsNullOrEmpty(typeName))
+                {
+                    tmpType = typeof(object);
+                }
+                else
+                {
+                    tmpType = TypeExtensions.GetTypeFromSimpleName(typeName);
+                }
+
+                // NOTE : Inlining causes debug issues, please avoid ;)
                 result.Parameters.Add(new MethodParameter
                 {
                     Name = input.AttributeSafe("Name"),
                     EmptyToNull = bool.TryParse(input.AttributeSafe("EmptyToNull"), out emptyToNull) && emptyToNull,
                     IsRequired = (validator = input.Element("Validator")) != null && validator.AttributeSafe("Type").Equals("Required", StringComparison.InvariantCultureIgnoreCase),
                     DefaultValue = input.AttributeSafe("DefaultValue"),
-                    Type = typeName == null ? typeof(object) : Type.GetType(typeName)
+                    Type = tmpType
                 });
             }
             return result;

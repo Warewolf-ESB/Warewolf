@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
+using Dev2.Runtime.Hosting;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -37,6 +39,23 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             // BUG 9500 - 2013.05.31 - TWR : added
             Namespace = action.AttributeSafe("Namespace");
+
+            // Handle old service this is not set
+            // We also need to redo wizards to correctly return defaults and mappings ;)
+            if (string.IsNullOrEmpty(Namespace))
+            {
+                var mySource = action.AttributeSafe("SourceName");
+
+                // Now look up the old source and fetch namespace ;)
+                var services = ResourceCatalog.Instance.GetDynamicObjects<Source>(GlobalConstants.ServerWorkspaceID, mySource);
+
+                var tmp = services.FirstOrDefault();
+
+                if (tmp != null)
+                {
+                    Namespace = tmp.AssemblyName;
+                }
+            }
 
             Source = CreateSource<PluginSource>(action);
             Method = CreateInputsMethod(action);

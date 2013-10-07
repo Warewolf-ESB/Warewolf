@@ -37,6 +37,11 @@ namespace Dev2.Services.Execution
             {
                 dataBuilder.Append("<Arg>");
                 dataBuilder.Append("<TypeOf>");
+                if (parameter.Type == null)
+                {
+                    //if Type is null we have big issues ;(
+                    throw new Exception("Null Type");
+                }
                 dataBuilder.Append(parameter.Type.Name.ToLower());
                 dataBuilder.Append("</TypeOf>");
                 dataBuilder.Append("<Value>");

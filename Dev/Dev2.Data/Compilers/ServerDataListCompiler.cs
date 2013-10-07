@@ -1469,7 +1469,7 @@ namespace Dev2.Server.Datalist
 
                     recordsetUpserter.Add(recordSetGroup);
                 }
-                    }
+            }
 
             // only flush if there is work to do ;)
             if(recordsetUpserter.HasData())

@@ -31,6 +31,6 @@ namespace Dev2.Runtime.ESB.Execution
         protected virtual void ExecuteWebRequest(WebService service)
         {
             WebServices.ExecuteRequest(service);
+            }
         }
-    }
 }

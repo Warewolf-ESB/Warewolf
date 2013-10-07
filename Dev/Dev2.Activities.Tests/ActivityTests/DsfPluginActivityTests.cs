@@ -62,7 +62,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsFalse(errors.HasErrors(), "Errors where thrown while executing a plugin service");
             mockContainer.Verify(c => c.Execute(out errors), Times.Once());
         }
-        
+
         #endregion
     }
 }

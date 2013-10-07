@@ -4,10 +4,12 @@ using System.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Value_Objects;
+using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
+using enActionType = Dev2.DataList.Contract.enActionType;
 
 namespace Dev2.Services.Execution
 {
@@ -228,33 +230,33 @@ namespace Dev2.Services.Execution
         {
             errors = new ErrorResultTO();
 
+            // NOTE : This is only used by Plugin Services and is 1 of 4 locations that now needs to be updated should the DataList or execution model change ;)
+
             // Format the XML data
             if (RequiresFormatting)
             {
-                var formattedPayload = outputFormatter != null
-                                           ? outputFormatter.Format(result).ToString()
-                                           : result.ToString();
+
+                errors = new ErrorResultTO();
+                ErrorResultTO invokeErrors;
+
+                var formattedPayload = result.ToString();
 
                 // Create a shape from the service action outputs
-                var dlShape = compiler.ShapeDev2DefinitionsToDataList(Service.OutputSpecification,
-                                                                      enDev2ArgumentType.Output, false, out errors);
-                errors.MergeErrors(errors);
+                var dlShape = compiler.ShapeDev2DefinitionsToDataList(Service.OutputSpecification, enDev2ArgumentType.Output, false, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
 
                 // Push formatted data into a datalist using the shape from the service action outputs
-                var tmpID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), formattedPayload,
-                                               dlShape, out errors);
-                errors.MergeErrors(errors);
+                var shapeDataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), formattedPayload, dlShape, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
 
-                // Attach a parent ID to the newly created datalist
-                compiler.SetParentID(tmpID, DataObj.DataListID);
+                // This merge op is killing the alias data....
+                // We need to account for alias ops too ;)
+                compiler.SetParentID(shapeDataListID, DataObj.DataListID);
 
-                // Merge each result into the datalist ;)
-                compiler.Merge(DataObj.DataListID, tmpID, enDataListMergeTypes.Union,
-                               enTranslationDepth.Data_With_Blank_OverWrite, false, out errors);
+                compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), Service.OutputSpecification, shapeDataListID, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
 
-                errors.MergeErrors(errors);
-
-                // NOTE : DO NOT DELETE tmpID this will cause chaos ;)
+                compiler.ForceDeleteDataListByID(shapeDataListID); // clean up 
             }
 
         }

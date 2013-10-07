@@ -368,8 +368,8 @@ namespace Dev2.DynamicServices
 
                     if (!string.IsNullOrEmpty(oDL))
                     {
-                        try
-                        {
+                    try
+        {
                         // finally glue the two together ;)
                         XmlDocument oDLXDoc = new XmlDocument();
                         oDLXDoc.LoadXml(oDL);
@@ -390,20 +390,20 @@ namespace Dev2.DynamicServices
                         try
                         {
                             // finally glue the two together ;)
-                            XmlDocument iDLXDoc = new XmlDocument();
-                            iDLXDoc.LoadXml(iDL);
+                        XmlDocument iDLXDoc = new XmlDocument();
+                        iDLXDoc.LoadXml(iDL);
 
                             inputFragment = iDLXDoc.DocumentElement.InnerXml;
-                        }
-                        catch (Exception e)
-                        {
-                            ServerLogger.LogError(e);
-                            errors.AddError(e.Message);
-                        }
+                    }
+                    catch (Exception e)
+            {
+                        ServerLogger.LogError(e);
+                        errors.AddError(e.Message);
+            }
                     }
 
                     result = "<DataList>" + outputFragment + inputFragment + "</DataList>";
-                }
+            }
             }
 
             if (string.IsNullOrEmpty(result))
