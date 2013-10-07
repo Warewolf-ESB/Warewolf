@@ -6,14 +6,14 @@
     public class EmailPlugin
     {
 
-        public string SampleSend(string host, string port, string from, string to, string subject, string body)
+        public string SampleSend(string host, int port, string from, string to, string subject, string body)
         {
             if (from == null)
             {
-                return "Anonymous email sent";
+                return "<result>Anonymous email sent</result>";
             }
 
-            return "Email sent from " + from;
+            return "<result>Email sent from " + from+"</result>";
         }
     }
 }
