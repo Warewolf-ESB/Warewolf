@@ -387,7 +387,7 @@ namespace Dev2.Services.Execution
         {
             object result = null;
 
-            if(val != "NULL")
+            if(val != GlobalConstants.NullPluginValue)
             {
                 result = Convert.ChangeType(val, t);
             }

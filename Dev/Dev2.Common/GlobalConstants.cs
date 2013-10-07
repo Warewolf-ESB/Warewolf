@@ -160,8 +160,10 @@ namespace Dev2.Common
         // Namespace cleanup - Set to false to avoid namespace clean-up ;)
         public const bool runtimeNamespaceClean = true;
 
+        // Server WorkspaceID
         public static readonly Guid ServerWorkspaceID = Guid.Empty;
 
+        public static readonly string NullPluginValue = "NULL";
 
         // Resource Catalog Constants
         public static int ResourceCatalogCapacity = 150;

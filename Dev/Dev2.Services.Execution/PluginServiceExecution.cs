@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
 
@@ -45,7 +46,16 @@ namespace Dev2.Services.Execution
                 dataBuilder.Append(parameter.Type.Name.ToLower());
                 dataBuilder.Append("</TypeOf>");
                 dataBuilder.Append("<Value>");
-                dataBuilder.Append(parameter.Value);
+                
+                var tmpInjectValue = parameter.Value;
+                
+                if (parameter.Value == null)
+                {
+                    tmpInjectValue = GlobalConstants.NullPluginValue;
+                }
+                
+                dataBuilder.Append(tmpInjectValue);
+
                 dataBuilder.Append("</Value>");
                 dataBuilder.Append("</Arg>");
             }

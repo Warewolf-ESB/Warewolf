@@ -177,7 +177,24 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 var outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
                 var description = outputDescriptionSerializationService.Deserialize(outputDescriptionStr);
+                
+                if (description == null)
+                {
+                    // we need to handle old plugins ;)
+                    outputDescriptionStr =
+                        outputDescriptionStr.Replace("<JSON />", "")
+                                            .Replace("</Dev2XMLResult>", "")
+                                            .Replace("</InterrogationResult>", "")
+                                            .Replace("<InterrogationResult>", "")
+                                            .Replace("<Dev2XMLResult>", "");
+
+                    description = outputDescriptionSerializationService.Deserialize(outputDescriptionStr);
+                }
+
+                // TODO : Get Result Coming Back ;)
+
                 OutputDescription = description;
+
                 if(description != null && description.DataSourceShapes.Count > 0)
                 {
                     paths = description.DataSourceShapes[0].Paths;
