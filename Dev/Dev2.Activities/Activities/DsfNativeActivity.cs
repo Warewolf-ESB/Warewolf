@@ -676,7 +676,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         IBinaryDataListItem item = dlEntry.FetchScalar();
                         CreateScalarDebugItems(expression, item.TheValue, dlId, results);
-
                     }
                 }
                 else
@@ -736,12 +735,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var results = new List<DebugItemResult>();
             ErrorResultTO errors = new ErrorResultTO();
             IList<DebugItemResult> resultsToPush = new List<DebugItemResult>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dataList = compiler.FetchBinaryDataList(dlId, out errors);
             if(DataListUtil.IsValueRecordset(expression))
             {
                 enRecordsetIndexType recsetIndexType = DataListUtil.GetRecordsetIndexType(expression);
-                string recsetName = DataListUtil.ExtractRecordsetNameFromValue(expression);
-                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-                IBinaryDataList dataList = compiler.FetchBinaryDataList(dlId, out errors);
+                string recsetName = DataListUtil.ExtractRecordsetNameFromValue(expression);             
                 IBinaryDataListEntry currentRecset;
                 string error;
                 dataList.TryGetEntry(recsetName, out currentRecset, out error);
@@ -776,17 +775,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     recsetIndexToUse = recsetIndexToUse + iterationNumber;
                     expression = expression.Replace("().", string.Concat("(", recsetIndexToUse, ")."));
-
-                    resultsToPush = CreateScalarDebugItems(expression, value, dlId);
+                    resultsToPush = string.IsNullOrEmpty(value) ? CreateDebugItemsFromEntry(expression, currentRecset, dlId, argumentType) : CreateScalarDebugItems(expression, value, dlId);
                 }
                 else
                 {
-                    resultsToPush = CreateScalarDebugItems(expression, value, dlId);
+                    resultsToPush = string.IsNullOrEmpty(value) ? CreateDebugItemsFromEntry(expression, currentRecset, dlId, argumentType) : CreateScalarDebugItems(expression, value, dlId);
                 }
             }
             else
             {
-                resultsToPush = CreateScalarDebugItems(expression, value, dlId);
+                IBinaryDataListEntry binaryDataListEntry;
+                string error;
+                dataList.TryGetEntry(expression, out binaryDataListEntry, out error);
+                resultsToPush = string.IsNullOrEmpty(value) ? CreateDebugItemsFromEntry(expression, binaryDataListEntry, dlId, argumentType) : CreateScalarDebugItems(expression, value, dlId);
             }
 
             foreach(var debugItemResult in resultsToPush)

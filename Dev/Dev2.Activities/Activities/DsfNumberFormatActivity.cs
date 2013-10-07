@@ -125,7 +125,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     int decimalPlacesToShowValue;
                     bool adjustDecimalPlaces = colItr.FetchNextRow(decimalPlacesToShowIterator).TheValue.IsWholeNumber(out decimalPlacesToShowValue);
 
-                    var val = colItr.FetchNextRow(expressionIterator).TheValue;
+                    var binaryDataListItem = colItr.FetchNextRow(expressionIterator);
+                    var val = binaryDataListItem.TheValue;
                     FormatNumberTO formatNumberTo = new FormatNumberTO(val, RoundingType, roundingDecimalPlacesValue, adjustDecimalPlaces, decimalPlacesToShowValue);
                     string result = _numberFormatter.Format(formatNumberTo);
 
@@ -134,15 +135,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         toUpsert.Add(region, result);
                         toUpsert.FlushIterationFrame();
-                        if (dataObject.IsDebugMode())
-                        {
-                                AddDebugOutputItem(region, result, executionId, iterationCounter);
-                        }
-                        iterationCounter++;
                     }
                 }
-
                 compiler.Upsert(executionId, toUpsert, out errors);
+                foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                {
+                    if(dataObject.IsDebugMode())
+                    {
+                        AddDebugOutputItem(region, string.Empty, executionId, iterationCounter);
+                    }
+                    iterationCounter++;
+                }
                 allErrors.MergeErrors(errors);
             }
             catch (Exception e)
@@ -196,8 +199,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void AddDebugOutputItem(string expression, string value, Guid dlId, int iterationCounter)
         {
             DebugItem itemToAdd = new DebugItem();
-
-            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, iterationCounter, enDev2ArgumentType.Output));
+            itemToAdd.AddRange(CreateDebugItemsFromString(expression, string.Empty, dlId, iterationCounter, enDev2ArgumentType.Output));
             _debugOutputs.Add(itemToAdd);
         }
 
