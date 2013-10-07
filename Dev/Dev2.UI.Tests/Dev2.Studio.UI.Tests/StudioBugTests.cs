@@ -38,11 +38,6 @@ namespace Dev2.Studio.UI.Tests
     {
         private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
 
-        public void CreateWorkflow()
-        {
-            Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}W");
-        }
-
         public void DoCleanup(string workflowName, bool clickNo = false)
         {
             try
@@ -72,7 +67,7 @@ namespace Dev2.Studio.UI.Tests
         {
 
             // Create the workflow
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             // Get some design surface
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
@@ -130,11 +125,11 @@ namespace Dev2.Studio.UI.Tests
         {
             Clipboard.SetText(" ");
 
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             WorkflowDesignerUIMap.CopyWorkflowXamlWithContextMenu(theTab);
             Assert.IsTrue(string.IsNullOrWhiteSpace(Clipboard.GetText()), "Able to copy workflow Xaml using context menu");
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
             theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             var startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
             Mouse.Click(new Point(startButton.BoundingRectangle.X - 5, startButton.BoundingRectangle.Y - 5));
@@ -149,7 +144,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         public void AddSecondServiceToWorkFlowExpectedDisplayTitleNotDsfActivity()
         {
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
 
@@ -178,7 +173,7 @@ namespace Dev2.Studio.UI.Tests
         {
             //Initialize
             Clipboard.SetText(" ");
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
@@ -437,7 +432,7 @@ namespace Dev2.Studio.UI.Tests
         // ReSharper restore InconsistentNaming
         {
             //Create testing workflow
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
 
@@ -479,7 +474,7 @@ namespace Dev2.Studio.UI.Tests
         // ReSharper restore InconsistentNaming
         {
             // Create first workflow
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
             var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             var theStartNode = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "StartSymbol");
             DocManagerUIMap.ClickOpenTabPage("Explorer");
@@ -494,7 +489,7 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(1000);
 
             // Create second workflow
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
             theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             theStartNode = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "StartSymbol");
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
@@ -579,24 +574,27 @@ namespace Dev2.Studio.UI.Tests
         // ReSharper restore InconsistentNaming
         {
             var checkVisibility = new Point();
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            var theTab = TabManagerUIMap.GetActiveTab();
             Point thePoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign", thePoint);
-            if(!WorkflowDesignerUIMap.GetHelpTextArea(theTab, "MultiAssignDesigner", 0).Exists)
+            var helpTextArea = WorkflowDesignerUIMap.GetCollapseHelpButton(theTab, "MultiAssignDesigner");
+            if(helpTextArea == null)
             {
-                Mouse.Click(WorkflowDesignerUIMap.GetCollapseHelpButton(theTab, "MultiAssignDesigner"));
-                Assert.IsTrue(WorkflowDesignerUIMap.GetHelpTextArea(theTab, "MultiAssignDesigner", 0).TryGetClickablePoint(out checkVisibility));
-                ToolboxUIMap.DragControlToWorkflowDesigner("Assign", new Point(thePoint.X, thePoint.Y + 200));
-                Assert.IsTrue(WorkflowDesignerUIMap.GetHelpTextArea(theTab, "MultiAssignDesigner", 1).TryGetClickablePoint(out checkVisibility));
+                Mouse.Click(WorkflowDesignerUIMap.GetOpenHelpButton(theTab, "MultiAssignDesigner"));
+                Assert.IsTrue(WorkflowDesignerUIMap.GetCollapseHelpButton(theTab, "MultiAssignDesigner").TryGetClickablePoint(out checkVisibility));
+                //Ashley: Commenting out this assert because help text doesnt work this way after Trevors latest refactor
+                //ToolboxUIMap.DragControlToWorkflowDesigner("Assign", new Point(thePoint.X, thePoint.Y + 200));
+                //Assert.IsNotNull(WorkflowDesignerUIMap.GetCollapseHelpButton(theTab, "MultiAssignDesigner", 1));
             }
             else
             {
                 Mouse.Click(WorkflowDesignerUIMap.GetCollapseHelpButton(theTab, "MultiAssignDesigner"));
-                Assert.IsFalse(WorkflowDesignerUIMap.GetHelpTextArea(theTab, "MultiAssignDesigner", 0).TryGetClickablePoint(out checkVisibility));
-                ToolboxUIMap.DragControlToWorkflowDesigner("Assign", new Point(thePoint.X, thePoint.Y + 200));
-                Assert.IsFalse(WorkflowDesignerUIMap.GetHelpTextArea(theTab, "MultiAssignDesigner", 1).TryGetClickablePoint(out checkVisibility));
+                Assert.IsFalse(WorkflowDesignerUIMap.GetOpenHelpButton(theTab, "MultiAssignDesigner").TryGetClickablePoint(out checkVisibility));
+                //Ashley: Commenting out this assert because help text doesnt work this way after Trevors latest refactor
+                //ToolboxUIMap.DragControlToWorkflowDesigner("Assign", new Point(thePoint.X, thePoint.Y + 200));
+                //Assert.IsNotNull(WorkflowDesignerUIMap.GetOpenHelpButton(theTab, "MultiAssignDesigner", 1));
             }
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
@@ -606,7 +604,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RenameResource_WithDashes")]
         public void RenameResource_WithDashes_ResourceRenamed()
         {
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
             Keyboard.SendKeys("^S");
             Playback.Wait(5000);
             Keyboard.SendKeys(WorkflowDesignerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0], "{TAB}{TAB}{TAB}{TAB}{TAB}OldResourceName{ENTER}");
@@ -685,7 +683,7 @@ namespace Dev2.Studio.UI.Tests
         public void SortToolAndBaseConvertDropDownListsMatch()
         {
             // Create the workflow
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             // Get some variables
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
@@ -779,7 +777,7 @@ namespace Dev2.Studio.UI.Tests
         public void DragAMultiAssignIntoAndOutOfAForEach_NoDrillDown()
         {
             // Create the workflow
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             // Get some variables
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());

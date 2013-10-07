@@ -54,12 +54,6 @@ namespace Dev2.CodedUI.Tests
     {
         public string ServerExeLocation;
 
-        public void CreateWorkflow()
-        {
-            Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}W");
-            Playback.Wait(150);
-        }
-
         public static string GetStudioWindowName()
         {
             return "Warewolf";
@@ -71,11 +65,12 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void QuickVariableInputFromListTest()
        {
+            Clipboard.Clear();
             // Create the workflow
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -101,27 +96,17 @@ namespace Dev2.CodedUI.Tests
             WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
 
             // Make sure an error has been thrown
-            var getHelpPane = WorkflowDesignerUIMap.GetHelpTextArea(theTab, "Assign", 0);
-            UITestControl getHelpList;
-            Point isVisible;
-            if (getHelpPane.TryGetClickablePoint(out isVisible))
-            {
-                getHelpList = getHelpPane.GetChildren()[0].GetChildren()[1];
-            }
-            else
-            {
-                Mouse.Click(WorkflowDesignerUIMap.GetCollapseHelpButton(theTab, "Assign"));
-                getHelpList = getHelpPane.GetChildren()[0].GetChildren()[1];
-            }
-            StringAssert.Contains((getHelpList as WpfText).DisplayText, "Prefix contains invalid characters");
+            var getError = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "invalid");
+            Assert.IsTrue(getError is WpfText, "Cannot find error text");
+            StringAssert.Contains((getError as WpfText).DisplayText, "Prefix contains invalid characters");
 
             // Assert clicking an error focusses the correct textbox
-            Mouse.Click(new Point(getHelpList.BoundingRectangle.X + 5, getHelpList.BoundingRectangle.Y + 5));
-            Keyboard.SendKeys("^A^X");
+            Mouse.Click(getError.GetChildren()[0]);
+            SendKeys.SendWait("^A^X");
             Assert.AreEqual("some(<).", Clipboard.GetText(), "Wrong textbox focussed on tool help link click");
 
             // enter some correct data
-            Keyboard.SendKeys("pre_");
+            SendKeys.SendWait("pre_");
 
             WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
 
@@ -138,7 +123,7 @@ namespace Dev2.CodedUI.Tests
         public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
         {
             var preCount = TabManagerUIMap.GetTabCount();
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
             string activeTabName = TabManagerUIMap.GetActiveTabName();
             var postCount = TabManagerUIMap.GetTabCount();
             Assert.IsTrue(postCount == preCount + 1, "Tab quantity has not been increased");
@@ -195,7 +180,7 @@ namespace Dev2.CodedUI.Tests
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
-            Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}{SHIFT}d");
+            SendKeys.SendWait("^+d");
             Playback.Wait(5000);
             UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if (uIItemImage == null)
@@ -264,11 +249,10 @@ namespace Dev2.CodedUI.Tests
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
         {
             // Create the workflow
-            SendKeys.SendWait("{ESC}");
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
             
             // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -345,7 +329,7 @@ namespace Dev2.CodedUI.Tests
             //SendKeys.SendWait("{ESC}");
 
             //Create a new workflow
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             
             // Get the tab
@@ -407,7 +391,7 @@ namespace Dev2.CodedUI.Tests
         public void UnsavedStar_UITest_WhenWorkflowIsChanged_ExpectStarIsShowing()
         {
             //------------Setup for test--------------------------
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
             // Get some data
             var tabName = TabManagerUIMap.GetActiveTabName();
             UITestControl theTab = TabManagerUIMap.FindTabByName(tabName);
@@ -435,7 +419,7 @@ namespace Dev2.CodedUI.Tests
         public void TypeInCalcBoxExpectedTooltipAppears()
         {
             //Create the Workflow for the test
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             // For later
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
@@ -514,7 +498,7 @@ namespace Dev2.CodedUI.Tests
         {
 
             //// Create the workflow
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             // Open the Variables tab, and enter the invalid value
             DocManagerUIMap.ClickOpenTabPage("Variables");
@@ -550,7 +534,7 @@ namespace Dev2.CodedUI.Tests
         {
             //------------Setup for test--------------------------
 
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
 
@@ -598,7 +582,7 @@ namespace Dev2.CodedUI.Tests
         public void SaveDecisionWithBlankFieldsExpectedDecisionSaved()
         {
             //Initialize
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
 
@@ -670,7 +654,7 @@ namespace Dev2.CodedUI.Tests
         public void DragAWorkflowIntoAndOutOfAForEach_Expected_NoErrors()
         {
             // Create the workflow
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             // Get some variables
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
@@ -732,7 +716,7 @@ namespace Dev2.CodedUI.Tests
 
 
             // Create the workflow
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             // Get some variables
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
@@ -772,7 +756,7 @@ namespace Dev2.CodedUI.Tests
         public void DragASwitchIntoForEachExpectNotAddedToForEach()
         {
             // Create the workflow
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             // Get some variables
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
@@ -812,7 +796,7 @@ namespace Dev2.CodedUI.Tests
         public void ClickShowMapping_Expected_InputOutputAdornersAreDisplayed()
         {
             // Create the workflow
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             // Get some variables
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
@@ -844,7 +828,7 @@ namespace Dev2.CodedUI.Tests
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
         {
 
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
@@ -1057,7 +1041,7 @@ namespace Dev2.CodedUI.Tests
         public void SaveDecisionWithBlankFieldsExpectedDecisionSaved()
         {
             //Initialize
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
 
@@ -1255,7 +1239,7 @@ namespace Dev2.CodedUI.Tests
             // Currently coded to use the IE8 map
 
             // Create the workflow
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             // Add the variable
             DocManagerUIMap.ClickOpenTabPage("Variables");
@@ -1287,7 +1271,7 @@ namespace Dev2.CodedUI.Tests
         public void DebugDataTypedExpectedNewRowIsAdded()
         {
             // Create the Workflow
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             // Vars
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
@@ -1378,7 +1362,7 @@ namespace Dev2.CodedUI.Tests
         {
 
             // Create the workflow
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             // Get some variables
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
@@ -1409,7 +1393,7 @@ namespace Dev2.CodedUI.Tests
             ////CreateCustomWorkflow("5782Point4Mo", "CodedUITestCategory");
 
             //// Set some variabes
-            //CreateWorkflow();
+            //RibbonUIMap.CreateNewWorkflow();
             //UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             //UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             //Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 150);
@@ -1645,7 +1629,7 @@ namespace Dev2.CodedUI.Tests
         {
             //ProcessManager procMan = new ProcessManager("Dev2.Studio");
 
-            //CreateWorkflow();
+            //RibbonUIMap.CreateNewWorkflow();
             //UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             //DocManagerUIMap.ClickOpenTabPage("Toolbox");
             //var multiAssign = ToolboxUIMap.FindControl("Assign");

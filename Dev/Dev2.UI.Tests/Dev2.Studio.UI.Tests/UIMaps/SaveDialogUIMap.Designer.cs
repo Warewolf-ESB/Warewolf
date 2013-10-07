@@ -8,6 +8,8 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+using System.Windows.Forms;
+
 namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
 {
     using System;
@@ -59,7 +61,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
             Mouse.Click(uIItemImage, new Point(145, 364));
 
             // Type text in 'Wpf' window
-            Keyboard.SendKeys(uIItemImage, textToType, ModifierKeys.None);
+            SendKeys.SendWait(textToType + "{TAB}{TAB}{ENTER}");
         }
         
         /// <summary>

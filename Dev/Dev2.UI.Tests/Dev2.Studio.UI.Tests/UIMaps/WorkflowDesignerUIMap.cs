@@ -468,20 +468,59 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             SendKeys.SendWait(value);
         }
 
-        public void AssignControl_ClickLeftTextboxInRow(UITestControl theTab, string controlAutomationId, int row)
+        public WpfTable AssignControl_GetSmallViewTable(UITestControl theTab, string controlAutomationId, int row)
         {
             UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
-            WpfTable middleBox = (WpfTable)assignControl.GetChildren()[2].GetChildren()[0];
+            UITestControl findContent = null;
+            foreach(var child in assignControl.GetChildren())
+            {
+                if (child.FriendlyName == "SmallViewContent")
+                {
+                    findContent = child;
+                    break;
+                }
+            }
+            if (findContent != null)
+            {
+                UITestControl findTable = null;
+                foreach (var child in findContent.GetChildren())
+                {
+                    if (child.FriendlyName == "SmallDataGrid")
+                    {
+                        findTable = child;
+                        break;
+                    }
+                }
+                if (findTable != null)
+                {
+                    WpfTable foundTable = (WpfTable) findTable;
+                    return foundTable;
+                }
+                else
+                {
+                    throw new UITestControlNotFoundException("Cannot find multiassign table");
+                }
+            }
+            else
+            {
+                throw new UITestControlNotFoundException("Cannot find multiassign small view content");
+            }
+        }
+
+        public void AssignControl_ClickLeftTextboxInRow(UITestControl theTab, string controlAutomationId, int row)
+        {
+            WpfTable middleBox = AssignControl_GetSmallViewTable(theTab, controlAutomationId, row);
             // Get the textbox
             UITestControl leftTextboxInRow = middleBox.Rows[row].GetChildren()[2].GetChildren()[0];
-            Point locationOfVariableTextbox = new Point(leftTextboxInRow.BoundingRectangle.X + 25, leftTextboxInRow.BoundingRectangle.Y + 5);
+            Point locationOfVariableTextbox = new Point(leftTextboxInRow.BoundingRectangle.X + 25,
+                                                        leftTextboxInRow.BoundingRectangle.Y + 5);
             Mouse.Click(locationOfVariableTextbox);
         }
 
         public UITestControl AssignControl_GetLeftTextboxInRow(string controlAutomationId, int row)
         {
-            UITestControl assignControl = FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), controlAutomationId);
-            WpfTable middleBox = (WpfTable)assignControl.GetChildren()[2].GetChildren()[0];
+            var activeTab = TabManagerUIMap.GetActiveTab();
+            WpfTable middleBox = AssignControl_GetSmallViewTable(activeTab, controlAutomationId,  row);
             // Get the textbox
             UITestControl leftTextboxInRow = middleBox.Rows[row].GetChildren()[2].GetChildren()[0];
             return leftTextboxInRow;
@@ -529,8 +568,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         public string AssignControl_GetVariableName(UITestControl theTab, string controlAutomationId, int itemInList)
         {
-            var assignControl = FindControlByAutomationId(theTab, controlAutomationId);
-            var middleBox = (WpfTable)assignControl.GetChildren()[2].GetChildren()[0];
+            var middleBox = AssignControl_GetSmallViewTable(theTab, controlAutomationId, itemInList);
             // Get the textbox
             var control = (WpfEdit)middleBox.Rows[itemInList].GetChildren()[2].GetChildren()[0];
             return control.Text;
@@ -1055,24 +1093,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             return qviControl;
         }
 
-        public UITestControl GetCollapseHelpButton(UITestControl theTab, string activityAutomationID)
+        public UITestControl GetCollapseHelpButton(UITestControl theTab, string activityAutomationID, int index = 0)
         {
-            var activity = FindControlByAutomationId(theTab, activityAutomationID);
-            return activity.GetChildren().FirstOrDefault(ui => ui.FriendlyName == "HelpExpandCollapseButtonImage");
+            var activity = GetAllControlsOnDesignSurface(theTab, activityAutomationID)[index];
+            return activity.GetChildren().FirstOrDefault(ui => ui.FriendlyName == "Close Help");
         }
 
-        public UITestControl GetHelpTextArea(UITestControl theTab, string activityAutomationID, int index = 0)
+        public UITestControl GetOpenHelpButton(UITestControl theTab, string activityAutomationID, int index = 0)
         {
-            var activities = GetAllControlsOnDesignSurface(theTab, activityAutomationID);
-            var activity = activities[index];
-            return activity.GetChildren().FirstOrDefault(ui => ui.FriendlyName == "AdornerHelpScrollViewer");
-        }
-
-        public UITestControl GetHelpTextArea(string activityAutomationID, int index = 0)
-        {
-            var activities = GetAllControlsOnDesignSurface(TabManagerUIMap.GetActiveTab(), activityAutomationID);
-            var activity = activities[index];
-            return activity.GetChildren().FirstOrDefault(ui => ui.FriendlyName == "AdornerHelpScrollViewer");
+            var activity = GetAllControlsOnDesignSurface(theTab, activityAutomationID)[index];
+            return activity.GetChildren().FirstOrDefault(ui => ui.FriendlyName == "Open Help");
         }
 
         public bool IsActivityIconVisible(UITestControl activity)

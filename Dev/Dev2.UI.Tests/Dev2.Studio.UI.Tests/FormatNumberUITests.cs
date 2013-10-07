@@ -56,10 +56,6 @@ namespace Dev2.Studio.UI.Tests
         }
         private TestContext testContextInstance;
 
-        public FormatNumberUITests()
-        {
-        }
-
         #region Format Number Inputs Tests
 
         // BUG 8876 : This test ensure that the input box is enabled when selecting any rounding
@@ -67,10 +63,9 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         public void SetRoundingType_Normal_ExpectedRoundingInputIsEnabled()
         {
+            RibbonUIMap.CreateNewWorkflow();
 
-            new TestBase().CreateWorkflow();
-
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -92,7 +87,7 @@ namespace Dev2.Studio.UI.Tests
         public void SetRoundingType_None_ExpectedRoundingInputIsDisabled()
         {
 
-            new TestBase().CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
@@ -115,10 +110,9 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         public void ChangeRoundingType_None_Expected_RoundingInputBecomesDisabledAndEmpty()
         {
+            RibbonUIMap.CreateNewWorkflow();
 
-            new TestBase().CreateWorkflow();
-
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -147,8 +141,7 @@ namespace Dev2.Studio.UI.Tests
         [Ignore] // Covered in the Tool Testing Workflow ;)
         public void ChangeRoundingType_None_And_Execute_Expected_DebugOutputContainsNorReferenceToPreviousValue()
         {
-
-            new TestBase().CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");

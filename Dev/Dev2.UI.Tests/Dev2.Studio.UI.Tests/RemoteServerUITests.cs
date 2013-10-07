@@ -92,7 +92,7 @@ namespace Dev2.Studio.UI.Tests
         {
             DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
             ExplorerUiMap.ClickServerInServerDDL(RemoteServerName);
-            CreateWorkflow();
+            RibbonUiMap.CreateNewWorkflow();
             var activeTabName = TabManagerUiMap.GetActiveTabName();
             Assert.IsTrue(activeTabName.Contains("Unsaved"));
         }
@@ -141,8 +141,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.EnterExplorerSearchText(TextToSearchWith);
             ExplorerUiMap.DragControlToWorkflowDesigner(RemoteServerName, "WORKFLOWS", "UTILITY", TextToSearchWith, point);
 
-            OpenMenuItem("Debug");
-            SendKeys.SendWait("{F5}");
+            RibbonUiMap.Debug();
 
             Assert.IsFalse(OutputUIMap.IsAnyStepsInError());
         }
@@ -167,8 +166,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.EnterExplorerSearchText(TextToSearchWith);
             ExplorerUiMap.DragControlToWorkflowDesigner(LocalHostServerName, "WORKFLOWS", "EXAMPLES", TextToSearchWith, point);
 
-            OpenMenuItem("Debug");
-            SendKeys.SendWait("{F5}");
+            RibbonUiMap.Debug();
 
             Assert.IsFalse(OutputUIMap.IsAnyStepsInError());
         }
@@ -284,7 +282,7 @@ namespace Dev2.Studio.UI.Tests
             //CREATE A WORKFLOW
             DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
             ExplorerUiMap.ClickServerInServerDDL(serverName);
-            CreateWorkflow();
+            RibbonUiMap.CreateNewWorkflow();
             var point = WorkflowDesignerUiMap.GetStartNodeBottomAutoConnectorPoint();
             ToolboxUiMap.DragControlToWorkflowDesigner("MultiAssign", point);
 
@@ -304,7 +302,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.EnterExplorerSearchText(InitialName);
             ExplorerUiMap.RightClickRenameProject(serverName, serviceType, folderName, InitialName);
             const string RenameTo = "RenameTo_Name_WF_1";
-            Keyboard.SendKeys(RenameTo + "{ENTER}");
+            SendKeys.SendWait(RenameTo + "{ENTER}");
 
             //DELETE A WORKFLOW
             DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
@@ -317,10 +315,9 @@ namespace Dev2.Studio.UI.Tests
 
         #region Utils
 
-        static void EnternameAndSave(string tempName)
+        void EnternameAndSave(string tempName)
         {
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
-            Keyboard.SendKeys(tempName);
+            SaveDialogUiMap.ClickAndTypeInNameTextbox(tempName);
             Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
             Playback.Wait(6000);
         }
@@ -339,11 +336,21 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.DoubleClickOpenProject(serverName, serviceType, foldername, textToSearchWith);
         }
 
-        void CreateWorkflow()
+        #endregion
+
+        public UIMap UIMap
         {
-            Keyboard.SendKeys(DocManagerUiMap.UIBusinessDesignStudioWindow, "{CTRL}W");
+            get
+            {
+                if((this.map == null))
+                {
+                    this.map = new UIMap();
+                }
+
+                return this.map;
+            }
         }
 
-        #endregion
+        private UIMap map;
     }
 }

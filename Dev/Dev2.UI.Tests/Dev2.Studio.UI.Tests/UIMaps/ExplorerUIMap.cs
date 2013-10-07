@@ -174,7 +174,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Playback.Wait(100);
             SendKeys.SendWait("{ENTER}");
             Playback.Wait(100);
-            Mouse.Click(UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[3], new Point(10, 10));
+            var confirmationDialog = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            var yesButton = confirmationDialog.GetChildren().FirstOrDefault(c => c.FriendlyName == "Yes");
+            Mouse.Click(yesButton, new Point(10, 10));
         }
 
         public bool ServiceExists(string serverName, string serviceType, string folderName, string projectName)
