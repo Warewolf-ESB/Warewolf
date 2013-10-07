@@ -528,7 +528,6 @@
     <Compile Include="StartupResources\SplashScreen.cs" />
     <Compile Include="Deploy\DeployStatsTO.cs" />
     <Compile Include="ViewModels\Deploy\DeployViewModel.cs" />
-    <Compile Include="CustomControls\Connections\ConnectViewModel.cs" />
     <Compile Include="ViewModels\Diagnostics\ExceptionViewModel.cs" />
     <Compile Include="ViewModels\Diagnostics\IExceptionViewModel.cs" />
     <Compile Include="ViewModels\Help\FeedbackViewModel.cs" />
@@ -593,9 +592,6 @@
       <DependentUpon>DebugOutputView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Diagnostics\DebugOutputViewModel.cs" />
-    <Compile Include="CustomControls\Connections\ConnectView.xaml.cs">
-      <DependentUpon>ConnectView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Explorer\ExplorerView.xaml.cs">
       <DependentUpon>ExplorerView.xaml</DependentUpon>
     </Compile>
@@ -1135,10 +1131,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Diagnostics\DebugOutputView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControls\Connections\ConnectView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -166,7 +166,6 @@
     <Compile Include="ConfigureDecisionViewModelTest.cs" />
     <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />
     <Compile Include="Utils\ShowResourceChangeUtilTests.cs" />
-    <Compile Include="ViewModelTests\ConnectViewModelTest.cs" />
     <Compile Include="DataListItemViewModelTest.cs" />
     <Compile Include="DataListSingletonTest.cs" />
     <Compile Include="DataListViewModelTests.cs" />
