@@ -110,6 +110,19 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             return results;
         }
 
+        public UITestControlCollection GetStepsByFriendly(UITestControl outputWindow, string friendlyName)
+        {
+            var children = outputWindow.GetChildren().Where(c => c.FriendlyName.Equals(friendlyName, StringComparison.CurrentCultureIgnoreCase));
+            var uiCollection = new UITestControlCollection();
+
+            foreach(var child in children)
+            {
+                uiCollection.Add(child);
+            }
+
+            return uiCollection;
+        }
+
         public UITestControl GetStepDetails(UITestControl outputWindow, string stepInformationToFind)
         {
             UITestControl workflowSearcher = new UITestControl(outputWindow);
@@ -201,15 +214,28 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             return steps;
         }
 
-        private static bool IsStepInError(WpfTreeItem theStep)
+        public static bool IsStepInError(UITestControl theStep)
         {
-            var errorSearcher = new UITestControl(theStep);
-            errorSearcher.SearchProperties.Add("ControlType", "Text");
-            errorSearcher.SearchProperties.Add("Name", "Error : ");
-            UITestControlCollection errorResults = errorSearcher.FindMatchingControls();
+            var errorResults = theStep.GetChildren()
+                                      .ToList()
+                                      .Where(c => c.FriendlyName.Equals("Error : "))
+                                      .ToList();
+            
+            if(errorResults.Count == 0)
+            {
+                return false;
+            }
+
             // Steps that aren't in errors still have the error text
             // Due to this, we can use the visibility (AKA: If height is -1, it's hidden (And not just 1 pixel above 0...))
             return errorResults[0].Height != -1;
+        }
+
+        public static bool IsAnyStepsInError()
+        {
+            Playback.Wait(10000);
+            var debugOutput = GetOutputWindow().ToList();
+            return debugOutput.Any(IsStepInError);
         }
     }
 }

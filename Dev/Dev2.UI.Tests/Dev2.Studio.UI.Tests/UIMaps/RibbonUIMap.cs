@@ -110,7 +110,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
         public UITestControl GetControlByName(string name)
         {
             var children = UIBusinessDesignStudioWindow.GetChildren();
-            var control = children.Where(c => c.FriendlyName == name)                    
+            var control = children.Where(c => c.FriendlyName == name)
                 .ToList().FirstOrDefault();
 
             return control;

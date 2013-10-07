@@ -44,27 +44,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses
         
           
         /// <summary>
-        /// Tab to Save and hit enter
-        /// </summary>
-        public void KeyboardSaveConnection()
-        {
-            Thread.Sleep(150);
-            // Click image
-            Keyboard.SendKeys(UIBusinessDesignStudioWindow.GetChildren()[0], "{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
-        }
-
-        /// <summary>
-        /// Click Save
+        /// ClickSave
         /// </summary>
         public void ClickSaveConnection()
         {
-            var uIItemImage = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-
+            Thread.Sleep(150);
             // Click image
-            Mouse.Click(uIItemImage, new Point(522, 453));
-
-            // Click image
-            Mouse.Click(uIItemImage, new Point(489, 435));
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
         }
         
         #region Properties
