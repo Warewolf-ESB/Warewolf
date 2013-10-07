@@ -76,19 +76,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             return theCollection;
         }
 
-        /// <summary>
-        /// cvbfgbfhgf
-        /// </summary>
-        public void cvbfgbfhgf()
-        {
-            #region Variable Declarations
-            WpfCustom uIItemCustom = this.UIBusinessDesignStudioWindow.UIZf56a7f909cd342859f4Custom.UIUI_TabManager_AutoIDTabList.UIStartPageTabPage.UIStartPageCustom.UIItemCustom;
-            #endregion
-
-            // Click custom control
-            Mouse.Click(uIItemCustom, new Point(421, 30));
-        }
-
         #region Properties
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
         {

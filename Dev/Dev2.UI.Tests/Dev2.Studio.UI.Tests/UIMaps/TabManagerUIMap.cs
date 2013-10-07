@@ -75,6 +75,24 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             Mouse.Click(close);
         }
 
+        public void CloseActiveTab(bool saveOnClose)
+        {
+            UITestControl control = FindTabByName(GetActiveTabName());
+            UITestControl close = new UITestControl(control);
+            close.SearchProperties["AutomationId"] = "closeBtn";
+            Playback.Wait(150);
+            Mouse.Click(close);
+            Playback.Wait(150);
+            if (saveOnClose)
+            {
+                Keyboard.SendKeys("{ENTER}");
+            }
+            else
+            {
+                Keyboard.SendKeys("{RIGHT}{ENTER}");
+            }
+        }
+
         public void MiddleClickCloseTab(string tabName)
         {
             Mouse.Click(new Point(Screen.PrimaryScreen.Bounds.Width / 2, Screen.PrimaryScreen.Bounds.Height / 2));

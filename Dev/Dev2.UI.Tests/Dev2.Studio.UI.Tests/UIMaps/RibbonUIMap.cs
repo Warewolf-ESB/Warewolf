@@ -71,8 +71,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
 
         public void  ClickRibbonMenuItem(string itemName)
         {
-            var uiTestControlCollection = UIBusinessDesignStudioWindow.GetChildren().SelectMany(c => c.GetChildren());
+            var uiTestControlCollection = UIBusinessDesignStudioWindow.GetChildren();
             var control = uiTestControlCollection.FirstOrDefault(c => c.FriendlyName == itemName);
+            var p = new Point(control.BoundingRectangle.X + 5, control.BoundingRectangle.Y + 5);
+            Mouse.Click(p);
+            Playback.Wait(8000);
+        }
+
+        public void CreateNewWorkflow()
+        {
+            var uiTestControlCollection = UIBusinessDesignStudioWindow.GetChildren();
+            var control = uiTestControlCollection.FirstOrDefault(c => c.FriendlyName == "UI_RibbonHomeTabWorkflowBtn_AutoID");
             var p = new Point(control.BoundingRectangle.X + 5, control.BoundingRectangle.Y + 5);
             Mouse.Click(p);
             Playback.Wait(8000);

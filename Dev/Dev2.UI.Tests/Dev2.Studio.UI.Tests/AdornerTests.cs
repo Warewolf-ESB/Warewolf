@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Dev2.CodedUI.Tests;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -58,11 +56,6 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion WorkflowDesigner UI Map
 
-        public void CreateWorkflow()
-        {
-            Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}W");
-        }
-
         #region DocManager UI Map
 
         public DocManagerUIMap DocManagerUIMap
@@ -98,6 +91,25 @@ namespace Dev2.Studio.UI.Tests
         }
 
         private ToolboxUIMap _toolboxUIMap;
+
+        #endregion
+
+        #region Ribbon UI Map
+
+        public RibbonUIMap RibbonUIMap
+        {
+            get
+            {
+                if((_ribbonUIMap == null))
+                {
+                    _ribbonUIMap = new RibbonUIMap();
+                }
+
+                return _ribbonUIMap;
+            }
+        }
+
+        private RibbonUIMap _ribbonUIMap;
 
         #endregion
 
@@ -138,7 +150,7 @@ namespace Dev2.Studio.UI.Tests
             #endregion
 
             // Create the workflow
-            CreateWorkflow();
+            WorkflowDesignerUIMap.CreateWorkflow();
 
             //// Get some design surface
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
@@ -197,9 +209,9 @@ namespace Dev2.Studio.UI.Tests
         public void AdornerHelpButtonOpenAnExampleWorlkflowTest()
         {
             // Create the workflow
-            CreateWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
             // Get some design surface
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
             //Get a point
             Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             //Open toolbox tab
@@ -210,7 +222,11 @@ namespace Dev2.Studio.UI.Tests
             var buttonControl = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "MultiAssignDesigner",
                                                                         "Open Help");
             Mouse.Click(buttonControl);
+            //Get 'View Sample' link button
+            var findViewSampleLink = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "View Sample Workflow");
+            Mouse.Click(findViewSampleLink.GetChildren()[0]);
 
+            //Wait for sample workflow
             UITestControl waitForTabToOpen = null;
             var count = 10;
             while (waitForTabToOpen == null && count > 0)
@@ -220,6 +236,7 @@ namespace Dev2.Studio.UI.Tests
                 count--;
             }
 
+            //Assert workflow opened after a time out.
             Assert.IsNotNull(waitForTabToOpen);
         }
 

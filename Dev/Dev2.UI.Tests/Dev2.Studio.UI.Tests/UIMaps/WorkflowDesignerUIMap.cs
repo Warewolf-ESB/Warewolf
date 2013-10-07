@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -31,19 +32,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             {
                 throw new ArgumentNullException("theTab");
             }
-            // Unless the UI drastically changes (In which case most Automation tests will fail),
-            // the order will remain constant
-
-            // Cake names are used until they are replaced by the real names
-            UITestControlCollection theCollection = new UITestControlCollection();
-            try
-            {
-                theCollection = theTab.GetChildren();
-            }
-            catch
-            {
-                Assert.Fail("Error - Could not find '" + controlAutomationId + "' on the workflow designer!");
-            }
+            UITestControlCollection theCollection = theTab.GetChildren();
             UITestControl designerWrapper = theCollection.FirstOrDefault(c => c.ControlType.Name == "Custom");
 
             if(designerWrapper != null)
@@ -58,28 +47,45 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                     var innerDesigner = designerChildren.LastOrDefault(c => c.ControlType.Name == "Custom");
                     if(innerDesigner != null)
                     {
-                        UITestControlCollection innerDesignerChildren = innerDesigner.GetChildren();
-                        //TODO : Find a cleaner way of getting the design surface
-                        UITestControl cake2 = innerDesignerChildren[3];
-                        UITestControlCollection splurtChildChildren = cake2.GetChildren();
-                        cake2 = splurtChildChildren[0];
-                        splurtChildChildren = cake2.GetChildren();
-                        cake2 = splurtChildChildren[0];
-                        splurtChildChildren = cake2.GetChildren();
-                        cake2 = splurtChildChildren[0];
-                        splurtChildChildren = cake2.GetChildren();
-                        foreach(UITestControl theControl in splurtChildChildren)
-                        {
-                            string automationId = theControl.GetProperty("AutomationId").ToString();
-                            if(automationId.Contains(controlAutomationId))
-                            {
-                                return theControl;
-                            }
-                        }
+                        UITestControl uiTestControl;
+                        if (FindControlWithinInnerDesignerByAutomationId(controlAutomationId, innerDesigner,
+                                                                             out uiTestControl)) return uiTestControl;
                     }
                 }
             }
             return null;
+        }
+
+        private static bool FindControlWithinInnerDesignerByAutomationId(string controlAutomationId, UITestControl innerDesigner,
+                                                                         out UITestControl uiTestControl)
+        {
+            uiTestControl = null;
+            UITestControlCollection innerDesignerChildren = innerDesigner.GetChildren();
+            //TODO : Find a cleaner way of getting the design surface
+            UITestControl cake2 = innerDesignerChildren[3];
+            UITestControlCollection splurtChildChildren = cake2.GetChildren();
+            cake2 = splurtChildChildren[0];
+            splurtChildChildren = cake2.GetChildren();
+            cake2 = splurtChildChildren[0];
+            splurtChildChildren = cake2.GetChildren();
+            cake2 = splurtChildChildren[0];
+            splurtChildChildren = cake2.GetChildren();
+            foreach (UITestControl theControl in splurtChildChildren)
+            {
+                string automationId = theControl.GetProperty("AutomationId").ToString();
+                if (automationId.Contains(controlAutomationId) || theControl.FriendlyName.Contains(controlAutomationId))
+                {
+                    {
+                        uiTestControl = theControl;
+                        return true;
+                    }
+                }
+            }
+            if (uiTestControl == null)
+            {
+                throw new UITestControlNotFoundException("The controll by that automation ID could not be found within the inner design surface");
+            }
+            return false;
         }
 
         /// <summary>
@@ -1190,6 +1196,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         {
             UITestControlCollection uiTestControlCollection = GetFlowchartDesigner(TabManagerUIMap.GetActiveTab()).GetChildren();
             return uiTestControlCollection.Where(c => c.ClassName == "Uia.ConnectorWithoutStartDot").ToList();
+        }
+
+        public void CreateWorkflow()
+        {
+            var middle = new Point(UIBusinessDesignStudioWindow.Left + UIBusinessDesignStudioWindow.Width / 2, UIBusinessDesignStudioWindow.Top + UIBusinessDesignStudioWindow.Height / 4);
+            Mouse.Click(middle);
+            Keyboard.SendKeys("^w");
         }
     }
 }
