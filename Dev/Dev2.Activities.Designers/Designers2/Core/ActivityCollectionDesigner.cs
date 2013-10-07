@@ -1,7 +1,5 @@
-﻿using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interactivity;
 using Dev2.Activities.Designers2.Core.Controls;
 
 namespace Dev2.Activities.Designers2.Core
@@ -32,19 +30,14 @@ namespace Dev2.Activities.Designers2.Core
         {
             base.OnContextMenuOpening(e);
 
-            // Massimo.Guerrera BUG_10181 - This is the only way we cound find if the right click happened in the datagrid
-            var tb = e.OriginalSource as DependencyObject;
-            var dataGrid = tb.GetSelfAndAncestors().OfType<DataGrid>().ToList();
+            var theGrid = TheGrid;
+            if(theGrid == null)
+            {
+                return;
+            }
 
-            var showMenuItems = dataGrid.Count > 0 && (dataGrid[0].SelectedIndex != (dataGrid[0].Items.Count - 1));
-            if(_deleteRowMenuItem != null)
-            {
-                _deleteRowMenuItem.IsEnabled = showMenuItems;
-            }
-            if(_insertRowMenuItem != null)
-            {
-                _insertRowMenuItem.IsEnabled = showMenuItems;
-            }
+            _deleteRowMenuItem.IsEnabled = ViewModel.CanRemoveAt(theGrid.SelectedIndex + 1);
+            _insertRowMenuItem.IsEnabled = ViewModel.CanInsertAt(theGrid.SelectedIndex + 1);
         }
 
         void InitializeContextMenu()
@@ -68,8 +61,7 @@ namespace Dev2.Activities.Designers2.Core
             var theGrid = TheGrid;
             if(theGrid != null)
             {
-                theGrid.RemoveRow(TheGrid.SelectedIndex);
-                ViewModel.UpdateDisplayName();
+                ViewModel.RemoveAt(TheGrid.SelectedIndex + 1);
             }
         }
 
@@ -78,18 +70,7 @@ namespace Dev2.Activities.Designers2.Core
             var theGrid = TheGrid;
             if(theGrid != null)
             {
-                theGrid.InsertRow(TheGrid.SelectedIndex);
-                ViewModel.UpdateDisplayName();
-            }
-        }
-
-        protected void AddDataGridRow(object sender, RoutedEventArgs e)
-        {
-            var theGrid = TheGrid;
-            if(theGrid != null)
-            {
-                theGrid.AddRow();
-                ViewModel.UpdateDisplayName();
+                ViewModel.InsertAt(TheGrid.SelectedIndex + 1);
             }
         }
     }

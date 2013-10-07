@@ -17,10 +17,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// </summary>
     public class ActivityDTO : INotifyPropertyChanged, IDev2TOFn, IPerformsValidation
     {
-        private string _fieldName;
-        private string _fieldValue;
-        private int _indexNumber;
-        private List<string> _outList;
+        string _fieldName;
+        string _fieldValue;
+        int _indexNumber;
+        List<string> _outList;
         Dictionary<string, List<IActionableErrorInfo>> _errors = new Dictionary<string, List<IActionableErrorInfo>>();
         string _errorMessage;
 
@@ -44,6 +44,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public string WatermarkTextValue { get; set; }
 
+        void RaiseCanAddRemoveChanged()
+        {
+            OnPropertyChanged("CanRemove");
+            OnPropertyChanged("CanAdd");
+        }
+
         [FindMissing]
         public string FieldName
         {
@@ -55,6 +61,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 _fieldName = value;
                 OnPropertyChanged("FieldName");
+                RaiseCanAddRemoveChanged();
                 //DO NOT call validation here as it will cause issues during serialization
             }
         }
@@ -81,6 +88,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 _fieldValue = value;
                 OnPropertyChanged("FieldValue");
+                RaiseCanAddRemoveChanged();
                 //DO NOT call validation here as it will cause issues during serialization
             }
         }

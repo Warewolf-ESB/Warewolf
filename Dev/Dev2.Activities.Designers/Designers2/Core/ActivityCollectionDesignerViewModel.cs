@@ -35,6 +35,14 @@ namespace Dev2.Activities.Designers2.Core
 
         public abstract string CollectionName { get; }
 
+        public abstract bool CanRemoveAt(int indexNumber);
+
+        public abstract bool CanInsertAt(int indexNumber);
+
+        public abstract void RemoveAt(int indexNumber);
+
+        public abstract void InsertAt(int indexNumber);
+
         protected abstract void AddToCollection(IEnumerable<string> source, bool overWrite);
 
         public QuickVariableInputViewModel QuickVariableInputViewModel

@@ -47,6 +47,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 _searchCriteria = value;
                 OnPropertyChanged("SearchCriteria");
+                RaiseCanAddRemoveChanged();
             }
         }
 
@@ -60,8 +61,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 _searchType = value;
                 OnPropertyChanged("SearchType");
+                RaiseCanAddRemoveChanged();
                 UpdateIsCriteriaEnabled();
             }
+        }
+
+        void RaiseCanAddRemoveChanged()
+        {
+            OnPropertyChanged("CanRemove");
+            OnPropertyChanged("CanAdd");
         }
 
         void UpdateIsCriteriaEnabled()

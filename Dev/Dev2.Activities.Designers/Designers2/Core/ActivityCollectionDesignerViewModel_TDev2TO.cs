@@ -1,15 +1,16 @@
-﻿using System.Activities.Presentation.Model;
+﻿using System;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Windows.Input;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
-using Dev2.Studio.Core.ViewModels.Base;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.Core
 {
+    // Note: All indexNumber parameters are 1-based
     public abstract class ActivityCollectionDesignerViewModel<TDev2TOFn> : ActivityCollectionDesignerViewModel
         where TDev2TOFn : class, IDev2TOFn, IPerformsValidation, new()
     {
@@ -18,22 +19,29 @@ namespace Dev2.Activities.Designers2.Core
         protected ActivityCollectionDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
-            AddRowCommand = new RelayCommand(o => AddBlankRow(), o => true);
         }
-
-        public ICommand AddRowCommand { get; private set; }
 
         public int ItemCount { get { return _modelItemCollection.Count; } }
 
         protected void InitializeItems(ModelItemCollection modelItemCollection)
         {
             _modelItemCollection = modelItemCollection;
-            if(modelItemCollection != null && modelItemCollection.Count <= 0)
+
+            // Do this before, because AddDTO() also attaches events
+            AttachEvents(0);
+
+            switch(modelItemCollection.Count)
             {
-                modelItemCollection.Add(DTOFactory.CreateNewDTO(new TDev2TOFn(), 1, true));
-                modelItemCollection.Add(DTOFactory.CreateNewDTO(new TDev2TOFn(), 2));
+                case 0:
+                    AddDTO(1);
+                    AddDTO(2);
+                    break;
+                case 1:
+                    AddDTO(2);
+                    break;
             }
 
+            AddBlankRow();
             UpdateDisplayName();
         }
 
@@ -43,8 +51,8 @@ namespace Dev2.Activities.Designers2.Core
             if(currentName.Contains("(") && currentName.Contains(")"))
             {
                 currentName = currentName.Remove(currentName.Contains(" (")
-                    ? currentName.IndexOf(" (", System.StringComparison.Ordinal)
-                    : currentName.IndexOf("(", System.StringComparison.Ordinal));
+                    ? currentName.IndexOf(" (", StringComparison.Ordinal)
+                    : currentName.IndexOf("(", StringComparison.Ordinal));
             }
             currentName = currentName + " (" + (ItemCount - 1) + ")";
             DisplayName = currentName;
@@ -60,94 +68,215 @@ namespace Dev2.Activities.Designers2.Core
             Errors = errors.Count == 0 ? null : errors;
         }
 
-        protected override void AddToCollection(IEnumerable<string> source, bool overwrite)
+        public override bool CanRemoveAt(int indexNumber)
         {
-            var collectionProperty = ModelItem.Properties[CollectionName];
-            if(collectionProperty != null)
-            {
-                var mic = collectionProperty.Collection;
-                if(mic != null)
-                {
-                    if(overwrite)
-                    {
-                        AddToCollection(mic, source);
-                    }
-                    else
-                    {
-                        InsertToCollection(mic, source);
-                    }
-                }
-            }
+            return indexNumber < _modelItemCollection.Count;
         }
 
-        void AddToCollection(ModelItemCollection mic, IEnumerable<string> source)
+        public override bool CanInsertAt(int indexNumber)
         {
-            mic.Clear();
-
-            var startIndex = 0;
-            foreach(var s in source)
-            {
-                mic.Add(DTOFactory.CreateNewDTO(new TDev2TOFn(), startIndex + 1, false, s));
-                startIndex++;
-            }
-            CleanUpCollection(mic, startIndex);
+            return _modelItemCollection.Count > 2 && indexNumber < _modelItemCollection.Count;
         }
 
-        void InsertToCollection(ModelItemCollection mic, IEnumerable<string> source)
+        public override void RemoveAt(int indexNumber)
         {
-            // gets non empty rows which is valid
-            var listOfValidRows = mic.Select(mi => mi.GetCurrentValue() as TDev2TOFn).Where(c => c != null && !c.CanRemove()).ToList();
-
-            // if there are valid (non-empty rows)
-            if(listOfValidRows.Count > 0)
+            if(!CanRemoveAt(indexNumber))
             {
-                // find last valid row
-                var startIndex = listOfValidRows.Last().IndexNumber;
-
-                // and insert before that
-                foreach(var s in source)
+                return;
+            }
+            if(_modelItemCollection.Count == 2)
+            {
+                if(indexNumber == 1)
                 {
-                    mic.Insert(startIndex, DTOFactory.CreateNewDTO(new TDev2TOFn(), startIndex + 1, false, s));
-                    startIndex++;
+                    var dto = GetDTO(indexNumber);
+                    dto.ClearRow();
                 }
-
-                // now remove the old one
-                CleanUpCollection(mic, startIndex);
             }
             else
             {
-                AddToCollection(mic, source);
+                var dto = GetDTO(indexNumber);
+                RemoveDTO(dto);
             }
         }
 
-        void CleanUpCollection(ModelItemCollection mic, int startIndex)
+        public override void InsertAt(int indexNumber)
         {
-            // remove last valid row
-            if(startIndex < mic.Count)
+            if(!CanInsertAt(indexNumber))
             {
-                mic.RemoveAt(startIndex);
+                return;
+            }
+            AddDTO(indexNumber);
+            Renumber(indexNumber);
+            UpdateDisplayName();
+        }
+
+        protected override void AddToCollection(IEnumerable<string> source, bool overwrite)
+        {
+            var indexNumber = GetIndexForAdd(overwrite);
+
+            // Always insert items before blank row
+            foreach(var s in source.Where(s => !string.IsNullOrWhiteSpace(s)))
+            {
+                AddDTO(indexNumber, s);
+                indexNumber++;
             }
 
-            // and add a new blank row to the end
-            mic.Add(DTOFactory.CreateNewDTO(new TDev2TOFn(), startIndex + 1, true));
+            var lastDTO = GetLastDTO();
+            lastDTO.IndexNumber = indexNumber;
 
             UpdateDisplayName();
         }
 
+        /// <summary>
+        /// Gets the insert index for <see cref="AddToCollection"/>. 
+        /// Returns the index of the last blank row.
+        /// </summary>
+        int GetIndexForAdd(bool overwrite)
+        {
+            var indexNumber = 1;
+            if(overwrite)
+            {
+                _modelItemCollection.Clear();
+
+                // Add blank row
+                AddDTO(indexNumber);
+            }
+            else
+            {
+                var lastDTO = GetLastDTO();
+                indexNumber = lastDTO.IndexNumber;
+
+                if(_modelItemCollection.Count == 2)
+                {
+                    // Check whether we have 2 blank rows
+                    var firstDTO = GetDTO(1);
+                    if(firstDTO.CanRemove() && lastDTO.CanRemove())
+                    {
+                        RemoveAt(lastDTO.IndexNumber, lastDTO);
+                    }
+                    indexNumber = 1;
+                }
+            }
+            return indexNumber;
+        }
+
+        TDev2TOFn GetDTO(int indexNumber)
+        {
+            var item = _modelItemCollection[indexNumber - 1];
+            return item.GetCurrentValue() as TDev2TOFn;
+        }
+
+        TDev2TOFn GetLastDTO()
+        {
+            return GetDTO(_modelItemCollection.Count);
+        }
+
         void AddBlankRow()
         {
-            var lastRow = _modelItemCollection[_modelItemCollection.Count - 1];
-            var lastRowValue = lastRow.GetCurrentValue() as TDev2TOFn;
-            if(lastRowValue == null)
+            var lastDTO = GetLastDTO();
+            var isLastRowBlank = lastDTO.CanRemove();
+            if(!isLastRowBlank)
+            {
+                AddDTO(lastDTO.IndexNumber + 1);
+                UpdateDisplayName();
+            }
+        }
+
+        void AddDTO(int indexNumber, string initializeWith = "")
+        {
+            //
+            // DO NOT invoke Renumber() from here - this method is called MANY times when invoking AddToCollection()!!
+            //
+            var dto = DTOFactory.CreateNewDTO(new TDev2TOFn(), indexNumber, false, initializeWith);
+            dto.PropertyChanged += OnDTOPropertyChanged;
+
+            var idx = dto.IndexNumber - 1;
+            if(idx == _modelItemCollection.Count)
+            {
+                _modelItemCollection.Add(dto);
+            }
+            else
+            {
+                _modelItemCollection.Insert(idx, dto);
+            }
+        }
+
+        void RemoveDTO(TDev2TOFn dto)
+        {
+            if(_modelItemCollection.Count > 2 && dto.IndexNumber >= 0 && dto.IndexNumber < _modelItemCollection.Count)
+            {
+                RemoveAt(dto.IndexNumber, dto);
+                Renumber(dto.IndexNumber - 1);
+                UpdateDisplayName();
+            }
+        }
+
+        void RemoveAt(int indexNumber, INotifyPropertyChanged notify)
+        {
+            notify.PropertyChanged -= OnDTOPropertyChanged;
+            var idx = indexNumber - 1;
+            _modelItemCollection.RemoveAt(idx);
+        }
+
+        void OnDTOPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if(args.PropertyName != "CanRemove")
             {
                 return;
             }
 
-            var isLastRowBlank = lastRowValue.CanRemove();
-            if(!isLastRowBlank)
+            var dto = (TDev2TOFn)sender;
+            if(dto.CanRemove())
             {
-                _modelItemCollection.Add(DTOFactory.CreateNewDTO(new TDev2TOFn(), lastRowValue.IndexNumber + 1));
-                UpdateDisplayName();
+                RemoveDTO(dto);
+            }
+            else if(dto.CanAdd())
+            {
+                AddBlankRow();
+
+                if(_modelItemCollection.Count == 3)
+                {
+                    // We may have been editing row 2 while row 1 was blank
+                    // check if first row is blank and remove it
+                    var firstDTO = GetDTO(1);
+                    if(firstDTO.CanRemove())
+                    {
+                        RemoveDTO(firstDTO);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Attaches events to the ModelItemCollection starting at the specified zero-based index.
+        /// </summary>
+        void AttachEvents(int startIndex)
+        {
+            ProcessModelItemCollection(dto => dto.PropertyChanged += OnDTOPropertyChanged, startIndex);
+        }
+
+        /// <summary>
+        /// Renumbers the ModelItemCollection starting at the specified zero-based index.
+        /// </summary>
+        void Renumber(int startIndex)
+        {
+            var indexNumber = startIndex + 1;
+            ProcessModelItemCollection(dto => dto.IndexNumber = indexNumber++, startIndex);
+        }
+
+        /// <summary>
+        /// Process the ModelItemCollection starting at the specified zero-based index.
+        /// </summary>
+        void ProcessModelItemCollection(Action<TDev2TOFn> processDTO, int startIndex)
+        {
+            startIndex = Math.Max(startIndex, 0);
+            for(var i = startIndex; i < _modelItemCollection.Count; i++)
+            {
+                var dto = _modelItemCollection[i].GetCurrentValue() as TDev2TOFn;
+                if(dto != null)
+                {
+                    processDTO(dto);
+                }
             }
         }
     }
