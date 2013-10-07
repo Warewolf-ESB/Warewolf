@@ -178,7 +178,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
                 var description = outputDescriptionSerializationService.Deserialize(outputDescriptionStr);
                 OutputDescription = description;
-                if(description.DataSourceShapes.Count > 0)
+                if(description != null && description.DataSourceShapes.Count > 0)
                 {
                     paths = description.DataSourceShapes[0].Paths;
                 }
