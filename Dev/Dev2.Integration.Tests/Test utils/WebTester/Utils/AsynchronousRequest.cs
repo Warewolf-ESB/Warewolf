@@ -1,22 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Web;
-using System.Xml;
 using System.Net;
 using System.IO;
 using System.Threading;
 using System.Diagnostics;
-//using mshtml;
 using Dev2.Integration.Tests.Interfaces;
 
 namespace Dev2.Integration.Tests.MEF.WebTester
 {
     public class AsynchronousRequest : ILogger
     {
-        private ManualResetEvent allDone = new ManualResetEvent(false);
-        const int BUFFER_SIZE = 1024;
         private Stopwatch stopWatch;
         private RequestState state;
         private WebRequest request;

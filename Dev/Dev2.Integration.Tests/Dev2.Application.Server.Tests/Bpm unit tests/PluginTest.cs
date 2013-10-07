@@ -57,6 +57,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
         // Bug 7820
         [TestMethod]
+        [Ignore] // Pick up when Wizards are corrected
         public void TestPluginsReturningPathsFromComplexType()
         {
             string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "PluginsReturningPathsFromComplexType");
@@ -99,6 +100,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         
         // Bug 7820
         [TestMethod]
+        [Ignore] // Pick up when Wizards are corrected
         public void TestPluginsReturningPathsFromJson()
         {
             string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "PluginsReturningPathsFromJson");
