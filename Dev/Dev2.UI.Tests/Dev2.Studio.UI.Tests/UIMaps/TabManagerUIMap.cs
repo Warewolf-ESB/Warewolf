@@ -13,16 +13,20 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
     {
         public string GetActiveTabName()
         {
-            var theTabManager = GetTabManager();
-            UITestControl tab = theTabManager.Tabs[theTabManager.SelectedIndex];
-            UITestControlCollection tabChildren = tab.GetChildren();
             string selectedTabName = string.Empty;
-            foreach (var tabChild in tabChildren)
+            var theTabManager = GetTabManager();
+            if (theTabManager.Tabs.Count > theTabManager.SelectedIndex)
             {
-                if (tabChild.ClassName == "Uia.TextBlock")
+                UITestControl tab = theTabManager.Tabs[theTabManager.SelectedIndex];
+                UITestControlCollection tabChildren = tab.GetChildren();
+                selectedTabName = string.Empty;
+                foreach (var tabChild in tabChildren)
                 {
-                    selectedTabName = tabChild.FriendlyName;
-                    break;
+                    if (tabChild.ClassName == "Uia.TextBlock")
+                    {
+                        selectedTabName = tabChild.FriendlyName;
+                        break;
+                    }
                 }
             }
             //string selectedTabName = theTabManager.Tabs[theTabManager.SelectedIndex].FriendlyName;
@@ -77,19 +81,23 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public void CloseActiveTab(bool saveOnClose)
         {
-            UITestControl control = FindTabByName(GetActiveTabName());
-            UITestControl close = new UITestControl(control);
-            close.SearchProperties["AutomationId"] = "closeBtn";
-            Playback.Wait(150);
-            Mouse.Click(close);
-            Playback.Wait(150);
-            if (saveOnClose)
+            var activeTabName = GetActiveTabName();
+            if (activeTabName != string.Empty)
             {
-                Keyboard.SendKeys("{ENTER}");
-            }
-            else
-            {
-                Keyboard.SendKeys("{RIGHT}{ENTER}");
+                UITestControl control = FindTabByName(activeTabName);
+                UITestControl close = new UITestControl(control);
+                close.SearchProperties["AutomationId"] = "closeBtn";
+                Playback.Wait(150);
+                Mouse.Click(close);
+                Playback.Wait(150);
+                if (saveOnClose)
+                {
+                    Keyboard.SendKeys("{ENTER}");
+                }
+                else
+                {
+                    Keyboard.SendKeys("{RIGHT}{ENTER}");
+                }
             }
         }
 
@@ -108,18 +116,20 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             while(openTabs != 0)
             {
                 string theTab = GetActiveTabName();
+                if (theTab != string.Empty)
+                {
+                    UITestControl zeTab = FindTabByName(theTab);
+                    Mouse.Click(new Point(zeTab.BoundingRectangle.X, zeTab.BoundingRectangle.Y + 500));
+                    Playback.Wait(2500);
 
-                UITestControl zeTab = FindTabByName(theTab);
-                Mouse.Click(new Point(zeTab.BoundingRectangle.X, zeTab.BoundingRectangle.Y + 500));
-                Playback.Wait(2500);
+                    CloseTab_Click_No(theTab);
+                    SendKeys.SendWait("n");
 
-                CloseTab_Click_No(theTab);
-                SendKeys.SendWait("n");
-
-                SendKeys.SendWait("{DELETE}"); // 
-                SendKeys.SendWait("{BACKSPACE}"); // Incase it was actually typed
-                //
-                openTabs = GetTabCount();
+                    SendKeys.SendWait("{DELETE}"); // 
+                    SendKeys.SendWait("{BACKSPACE}"); // Incase it was actually typed
+                    //
+                    openTabs = GetTabCount();
+                }
             }
         }
 
@@ -174,22 +184,26 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public UITestControl GetActiveTab()
         {
+            UITestControl control = null;
             var theTabManager = GetTabManager();
-            UITestControl tab = theTabManager.Tabs[theTabManager.SelectedIndex];
-            UITestControlCollection tabChildren = tab.GetChildren();
-            string selectedTabName = string.Empty;
-            foreach (var tabChild in tabChildren)
+            if (theTabManager.Tabs.Count > theTabManager.SelectedIndex)
             {
-                if (tabChild.ClassName == "Uia.TextBlock")
+                UITestControl tab = theTabManager.Tabs[theTabManager.SelectedIndex];
+                UITestControlCollection tabChildren = tab.GetChildren();
+                string selectedTabName = string.Empty;
+                foreach (var tabChild in tabChildren)
                 {
-                    selectedTabName = tabChild.FriendlyName;
-                    break;
+                    if (tabChild.ClassName == "Uia.TextBlock")
+                    {
+                        selectedTabName = tabChild.FriendlyName;
+                        break;
+                    }
                 }
+                UIBusinessDesignStudioWindow2 theWindow = new UIBusinessDesignStudioWindow2();
+                UIUI_TabManager_AutoIDTabList1 tabMgr = new UIUI_TabManager_AutoIDTabList1(theWindow);
+                //string firstName = uIServiceDetailsTabPage.FriendlyName;
+                control = tabMgr.GetTab(selectedTabName);
             }
-            UIBusinessDesignStudioWindow2 theWindow = new UIBusinessDesignStudioWindow2();
-            UIUI_TabManager_AutoIDTabList1 tabMgr = new UIUI_TabManager_AutoIDTabList1(theWindow);
-            //string firstName = uIServiceDetailsTabPage.FriendlyName;
-            UITestControl control = tabMgr.GetTab(selectedTabName);
 
             return control;
         }

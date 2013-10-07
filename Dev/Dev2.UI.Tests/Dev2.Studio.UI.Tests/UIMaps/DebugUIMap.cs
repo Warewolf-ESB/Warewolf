@@ -47,6 +47,19 @@
             SendKeys.SendWait("{ESCAPE}");
         }
 
+        public void ClickExecute()
+        {
+            var debugWindow = GetDebugWindow();
+            foreach (var child in debugWindow.GetChildren())
+            {
+                if (child.GetProperty("AutomationId").ToString() == "UI_Executebtn_AutoID")
+                {
+                    Mouse.Click(child);
+                    break;
+                }
+            }
+        }
+
         public bool DebugWindowExists()
         {
             WpfWindow uIDebugWindow = this.UIDebugWindow;

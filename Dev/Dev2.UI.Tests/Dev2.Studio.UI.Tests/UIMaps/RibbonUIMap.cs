@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Linq;
+using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -8,6 +9,25 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
 {
     public partial class RibbonUIMap
     {
+        #region Mappings
+
+        private DebugUIMap _debugUIMap;
+
+        public DebugUIMap DebugUIMap
+        {
+            get
+            {
+                if((_debugUIMap == null))
+                {
+                    _debugUIMap = new DebugUIMap();
+                }
+                return _debugUIMap;
+            }
+            set { _debugUIMap = value; }
+        }
+
+        #endregion
+
         int loopCount = 0;
         WpfTabList uIRibbonTabList;
 
@@ -69,7 +89,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             }
         }
 
-        public void  ClickRibbonMenuItem(string itemName)
+        public void ClickRibbonMenuItem(string itemName)
         {
             var uiTestControlCollection = UIBusinessDesignStudioWindow.GetChildren();
             var control = uiTestControlCollection.FirstOrDefault(c => c.FriendlyName == itemName);
@@ -90,11 +110,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
         public UITestControl GetControlByName(string name)
         {
             var children = UIBusinessDesignStudioWindow.GetChildren();
-            var control = children.SelectMany(c => c.GetChildren())
-                .Where(c => c.FriendlyName == name)                    
+            var control = children.Where(c => c.FriendlyName == name)                    
                 .ToList().FirstOrDefault();
 
             return control;
+        }
+
+        public void Debug()
+        {
+            var executeGroup = GetControlByName("Execute");
+            Mouse.Click(new Point(executeGroup.BoundingRectangle.X + 25, executeGroup.BoundingRectangle.Y - 10));
+            DebugUIMap.ClickExecute();
         }
     }
 }
