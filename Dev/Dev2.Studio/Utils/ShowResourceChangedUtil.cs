@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Providers.Logs;
@@ -14,11 +15,23 @@ namespace Dev2.Utils
         readonly IEventAggregator _eventPublisher;
         public ShowResourceChangedUtil(IEventAggregator eventPublisher)
         {
+            if(eventPublisher == null)
+            {
+                throw new ArgumentNullException("eventPublisher");
+            }
             _eventPublisher = eventPublisher;
         }
 
         public void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants)
         {
+            if(resource == null)
+            {
+                throw new ArgumentNullException("resource");
+            }
+            if(numberOfDependants == null)
+            {
+                throw new ArgumentNullException("numberOfDependants");
+            }
             var dialog = new ResourceChangedDialog(resource, numberOfDependants.Count, StringResources.MappingChangedWarningDialogTitle);
             dialog.ShowDialog();
             if(dialog.OpenDependencyGraph)
