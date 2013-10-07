@@ -5,6 +5,7 @@ using System.Drawing;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
@@ -26,6 +27,8 @@ namespace Dev2.Studio.UI.Tests
         TabManagerUIMap _tabManagerDesignerUIMap;
         ToolboxUIMap _toolboxUIMap;
         WorkflowDesignerUIMap _workflowDesignerUIMap;
+        RibbonUIMap _ribbonUIMap;
+
         public WorkflowDesignerUIMap WorkflowDesignerUIMap
         {
             get
@@ -103,6 +106,20 @@ namespace Dev2.Studio.UI.Tests
                 return _decisionWizardUIMap;
             }
         }
+
+        public RibbonUIMap RibbonUIMap
+        {
+            get
+            {
+                if((_ribbonUIMap == null))
+                {
+                    _ribbonUIMap = new RibbonUIMap();
+                }
+
+                return _ribbonUIMap;
+            }
+        }
+
         #endregion
 
         #region Tests
@@ -273,7 +290,7 @@ namespace Dev2.Studio.UI.Tests
 
         public void CreateWorkflow()
         {
-            Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}W");
+            RibbonUIMap.CreateNewWorkflow();
         }
 
         #endregion
