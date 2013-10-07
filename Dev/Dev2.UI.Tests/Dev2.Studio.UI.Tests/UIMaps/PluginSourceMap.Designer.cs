@@ -45,6 +45,20 @@ namespace Dev2.Studio.UI.Tests.UIMaps.PluginSourceMapClasses
         {
             Keyboard.SendKeys("{TAB}{TAB}{TAB}{ENTER}");
         }
+
+        /// <summary>
+        /// Click Save
+        /// </summary>
+        public void ClickSave()
+        {
+            var uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+
+            // Click image
+            Mouse.Click(uIItemImage, new Point(523, 450));
+
+            // Click image
+            Mouse.Click(uIItemImage, new Point(488, 436));
+        }
         
         #region Properties
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow

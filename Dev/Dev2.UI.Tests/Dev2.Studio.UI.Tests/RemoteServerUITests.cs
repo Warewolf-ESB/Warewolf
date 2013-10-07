@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Forms;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
@@ -15,6 +16,7 @@ using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.PluginSourceMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests
@@ -119,6 +121,8 @@ namespace Dev2.Studio.UI.Tests
             const string TextToSearchWith = "Find Records";
             OpenWorkFlow(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
             OpenMenuItem("View in Browser");
+            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            if(child != null) Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(Window));
         }
 
         [TestMethod]
@@ -143,7 +147,7 @@ namespace Dev2.Studio.UI.Tests
 
             RibbonUiMap.Debug();
 
-            Assert.IsFalse(OutputUIMap.IsAnyStepsInError());
+            Assert.AreEqual(34, OutputUIMap.GetOutputWindow().Count, "Cannot get full debug output");
         }
 
         [TestMethod]
@@ -166,9 +170,11 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.EnterExplorerSearchText(TextToSearchWith);
             ExplorerUiMap.DragControlToWorkflowDesigner(LocalHostServerName, "WORKFLOWS", "EXAMPLES", TextToSearchWith, point);
 
-            RibbonUiMap.Debug();
+            OpenMenuItem("Debug");
+            SendKeys.SendWait("{F5}");
+            Playback.Wait(1000);
 
-            Assert.IsFalse(OutputUIMap.IsAnyStepsInError());
+            Assert.AreEqual(34, OutputUIMap.GetOutputWindow().Count, "Cannot get full debug output");
         }
 
         [TestMethod]
@@ -214,8 +220,13 @@ namespace Dev2.Studio.UI.Tests
             const string TextToSearchWith = "DBSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
             DatabaseSourceUiMap.ClickSaveConnection();
-            SaveDialogUiMap.ClickSave();
-            //Not sure how to assert here
+            Playback.Wait(120);
+            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            if(child != null)
+            {
+                var dialog = child.GetChildren()[0];
+                Assert.IsNotInstanceOfType(dialog, typeof(WpfImage));
+        }
         }
 
         [TestMethod]
@@ -225,9 +236,10 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "DBService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            DatabaseServiceWizardUiMap.KeyboardOK();
-            SaveDialogUiMap.ClickSave();
-            //Not sure how to assert here
+            DatabaseServiceWizardUiMap.DatabaseServiceClickCancel();
+            Playback.Wait(120);
+            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            if(child != null) Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
         }
 
         [TestMethod]
@@ -237,11 +249,10 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "EmailSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            EmailSourceWizardUiMap.ClickTestConnection();
-            EmailSourceWizardUiMap.EnterEmailAddressAndSend();
-            EmailSourceWizardUiMap.ClickSaveEmailSource();
-            SaveDialogUiMap.ClickSave();
-            //Not sure how to assert here
+            EmailSourceWizardUiMap.ClickCancel();
+            Playback.Wait(120);
+            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            if(child != null) Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
         }
 
         [TestMethod]
@@ -251,9 +262,10 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "PluginSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            PluginSourceMap.ClickSavePlugin();
-            SaveDialogUiMap.ClickSave();
-            //Not sure how to assert here
+            PluginSourceMap.ClickSave();
+            Playback.Wait(120);
+            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            if(child != null) Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
         }
 
         [TestMethod]
@@ -263,9 +275,10 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "PluginService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            PluginServiceWizardUiMap.ClickTestAndOk();
-            SaveDialogUiMap.ClickSave();
-            //Not sure how to assert here
+            PluginServiceWizardUiMap.ClickSave();
+            Playback.Wait(120);
+            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            if(child != null) Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
         }
 
         [TestMethod]
@@ -336,6 +349,11 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.DoubleClickOpenProject(serverName, serviceType, foldername, textToSearchWith);
         }
 
+        void CreateWorkflow()
+        {
+            RibbonUiMap.CreateNewWorkflow();
+        }
+
         #endregion
 
         public UIMap UIMap
@@ -343,7 +361,7 @@ namespace Dev2.Studio.UI.Tests
             get
             {
                 if((this.map == null))
-                {
+        {
                     this.map = new UIMap();
                 }
 

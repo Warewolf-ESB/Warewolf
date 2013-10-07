@@ -28,7 +28,23 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
     [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public partial class PluginServiceWizardUIMap
     {
-        
+        /// <summary>
+        /// Click Test, Save, Save
+        /// </summary>
+        public void ClickSave()
+        {
+            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+
+            // Click image
+            Mouse.Click(uIItemImage, new Point(887, 73));
+
+            // Click image
+            Mouse.Click(uIItemImage, new Point(771, 526));
+
+            // Click image
+            Mouse.Click(uIItemImage, new Point(612, 474));
+        }
+
         /// <summary>
         /// PluginServiceDetailsWizardIsOpen
         /// </summary>

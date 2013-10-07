@@ -89,6 +89,19 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
             Keyboard.SendKeys("{ENTER}");
             Playback.Wait(10000);
         }
+
+        /// <summary>
+        /// Click Cancel
+        /// </summary>
+        public void ClickCancel()
+        {
+            #region Variable Declarations
+            var uIItemImage = new DocManagerUIMap().UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            #endregion
+
+            //Click Cancel
+            Mouse.Click(uIItemImage, new Point(638, 459));
+        }
     }
 
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
