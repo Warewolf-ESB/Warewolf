@@ -1,4 +1,4 @@
-﻿namespace Unlimited.Email.Plugins
+﻿namespace Unlimited.Framework.Plugins
 {
     /// <summary>
     /// Used to test the nullToEmpty property of Plugins ;)
