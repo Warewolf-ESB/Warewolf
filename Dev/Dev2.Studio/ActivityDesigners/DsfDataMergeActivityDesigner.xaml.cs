@@ -1,18 +1,18 @@
-﻿using Dev2.Activities.Designers2.Core.Controls;
+﻿using System.Windows.Controls.Primitives;
+using Dev2.Activities.Designers2.Core.Controls;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Models.QuickVariableInput;
-using Dev2.UI;
 using System;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.View;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Util.ExtensionMethods;
+using Dev2.Utilities;
 using QuickVariableInputViewModel = Dev2.ViewModels.QuickVariableInput.QuickVariableInputViewModel;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -162,7 +162,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
         void DsfDataMergeActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true;
+            ActivityHelper.HandleMouseDoubleClick(e);
         }
 
         private void SetValuetxt_KeyUp(object sender, KeyEventArgs e)

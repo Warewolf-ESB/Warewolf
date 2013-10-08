@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2;
@@ -14,6 +15,7 @@ using Dev2.Interfaces;
 using Dev2.Studio.Core.Models.QuickVariableInput;
 using Dev2.UI;
 using Dev2.Util.ExtensionMethods;
+using Dev2.Utilities;
 using QuickVariableInputViewModel = Dev2.ViewModels.QuickVariableInput.QuickVariableInputViewModel;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -23,8 +25,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Fields
 
-        bool _isRegistered = false;
-        string mediatorKey = string.Empty;
         ModelItem activity;
         dynamic _convertCollection;
         Point _mousedownPoint = new Point(0, 0);
@@ -136,7 +136,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public void Dispose()
         {
             CleanUp();
-            //Mediator.DeRegister(MediatorMessages.DataListItemSelected, mediatorKey);
         }
 
         #endregion
@@ -168,7 +167,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
         void DsfCaseConvertActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true;
+            ActivityHelper.HandleMouseDoubleClick(e);
         }
 
         void SetValuetxt_KeyUp(object sender, KeyEventArgs e)
@@ -320,7 +319,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void ShowAllAdorners()
         {
-            //BringToFront();
             ShowAdorners = true;
         }
 

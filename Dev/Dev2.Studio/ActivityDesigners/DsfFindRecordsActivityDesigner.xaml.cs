@@ -1,12 +1,13 @@
 ﻿
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.DataList;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-
+using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -43,7 +44,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
         void DsfFindRecordsActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true;
+            ActivityHelper.HandleMouseDoubleClick(e);
         }
 
         void DsfFindRecordsActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -15,6 +16,7 @@ using Dev2.Common.Enums;
 using Dev2.Common.ExtMethods;
 using Dev2.Data.Enums;
 using System.Linq;
+using Dev2.Utilities;
 
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -83,7 +85,7 @@ namespace Dev2.Studio.ActivityDesigners
         //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
         void DsfRandomActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true;
+            ActivityHelper.HandleMouseDoubleClick(e);
         }
 
         #endregion

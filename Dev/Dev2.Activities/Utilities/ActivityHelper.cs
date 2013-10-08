@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using Dev2.Common;
 using Dev2.Data.SystemTemplates.Models;
 
@@ -12,7 +14,7 @@ namespace Dev2.Utilities
             if(ds == null) return;
 
             // FetchSwitchData
-            string expressionToInject = string.Join("", GlobalConstants.InjectedSwitchDataFetch,
+            string expressionToInject = String.Join("", GlobalConstants.InjectedSwitchDataFetch,
                                                     "(\"", ds.SwitchVariable, "\",",
                                                     GlobalConstants.InjectedDecisionDataListVariable,
                                                     ")");
@@ -27,7 +29,7 @@ namespace Dev2.Utilities
             if(ds == null) return;
 
             string modelData = ds.ToVBPersistableModel();
-            string expressionToInject = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"",
+            string expressionToInject = String.Join("", GlobalConstants.InjectedDecisionHandler, "(\"",
                                                     modelData, "\",",
                                                     GlobalConstants.InjectedDecisionDataListVariable, ")");
 
@@ -76,12 +78,12 @@ namespace Dev2.Utilities
 
         public static void SetArmTextDefaults(Dev2DecisionStack dds)
         {
-            if(string.IsNullOrEmpty(dds.TrueArmText.Trim()))
+            if(String.IsNullOrEmpty(dds.TrueArmText.Trim()))
             {
                 dds.TrueArmText = GlobalConstants.DefaultTrueArmText;
             }
 
-            if(string.IsNullOrEmpty(dds.FalseArmText.Trim()))
+            if(String.IsNullOrEmpty(dds.FalseArmText.Trim()))
             {
                 dds.FalseArmText = GlobalConstants.DefaultFalseArmText;
             }
@@ -117,5 +119,13 @@ namespace Dev2.Utilities
         }
 
         #endregion
+
+        public static void HandleMouseDoubleClick(MouseButtonEventArgs e)
+        {
+            if(!(e.OriginalSource is IScrollInfo))
+            {
+                e.Handled = true;
+            }
+        }
     }
 }

@@ -2,16 +2,16 @@
 using System.Activities.Presentation.Model;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Activities.Utils;
-using Dev2.DataList.Contract;
+using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public partial class DsfCountRecordsetActivityDesigner : IDisposable
     {
-        private bool _isRegistered = false;
 
         public DsfCountRecordsetActivityDesigner()
         {
@@ -66,7 +66,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
         void DsfCountRecordsetActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true;
+            ActivityHelper.HandleMouseDoubleClick(e);
         }
 
         void DsfCountRecordsetActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)

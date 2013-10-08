@@ -49,7 +49,7 @@
     </i:Interaction.Behaviors>
     <sap:ActivityDesigner.ContextMenu>
         <ContextMenu>
-            <!--<MenuItem Header="Insert Row" Click="InsertRow_MenuItem_Click"  IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>-->
+            <MenuItem Header="Insert Row" Click="InsertRow_MenuItem_Click"  IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             <MenuItem Header="Delete Row" Click="DeleteRow_MenuItem_Click" IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         </ContextMenu>
     </sap:ActivityDesigner.ContextMenu>

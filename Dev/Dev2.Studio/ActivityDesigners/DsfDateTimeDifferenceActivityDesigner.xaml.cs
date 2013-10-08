@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Converters.DateAndTime;
+using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -22,7 +24,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
         void DsfDateTimeDifferenceActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true;
+            ActivityHelper.HandleMouseDoubleClick(e);
         }
 
         void DsfDateTimeDifferenceActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)

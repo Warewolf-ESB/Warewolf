@@ -5,12 +5,14 @@ using System.Activities.Presentation.View;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Activities.Designers2.Core.Controls;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Models.QuickVariableInput;
 using Dev2.UI;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using QuickVariableInputViewModel = Dev2.ViewModels.QuickVariableInput.QuickVariableInputViewModel;
 
@@ -21,8 +23,6 @@ namespace Dev2.Studio.ActivityDesigners
     {
         #region Fields
 
-        bool _isRegistered = false;
-        string mediatorKey = string.Empty;
         ModelItem activity;
         dynamic _resultsCollection;
         Point _mousedownPoint = new Point(0, 0);
@@ -86,10 +86,6 @@ namespace Dev2.Studio.ActivityDesigners
         {
             base.OnModelItemChanged(newItem);
             Context.Items.Subscribe<Selection>(SelectionChanged);
-            if (!_isRegistered)
-            {
-                //mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.DataListItemSelected, input => Highlight(input as IDataListItemModel));
-            }
             _resultsCollection = newItem;
             activity = newItem as ModelItem;
 
@@ -159,8 +155,8 @@ namespace Dev2.Studio.ActivityDesigners
 
         void DsfXPathActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true;
-        }        
+            ActivityHelper.HandleMouseDoubleClick(e);
+        }
 
         void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {

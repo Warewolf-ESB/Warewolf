@@ -1,7 +1,7 @@
-﻿using Dev2.Activities.Designers2.Core.Controls;
+﻿using System.Windows.Controls.Primitives;
+using Dev2.Activities.Designers2.Core.Controls;
 using Dev2.Interfaces;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.QuickVariableInput;
 using Dev2.UI;
 using System;
@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Util.ExtensionMethods;
+using Dev2.Utilities;
 using Dev2.ViewModels.QuickVariableInput;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -23,8 +24,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Fields
 
-        bool _isRegistered = false;
-        string mediatorKey = string.Empty;
         ModelItem activity;
         dynamic _resultsCollection;
         Point _mousedownPoint = new Point(0, 0);
@@ -97,10 +96,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             base.OnModelItemChanged(newItem);
             Context.Items.Subscribe<Selection>(SelectionChanged);
-            if (!_isRegistered)
-            {
-                //mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.DataListItemSelected, input => Highlight(input as IDataListItemModel));
-            }
             _resultsCollection = newItem;
             activity = newItem as ModelItem;
 
@@ -131,43 +126,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ViewModel = new QuickVariableInputViewModel(model);
         }
 
-        private void Highlight(IDataListItemModel dataListItemViewModel)
-        {
-            Dev2.UI.IntellisenseTextBox bob = new Dev2.UI.IntellisenseTextBox();
-
-            //ObservableCollection<string> containingFields = new ObservableCollection<string>();
-            //border.Visibility = Visibility.Hidden;
-
-            //SetValuetxt.BorderBrush = Brushes.LightGray;
-            //SetValuetxt.BorderThickness = new Thickness(1.0);
-            //ToValuetxt.BorderBrush = Brushes.LightGray;
-            //ToValuetxt.BorderThickness = new Thickness(1.0);
-
-            //containingFields = DsfActivityDataListComparer.ContainsDataListItem(ModelItem, dataListItemViewModel);
-
-            //if (containingFields.Count > 0) {
-            //    foreach (string item in containingFields) {
-            //        if (item.Equals("FieldName")) {
-            //            SetValuetxt.BorderBrush = System.Windows.Media.Brushes.DeepSkyBlue;
-            //            SetValuetxt.BorderThickness = new Thickness(2.0);
-            //        }
-            //        else if (item.Equals("FieldValue")) {
-            //            ToValuetxt.BorderBrush = System.Windows.Media.Brushes.DeepSkyBlue;
-            //            ToValuetxt.BorderThickness = new Thickness(2.0);
-            //        }
-            //        var bob = this.BorderBrush;
-
-
-            //    }
-            //}
-        }
-
         #region Dispose
 
         public void Dispose()
         {
             CleanUp();
-            //Mediator.DeRegister(MediatorMessages.DataListItemSelected, mediatorKey);
         }
 
         #endregion
@@ -199,7 +162,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
         void DsfDataSplitActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true;
+            ActivityHelper.HandleMouseDoubleClick(e);
         }        
 
         void SetValuetxt_KeyUp(object sender, KeyEventArgs e)
