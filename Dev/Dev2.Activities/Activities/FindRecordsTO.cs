@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
@@ -14,8 +13,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         int _indexNum;
         string _searchType;
         bool _isSearchCriteriaEnabled;
-        [NonSerialized]
-        readonly IList<string> _requiresSearchCriteria = new List<string> { "Not Contains", "Contains", "Equal", "Not Equal", "Ends With", "Starts With", "Regex", ">", "<", "<=", ">=" };
 
         string _searchCriteria;
         Dictionary<string, List<IActionableErrorInfo>> _errors = new Dictionary<string, List<IActionableErrorInfo>>();
@@ -62,7 +59,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _searchType = value;
                 OnPropertyChanged("SearchType");
                 RaiseCanAddRemoveChanged();
-                UpdateIsCriteriaEnabled();
             }
         }
 
@@ -70,19 +66,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-        }
-
-        void UpdateIsCriteriaEnabled()
-        {
-            if(_requiresSearchCriteria.Contains(SearchType))
-            {
-                IsSearchCriteriaEnabled = true;
-            }
-            else
-            {
-                IsSearchCriteriaEnabled = false;
-                SearchCriteria = string.Empty;
-            }
         }
 
         public bool IsSearchCriteriaEnabled

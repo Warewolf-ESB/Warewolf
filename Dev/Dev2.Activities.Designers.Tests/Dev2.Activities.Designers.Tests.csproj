@@ -85,6 +85,7 @@
     <Compile Include="Designers2\Core\ActivityDesignerTests.cs" />
     <Compile Include="Designers2\Core\ActivityCollectionDesignerViewModelTests.cs" />
     <Compile Include="Designers2\Core\ActivityDesignerButtonTests.cs" />
+    <Compile Include="FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaTests.cs" />
     <Compile Include="GetWebRequestTests\GetWebRequestViewModelTests.cs" />
     <Compile Include="MultiAssignTests\MultiAssignViewModelTests.cs" />
     <Compile Include="Preview\PreviewViewModelTests.cs" />

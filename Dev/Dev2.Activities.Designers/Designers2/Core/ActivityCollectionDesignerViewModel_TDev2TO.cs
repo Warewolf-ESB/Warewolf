@@ -6,6 +6,7 @@ using System.Linq;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
+using Dev2.Studio.Core.Activities.Utils;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.Core
@@ -20,18 +21,16 @@ namespace Dev2.Activities.Designers2.Core
     public abstract class ActivityCollectionDesignerViewModel<TDev2TOFn> : ActivityCollectionDesignerViewModel
         where TDev2TOFn : class, IDev2TOFn, IPerformsValidation, new()
     {
-        ModelItemCollection _modelItemCollection;
-
         protected ActivityCollectionDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
         }
 
-        public int ItemCount { get { return _modelItemCollection.Count; } }
+        public int ItemCount { get { return ModelItemCollection.Count; } }
 
         protected void InitializeItems(ModelItemCollection modelItemCollection)
         {
-            _modelItemCollection = modelItemCollection;
+            ModelItemCollection = modelItemCollection;
 
             // Do this before, because AddDTO() also attaches events
             AttachEvents(0);
@@ -67,7 +66,7 @@ namespace Dev2.Activities.Designers2.Core
         public override void Validate()
         {
             var errors = new List<IActionableErrorInfo>();
-            foreach(var error in _modelItemCollection.SelectMany(mi => ((TDev2TOFn)mi.GetCurrentValue()).Errors))
+            foreach(var error in ModelItemCollection.SelectMany(mi => ((TDev2TOFn)mi.GetCurrentValue()).Errors))
             {
                 errors.AddRange(error.Value);
             }
@@ -76,12 +75,12 @@ namespace Dev2.Activities.Designers2.Core
 
         public override bool CanRemoveAt(int indexNumber)
         {
-            return indexNumber < _modelItemCollection.Count;
+            return indexNumber < ModelItemCollection.Count;
         }
 
         public override bool CanInsertAt(int indexNumber)
         {
-            return _modelItemCollection.Count > 2 && indexNumber < _modelItemCollection.Count;
+            return ModelItemCollection.Count > 2 && indexNumber < ModelItemCollection.Count;
         }
 
         public override void RemoveAt(int indexNumber)
@@ -90,7 +89,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return;
             }
-            if(_modelItemCollection.Count == 2)
+            if(ModelItemCollection.Count == 2)
             {
                 if(indexNumber == 1)
                 {
@@ -142,7 +141,7 @@ namespace Dev2.Activities.Designers2.Core
             var indexNumber = 1;
             if(overwrite)
             {
-                _modelItemCollection.Clear();
+                ModelItemCollection.Clear();
 
                 // Add blank row
                 AddDTO(indexNumber);
@@ -152,7 +151,7 @@ namespace Dev2.Activities.Designers2.Core
                 var lastDTO = GetLastDTO();
                 indexNumber = lastDTO.IndexNumber;
 
-                if(_modelItemCollection.Count == 2)
+                if(ModelItemCollection.Count == 2)
                 {
                     // Check whether we have 2 blank rows
                     var firstDTO = GetDTO(1);
@@ -168,13 +167,13 @@ namespace Dev2.Activities.Designers2.Core
 
         TDev2TOFn GetDTO(int indexNumber)
         {
-            var item = _modelItemCollection[indexNumber - 1];
+            var item = ModelItemCollection[indexNumber - 1];
             return item.GetCurrentValue() as TDev2TOFn;
         }
 
         TDev2TOFn GetLastDTO()
         {
-            return GetDTO(_modelItemCollection.Count);
+            return GetDTO(ModelItemCollection.Count);
         }
 
         void AddBlankRow()
@@ -197,19 +196,19 @@ namespace Dev2.Activities.Designers2.Core
             AttachEvents(dto);
 
             var idx = dto.IndexNumber - 1;
-            if(idx == _modelItemCollection.Count)
+            if(idx == ModelItemCollection.Count)
             {
-                _modelItemCollection.Add(dto);
+                ModelItemCollection.Add(dto);
             }
             else
             {
-                _modelItemCollection.Insert(idx, dto);
+                ModelItemCollection.Insert(idx, dto);
             }
         }
 
         void RemoveDTO(TDev2TOFn dto)
         {
-            if(_modelItemCollection.Count > 2 && dto.IndexNumber >= 0 && dto.IndexNumber < _modelItemCollection.Count)
+            if(ModelItemCollection.Count > 2 && dto.IndexNumber >= 0 && dto.IndexNumber < ModelItemCollection.Count)
             {
                 RemoveAt(dto.IndexNumber, dto);
                 Renumber(dto.IndexNumber - 1);
@@ -221,7 +220,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             notify.PropertyChanged -= OnDTOPropertyChanged;
             var idx = indexNumber - 1;
-            _modelItemCollection.RemoveAt(idx);
+            ModelItemCollection.RemoveAt(idx);
         }
 
         void OnDTOPropertyChanged(object sender, PropertyChangedEventArgs args)
@@ -240,7 +239,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 AddBlankRow();
 
-                if(_modelItemCollection.Count == 3)
+                if(ModelItemCollection.Count == 3)
                 {
                     // We may have been editing row 2 while row 1 was blank
                     // check if first row is blank and remove it
@@ -279,14 +278,7 @@ namespace Dev2.Activities.Designers2.Core
         void Renumber(int startIndex)
         {
             var indexNumber = startIndex + 1;
-            ProcessModelItemCollection(startIndex, mi =>
-            {
-                var prop = mi.Properties["IndexNumber"];
-                if(prop != null)
-                {
-                    prop.SetValue(indexNumber++);
-                }
-            });
+            ProcessModelItemCollection(startIndex, mi => mi.SetProperty("IndexNumber", indexNumber++));
         }
 
         /// <summary>
@@ -295,9 +287,9 @@ namespace Dev2.Activities.Designers2.Core
         void ProcessModelItemCollection(int startIndex, Action<ModelItem> processModelItem)
         {
             startIndex = Math.Max(startIndex, 0);
-            for(var i = startIndex; i < _modelItemCollection.Count; i++)
+            for(var i = startIndex; i < ModelItemCollection.Count; i++)
             {
-                processModelItem(_modelItemCollection[i]);
+                processModelItem(ModelItemCollection[i]);
             }
         }
     }

@@ -92,7 +92,14 @@
                             <ComboBox Style="{StaticResource ActivityComboBoxStyle}"
                                       Margin="0,0,2,0"
                                       ItemsSource="{Binding DataContext.WhereOptions, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                      SelectedValue="{Binding SearchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                      SelectedValue="{Binding SearchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SourceUpdated">
+                                        <i:InvokeCommandAction 
+                                            Command="{Binding SearchTypeUpdatedCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
+                                            CommandParameter="{Binding SelectedIndex, RelativeSource={RelativeSource AncestorType=controls:Dev2DataGrid}}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsSearchTypeHelpText}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -128,7 +135,7 @@
                                                     MaxHeight="52"
                                                     Padding="3"
                                                     Text="{Binding SearchCriteria, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    IsEnabled="{Binding IsSearchCriteriaEnabled}"
+                                                    IsEnabled="{Binding IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsMatchHelpText}"

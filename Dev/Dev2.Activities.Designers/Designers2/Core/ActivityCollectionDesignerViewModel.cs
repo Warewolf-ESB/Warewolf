@@ -31,6 +31,8 @@ namespace Dev2.Activities.Designers2.Core
             });
         }
 
+        public ModelItemCollection ModelItemCollection { get; protected set; }
+        
         public abstract void UpdateDisplayName();
 
         public abstract string CollectionName { get; }
