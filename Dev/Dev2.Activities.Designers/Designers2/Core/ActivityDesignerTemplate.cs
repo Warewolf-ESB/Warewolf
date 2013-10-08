@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,6 +11,8 @@ namespace Dev2.Activities.Designers2.Core
 {
     public abstract class ActivityDesignerTemplate : UserControl
     {
+        Dev2DataGrid _dataGrid;
+
         protected ActivityDesignerTemplate()
         {
             LeftButtons = new ObservableCollection<Button>();
@@ -18,7 +21,31 @@ namespace Dev2.Activities.Designers2.Core
 
         public ObservableCollection<Button> LeftButtons { get; set; }
         public ObservableCollection<Button> RightButtons { get; set; }
-        public Dev2DataGrid DataGrid { get; set; }
+
+        public Dev2DataGrid DataGrid
+        {
+            get
+            {
+                return _dataGrid;
+            }
+            set
+            {
+                if(_dataGrid != value)
+                {
+                    if(_dataGrid != null)
+                    {
+                        _dataGrid.SelectionChanged -= OnSelectionChanged;
+                    }
+
+                    _dataGrid = value;
+
+                    if(_dataGrid != null)
+                    {
+                        _dataGrid.SelectionChanged += OnSelectionChanged;
+                    }
+                }
+            }
+        }
 
         public void SetInitialFocus()
         {
@@ -34,5 +61,17 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         protected abstract IInputElement GetInitialFocusElement();
+
+        void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
+        {
+            var viewModel = DataGrid.DataContext as ActivityCollectionDesignerViewModel;
+            if(viewModel != null)
+            {
+                var oldItem = args.RemovedItems != null && args.RemovedItems.Count > 0 ? args.RemovedItems[0] : null;
+                var newItem = args.AddedItems != null && args.AddedItems.Count > 0 ? args.AddedItems[0] : null;
+
+                viewModel.OnSelectionChanged(oldItem as ModelItem, newItem as ModelItem);
+            }
+        }
     }
 }

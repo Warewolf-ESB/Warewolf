@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Data;
+using Caliburn.Micro;
 using Dev2.Activities.Designers.Tests.Designers2.Core.Stubs;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Providers.Errors;
@@ -460,14 +461,14 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ActivityCollectionDesignerViewModel_UpdateItem")]
-        public void ActivityCollectionDesignerViewModel_UpdateItem_MakesRowBlankAndIndexNumberInBounds_RowRemoved()
+        public void ActivityCollectionDesignerViewModel_UpdateItem_MakesRowBlankAndIndexNumberInBounds_RowNotRemoved()
         {
-            Verify_UpdateItem_MakesRowBlankAndIndexNumberInBounds_RowRemoved(4, 1);
-            Verify_UpdateItem_MakesRowBlankAndIndexNumberInBounds_RowRemoved(4, 2);
-            Verify_UpdateItem_MakesRowBlankAndIndexNumberInBounds_RowRemoved(4, 3);
+            Verify_UpdateItem_MakesRowBlankAndIndexNumberInBounds_RowNotRemoved(4, 1);
+            Verify_UpdateItem_MakesRowBlankAndIndexNumberInBounds_RowNotRemoved(4, 2);
+            Verify_UpdateItem_MakesRowBlankAndIndexNumberInBounds_RowNotRemoved(4, 3);
         }
 
-        void Verify_UpdateItem_MakesRowBlankAndIndexNumberInBounds_RowRemoved(int startItemCount, int indexNumber)
+        void Verify_UpdateItem_MakesRowBlankAndIndexNumberInBounds_RowNotRemoved(int startItemCount, int indexNumber)
         {
             //------------Setup for test--------------------------
             var items = CreateItemsList(startItemCount);
@@ -489,7 +490,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             //------------Assert Results-------------------------
             Assert.IsTrue(items[idx].CanRemove());
 
-            var expectedItemCount = startItemCount - 1;
+            var expectedItemCount = startItemCount;
             var expectedNonBlankItemCount = expectedItemCount - 1;
             Assert.AreEqual(expectedItemCount, viewModel.ItemCount);
             Assert.AreEqual(string.Format("Activity ({0})", expectedNonBlankItemCount), viewModel.ModelItem.GetProperty("DisplayName"));
@@ -499,10 +500,6 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
             for(int i = 0, j = 0; j < expectedItemCount; j++)
             {
-                if(i == idx)
-                {
-                    i++; // skip
-                }
                 var dto = (ActivityDTO)mic[j].GetCurrentValue();
                 Assert.AreSame(items[i++], dto);
                 Assert.AreEqual(j + 1, dto.IndexNumber);
@@ -599,7 +596,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ActivityCollectionDesignerViewModel_UpdateItem")]
-        public void ActivityCollectionDesignerViewModel_UpdateItem_RowCountIsTwoBlanksAndMakesSecondRowNonBlank_FirstRowRemovedAndBlankRowAdded()
+        public void ActivityCollectionDesignerViewModel_UpdateItem_RowCountIsTwoBlanksAndMakesSecondRowNonBlank_NoRowsAddedOrRemoved()
         {
             //------------Setup for test--------------------------
             var items = new List<ActivityDTO>
@@ -620,24 +617,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             items[Idx].FieldName = "test";   // CanRemove() checks this
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(items[Idx].CanRemove());
-
-            const int ExpectedItemCount = 2;
-            const int ExpectedNonBlankItemCount = ExpectedItemCount - 1;
-            Assert.AreEqual(2, viewModel.ItemCount);
-            Assert.AreEqual(string.Format("Activity ({0})", ExpectedNonBlankItemCount), viewModel.ModelItem.GetProperty("DisplayName"));
-
-            // ReSharper disable PossibleNullReferenceException
-            var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
-
-            Assert.AreSame(items[1], mic[0].GetCurrentValue());
-            VerifyItem(mic[0], 1, "test", "");
-
-            Assert.AreNotSame(items[0], mic[1].GetCurrentValue());
-            Assert.AreNotSame(items[1], mic[1].GetCurrentValue());
-            VerifyItem(mic[1], 2, "", "");
-
-            // ReSharper restore PossibleNullReferenceException
+            Verify_CollectionUnchanged(items, viewModel);
         }
 
         [TestMethod]
@@ -701,10 +681,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
                 Assert.AreEqual(j + 1, dto.IndexNumber);
             }
             // ReSharper restore PossibleNullReferenceException
-
-
         }
-
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -810,8 +787,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             var viewModel = new TestActivityDesignerCollectionViewModelItemsInitialized(modelItem);
 
             viewModel.RemoveAt(1);
-            Verify_CollectionUnchanged(items, viewModel); 
-            
+            Verify_CollectionUnchanged(items, viewModel);
+
             viewModel.RemoveAt(2);
             Verify_CollectionUnchanged(items, viewModel);
         }
@@ -979,12 +956,102 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Verify_CollectionUnchanged(items, viewModel);
         }
 
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ActivityCollectionDesignerViewModel_OnSelectionChanged")]
+        public void ActivityCollectionDesignerViewModel_OnSelectionChanged_OldRowIsBlank_RowRemoved()
+        {
+            Verify_OnSelectionChanged_OldRowIsBlank_RowRemoved(4, 1);
+            Verify_OnSelectionChanged_OldRowIsBlank_RowRemoved(4, 2);
+            Verify_OnSelectionChanged_OldRowIsBlank_RowRemoved(4, 3);
+        }
+
+        void Verify_OnSelectionChanged_OldRowIsBlank_RowRemoved(int startItemCount, int indexNumber)
+        {
+            //------------Setup for test--------------------------
+            var items = CreateItemsList(startItemCount);
+            var modelItem = CreateModelItem(items);
+            var viewModel = new TestActivityDesignerCollectionViewModelItemsInitialized(modelItem);
+
+            for(var i = 0; i < startItemCount; i++)
+            {
+                Assert.AreEqual(i == startItemCount - 1, items[i].CanRemove());
+            }
+
+            var idx = indexNumber - 1;
+
+            //------------Execute Test---------------------------
+            items[idx].FieldName = string.Empty;  // CanRemove() checks this
+            items[idx].FieldValue = string.Empty; // CanRemove() checks this
+            viewModel.OnSelectionChanged(viewModel.ModelItemCollection[idx], viewModel.ModelItemCollection[idx + 1]);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(items[idx].CanRemove());
+
+            var expectedItemCount = startItemCount - 1;
+            var expectedNonBlankItemCount = expectedItemCount - 1;
+            Assert.AreEqual(expectedItemCount, viewModel.ItemCount);
+            Assert.AreEqual(string.Format("Activity ({0})", expectedNonBlankItemCount), viewModel.ModelItem.GetProperty("DisplayName"));
+
+            // ReSharper disable PossibleNullReferenceException
+            var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
+
+            for(int i = 0, j = 0; j < expectedItemCount; j++)
+            {
+                if(i == idx)
+                {
+                    i++; // skip
+                }
+                var dto = (ActivityDTO)mic[j].GetCurrentValue();
+                Assert.AreSame(items[i++], dto);
+                Assert.AreEqual(j + 1, dto.IndexNumber);
+            }
+            // ReSharper restore PossibleNullReferenceException
+        }
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ActivityCollectionDesignerViewModel_OnSelectionChanged")]
+        public void ActivityCollectionDesignerViewModel_OnSelectionChanged_OldRowIsNotBlank_RowNotRemoved()
+        {
+            Verify_OnSelectionChanged_OldRowIsNotBlank_RowNotRemoved(4, 1);
+            Verify_OnSelectionChanged_OldRowIsNotBlank_RowNotRemoved(4, 2);
+            Verify_OnSelectionChanged_OldRowIsNotBlank_RowNotRemoved(4, 3);
+        }
+
+        void Verify_OnSelectionChanged_OldRowIsNotBlank_RowNotRemoved(int startItemCount, int indexNumber)
+        {
+            //------------Setup for test--------------------------
+            var items = CreateItemsList(startItemCount);
+            var modelItem = CreateModelItem(items);
+            var viewModel = new TestActivityDesignerCollectionViewModelItemsInitialized(modelItem);
+
+            for(var i = 0; i < startItemCount; i++)
+            {
+                Assert.AreEqual(i == startItemCount - 1, items[i].CanRemove());
+            }
+
+            var idx = indexNumber - 1;
+
+            //------------Execute Test---------------------------
+            items[idx].FieldName = string.Empty;  // CanRemove() checks this
+            viewModel.OnSelectionChanged(viewModel.ModelItemCollection[idx], viewModel.ModelItemCollection[idx + 1]);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(items[idx].CanRemove());
+
+            Verify_CollectionUnchanged(items, viewModel);
+        }
+
         static void VerifyItem(ModelItem modelItem, int indexNumber, string fieldName, string fieldValue)
         {
-            var dto = (ActivityDTO)modelItem.GetCurrentValue();
-            Assert.AreEqual(indexNumber, dto.IndexNumber);
-            Assert.AreEqual(fieldName, dto.FieldName);
-            Assert.AreEqual(fieldValue, dto.FieldValue);
+            // ReSharper disable PossibleNullReferenceException
+            Assert.AreEqual(indexNumber, modelItem.Properties["IndexNumber"].ComputedValue);
+            Assert.AreEqual(fieldName, modelItem.Properties["FieldName"].ComputedValue);
+            Assert.AreEqual(fieldValue, modelItem.Properties["FieldValue"].ComputedValue);
+            // ReSharper restore PossibleNullReferenceException
         }
 
         void Verify_CollectionUnchanged(List<ActivityDTO> items, TestActivityDesignerCollectionViewModelItemsInitialized viewModel)

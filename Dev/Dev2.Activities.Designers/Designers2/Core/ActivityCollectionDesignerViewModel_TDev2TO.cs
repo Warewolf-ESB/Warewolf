@@ -50,6 +50,19 @@ namespace Dev2.Activities.Designers2.Core
             UpdateDisplayName();
         }
 
+        public override void OnSelectionChanged(ModelItem oldItem, ModelItem newItem)
+        {
+            if(oldItem != null)
+            {
+                var dto = oldItem.GetCurrentValue() as TDev2TOFn;
+                if(dto != null && dto.CanRemove())
+                {
+                    // old row is blank so remove
+                    RemoveDTO(dto);
+                }
+            }
+        }
+
         public override void UpdateDisplayName()
         {
             var currentName = DisplayName;
@@ -236,23 +249,20 @@ namespace Dev2.Activities.Designers2.Core
             }
 
             var dto = (TDev2TOFn)sender;
-            if(dto.CanRemove())
+            if(dto.CanAdd())
             {
-                RemoveDTO(dto);
-            }
-            else if(dto.CanAdd())
-            {
-                AddBlankRow();
-
-                if(ModelItemCollection.Count == 3)
+                if(ModelItemCollection.Count == 2)
                 {
-                    // We may have been editing row 2 while row 1 was blank
-                    // check if first row is blank and remove it
                     var firstDTO = GetDTO(1);
-                    if(firstDTO.CanRemove())
+                    if(!firstDTO.CanRemove())
                     {
-                        RemoveDTO(firstDTO);
+                        // first row is not blank
+                        AddBlankRow();
                     }
+                }
+                else
+                {
+                    AddBlankRow();
                 }
             }
         }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Input;
 using Dev2.Activities.Designers2.Core.Converters;
 using Dev2.Activities.Designers2.Core.QuickVariableInput;
 
@@ -32,7 +31,9 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         public ModelItemCollection ModelItemCollection { get; protected set; }
-        
+
+        public abstract void OnSelectionChanged(ModelItem oldItem, ModelItem newItem);
+
         public abstract void UpdateDisplayName();
 
         public abstract string CollectionName { get; }
