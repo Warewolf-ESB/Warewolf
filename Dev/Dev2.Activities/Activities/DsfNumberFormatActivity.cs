@@ -105,19 +105,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IDev2DataListEvaluateIterator expressionIterator = CreateDataListEvaluateIterator(expression, executionId, compiler, colItr, allErrors);
 
                 IDev2DataListEvaluateIterator roundingDecimalPlacesIterator = CreateDataListEvaluateIterator(roundingDecimalPlaces, executionId, compiler, colItr, allErrors);
-                
+
                 IDev2DataListEvaluateIterator decimalPlacesToShowIterator = CreateDataListEvaluateIterator(decimalPlacesToShow, executionId, compiler, colItr, allErrors);
 
-                if (dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(expression, "Number To Format",expressionIterator.FetchEntry(),executionId);
+                    AddDebugInputItem(expression, "Number To Format", expressionIterator.FetchEntry(), executionId);
                     AddDebugInputItem(roundingDecimalPlaces, "Rounding Decimal Places", roundingDecimalPlacesIterator.FetchEntry(), executionId);
 
                     AddDebugInputItem(decimalPlacesToShow, "Decimals To Show", decimalPlacesToShowIterator.FetchEntry(), executionId);
                 }
                 int iterationCounter = 0;
                 // Loop data ;)
-                while (colItr.HasMoreData())
+                while(colItr.HasMoreData())
                 {
                     int roundingDecimalPlacesValue;
                     colItr.FetchNextRow(roundingDecimalPlacesIterator).TheValue.IsWholeNumber(out roundingDecimalPlacesValue);
@@ -135,6 +135,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         toUpsert.Add(region, result);
                         toUpsert.FlushIterationFrame();
+                        if(dataObject.IsDebugMode())
+                        {
+                            if(DataListUtil.IsValueRecordset(region))
+                            {
+                                enRecordsetIndexType recsetIndexType = DataListUtil.GetRecordsetIndexType(region);
+                                if(recsetIndexType == enRecordsetIndexType.Blank)
+                                {
+
+                                    AddDebugOutputItem(region, result, executionId, iterationCounter);
+                                }
+                                iterationCounter++;
+                            }
+                        }                        
                     }
                 }
                 compiler.Upsert(executionId, toUpsert, out errors);
@@ -142,13 +155,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(dataObject.IsDebugMode())
                     {
-                        AddDebugOutputItem(region, string.Empty, executionId, iterationCounter);
+                        if(DataListUtil.IsValueRecordset(region))
+                        {
+                            enRecordsetIndexType recsetIndexType = DataListUtil.GetRecordsetIndexType(region);
+                            if(recsetIndexType == enRecordsetIndexType.Star)
+                            {
+                                AddDebugOutputItem(region, string.Empty, executionId, iterationCounter);
+                            }                            
+                        }
+                        else
+                        {
+                            AddDebugOutputItem(region, string.Empty, executionId, iterationCounter);
+                        }
+                        iterationCounter++;
                     }
-                    iterationCounter++;
+                    allErrors.MergeErrors(errors);
                 }
-                allErrors.MergeErrors(errors);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 allErrors.AddError(e.Message);
             }
@@ -156,7 +180,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 #region Handle Errors
 
-                if (allErrors.HasErrors())
+                if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfNumberFormatActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
@@ -164,9 +188,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 #endregion
 
-                if (dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(context,StateType.Before);
+                    DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
             }
@@ -199,7 +223,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void AddDebugOutputItem(string expression, string value, Guid dlId, int iterationCounter)
         {
             DebugItem itemToAdd = new DebugItem();
-            itemToAdd.AddRange(CreateDebugItemsFromString(expression, string.Empty, dlId, iterationCounter, enDev2ArgumentType.Output));
+            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, iterationCounter, enDev2ArgumentType.Output));
             _debugOutputs.Add(itemToAdd);
         }
 

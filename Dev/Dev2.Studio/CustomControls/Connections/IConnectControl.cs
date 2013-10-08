@@ -12,11 +12,11 @@ namespace Dev2.UI
 
         ICommand EnvironmentChangedCommand { get; set; }
 
-        IServer SelectedServer { get; set; }
+       // IServer SelectedServer { get; set; }
 
         string LabelText { get; set; }
 
-        IList<IServer> Servers { get; }
+       // IList<IServer> Servers { get; }
 
     }
 }

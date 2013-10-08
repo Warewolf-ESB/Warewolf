@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.Annotations;
 using Dev2.Data.ServiceModel;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels;
-using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.Webs;
 using Action = System.Action;
 
@@ -26,9 +22,8 @@ namespace Dev2.UI
     /// <summary>
     /// Interaction logic for ConnectControl.xaml
     /// </summary>
-    public partial class ConnectControl : IConnectControl
+    public partial class ConnectControl : IConnectControl,INotifyPropertyChanged
     {
-        bool _isSelectedFromDropDown = true;
         readonly IEventAggregator _eventPublisher;
         ConnectControlViewModel _viewModel;
 
@@ -42,13 +37,9 @@ namespace Dev2.UI
         public ConnectControl(IEventAggregator eventPublisher)
         {
             InitializeComponent();
-            Servers = new ObservableCollection<IServer>();
-            LoadServers();
-
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _eventPublisher = eventPublisher;
             _eventPublisher.Subscribe(this);
-
             Loaded += OnLoaded;
         }
 
@@ -147,37 +138,7 @@ namespace Dev2.UI
 
         #endregion
 
-        #region Selected Server
-
-        public IServer SelectedServer
-        {
-            get
-            {
-                return (IServer)GetValue(SelectedServerProperty);
-            }
-            set
-            {
-                SetValue(SelectedServerProperty, value);
-            }
-        }
-
-        // Using a DependencyProperty as the backing store for SelectedServer.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SelectedServerProperty =
-            DependencyProperty.Register("SelectedServer", typeof(IServer), typeof(ConnectControl),
-                new PropertyMetadata(null, ServerChangedCallBack));
-
-        static void ServerChangedCallBack(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
-        {
-            var control = (ConnectControl)dependencyObject;
-            var selectedServer = e.NewValue as IServer;
-            if(selectedServer != null)
-            {
-                var server = control.Servers.FirstOrDefault(s => s.ID == selectedServer.ID);
-                control.TheServerComboBox.SelectedItem = server;
-            }
-        }
-
-        #endregion
+        
 
         #region LabelText
 
@@ -197,19 +158,7 @@ namespace Dev2.UI
 
         #endregion
 
-        #region Servers
-
-        public IList<IServer> Servers
-        {
-            get { return (IList<IServer>)GetValue(ServersProperty); }
-            private set { SetValue(ServersProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for Servers.  This enables animation, styling, binding, etc...
-        static readonly DependencyProperty ServersProperty =
-            DependencyProperty.Register("Servers", typeof(IList<IServer>), typeof(ConnectControl));
-
-        #endregion
+        
 
         public Guid? Context
         {
@@ -220,45 +169,28 @@ namespace Dev2.UI
         public static readonly DependencyProperty ContextProperty =
             DependencyProperty.Register("Context", typeof(Guid?), typeof(ConnectControl));
 
-        public bool? IsEditEnabled
-        {
-            get { return (bool?)GetValue(IsEditEnabledProperty); }
-            set { SetValue(IsEditEnabledProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsEditEnabledProperty =
-            DependencyProperty.Register("IsEditEnabled", typeof(bool?), typeof(ConnectControl));
-
+       
         #endregion Dependency Properties
 
-        #region LoadServers
-
-        void LoadServers(IEnvironmentModel envModel = null)
-        {
-            IsEditEnabled = false;
-            Servers.Clear();
-            var servers = ServerProvider.Instance.Load();
-            foreach(var server in servers)
-            {
-                Servers.Add(server);
-                if(envModel != null && server.Alias == envModel.Name)
-                {
-                    if(!_isSelectedFromDropDown)
-                    {
-                        SelectedServer = server;
-                    }
-                    IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost);
-                }
-            }
-        }
-
-        #endregion
 
         #region OnServerDropDownOpened
 
+        public ConnectControlViewModel ViewModel
+        {
+            get
+            {
+                return _viewModel;
+            }
+            set
+            {
+                _viewModel = value;     
+                OnPropertyChanged();
+            }
+        }
+
         void OnServerDropDownOpened(object sender, EventArgs e)
         {
-            LoadServers();
+            ViewModel.LoadServers();
         }
 
         #endregion
@@ -270,20 +202,20 @@ namespace Dev2.UI
             if(e.AddedItems != null && e.AddedItems.Count > 0)
             {
                 var server = e.AddedItems[0] as IServer;
-                if(server != null && _isSelectedFromDropDown)
+                if(server != null && (ViewModel!=null && ViewModel.IsSelectedFromDropDown))
                 {
                     InvokeCommands(server);
                     Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedItemInExplorerTree));
                     _eventPublisher.Publish(new SetSelectedItemInExplorerTree(server.Environment.Name));
-                    SelectedServer = server;
                     Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
                     _eventPublisher.Publish(new SetActiveEnvironmentMessage(server.Environment));
                 }
                 else
                 {
-                    SelectedServer = server;
-
-                    IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost);
+                    if(ViewModel != null)
+                    {
+                        ViewModel.IsEditEnabled = (ViewModel.SelectedServer != null && !ViewModel.SelectedServer.IsLocalHost);
+                    }
                 }
             }
         }
@@ -315,12 +247,12 @@ namespace Dev2.UI
 
         void OnEditClick(object sender, RoutedEventArgs e)
         {
-            RootWebSite.ShowDialog(_viewModel.ActiveEnvironment, ResourceType.Server, null, SelectedServer.ID, Context);
+            RootWebSite.ShowDialog(ViewModel.ActiveEnvironment, ResourceType.Server, null, ViewModel.SelectedServer.ID, Context);
         }
 
         void OnNewClick(object sender, RoutedEventArgs e)
         {
-            RootWebSite.ShowDialog(_viewModel.ActiveEnvironment, ResourceType.Server, null, null, Context);
+            RootWebSite.ShowDialog(ViewModel.ActiveEnvironment, ResourceType.Server, null, null, Context);
         }
 
         #endregion
@@ -332,9 +264,10 @@ namespace Dev2.UI
             Logger.TraceInfo(message.GetType().Name);
             if(message.EnvironmentModel != null && BindToActiveEnvironment)
             {
-                _isSelectedFromDropDown = false;
-                LoadServers(message.EnvironmentModel);
-                _isSelectedFromDropDown = true;
+                if(ViewModel != null)
+                {
+                    ViewModel.ChangeSelected(message.EnvironmentModel);
+                }
             }
         }
 
@@ -344,45 +277,33 @@ namespace Dev2.UI
         {
             if(TheServerComboBox.SelectedItem == null)
             {
-                if(_viewModel != null)
+                if(ViewModel != null)
                 {
-                    _isSelectedFromDropDown = false;
-                    LoadServers(_viewModel.ActiveEnvironment);
-                    _isSelectedFromDropDown = true;
+                    ViewModel.ChangeSelected(ViewModel.ActiveEnvironment);
                 }
             }
         }
+
+        
 
         void OnLoaded(object sender, RoutedEventArgs e)
         {
-            _viewModel = BuildConnectControlViewModel(((IMainViewModel)Application.Current.MainWindow.DataContext).DeployResource, ((IMainViewModel)Application.Current.MainWindow.DataContext).ActiveEnvironment);
+            ViewModel = ConnectControlViewModel.BuildConnectControlViewModel(((IMainViewModel)Application.Current.MainWindow.DataContext).DeployResource, ((IMainViewModel)Application.Current.MainWindow.DataContext).ActiveEnvironment);
             // 2013.09.02 - BUG 10221 - set default server selection
-            SelectedServer = _viewModel.GetSelectedServer(Servers, LabelText);
+            //ViewModel.SelectedServer = ViewModel.GetSelectedServer(ViewModel.Servers, LabelText);
             Loaded -= OnLoaded;
         }
 
-        public static ConnectControlViewModel BuildConnectControlViewModel(SimpleBaseViewModel deployResource, IEnvironmentModel mainViewModelActiveEnvironment)
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            // Moved code incorrectly put into ConnectViewModel back here
-            var abstractTreeViewModel = deployResource as AbstractTreeViewModel;
-            IEnvironmentModel activeEnvironment = null;
-            if(abstractTreeViewModel != null)
+            var handler = PropertyChanged;
+            if(handler != null)
             {
-                activeEnvironment = abstractTreeViewModel.EnvironmentModel;
+                handler(this, new PropertyChangedEventArgs(propertyName));
             }
-            else
-            {
-                var resourceModel = deployResource as ResourceModel;
-                if(resourceModel != null)
-                {
-                    activeEnvironment = resourceModel.Environment;
-                }
-            }
-            if(activeEnvironment == null)
-            {
-                activeEnvironment = mainViewModelActiveEnvironment;                 
-            }
-            return new ConnectControlViewModel(activeEnvironment);
         }
     }
 }

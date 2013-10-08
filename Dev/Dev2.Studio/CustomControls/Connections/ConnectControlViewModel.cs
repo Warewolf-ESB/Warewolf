@@ -1,12 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Windows;
+using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.ViewModels.Navigation;
 
 namespace Dev2.UI
 {
     // Moved code incorrectly put into ConnectViewModel here
-    public class ConnectControlViewModel
+    public class ConnectControlViewModel:DependencyObject,INotifyPropertyChanged
     {
         readonly IEnvironmentModel _activeEnvironment;
 
@@ -17,6 +24,7 @@ namespace Dev2.UI
                 throw new ArgumentNullException("activeEnvironment");
             }
             _activeEnvironment = activeEnvironment;
+            Servers = new ObservableCollection<IServer>();
         }
 
         public IEnvironmentModel ActiveEnvironment
@@ -28,7 +36,38 @@ namespace Dev2.UI
             }
         }
 
-        public IServer GetSelectedServer(IList<IServer> servers, string labelText)
+        public void ChangeSelected(IEnvironmentModel activeEnvironment)
+        {
+            IsSelectedFromDropDown = false;
+            LoadServers(activeEnvironment);
+            IsSelectedFromDropDown = true;
+        }
+
+        public static ConnectControlViewModel BuildConnectControlViewModel(SimpleBaseViewModel deployResource, IEnvironmentModel mainViewModelActiveEnvironment)
+        {
+            // Moved code incorrectly put into ConnectViewModel back here
+            var abstractTreeViewModel = deployResource as AbstractTreeViewModel;
+            IEnvironmentModel activeEnvironment = null;
+            if(abstractTreeViewModel != null)
+            {
+                activeEnvironment = abstractTreeViewModel.EnvironmentModel;
+            }
+            else
+            {
+                var resourceModel = deployResource as ResourceModel;
+                if(resourceModel != null)
+                {
+                    activeEnvironment = resourceModel.Environment;
+                }
+            }
+            if(activeEnvironment == null)
+            {
+                activeEnvironment = mainViewModelActiveEnvironment;
+            }
+            return new ConnectControlViewModel(activeEnvironment);
+        }
+
+        public IServer GetSelectedServer(ObservableCollection<IServer> servers, string labelText)
         {
             if(servers == null || servers.Count == 0)
             {
@@ -69,6 +108,88 @@ namespace Dev2.UI
             }
 
             return null;
+        }
+        #region Servers
+
+        public ObservableCollection<IServer> Servers { get; set; }
+
+        // Using a DependencyProperty as the backing store for Servers.  This enables animation, styling, binding, etc...
+        #endregion
+        public bool? IsEditEnabled
+        {
+            get { return (bool?)GetValue(IsEditEnabledProperty); }
+            set { SetValue(IsEditEnabledProperty, value); }
+        }
+
+        
+
+        public static readonly DependencyProperty IsEditEnabledProperty =
+            DependencyProperty.Register("IsEditEnabled", typeof(bool?), typeof(ConnectControlViewModel));
+
+        #region Selected Server
+
+        public IServer SelectedServer
+        {
+            get
+            {
+                return (IServer)GetValue(SelectedServerProperty);
+            }
+            set
+            {
+                SetValue(SelectedServerProperty, value);
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsSelectedFromDropDown { get; set; }
+
+        // Using a DependencyProperty as the backing store for SelectedServer.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedServerProperty =
+            DependencyProperty.Register("SelectedServer", typeof(IServer), typeof(ConnectControlViewModel),
+                new PropertyMetadata(null, ServerChangedCallBack));
+
+        static void ServerChangedCallBack(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (ConnectControlViewModel)dependencyObject;
+            var selectedServer = e.NewValue as IServer;
+            if(selectedServer != null)
+            {
+                var server = control.Servers.FirstOrDefault(s => s.ID == selectedServer.ID);
+                control.SelectedServer = server;
+            }
+        }
+
+        #endregion
+
+        public void LoadServers(IEnvironmentModel envModel = null)
+        {
+            IsEditEnabled = false;
+            Servers.Clear();
+            var servers = ServerProvider.Instance.Load();
+            foreach(var server in servers)
+            {
+                Servers.Add(server);
+                if(envModel != null && server.Alias == envModel.Name)
+                {
+                    if(!IsSelectedFromDropDown)
+                    {
+                        SelectedServer = server;
+                    }
+                    IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost);
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [Annotations.NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if(handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

@@ -37,6 +37,11 @@ namespace Dev2.Core.Tests.Environments
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
+            SetupMef();
+        }
+
+        static void SetupMef()
+        {
             var securityContext = new Mock<IFrameworkSecurityContext>();
             securityContext.Setup(s => s.Roles).Returns(new string[0]);
 

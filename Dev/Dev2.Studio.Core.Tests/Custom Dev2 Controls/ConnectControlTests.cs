@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Documents;
 using Caliburn.Micro;
+using Dev2.Messages;
+using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Models;
-using Dev2.Studio.ViewModels.Navigation;
+using Dev2.Studio.Core.Messages;
 using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -15,78 +20,151 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
     {
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ConnectControl_BuildConnectViewModel")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ConnectControl_BuildConnectViewModel_WithNullDeployResourceAndNullActiveEnvironment_DoesNotCreateConnectViewModel()
+        [TestCategory("ConnectControl_SelectionChanged")]
+        public void ConnectControl_SelectionChanged_WhenHasItem_NoViewModel_ShouldNotFireMessages()
         {
             //------------Setup for test--------------------------
-            
+            var localhostServer = CreatServer("localhost", true);
+            var remoteServer = CreatServer("remote", false);
+            var otherServer = CreatServer("disconnected", false);
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
+            var connectControl = new ConnectControl(mockEventAggregator.Object);
+            connectControl.TheServerComboBox.ItemsSource = new List<ServerDTO> { localhostServer, remoteServer, otherServer };
             //------------Execute Test---------------------------
-            ConnectControl.BuildConnectControlViewModel(null, null);
+            connectControl.TheServerComboBox.SelectedItem = remoteServer;
             //------------Assert Results-------------------------
-        }
-        
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ConnectControl_BuildConnectViewModel")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ConnectControl_BuildConnectViewModel_WithDeployResourceWithNullEnvironmentAndNullActiveEnvironment_DoesNotCreateConnectViewModel()
-        {
-            //------------Setup for test--------------------------
-            var resourceModel = new ResourceModel(null);
-            //------------Execute Test---------------------------
-            ConnectControl.BuildConnectControlViewModel(resourceModel, null);
-            //------------Assert Results-------------------------
-        }
-        
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ConnectControl_BuildConnectViewModel")]
-        public void ConnectControl_BuildConnectViewModel_WithDeployResourceWithNullEnvironmentAndActiveEnvironment_CreateConnectViewModelWithActiveEnvironment()
-        {
-            //------------Setup for test--------------------------
-            var resourceModel = new ResourceModel(null);
-            var mainViewModelActiveEnvironment = new Mock<IEnvironmentModel>().Object;
-            //------------Execute Test---------------------------
-            var controlViewModel = ConnectControl.BuildConnectControlViewModel(resourceModel, mainViewModelActiveEnvironment);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(controlViewModel);
-            Assert.IsNotNull(controlViewModel.ActiveEnvironment);
-            Assert.AreEqual(mainViewModelActiveEnvironment,controlViewModel.ActiveEnvironment);
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>()),Times.Never());
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>()), Times.Never());
         } 
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ConnectControl_SelectionChanged")]
+        public void ConnectControl_SelectionChanged_WhenHasItem_ViewModelIsSelectedFromDropDownFalse_ShouldNotFireMessages_IsEditEnabledTrue()
+        {
+            //------------Setup for test--------------------------
+            var localhostServer = CreatServer("localhost", true);
+            var remoteServer = CreatServer("remote", false);
+            var otherServer = CreatServer("disconnected", false);
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
+            var connectControl = new ConnectControl(mockEventAggregator.Object);
+            var connectControlViewModel = new ConnectControlViewModel(localhostServer.Environment);
+            connectControlViewModel.SelectedServer = remoteServer;
+            connectControlViewModel.IsSelectedFromDropDown = false;
+            var serverDtos = new List<ServerDTO> { localhostServer, remoteServer, otherServer };
+            connectControl.ViewModel = connectControlViewModel;
+            var observableCollection = new ObservableCollection<IServer>(serverDtos);
+            connectControl.ViewModel.Servers = observableCollection;
+            connectControl.TheServerComboBox.ItemsSource = connectControl.ViewModel.Servers;
+            //------------Execute Test---------------------------
+            connectControl.TheServerComboBox.SelectedItem = remoteServer;
+            //------------Assert Results-------------------------
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>()),Times.Never());
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>()), Times.Never());
+            Assert.IsTrue(connectControl.ViewModel.IsEditEnabled.GetValueOrDefault(false));
+        }  
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ConnectControl_BuildConnectViewModel")]
-        public void ConnectControl_BuildConnectViewModel_WithDeployResourceAsResourceModelWithEnvironmentAndActiveEnvironment_CreateConnectViewModelWithResourceModelEnvironmentAsActiveEnvironment()
+        [TestCategory("ConnectControl_SelectionChanged")]
+        public void ConnectControl_SelectionChanged_WhenHasItem_ViewModelIsSelectedFromDropDownFalse_ShouldNotFireMessages_IsEditEnabledFalse()
         {
             //------------Setup for test--------------------------
-            var resourceModelEnvironmentModel = new Mock<IEnvironmentModel>().Object;
-            var resourceModel = new ResourceModel(resourceModelEnvironmentModel);
-            var mainViewModelActiveEnvironment = new Mock<IEnvironmentModel>().Object;
+            var localhostServer = CreatServer("localhost", true);
+            var remoteServer = CreatServer("remote", false);
+            var otherServer = CreatServer("disconnected", false);
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
+            var connectControl = new ConnectControl(mockEventAggregator.Object);
+            var connectControlViewModel = new ConnectControlViewModel(localhostServer.Environment);
+            connectControlViewModel.SelectedServer = localhostServer;
+            connectControlViewModel.IsSelectedFromDropDown = false;
+            var serverDtos = new List<ServerDTO> { localhostServer, remoteServer, otherServer };
+            connectControl.ViewModel = connectControlViewModel;
+            var observableCollection = new ObservableCollection<IServer>(serverDtos);
+            connectControl.ViewModel.Servers = observableCollection;
+            connectControl.TheServerComboBox.ItemsSource = connectControl.ViewModel.Servers;
             //------------Execute Test---------------------------
-            var controlViewModel = ConnectControl.BuildConnectControlViewModel(resourceModel, mainViewModelActiveEnvironment);
+            connectControl.TheServerComboBox.SelectedItem = localhostServer;
             //------------Assert Results-------------------------
-            Assert.IsNotNull(controlViewModel);
-            Assert.IsNotNull(controlViewModel.ActiveEnvironment);
-            Assert.AreEqual(resourceModelEnvironmentModel, controlViewModel.ActiveEnvironment);
-        }
-        
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>()),Times.Never());
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>()), Times.Never());
+            Assert.IsFalse(connectControl.ViewModel.IsEditEnabled.GetValueOrDefault(true));
+        }   
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ConnectControl_BuildConnectViewModel")]
-        public void ConnectControl_BuildConnectViewModel_WithDeployResourceAsAbstractTreeViewModelWithEnvironmentAndActiveEnvironment_CreateConnectViewModelWithAbstractTreeViewModelEnvironmentAsActiveEnvironment()
+        [TestCategory("ConnectControl_SelectionChanged")]
+        public void ConnectControl_SelectionChanged_WhenHasItemNullViewModelSelectedServer_ViewModelIsSelectedFromDropDownFalse_ShouldNotFireMessages_IsEditEnabledFalse()
         {
             //------------Setup for test--------------------------
-            var treeViewModelEnvironmentModel = new Mock<IEnvironmentModel>().Object;
-            var resourceModel = new EnvironmentTreeViewModel(new Mock<IEventAggregator>().Object,null,treeViewModelEnvironmentModel);
-            var mainViewModelActiveEnvironment = new Mock<IEnvironmentModel>().Object;
+            var localhostServer = CreatServer("localhost", true);
+            var remoteServer = CreatServer("remote", false);
+            var otherServer = CreatServer("disconnected", false);
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
+            var connectControl = new ConnectControl(mockEventAggregator.Object);
+            var connectControlViewModel = new ConnectControlViewModel(localhostServer.Environment);
+            connectControlViewModel.SelectedServer = null;
+            connectControlViewModel.IsSelectedFromDropDown = false;
+            var serverDtos = new List<ServerDTO> { localhostServer, remoteServer, otherServer };
+            connectControl.ViewModel = connectControlViewModel;
+            var observableCollection = new ObservableCollection<IServer>(serverDtos);
+            connectControl.ViewModel.Servers = observableCollection;
+            connectControl.TheServerComboBox.ItemsSource = connectControl.ViewModel.Servers;
             //------------Execute Test---------------------------
-            var controlViewModel = ConnectControl.BuildConnectControlViewModel(resourceModel, mainViewModelActiveEnvironment);
+            connectControl.TheServerComboBox.SelectedItem = localhostServer;
             //------------Assert Results-------------------------
-            Assert.IsNotNull(controlViewModel);
-            Assert.IsNotNull(controlViewModel.ActiveEnvironment);
-            Assert.AreEqual(treeViewModelEnvironmentModel, controlViewModel.ActiveEnvironment);
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>()),Times.Never());
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>()), Times.Never());
+            Assert.IsFalse(connectControl.ViewModel.IsEditEnabled.GetValueOrDefault(true));
+        }     
+   
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ConnectControl_SelectionChanged")]
+        public void ConnectControl_SelectionChanged_WhenHasItem_ViewModelIsSelectedFromDropDownTrue_ShouldFireMessages()
+        {
+            //------------Setup for test--------------------------
+            var localhostServer = CreatServer("localhost", true);
+            var remoteServer = CreatServer("remote", false);
+            var otherServer = CreatServer("disconnected", false);
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
+            var connectControl = new ConnectControl(mockEventAggregator.Object);
+            var connectControlViewModel = new ConnectControlViewModel(localhostServer.Environment);
+            connectControlViewModel.IsSelectedFromDropDown = true;
+            var serverDtos = new List<ServerDTO> { localhostServer, remoteServer, otherServer };
+            connectControl.ViewModel = connectControlViewModel;
+            var observableCollection = new ObservableCollection<IServer>(serverDtos);
+            connectControl.ViewModel.Servers = observableCollection;
+            connectControl.TheServerComboBox.ItemsSource = connectControl.ViewModel.Servers;
+            //------------Execute Test---------------------------
+            connectControl.TheServerComboBox.SelectedItem = connectControl.ViewModel.Servers[1];
+            connectControlViewModel.SelectedServer = remoteServer;
+            //------------Assert Results-------------------------
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>()),Times.Once());
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>()), Times.Once());
+        }
+
+        static ServerDTO CreatServer(string name, bool isConnected)
+        {
+            var isLocalhost = name == "localhost";
+
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.Name).Returns(name);
+            env.Setup(e => e.ID).Returns(isLocalhost ? Guid.Empty : Guid.NewGuid());
+            env.Setup(e => e.IsConnected).Returns(isConnected);
+            env.Setup(e => e.IsLocalHost()).Returns(isLocalhost);
+
+            return new ServerDTO(env.Object);
         }
     }
 }

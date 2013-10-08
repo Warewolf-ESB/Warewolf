@@ -390,6 +390,7 @@
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\Progress\ProgressFileDownloader.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\HyperlinkUtility.cs" />
     <Compile Include="Utils\ShowResourceChangedUtil.cs" />
     <Compile Include="ViewModels\ActivityViewModels\DsfActivityViewModel.cs" />

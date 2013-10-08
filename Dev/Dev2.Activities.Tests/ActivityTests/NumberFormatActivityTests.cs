@@ -254,16 +254,98 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(10, outRes.Count);
+            
             var fetchResultsList = outRes[0].FetchResultsList();
             Assert.AreEqual(3, fetchResultsList.Count);
-
             Assert.AreEqual(fetchResultsList[0].Type, DebugItemResultType.Variable);
-            Assert.AreEqual(fetchResultsList[0].Value, "[[Numeric(21).num]]");
+            Assert.AreEqual(fetchResultsList[0].Value, "[[Numeric(11).num]]");
+            Assert.AreEqual(fetchResultsList[1].Type, DebugItemResultType.Label);
+            Assert.AreEqual(fetchResultsList[1].Value, GlobalConstants.EqualsExpression);
+            Assert.AreEqual(fetchResultsList[2].Type, DebugItemResultType.Value);
+            Assert.AreEqual(fetchResultsList[2].Value, "654.00");
+
+            fetchResultsList = outRes[1].FetchResultsList();
+            Assert.AreEqual(3, fetchResultsList.Count);
+            Assert.AreEqual(fetchResultsList[0].Type, DebugItemResultType.Variable);
+            Assert.AreEqual(fetchResultsList[0].Value, "[[Numeric(12).num]]");
+            Assert.AreEqual(fetchResultsList[1].Type, DebugItemResultType.Label);
+            Assert.AreEqual(fetchResultsList[1].Value, GlobalConstants.EqualsExpression);
+            Assert.AreEqual(fetchResultsList[2].Type, DebugItemResultType.Value);
+            Assert.AreEqual(fetchResultsList[2].Value, "668416154.00");
+
+            fetchResultsList = outRes[2].FetchResultsList();
+            Assert.AreEqual(3, fetchResultsList.Count);
+            Assert.AreEqual(fetchResultsList[0].Type, DebugItemResultType.Variable);
+            Assert.AreEqual(fetchResultsList[0].Value, "[[Numeric(13).num]]");
+            Assert.AreEqual(fetchResultsList[1].Type, DebugItemResultType.Label);
+            Assert.AreEqual(fetchResultsList[1].Value, GlobalConstants.EqualsExpression);
+            Assert.AreEqual(fetchResultsList[2].Type, DebugItemResultType.Value);
+            Assert.AreEqual(fetchResultsList[2].Value, "51566.00");
+
+            fetchResultsList = outRes[3].FetchResultsList();
+            Assert.AreEqual(3, fetchResultsList.Count);
+            Assert.AreEqual(fetchResultsList[0].Type, DebugItemResultType.Variable);
+            Assert.AreEqual(fetchResultsList[0].Value, "[[Numeric(14).num]]");
+            Assert.AreEqual(fetchResultsList[1].Type, DebugItemResultType.Label);
+            Assert.AreEqual(fetchResultsList[1].Value, GlobalConstants.EqualsExpression);
+            Assert.AreEqual(fetchResultsList[2].Type, DebugItemResultType.Value);
+            Assert.AreEqual(fetchResultsList[2].Value, "21.00");
+
+            fetchResultsList = outRes[4].FetchResultsList();
+            Assert.AreEqual(3, fetchResultsList.Count);
+            Assert.AreEqual(fetchResultsList[0].Type, DebugItemResultType.Variable);
+            Assert.AreEqual(fetchResultsList[0].Value, "[[Numeric(15).num]]");
+            Assert.AreEqual(fetchResultsList[1].Type, DebugItemResultType.Label);
+            Assert.AreEqual(fetchResultsList[1].Value, GlobalConstants.EqualsExpression);
+            Assert.AreEqual(fetchResultsList[2].Type, DebugItemResultType.Value);
+            Assert.AreEqual(fetchResultsList[2].Value, "1520.00");
+
+            fetchResultsList = outRes[5].FetchResultsList();
+            Assert.AreEqual(3, fetchResultsList.Count);
+            Assert.AreEqual(fetchResultsList[0].Type, DebugItemResultType.Variable);
+            Assert.AreEqual(fetchResultsList[0].Value, "[[Numeric(16).num]]");
+            Assert.AreEqual(fetchResultsList[1].Type, DebugItemResultType.Label);
+            Assert.AreEqual(fetchResultsList[1].Value, GlobalConstants.EqualsExpression);
+            Assert.AreEqual(fetchResultsList[2].Type, DebugItemResultType.Value);
+            Assert.AreEqual(fetchResultsList[2].Value, "1.00");
+
+            fetchResultsList = outRes[6].FetchResultsList();
+            Assert.AreEqual(3, fetchResultsList.Count);
+            Assert.AreEqual(fetchResultsList[0].Type, DebugItemResultType.Variable);
+            Assert.AreEqual(fetchResultsList[0].Value, "[[Numeric(17).num]]");
+            Assert.AreEqual(fetchResultsList[1].Type, DebugItemResultType.Label);
+            Assert.AreEqual(fetchResultsList[1].Value, GlobalConstants.EqualsExpression);
+            Assert.AreEqual(fetchResultsList[2].Type, DebugItemResultType.Value);
+            Assert.AreEqual(fetchResultsList[2].Value, "0.00");
+
+            fetchResultsList = outRes[7].FetchResultsList();
+            Assert.AreEqual(3, fetchResultsList.Count);
+            Assert.AreEqual(fetchResultsList[0].Type, DebugItemResultType.Variable);
+            Assert.AreEqual(fetchResultsList[0].Value, "[[Numeric(18).num]]");
+            Assert.AreEqual(fetchResultsList[1].Type, DebugItemResultType.Label);
+            Assert.AreEqual(fetchResultsList[1].Value, GlobalConstants.EqualsExpression);
+            Assert.AreEqual(fetchResultsList[2].Type, DebugItemResultType.Value);
+            Assert.AreEqual(fetchResultsList[2].Value, "2135.00");
+
+            fetchResultsList = outRes[8].FetchResultsList();
+            Assert.AreEqual(3, fetchResultsList.Count);
+            Assert.AreEqual(fetchResultsList[0].Type, DebugItemResultType.Variable);
+            Assert.AreEqual(fetchResultsList[0].Value, "[[Numeric(19).num]]");
+            Assert.AreEqual(fetchResultsList[1].Type, DebugItemResultType.Label);
+            Assert.AreEqual(fetchResultsList[1].Value, GlobalConstants.EqualsExpression);
+            Assert.AreEqual(fetchResultsList[2].Type, DebugItemResultType.Value);
+            Assert.AreEqual(fetchResultsList[2].Value, "5123.00");
+
+            fetchResultsList = outRes[9].FetchResultsList();
+            Assert.AreEqual(3, fetchResultsList.Count);
+            Assert.AreEqual(fetchResultsList[0].Type, DebugItemResultType.Variable);
+            Assert.AreEqual(fetchResultsList[0].Value, "[[Numeric(20).num]]");
             Assert.AreEqual(fetchResultsList[1].Type, DebugItemResultType.Label);
             Assert.AreEqual(fetchResultsList[1].Value, GlobalConstants.EqualsExpression);
             Assert.AreEqual(fetchResultsList[2].Type, DebugItemResultType.Value);
             Assert.AreEqual(fetchResultsList[2].Value, "110.00");
+
         }
 
         /// <summary>
