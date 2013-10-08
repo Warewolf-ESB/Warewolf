@@ -22,6 +22,7 @@ using Dev2.Studio.ViewModels.Deploy;
 using Dev2.Studio.ViewModels.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Core.Tests
 {
@@ -355,11 +356,42 @@ namespace Dev2.Core.Tests
         public void DeployViewModel_UnitTest_CanDeployToDisconnectedServer_ReturnsFalse()
         // ReSharper restore InconsistentNaming
         {
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IServer> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+
+            deployViewModel.SelectedDestinationServer = destServer.Object;
+
+            destEnv.Setup(e => e.IsConnected).Returns(true);
+            Assert.IsTrue(deployViewModel.CanDeploy, "DeployViewModel CanDeploy is false when server is connected.");
+
+            destEnv.Setup(e => e.IsConnected).Returns(false);
+            Assert.IsFalse(deployViewModel.CanDeploy, "DeployViewModel CanDeploy is true when server is disconnected.");
+        }
+        
+        [TestMethod]
+        [TestCategory("DeployViewModel_CanDeploy")]
+        [Owner("Hagashen Naidu")]
+        public void DeployViewModel_CanDeployWithSameSourceAndDestinationServer_ReturnsFalse()
+        {
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IServer> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            destServer.Setup(server => server.AppAddress).Returns("http://localhost");
+            deployViewModel.SelectedDestinationServer = destServer.Object;
+            deployViewModel.SelectedSourceServer = destServer.Object;
+
+            destEnv.Setup(e => e.IsConnected).Returns(true);
+            Assert.IsFalse(deployViewModel.CanDeploy);
+        }
+
+        static DeployViewModel SetupDeployViewModel(out Mock<IEnvironmentModel> destEnv, out Mock<IServer> destServer)
+        {
             ImportService.CurrentContext = _okayContext;
 
-            var destEnv = new Mock<IEnvironmentModel>();
+            destEnv = new Mock<IEnvironmentModel>();
 
-            var destServer = new Mock<IServer>();
+            destServer = new Mock<IServer>();
             destServer.Setup(s => s.Environment).Returns(destEnv.Object);
 
             var envRepo = new Mock<IEnvironmentRepository>();
@@ -374,14 +406,122 @@ namespace Dev2.Core.Tests
             statsCalc.Setup(c => c.CalculateStats(It.IsAny<IEnumerable<ITreeNode>>(), It.IsAny<Dictionary<string, Func<ITreeNode, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out deployItemCount));
 
             var deployViewModel = new DeployViewModel(serverProvider.Object, envRepo.Object, new Mock<IEventAggregator>().Object, statsCalc.Object);
+            return deployViewModel;
+        }
 
-            deployViewModel.SelectedDestinationServer = destServer.Object;
-
-            destEnv.Setup(e => e.IsConnected).Returns(true);
-            Assert.IsTrue(deployViewModel.CanDeploy, "DeployViewModel CanDeploy is false when server is connected.");
-
-            destEnv.Setup(e => e.IsConnected).Returns(false);
-            Assert.IsFalse(deployViewModel.CanDeploy, "DeployViewModel CanDeploy is true when server is disconnected.");
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModel_ServersAreNotTheSame")]
+        public void DeployViewModel_ServersAreNotTheSame_SourceServerIsNull_True()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IServer> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            deployViewModel.SelectedSourceServer = null;
+            deployViewModel.SelectedDestinationServer = new Mock<IServer>().Object;
+            //------------Execute Test---------------------------
+            var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
+            //------------Assert Results-------------------------
+            Assert.IsTrue(serversAreNotTheSame);
+        } 
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModel_ServersAreNotTheSame")]
+        public void DeployViewModel_ServersAreNotTheSame_DestinationServerIsNull_True()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IServer> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            deployViewModel.SelectedSourceServer = new Mock<IServer>().Object;
+            deployViewModel.SelectedDestinationServer = null;
+            //------------Execute Test---------------------------
+            var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
+            //------------Assert Results-------------------------
+            Assert.IsTrue(serversAreNotTheSame);
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModel_ServersAreNotTheSame")]
+        public void DeployViewModel_ServersAreNotTheSame_DestinationServerNullAppAddress_True()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IServer> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            var mockSourceServer = new Mock<IServer>();
+            mockSourceServer.Setup(server => server.AppAddress).Returns("http://localhost");
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            deployViewModel.SelectedDestinationServer = new Mock<IServer>().Object;
+            //------------Execute Test---------------------------
+            var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
+            //------------Assert Results-------------------------
+            Assert.IsTrue(serversAreNotTheSame);
+        }  
+   
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModel_ServersAreNotTheSame")]
+        public void DeployViewModel_ServersAreNotTheSame_SourceServerNullAppAddress_True()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IServer> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            var mockSourceServer = new Mock<IServer>();
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            var mockDestinationServer = new Mock<IServer>();
+            mockDestinationServer.Setup(server => server.AppAddress).Returns("http://remote");
+            deployViewModel.SelectedDestinationServer = mockDestinationServer.Object;
+            //------------Execute Test---------------------------
+            var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
+            //------------Assert Results-------------------------
+            Assert.IsTrue(serversAreNotTheSame);
+        } 
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModel_ServersAreNotTheSame")]
+        public void DeployViewModel_ServersAreNotTheSame_SourceDestinationServerNotSameAppAddress_True()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IServer> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            var mockSourceServer = new Mock<IServer>();
+            mockSourceServer.Setup(server => server.AppAddress).Returns("http://localhost");
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            var mockDestinationServer = new Mock<IServer>();
+            mockDestinationServer.Setup(server => server.AppAddress).Returns("http://remote");
+            deployViewModel.SelectedDestinationServer = mockDestinationServer.Object;
+            //------------Execute Test---------------------------
+            var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
+            //------------Assert Results-------------------------
+            Assert.IsTrue(serversAreNotTheSame);
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModel_ServersAreNotTheSame")]
+        public void DeployViewModel_ServersAreNotTheSame_SourceDestinationServerSameAppAddress_False()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IServer> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            var mockSourceServer = new Mock<IServer>();
+            mockSourceServer.Setup(server => server.AppAddress).Returns("http://localhost");
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            var mockDestinationServer = new Mock<IServer>();
+            mockDestinationServer.Setup(server => server.AppAddress).Returns("http://localhost");
+            deployViewModel.SelectedDestinationServer = mockDestinationServer.Object;
+            //------------Execute Test---------------------------
+            var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
+            //------------Assert Results-------------------------
+            Assert.IsFalse(serversAreNotTheSame);
         }
 
     }

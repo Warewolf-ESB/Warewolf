@@ -152,14 +152,14 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             get
             {
-                return SelectedDestinationServer==null || (SelectedDestinationServer != null && SelectedDestinationServer.AppAddress!=SelectedSourceServer.AppAddress);
+                return (SelectedDestinationServer == null || SelectedSourceServer == null) || (SelectedDestinationServer.AppAddress != SelectedSourceServer.AppAddress);
             }
         }
 
         bool HasItemsToDeploy()
         {
             return _sourceDeployItemCount > 0 && _destinationDeployItemCount > 0;
-        }
+            }
 
         bool SelectedDestinationServerIsValid()
         {
