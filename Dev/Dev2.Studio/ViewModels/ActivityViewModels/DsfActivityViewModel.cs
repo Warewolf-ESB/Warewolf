@@ -834,6 +834,11 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         {
             if(resource != null)
             {
+                if(!string.IsNullOrEmpty(resource.IconPath))
+                {
+                    return resource.IconPath;
+                }
+
                 if(resource.ResourceType == ResourceType.WorkflowService)
                 {
                     return "pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png";

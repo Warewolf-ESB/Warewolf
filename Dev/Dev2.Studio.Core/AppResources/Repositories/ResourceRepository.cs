@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
@@ -414,6 +415,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
                 var resource = ResourceModelFactory.CreateResourceModel(_environmentModel);
                 resource.ResourceType = resourceType;
+               
 
                 // TODO : make this property use new fetch definition service ;)
 
@@ -425,6 +427,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 }
 
                 resource.DataList = data.GetValue("DataList");
+             
                 resource.ID = id;
 
                 Guid serverID;
@@ -466,11 +469,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 var displayName = data.DisplayName as string;
                 resource.DisplayName = displayName ?? resourceType.ToString();
 
-                var iconPath = data.IconPath as string;
-                if(iconPath != null)
-                {
-                    resource.IconPath = iconPath;
-                }
+                resource.IconPath = GetIconPath(data);
 
                 var authorRoles = data.AuthorRoles as string;
                 if(authorRoles != null)
@@ -550,6 +549,63 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return null;
         }
 
+        readonly Func<dynamic, bool> _doesPathExist = (data) =>
+        {
+            try
+            {
+                new BitmapImage(new Uri(data.IconPath));
+                return true;
+            }
+            catch(Exception)
+            {
+                var message = string.Format("Resource Name : {0} does not has an invalid path : {1}", data.GetValue("Name"), data.IconPath);
+                Logger.Error(message);
+                return false;
+            }
+        }; 
+
+        private string GetIconPath(dynamic data)
+        {
+            var iconPath = data.IconPath as string;
+            if(string.IsNullOrEmpty(iconPath) || !iconPath.Contains(".png") || !_doesPathExist(iconPath))
+            {
+                var type = data.GetValue("ResourceType");
+                ResourceType resType;
+
+                var isParsed = Enum.TryParse(type, out resType);
+
+                if(isParsed)
+                {
+                    switch(resType)
+                    {
+                        case ResourceType.DbService:
+                        case ResourceType.DbSource:
+                            iconPath = "pack://application:,,,/Warewolf Studio;component/images/DatabaseService-32.png";
+                            break;
+                        case ResourceType.EmailSource:
+                            iconPath = "pack://application:,,,/Warewolf Studio;component/images/ToolSendEmail-32.png";
+                            break;
+                        case ResourceType.PluginService:
+                        case ResourceType.PluginSource:
+                            iconPath = "pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png";
+                            break;
+                        case ResourceType.WebService:
+                        case ResourceType.WebSource:
+                            iconPath = "pack://application:,,,/Warewolf Studio;component/images/WebService-32.png";
+                            break;
+                        case ResourceType.WorkflowService:
+                            iconPath = "pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png";
+                            break;
+                    }
+                }
+                else
+                {
+                    var message = string.Format("Resource Name : {0} does not have a valid resource type, type found : {1}", data.GetValue("Name"), type);
+                    Logger.Error(message);
+                }
+            }
+            return iconPath;
+        }
 
         #endregion Methods
 
