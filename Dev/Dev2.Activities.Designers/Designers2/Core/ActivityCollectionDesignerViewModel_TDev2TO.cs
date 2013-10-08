@@ -10,7 +10,13 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    // Note: All indexNumber parameters are 1-based
+    // -------------------------------------------------------------------------------------------------------------
+    // NOTES
+    // -------------------------------------------------------------------------------------------------------------
+    // - All indexNumber parameters are 1-based
+    // - MUST ALWAYS modify DTO properties via ModelItem properties - otherwise you WILL experience binding issues.
+    // -------------------------------------------------------------------------------------------------------------
+
     public abstract class ActivityCollectionDesignerViewModel<TDev2TOFn> : ActivityCollectionDesignerViewModel
         where TDev2TOFn : class, IDev2TOFn, IPerformsValidation, new()
     {
@@ -188,7 +194,7 @@ namespace Dev2.Activities.Designers2.Core
             // DO NOT invoke Renumber() from here - this method is called MANY times when invoking AddToCollection()!!
             //
             var dto = DTOFactory.CreateNewDTO(new TDev2TOFn(), indexNumber, false, initializeWith);
-            dto.PropertyChanged += OnDTOPropertyChanged;
+            AttachEvents(dto);
 
             var idx = dto.IndexNumber - 1;
             if(idx == _modelItemCollection.Count)
@@ -252,7 +258,19 @@ namespace Dev2.Activities.Designers2.Core
         /// </summary>
         void AttachEvents(int startIndex)
         {
-            ProcessModelItemCollection(dto => dto.PropertyChanged += OnDTOPropertyChanged, startIndex);
+            ProcessModelItemCollection(startIndex, mi =>
+            {
+                var dto = mi.GetCurrentValue() as TDev2TOFn;
+                if(dto != null)
+                {
+                    AttachEvents(dto);
+                }
+            });
+        }
+
+        void AttachEvents(INotifyPropertyChanged dto)
+        {
+            dto.PropertyChanged += OnDTOPropertyChanged;
         }
 
         /// <summary>
@@ -261,22 +279,25 @@ namespace Dev2.Activities.Designers2.Core
         void Renumber(int startIndex)
         {
             var indexNumber = startIndex + 1;
-            ProcessModelItemCollection(dto => dto.IndexNumber = indexNumber++, startIndex);
+            ProcessModelItemCollection(startIndex, mi =>
+            {
+                var prop = mi.Properties["IndexNumber"];
+                if(prop != null)
+                {
+                    prop.SetValue(indexNumber++);
+                }
+            });
         }
 
         /// <summary>
         /// Process the ModelItemCollection starting at the specified zero-based index.
         /// </summary>
-        void ProcessModelItemCollection(Action<TDev2TOFn> processDTO, int startIndex)
+        void ProcessModelItemCollection(int startIndex, Action<ModelItem> processModelItem)
         {
             startIndex = Math.Max(startIndex, 0);
             for(var i = startIndex; i < _modelItemCollection.Count; i++)
             {
-                var dto = _modelItemCollection[i].GetCurrentValue() as TDev2TOFn;
-                if(dto != null)
-                {
-                    processDTO(dto);
-                }
+                processModelItem(_modelItemCollection[i]);
             }
         }
     }
