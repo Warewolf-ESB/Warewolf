@@ -202,20 +202,26 @@ namespace Dev2.UI
             if(e.AddedItems != null && e.AddedItems.Count > 0)
             {
                 var server = e.AddedItems[0] as IServer;
-                if(server != null && (ViewModel!=null && ViewModel.IsSelectedFromDropDown))
+                SelectionHasChanged(server);
+            }
+        }
+
+        void SelectionHasChanged(IServer server)
+        {
+            //
+            if(server != null && (ViewModel != null && ViewModel.IsSelectedFromDropDown))
+            {
+                InvokeCommands(server);
+                Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedItemInExplorerTree));
+                _eventPublisher.Publish(new SetSelectedItemInExplorerTree(server.Environment.Name));
+                Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
+                _eventPublisher.Publish(new SetActiveEnvironmentMessage(server.Environment));
+            }
+            else
+            {
+                if(ViewModel != null)
                 {
-                    InvokeCommands(server);
-                    Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedItemInExplorerTree));
-                    _eventPublisher.Publish(new SetSelectedItemInExplorerTree(server.Environment.Name));
-                    Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
-                    _eventPublisher.Publish(new SetActiveEnvironmentMessage(server.Environment));
-                }
-                else
-                {
-                    if(ViewModel != null)
-                    {
-                        ViewModel.IsEditEnabled = (ViewModel.SelectedServer != null && !ViewModel.SelectedServer.IsLocalHost);
-                    }
+                    ViewModel.IsEditEnabled = (ViewModel.SelectedServer != null && !ViewModel.SelectedServer.IsLocalHost);
                 }
             }
         }
@@ -290,7 +296,13 @@ namespace Dev2.UI
         {
             ViewModel = ConnectControlViewModel.BuildConnectControlViewModel(((IMainViewModel)Application.Current.MainWindow.DataContext).DeployResource, ((IMainViewModel)Application.Current.MainWindow.DataContext).ActiveEnvironment);
             // 2013.09.02 - BUG 10221 - set default server selection
-            //ViewModel.SelectedServer = ViewModel.GetSelectedServer(ViewModel.Servers, LabelText);
+            ViewModel.LoadServers();
+            ViewModel.SelectedServer = ViewModel.GetSelectedServer(ViewModel.Servers, LabelText);
+            if(ViewModel.SelectedServer != null)
+            {
+                ViewModel.ChangeSelected(ViewModel.SelectedServer.Environment);
+                SelectionHasChanged(ViewModel.SelectedServer);
+            }
             Loaded -= OnLoaded;
         }
 
