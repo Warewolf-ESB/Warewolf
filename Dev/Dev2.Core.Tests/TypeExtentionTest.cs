@@ -514,6 +514,27 @@ namespace Dev2.Tests
 
         #endregion
 
+        #region System dot
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("TypeExtentions_WhenString")]
+        public void TypeExtentions_GetTypeFromSimpleName_WhenSystemDotString_ExpectString()
+        {
+            //------------Setup for test--------------------------
+            var myType = "System.String";
+
+            //------------Execute Test---------------------------
+
+            var result = TypeExtensions.GetTypeFromSimpleName(myType);
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual(typeof(string), result);
+        }
+
+        #endregion
+
         #region Execptions
 
         [TestMethod]

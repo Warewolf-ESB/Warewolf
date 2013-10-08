@@ -4,7 +4,9 @@ using System.Linq;
 using System.Xml.Linq;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Framework.Converters.Graph.String.Xml
+// ReSharper restore CheckNamespace
 {
     public class XmlMapper : IMapper
     {

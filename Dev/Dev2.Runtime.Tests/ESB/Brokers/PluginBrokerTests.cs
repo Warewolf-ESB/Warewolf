@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
@@ -84,7 +85,173 @@ namespace Dev2.Tests.Runtime.ESB.Brokers
             }
         }
 
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("PluginBroker_TestPlugin")]
+        public void PluginBroker_TestPlugin_WhenXmlInput_ValidXmlPaths()
+        {
+            //------------Setup for test--------------------------
+            var pluginBroker = new PluginBroker();
+
+            #region XML Fragment
+            const string xmlFragment = @"<Company Name='Dev2'>
+    <Motto>Eat lots of cake</Motto>
+    <PreviousMotto/>
+ <Departments TestAttrib='testing'>
+  <Department Name='Dev'>
+   <Employees>
+    <Person Name='Brendon' Surename='Page' />
+    <Person Name='Jayd' Surename='Page' />
+   </Employees>
+  </Department>
+  <Department Name='Accounts'>
+   <Employees>
+    <Person Name='Bob' Surename='Soap' />
+    <Person Name='Joe' Surename='Pants' />
+   </Employees>
+  </Department>
+ </Departments>
+    <InlineRecordSet>
+        RandomData
+    </InlineRecordSet>
+    <InlineRecordSet>
+        RandomData1
+    </InlineRecordSet>
+    <OuterNestedRecordSet>
+        <InnerNestedRecordSet ItemValue='val1' />
+        <InnerNestedRecordSet ItemValue='val2' />
+    </OuterNestedRecordSet>
+    <OuterNestedRecordSet>
+        <InnerNestedRecordSet ItemValue='val3' />
+        <InnerNestedRecordSet ItemValue='val4' />
+    </OuterNestedRecordSet>
+</Company>";
+            #endregion
+
+            List<string> expectedExpressions = new List<string>
+                                                                {
+                                                                    "Company:Name",
+                                                                    "Company.Motto",
+                                                                    "Company.PreviousMotto",
+                                                                    "Company.Departments:TestAttrib",
+                                                                    "Company.Departments().Department:Name",
+                                                                    "Company.Departments().Department.Employees().Person:Name",
+                                                                    "Company.Departments().Department.Employees().Person:Surename",
+                                                                    "Company().InlineRecordSet",
+                                                                    "Company().OuterNestedRecordSet().InnerNestedRecordSet:ItemValue"
+                                                                 };
+
+            //------------Execute Test---------------------------
+
+            var result = pluginBroker.TestPluginResult(xmlFragment);
+
+            //------------Assert Results-------------------------
+
+            var xmlPaths = result.DataSourceShapes[0].Paths;
+
+            List<string> resultExpressions = xmlPaths.Select(value => value.ActualPath).ToList();
+
+
+            CollectionAssert.AreEqual(expectedExpressions, resultExpressions);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("PluginBroker_TestPlugin")]
+        public void PluginBroker_TestPlugin_WhenJsonInput_ValidJsonPaths()
+        {
+            //------------Setup for test--------------------------
+            var pluginBroker = new PluginBroker();
+
+            #region JSON Fragment
+            const string jsonFragment = @"{
+    ""Name"": ""Dev2"",
+    ""Motto"": ""Eat lots of cake"",
+    ""Departments"": [      
+        {
+          ""Name"": ""Dev"",
+          ""Employees"": [
+              {
+                ""Name"": ""Brendon"",
+                ""Surename"": ""Page""
+              },
+              {
+                ""Name"": ""Jayd"",
+                ""Surename"": ""Page""
+              }
+            ]
+        },
+        {
+          ""Name"": ""Accounts"",
+          ""Employees"": [
+              {
+                ""Name"": ""Bob"",
+                ""Surename"": ""Soap""
+              },
+              {
+                ""Name"": ""Joe"",
+                ""Surename"": ""Pants""
+              }
+            ]
+        }
+      ],
+    ""Contractors"": [      
+        {
+          ""Name"": ""Roofs Inc."",
+          ""PhoneNumber"": ""123"",
+        },
+        {
+          ""Name"": ""Glass Inc."",
+          ""PhoneNumber"": ""1234"",
+        },
+        {
+          ""Name"": ""Doors Inc."",
+          ""PhoneNumber"": ""1235"",
+        },
+        {
+          ""Name"": ""Cakes Inc."",
+          ""PhoneNumber"": ""1236"",
+        }
+      ],
+    ""PrimitiveRecordset"": [
+      ""
+        RandomData
+    "",
+      ""
+        RandomData1
+    ""
+    ],
+  }";
+            #endregion
+
+            List<string> expectedExpressions = new List<string>
+                                                                {
+                                                                    "Name",
+                                                                    "Motto",
+                                                                    "PrimitiveRecordset()",
+                                                                    "Departments().Name",
+                                                                    "Departments().Employees().Name",
+                                                                    "Departments().Employees().Surename",
+                                                                    "Contractors().Name",
+                                                                    "Contractors().PhoneNumber"
+                                                                 };
+
+            //------------Execute Test---------------------------
+
+            var result = pluginBroker.TestPluginResult(jsonFragment);
+
+            //------------Assert Results-------------------------
+
+            var jsonPaths = result.DataSourceShapes[0].Paths;
+
+            List<string> resultExpressions = jsonPaths.Select(value => value.ActualPath).ToList();
+
+
+            CollectionAssert.AreEqual(expectedExpressions, resultExpressions);
+        }
+
         #endregion
+
 
         static void VerifyField(IEnumerable<RecordsetField> fields, string name, string alias, string path)
         {

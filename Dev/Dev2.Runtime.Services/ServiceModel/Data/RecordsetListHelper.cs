@@ -38,8 +38,9 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var rsName = names.Item1;
                 var rsAlias = rsName;
                 var fieldName = names.Item2;
-                var fieldAlias = fieldName;
-
+                // Bug 10532 - Amend to remove : from the alias ;)
+                var fieldAlias = fieldName.Replace(":","");
+                
                 var pathLoop = path;
                 var rsField = currentFields.FirstOrDefault(f => f.Path == pathLoop) ?? new RecordsetField { Path = path, Alias = fieldAlias, RecordsetAlias = rsAlias };
                 rsField.Name = fieldName;

@@ -28,6 +28,9 @@ namespace Dev2.Common.ExtMethods
 
             typeName = typeName.ToLower();
 
+            // remove any system. stuff ;)
+            typeName = typeName.Replace("system.", "");
+
             string parsedTypeName = null;
             switch(typeName)
             {

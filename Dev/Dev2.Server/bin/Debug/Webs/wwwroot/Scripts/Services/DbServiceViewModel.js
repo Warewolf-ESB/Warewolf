@@ -24,7 +24,6 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
 
     self.data = {
         resourceID: ko.observable(""),
-        //resourceID: ko.observable(self.isEditing ? resourceID : $.Guid.Empty()),
         resourceType: ko.observable("DbService"),
         resourceName: ko.observable(""),
         resourcePath: ko.observable(""),
