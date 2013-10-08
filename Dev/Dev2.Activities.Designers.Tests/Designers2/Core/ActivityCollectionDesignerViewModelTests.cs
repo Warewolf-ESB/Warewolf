@@ -705,15 +705,23 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
         }
 
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ActivityCollectionDesignerViewModel_CanRemoveAt")]
+        public void ActivityCollectionDesignerViewModel_CanRemoveAt_AnyIndexWhenTwoRows_False()
+        {
+            var items = CreateItemsList(2);
+            Verify_CanRemoveAt(items, indexNumber: 1, expected: false);
+            Verify_CanRemoveAt(items, indexNumber: 2, expected: false);
+        }
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ActivityCollectionDesignerViewModel_CanRemoveAt")]
         public void ActivityCollectionDesignerViewModel_CanRemoveAt_IndexIsNotLastRow_True()
         {
-            var items = CreateItemsList(2);
-            Verify_CanRemoveAt(items, indexNumber: 1, expected: true);
-
-            items = CreateItemsList(3);
+            var items = CreateItemsList(3);
             Verify_CanRemoveAt(items, indexNumber: 1, expected: true);
             Verify_CanRemoveAt(items, indexNumber: 2, expected: true);
 
@@ -795,48 +803,15 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ActivityCollectionDesignerViewModel_RemoveAt")]
-        public void ActivityCollectionDesignerViewModel_RemoveAt_IndexOneWhenTwoRows_ClearsRow()
-        {
-            //------------Setup for test--------------------------
-            const int StartItemCount = 2;
-            var items = CreateItemsList(StartItemCount);
-            items[0].FieldName = "field";
-
-            Assert.IsFalse(items[0].CanRemove());
-
-            var modelItem = CreateModelItem(items);
-            var viewModel = new TestActivityDesignerCollectionViewModelItemsInitialized(modelItem);
-
-            //------------Execute Test---------------------------
-            viewModel.RemoveAt(1);
-
-            //------------Assert Results-------------------------
-            const int ExpectedItemCount = StartItemCount;
-            const int ExpectedNonBlankItemCount = ExpectedItemCount - 1;
-            Assert.AreEqual(ExpectedItemCount, viewModel.ItemCount);
-            Assert.AreEqual(string.Format("Activity ({0})", ExpectedNonBlankItemCount), viewModel.ModelItem.GetProperty("DisplayName"));
-
-            // ReSharper disable PossibleNullReferenceException
-            var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
-
-            Assert.AreSame(items[0], mic[0].GetCurrentValue());
-            Assert.AreSame(items[1], mic[1].GetCurrentValue());
-
-            var actual = (ActivityDTO)mic[0].GetCurrentValue();
-            Assert.IsTrue(actual.CanRemove());
-
-            // ReSharper restore PossibleNullReferenceException
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ActivityCollectionDesignerViewModel_RemoveAt")]
-        public void ActivityCollectionDesignerViewModel_RemoveAt_IndexTwoWhenTwoRows_DoesNotRemoveRow()
+        public void ActivityCollectionDesignerViewModel_RemoveAt_AnyIndexWhenTwoRows_DoesNotRemoveRow()
         {
             var items = CreateItemsList(2);
             var modelItem = CreateModelItem(items);
             var viewModel = new TestActivityDesignerCollectionViewModelItemsInitialized(modelItem);
 
+            viewModel.RemoveAt(1);
+            Verify_CollectionUnchanged(items, viewModel); 
+            
             viewModel.RemoveAt(2);
             Verify_CollectionUnchanged(items, viewModel);
         }

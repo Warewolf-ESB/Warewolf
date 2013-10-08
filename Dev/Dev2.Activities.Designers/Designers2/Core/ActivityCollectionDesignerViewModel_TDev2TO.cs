@@ -75,7 +75,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public override bool CanRemoveAt(int indexNumber)
         {
-            return indexNumber < ModelItemCollection.Count;
+            return ModelItemCollection.Count > 2 && indexNumber < ModelItemCollection.Count;
         }
 
         public override bool CanInsertAt(int indexNumber)
@@ -126,8 +126,8 @@ namespace Dev2.Activities.Designers2.Core
                 indexNumber++;
             }
 
-            var lastDTO = GetLastDTO();
-            lastDTO.IndexNumber = indexNumber;
+            var lastModelItem = GetModelItem(ItemCount);
+            SetIndexNumber(lastModelItem, indexNumber);
 
             UpdateDisplayName();
         }
@@ -165,15 +165,20 @@ namespace Dev2.Activities.Designers2.Core
             return indexNumber;
         }
 
+        ModelItem GetModelItem(int indexNumber)
+        {
+            return ModelItemCollection[indexNumber - 1];
+        }
+
         TDev2TOFn GetDTO(int indexNumber)
         {
-            var item = ModelItemCollection[indexNumber - 1];
+            var item = GetModelItem(indexNumber);
             return item.GetCurrentValue() as TDev2TOFn;
         }
 
         TDev2TOFn GetLastDTO()
         {
-            return GetDTO(ModelItemCollection.Count);
+            return GetDTO(ItemCount);
         }
 
         void AddBlankRow()
@@ -278,7 +283,7 @@ namespace Dev2.Activities.Designers2.Core
         void Renumber(int startIndex)
         {
             var indexNumber = startIndex + 1;
-            ProcessModelItemCollection(startIndex, mi => mi.SetProperty("IndexNumber", indexNumber++));
+            ProcessModelItemCollection(startIndex, mi => SetIndexNumber(mi, indexNumber++));
         }
 
         /// <summary>
@@ -291,6 +296,11 @@ namespace Dev2.Activities.Designers2.Core
             {
                 processModelItem(ModelItemCollection[i]);
             }
+        }
+
+        static void SetIndexNumber(ModelItem mi, int indexNumber)
+        {
+            mi.SetProperty("IndexNumber", indexNumber);
         }
     }
 }
