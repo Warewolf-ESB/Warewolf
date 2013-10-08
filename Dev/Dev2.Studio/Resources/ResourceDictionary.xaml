@@ -39,6 +39,12 @@
         <Setter Property="Width" Value="15" />
         <Setter Property="Source" Value="/Images/ActionSuccessful-16.png" />
     </Style>
+    
+    <Style x:Key="ImageCloseStyle" TargetType="{x:Type Image}">
+        <Setter Property="Height" Value="15" />
+        <Setter Property="Width" Value="15" />
+        <Setter Property="Source" Value="/Images/Close_Box_Red.png" />
+    </Style>
 
     <Style x:Key="FlashingFrameworkElement" TargetType="{x:Type FrameworkElement}">
         <Style.Triggers>

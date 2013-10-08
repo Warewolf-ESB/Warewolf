@@ -21,16 +21,30 @@ namespace Dev2.Providers.Logs
 
         public override void Write(string value)
         {
-            CheckRollover();
-            _traceWriter.Write(value);
-            _traceWriter.Flush();
+            try
+            {
+                CheckRollover();
+                _traceWriter.Write(value);
+                _traceWriter.Flush();
+            }
+            catch(ObjectDisposedException e)
+            {
+                //ignore this exception
+            }
         }
 
         public override void WriteLine(string value)
         {
-            CheckRollover();
-            _traceWriter.WriteLine(value);
-            _traceWriter.Flush();
+            try
+            {
+                CheckRollover();
+                _traceWriter.WriteLine(value);
+                _traceWriter.Flush();
+            }
+            catch(ObjectDisposedException e)
+            {
+                //ignore this exception
+            }
         }
 
         void CheckRollover()

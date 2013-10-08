@@ -241,13 +241,17 @@
                     Content="Select All Dependencies" HorizontalAlignment="Right" Background="Transparent" 
                     BorderBrush="Transparent" Command="{Binding SelectAllDependanciesCommand}" />
                 </StackPanel>
-                <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
                     <StackPanel Orientation="Horizontal" Margin="0,0,5,0" Visibility="{Binding DeploySuccessfull, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                         <Image Grid.Column="0" Grid.Row="2" Style="{StaticResource ImageTickStyle}" />
                         <TextBlock Grid.Column="1" Grid.Row="2" Foreground="White" Text="Items deployed successfully" AutomationProperties.AutomationId="UI_DeploySelectTB_AutoID"
                                    VerticalAlignment="Center" Margin="3,0,0,0"/>
                     </StackPanel>
-
+                    <StackPanel Orientation="Horizontal" Margin="0,0,5,0" Visibility="{Binding ServersAreNotTheSame, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                        <Image Style="{StaticResource ImageCloseStyle}" />
+                        <TextBlock Foreground="White" Text="Source and Destination cannot be the same." AutomationProperties.AutomationId="UI_DeploySelectTB_AutoID"
+                                   VerticalAlignment="Center" Margin="3,0,0,0"/>
+                    </StackPanel>
                     <customControls2:CircularProgressBar Height="15" Width="15" VerticalAlignment="Center" Margin="0,0,5,0" 
                                                         Visibility="{Binding IsDeploying, Converter={StaticResource BoolToVisConverter}}"/>
                     <Button AutomationProperties.AutomationId="UI_Deploybtn_AutoID" 

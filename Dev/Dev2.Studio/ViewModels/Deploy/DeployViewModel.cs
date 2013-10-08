@@ -144,8 +144,26 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             get
             {
-                return SelectedDestinationServer != null && SelectedDestinationServer.Environment.IsConnected && _sourceDeployItemCount > 0 && _destinationDeployItemCount > 0 && !IsDeploying;
+                return SelectedDestinationServerIsValid() && HasItemsToDeploy() && !IsDeploying && ServersAreNotTheSame;
             }
+        }
+
+        public bool ServersAreNotTheSame
+        {
+            get
+            {
+                return SelectedDestinationServer==null || (SelectedDestinationServer != null && SelectedDestinationServer.AppAddress!=SelectedSourceServer.AppAddress);
+            }
+        }
+
+        bool HasItemsToDeploy()
+        {
+            return _sourceDeployItemCount > 0 && _destinationDeployItemCount > 0;
+        }
+
+        bool SelectedDestinationServerIsValid()
+        {
+            return SelectedDestinationServer != null && SelectedDestinationServer.Environment.IsConnected;
         }
 
         public bool SourceItemsSelected
@@ -281,6 +299,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 NotifyOfPropertyChange(() => SelectedDestinationServer);
                 NotifyOfPropertyChange(() => SourceItemsSelected);
                 NotifyOfPropertyChange(() => CanDeploy);
+                NotifyOfPropertyChange(() => ServersAreNotTheSame);
             }
         }
 
@@ -299,6 +318,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                     NotifyOfPropertyChange(() => SelectedDestinationServer);
                     NotifyOfPropertyChange(() => SourceItemsSelected);
                     NotifyOfPropertyChange(() => CanDeploy);
+                    NotifyOfPropertyChange(() => ServersAreNotTheSame);
                 }
             }
         }

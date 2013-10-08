@@ -286,7 +286,13 @@ namespace Dev2.UI
                 if(ViewModel != null)
                 {
                     ViewModel.ChangeSelected(ViewModel.ActiveEnvironment);
+                    
                 }
+            }
+            else
+            {
+                ViewModel.ChangeSelected(ViewModel.SelectedServer.Environment);
+                SelectionHasChanged(ViewModel.SelectedServer);
             }
         }
 
