@@ -106,19 +106,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdornerTests.cs" />
-    <Compile Include="Bootstrap\CompositionInitializer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Bootstrap\MoqConfigurationReader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Bootstrap\MoqPopup.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Bootstrap\StringResourcesTest1.Designer.cs" />
-    <Compile Include="Bootstrap\TestAggregateCatalog.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Bootstrap\UIBootstrap.cs" />
     <Compile Include="AutoConnectorTests.cs" />
     <Compile Include="RemoteServerUITests.cs" />
