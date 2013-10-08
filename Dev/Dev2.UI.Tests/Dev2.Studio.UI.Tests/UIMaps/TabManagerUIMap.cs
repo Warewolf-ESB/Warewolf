@@ -66,13 +66,29 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             return GetChildrenCount();
         }
 
-        public void CloseTab(string tabName)
+        public bool CloseTab(string tabName)
         {
+            const int totalTimeOut = 10;
             UITestControl control = FindTabByName(tabName);
             UITestControl close = new UITestControl(control);
             close.SearchProperties["AutomationId"] = "closeBtn";
             Playback.Wait(150);
-            Mouse.Click(close);
+            var point = new Point();
+            var timeout = 0;
+            while(!close.TryGetClickablePoint(out point) && timeout < totalTimeOut)
+            {
+                //try close explorer pane
+                Mouse.Click(new Point(control.BoundingRectangle.X + 400, control.BoundingRectangle.Y + 500));
+                Mouse.Move(new Point(control.BoundingRectangle.X, control.BoundingRectangle.Y + 500));
+                Playback.Wait(1000);
+                timeout++;
+            }
+            if (timeout < totalTimeOut)
+            {
+                Mouse.Click(close);
+                return true;
+            }
+            return false;
         }
 
         public void MiddleClickCloseTab(string tabName)
@@ -86,17 +102,17 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public void CloseAllTabs()
         {
-            bool isFirst = true;
             int openTabs = GetTabCount();
-            while(openTabs != 0)
+            var canCloseTab = true;
+            while(openTabs != 0 && canCloseTab)
             {
                 string theTab = GetActiveTabName();
 
                 UITestControl zeTab = FindTabByName(theTab);
-                Mouse.Click(new Point(zeTab.BoundingRectangle.X, zeTab.BoundingRectangle.Y + 500));
+                Mouse.Click(new Point(zeTab.BoundingRectangle.X + 400, zeTab.BoundingRectangle.Y + 500));
                 Playback.Wait(2500);
 
-                CloseTab_Click_No(theTab);
+                canCloseTab = CloseTab_Click_No(theTab);
                 SendKeys.SendWait("n");
 
                 SendKeys.SendWait("{DELETE}"); // 
@@ -119,27 +135,31 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             Mouse.Click();
         }
 
-        public void CloseTab_Click_No(string tabName)
+        public bool CloseTab_Click_No(string tabName)
         {
-            CloseTab(tabName);
-
-            try
+            if (CloseTab(tabName))
             {
-                UITestControlCollection saveDialogButtons = GetWorkflowNotSavedButtons();
-                if (saveDialogButtons.Count > 0)
+                try
                 {
-                    UITestControl cancelButton = saveDialogButtons[1];
-                    Point p = new Point(cancelButton.Left + 25, cancelButton.Top + 15);
-                    Mouse.MouseMoveSpeed = 1000;
-                    Mouse.Move(p);
-                    Mouse.MouseMoveSpeed = 450;
-                    Mouse.Click();
+                    UITestControlCollection saveDialogButtons = GetWorkflowNotSavedButtons();
+                    if (saveDialogButtons.Count > 0)
+                    {
+                        UITestControl cancelButton = saveDialogButtons[1];
+                        Point p = new Point(cancelButton.Left + 25, cancelButton.Top + 15);
+                        Mouse.MouseMoveSpeed = 1000;
+                        Mouse.Move(p);
+                        Mouse.MouseMoveSpeed = 450;
+                        Mouse.Click();
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return true;
+                    //This is empty because if the pop cant be found then the tab must just close;)
                 }
             }
-            catch (Exception ex)
-            {
-                //This is empty because if the pop cant be found then the tab must just close;)
-            }
+            return false;
         }
 
         public void CloseTab_Click_Cancel(string tabName)

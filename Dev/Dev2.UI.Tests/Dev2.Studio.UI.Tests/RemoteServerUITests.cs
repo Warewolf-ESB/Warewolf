@@ -46,6 +46,7 @@ namespace Dev2.Studio.UI.Tests
         ToolboxUIMap _toolboxUiMap;
         WorkflowDesignerUIMap _workflowDesignerUiMap;
         OutputUIMap _outputUiMap;
+        UIMap map;
 
         #endregion
 
@@ -65,6 +66,7 @@ namespace Dev2.Studio.UI.Tests
         public DebugUIMap DebugUiMap { get { return _debugUiMap ?? (_debugUiMap = new DebugUIMap()); } }
         public RibbonUIMap RibbonUiMap { get { return _ribbonUiMap ?? (_ribbonUiMap = new RibbonUIMap()); } }
         public OutputUIMap OutputUiMap { get { return _outputUiMap ?? (_outputUiMap = new OutputUIMap()); } }
+        public UIMap UIMap { get { return map ?? (map = new UIMap()); } }
         
         #endregion
 
@@ -74,6 +76,8 @@ namespace Dev2.Studio.UI.Tests
         public void TestCleanup()
         {
             TabManagerUiMap.CloseAllTabs();
+            DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
+            ExplorerUiMap.ClickServerInServerDDL(LocalHostServerName);
         }
 
         [TestMethod]
@@ -121,6 +125,8 @@ namespace Dev2.Studio.UI.Tests
             const string TextToSearchWith = "Find Records";
             OpenWorkFlow(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
             OpenMenuItem("View in Browser");
+            Playback.Wait(5000);
+            SendKeys.SendWait("^{F4}");
             var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
             if(child != null) Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(Window));
         }
@@ -145,7 +151,9 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.EnterExplorerSearchText(TextToSearchWith);
             ExplorerUiMap.DragControlToWorkflowDesigner(RemoteServerName, "WORKFLOWS", "UTILITY", TextToSearchWith, point);
 
-            RibbonUiMap.Debug();
+            OpenMenuItem("Debug");
+            SendKeys.SendWait("{F5}");
+            Playback.Wait(1000);
 
             Assert.AreEqual(34, OutputUIMap.GetOutputWindow().Count, "Cannot get full debug output");
         }
@@ -206,7 +214,9 @@ namespace Dev2.Studio.UI.Tests
 
             OpenWorkFlow(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
 
-            RibbonUiMap.Debug();
+            OpenMenuItem("Debug");
+            SendKeys.SendWait("{F5}");
+            Playback.Wait(1000);
 
             var remoteTab = TabManagerUiMap.FindTabByName(TextToSearchWith + " - " + RemoteServerName);
             Assert.IsNotNull(remoteTab);
@@ -220,13 +230,8 @@ namespace Dev2.Studio.UI.Tests
             const string TextToSearchWith = "DBSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
             DatabaseSourceUiMap.ClickSaveConnection();
+            SaveDialogUiMap.ClickSave();
             Playback.Wait(120);
-            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            if(child != null)
-            {
-                var dialog = child.GetChildren()[0];
-                Assert.IsNotInstanceOfType(dialog, typeof(WpfImage));
-        }
         }
 
         [TestMethod]
@@ -275,6 +280,7 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "PluginService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
+            PluginServiceWizardUiMap.ClickTestAndOk();
             PluginServiceWizardUiMap.ClickSave();
             Playback.Wait(120);
             var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
@@ -322,7 +328,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.ClearExplorerSearchText();
             ExplorerUiMap.EnterExplorerSearchText(RenameTo);
             ExplorerUiMap.RightClickDeleteProject(serverName, serviceType, folderName, RenameTo);
-            Keyboard.SendKeys("{ENTER}{ENTER}");
+            SendKeys.SendWait("{ENTER}{ENTER}");
         }
         #endregion
 
@@ -355,20 +361,5 @@ namespace Dev2.Studio.UI.Tests
         }
 
         #endregion
-
-        public UIMap UIMap
-        {
-            get
-            {
-                if((this.map == null))
-        {
-                    this.map = new UIMap();
-                }
-
-                return this.map;
-            }
-        }
-
-        private UIMap map;
     }
 }

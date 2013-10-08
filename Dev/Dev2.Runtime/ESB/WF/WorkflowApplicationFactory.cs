@@ -439,7 +439,7 @@ namespace Dev2.DynamicServices
                     if (_waitHandle != null) _waitHandle.Set();
                     ExecutableServiceRepository.Instance.Remove(this);
                     DispatchDebugState(DataTransferObject, StateType.End, _runTime);
-                    DataTransferObject.NumberOfSteps = _previousNumberOfSteps;
+                    if(DataTransferObject != null) DataTransferObject.NumberOfSteps = _previousNumberOfSteps;
                 }
 
                 ExecutionStatusCallbackDispatcher.Instance.Post(_result.ExecutionCallbackID, ExecutionStatusCallbackMessageType.CompletedCallback);

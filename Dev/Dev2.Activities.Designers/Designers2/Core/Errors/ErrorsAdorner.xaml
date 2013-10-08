@@ -24,7 +24,7 @@
             <Grid.Resources>
                 <DataTemplate x:Key="ErrorDisplayTemplate"
                               DataType="errors:IActionableErrorInfo">
-                    <StackPanel Margin="0,5,0,5">
+                    <StackPanel Margin="0,5,0,5" AutomationProperties.AutomationId="ErrorsPanel">
                         <TextBlock TextWrapping="Wrap"
                                    VerticalAlignment="Top">
                                 <Hyperlink Command="{Binding Path=DataContext.OpenErrorsLinkCommand, ElementName=ErrorsGrid}"

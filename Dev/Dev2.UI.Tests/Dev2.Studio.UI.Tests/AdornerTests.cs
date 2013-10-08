@@ -113,25 +113,10 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
-        public void DoCleanup(string workflowName, bool clickNo = false)
+        [TestCleanup]
+        public void TestCleanup()
         {
-            try
-            {
-                // Test complete - Delete itself  
-                if (clickNo)
-                {
-                    TabManagerUIMap.CloseTab_Click_No(workflowName);
-                }
-                else
-                {
-                    TabManagerUIMap.CloseTab(workflowName);
-                }
-            }
-            catch (Exception e)
-            {
-                // Log it so the UI Test still passes...
-                Trace.WriteLine(e.Message);
-            }
+            TabManagerUIMap.CloseAllTabs();
         }
 
         [TestMethod]
@@ -193,13 +178,6 @@ namespace Dev2.Studio.UI.Tests
                             "The text entered in the adorner is not the same as what is shown on the tool");
             Assert.AreEqual(result, (dateTimeAllTextBoxes[4] as WpfEdit).Text,
                             "The text entered in the adorner is not the same as what is shown on the tool");
-
-            #region Do Clean Up
-
-            TestBase tb = new TestBase();
-            tb.DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
-
-            #endregion
         }
 
         [TestMethod]
@@ -219,9 +197,8 @@ namespace Dev2.Studio.UI.Tests
             //Drag a control to the design surface
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign", requiredPoint);
             //Get Adorner buttons
-            var buttonControl = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "MultiAssignDesigner",
-                                                                        "Open Help");
-            Mouse.Click(buttonControl);
+            var button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign", "Open Help");
+            Mouse.Click(button);
             //Get 'View Sample' link button
             var findViewSampleLink = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "View Sample Workflow");
             Mouse.Click(findViewSampleLink.GetChildren()[0]);
@@ -239,7 +216,5 @@ namespace Dev2.Studio.UI.Tests
             //Assert workflow opened after a time out.
             Assert.IsNotNull(waitForTabToOpen);
         }
-
-
     }
 }

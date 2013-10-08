@@ -64,7 +64,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         {
             for(int i = 0; i < n; i++)
             {
-                Keyboard.SendKeys("{DOWN}");
+                SendKeys.SendWait("{DOWN}");
             }
         }
 
@@ -76,7 +76,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
             for(int i = 0; i < n; i++)
             {
                 Playback.Wait(700);
-                Keyboard.SendKeys("{TAB}");
+                SendKeys.SendWait("{TAB}");
             }
         }
 
@@ -85,30 +85,30 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         /// </summary>
         public void GetFirstIntellisense(string startWith, bool deleteText = false, Point mousePoint = default(Point))
         {
-            Keyboard.SendKeys(startWith);
+            SendKeys.SendWait(startWith);
             Thread.Sleep(250);
 
             if (mousePoint != default(Point) )
             {
                 // nasty fixed sizing, but no other real choice to test what  I need to ;(
-                Mouse.Click(mousePoint);
+                Mouse.Click(new Point(UIBusinessDesignStudioWindow.Left + mousePoint.X, UIBusinessDesignStudioWindow.Top + mousePoint.Y));
             }
             else
             {
-                Keyboard.SendKeys("{DOWN}");
+                SendKeys.SendWait("{DOWN}");
                 Thread.Sleep(250);
-                Keyboard.SendKeys("{ENTER}");     
+                SendKeys.SendWait("{ENTER}");     
             }
 
             if (deleteText)
             {
                 Thread.Sleep(250);
-                Keyboard.SendKeys("^A");
+                SendKeys.SendWait("^A");
                 Thread.Sleep(250);
-                Keyboard.SendKeys("^C");
+                SendKeys.SendWait("^C");
 
                 Thread.Sleep(250);
-                Keyboard.SendKeys("{DELETE}");
+                SendKeys.SendWait("{DELETE}");
             }
         }
 

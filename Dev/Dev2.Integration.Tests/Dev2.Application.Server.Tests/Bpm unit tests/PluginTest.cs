@@ -86,6 +86,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
         // Bug 8378
         [TestMethod]
+        [Ignore] // Pick up when Wizards are corrected
         public void TestPluginsReturningXMLFromJson()
         {
             string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "PluginsReturningXMLFromJson");

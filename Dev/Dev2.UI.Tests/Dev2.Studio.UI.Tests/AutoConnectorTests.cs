@@ -127,11 +127,9 @@ namespace Dev2.Studio.UI.Tests
         [TestCleanup]
         public void TestCleanup()
         {
+            TabManagerUIMap.CloseAllTabs();
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
-            var middle = new Point(DocManagerUIMap.UIBusinessDesignStudioWindow.Left + DocManagerUIMap.UIBusinessDesignStudioWindow.Width / 2, DocManagerUIMap.UIBusinessDesignStudioWindow.Top + DocManagerUIMap.UIBusinessDesignStudioWindow.Height / 4);
-            Mouse.Click(DocManagerUIMap.UIBusinessDesignStudioWindow, middle);
-            TabManagerUIMap.CloseAllTabs();
         }
 
         [TestMethod]

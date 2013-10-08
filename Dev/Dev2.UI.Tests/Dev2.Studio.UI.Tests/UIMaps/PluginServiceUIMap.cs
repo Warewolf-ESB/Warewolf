@@ -1,4 +1,5 @@
-﻿using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
+﻿using System.Windows.Forms;
+using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 
 namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
 {
@@ -47,16 +48,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
         public void ClickTestAndOk()
         {
             Playback.Wait(200);
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
-            Keyboard.SendKeys("test string");
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            SendKeys.SendWait("test string");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
             Playback.Wait(200);
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
         }
 
         public void ClickOK()
         {
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
         }
 
         #region Properties

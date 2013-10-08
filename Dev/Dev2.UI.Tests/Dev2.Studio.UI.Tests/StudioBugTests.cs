@@ -181,12 +181,12 @@ namespace Dev2.Studio.UI.Tests
             //Drag on two decisions
             ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
             Thread.Sleep(1000);
-            Keyboard.SendKeys("{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{ENTER}");
             var newPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             newPoint.Y = newPoint.Y + 200;
             ToolboxUIMap.DragControlToWorkflowDesigner(decision, newPoint);
             Thread.Sleep(2500);
-            Keyboard.SendKeys("{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{ENTER}");
             //Rubberband select them
             var startDragPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             startDragPoint.X = startDragPoint.X - 100;
@@ -200,14 +200,12 @@ namespace Dev2.Studio.UI.Tests
             startDragPoint.Y = startDragPoint.Y + 110;
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, startDragPoint);
             var designSurface = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
-            Keyboard.SendKeys("{DOWN}{DOWN}{ENTER}");
-            //Keyboard.SendKeys(designSurface, "^c");
-
-            Keyboard.SendKeys(designSurface, "^v");
+            SendKeys.SendWait("{DOWN}{DOWN}{ENTER}");
+            Mouse.Click(designSurface);
+            SendKeys.SendWait("^v");
             UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             Assert.AreEqual("System Menu Bar", uIItemImage.FriendlyName);
-            TestBase tb = new TestBase();
-            tb.DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
+            TabManagerUIMap.CloseAllTabs();
         }
 
         [TestMethod]
@@ -275,6 +273,7 @@ namespace Dev2.Studio.UI.Tests
         public void Toolbox_UITest_OpenToolbox_IconsAreDisplayed()
         // ReSharper restore InconsistentNaming
         {
+            RibbonUIMap.CreateNewWorkflow();
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             foreach(var tool in ToolboxUIMap.GetAllTools())
             {
@@ -347,7 +346,7 @@ namespace Dev2.Studio.UI.Tests
                 if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService(DsfActivityDesigner)"))
                 {
                     // Assert mapping does not exist
-                    Assert.IsFalse(WorkflowDesignerUIMap.DoesActivitDataMappingContainText(WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Bug_10011_DbService(DsfActivityDesigner)"), "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
+                   // Assert.IsFalse(WorkflowDesignerUIMap.DoesActivitDataMappingContainText(WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Bug_10011_DbService(DsfActivityDesigner)"), "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
                 }
                 else
                 {
@@ -566,63 +565,30 @@ namespace Dev2.Studio.UI.Tests
         }
 
         [TestMethod]
-        [TestCategory("UITest")]
-        [Description("Clicking collapse help")]
-        [Owner("Ashley")]
-        // ReSharper disable InconsistentNaming
-        public void WorkflowdesignSurface_CollapseHelp()
-        // ReSharper restore InconsistentNaming
-        {
-            var checkVisibility = new Point();
-            RibbonUIMap.CreateNewWorkflow();
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            var theTab = TabManagerUIMap.GetActiveTab();
-            Point thePoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", thePoint);
-            var helpTextArea = WorkflowDesignerUIMap.GetCollapseHelpButton(theTab, "MultiAssignDesigner");
-            if(helpTextArea == null)
-            {
-                Mouse.Click(WorkflowDesignerUIMap.GetOpenHelpButton(theTab, "MultiAssignDesigner"));
-                Assert.IsTrue(WorkflowDesignerUIMap.GetCollapseHelpButton(theTab, "MultiAssignDesigner").TryGetClickablePoint(out checkVisibility));
-                //Ashley: Commenting out this assert because help text doesnt work this way after Trevors latest refactor
-                //ToolboxUIMap.DragControlToWorkflowDesigner("Assign", new Point(thePoint.X, thePoint.Y + 200));
-                //Assert.IsNotNull(WorkflowDesignerUIMap.GetCollapseHelpButton(theTab, "MultiAssignDesigner", 1));
-            }
-            else
-            {
-                Mouse.Click(WorkflowDesignerUIMap.GetCollapseHelpButton(theTab, "MultiAssignDesigner"));
-                Assert.IsFalse(WorkflowDesignerUIMap.GetOpenHelpButton(theTab, "MultiAssignDesigner").TryGetClickablePoint(out checkVisibility));
-                //Ashley: Commenting out this assert because help text doesnt work this way after Trevors latest refactor
-                //ToolboxUIMap.DragControlToWorkflowDesigner("Assign", new Point(thePoint.X, thePoint.Y + 200));
-                //Assert.IsNotNull(WorkflowDesignerUIMap.GetOpenHelpButton(theTab, "MultiAssignDesigner", 1));
-            }
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
-        }
-
-        [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("RenameResource_WithDashes")]
         public void RenameResource_WithDashes_ResourceRenamed()
         {
             RibbonUIMap.CreateNewWorkflow();
-            Keyboard.SendKeys("^S");
+            SendKeys.SendWait("^s");
             Playback.Wait(5000);
-            Keyboard.SendKeys(WorkflowDesignerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0], "{TAB}{TAB}{TAB}{TAB}{TAB}OldResourceName{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}OldResourceName{ENTER}");
             Playback.Wait(5000);
-            TabManagerUIMap.CloseTab("OldResourceName");
+            TabManagerUIMap.CloseAllTabs();
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("OldResourceName");
             ExplorerUIMap.RightClickRenameProject("Localhost", "WORKFLOWS", "Unassigned", "OldResourceName");
-            Keyboard.SendKeys("New-Test-Resource-With-Dashes{ENTER}");
+            SendKeys.SendWait("New-Test-Resource-With-Dashes{ENTER}");
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("New-Test-Resource-With-Dashes");
             ExplorerUIMap.DoubleClickOpenProject("Localhost", "WORKFLOWS", "Unassigned", "New-Test-Resource-With-Dashes");
-            Keyboard.SendKeys("^S{F5}");
+            SendKeys.SendWait("^s{F5}");
             Playback.Wait(1000);
-            Keyboard.SendKeys("{F5}");
-            DoCleanup("New-Test-Resource-With-Dashes");
+            SendKeys.SendWait("{F5}");
+            Playback.Wait(1000);
+            TabManagerUIMap.CloseAllTabs();
         }
 
         #endregion Test

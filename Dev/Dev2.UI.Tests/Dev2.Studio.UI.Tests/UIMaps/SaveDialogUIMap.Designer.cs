@@ -102,7 +102,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
             //#endregion
             //// Click image
             //Mouse.Click(uIItemImage, new Point(478, 432));
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{ENTER}");
         }
         
         #region Properties

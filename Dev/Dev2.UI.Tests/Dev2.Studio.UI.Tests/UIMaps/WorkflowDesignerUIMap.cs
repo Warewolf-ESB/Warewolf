@@ -774,7 +774,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             Mouse.Click(addBtn, new Point(5, 5));
         }
 
-
         public void AssignControl_QuickVariableInputControl_ClickPreview(UITestControl theTab, string controlAutomationId)
         {
             UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
@@ -984,27 +983,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             return flowchartDesigner;
         }
 
-        public bool DoesActivitDataMappingContainText(UITestControl dsfActivityControl, string searchText)
-        {
-            //DataMappings view must be expanded on the dsfActivityControl: this cannot be checked here
-            var dsfActivityContents = dsfActivityControl.GetChildren();
-            foreach(var x in from control in dsfActivityContents
-                             where control.ControlType == ControlType.Table && control is WpfTable
-                             select (control as WpfTable).GetChildren()
-                             into rows
-                             from row in rows
-                             where row.ControlType == ControlType.Row
-                             select row.GetChildren()
-                             into cells
-                             from cell in cells
-                             where cell.ControlType == ControlType.Cell
-                             where cell.GetChildren().Any(element => (element.ControlType == ControlType.Edit && element is WpfEdit && (element as WpfEdit).Text == searchText))
-                             select cell)
-            {
-                return true;
-            }
-            return false;
-        }
+      
+
 
         public List<UITestControl> Adorner_GetAllTextBoxes(UITestControl theTab)
         {

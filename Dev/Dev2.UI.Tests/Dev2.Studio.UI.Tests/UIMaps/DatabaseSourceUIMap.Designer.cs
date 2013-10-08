@@ -9,6 +9,7 @@
 // ------------------------------------------------------------------------------
 
 using System.Threading;
+using System.Windows.Forms;
 using Dev2.CodedUI.Tests;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses
@@ -50,7 +51,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses
         {
             Thread.Sleep(150);
             // Click image
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
         }
         
         #region Properties

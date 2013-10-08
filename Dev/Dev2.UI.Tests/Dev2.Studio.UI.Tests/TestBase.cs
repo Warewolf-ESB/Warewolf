@@ -71,13 +71,13 @@ namespace Dev2.CodedUI.Tests
 
             // Get some variables
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+            Point startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            Point point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, point);
 
             //click done
             WorkflowDesignerUIMap.Adorner_ClickDoneButton(theTab, "MultiAssignDesigner");
@@ -95,13 +95,11 @@ namespace Dev2.CodedUI.Tests
             // Click done
             WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
 
-            // Make sure an error has been thrown
-            var getError = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "invalid");
-            Assert.IsTrue(getError is WpfText, "Cannot find error text");
-            StringAssert.Contains((getError as WpfText).DisplayText, "Prefix contains invalid characters");
+            var errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab ,"Prefix contains invalid characters");
+            Assert.IsNotNull(errorControl);
 
             // Assert clicking an error focusses the correct textbox
-            Mouse.Click(getError.GetChildren()[0]);
+            Mouse.Click(errorControl.GetChildren()[0]);
             SendKeys.SendWait("^A^X");
             Assert.AreEqual("some(<).", Clipboard.GetText(), "Wrong textbox focussed on tool help link click");
 
@@ -123,7 +121,8 @@ namespace Dev2.CodedUI.Tests
         public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
         {
             var preCount = TabManagerUIMap.GetTabCount();
-            RibbonUIMap.CreateNewWorkflow();
+            Mouse.Click(DocManagerUIMap.UIBusinessDesignStudioWindow);
+            SendKeys.SendWait("^w");
             string activeTabName = TabManagerUIMap.GetActiveTabName();
             var postCount = TabManagerUIMap.GetTabCount();
             Assert.IsTrue(postCount == preCount + 1, "Tab quantity has not been increased");
@@ -244,7 +243,7 @@ namespace Dev2.CodedUI.Tests
 
         #endregion New PBI Tests
 
-        // OK
+
         [TestMethod]
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
         {
@@ -264,7 +263,7 @@ namespace Dev2.CodedUI.Tests
             // Add the data!
             WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
             // moved from 100 to 20 for time
-            for (int j = 0; j < 20; j++)
+            for(int j = 0; j < 20; j++)
             {
                 // Sleeps are due to the delay when adding a lot of items
                 SendKeys.SendWait("[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
@@ -284,7 +283,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        //PBI 9461
+        ////PBI 9461
         [TestMethod]
         [Ignore]//Does not show dependancies dialog consistantly
         public void ChangingResourceExpectedPopUpWarningWithViewDependancies()
@@ -533,16 +532,16 @@ namespace Dev2.CodedUI.Tests
         public void DecisionWizard_Save_WhenMouseUsedToSelect2ndAnd3rdInputFields_FieldDataSavedCorrectly()
         {
             //------------Setup for test--------------------------
-
+            Clipboard.Clear();
             RibbonUIMap.CreateNewWorkflow();
 
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             //------------Execute Test---------------------------
 
             DocManagerUIMap.ClickOpenTabPage("Variables");
             VariablesUIMap.ClickVariableName(0);
-            Keyboard.SendKeys("VariableName");
+            SendKeys.SendWait("VariableName");
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             var decision = ToolboxUIMap.FindControl("Decision");
             ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
@@ -558,13 +557,13 @@ namespace Dev2.CodedUI.Tests
             _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(1110, 420));
 
             _decisionWizardUiMap.SendTabs(6);
-            Keyboard.SendKeys("{ENTER}");
+            SendKeys.SendWait("{ENTER}");
 
 
-            Keyboard.SendKeys("{TAB}");
-            Keyboard.SendKeys("^A");
+            SendKeys.SendWait("{TAB}");
+            SendKeys.SendWait("^A");
             Thread.Sleep(250);
-            Keyboard.SendKeys("^C");
+            SendKeys.SendWait("^C");
             var displayValue = Clipboard.GetData(DataFormats.Text);
 
             //------------Assert Results-------------------------

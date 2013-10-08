@@ -54,19 +54,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
                 {
                     theControl = tabPage;
                     Point p = new Point(theControl.BoundingRectangle.X + 5, theControl.BoundingRectangle.Y + 5);
-                    //if (theControl.BoundingRectangle.Width > 500)
-                    //{
-                    //UITestControlCollection myCollection = theControl.GetChildren();
-                    //UITestControl testControl = myCollection[0].Container;
                     p = new Point(theControl.GetChildren()[0].BoundingRectangle.X + 20, theControl.GetChildren()[0].BoundingRectangle.Y + 10);
                     Mouse.Click(p);
                     return;
-                    //}
-                    //if (p.X > 5 && theControl.BoundingRectangle.Width > 500)
-                    //{
-                    //    Mouse.Click(p);
-                    //    return;
-                    //}
                 }
                 else
                 {
@@ -102,25 +92,18 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
         {
             var uiTestControlCollection = UIBusinessDesignStudioWindow.GetChildren();
             var control = uiTestControlCollection.FirstOrDefault(c => c.FriendlyName == "UI_RibbonHomeTabWorkflowBtn_AutoID");
-            var p = new Point(control.BoundingRectangle.X + 5, control.BoundingRectangle.Y + 5);
+            var p = new Point(control.BoundingRectangle.Left + 5, control.BoundingRectangle.Top + 5);
             Mouse.Click(p);
-            Playback.Wait(8000);
+            Playback.Wait(2000);
         }
 
         public UITestControl GetControlByName(string name)
         {
             var children = UIBusinessDesignStudioWindow.GetChildren();
-            var control = children.Where(c => c.FriendlyName == name)
+            var control = children.Where(c => c.FriendlyName == name || c.GetChildren().Any(child => child.FriendlyName == name))
                 .ToList().FirstOrDefault();
 
             return control;
-        }
-
-        public void Debug()
-        {
-            var executeGroup = GetControlByName("Execute");
-            Mouse.Click(new Point(executeGroup.BoundingRectangle.X + 25, executeGroup.BoundingRectangle.Y - 10));
-            DebugUIMap.ClickExecute();
         }
     }
 }
