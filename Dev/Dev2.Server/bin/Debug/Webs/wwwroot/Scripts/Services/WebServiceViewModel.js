@@ -49,6 +49,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
             self.clearRequestVariables();
         }
         self.hasSourceSelectionChanged = isPasting;
+		self.hasPasteHappened = isPasting;
     });
 
     self.isCut = ko.observable(false);
@@ -87,6 +88,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     self.isEqualPressed = false;
     self.isCloseBracketPressed = false;
     self.hasSourceSelectionChanged = false;
+	self.hasPasteHappened = false;
 
     self.pushRequestVariable = function(varName, varSrc, varValue) {
         var oldVar = $.grep(self.data.method.Parameters(), function (e) { return e.Name == varName; });
@@ -140,6 +142,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
 
     self.extractAndPushRequestVariable = function (text, start, varSrc) {
         var prev = text.slice(start - 2, start - 1);
+		
         if (prev == "]") {
             var idx = text.lastIndexOf("[[", start);
             if (idx != -1) {
@@ -220,30 +223,97 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         });
     };
 
+	self.ProperlyHandleVariableInput = function(newValue){
+		// handle more normal use cases ;)
+			
+		// find ? then substring
+		var indexOfQuestionMark = newValue.indexOf("?");
+		
+		if(indexOfQuestionMark >= 0){
+		
+			// create working string 
+			var tmpValue = newValue.substring((indexOfQuestionMark+1));
+			// keep append portion ;)
+			var toAppend = newValue.substring(0, indexOfQuestionMark);
+			// generate pairs
+			var pairs = tmpValue.split("&");
+			
+			// now match pairs ;)
+			for(var i = 0; i < pairs.length; i++){
+				
+				var tmp = pairs[i];
+				
+				var subPairs = tmp.split("=");
+				
+				if(subPairs.length == 2){
+					var varName = subPairs[1].replace("[[","").replace("]]","");
+				
+					var targetEnd = varName.indexOf("&");
+					
+					if(targetEnd > 0){
+						// we need to trim it up a bit ;)
+						varName = varName.substring(0, targetEnd);
+					}
+					
+					self.pushRequestVariable(varName, "", "");						
+				}
+			}
+		}
+	};
 
     self.updateVariables = function (varSrc, newValue) {
+
+		var param = self.getParameter(newValue, start);
         var start = varSrc == SRC_URL ? $requestUrl.caret() : $requestBody.caret();
+		
         if (self.hasSourceSelectionChanged) {
-            self.updateAllVariables(varSrc, newValue);
+		
+		
+			if(self.hasPasteHappened){
+				// when paste call this ;)
+				self.ProperlyHandleVariableInput(newValue);
+				self.hasPasteHappened = false;
+			}else{
+				self.updateAllVariables(varSrc, newValue);
+			}
+			
+			self.data.method.Parameters.sort(utils.nameCaseInsensitiveSort);
+			
             return;
         }
+	
         if (varSrc == SRC_URL) {
             if (self.isEqualPressed) {
                 var param = self.getParameter(newValue, start);
 
-                self.pushRequestVariable(param.name, varSrc, param.value);
+				var afterParam = "";
+				var offSet = start+(param.name.length);
+				
+				if(offSet < newValue.length){
+					afterParam = newValue.substring(offSet);
+				}
+				
+				// handle the case of ]]= and &= correctly 
+				if(param.name.indexOf("[[") < 0 && param.name.indexOf("=") < 0 && param.name.length > 0 && afterParam.indexOf("[") != 0 ){
+					self.pushRequestVariable(param.name, varSrc, param.value);
 
-                var prefix = newValue.slice(0, param.valueStart);
-                var postfix = newValue.slice(param.valueEnd, newValue.length);
-                var paramValue = "[[" + param.name + "]]";
-                newValue = prefix.concat(paramValue).concat(postfix);
-
-                self.updateVariablesText(varSrc, newValue, start + paramValue.length);
+					var prefix = newValue.slice(0, param.valueStart);
+					var postfix = newValue.slice(param.valueEnd, newValue.length);
+					var paramValue = "[[" + param.name + "]]";
+					newValue = prefix.concat(paramValue).concat(postfix);
+					
+					self.updateVariablesText(varSrc, newValue, start + paramValue.length);
+				}
 
             } else if (self.isCloseBracketPressed) {
                 self.extractAndPushRequestVariable(newValue, start, varSrc);
-            }
+            }else{
+			
+				// handle more normal use cass ;)
+				self.ProperlyHandleVariableInput(newValue);
+			}
         } else { // SRC_BODY
+			
             if (self.isCloseBracketPressed) {
                 self.extractAndPushRequestVariable(newValue, start, varSrc);
             }
@@ -251,18 +321,19 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
 
         // Clean up variables
         if (newValue) {
-            var paramVars = newValue.match(/\[\[\w*\]\]/g);    // match our variables!
-            if (paramVars) {
-                for (var i = self.data.method.Parameters().length - 1; i >= 0; i--) {
-                    var requestVar = self.data.method.Parameters()[i];
-                    var paramVar = $.grep(paramVars, function (e) { return e == "[[" + requestVar.Name + "]]"; });
-                    if (paramVar.length == 0 && requestVar.Src == varSrc) {
-                        self.data.method.Parameters.splice(i, 1);
-                    }
-                }
-            }
+
+			var paramVars = newValue.match(/\[\[\w*\]\]/g);    // match our variables!
+			if (paramVars) {
+				for (var i = self.data.method.Parameters().length - 1; i >= 0; i--) {
+					var requestVar = self.data.method.Parameters()[i];
+					var paramVar = $.grep(paramVars, function (e) { return e == "[[" + requestVar.Name + "]]"; });
+					if (paramVar.length == 0 && requestVar.Src == varSrc) {
+						self.data.method.Parameters.splice(i, 1);
+					}
+				}
+			}
         }
-        
+		
         self.data.method.Parameters.sort(utils.nameCaseInsensitiveSort);
     };
     

@@ -5,7 +5,6 @@ using Dev2.DynamicServices;
 using Dev2.Services.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Moq.Protected;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
