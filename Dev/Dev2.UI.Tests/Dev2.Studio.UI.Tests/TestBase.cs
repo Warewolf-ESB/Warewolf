@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Threading;
+﻿using System.Threading;
 using System.Windows.Input;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
@@ -61,7 +60,10 @@ namespace Dev2.CodedUI.Tests
             return "Warewolf";
         }
 
+
         #region New PBI Tests
+
+        
 
         // PBI 8601 (Task 8855)
         [TestMethod]
@@ -414,7 +416,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         #endregion
-
+          
         [TestMethod]
         public void DragAWorkflowIntoAndOutOfAForEach_Expected_NoErrors()
         {

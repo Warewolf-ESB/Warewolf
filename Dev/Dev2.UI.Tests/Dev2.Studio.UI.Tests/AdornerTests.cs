@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using Dev2.CodedUI.Tests;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
@@ -18,6 +19,31 @@ namespace Dev2.Studio.UI.Tests
     [CodedUITest]
     public class AdornerTests
     {
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            //TabManagerUIMap.CloseAllTabs();
+        }
+
+        #region Properties
+
+        private ExplorerUIMap _explorerUiMap;
+        public ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if((_explorerUiMap == null))
+                {
+                    _explorerUiMap = new ExplorerUIMap();
+                }
+
+                return _explorerUiMap;
+            }
+        }
+
+        #endregion
+
         #region TabManager UI Map
 
         public TabManagerUIMap TabManagerUIMap
@@ -113,11 +139,102 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
-        [TestCleanup]
-        public void TestCleanup()
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExternalService_EditService")]
+        public void ExternalService_EditService_EditWithNoSecondSaveDialog_ExpectOneDialog()
         {
-            TabManagerUIMap.CloseAllTabs();
+            //------------Setup for test--------------------------
+            // Open the workflow
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("Edit Service Workflow");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "UI TEST", "Edit Service Workflow");
+
+            //------------Execute Test---------------------------
+
+            // Get some design surface
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+
+            //Get Adorner buttons
+            var button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TravsTestService", "Edit");
+
+            // -- DO DB Services
+
+            // move to show adorner buttons ;)
+            Mouse.Move(new Point(1030, 445));
+
+            Playback.Wait(500);
+            Mouse.Click(button);
+            Playback.Wait(1000);
+            Mouse.Click(new Point(840, 270)); // click on the second tab ;)
+            Keyboard.SendKeys("{TAB}");
+            Playback.Wait(500);
+            Keyboard.SendKeys("zzz");
+            // -- wizard closed
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            
+
+            // -- DO Web Services
+
+            //Get Adorner buttons
+            button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "FetchCities", "Edit");
+
+            // move to show adorner buttons ;)
+            Mouse.Move(new Point(1030, 600));
+
+            Playback.Wait(500);
+            Mouse.Click(button);
+            Playback.Wait(1000);
+            Mouse.Click(new Point(780, 270)); // click on the second tab ;)
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}");
+            Playback.Wait(500);
+            Keyboard.SendKeys("zzz");
+            // -- wizard closed, account for darn dialog ;(
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{ENTER}{TAB}{ENTER}");
+            Playback.Wait(1000);
+
+
+            // DO Plugin Services
+
+            //Get Adorner buttons
+            button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "DummyService", "Edit");
+
+            // move to show adorner buttons ;)
+            Mouse.Move(new Point(1030, 740));
+
+            Playback.Wait(500);
+            Mouse.Click(button);
+            Playback.Wait(1000);
+            Mouse.Click(new Point(780, 270)); // click on the second tab ;)
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}");
+            Playback.Wait(500);
+            Keyboard.SendKeys("zzz");
+            // -- wizard closed, account for darn dialog ;(
+            Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
+            
+
+            //------------Assert Results-------------------------
+
+            // check services for warning icon to incidate mappings out of date ;)
+
+            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "TravsTestService(DsfActivityDesigner)"))
+            {
+                Assert.Fail("'Fix Errors' button not visible");
+            }
+
+            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "FetchCities(DsfActivityDesigner)"))
+            {
+                Assert.Fail("'Fix Errors' button not visible");
+            }
+
+            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "DummyService(DsfActivityDesigner)"))
+            {
+                Assert.Fail("'Fix Errors' button not visible");
+            }
+
         }
+
 
         [TestMethod]
         [TestCategory("UITest")]

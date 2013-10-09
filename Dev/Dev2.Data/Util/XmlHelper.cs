@@ -30,17 +30,17 @@ namespace Dev2.Data.Util
                                 {
                                     try
                                     {
-                                        var fragment = XNode.ReadFrom(fragmentReader) as XElement;
+                                    var fragment = XNode.ReadFrom(fragmentReader) as XElement;
 
-                                        if (fragment != null &&
-                                            fragment.Name.LocalName ==
-                                            GlobalConstants.InnerErrorTag.TrimStart('<').TrimEnd('>'))
-                                        {
-                                            count++;
-                                            result.AppendFormat(" {0} ", count);
-                                            result.AppendLine(fragment.Value);
-                                        }
+                                    if (fragment != null &&
+                                        fragment.Name.LocalName ==
+                                        GlobalConstants.InnerErrorTag.TrimStart('<').TrimEnd('>'))
+                                    {
+                                        count++;
+                                        result.AppendFormat(" {0} ", count);
+                                        result.AppendLine(fragment.Value);
                                     }
+                                }
                                     catch (Exception)
                                     {
                                         // There was an issue parsing, must be text node now ;(

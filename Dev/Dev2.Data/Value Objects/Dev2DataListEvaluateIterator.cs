@@ -22,6 +22,12 @@ namespace Dev2.DataList.Contract.Value_Objects
             }
         }
 
+        /// <summary>
+        /// Fetches the next row data.
+        /// If scalar repeat
+        /// If RS append notation repeat
+        /// </summary>
+        /// <returns></returns>
         public IList<IBinaryDataListItem> FetchNextRowData()
         {
             string error = string.Empty;

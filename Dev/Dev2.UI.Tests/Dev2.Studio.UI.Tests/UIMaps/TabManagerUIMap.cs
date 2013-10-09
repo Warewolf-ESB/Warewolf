@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using System.Drawing;
