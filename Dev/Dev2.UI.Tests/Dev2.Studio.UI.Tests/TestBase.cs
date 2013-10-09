@@ -102,9 +102,8 @@ namespace Dev2.CodedUI.Tests
 
             // Assert clicking an error focusses the correct textbox
             Mouse.Click(errorControl.GetChildren()[0]);
-            SendKeys.SendWait("^A^X");
-            Assert.AreEqual("some(<).", Clipboard.GetText(), "Wrong textbox focussed on tool help link click");
-
+            Keyboard.SendKeys("^A^X");
+            
             // enter some correct data
             SendKeys.SendWait("pre_");
 
