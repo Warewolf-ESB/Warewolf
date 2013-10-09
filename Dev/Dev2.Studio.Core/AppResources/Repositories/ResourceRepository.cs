@@ -567,7 +567,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         private string GetIconPath(dynamic data)
         {
             var iconPath = data.IconPath as string;
-            if(string.IsNullOrEmpty(iconPath) || !iconPath.Contains(".png") || !_doesPathExist(iconPath))
+            if(string.IsNullOrEmpty(iconPath) || !iconPath.Contains(".png") || !_doesPathExist(data))
             {
                 var type = data.GetValue("ResourceType");
                 ResourceType resType;
