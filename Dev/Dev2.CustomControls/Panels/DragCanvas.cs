@@ -275,6 +275,12 @@ namespace WPF.JoshSmith.Panels
 
             this.isDragInProgress = false;
 
+            // Don't continue if there was a double or tripple click
+            if(e.ClickCount > 1)
+            {
+                return;
+            }
+
             // Cache the mouse cursor location.
             this.origCursorLocation = e.GetPosition(this);
 
@@ -304,6 +310,19 @@ namespace WPF.JoshSmith.Panels
 
         #endregion // OnPreviewMouseLeftButtonDown
 
+        #region OnPreviewMouseLeftButtonUp
+        /// <summary>
+        ///  Release item being dragged once the mouse is up
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnPreviewMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            base.OnPreviewMouseLeftButtonUp(e);
+            this.ElementBeingDragged = null;
+        }
+        #endregion
+
+
         #region OnPreviewMouseMove
 
         /// <summary>
@@ -313,7 +332,7 @@ namespace WPF.JoshSmith.Panels
         protected override void OnPreviewMouseMove(MouseEventArgs e)
         {
             base.OnPreviewMouseMove(e);
-
+            
             // If no element is being dragged, there is nothing to do.
             if (this.ElementBeingDragged == null || !this.isDragInProgress)
                 return;
@@ -402,7 +421,6 @@ namespace WPF.JoshSmith.Panels
             // released, in case a context menu was opened on the drag element.
             this.ElementBeingDragged = null;
         }
-
         #endregion // OnHostPreviewMouseUp
 
         #endregion // Host Event Handlers
