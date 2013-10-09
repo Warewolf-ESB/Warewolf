@@ -24,9 +24,9 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
         public void ConnectControl_SelectionChanged_WhenHasItem_NoViewModel_ShouldNotFireMessages()
         {
             //------------Setup for test--------------------------
-            var localhostServer = CreatServer("localhost", true);
-            var remoteServer = CreatServer("remote", false);
-            var otherServer = CreatServer("disconnected", false);
+            var localhostServer = CreateServer("localhost", true);
+            var remoteServer = CreateServer("remote", false);
+            var otherServer = CreateServer("disconnected", false);
             var mockEventAggregator = new Mock<IEventAggregator>();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
@@ -45,9 +45,9 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
         public void ConnectControl_SelectionChanged_WhenHasItem_ViewModelIsSelectedFromDropDownFalse_ShouldNotFireMessages_IsEditEnabledTrue()
         {
             //------------Setup for test--------------------------
-            var localhostServer = CreatServer("localhost", true);
-            var remoteServer = CreatServer("remote", false);
-            var otherServer = CreatServer("disconnected", false);
+            var localhostServer = CreateServer("localhost", true);
+            var remoteServer = CreateServer("remote", false);
+            var otherServer = CreateServer("disconnected", false);
             var mockEventAggregator = new Mock<IEventAggregator>();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
@@ -74,9 +74,9 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
         public void ConnectControl_SelectionChanged_WhenHasItem_ViewModelIsSelectedFromDropDownFalse_ShouldNotFireMessages_IsEditEnabledFalse()
         {
             //------------Setup for test--------------------------
-            var localhostServer = CreatServer("localhost", true);
-            var remoteServer = CreatServer("remote", false);
-            var otherServer = CreatServer("disconnected", false);
+            var localhostServer = CreateServer("localhost", true);
+            var remoteServer = CreateServer("remote", false);
+            var otherServer = CreateServer("disconnected", false);
             var mockEventAggregator = new Mock<IEventAggregator>();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
@@ -103,9 +103,9 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
         public void ConnectControl_SelectionChanged_WhenHasItemNullViewModelSelectedServer_ViewModelIsSelectedFromDropDownFalse_ShouldNotFireMessages_IsEditEnabledFalse()
         {
             //------------Setup for test--------------------------
-            var localhostServer = CreatServer("localhost", true);
-            var remoteServer = CreatServer("remote", false);
-            var otherServer = CreatServer("disconnected", false);
+            var localhostServer = CreateServer("localhost", true);
+            var remoteServer = CreateServer("remote", false);
+            var otherServer = CreateServer("disconnected", false);
             var mockEventAggregator = new Mock<IEventAggregator>();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
@@ -132,9 +132,9 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
         public void ConnectControl_SelectionChanged_WhenHasItem_ViewModelIsSelectedFromDropDownTrue_ShouldFireMessages()
         {
             //------------Setup for test--------------------------
-            var localhostServer = CreatServer("localhost", true);
-            var remoteServer = CreatServer("remote", false);
-            var otherServer = CreatServer("disconnected", false);
+            var localhostServer = CreateServer("localhost", true);
+            var remoteServer = CreateServer("remote", false);
+            var otherServer = CreateServer("disconnected", false);
             var mockEventAggregator = new Mock<IEventAggregator>();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
@@ -154,7 +154,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>()), Times.Once());
         }
 
-        static ServerDTO CreatServer(string name, bool isConnected)
+        static ServerDTO CreateServer(string name, bool isConnected)
         {
             var isLocalhost = name == "localhost";
 
