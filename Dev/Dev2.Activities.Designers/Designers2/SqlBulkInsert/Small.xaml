@@ -73,7 +73,8 @@
                   Style="{StaticResource ActivityComboBoxStyle}"   
                   ItemsSource="{Binding Tables, Mode=TwoWay}" 
                   DisplayMemberPath="TableName"
-                  SelectedItem="{Binding ModelItem.TableName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                      
+                  SelectedValuePath="TableName"
+                  SelectedValue="{Binding ModelItem.TableName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                      
                   Margin="0,2,1,2" 
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_TableName_AutoID}">
         </ComboBox>
