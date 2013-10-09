@@ -150,7 +150,7 @@
                                         d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Content="{Binding OutputColumnName, UpdateSourceTrigger=PropertyChanged}"
+                            <Label Content="{Binding OutputColumn.ColumnName, UpdateSourceTrigger=PropertyChanged}"
                                    VerticalAlignment="Center">
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">

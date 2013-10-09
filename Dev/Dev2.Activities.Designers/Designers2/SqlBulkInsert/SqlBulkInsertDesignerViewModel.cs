@@ -1,9 +1,11 @@
 using System.Activities.Presentation.Model;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Common;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
@@ -12,6 +14,8 @@ using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.TO;
+using Newtonsoft.Json;
+using Unlimited.Framework;
 
 namespace Dev2.Activities.Designers2.SqlBulkInsert
 {
@@ -71,6 +75,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         // DO NOT bind to these properties - these are here for convenience only!!!
         DbSource Database { get { return GetProperty<DbSource>(); } }
+        string TableName { get { return GetProperty<string>(); } }
 
         protected override void OnModelItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -111,8 +116,8 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             //}
 
             Tables.Clear();
-            var tables = dbSource.GetTables();
-            foreach(var table in tables.OrderBy(t => t.TableName))
+            var tables = GetDatabaseTables();
+            foreach(var table in tables)
             {
                 Tables.Add(table);
             }
@@ -120,6 +125,17 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         void LoadTableColumns()
         {
+            var table = Tables.FirstOrDefault(t => t.TableName == TableName);
+            if(table == null)
+            {
+                return;
+            }
+
+            ModelItemCollection.Clear();
+            foreach(var mapping in table.Columns.Select(column => new DataColumnMapping { OutputColumn = column }))
+            {
+                ModelItemCollection.Add(mapping);
+            }
         }
 
         void EditDatabase()
@@ -133,6 +149,20 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         void SetDatabase(DbSource dbSource)
         {
             ModelItem.SetProperty("Database", dbSource);
+        }
+
+        IEnumerable<DbTable> GetDatabaseTables()
+        {
+            dynamic request = new UnlimitedObject();
+            request.Service = "GetDatabaseTablesService";
+            request.Database = JsonConvert.SerializeObject(Database);
+            request.TableName = TableName;
+
+            var workspaceID = _environmentModel.Connection.WorkspaceID;
+
+            var result = _environmentModel.Connection.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID);
+
+            return JsonConvert.DeserializeObject<List<DbTable>>(result);
         }
     }
 }
