@@ -116,6 +116,7 @@
     <Compile Include="Activities\DsfSortRecordsActivity.cs" />
     <Compile Include="Activities\DsfCountRecordsetActivity.cs" />
     <Compile Include="Activities\DsfMultiAssignActivity.cs" />
+    <Compile Include="Activities\DsfSqlBulkInsertActivity.cs" />
     <Compile Include="Activities\DsfUniqueActivity.cs" />
     <Compile Include="Activities\DsfWebGetRequestActivity.cs" />
     <Compile Include="Activities\DsfWebPageActivity.cs" />
