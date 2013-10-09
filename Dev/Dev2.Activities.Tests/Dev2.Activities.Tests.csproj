@@ -117,6 +117,7 @@
     <Compile Include="ActivityTests\Scripting\DsfScriptingActivityTests.cs" />
     <Compile Include="ActivityTests\SendEmailActivityTests.cs" />
     <Compile Include="ActivityTests\SortRecordsTest.cs" />
+    <Compile Include="ActivityTests\SqlBulkInsertActivityTests.cs" />
     <Compile Include="ActivityTests\TestActivity.cs" />
     <Compile Include="ActivityTests\FileReadTests.cs" />
     <Compile Include="ActivityTests\FileWriteTests.cs" />
