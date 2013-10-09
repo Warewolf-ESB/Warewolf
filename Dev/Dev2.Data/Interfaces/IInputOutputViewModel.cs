@@ -15,6 +15,7 @@ namespace Dev2.Data.Interfaces
         string DisplayDefaultValue { get; }
         bool IsNew { get; set; }
         bool RequiredMissing { get; set; }
+        string TypeName { get; set; }
 
         IDev2Definition GetGenerationTO();
     }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
-using Dev2.Data.Interfaces;
+using Dev2.TO;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -13,10 +13,10 @@ namespace Dev2.Activities
         public DsfSqlBulkInsertActivity()
             : base("SQL Bulk Insert")
         {
-            InputMappings = new List<IInputOutputViewModel>();
+            InputMappings = new List<InputOutputTO>();
         }
 
-        public IList<IInputOutputViewModel> InputMappings
+        public IList<InputOutputTO> InputMappings
         {
             get;
             set;

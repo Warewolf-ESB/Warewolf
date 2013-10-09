@@ -154,6 +154,7 @@
     <Compile Include="Behaviors\DataGridFocusTextOnLoadBehavior.cs" />
     <Compile Include="AttachedProperties\FocusSetter.cs" />
     <Compile Include="AttachedProperties\WizardEngineAttachedProperties.cs" />
+    <Compile Include="Designers2\SqlBulkInsert\SqlBulkInsertDesignerViewModel.cs" />
     <Compile Include="Preview\PreviewRequestedEventArgs.cs" />
     <Compile Include="Preview\PreviewView.xaml.cs">
       <DependentUpon>PreviewView.xaml</DependentUpon>

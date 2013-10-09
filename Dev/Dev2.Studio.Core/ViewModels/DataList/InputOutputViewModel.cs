@@ -2,7 +2,6 @@
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 
@@ -19,10 +18,24 @@ namespace Dev2.Studio.ViewModels.DataList
         private bool _required;
         private string _recordSetName;
         bool _isNew;
-        bool _requiredMissing;        
+        bool _requiredMissing;
+        string _typeName;
 
         #region Properties
 
+        public string TypeName
+        {
+            get
+            {
+                return _typeName;
+            }
+            set
+            {
+                _typeName = value;
+
+                base.OnPropertyChanged("TypeName");
+            }
+        }
         public bool RequiredMissing
         {
             get
@@ -31,7 +44,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             set
             {
-                if (value.Equals(_requiredMissing))
+                if(value.Equals(_requiredMissing))
                 {
                     return;
                 }
@@ -176,7 +189,6 @@ namespace Dev2.Studio.ViewModels.DataList
         public bool EmptyToNull { get; private set; }
 
         #endregion
-
 
         public InputOutputViewModel(string name, string value, string mapsTo, string defaultValue, bool required, string recordSetName)
             : this(name, value, mapsTo, defaultValue, required, recordSetName, false)
