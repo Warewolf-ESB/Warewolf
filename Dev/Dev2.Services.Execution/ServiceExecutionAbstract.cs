@@ -23,7 +23,7 @@ namespace Dev2.Services.Execution
         public IDSFDataObject DataObj { get; set; }
         public bool HandlesOutputFormatting { get; private set; }
         public bool RequiresFormatting { get; set; }
-        readonly ErrorResultTO _errorResult;
+        public readonly ErrorResultTO _errorResult;
 
         /// <summary>
         /// Construction for ServiceExecution
@@ -162,6 +162,9 @@ namespace Dev2.Services.Execution
                 {
                     disposable.Dispose();
                 }
+
+                // ensure errors bubble up ;)
+                errors.MergeErrors(_errorResult);
             }
         }
 

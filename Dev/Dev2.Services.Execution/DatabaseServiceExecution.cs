@@ -100,7 +100,11 @@ namespace Dev2.Services.Execution
         {
             var errors = new ErrorResultTO();
             object executeService;
-            return SqlExecution(errors, out executeService) ? executeService : string.Empty;
+            var result =  SqlExecution(errors, out executeService) ? executeService : string.Empty;
+
+            _errorResult.MergeErrors(errors);
+
+            return result;
         }
 
         bool SqlExecution(ErrorResultTO errors, out object executeService)

@@ -28,15 +28,26 @@ namespace Dev2.Data.Util
                             {
                                 if (fragmentReader.Read())
                                 {
-                                    var fragment = XNode.ReadFrom(fragmentReader) as XElement;
-
-                                    if (fragment != null &&
-                                        fragment.Name.LocalName ==
-                                        GlobalConstants.InnerErrorTag.TrimStart('<').TrimEnd('>'))
+                                    try
                                     {
+                                        var fragment = XNode.ReadFrom(fragmentReader) as XElement;
+
+                                        if (fragment != null &&
+                                            fragment.Name.LocalName ==
+                                            GlobalConstants.InnerErrorTag.TrimStart('<').TrimEnd('>'))
+                                        {
+                                            count++;
+                                            result.AppendFormat(" {0} ", count);
+                                            result.AppendLine(fragment.Value);
+                                        }
+                                    }
+                                    catch (Exception)
+                                    {
+                                        // There was an issue parsing, must be text node now ;(
+
                                         count++;
                                         result.AppendFormat(" {0} ", count);
-                                        result.AppendLine(fragment.Value);
+                                        result.AppendLine(fragmentReader.Value);
                                     }
                                 }
                             }

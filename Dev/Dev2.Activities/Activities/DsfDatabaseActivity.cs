@@ -33,7 +33,7 @@ namespace Dev2.Activities
             {
                 var outputMappings = remainingMappings.FirstOrDefault(c => c.Key == enDev2ArgumentType.Output);
                 compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputMappings.Value, out execErrors);
-                errors.MergeErrors(errors);
+                errors.MergeErrors(execErrors);
             }
 
             return result;

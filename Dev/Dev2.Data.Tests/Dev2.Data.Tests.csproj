@@ -116,6 +116,7 @@
     </Compile>
     <Compile Include="TO\ErrorResultTOTests.cs" />
     <Compile Include="TO\CompileMessageTOTests.cs" />
+    <Compile Include="XmlHelperTest.cs" />
     <Compile Include="XPathParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
