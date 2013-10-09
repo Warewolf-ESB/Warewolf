@@ -1,5 +1,4 @@
-﻿using System.Activities.Statements;
-using System.Threading;
+﻿using System.Threading;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
