@@ -129,6 +129,7 @@
     <Compile Include="Activities\IDev2Activity.cs" />
     <Compile Include="Activities\IEmailSender.cs" />
     <Compile Include="Activities\IFlowNodeActivity.cs" />
+    <Compile Include="Activities\ISqlBulkInserter.cs" />
     <Compile Include="Activities\IWebRequestInvoker.cs" />
     <Compile Include="Activities\ModalChecker.cs" />
     <Compile Include="Activities\Scripting\DsfScriptingActivity.cs" />
@@ -146,6 +147,7 @@
     <Compile Include="Activities\PathOperations\DsfPathRename.cs" />
     <Compile Include="Activities\PathOperations\DsfUnZip.cs" />
     <Compile Include="Activities\PathOperations\DsfZip.cs" />
+    <Compile Include="Activities\SqlBulkInserter.cs" />
     <Compile Include="Activities\WebRequestInvoker.cs" />
     <Compile Include="Enums\enFindMissingType.cs" />
     <Compile Include="Factories\Dev2FindMissingStrategyFactory.cs" />

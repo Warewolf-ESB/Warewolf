@@ -36,9 +36,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var activity = GetSendEmailActivity();
             //------------Execute Test---------------------------
-            var getSystemInformation = activity.EmailSender;
+            var emailSender = activity.EmailSender;
             //------------Assert Results-------------------------
-            Assert.IsInstanceOfType(getSystemInformation,typeof(EmailSender));
+            Assert.IsInstanceOfType(emailSender,typeof(EmailSender));
         }
 
         [TestMethod]
