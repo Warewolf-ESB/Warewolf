@@ -20,19 +20,19 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
     self.inputMappingLink = "Please select an saveaction first (Step 3)";
     self.outputMappingLink = "Please run a test first (Step 4)";
 
-    self.data = new ServiceData(self.isEditing ? resourceID : $.Guid.Empty(), "PluginService");  
+    self.data = new ServiceData(self.isEditing ? resourceID : $.Guid.Empty(), "PluginService");
     self.data.namespace = ko.observable("");
 
     self.sources = ko.observableArray();
     self.namespaces = ko.observableArray();
     self.namespaceSelected = ko.observable();
-    self.namespaceSelected.subscribe(function (newValue) {       
+    self.namespaceSelected.subscribe(function (newValue) {
         if (newValue) {
             self.data.namespace(newValue.FullName);
             self.loadMethods();
         }
     });
-    
+
     self.sourceMethods = ko.observableArray();
     self.sourceMethodSearchTerm = ko.observable("");
     self.sourceMethodSearchResults = ko.computed(function () {
@@ -44,7 +44,7 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
             return serviceAction.Name.toLowerCase().indexOf(term) !== -1;
         });
     });
-    
+
     self.hasMethod = ko.computed(function () {
         return self.data.method.Name() !== "";
     });
@@ -53,9 +53,9 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
         return self.hasMethod();
     });
 
-    self.hasTestResults = ko.observable(false);    
+    self.hasTestResults = ko.observable(false);
     self.hasTestResultRecords = ko.observable(false);
-    self.testErrorMessage = ko.observable("");  
+    self.testErrorMessage = ko.observable("");
     self.hasTestErrors = ko.observable(false);
     self.isFormValid = ko.computed(function () {
         return self.hasTestResults();
@@ -73,11 +73,11 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
     self.data.source.subscribe(function (newValue) {
         self.loadNamespaces(newValue);
     });
-    
+
     self.data.method.Name.subscribe(function (newValue) {
         self.pushRecordsets([]);
     });
-    
+
     self.clearSelectedMethod = function () {
         if (!self.isLoading) {
             self.data.method.Name("");
@@ -86,7 +86,7 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
             self.pushRecordsets([]);
         }
     };
-    
+
     self.title = ko.observable("New Service");
     self.title.subscribe(function (newValue) {
         document.title = newValue;
@@ -108,13 +108,13 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
         // BUG 9500 - 2013.05.31 - TWR : fixed
         return ko.toJSON(self.data);
     };
-    
+
     self.selectSourceByID = function (theID) {
         theID = theID.toLowerCase();
         var found = false;
         $.each(self.sources(), function (index, source) {
             if (source.ResourceID.toLowerCase() === theID) {
-                found = true;               
+                found = true;
                 self.data.source(source); // This will trigger a call to loadMethods
                 return false;
             }
@@ -122,12 +122,12 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
         });
         return found;
     };
-    
-    self.selectSourceByName = function(theName) {
+
+    self.selectSourceByName = function (theName) {
         var found = false;
         if (theName) {
             theName = theName.toLowerCase();
-            $.each(self.sources(), function(index, source) {
+            $.each(self.sources(), function (index, source) {
                 if (source.ResourceName.toLowerCase() === theName) {
                     found = true;
                     self.data.source(source); // This will trigger a call to loadMethods
@@ -137,7 +137,7 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
             });
         }
         return found;
-    };  
+    };
 
     self.selectNamespaceByName = function (theName) {
         var found = false;
@@ -157,22 +157,22 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
     };
 
 
-    self.pushRecordsets = function (result) {       
-        var hasResults = result.length > 0;        
+    self.pushRecordsets = function (result) {
+        var hasResults = result.length > 0;
 
         self.hasTestResultRecords(hasResults);
         self.hasTestResults(hasResults);
 
         recordsets.pushResult(self.data.recordsets, result);
     };
-    
+
     self.load = function () {
         self.isLoading = true; // BUG 9500 - 2013.05.31 - TWR : added
-        self.loadSources(function() {
+        self.loadSources(function () {
             self.loadService();
         });
     };
-    
+
     self.loadService = function () {
         var args = ko.toJSON({
             resourceID: resourceID,
@@ -183,15 +183,15 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
             self.data.resourceType(result.ResourceType);
             self.data.resourceName(result.ResourceName);
             self.data.resourcePath(result.ResourcePath);
-            
+
             if (!result.ResourcePath && resourcePath) {
                 self.data.resourcePath(resourcePath);
             }
-            
+
             // BUG 9500 - 2013.05.31 - TWR : added           
             self.data.namespace(result.Namespace);
-          
-            var found = sourceName && self.selectSourceByName(sourceName);           
+
+            var found = sourceName && self.selectSourceByName(sourceName);
             if (!found) {
                 if (!utils.IsNullOrEmptyGuid(result.Source.ResourceID)) {
                     self.selectSourceByID(result.Source.ResourceID);
@@ -203,7 +203,7 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
                     }
                 }
             }
-            
+
             // MUST set these AFTER setting data.source otherwise they will be blanked!
             if (result.Method) {
                 self.data.method.Name(result.Method.Name);
@@ -227,14 +227,14 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
             }
         });
     };
-    
+
     self.loadMethods = function () {
         // BUG 9500 - 2013.05.31 - TWR : DO NOT empty self.data.method properties otherwise action selection does not work!!!
         self.clearSelectedMethod();
         self.sourceMethods.removeAll();
         self.sourceMethodSearchTerm("");
         self.isSourceMethodsLoading(true);
-        
+
         // BUG 9500 - 2013.05.31 - TWR : PluginMethods changed to use PluginService as args
         $.post("Service/PluginServices/Methods" + window.location.search, self.getJsonData(), function (result) {
             self.isSourceMethodsLoading(false);
@@ -258,7 +258,7 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
             self.isLoading = false; // BUG 9500 - 2013.05.31 - TWR : added
         });
     };
-    
+
     self.loadNamespaces = function (source) {
         self.clearSelectedMethod();
         self.sourceMethods.removeAll();
@@ -280,7 +280,7 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
     self.showTab = function (tabIndex) {
         $tabs.tabs("option", "active", tabIndex);
     };
-    
+
     self.showSource = function (theSourceName) {
         // 
         // pluginSourceViewModel is a global variable instantiated in PluginSource.htm
@@ -299,7 +299,7 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
             self.data.source(result); // This will trigger a call to loadMethods
         });
     };
-    
+
     self.editSource = function () {
         return self.showSource(self.data.source().ResourceName);
     };
@@ -307,11 +307,11 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
     self.newSource = function () {
         return self.showSource("");
     };
-    
+
     self.showAction = function () {
         $actionInspectorDialog.dialog("open");
     };
-    
+
     self.testAction = function () {
         self.isTestResultsLoading(true);
         $.post("Service/PluginServices/Test" + window.location.search, self.getJsonData(), function (result) {
