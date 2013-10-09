@@ -13,10 +13,10 @@ namespace Dev2.Activities
         public DsfSqlBulkInsertActivity()
             : base("SQL Bulk Insert")
         {
-            InputMappings = new List<SqlBulkInsertTO>();
+            InputMappings = new List<DataColumnMapping>();
         }
 
-        public IList<SqlBulkInsertTO> InputMappings
+        public IList<DataColumnMapping> InputMappings
         {
             get;
             set;

@@ -445,11 +445,11 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sql Bulk Insert Input Data Help Text goes here.
+        ///   Looks up a localized string similar to Sql Bulk Insert Input Column Help Text goes here.
         /// </summary>
-        public static string SqlBulkInsertInputDataHelpText {
+        public static string SqlBulkInsertInputColumnHelpText {
             get {
-                return ResourceManager.GetString("SqlBulkInsertInputDataHelpText", resourceCulture);
+                return ResourceManager.GetString("SqlBulkInsertInputColumnHelpText", resourceCulture);
             }
         }
         

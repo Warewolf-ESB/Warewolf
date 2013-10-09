@@ -207,7 +207,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="TO\InputOutputTO.cs" />
+    <Compile Include="TO\DataColumnMapping.cs" />
     <Compile Include="TO\XPathDTO.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Utilities\ActivityHelper.cs" />

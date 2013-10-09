@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
@@ -6,18 +7,21 @@ using Dev2.Providers.Validation.Rules;
 
 namespace Dev2.TO
 {
-    public class SqlBulkInsertTO : ObservableObject, IDev2TOFn, IPerformsValidation
+    public class DataColumnMapping : ObservableObject, IDev2TOFn, IPerformsValidation
     {
-        string _inputData;
-        string _outputColumn;
-        string _outputColumnType;
         int _indexNumber;
+        string _inputColumn;
+        string _outputColumnName;
+        Type _outputColumnDataType;
+        int _outputColumnMaxLength;
 
-        public string InputData { get { return _inputData; } set { OnPropertyChanged(ref _inputData, value); } }
+        public string InputColumn { get { return _inputColumn; } set { OnPropertyChanged(ref _inputColumn, value); } }
 
-        public string OutputColumn { get { return _outputColumn; } set { OnPropertyChanged(ref _outputColumn, value); } }
+        public string OutputColumnName { get { return _outputColumnName; } set { OnPropertyChanged(ref _outputColumnName, value); } }
 
-        public string OutputColumnType { get { return _outputColumnType; } set { OnPropertyChanged(ref _outputColumnType, value); } }
+        public Type OutputColumnDataType { get { return _outputColumnDataType; } set { OnPropertyChanged(ref _outputColumnDataType, value); } }
+
+        public int OutputColumnMaxLength { get { return _outputColumnMaxLength; } set { OnPropertyChanged(ref _outputColumnMaxLength, value); } }
 
         #region Implementation of IDev2TOFn
 

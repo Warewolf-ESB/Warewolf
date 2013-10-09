@@ -34,39 +34,28 @@
         
         <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
         
-        <DataGrid.Columns>
-            <DataGridTemplateColumn Width="25"
-                                    d:DataContext="{d:DesignInstance Type=dto:SqlBulkInsertTO}"
-                                    IsReadOnly="True">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <Label Content="{Binding IndexNumber, UpdateSourceTrigger=PropertyChanged}"
-                               VerticalAlignment="Center" />
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-
+        <DataGrid.Columns>        
             <DataGridTemplateColumn Width="*"
                                     Header="Input Data or [[Variable]]"
-                                    d:DataContext="{d:DesignInstance Type=dto:SqlBulkInsertTO}">
+                                    d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <ui:IntellisenseTextBox AllowUserInsertLine="False"
                                                 VerticalAlignment="Center"
                                                 WrapInBrackets="True"
-                                                Text="{Binding InputData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Text="{Binding InputColumn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
                                                 Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                             <i:Interaction.Behaviors>
-                                <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertInputDataHelpText}"
+                                <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertInputColumnHelpText}"
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                 <errors:ErrorsSetter Source="{Binding}"
-                                                     SourcePropertyName="InputData"
-                                                     SourcePropertyValue="{Binding InputData, UpdateSourceTrigger=PropertyChanged}"
+                                                     SourcePropertyName="InputColumn"
+                                                     SourcePropertyValue="{Binding InputColumn, UpdateSourceTrigger=PropertyChanged}"
                                                      Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                             </i:Interaction.Behaviors>
                             <AutomationProperties.AutomationId>
-                                <MultiBinding StringFormat="UI_{0}_Row{1}_FieldName_AutoID">
+                                <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID"
                                              RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
                                     <Binding Path="IndexNumber" />
@@ -89,13 +78,13 @@
             </DataGridTemplateColumn>
 
             <DataGridTemplateColumn Width="*"
-                                    d:DataContext="{d:DesignInstance Type=dto:SqlBulkInsertTO}">
+                                    d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <Label Content="{Binding OutputColumn, UpdateSourceTrigger=PropertyChanged}"
+                        <Label Content="{Binding OutputColumnName, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center">
                              <AutomationProperties.AutomationId>
-                                <MultiBinding StringFormat="UI_{0}_Row{1}_MapsTo_AutoID">
+                                <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID"
                                              RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
                                     <Binding Path="IndexNumber" />

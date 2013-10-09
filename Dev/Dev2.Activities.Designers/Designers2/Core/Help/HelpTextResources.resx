@@ -290,7 +290,7 @@ To traverse an retrieve the raw response from a webpage, enter it in here.</valu
   <data name="DateTimeAddTimeTypeHelpText" xml:space="preserve">
     <value>Select the unit of time to add or subtract. This is ignored if the unit is blank or 0.</value>
   </data>
-  <data name="SqlBulkInsertInputDataHelpText" xml:space="preserve">
-    <value>Sql Bulk Insert Input Data Help Text goes here</value>
+  <data name="SqlBulkInsertInputColumnHelpText" xml:space="preserve">
+    <value>Sql Bulk Insert Input Column Help Text goes here</value>
   </data>
 </root>
