@@ -6,7 +6,9 @@ using System.Data.SqlClient;
 using Dev2.Common;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
+using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Dev2.Util;
@@ -17,6 +19,7 @@ namespace Dev2.Activities
 {
     public class DsfSqlBulkInsertActivity : DsfActivityAbstract<string>
     {
+        [NonSerialized]
         ISqlBulkInserter _sqlBulkInserter;
 
         public DsfSqlBulkInsertActivity()
@@ -53,7 +56,7 @@ namespace Dev2.Activities
 
         public bool KeepTableLock { get; set; }
         
-        public ISqlBulkInserter SqlBulkInserter
+        internal ISqlBulkInserter SqlBulkInserter
         {
             get
             {
@@ -72,25 +75,71 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            IDev2DataListUpsertPayloadBuilder<List<string>> toUpsert = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
+            var dataObject = context.GetExtension<IDSFDataObject>();
+            var compiler = DataListFactory.CreateDataListCompiler();
+            var toUpsert = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
             toUpsert.IsDebug = (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke);
             toUpsert.ResourceID = dataObject.ResourceID;
-            ErrorResultTO errors = new ErrorResultTO();
-            ErrorResultTO allErrors = new ErrorResultTO();
-            Guid executionID = DataListExecutionID.Get(context);
+            var errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var executionID = DataListExecutionID.Get(context);
 
             try
             {
+                if(InputMappings.Count > 0)
+                {
                 var dataTableToInsert = BuildDataTableToInsert();
                 SqlBulkInserter.CurrentOptions = BuildSqlBulkCopyOptions();
+
+                    IDev2IteratorCollection iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
+                    allErrors.MergeErrors(errors);
+                    List<IDev2DataListEvaluateIterator> listOfIterators = new List<IDev2DataListEvaluateIterator>();
+
+
+                    foreach(var row in InputMappings)
+                    {
+                        IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionID, enActionType.User, row.InputColumn, false, out errors);
+                        allErrors.MergeErrors(errors);
+                        if(dataObject.IsDebugMode())
+                        {
+                            AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, expressionsEntry, row.OutputColumn.DataType, executionID);
+                        }
+                        IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
+
+                        iteratorCollection.AddIterator(itr);
+                        listOfIterators.Add(itr);
+                    }
+                    
+                    while(iteratorCollection.HasMoreData())
+                    {
+                        var dataRow = dataTableToInsert.NewRow();
+                        int pos = 0;
+                        foreach(var iterator in listOfIterators)
+                        {
+
+                            var val = iteratorCollection.FetchNextRow(iterator);
+
+                            if(val != null)
+                            {
+                                string value = val.TheValue;
+                                dataRow[pos] = value;
+                                pos++;
+                            }
+                        }
+                        dataTableToInsert.Rows.Add(dataRow);
+                    }
+
                 SqlBulkInserter.Insert(new SqlBulkCopy("", SqlBulkInserter.CurrentOptions), dataTableToInsert);
+            }
             }
             catch(Exception e)
             {
                 Console.WriteLine(e);
             }
+        }
+
+        void AddDebugInputItem(string inputColumn, string outputColumnName, IBinaryDataListEntry expressionsEntry, Type outputColumnDataType, Guid executionID)
+        {
         }
 
         SqlBulkCopyOptions BuildSqlBulkCopyOptions()

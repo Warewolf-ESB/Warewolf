@@ -9,7 +9,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
+
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -310,6 +310,59 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(typeof(decimal), returnedDataTable.Columns[3].DataType);
             Assert.AreEqual(-1, returnedDataTable.Columns[3].MaxLength); // Max Length Only applies to strings            
 
+
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSqlBulkInsertActivity_Execute")]
+        public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsAndDataFromDataList_HasDataTableWithData()
+        {
+            //------------Setup for test--------------------------
+            DataTable returnedDataTable = null;
+            var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
+            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()))
+                .Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedDataTable = dataTable);
+            var dataColumnMappings = new List<DataColumnMapping>
+            {
+                new DataColumnMapping
+                {
+                    InputColumn = "[[recset1().field1]]",
+                    OutputColumn = new DbColumn {ColumnName = "TestCol",
+                    DataType = typeof(String),
+                    MaxLength = 100},
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1().field2]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol2",
+                    DataType = typeof(Int32),
+                    MaxLength = 100 }
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1().field3]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol3",
+                    DataType = typeof(char),
+                    MaxLength = 100 }
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1().field4]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol4",
+                    DataType = typeof(decimal),
+                    MaxLength = 100 }
+                }
+            };
+            SetupArguments("<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1></root>", "<root><recset1><field1/><field2/><field3/><field4/></recset1></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
+            //------------Execute Test---------------------------
+            ExecuteProcess();
+            //------------Assert Results-------------------------
+            mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
+            Assert.IsNotNull(returnedDataTable);
+            Assert.AreEqual(4, returnedDataTable.Columns.Count);
+            Assert.AreEqual(1,returnedDataTable.Rows.Count);
+            Assert.AreEqual("Bob", returnedDataTable.Rows[0]["TestCol"]);
+            Assert.AreEqual(2, returnedDataTable.Rows[0]["TestCol2"]);
+            Assert.AreEqual('C', returnedDataTable.Rows[0]["TestCol3"]);
+            Assert.AreEqual(21.2m, returnedDataTable.Rows[0]["TestCol4"]);
 
         }
 
