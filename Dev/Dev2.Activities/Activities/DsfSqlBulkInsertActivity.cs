@@ -3,11 +3,11 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using Dev2.Common;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
@@ -28,11 +28,7 @@ namespace Dev2.Activities
             InputMappings = new List<DataColumnMapping>();
         }
 
-        public IList<DataColumnMapping> InputMappings
-        {
-            get;
-            set;
-        }
+        public IList<DataColumnMapping> InputMappings{ get; set; }
 
         [Inputs("Database")]
         public DbSource Database { get; set; }
@@ -80,62 +76,63 @@ namespace Dev2.Activities
             var toUpsert = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
             toUpsert.IsDebug = (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke);
             toUpsert.ResourceID = dataObject.ResourceID;
-            var errors = new ErrorResultTO();
+            var errorResultTO = new ErrorResultTO();
             var allErrors = new ErrorResultTO();
             var executionID = DataListExecutionID.Get(context);
 
             try
             {
-                if(InputMappings.Count > 0)
-                {
                 var dataTableToInsert = BuildDataTableToInsert();
                 SqlBulkInserter.CurrentOptions = BuildSqlBulkCopyOptions();
 
-                    IDev2IteratorCollection iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
-                    allErrors.MergeErrors(errors);
-                    List<IDev2DataListEvaluateIterator> listOfIterators = new List<IDev2DataListEvaluateIterator>();
-
-
-                    foreach(var row in InputMappings)
-                    {
-                        IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionID, enActionType.User, row.InputColumn, false, out errors);
-                        allErrors.MergeErrors(errors);
-                        if(dataObject.IsDebugMode())
-                        {
-                            AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, expressionsEntry, row.OutputColumn.DataType, executionID);
-                        }
-                        IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
-
-                        iteratorCollection.AddIterator(itr);
-                        listOfIterators.Add(itr);
-                    }
-                    
-                    while(iteratorCollection.HasMoreData())
-                    {
-                        var dataRow = dataTableToInsert.NewRow();
-                        int pos = 0;
-                        foreach(var iterator in listOfIterators)
-                        {
-
-                            var val = iteratorCollection.FetchNextRow(iterator);
-
-                            if(val != null)
-                            {
-                                string value = val.TheValue;
-                                dataRow[pos] = value;
-                                pos++;
-                            }
-                        }
-                        dataTableToInsert.Rows.Add(dataRow);
-                    }
-
+                if(InputMappings != null && InputMappings.Count > 0)
+                {
+                    var iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
+                    allErrors.MergeErrors(errorResultTO);
+                    var listOfIterators = GetIteratorsFromInputMappings(compiler, executionID, allErrors, dataObject, iteratorCollection, out errorResultTO);
+                    FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
+                }
                 SqlBulkInserter.Insert(new SqlBulkCopy("", SqlBulkInserter.CurrentOptions), dataTableToInsert);
-            }
             }
             catch(Exception e)
             {
                 Console.WriteLine(e);
             }
+        }
+
+        static void FillDataTableWithDataFromDataList(IDev2IteratorCollection iteratorCollection, DataTable dataTableToInsert, List<IDev2DataListEvaluateIterator> listOfIterators)
+        {
+            while(iteratorCollection.HasMoreData())
+            {
+                var dataRow = dataTableToInsert.NewRow();
+                var pos = 0;
+                foreach(var value in from iterator in listOfIterators select iteratorCollection.FetchNextRow(iterator) into val where val != null select val.TheValue)
+                {
+                    dataRow[pos] = value;
+                    pos++;
+                }
+                dataTableToInsert.Rows.Add(dataRow);
+            }
+        }
+
+        List<IDev2DataListEvaluateIterator> GetIteratorsFromInputMappings(IDataListCompiler compiler, Guid executionID, ErrorResultTO allErrors, IDSFDataObject dataObject, IDev2IteratorCollection iteratorCollection, out ErrorResultTO errorsResultTO)
+        {
+            errorsResultTO = new ErrorResultTO();
+            var listOfIterators = new List<IDev2DataListEvaluateIterator>();
+            foreach(var row in InputMappings)
+            {
+                var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, row.InputColumn, false, out errorsResultTO);
+                allErrors.MergeErrors(errorsResultTO);
+                if(dataObject.IsDebugMode())
+                {
+                    AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, expressionsEntry, row.OutputColumn.DataType, executionID);
+                }
+                var itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
+
+                iteratorCollection.AddIterator(itr);
+                listOfIterators.Add(itr);
+            }
+            return listOfIterators;
         }
 
         void AddDebugInputItem(string inputColumn, string outputColumnName, IBinaryDataListEntry expressionsEntry, Type outputColumnDataType, Guid executionID)
@@ -178,9 +175,7 @@ namespace Dev2.Activities
             var dataTableToInsert = new DataTable();
             foreach(var dataColumnMapping in InputMappings)
             {
-                var dataColumn = new DataColumn();
-                dataColumn.ColumnName = dataColumnMapping.OutputColumn.ColumnName;
-                dataColumn.DataType = dataColumnMapping.OutputColumn.DataType;
+                var dataColumn = new DataColumn { ColumnName = dataColumnMapping.OutputColumn.ColumnName, DataType = dataColumnMapping.OutputColumn.DataType };
                 if(dataColumn.DataType == typeof(String))
         {
                     dataColumn.MaxLength = dataColumnMapping.OutputColumn.MaxLength;
