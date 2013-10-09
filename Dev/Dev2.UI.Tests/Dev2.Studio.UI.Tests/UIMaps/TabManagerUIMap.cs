@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using System.Drawing;
 using System.Windows.Forms;
@@ -102,22 +103,17 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public void CloseAllTabs()
         {
+            var explorerUiMap = new ExplorerUIMap();
             int openTabs = GetTabCount();
             var canCloseTab = true;
             while(openTabs != 0 && canCloseTab)
             {
                 string theTab = GetActiveTabName();
 
-                UITestControl zeTab = FindTabByName(theTab);
-                Mouse.Click(new Point(zeTab.BoundingRectangle.X + 400, zeTab.BoundingRectangle.Y + 500));
+                //try close explorer pane
+                explorerUiMap.ClosePane();
                 Playback.Wait(2500);
-
                 canCloseTab = CloseTab_Click_No(theTab);
-                SendKeys.SendWait("n");
-
-                SendKeys.SendWait("{DELETE}"); // 
-                SendKeys.SendWait("{BACKSPACE}"); // Incase it was actually typed
-                //
                 openTabs = GetTabCount();
             }
         }

@@ -70,12 +70,6 @@
   </ItemGroup>
   <!--  Linked Configs -->
   <ItemGroup>
-    <None Include="..\..\Dev2.Server\Warewolf Server.exe.config">
-      <Link>Warewolf Server.exe.config</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AdornerTests.cs" />
     <Compile Include="Bootstrap\StringResourcesTest1.Designer.cs" />
     <Compile Include="Bootstrap\UIBootstrap.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
+using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 
 namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 {
@@ -440,6 +441,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             SendKeys.SendWait("{DOWN}");
             Thread.Sleep(100);
             SendKeys.SendWait("{ENTER}");
+        }
+
+        public void ClosePane()
+        {
+            var tabManager = new TabManagerUIMap();
+            var getActiveTab = tabManager.GetActiveTab();
+            Mouse.Click(new Point(getActiveTab.BoundingRectangle.Right - 100, getActiveTab.BoundingRectangle.Y + 500));
         }
     }
 }

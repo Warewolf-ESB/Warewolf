@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Forms;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
@@ -19,6 +18,7 @@ using Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Point = System.Drawing.Point;
 
 namespace Dev2.Studio.UI.Tests
 {
@@ -129,7 +129,7 @@ namespace Dev2.Studio.UI.Tests
             OpenWorkFlow(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
             OpenMenuItem("View in Browser");
             Playback.Wait(5000);
-            SendKeys.SendWait("^{F4}");
+            //assert error dialog not showing
             var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
             if(child != null) Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(Window));
         }
@@ -159,7 +159,7 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait("{F5}");
             Playback.Wait(1000);
 
-            Assert.AreEqual(34, OutputUIMap.GetOutputWindow().Count, "Cannot get full debug output");
+            Assert.IsFalse(OutputUIMap.IsAnyStepsInError());
         }
 
         [TestMethod]
@@ -186,7 +186,7 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait("{F5}");
             Playback.Wait(1000);
 
-            Assert.AreEqual(34, OutputUIMap.GetOutputWindow().Count, "Cannot get full debug output");
+            Assert.IsFalse(OutputUIMap.IsAnyStepsInError());
         }
 
         [TestMethod]
