@@ -122,7 +122,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [TestCategory("UITest")]
         [Description("Test that clicking on the help button does indeed open an example workflow")]
-        [Owner("Tshepo")]
+        [Owner("Tshepo")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void AdornerHelpButtonOpenAnExampleWorlkflowTest()
         {
             // Create the workflow

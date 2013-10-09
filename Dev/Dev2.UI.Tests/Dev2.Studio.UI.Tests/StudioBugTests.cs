@@ -120,7 +120,7 @@ namespace Dev2.Studio.UI.Tests
 
 
         //2013.05.29: Ashley Lewis for bug 9455 - Dont allow copy paste workflow xaml to another workflow
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void CopyWorkFlowWithContextMenuCopyAndPasteToAnotherWorkflowExpectedNothingCopied()
         {
             Clipboard.SetText(" ");
@@ -135,9 +135,7 @@ namespace Dev2.Studio.UI.Tests
             Mouse.Click(new Point(startButton.BoundingRectangle.X - 5, startButton.BoundingRectangle.Y - 5));
             SendKeys.SendWait("^V");
             Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "Unsaved 1(FlowchartDesigner)"));
-            DoCleanup("Unsaved 1", true);
-            DoCleanup("Unsaved 2", true);
-
+            TabManagerUIMap.CloseAllTabs();
         }
 
         //2013.06.06: Ashley Lewis for 9448 - Dsf Activity Title - shows up as "DSFActivity" After a service has been dragged onto a workflow.

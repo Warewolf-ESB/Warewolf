@@ -11,6 +11,7 @@ using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.PluginSourceMapClasses;
@@ -50,6 +51,7 @@ namespace Dev2.Studio.UI.Tests
         UIMap _map;
         WebServiceWizardUIMap _webServiceWizardUiMap;
         private ExternalUIMap _externalUiMap;
+        private DecisionWizardUIMap _decisionWizardUiMap;
 
         #endregion
 
@@ -72,6 +74,7 @@ namespace Dev2.Studio.UI.Tests
         public UIMap UIMap { get { return _map ?? (_map = new UIMap()); } }
         public WebServiceWizardUIMap WebServiceWizardUiMap { get { return _webServiceWizardUiMap ?? (_webServiceWizardUiMap = new WebServiceWizardUIMap()); } }
         public ExternalUIMap ExternalWizardUiMap { get { return _externalUiMap ?? (_externalUiMap = new ExternalUIMap()); } }
+        public DecisionWizardUIMap DecisionWizardUiMap { get { return _decisionWizardUiMap ?? (_decisionWizardUiMap = new DecisionWizardUIMap()); } }
         
         #endregion
 
@@ -80,16 +83,19 @@ namespace Dev2.Studio.UI.Tests
         [TestCleanup]
         public void TestCleanup()
         {
+            //close any open dialogs
+            SendKeys.SendWait("{ESCAPE}");
+            //close any open tabs
             TabManagerUiMap.CloseAllTabs();
             DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
+            //reset active server
             ExplorerUiMap.ClickServerInServerDDL(LocalHostServerName);
             ExplorerUiMap.ClearExplorerSearchText();
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")]
-        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void RemoteServerUITests_ConnectToRemoteServerFromExplorer_RemoteServerConnected()
         {
             DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
@@ -100,8 +106,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")]
-        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void RemoteServerUITests_CreateRemoteWorkFlow_WorkflowIsCreated()
         {
             DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
@@ -113,8 +118,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")]
-        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void RemoteServerUITests_EditRemoteWorkFlow_WorkflowIsEdited()
         {
             const string TextToSearchWith = "Find Records";
@@ -128,8 +132,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")]
-        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void RemoteServerUITests_ViewRemoteWorkFlowInBrowser_WorkflowIsExecuted()
         {
             const string TextToSearchWith = "Find Records";
@@ -153,8 +156,7 @@ namespace Dev2.Studio.UI.Tests
         
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")]
-        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void RemoteServerUITests_DragAndDropWorkflowFromRemoteServerOnALocalHostCreatedWorkflow_WorkFlowIsDropped()
         {
             const string TextToSearchWith = "Internal Recursive Copy";
@@ -181,7 +183,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")]
+        [TestCategory("RemoteServerUITests")] [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void RemoteServerUITests_DragAndDropWorkflowFromALocalServerOnARemoteServerCreatedWorkflow_WorkFlowIsDropped()
         {
             const string TextToSearchWith = "Utility - Assign";
@@ -208,8 +210,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")]
-        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void RemoteServerUITests_OpenWorkflowOnRemoteServerAndOpenWorkflowWithSameNameOnLocalHost_WorkflowIsOpened()
         {
             const string TextToSearchWith = "Find Records";
@@ -225,8 +226,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")]
-        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void RemoteServerUITests_DebugARemoteWorkflowWhenLocalWorkflowWithSameNameIsOpen_WorkflowIsExecuted()
         {
             const string TextToSearchWith = "Find Records";
@@ -252,17 +252,23 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "DBSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            Playback.Wait(120);
-            DatabaseSourceUiMap.ClickSaveConnection();
-            SaveDialogUiMap.ClickSave();
-            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            if(child != null)
+            if (DecisionWizardUiMap.WaitForDialog(5000))
             {
-                Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
+                DatabaseSourceUiMap.ClickSaveConnection();
+                SaveDialogUiMap.ClickSave();
+                var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+                if (child != null)
+                {
+                    Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (WpfImage));
+                }
+                else
+                {
+                    Assert.Fail("Cannot find studio window after open remote wizard");
+                }
             }
             else
             {
-                Assert.Fail("Cannot find studio window after open remote wizard");
+                Assert.Fail("Edit remote Db Source wizard takes to long to display");
             }
         }
 
@@ -273,17 +279,23 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "WebSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            Playback.Wait(120);
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
-            SaveDialogUiMap.ClickSave();
-            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            if(child != null)
+            if (DecisionWizardUiMap.WaitForDialog(5000))
             {
-                Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
+                SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
+                SaveDialogUiMap.ClickSave();
+                var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+                if (child != null)
+                {
+                    Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (WpfImage));
+                }
+                else
+                {
+                    Assert.Fail("Cannot find studio window after open remote wizard");
+                }
             }
             else
             {
-                Assert.Fail("Cannot find studio window after open remote wizard");
+                Assert.Fail("Edit remote Web Source wizard takes to long to display");
             }
         }
 
@@ -294,17 +306,24 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "WebService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            Playback.Wait(120);
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
-            SaveDialogUiMap.ClickSave();
-            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            if(child != null)
+            if (DecisionWizardUiMap.WaitForDialog(5000))
             {
-                Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
+                Playback.Wait(120);
+                SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
+                SaveDialogUiMap.ClickSave();
+                var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+                if (child != null)
+                {
+                    Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (WpfImage));
+                }
+                else
+                {
+                    Assert.Fail("Cannot find studio window after open remote wizard");
+                }
             }
             else
             {
-                Assert.Fail("Cannot find studio window after open remote wizard");
+                Assert.Fail("Edit remote Web Service wizard takes to long to display");
             }
         }
 
@@ -315,16 +334,22 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "DBService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            Playback.Wait(120);
-            DatabaseServiceWizardUiMap.DatabaseServiceClickCancel();
-            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            if (child != null)
+            if (DecisionWizardUiMap.WaitForDialog(5000))
             {
-                Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (WpfImage));
+                DatabaseServiceWizardUiMap.DatabaseServiceClickCancel();
+                var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+                if (child != null)
+                {
+                    Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (WpfImage));
+                }
+                else
+                {
+                    Assert.Fail("Cannot find studio window after open remote wizard");
+                }
             }
             else
             {
-                Assert.Fail("Cannot find studio window after open remote wizard");
+                Assert.Fail("Edit remote Db Service wizard takes to long to display");
             }
         }
 
@@ -335,16 +360,22 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "EmailSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            Playback.Wait(120);
-            EmailSourceWizardUiMap.ClickCancel();
-            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            if(child != null)
+            if (DecisionWizardUiMap.WaitForDialog(5000))
             {
-                Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
+                EmailSourceWizardUiMap.ClickCancel();
+                var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+                if (child != null)
+                {
+                    Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (WpfImage));
+                }
+                else
+                {
+                    Assert.Fail("Cannot find studio window after open remote wizard");
+                }
             }
             else
             {
-                Assert.Fail("Cannot find studio window after open remote wizard");
+                Assert.Fail("Edit remote Email Source wizard takes to long to display");
             }
         }
 
@@ -355,16 +386,22 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "PluginSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            Playback.Wait(120);
-            PluginSourceMap.ClickSave();
-            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            if(child != null)
+            if (DecisionWizardUiMap.WaitForDialog(5000))
             {
-                Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
+                PluginSourceMap.ClickSave();
+                var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+                if (child != null)
+                {
+                    Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (WpfImage));
+                }
+                else
+                {
+                    Assert.Fail("Cannot find studio window after open remote wizard");
+                }
             }
             else
             {
-                Assert.Fail("Cannot find studio window after open remote wizard");
+                Assert.Fail("Edit remote Plugin Source wizard takes to long to display");
             }
         }
 
@@ -375,23 +412,29 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "PluginService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            Playback.Wait(120);
-            PluginServiceWizardUiMap.ClickTestAndOk();
-            PluginServiceWizardUiMap.ClickSave();
-            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            if(child != null)
+            if (DecisionWizardUiMap.WaitForDialog(5000))
             {
-                Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
+                PluginServiceWizardUiMap.ClickTestAndOk();
+                PluginServiceWizardUiMap.ClickSave();
+                var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+                if (child != null)
+                {
+                    Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (WpfImage));
+                }
+                else
+                {
+                    Assert.Fail("Cannot find studio window after open remote wizard");
+                }
             }
             else
             {
-                Assert.Fail("Cannot find studio window after open remote wizard");
+                Assert.Fail("Edit remote Plugin Service wizard takes to long to display");
             }
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")]
+        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void RemoteServerUITests_AddExecuteRenameAndDeleteALocalWorlFlow_ProcessCompletesSuccessfully()
         {
             ProcessAWorkflow(LocalHostServerName, "WORKFLOWS", "Unassigned");

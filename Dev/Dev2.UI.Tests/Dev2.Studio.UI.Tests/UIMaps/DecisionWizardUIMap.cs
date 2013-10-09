@@ -50,11 +50,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         public void HitDoneWithKeyboard()
         {
             UITestControl decisionDialog = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            // Click image
+            // Click middle of the image to set focus
             Mouse.Click(decisionDialog, new Point(decisionDialog.BoundingRectangle.X + decisionDialog.Width / 2, decisionDialog.BoundingRectangle.Y + decisionDialog.Height / 2));
-            Keyboard.SendKeys(decisionDialog, "{TAB}");
+            SendKeys.SendWait("{TAB}");
             Playback.Wait(700);
-            Keyboard.SendKeys(decisionDialog, "{ENTER}");
+            SendKeys.SendWait("{ENTER}");
         }
 
         /// <summary>
@@ -123,7 +123,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
             {
                 timeNow = timeNow + 100;
                 Playback.Wait(100);
-                type = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0].GetType();
+                var tryGetDialog = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+                type = tryGetDialog.GetType();
                 if (timeNow > timeOut)
                 {
                     break;

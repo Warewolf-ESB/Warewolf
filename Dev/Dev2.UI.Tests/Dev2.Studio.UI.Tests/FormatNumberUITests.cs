@@ -78,7 +78,7 @@ namespace Dev2.Studio.UI.Tests
             FormatNumberUIMap.InputAllFormatNumberValues(ctrl, "1234.56", "Normal", "1", "3", "[[Result]]");
             Assert.IsTrue(FormatNumberUIMap.IsRoundingInputEnabled());
 
-            new TestBase().DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
+            TabManagerUIMap.CloseAllTabs();
         }
 
 
@@ -102,7 +102,7 @@ namespace Dev2.Studio.UI.Tests
             FormatNumberUIMap.InputAllFormatNumberValues(ctrl, "1234.56", "None", "1", "3", "[[Result]]");
             Assert.IsFalse(FormatNumberUIMap.IsRoundingInputEnabled());
 
-            new TestBase().DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
+            TabManagerUIMap.CloseAllTabs();
         }
 
         // BUG 8876 : This test ensure that the input box is disabled and cleared when changing the rounding

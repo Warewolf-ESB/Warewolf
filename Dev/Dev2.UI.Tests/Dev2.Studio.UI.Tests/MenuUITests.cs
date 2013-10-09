@@ -77,10 +77,14 @@ namespace Dev2.Studio.UI.Tests
 
             var uiControl = RibbonUIMap.GetControlByName("Save");
 
+            var count = 0;
+            while(count < 10 && !uiControl.Enabled)
+            {
+                count++;
+            }
             Assert.IsTrue(uiControl.Enabled);
 
-            // All good - Cleanup time!
-            new TestBase().DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
+            TabManagerUIMap.CloseAllTabs();
         }
     }
 }

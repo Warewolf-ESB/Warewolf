@@ -134,8 +134,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("AutoConnectorTests")]
-        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("AutoConnectorTests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void AutoConnectorTests_DragActivityOnStartAutoConnectorNode_AConnectorIsCreated()
         {
             CreateWorkflow();
@@ -152,8 +151,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("AutoConnectorTests")]
-        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("AutoConnectorTests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void AutoConnectorTests_DragAToolOnStartAutoConnectorNode_AConnectorIsCreated()
         {
             CreateWorkflow();
@@ -168,8 +166,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("AutoConnectorTests")]
-        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("AutoConnectorTests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void AutoConnectorTests_DragAToolOnALineBetweenConnectors_ASecondConnectorIsCreated()
         {
             //Drag a tool to the design surface
@@ -197,8 +194,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("AutoConnectorTests")]
-        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("AutoConnectorTests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void AutoConnectorTests_DragAnActivityOnALineBetweenConnectors_ASecondConnectorIsCreated()
         {
             //Drag an activity to the design surface
@@ -251,7 +247,7 @@ namespace Dev2.Studio.UI.Tests
 
             if (DecisionWizardUIMap.WaitForDialog(5000))
             {
-                DecisionWizardUIMap.ClickCancel();
+                DecisionWizardUIMap.HitDoneWithKeyboard();
                 var connectors = WorkflowDesignerUIMap.GetAllConnectors();
                 //Assert start auto connector worked
                 Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
