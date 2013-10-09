@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
 using Dev2.Providers.Validation.Rules;
+using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.TO
 {
@@ -11,17 +11,11 @@ namespace Dev2.TO
     {
         int _indexNumber;
         string _inputColumn;
-        string _outputColumnName;
-        Type _outputColumnDataType;
-        int _outputColumnMaxLength;
+        DbColumn _outputColumn;
 
         public string InputColumn { get { return _inputColumn; } set { OnPropertyChanged(ref _inputColumn, value); } }
 
-        public string OutputColumnName { get { return _outputColumnName; } set { OnPropertyChanged(ref _outputColumnName, value); } }
-
-        public Type OutputColumnDataType { get { return _outputColumnDataType; } set { OnPropertyChanged(ref _outputColumnDataType, value); } }
-
-        public int OutputColumnMaxLength { get { return _outputColumnMaxLength; } set { OnPropertyChanged(ref _outputColumnMaxLength, value); } }
+        public DbColumn OutputColumn { get { return _outputColumn; } set { OnPropertyChanged(ref _outputColumn, value); } }
 
         #region Implementation of IDev2TOFn
 

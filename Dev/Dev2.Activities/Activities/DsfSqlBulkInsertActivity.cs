@@ -130,11 +130,11 @@ namespace Dev2.Activities
             foreach(var dataColumnMapping in InputMappings)
             {
                 var dataColumn = new DataColumn();
-                dataColumn.ColumnName = dataColumnMapping.OutputColumnName;
-                dataColumn.DataType = dataColumnMapping.OutputColumnDataType;
+                dataColumn.ColumnName = dataColumnMapping.OutputColumn.ColumnName;
+                dataColumn.DataType = dataColumnMapping.OutputColumn.DataType;
                 if(dataColumn.DataType == typeof(String))
         {
-                    dataColumn.MaxLength = dataColumnMapping.OutputColumnMaxLength;
+                    dataColumn.MaxLength = dataColumnMapping.OutputColumn.MaxLength;
                 }
                 dataTableToInsert.Columns.Add(dataColumn);
             }

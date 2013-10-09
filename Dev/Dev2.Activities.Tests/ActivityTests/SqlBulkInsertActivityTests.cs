@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using ActivityUnitTests;
 using Dev2.Activities;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -198,9 +199,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new DataColumnMapping
                 {
                     InputColumn = "tests",
-                    OutputColumnName = "TestCol",
-                    OutputColumnDataType = typeof(Int32),
-                    OutputColumnMaxLength = 100
+                    OutputColumn = new DbColumn { ColumnName = "TestCol",
+                    DataType = typeof(Int32),
+                    MaxLength = 100 }
                 }
             };
             SetupArguments("<root><recset1><field1/></recset1></root>", "<root><recset1><field1/></recset1></root>",mockSqlBulkInserter.Object,dataColumnMappings, "[[result]]");
@@ -230,9 +231,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new DataColumnMapping
                 {
                     InputColumn = "tests",
-                    OutputColumnName = "TestCol",
-                    OutputColumnDataType = typeof(String),
-                    OutputColumnMaxLength = 100
+                    OutputColumn = new DbColumn { ColumnName = "TestCol",
+                    DataType = typeof(String),
+                    MaxLength = 100 }
                 }
             };
             SetupArguments("<root><recset1><field1/></recset1></root>", "<root><recset1><field1/></recset1></root>",mockSqlBulkInserter.Object,dataColumnMappings, "[[result]]");
@@ -262,27 +263,27 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new DataColumnMapping
                 {
                     InputColumn = "tests",
-                    OutputColumnName = "TestCol",
-                    OutputColumnDataType = typeof(String),
-                    OutputColumnMaxLength = 100
+                    OutputColumn = new DbColumn { ColumnName = "TestCol",
+                    DataType = typeof(String),
+                    MaxLength = 100 }
                 }, new DataColumnMapping
                 {
                     InputColumn = "tests2",
-                    OutputColumnName = "TestCol2",
-                    OutputColumnDataType = typeof(Int32),
-                    OutputColumnMaxLength = 100
+                    OutputColumn = new DbColumn { ColumnName = "TestCol2",
+                    DataType = typeof(Int32),
+                    MaxLength = 100 }
                 }, new DataColumnMapping
                 {
                     InputColumn = "tests3",
-                    OutputColumnName = "TestCol3",
-                    OutputColumnDataType = typeof(char),
-                    OutputColumnMaxLength = 100
+                    OutputColumn = new DbColumn { ColumnName = "TestCol3",
+                    DataType = typeof(char),
+                    MaxLength = 100 }
                 }, new DataColumnMapping
                 {
                     InputColumn = "tests4",
-                    OutputColumnName = "TestCol4",
-                    OutputColumnDataType = typeof(decimal),
-                    OutputColumnMaxLength = 100
+                    OutputColumn = new DbColumn { ColumnName = "TestCol4",
+                    DataType = typeof(decimal),
+                    MaxLength = 100 }
                 }
             };
             SetupArguments("<root><recset1><field1/></recset1></root>", "<root><recset1><field1/></recset1></root>",mockSqlBulkInserter.Object,dataColumnMappings, "[[result]]");

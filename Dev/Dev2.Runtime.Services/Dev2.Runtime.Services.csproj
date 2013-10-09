@@ -148,6 +148,9 @@
     <Compile Include="Network\StudioMessaging.cs" />
     <Compile Include="Network\StudioNetworkSession.cs" />
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
+    <Compile Include="ServiceModel\Data\DbColumn.cs" />
+    <Compile Include="ServiceModel\Data\DbSourceExtensions.cs" />
+    <Compile Include="ServiceModel\Data\DbTable.cs" />
     <Compile Include="ServiceModel\Data\RecordsetList.cs" />
     <Compile Include="ServiceModel\Data\RecordsetListHelper.cs" />
     <Compile Include="ServiceModel\Data\WebService.cs" />

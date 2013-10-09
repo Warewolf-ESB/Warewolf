@@ -19,7 +19,6 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
     {
         readonly IEnvironmentModel _environmentModel;
         readonly DbSource _newDbSource;
-        bool _canEditDatabase;
 
         static IEnvironmentModel GetActiveEnvironment()
         {
@@ -50,10 +49,10 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             };
 
             Databases = new ObservableCollection<DbSource>();
-            Tables = new ObservableCollection<string>();
+            Tables = new ObservableCollection<DbTable>();
 
-            EditDatabaseCommand = new RelayCommand(o => EditDatabase(), o => _canEditDatabase);
-            RefreshTablesCommand = new RelayCommand(o => LoadDatabaseTables(), o => _canEditDatabase);
+            EditDatabaseCommand = new RelayCommand(o => EditDatabase(), o => CanEditDatabase);
+            RefreshTablesCommand = new RelayCommand(o => LoadDatabaseTables(), o => CanEditDatabase);
 
             LoadDatabases();
         }
@@ -62,7 +61,9 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         public ObservableCollection<DbSource> Databases { get; private set; }
 
-        public ObservableCollection<string> Tables { get; private set; }
+        public ObservableCollection<DbTable> Tables { get; private set; }
+
+        public bool CanEditDatabase { get { return Database != null; } }
 
         public ICommand EditDatabaseCommand { get; private set; }
 
@@ -77,19 +78,12 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             {
                 case "Database":
                     LoadDatabaseTables();
-                    UpdateUIState();
                     break;
 
                 case "TableName":
                     LoadTableColumns();
-                    UpdateUIState();
                     break;
             }
-        }
-
-        void UpdateUIState()
-        {
-            _canEditDatabase = Database != null;
         }
 
         void LoadDatabases()
@@ -110,10 +104,17 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         void LoadDatabaseTables()
         {
-            if(Database == _newDbSource)
+            var dbSource = Database;
+            //if(Database == _newDbSource)
+            //{
+            //    CreateDatabase();
+            //}
+
+            Tables.Clear();
+            var tables = dbSource.GetTables();
+            foreach(var table in tables.OrderBy(t => t.TableName))
             {
-                CreateDatabase();
-                SetDatabase(null);
+                Tables.Add(table);
             }
         }
 
