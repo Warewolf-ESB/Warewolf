@@ -22,7 +22,7 @@ namespace Dev2.Utils
             _eventPublisher = eventPublisher;
         }
 
-        public void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants)
+        public void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants,IResourceChangedDialog resourceChangedDialog = null)
         {
             if(resource == null)
             {
@@ -32,9 +32,12 @@ namespace Dev2.Utils
             {
                 throw new ArgumentNullException("numberOfDependants");
             }
-            var dialog = new ResourceChangedDialog(resource, numberOfDependants.Count, StringResources.MappingChangedWarningDialogTitle);
-            dialog.ShowDialog();
-            if(dialog.OpenDependencyGraph)
+            if(resourceChangedDialog == null)
+            {
+                resourceChangedDialog = new ResourceChangedDialog(resource, numberOfDependants.Count, StringResources.MappingChangedWarningDialogTitle);
+            }
+            resourceChangedDialog.ShowDialog();
+            if(resourceChangedDialog.OpenDependencyGraph)
             {
                 if(numberOfDependants.Count == 1)
                 {

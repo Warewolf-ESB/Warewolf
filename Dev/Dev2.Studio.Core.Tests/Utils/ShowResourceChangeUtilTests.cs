@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using Caliburn.Micro;
 using Dev2.Providers.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -55,8 +57,7 @@ namespace Dev2.Core.Tests.Utils
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ShowResourceChangedUtil_ShowResourceChanged")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ShowResourceChangedUtil_ShowResourceChanged_WithOneDependant_FiresMessage()
+        public void ShowResourceChangedUtil_ShowResourceChanged_WithOneDependant_FiresAddWorkSurfaceMessageMessage()
         {
             //------------Setup for test--------------------------
             var mockAggregator = new Mock<IEventAggregator>();
@@ -65,13 +66,41 @@ namespace Dev2.Core.Tests.Utils
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockResourceRepository = new Mock<IResourceRepository>();
             var mockResourceModelDependant = new Mock<IResourceModel>();
-            mockResourceRepository.Setup(repository => repository.FindSingle(model => true)).Returns(mockResourceModelDependant.Object);
+            mockResourceModelDependant.Setup(model => model.ResourceName).Returns("MyResource");
+            mockResourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(mockResourceModelDependant.Object);
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
             mockResource.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
             //------------Execute Test---------------------------
-            showResourceChangedUtil.ShowResourceChanged(mockResource.Object,null);
+            var mock = new Mock<IResourceChangedDialog>();
+            mock.Setup(dialog => dialog.OpenDependencyGraph).Returns(true);
+            showResourceChangedUtil.ShowResourceChanged(mockResource.Object,new List<string>{"MyResource"},mock.Object);
             //------------Assert Results-------------------------
             mockAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>()),Times.Once());
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ShowResourceChangedUtil_ShowResourceChanged")]
+        public void ShowResourceChangedUtil_ShowResourceChanged_WithMoreThanOneDependant_FiresShowReverseDependencyVisualizerMessage()
+        {
+            //------------Setup for test--------------------------
+            var mockAggregator = new Mock<IEventAggregator>();
+            var showResourceChangedUtil = CreateShowResourceChangedUtil(mockAggregator.Object);
+            var mockResource = new Mock<IContextualResourceModel>();
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            var mockResourceModelDependant = new Mock<IResourceModel>();
+            mockResourceModelDependant.Setup(model => model.ResourceName).Returns("MyResource");
+            mockResourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(mockResourceModelDependant.Object);
+            mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
+            mockResource.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
+            //------------Execute Test---------------------------
+            var mock = new Mock<IResourceChangedDialog>();
+            mock.Setup(dialog => dialog.OpenDependencyGraph).Returns(true);
+            showResourceChangedUtil.ShowResourceChanged(mockResource.Object,new List<string>{"MyResource","MyOtherResource"},mock.Object);
+            //------------Assert Results-------------------------
+            mockAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<ShowReverseDependencyVisualizer>()), Times.Once());
         }
 
         static ShowResourceChangedUtil CreateShowResourceChangedUtil()

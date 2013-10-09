@@ -6,10 +6,16 @@ using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Studio.Views.ResourceManagement
 {
+    public interface IResourceChangedDialog
+    {
+        bool OpenDependencyGraph { get; }
+        bool? ShowDialog();
+    }
+
     /// <summary>
     /// Interaction logic for ResourceChangedDialog.xaml
     /// </summary>
-    public partial class ResourceChangedDialog : Window
+    public partial class ResourceChangedDialog : Window, IResourceChangedDialog
     {
       private bool _openDependencyGraph = false;
 
