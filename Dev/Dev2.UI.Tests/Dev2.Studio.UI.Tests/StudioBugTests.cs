@@ -494,7 +494,7 @@ namespace Dev2.Studio.UI.Tests
                 new Point(theStartNode.BoundingRectangle.X + 20,
                             theStartNode.BoundingRectangle.Y + 100));
             RibbonUIMap.ClickRibbonMenuItem("Save");
-            if (WizardsUIMap.WaitForWizard(5000))
+            if(WizardsUIMap.WaitForWizard(5000))
             {
                 SaveDialogUIMap.ClickAndTypeInNameTextbox(firstName);
                 Playback.Wait(1000);
@@ -513,7 +513,7 @@ namespace Dev2.Studio.UI.Tests
                 new Point(theStartNode.BoundingRectangle.X + 20,
                             theStartNode.BoundingRectangle.Y + 100));
             RibbonUIMap.ClickRibbonMenuItem("Save");
-            if (WizardsUIMap.WaitForWizard(5000))
+            if(WizardsUIMap.WaitForWizard(5000))
             {
                 SaveDialogUIMap.ClickAndTypeInNameTextbox(secondName);
                 Playback.Wait(1000);
@@ -538,18 +538,9 @@ namespace Dev2.Studio.UI.Tests
             Mouse.Click(TabManagerUIMap.FindTabByName(secondName));
 
             // Test Cleanup
-            DoCleanup(firstName, true);
-            DoCleanup(firstName+" *", true);
-            DoCleanup(secondName, true);
-            DoCleanup(secondName+" *", true);
+            TabManagerUIMap.CloseAllTabs();
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText(firstName);
-            ExplorerUIMap.RightClickDeleteProject("localhost", "WORKFLOWS", "Unassigned", firstName);
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText(secondName);
-            ExplorerUIMap.RightClickDeleteProject("localhost", "WORKFLOWS", "Unassigned", secondName);
         }
 
         [TestMethod]

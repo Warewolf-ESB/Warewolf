@@ -446,10 +446,18 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public static void ClosePane(UITestControl theTab)
         {
-            var tabXCoord = theTab.BoundingRectangle.X;
-            var width = theTab.BoundingRectangle.Width;
-            var tabYCoord = theTab.BoundingRectangle.Y;
-            Mouse.Move(new Point(tabXCoord + width - 100, tabYCoord + 500));
+            UITestControl findContentPane = null;
+            foreach (var child in theTab.GetChildren())
+            {
+                if (child.ClassName == "Uia.ContentPane")
+                {
+                    findContentPane = child;
+                    break;
+                }
+            }
+            var tabFarRightCoord = findContentPane.BoundingRectangle.Right;
+            var tabYCoord = findContentPane.Top;
+            Mouse.Click(new Point(tabFarRightCoord - 100, tabYCoord + 500));
             Playback.Wait(2500);
         }
     }
