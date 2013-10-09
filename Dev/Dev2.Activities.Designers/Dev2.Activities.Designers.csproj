@@ -154,6 +154,12 @@
     <Compile Include="Behaviors\DataGridFocusTextOnLoadBehavior.cs" />
     <Compile Include="AttachedProperties\FocusSetter.cs" />
     <Compile Include="AttachedProperties\WizardEngineAttachedProperties.cs" />
+    <Compile Include="Designers2\SqlBulkInsert\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SqlBulkInsert\SqlBulkInsertDesigner.xaml.cs">
+      <DependentUpon>SqlBulkInsertDesigner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\SqlBulkInsert\SqlBulkInsertDesignerViewModel.cs" />
     <Compile Include="Preview\PreviewRequestedEventArgs.cs" />
     <Compile Include="Preview\PreviewView.xaml.cs">
@@ -300,6 +306,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Designers2\SqlBulkInsert\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SqlBulkInsert\SqlBulkInsertDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\ActivityDesignerStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -370,7 +384,9 @@
   <ItemGroup>
     <Resource Include="Images\ToolDataSplit-32.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\ToolSqlBulkInsert-32.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\HelpTextCollapser-16.png" />
     <Resource Include="Images\HelpTextExpander-16.png" />

@@ -4,19 +4,18 @@ using Dev2.TO;
 
 namespace Dev2.Activities.Designers2.SqlBulkInsert
 {
-    public class SqlBulkInsertDesignerViewModel : ActivityCollectionDesignerViewModel<InputOutputTO>
+    public class SqlBulkInsertDesignerViewModel : ActivityCollectionDesignerViewModel<SqlBulkInsertTO>
     {
         public SqlBulkInsertDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
             AddTitleBarLargeToggle();
-            AddTitleBarQuickVariableInputToggle();
             AddTitleBarHelpToggle();
 
             dynamic mi = ModelItem;
-            InitializeItems(mi.FieldsCollection);
+            ModelItemCollection = mi.InputMappings;
         }
 
-        public override string CollectionName { get { return "FieldsCollection"; } }
+        public override string CollectionName { get { return "InputMappings"; } }
     }
 }

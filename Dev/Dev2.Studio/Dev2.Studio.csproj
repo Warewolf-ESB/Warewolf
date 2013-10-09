@@ -1268,6 +1268,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\ToolSqlBulkInsert-32.png" />
     <Resource Include="Images\StartNode.png" />
     <Resource Include="Images\ToolGetWebRequest-32.png" />
     <Resource Include="Images\HelpLanguage-32.png" />

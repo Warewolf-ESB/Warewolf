@@ -49,6 +49,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 category.Add(new ToolboxItemWrapper(typeof(DsfFindRecordsMultipleCriteriaActivity), "/images/ToolFindRecords-32.png", "Find"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfSortRecordsActivity), "/images/ToolSortRecords-32.png", "Sort"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfUniqueActivity), "/images/ToolUniqueRecord-32.png", "Unique"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfSqlBulkInsertActivity), "/images/ToolSqlBulkInsert-32.png", "SQL Bulk Insert"));
             }
 
 

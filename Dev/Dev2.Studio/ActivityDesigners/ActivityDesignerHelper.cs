@@ -5,6 +5,7 @@ using Dev2.Activities.Designers2.DateTime;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
 using Dev2.Activities.Designers2.GetWebRequest;
 using Dev2.Activities.Designers2.MultiAssign;
+using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Studio.ActivityDesigners.Scripting;
 using Dev2.Studio.ViewModels.Workflow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -21,6 +22,7 @@ namespace Dev2.Studio.ActivityDesigners
                     {typeof (DsfDateTimeActivity), typeof (DateTimeDesigner)},
                     {typeof (DsfWebGetRequestActivity), typeof (GetWebRequestDesigner)},
                     {typeof (DsfFindRecordsMultipleCriteriaActivity), typeof (FindRecordsMultipleCriteriaDesigner)},
+                    {typeof (DsfSqlBulkInsertActivity), typeof (SqlBulkInsertDesigner)},
 
                     {typeof (DsfActivity), typeof (DsfActivityDesigner)},
                     {typeof (DsfDatabaseActivity), typeof (DsfActivityDesigner)},
