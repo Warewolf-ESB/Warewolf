@@ -133,7 +133,7 @@ namespace Dev2.Utilities
         {
             if(e != null)
             {
-               // e.Handled = true;
+                e.Handled = true;
             }
         }
     }
