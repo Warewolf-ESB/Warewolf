@@ -103,7 +103,7 @@ namespace Dev2.CodedUI.Tests
             // Assert clicking an error focusses the correct textbox
             Mouse.Click(errorControl.GetChildren()[0]);
             Keyboard.SendKeys("^A^X");
-            
+
             // enter some correct data
             SendKeys.SendWait("pre_");
 
@@ -143,63 +143,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        [TestMethod]
-        public void ClickNewDatabaseServiceExpectedDatabaseServiceOpens()
-        {
-            RibbonUIMap.ClickRibbonMenuItem("Database Service");
-            UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            if (uIItemImage == null)
-            {
-                Assert.Fail("Error - Clicking the new database service button does not create the new database service window");
-            }
-            DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
-        }
-
-        [TestMethod]
-        public void NewWebServiceShortcutKeyExpectedWebServiceOpens()
-        {
-            SendKeys.SendWait("{CTRL}{SHIFT}W");
-           
-            Playback.Wait(5000);
-            WebServiceWizardUIMap.Cancel();
-            SendKeys.SendWait("{ESC}");
-        }
-
-        /// <summary>
-        /// News the database service shortcut key expected database service opens.
-        /// </summary>
-        [TestMethod]
-        public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
-        {
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            SendKeys.SendWait("^+d");
-            Playback.Wait(5000);
-            UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            if (uIItemImage == null)
-            {
-                Assert.Fail("Error - Clicking the new database service button does not create the new database service window");
-            }
-            DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
-        }
-
-        [TestMethod]
-        public void ClickNewPluginServiceShortcutKeyExpectedPluginServiceOpens()
-        {
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            SendKeys.SendWait("^+p");
-            Playback.Wait(500);
-            UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            if(uiTestControl == null)
-            {
-                Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
-            }
-            Playback.Wait(5000);
-            PluginServiceWizardUIMap.ClickCancel();
-            SendKeys.SendWait("{ESC}");
-        }
-
         #endregion New PBI Tests
-
 
         [TestMethod]
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
@@ -362,7 +306,6 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-
         [TestMethod]
         // Should be unit test
         public void TypeInCalcBoxExpectedTooltipAppears()
@@ -472,127 +415,6 @@ namespace Dev2.CodedUI.Tests
 
         #endregion
 
-        #region Decision Wizard
-
-        private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DecisionWizard_Save")]
-        public void DecisionWizard_Save_WhenMouseUsedToSelect2ndAnd3rdInputFields_FieldDataSavedCorrectly()
-        {
-            //------------Setup for test--------------------------
-            Clipboard.Clear();
-            RibbonUIMap.CreateNewWorkflow();
-
-            UITestControl theTab = TabManagerUIMap.GetActiveTab();
-
-            //------------Execute Test---------------------------
-
-            DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.ClickVariableName(0);
-            SendKeys.SendWait("VariableName");
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            var decision = ToolboxUIMap.FindControl("Decision");
-            ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
-            _decisionWizardUiMap.SendTabs(4);
-            _decisionWizardUiMap.SelectMenuItem(37); // select between ;)
-
-            _decisionWizardUiMap.SendTabs(11);
-            _decisionWizardUiMap.GetFirstIntellisense("[[V",false, new Point(610,420));
-
-            _decisionWizardUiMap.SendTabs(2);
-            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(940, 420));
-            _decisionWizardUiMap.SendTabs(1);
-            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(1110, 420));
-
-            _decisionWizardUiMap.SendTabs(6);
-            SendKeys.SendWait("{ENTER}");
-
-
-            SendKeys.SendWait("{TAB}");
-            SendKeys.SendWait("^A");
-            Thread.Sleep(250);
-            SendKeys.SendWait("^C");
-            var displayValue = Clipboard.GetData(DataFormats.Text);
-
-            //------------Assert Results-------------------------
-
-            var expected = "If [[VariableName]] Is Between [[VariableName]] and [[VariableName]]";
-
-            Assert.AreEqual(expected, displayValue);
-
-            //Cleanup
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
-        }
-
-        //Bug 9339 + Bug 9378
-        [TestMethod]
-        public void SaveDecisionWithBlankFieldsExpectedDecisionSaved()
-        {
-            //Initialize
-            RibbonUIMap.CreateNewWorkflow();
-
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-
-            //Set variable
-            DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.ClickVariableName(0);
-            Keyboard.SendKeys("VariableName");
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            var decision = ToolboxUIMap.FindControl("Decision");
-            ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
-            _decisionWizardUiMap.SendTabs(4);
-            _decisionWizardUiMap.SelectMenuItem(20);
-            //Assert intellisense works
-            _decisionWizardUiMap.SendTabs(10);
-            _decisionWizardUiMap.GetFirstIntellisense("[[V", true);
-            var actual = Clipboard.GetData(DataFormats.Text);
-            Assert.AreEqual("[[VariableName]]", actual, "Decision intellisense doesn't work");
-            _decisionWizardUiMap.SendTabs(2);
-            _decisionWizardUiMap.GetFirstIntellisense("[[V", true);
-            actual = Clipboard.GetData(DataFormats.Text);
-            Assert.AreEqual("[[VariableName]]", actual, "Decision intellisense doesn't work");
-            _decisionWizardUiMap.SendTabs(6);
-            Keyboard.SendKeys("{ENTER}");
-
-            //Assert can save blank decision
-            decision = new WorkflowDesignerUIMap().FindControlByAutomationId(theTab, "FlowDecisionDesigner");
-            Point point;
-            Assert.IsTrue(decision.TryGetClickablePoint(out point));
-            Assert.IsNotNull(point);
-
-            //Cleanup
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
-        }
-
-        #endregion
-          
-        [TestMethod]
-        public void ClickNewRemoteWarewolfServerExpectedRemoteWarewolfServerOpens()
-        {
-            var _explorer = new ExplorerUIMap();
-
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            var getLocalServer = _explorer.GetLocalServer();
-            Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
-            for (var i = 0; i < 6; i++)
-            {
-                Keyboard.SendKeys("{DOWN}");
-            }
-            Keyboard.SendKeys("{ENTER}");
-            Playback.Wait(1000);
-
-
-            Playback.Wait(100);
-            UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
-            if (uiTestControl == null)
-            {
-                Assert.Fail("Error - Clicking the remote warewolf button does not create the new server window");
-            }
-            NewServerUIMap.CloseWindow();
-        } 
-         
         [TestMethod]
         public void DragAWorkflowIntoAndOutOfAForEach_Expected_NoErrors()
         {
@@ -656,8 +478,6 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void DragADecisionIntoForEachExpectNotAddedToForEach()
         {
-
-
             // Create the workflow
             RibbonUIMap.CreateNewWorkflow();
 
@@ -691,8 +511,7 @@ namespace Dev2.CodedUI.Tests
                 Assert.IsTrue(true);
             }
 
-
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
+            TabManagerUIMap.CloseAllTabs();
         }
 
         [TestMethod]
@@ -731,8 +550,7 @@ namespace Dev2.CodedUI.Tests
                 Assert.IsTrue(true);
             }
 
-
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
+            TabManagerUIMap.CloseAllTabs();
         }
 
         [TestMethod]
@@ -762,15 +580,12 @@ namespace Dev2.CodedUI.Tests
 
             Playback.Wait(2500);
 
-            // All good - Cleanup time!
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
-
+            TabManagerUIMap.CloseAllTabs();
         }
 
         [TestMethod]
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
         {
-
             RibbonUIMap.CreateNewWorkflow();
 
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
@@ -826,7 +641,7 @@ namespace Dev2.CodedUI.Tests
             }
 
             // Test complete - Delete itself
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
+            TabManagerUIMap.CloseAllTabs();
         }
 
         #region Tests Requiring Designer access
@@ -836,7 +651,7 @@ namespace Dev2.CodedUI.Tests
         public void DropAWorkflowOrServiceOnFromTheToolBoxAndTestTheWindowThatPopsUp()
         {
             // Create the Workflow
-            Keyboard.SendKeys("{CTRL}W");
+            RibbonUIMap.CreateNewWorkflow();
             //DocManagerUIMap.ClickOpenTabPage("Explorer");
             //ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "WorkflowServiceDropWorkflow");
 
@@ -938,7 +753,7 @@ namespace Dev2.CodedUI.Tests
             #endregion
 
             // Delete the workflow
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
+            TabManagerUIMap.CloseAllTabs();
         }
 
         #endregion Tests Requiring Designer access
@@ -979,35 +794,8 @@ namespace Dev2.CodedUI.Tests
 
         #region Groomed Test
 
-        /*
-         * Test land up here one of a few ways. 
-         * 
-         * 1) They where groomed out long ago
-         * 2) They form part of the regression pack to run nightly to keep performance tighty
-         * 3) They generally cost way too much time to keep groomed and would be getter served by nightly exection and not hold up the dev
-         *    merge process. 
-         */
-
-
-
         [TestMethod]
-        public void ClickNewPluginServiceExpectedPluginServiceOpens()
-        {
-            RibbonUIMap.ClickRibbonMenu("Plugin Service");
-            UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            if(uiTestControl == null)
-            {
-                Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
-            }
-            Playback.Wait(5000);
-            SendKeys.SendWait("{ESC}");
-            PluginServiceWizardUIMap.ClickCancel();
-
-        }
-
-
-        [TestMethod]
-        public void CheckIfDebugProcessingBarIsShowingDurningExecutionExpextedToShowDuringExecutionOnly()
+        public void CheckIfDebugProcessingBarIsShowingDurningExecutionExpectedToShowDuringExecutionOnly()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             //Open the correct workflow
@@ -1030,8 +818,6 @@ namespace Dev2.CodedUI.Tests
             Assert.IsTrue(progressbar.Height != -1);
             DoCleanup("LargeFileTesting", true);
         }
-
-
 
         [TestMethod]
         public void ClickHelpFeedback_Expected_FeedbackWindowOpens()
@@ -1192,7 +978,6 @@ namespace Dev2.CodedUI.Tests
         }
 
         [TestMethod]
-        [Ignore]
         public void UnsavedWorkflowsPersistingOnStudioRestartExpectedWorkflowStillOpen()
         {
             Process[] procMan = Process.GetProcessesByName("Dev2.Studio");

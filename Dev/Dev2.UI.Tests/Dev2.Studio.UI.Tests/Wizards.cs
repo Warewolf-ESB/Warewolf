@@ -1,10 +1,19 @@
 ﻿using System;
+using System.Drawing;
+using System.Threading;
+using System.Windows.Forms;
+using System.Windows.Input;
 using Dev2.CodedUI.Tests;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
 
 namespace Dev2.Studio.UI.Tests.UIMaps
@@ -15,7 +24,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
     [CodedUITest]
     public class Wizards : UIMapBase
     {
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -33,26 +41,20 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
         private TestContext testContextInstance;
 
-        #region Deprecated Test
+        #region Service Wizards
 
-        //2013.06.22: Ashley Lewis for bug 9478
         [TestMethod]
-        public void EmailSourceWizardCreateNewSourceExpectedSourceCreated()
+        public void ClickNewPluginServiceExpectedPluginServiceOpens()
         {
-            //Initialization
-            var sourceName = Guid.NewGuid().ToString().Substring(0, 5);
-            var name = "codeduitest" + sourceName;
-
-            EmailSourceWizardUIMap.InitializeFullTestSource(name);
-
-            //Assert
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.DoRefresh();
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText(name);
-
-            Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", "Unassigned", name));
-            TabManagerUIMap.CloseAllTabs();
+            RibbonUIMap.ClickRibbonMenu("Plugin Service");
+            UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            if(uiTestControl == null)
+            {
+                Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
+            }
+            Playback.Wait(5000);
+            SendKeys.SendWait("{ESC}");
+            PluginServiceWizardUIMap.ClickCancel();
         }
 
         [TestMethod]
@@ -77,8 +79,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", "Unassigned", sourceName));
         }
 
-        #endregion
-
         //2013.03.14: Ashley Lewis - Bug 9217
         [TestMethod]
         public void DatabaseServiceWizardCreateNewServiceExpectedServiceCreated()
@@ -98,5 +98,211 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", cat, name));
         }
+
+        [TestMethod]
+        public void ClickNewDatabaseServiceExpectedDatabaseServiceOpens()
+        {
+            RibbonUIMap.ClickRibbonMenuItem("Database Service");
+            UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            if(uIItemImage == null)
+            {
+                Assert.Fail("Error - Clicking the new database service button does not create the new database service window");
+            }
+            DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
+        }
+
+        [TestMethod]
+        public void NewWebServiceShortcutKeyExpectedWebServiceOpens()
+        {
+            SendKeys.SendWait("{CTRL}{SHIFT}W");
+
+            Playback.Wait(5000);
+            WebServiceWizardUIMap.Cancel();
+            SendKeys.SendWait("{ESC}");
+        }
+
+        /// <summary>
+        /// News the database service shortcut key expected database service opens.
+        /// </summary>
+        [TestMethod]
+        public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
+        {
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            SendKeys.SendWait("^+d");
+            Playback.Wait(5000);
+            UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            if(uIItemImage == null)
+            {
+                Assert.Fail("Error - Clicking the new database service button does not create the new database service window");
+            }
+            DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
+        }
+
+        [TestMethod]
+        public void ClickNewPluginServiceShortcutKeyExpectedPluginServiceOpens()
+        {
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            SendKeys.SendWait("^+p");
+            Playback.Wait(500);
+            UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            if(uiTestControl == null)
+            {
+                Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
+            }
+            Playback.Wait(5000);
+            PluginServiceWizardUIMap.ClickCancel();
+            SendKeys.SendWait("{ESC}");
+        }
+
+        #endregion
+
+        #region Source Wizards
+
+        //2013.06.22: Ashley Lewis for bug 9478
+        [TestMethod]
+        public void EmailSourceWizardCreateNewSourceExpectedSourceCreated()
+        {
+            //Initialization
+            var sourceName = Guid.NewGuid().ToString().Substring(0, 5);
+            var name = "codeduitest" + sourceName;
+
+            EmailSourceWizardUIMap.InitializeFullTestSource(name);
+
+            //Assert
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.DoRefresh();
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText(name);
+
+            Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", "Unassigned", name));
+            TabManagerUIMap.CloseAllTabs();
+        }
+
+        #endregion
+
+        #region Decision Wizard
+
+        private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DecisionWizard_Save")]
+        public void DecisionWizard_Save_WhenMouseUsedToSelect2ndAnd3rdInputFields_FieldDataSavedCorrectly()
+        {
+            //------------Setup for test--------------------------
+            Clipboard.Clear();
+            RibbonUIMap.CreateNewWorkflow();
+
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+
+            //------------Execute Test---------------------------
+
+            DocManagerUIMap.ClickOpenTabPage("Variables");
+            VariablesUIMap.ClickVariableName(0);
+            SendKeys.SendWait("VariableName");
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            var decision = ToolboxUIMap.FindControl("Decision");
+            ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
+            _decisionWizardUiMap.SendTabs(4);
+            _decisionWizardUiMap.SelectMenuItem(37); // select between ;)
+
+            _decisionWizardUiMap.SendTabs(11);
+            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(610, 420));
+
+            _decisionWizardUiMap.SendTabs(2);
+            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(940, 420));
+            _decisionWizardUiMap.SendTabs(1);
+            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(1110, 420));
+
+            _decisionWizardUiMap.SendTabs(6);
+            SendKeys.SendWait("{ENTER}");
+
+
+            SendKeys.SendWait("{TAB}");
+            SendKeys.SendWait("^A");
+            Thread.Sleep(250);
+            SendKeys.SendWait("^C");
+            var displayValue = Clipboard.GetData(DataFormats.Text);
+
+            //------------Assert Results-------------------------
+
+            var expected = "If [[VariableName]] Is Between [[VariableName]] and [[VariableName]]";
+
+            Assert.AreEqual(expected, displayValue);
+
+            //Cleanup
+            TabManagerUIMap.CloseAllTabs();
+        }
+
+        //Bug 9339 + Bug 9378
+        [TestMethod]
+        public void SaveDecisionWithBlankFieldsExpectedDecisionSaved()
+        {
+            //Initialize
+            RibbonUIMap.CreateNewWorkflow();
+
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+
+            //Set variable
+            DocManagerUIMap.ClickOpenTabPage("Variables");
+            VariablesUIMap.ClickVariableName(0);
+            Keyboard.SendKeys("VariableName");
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            var decision = ToolboxUIMap.FindControl("Decision");
+            ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
+            _decisionWizardUiMap.SendTabs(4);
+            _decisionWizardUiMap.SelectMenuItem(20);
+            //Assert intellisense works
+            _decisionWizardUiMap.SendTabs(10);
+            _decisionWizardUiMap.GetFirstIntellisense("[[V", true);
+            var actual = Clipboard.GetData(DataFormats.Text);
+            Assert.AreEqual("[[VariableName]]", actual, "Decision intellisense doesn't work");
+            _decisionWizardUiMap.SendTabs(2);
+            _decisionWizardUiMap.GetFirstIntellisense("[[V", true);
+            actual = Clipboard.GetData(DataFormats.Text);
+            Assert.AreEqual("[[VariableName]]", actual, "Decision intellisense doesn't work");
+            _decisionWizardUiMap.SendTabs(6);
+            Keyboard.SendKeys("{ENTER}");
+
+            //Assert can save blank decision
+            decision = new WorkflowDesignerUIMap().FindControlByAutomationId(theTab, "FlowDecisionDesigner");
+            Point point;
+            Assert.IsTrue(decision.TryGetClickablePoint(out point));
+            Assert.IsNotNull(point);
+
+            //Cleanup
+            TabManagerUIMap.CloseAllTabs();
+        }
+
+        #endregion
+
+        #region Server Wizard
+          
+        [TestMethod]
+        public void ClickNewRemoteWarewolfServerExpectedRemoteWarewolfServerOpens()
+        {
+            var _explorer = new ExplorerUIMap();
+
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            var getLocalServer = _explorer.GetLocalServer();
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
+            for (var i = 0; i < 6; i++)
+            {
+                Keyboard.SendKeys("{DOWN}");
+            }
+            Keyboard.SendKeys("{ENTER}");
+            Playback.Wait(1000);
+
+
+            Playback.Wait(100);
+            UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
+            if (uiTestControl == null)
+            {
+                Assert.Fail("Error - Clicking the remote warewolf button does not create the new server window");
+            }
+            NewServerUIMap.CloseWindow();
+        } 
+        
+        #endregion
     }
 }

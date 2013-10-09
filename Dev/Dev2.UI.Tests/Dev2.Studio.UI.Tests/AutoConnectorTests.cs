@@ -247,7 +247,8 @@ namespace Dev2.Studio.UI.Tests
 
             if (DecisionWizardUIMap.WaitForDialog(5000))
             {
-                DecisionWizardUIMap.HitDoneWithKeyboard();
+                Playback.Wait(2000);
+                DecisionWizardUIMap.ClickCancel();
                 var connectors = WorkflowDesignerUIMap.GetAllConnectors();
                 //Assert start auto connector worked
                 Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
@@ -270,11 +271,12 @@ namespace Dev2.Studio.UI.Tests
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
             if (DecisionWizardUIMap.WaitForDialog(5000))
             {
+                Playback.Wait(2000);
                 DecisionWizardUIMap.ClickCancel();
                 var connectors = WorkflowDesignerUIMap.GetAllConnectors();
-            //Assert start auto connector worked
-            Assert.AreEqual(1, connectors.Count, "Start auto connector doesnt work");
-        }
+                //Assert start auto connector worked
+                Assert.AreEqual(1, connectors.Count, "Start auto connector doesnt work");
+            }
             else
             {
                 Assert.Fail("Decision dialog not shown after decision drop within the given timeout period.");
