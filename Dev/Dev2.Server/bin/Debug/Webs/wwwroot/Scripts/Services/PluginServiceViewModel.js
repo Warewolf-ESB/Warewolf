@@ -17,7 +17,7 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
 
     self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
     self.isLoading = false;  // BUG 9500 - 2013.05.31 - TWR : added
-    self.inputMappingLink = "Please select an action first (Step 3)";
+    self.inputMappingLink = "Please select an saveaction first (Step 3)";
     self.outputMappingLink = "Please run a test first (Step 4)";
 
     self.data = new ServiceData(self.isEditing ? resourceID : $.Guid.Empty(), "PluginService");  
@@ -336,7 +336,14 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
     self.saveViewModel = SaveViewModel.create("Service/PluginServices/Save", self, saveContainerID);
 
     self.save = function () {
-        self.saveViewModel.showDialog(true);
+
+        // if new do old action
+        if (self.data.resourceID() == "00000000-0000-0000-0000-000000000000") {
+            self.saveViewModel.showDialog(true);
+        } else {
+            // else use new action ;)
+            self.saveViewModel.save();
+        }
     };
 
     self.load();

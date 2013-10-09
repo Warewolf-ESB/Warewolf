@@ -283,6 +283,8 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
 
         var jsonData = ko.toJSON(self.data);
         if (saveUri) {
+           
+
             $.post(saveUri + window.location.search, jsonData, function (result) {
                 if (!result.IsValid) {
                     $saveForm.dialog("close");

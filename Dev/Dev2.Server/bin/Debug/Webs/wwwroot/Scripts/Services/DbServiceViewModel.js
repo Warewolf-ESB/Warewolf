@@ -344,7 +344,14 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
     self.saveViewModel = SaveViewModel.create("Service/Services/Save", self, saveContainerID);
 
     self.save = function () {
-        self.saveViewModel.showDialog(true);
+
+        // if new do old action
+        if (self.data.resourceID() == "00000000-0000-0000-0000-000000000000") {
+            self.saveViewModel.showDialog(true);
+        } else {
+            // else use new action ;)
+            self.saveViewModel.save();
+        }
     };    
 
     self.showSource = function (theSourceName) {
