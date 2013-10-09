@@ -22,10 +22,13 @@ namespace Dev2.Activities
         [NonSerialized]
         ISqlBulkInserter _sqlBulkInserter;
 
+        int _timeout;
+
         public DsfSqlBulkInsertActivity()
             : base("SQL Bulk Insert")
         {
             InputMappings = new List<DataColumnMapping>();
+            _timeout = 30;
         }
 
         public IList<DataColumnMapping> InputMappings{ get; set; }
@@ -46,12 +49,24 @@ namespace Dev2.Activities
 
         public bool UseInternalTransaction { get; set; }
 
-        public bool UseDefaultValues { get; set; }
-
         public bool KeepIdentity { get; set; }
 
         public bool KeepTableLock { get; set; }
-        
+
+        public int Timeout
+        {
+            get
+            {
+                return _timeout;
+            }
+            set
+            {
+                _timeout = value;
+            }
+        }
+
+        public int BatchSize { get; set; }
+
         internal ISqlBulkInserter SqlBulkInserter
         {
             get
@@ -92,7 +107,10 @@ namespace Dev2.Activities
                     var listOfIterators = GetIteratorsFromInputMappings(compiler, executionID, allErrors, dataObject, iteratorCollection, out errorResultTO);
                     FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
                 }
-                SqlBulkInserter.Insert(new SqlBulkCopy("", SqlBulkInserter.CurrentOptions), dataTableToInsert);
+                var sqlBulkCopy = new SqlBulkCopy("", SqlBulkInserter.CurrentOptions);
+                sqlBulkCopy.BulkCopyTimeout = Timeout;
+                sqlBulkCopy.BatchSize = BatchSize;
+                SqlBulkInserter.Insert(sqlBulkCopy, dataTableToInsert);
             }
             catch(Exception e)
             {
@@ -153,10 +171,6 @@ namespace Dev2.Activities
             if(KeepIdentity)
             {
                 sqlBulkOptions = sqlBulkOptions | SqlBulkCopyOptions.KeepIdentity;
-            }
-            if(!UseDefaultValues)
-            {
-                sqlBulkOptions = sqlBulkOptions | SqlBulkCopyOptions.KeepNulls;
             }
             if(UseInternalTransaction)
             {

@@ -86,7 +86,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
-            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()));
+            SqlBulkCopy returnedSqlBulkCopy = null;
+            mockSqlBulkInserter = mockSqlBulkInserter.SetupAllProperties();
+            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>())).Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedSqlBulkCopy = sqlBulkCopy); ;
             SetupArguments("<root><recset1><field1/></recset1></root>", "<root><recset1><field1/></recset1></root>", mockSqlBulkInserter.Object, null, "[[result]]");
             //------------Execute Test---------------------------
             ExecuteProcess();
@@ -98,8 +100,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepIdentity));  
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.TableLock));  
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.UseInternalTransaction));  
-            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepNulls));  
-            
+            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepNulls));
+            Assert.AreEqual(30, returnedSqlBulkCopy.BulkCopyTimeout);
+            Assert.AreEqual(0, returnedSqlBulkCopy.BatchSize);
         }
 
         [TestMethod]
@@ -109,8 +112,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
+            SqlBulkCopy returnedSqlBulkCopy = null;
             mockSqlBulkInserter = mockSqlBulkInserter.SetupAllProperties();
-            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()));
+            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>())).Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedSqlBulkCopy = sqlBulkCopy);;
             TestStartNode = new FlowStep
             {
                 Action = new DsfSqlBulkInsertActivity
@@ -119,7 +123,6 @@ namespace Dev2.Tests.Activities.ActivityTests
                     CheckConstraints = true,
                     FireTriggers = true,
                     KeepIdentity = true,
-                    UseDefaultValues = true,
                     UseInternalTransaction = true,
                     KeepTableLock = true,
                     SqlBulkInserter = mockSqlBulkInserter.Object,
@@ -134,13 +137,15 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
             Assert.IsNotNull(mockSqlBulkInserter.Object.CurrentOptions);  
+            Assert.IsNotNull(returnedSqlBulkCopy);  
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.CheckConstraints));
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.FireTriggers));
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepIdentity));
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.TableLock));
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.UseInternalTransaction));
-            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepNulls));  
-            
+            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepNulls));
+            Assert.AreEqual(30, returnedSqlBulkCopy.BulkCopyTimeout);
+            Assert.AreEqual(0, returnedSqlBulkCopy.BatchSize);
         }
 
         [TestMethod]
@@ -150,8 +155,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
+            SqlBulkCopy returnedSqlBulkCopy = null;
             mockSqlBulkInserter = mockSqlBulkInserter.SetupAllProperties();
-            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()));
+            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>())).Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedSqlBulkCopy = sqlBulkCopy); ;
             TestStartNode = new FlowStep
             {
                 Action = new DsfSqlBulkInsertActivity
@@ -160,9 +166,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                     CheckConstraints = true,
                     FireTriggers = false,
                     KeepIdentity = true,
-                    UseDefaultValues = false,
                     UseInternalTransaction = true,
                     KeepTableLock = false,
+                    BatchSize = 10,
+                    Timeout = 120,
                     SqlBulkInserter = mockSqlBulkInserter.Object,
                     Result = "[[result]]"
                 }
@@ -180,8 +187,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepIdentity));
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.TableLock));
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.UseInternalTransaction));
-            Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepNulls));  
-            
+            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepNulls));
+            Assert.AreEqual(120, returnedSqlBulkCopy.BulkCopyTimeout);
+            Assert.AreEqual(10, returnedSqlBulkCopy.BatchSize); 
         }
 
         [TestMethod]
