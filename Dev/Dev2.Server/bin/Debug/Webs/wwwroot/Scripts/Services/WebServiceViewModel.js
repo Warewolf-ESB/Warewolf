@@ -233,8 +233,6 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
 		
 			// create working string 
 			var tmpValue = newValue.substring((indexOfQuestionMark+1));
-			// keep append portion ;)
-			var toAppend = newValue.substring(0, indexOfQuestionMark);
 			// generate pairs
 			var pairs = tmpValue.split("&");
 			
@@ -245,17 +243,25 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
 				
 				var subPairs = tmp.split("=");
 				
-				if(subPairs.length == 2){
-					var varName = subPairs[1].replace("[[","").replace("]]","");
-				
-					var targetEnd = varName.indexOf("&");
-					
-					if(targetEnd > 0){
-						// we need to trim it up a bit ;)
-						varName = varName.substring(0, targetEnd);
-					}
-					
-					self.pushRequestVariable(varName, "", "");						
+				if (subPairs.length == 2) {
+				    var varName = subPairs[1].replace("[[", "").replace("]]", "");
+
+				    var targetEnd = varName.indexOf("&");
+
+				    if (targetEnd > 0) {
+				        // we need to trim it up a bit ;)
+				        varName = varName.substring(0, targetEnd);
+				    }
+
+				    self.pushRequestVariable(varName, "", "");
+				} else {
+				    // we may have a silly chicken with just a datalist fragment ;)
+				    if (tmp.indexOf("[[") == 0) {
+				   
+				        varName = tmp.replace("[[", "").replace("]]", "");
+				        self.pushRequestVariable(varName, "", "");
+				        
+				    }
 				}
 			}
 		}
