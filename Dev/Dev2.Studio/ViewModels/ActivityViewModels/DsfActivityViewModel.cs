@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Communication;
+using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Providers.Errors;

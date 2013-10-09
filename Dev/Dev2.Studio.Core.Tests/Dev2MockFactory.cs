@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Core.Tests.Utils;
+using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Network.Execution;

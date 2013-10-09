@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 using System.Collections.ObjectModel;
+using Dev2.Data.Interfaces;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.Interfaces;
 

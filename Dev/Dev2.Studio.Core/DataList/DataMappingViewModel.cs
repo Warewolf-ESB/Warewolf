@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Input;
 using System.Xml;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;

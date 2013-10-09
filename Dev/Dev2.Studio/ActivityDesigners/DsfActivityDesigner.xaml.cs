@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 using Dev2.Activities.Adorners;
+using Dev2.Data.Interfaces;
 using Dev2.Studio.ActivityDesigners.Singeltons;
 using Dev2.Studio.AppResources.Behaviors;
 using Dev2.Studio.AppResources.ExtensionMethods;

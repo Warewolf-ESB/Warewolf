@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-
+using Dev2.Data.Interfaces;
 
 namespace Dev2.Studio.Core.Interfaces
 {

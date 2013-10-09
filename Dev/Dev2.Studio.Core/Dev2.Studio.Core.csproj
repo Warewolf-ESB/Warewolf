@@ -277,7 +277,6 @@
     <Compile Include="Interfaces\IDataMappingViewModel.cs" />
     <Compile Include="Interfaces\IEnvironmentConnection.cs" />
     <Compile Include="Interfaces\IEnvironmentRepository.cs" />
-    <Compile Include="Interfaces\IInputOutputViewModel.cs" />
     <Compile Include="Interfaces\IIntellisenseProvider.cs" />
     <Compile Include="Interfaces\IObjectCloner.cs" />
     <Compile Include="Interfaces\IOperatorType.cs" />

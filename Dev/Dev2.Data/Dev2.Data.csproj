@@ -102,6 +102,7 @@
     <Compile Include="Enums\enForEachType.cs" />
     <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />
     <Compile Include="Globals.cs" />
+    <Compile Include="Interfaces\IInputOutputViewModel.cs" />
     <Compile Include="Network\DataListMessage.cs" />
     <Compile Include="Parsers\XPathParser.cs" />
     <Compile Include="ServiceModel\AuthenticationType.cs" />
