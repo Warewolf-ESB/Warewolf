@@ -88,46 +88,6 @@ namespace Dev2.Tests.Runtime.ESB.Brokers
             }
         }
 
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("PluginBroker_TestPlugin")]
-        public void PluginBroker_TestPlugin_WhenPocoInput_ValidRecordsetPaths()
-        {
-            //------------Setup for test--------------------------
-
-            var broker = new PluginBroker();
-            var poco = PocoTestFactory.CreateCompany();
-
-            //------------Execute Test---------------------------
-
-            var result = broker.TestPluginResult(poco);
-
-            var recordsets = result.ToRecordsetList();
-
-
-            //------------Assert Results-------------------------
-            //var shapeList = result.DataSourceShapes[0];
-
-            //// --- Assert Display Paths
-            Assert.AreEqual(3, recordsets.Count);
-            //Assert.AreEqual("Departments.Capacity", shapeList.Paths[1].DisplayPath);
-            //Assert.AreEqual("Departments.Count", shapeList.Paths[2].DisplayPath);
-            //Assert.AreEqual("Departments().Name", shapeList.Paths[3].DisplayPath);
-            //Assert.AreEqual("Departments().Employees.Capacity", shapeList.Paths[4].DisplayPath);
-            //Assert.AreEqual("Departments().Employees.Count", shapeList.Paths[5].DisplayPath);
-            //Assert.AreEqual("Departments.Employees().Name", shapeList.Paths[6].DisplayPath);
-
-            //// --- Assert Actual Paths
-            //Assert.AreEqual("Name", shapeList.Paths[0].ActualPath);
-            //Assert.AreEqual("Departments.Capacity", shapeList.Paths[1].ActualPath);
-            //Assert.AreEqual("Departments.Count", shapeList.Paths[2].ActualPath);
-            //Assert.AreEqual("Departments().Name", shapeList.Paths[3].ActualPath);
-            //Assert.AreEqual("Departments().Employees.Capacity", shapeList.Paths[4].ActualPath);
-            //Assert.AreEqual("Departments().Employees.Count", shapeList.Paths[5].ActualPath);
-            //Assert.AreEqual("Departments().Employees().Name", shapeList.Paths[6].ActualPath);
-
-        }
-
 
         [TestMethod]
         [Owner("Travis Frisinger")]
