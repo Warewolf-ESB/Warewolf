@@ -90,6 +90,7 @@ namespace Dev2.Studio.UI.Tests
             {
                 Mouse.Click(tryFindDialog);
                 SendKeys.SendWait("{ESCAPE}");
+                Assert.Fail("Dialog hanging after test, might not have rendered properly");
             }
             //close any open tabs
             TabManagerUiMap.CloseAllTabs();
@@ -262,15 +263,6 @@ namespace Dev2.Studio.UI.Tests
             {
                 DatabaseSourceUiMap.ClickSaveConnection();
                 SaveDialogUiMap.ClickSave();
-                var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-                if (child != null)
-                {
-                    Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (WpfImage));
-                }
-                else
-                {
-                    Assert.Fail("Cannot find studio window after open remote wizard");
-                }
             }
             else
             {
@@ -289,15 +281,6 @@ namespace Dev2.Studio.UI.Tests
             {
                 SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
                 SaveDialogUiMap.ClickSave();
-                var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-                if (child != null)
-                {
-                    Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (WpfImage));
-                }
-                else
-                {
-                    Assert.Fail("Cannot find studio window after open remote wizard");
-                }
             }
             else
             {
@@ -317,15 +300,6 @@ namespace Dev2.Studio.UI.Tests
                 Playback.Wait(120);
                 SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
                 SaveDialogUiMap.ClickSave();
-                var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-                if (child != null)
-                {
-                    Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (WpfImage));
-                }
-                else
-                {
-                    Assert.Fail("Cannot find studio window after open remote wizard");
-                }
             }
             else
             {
@@ -343,15 +317,6 @@ namespace Dev2.Studio.UI.Tests
             if(WizardsUIMap.WaitForWizard(5000))
             {
                 DatabaseServiceWizardUiMap.DatabaseServiceClickCancel();
-                var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-                if (child != null)
-                {
-                    Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (WpfImage));
-                }
-                else
-                {
-                    Assert.Fail("Cannot find studio window after open remote wizard");
-                }
             }
             else
             {
@@ -369,15 +334,6 @@ namespace Dev2.Studio.UI.Tests
             if(WizardsUIMap.WaitForWizard(5000))
             {
                 EmailSourceWizardUiMap.ClickCancel();
-                var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-                if (child != null)
-                {
-                    Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (WpfImage));
-                }
-                else
-                {
-                    Assert.Fail("Cannot find studio window after open remote wizard");
-                }
             }
             else
             {
@@ -395,15 +351,6 @@ namespace Dev2.Studio.UI.Tests
             if(WizardsUIMap.WaitForWizard(5000))
             {
                 PluginSourceMap.ClickSave();
-                var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-                if (child != null)
-                {
-                    Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (WpfImage));
-                }
-                else
-                {
-                    Assert.Fail("Cannot find studio window after open remote wizard");
-                }
             }
             else
             {
@@ -422,15 +369,6 @@ namespace Dev2.Studio.UI.Tests
             {
                 PluginServiceWizardUiMap.ClickTestAndOk();
                 PluginServiceWizardUiMap.ClickSave();
-                var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-                if (child != null)
-                {
-                    Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (WpfImage));
-                }
-                else
-                {
-                    Assert.Fail("Cannot find studio window after open remote wizard");
-                }
             }
             else
             {
