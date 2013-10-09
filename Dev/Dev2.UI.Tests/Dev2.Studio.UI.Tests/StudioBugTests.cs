@@ -285,7 +285,6 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, the mappings on the service are changed and hitting the fix errors adorner should change the activity instance's mappings")]
         [Owner("Ashley")]
-        [Ignore]//unstable
         // ReSharper disable InconsistentNaming
         public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_DbServiceMappingsFixed()
         // ReSharper restore InconsistentNaming
@@ -303,38 +302,38 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.EnterExplorerSearchText("Bug_10011_DbService");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
             // Get wizard window
-            var wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            var wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if(DatabaseServiceWizardUIMap.IsControlADbServiceWizard(wizardWindow))
             {
                 // Tab to mappings
                 DatabaseServiceWizardUIMap.TabToOutputMappings(wizardWindow);
                 // Remove column 1+2's mapping
-                Keyboard.SendKeys(wizardWindow, "{TAB}");
-                Keyboard.SendKeys(wizardWindow, "{DEL}");
-                Keyboard.SendKeys(wizardWindow, "{TAB}");
-                Keyboard.SendKeys(wizardWindow, "{DEL}");
+                SendKeys.SendWait("{TAB}");
+                SendKeys.SendWait("{DEL}");
+                SendKeys.SendWait("{TAB}");
+                SendKeys.SendWait("{DEL}");
                 // Save
                 DatabaseServiceWizardUIMap.KeyboardOK();
-                Keyboard.SendKeys("{TAB}utility");
+                SendKeys.SendWait("{TAB}utility");
                 DatabaseServiceWizardUIMap.SaveDialogClickFirstFolder();
-                Keyboard.SendKeys(wizardWindow, "{TAB}{ENTER}");
+                SendKeys.SendWait("{TAB}{ENTER}");
                 ResourceChangedPopUpUIMap.ClickCancel();
 
                 ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
                 // Get wizard window
-                wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+                wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
                 if(DatabaseServiceWizardUIMap.IsControlADbServiceWizard(wizardWindow))
                 {
                     // Tab to mappings
                     DatabaseServiceWizardUIMap.TabToOutputMappings(wizardWindow);
                     // Replace column 1's mapping
-                    Keyboard.SendKeys(wizardWindow, "{TAB}");
-                    Keyboard.SendKeys(wizardWindow, "Column1");
+                    SendKeys.SendWait("{TAB}");
+                    SendKeys.SendWait("Column1");
                     // Save
                     DatabaseServiceWizardUIMap.KeyboardOK();
-                    Keyboard.SendKeys("{TAB}utility");
+                    SendKeys.SendWait("{TAB}utility");
                     DatabaseServiceWizardUIMap.SaveDialogClickFirstFolder();
-                    Keyboard.SendKeys(wizardWindow, "{TAB}{ENTER}");
+                    SendKeys.SendWait("{TAB}{ENTER}");
                     ResourceChangedPopUpUIMap.ClickCancel();
                 }
                 else
@@ -346,7 +345,7 @@ namespace Dev2.Studio.UI.Tests
                 if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService(DsfActivityDesigner)"))
                 {
                     // Assert mapping does not exist
-                   // Assert.IsFalse(WorkflowDesignerUIMap.DoesActivitDataMappingContainText(WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Bug_10011_DbService(DsfActivityDesigner)"), "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
+                    Assert.IsFalse(WorkflowDesignerUIMap.DoesActivityDataMappingContainText(WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Bug_10011_DbService(DsfActivityDesigner)"), "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
                 }
                 else
                 {
@@ -364,7 +363,6 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, mappings on the service are set to required and hitting the fix errors adorner should prompt the user to add required mappings to the activity instance's mappings")]
         [Owner("Ashley")]
-        [Ignore]//unstable
         // ReSharper disable InconsistentNaming
         public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_UserIsPromptedToAddRequiredDbServiceMappings()
         // ReSharper restore InconsistentNaming
@@ -425,7 +423,6 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Clicking a debug output step should highlight that activity on the design surface")]
         [Owner("Ashley")]
-        [Ignore]//the hot fix for save data being mixed with activity steps isnt in dev yet
         // ReSharper disable InconsistentNaming
         public void DebugOutput_ClickStep_ActivityIsHighlighted()
         // ReSharper restore InconsistentNaming
@@ -467,7 +464,6 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UnsavedWorkflows_UITest")]
         [Description("For bug 10086 - Switching tabs does not flicker unsaved status")]
         [Owner("Ashley Lewis")]
-        [Ignore]
         // ReSharper disable InconsistentNaming
         public void Tabs_UnsavedStar_SwitchingTabs_DoesNotChangeUnsavedStatus()
         // ReSharper restore InconsistentNaming
@@ -530,41 +526,6 @@ namespace Dev2.Studio.UI.Tests
         }
 
         [TestMethod]
-        [TestCategory("UITest")]
-        [Description("Clicking an activity should scroll to that debug output step on the design surface")]
-        [Owner("Ashley")]
-        [Ignore]
-        // ReSharper disable InconsistentNaming
-        public void WorkflowdesignSurfrace_ClickStep_OutputScrollsToActivity()
-        // ReSharper restore InconsistentNaming
-        {
-            //Open the workflow and run it
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("BUG_10101_SelectStepScrollsToActivity");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "BUG_10101_SelectStepScrollsToActivity");
-            var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-            WorkflowDesignerUIMap.RunWorkflowUntilOutputStepCountAtLeast(10, 5);
-
-            //Pre-assert the activity is not visible
-            var testVisible = new Point();
-            var activity = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Assign (3)(MultiAssignDesigner)");
-            Assert.IsNull(activity, "Workflow openned with the scroll not at the top, test cannot continue");
-
-            //Click last step
-            DocManagerUIMap.ClickOpenTabPage("Output");
-            var step = OutputUIMap.GetOutputWindow();
-            Mouse.Click(step[9]);
-
-            //Assert the activity is now visible
-            DocManagerUIMap.ClickOpenTabPage("Explorer");//close output tab without disturbing selected item
-            activity = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Assign (3)(MultiAssignDesigner)");
-            Assert.IsTrue(activity.TryGetClickablePoint(out testVisible), "Selecting a step on the design surface does not scroll to the activity");
-
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
-        }
-
-        [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("RenameResource_WithDashes")]
         public void RenameResource_WithDashes_ResourceRenamed()
@@ -598,14 +559,11 @@ namespace Dev2.Studio.UI.Tests
 
         // Bug 6180
         [TestMethod]
-        [Ignore]
         // Deploy Rework
         public void MakeSureDeployedItemsAreNotFiltered()
         {
-            // Jurie has apparently fixed this, but just hasn't checked it in :D
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.RightClickDeployProject("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
-            //this.UIMap.DeployOptionClick - To fix
             // Wait for it to open!
             Thread.Sleep(5000);
             UITestControl theTab = TabManagerUIMap.FindTabByName("Deploy Resources");
@@ -613,14 +571,12 @@ namespace Dev2.Studio.UI.Tests
             DeployViewUIMap.EnterTextInSourceServerFilterBox(theTab, "ldnslgnsdg"); // Random text
             if(!DeployViewUIMap.DoesSourceServerHaveDeployItems(theTab))
             {
-                Assert.Inconclusive("The deployed item has been removed with the filter - It should not be (Jurie should have fixed this....)");
+                Assert.Fail("The deployed item has been removed with the filter - It should not be");
             }
         }
 
         // Bug 6617
         [TestMethod]
-        [Ignore]
-        // Ashley work - Removed this menu option
         public void OpeningDependancyWindowTwiceKeepsItOpen()
         {
             // The workflow so we have a second tab
@@ -643,45 +599,8 @@ namespace Dev2.Studio.UI.Tests
             }
         }
 
-        // Bug 8408
-        [TestMethod]
-        [Ignore] // Silly test that does nothing really
-        public void SortToolAndBaseConvertDropDownListsMatch()
-        {
-            // Create the workflow
-            RibbonUIMap.CreateNewWorkflow();
-
-            // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-
-            // Get a reference point to start dragging
-            Point thePoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
-
-            // Drag the controls on
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            ToolboxUIMap.DragControlToWorkflowDesigner("SortRecords", thePoint);
-
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            ToolboxUIMap.DragControlToWorkflowDesigner("FindRecords", new Point(thePoint.X, thePoint.Y + 150));
-
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            ToolboxUIMap.DragControlToWorkflowDesigner("BaseConvert", new Point(thePoint.X, thePoint.Y + 250));
-
-            int sortControlHeight = WorkflowDesignerUIMap.Sort_GetDDLHeight(theTab, "SortRecords");
-            int findRecordsHeight = WorkflowDesignerUIMap.FindRecords_GetDDLHeight(theTab, "Find Record Index");
-            int baseConvertHeight = WorkflowDesignerUIMap.BaseConvert_GetDDLHeight(theTab, "Base Conversion");
-
-            Assert.AreEqual(sortControlHeight, findRecordsHeight, "The height of the DDL's on the Sort Control and Find Record control are different!");
-            Assert.AreNotEqual(sortControlHeight, baseConvertHeight, "The height of the DDL's on the Sort Control and Base Convert control are the same!");
-
-            // Cleanup
-            new TestBase().DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
-        }
-
         // Bug 8816
         [TestMethod]
-        [Ignore]
-        // Deploy Behavior Rework
         public void IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled()
         {
             // Click the Deploy button in the Ribbon
@@ -702,8 +621,6 @@ namespace Dev2.Studio.UI.Tests
 
         // Bug 8819
         [TestMethod]
-        [Ignore]
-        // Deploy Rework
         public void EnterFilterOnDestinationServer_Expected_DeployedItemsStillVisible()
         {
             // Choose to deploy one of our own items
@@ -723,17 +640,6 @@ namespace Dev2.Studio.UI.Tests
 
             // And make sure it still has items
             Assert.IsTrue(DeployViewUIMap.DoesDestinationServerHaveItems(deployTab), "After a filter was applied, the destination Server lost all its items!");
-        }
-
-        [TestMethod]
-        [TestCategory("UITest")]
-        [Description("for 9599 - Default docking window layout and reset (2013.06.06)")]
-        [Owner("Ashley")]
-        [Ignore]// No longer currently a feature
-        public void ResetLayOutWithDebugOutputExpandedAndExplorerPanePinnedExpectedReset()
-        {
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.PinPane();
         }
 
         [TestMethod]

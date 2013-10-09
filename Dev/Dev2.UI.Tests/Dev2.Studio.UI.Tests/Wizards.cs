@@ -13,7 +13,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
     /// Summary description for CodedUITest1
     /// </summary>
     [CodedUITest]
-    [Ignore]
     public class Wizards : UIMapBase
     {
 
@@ -38,7 +37,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         //2013.06.22: Ashley Lewis for bug 9478
         [TestMethod]
-        [Ignore] // Account ban!
         public void EmailSourceWizardCreateNewSourceExpectedSourceCreated()
         {
             //Initialization
@@ -54,12 +52,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             ExplorerUIMap.EnterExplorerSearchText(name);
 
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", "Unassigned", name));
-
-            new TestBase().DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
+            TabManagerUIMap.CloseAllTabs();
         }
 
         [TestMethod]
-        [Ignore]
         public void WebServiceWizardCreateServiceAndSourceExpectedServiceCreated()
         {
             //Initialization

@@ -419,6 +419,45 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             return rowCounter;
         }
 
+        public bool DoesActivityDataMappingContainText(UITestControl aControl, string text)
+        {
+            UITestControlCollection testFlowChildCollection = aControl.GetChildren();
+            foreach(UITestControl theControl in testFlowChildCollection)
+            {
+                // inputMappings
+                string automationId = theControl.GetProperty("AutomationID").ToString();
+                if(automationId == "inputMappings")
+                {
+                    UITestControlCollection inputChildren = theControl.GetChildren();
+                    foreach(UITestControl potentialRow in inputChildren)
+                    {
+                        if(potentialRow.ControlType.ToString() == "Row")
+                        {
+                            var theRow = (potentialRow as WpfRow);
+                            foreach (var cell in theRow.Cells)
+                            {
+                                if (cell is WpfEdit)
+                                {
+                                    if ((cell as WpfEdit).Text == text)
+                                    {
+                                        return true;
+                                    }
+                                }
+                                else if ((cell is WpfText))
+                                {
+                                   if((cell as WpfText).DisplayText == text)
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
         #endregion Adorners
 
         public string GetWizardTitle(UITestControl theTab)

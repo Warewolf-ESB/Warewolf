@@ -22,8 +22,6 @@ namespace Dev2.Studio.UI.Tests
         }
 
         [TestMethod]
-        [Ignore]
-        // Way the freak too long to run!
         public void SearchAndRefresh_AttemptToSearch_ExpectedSearchFilteredByAllItems()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
@@ -40,8 +38,6 @@ namespace Dev2.Studio.UI.Tests
         #region Deprecated Test
         //2013.03.11: Ashley Lewis - Bug 9124
         [TestMethod]
-        [Ignore]
-        // External Resources Required : Server
         public void TryConnectWhereBusyConnectingExpectedWizardCanCreateAndDeleteBoth()
         {
             //Initialize
@@ -57,7 +53,7 @@ namespace Dev2.Studio.UI.Tests
 
             System.Threading.Thread.Sleep(100);
             connectionWizard.ClickNewServerAddress();
-            Keyboard.SendKeys(@"http://RSAKLFDEV02:77/dsf{TAB}{TAB}{ENTER}");
+            Keyboard.SendKeys(@"http://RSAKLFSVRTFSBLD:77/dsf{TAB}{TAB}{ENTER}");
             System.Threading.Thread.Sleep(100);
             Keyboard.SendKeys("{TAB}{ENTER}");
             System.Threading.Thread.Sleep(100);
@@ -71,7 +67,7 @@ namespace Dev2.Studio.UI.Tests
 
             System.Threading.Thread.Sleep(100);
             connectionWizard.ClickNewServerAddress();
-            Keyboard.SendKeys(@"http://RSAKLFASHLEY:77/dsf{TAB}{TAB}{ENTER}");
+            Keyboard.SendKeys(@"http://RSAKLFSVRWRWBLD:77/dsf{TAB}{TAB}{ENTER}");
             System.Threading.Thread.Sleep(100);
             Keyboard.SendKeys("{TAB}{ENTER}");
             System.Threading.Thread.Sleep(100);

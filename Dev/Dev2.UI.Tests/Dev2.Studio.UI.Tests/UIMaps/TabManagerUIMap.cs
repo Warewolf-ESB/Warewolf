@@ -108,12 +108,13 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             var canCloseTab = true;
             while(openTabs != 0 && canCloseTab)
             {
-                string theTab = GetActiveTabName();
-
                 //try close explorer pane
-                explorerUiMap.ClosePane();
-                Playback.Wait(2500);
-                canCloseTab = CloseTab_Click_No(theTab);
+                explorerUiMap.ClosePane(GetActiveTab());
+                //the tab switch caused by closing the tab
+                //triggers show resource in explorer tree
+                //causing the explorer pane to pop out
+                //blocking the tab close button for the next tab close
+                canCloseTab = CloseTab_Click_No(GetActiveTabName());
                 openTabs = GetTabCount();
             }
         }

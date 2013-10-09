@@ -135,6 +135,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("AutoConnectorTests")]
+        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void AutoConnectorTests_DragActivityOnStartAutoConnectorNode_AConnectorIsCreated()
         {
             CreateWorkflow();
@@ -152,6 +153,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("AutoConnectorTests")]
+        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void AutoConnectorTests_DragAToolOnStartAutoConnectorNode_AConnectorIsCreated()
         {
             CreateWorkflow();
@@ -167,6 +169,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("AutoConnectorTests")]
+        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void AutoConnectorTests_DragAToolOnALineBetweenConnectors_ASecondConnectorIsCreated()
         {
             //Drag a tool to the design surface
@@ -195,6 +198,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("AutoConnectorTests")]
+        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void AutoConnectorTests_DragAnActivityOnALineBetweenConnectors_ASecondConnectorIsCreated()
         {
             //Drag an activity to the design surface
@@ -238,7 +242,7 @@ namespace Dev2.Studio.UI.Tests
             if (control != null)
             {
                 var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
-            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
+                ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
             }
             else
             {
@@ -249,9 +253,9 @@ namespace Dev2.Studio.UI.Tests
             {
                 DecisionWizardUIMap.ClickCancel();
                 var connectors = WorkflowDesignerUIMap.GetAllConnectors();
-            //Assert start auto connector worked
-            Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
-        }
+                //Assert start auto connector worked
+                Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
+            }
             else
             {
                 Assert.Fail("Decision dialog not shown after decision drop within the given timeout period.");

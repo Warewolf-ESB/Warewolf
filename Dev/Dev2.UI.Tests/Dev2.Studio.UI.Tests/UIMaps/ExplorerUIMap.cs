@@ -443,11 +443,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             SendKeys.SendWait("{ENTER}");
         }
 
-        public void ClosePane()
+        public void ClosePane(UITestControl theTab)
         {
-            var tabManager = new TabManagerUIMap();
-            var getActiveTab = tabManager.GetActiveTab();
-            Mouse.Click(new Point(getActiveTab.BoundingRectangle.Right - 100, getActiveTab.BoundingRectangle.Y + 500));
+            Mouse.Click(new Point(theTab.BoundingRectangle.Right - 100, theTab.BoundingRectangle.Y + 500));
+            Playback.Wait(2500);
         }
     }
 }

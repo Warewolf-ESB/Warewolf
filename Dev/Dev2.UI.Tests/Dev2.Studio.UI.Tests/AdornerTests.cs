@@ -121,67 +121,6 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [TestCategory("UITest")]
-        [Description("for bug 9969- large view adorners")]
-        [Owner("Jurie")]
-        [Ignore] //Until Datetime large view is done.
-        public void DateTimeLargeViewAdornerTest()
-        {
-            #region Test Strings
-
-            string input = "14.10.1988";
-            string inputFormat = "dd.mm.yyyy";
-            string result = "[[Result]]";
-
-            #endregion
-
-            // Create the workflow
-            WorkflowDesignerUIMap.CreateWorkflow();
-
-            //// Get some design surface
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
-            requiredPoint.Offset(20, 50);
-
-            // Drag the tool onto the workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("DateTime");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, requiredPoint);
-            //Open the adorner
-            WorkflowDesignerUIMap.Adorner_ClickLargeView(theTab);
-            //Get all the textboxes in the adorner
-            List<UITestControl> adornerAllTextBoxes = WorkflowDesignerUIMap.Adorner_GetAllTextBoxes(theTab);
-            if (adornerAllTextBoxes.Count == 5)
-            {
-                //Fill text into the textboxes
-                Mouse.Click(adornerAllTextBoxes[0]);
-                SendKeys.SendWait(input);
-                Mouse.Click(adornerAllTextBoxes[1]);
-                SendKeys.SendWait(inputFormat);
-
-                Mouse.Click(adornerAllTextBoxes[4]);
-                SendKeys.SendWait(result);
-            }
-            //Close the adorner
-            WorkflowDesignerUIMap.Adorner_ClickLargeView(theTab);
-
-            //Get all the textboxes from the tool
-            List<UITestControl> dateTimeAllTextBoxes = WorkflowDesignerUIMap.Tool_GetAllTextBoxes(theTab,
-                                                                                                  "Date and Time(DsfDateTimeActivityDesigner)",
-                                                                                                  "Uia.DsfDateTimeActivityTemplate");
-
-            //Check the the text entered in the adorner is the same as what is on the tool now
-            Assert.AreEqual(5, dateTimeAllTextBoxes.Count,
-                            "The wrong number of textboxes was returned for the date tine tool");
-            Assert.AreEqual(input, (dateTimeAllTextBoxes[0] as WpfEdit).Text,
-                            "The text entered in the adorner is not the same as what is shown on the tool");
-            Assert.AreEqual(inputFormat, (dateTimeAllTextBoxes[1] as WpfEdit).Text,
-                            "The text entered in the adorner is not the same as what is shown on the tool");
-            Assert.AreEqual(result, (dateTimeAllTextBoxes[4] as WpfEdit).Text,
-                            "The text entered in the adorner is not the same as what is shown on the tool");
-        }
-
-        [TestMethod]
-        [TestCategory("UITest")]
         [Description("Test that clicking on the help button does indeed open an example workflow")]
         [Owner("Tshepo")]
         public void AdornerHelpButtonOpenAnExampleWorlkflowTest()

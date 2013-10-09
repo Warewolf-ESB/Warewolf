@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.ExternalUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
@@ -18,7 +19,6 @@ using Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Point = System.Drawing.Point;
 
 namespace Dev2.Studio.UI.Tests
 {
@@ -49,6 +49,7 @@ namespace Dev2.Studio.UI.Tests
         OutputUIMap _outputUiMap;
         UIMap _map;
         WebServiceWizardUIMap _webServiceWizardUiMap;
+        private ExternalUIMap _externalUiMap;
 
         #endregion
 
@@ -70,6 +71,7 @@ namespace Dev2.Studio.UI.Tests
         public OutputUIMap OutputUiMap { get { return _outputUiMap ?? (_outputUiMap = new OutputUIMap()); } }
         public UIMap UIMap { get { return _map ?? (_map = new UIMap()); } }
         public WebServiceWizardUIMap WebServiceWizardUiMap { get { return _webServiceWizardUiMap ?? (_webServiceWizardUiMap = new WebServiceWizardUIMap()); } }
+        public ExternalUIMap ExternalWizardUiMap { get { return _externalUiMap ?? (_externalUiMap = new ExternalUIMap()); } }
         
         #endregion
 
@@ -81,11 +83,13 @@ namespace Dev2.Studio.UI.Tests
             TabManagerUiMap.CloseAllTabs();
             DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
             ExplorerUiMap.ClickServerInServerDDL(LocalHostServerName);
+            ExplorerUiMap.ClearExplorerSearchText();
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
+        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void RemoteServerUITests_ConnectToRemoteServerFromExplorer_RemoteServerConnected()
         {
             DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
@@ -97,6 +101,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
+        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void RemoteServerUITests_CreateRemoteWorkFlow_WorkflowIsCreated()
         {
             DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
@@ -109,6 +114,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
+        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void RemoteServerUITests_EditRemoteWorkFlow_WorkflowIsEdited()
         {
             const string TextToSearchWith = "Find Records";
@@ -123,6 +129,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
+        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void RemoteServerUITests_ViewRemoteWorkFlowInBrowser_WorkflowIsExecuted()
         {
             const string TextToSearchWith = "Find Records";
@@ -131,13 +138,23 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(5000);
             //assert error dialog not showing
             var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            if(child != null) Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(Window));
+            if (child != null)
+            {
+                Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (Window));
+            }
+            else
+            {
+                Assert.Fail("Cannot get studio window after remote workflow show in browser");
+            }
+            //Try close browser
+            ExternalWizardUiMap.CloseAllInstancesOfIE();
         }
 
         
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
+        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void RemoteServerUITests_DragAndDropWorkflowFromRemoteServerOnALocalHostCreatedWorkflow_WorkFlowIsDropped()
         {
             const string TextToSearchWith = "Internal Recursive Copy";
@@ -192,6 +209,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
+        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void RemoteServerUITests_OpenWorkflowOnRemoteServerAndOpenWorkflowWithSameNameOnLocalHost_WorkflowIsOpened()
         {
             const string TextToSearchWith = "Find Records";
@@ -208,6 +226,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
+        [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void RemoteServerUITests_DebugARemoteWorkflowWhenLocalWorkflowWithSameNameIsOpen_WorkflowIsExecuted()
         {
             const string TextToSearchWith = "Find Records";
@@ -233,9 +252,18 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "DBSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
+            Playback.Wait(120);
             DatabaseSourceUiMap.ClickSaveConnection();
             SaveDialogUiMap.ClickSave();
-            Playback.Wait(120);
+            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            if(child != null)
+            {
+                Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
+            }
+            else
+            {
+                Assert.Fail("Cannot find studio window after open remote wizard");
+            }
         }
 
         [TestMethod]
@@ -248,6 +276,15 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(120);
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
             SaveDialogUiMap.ClickSave();
+            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            if(child != null)
+            {
+                Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
+            }
+            else
+            {
+                Assert.Fail("Cannot find studio window after open remote wizard");
+            }
         }
 
         [TestMethod]
@@ -260,6 +297,15 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(120);
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
             SaveDialogUiMap.ClickSave();
+            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            if(child != null)
+            {
+                Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
+            }
+            else
+            {
+                Assert.Fail("Cannot find studio window after open remote wizard");
+            }
         }
 
         [TestMethod]
@@ -269,10 +315,17 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "DBService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            DatabaseServiceWizardUiMap.DatabaseServiceClickCancel();
             Playback.Wait(120);
+            DatabaseServiceWizardUiMap.DatabaseServiceClickCancel();
             var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            if(child != null) Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
+            if (child != null)
+            {
+                Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (WpfImage));
+            }
+            else
+            {
+                Assert.Fail("Cannot find studio window after open remote wizard");
+            }
         }
 
         [TestMethod]
@@ -282,10 +335,17 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "EmailSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            EmailSourceWizardUiMap.ClickCancel();
             Playback.Wait(120);
+            EmailSourceWizardUiMap.ClickCancel();
             var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            if(child != null) Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
+            if(child != null)
+            {
+                Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
+            }
+            else
+            {
+                Assert.Fail("Cannot find studio window after open remote wizard");
+            }
         }
 
         [TestMethod]
@@ -295,10 +355,17 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "PluginSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            PluginSourceMap.ClickSave();
             Playback.Wait(120);
+            PluginSourceMap.ClickSave();
             var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            if(child != null) Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
+            if(child != null)
+            {
+                Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
+            }
+            else
+            {
+                Assert.Fail("Cannot find studio window after open remote wizard");
+            }
         }
 
         [TestMethod]
@@ -308,11 +375,18 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "PluginService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
+            Playback.Wait(120);
             PluginServiceWizardUiMap.ClickTestAndOk();
             PluginServiceWizardUiMap.ClickSave();
-            Playback.Wait(120);
             var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            if(child != null) Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
+            if(child != null)
+            {
+                Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(WpfImage));
+            }
+            else
+            {
+                Assert.Fail("Cannot find studio window after open remote wizard");
+            }
         }
 
         [TestMethod]

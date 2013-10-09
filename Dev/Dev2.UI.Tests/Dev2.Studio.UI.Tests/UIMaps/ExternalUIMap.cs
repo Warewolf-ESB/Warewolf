@@ -47,7 +47,7 @@
 
         public void CloseAllInstancesOfIE()
         {
-            Process[] processList = System.Diagnostics.Process.GetProcessesByName("iexplore");
+            Process[] processList = Process.GetProcessesByName("iexplore");
             foreach (Process p in processList)
             {
                 p.Kill();
@@ -59,6 +59,15 @@
             WinWindow outlookWindow = GetOutlookAfterFeedbackWindow();
             Point p = new Point();
             return outlookWindow.TryGetClickablePoint(out p);
+        }
+
+        public void CloseAllInstancesOfOutlook()
+        {
+            Process[] processList = Process.GetProcessesByName("OUTLOOK");
+            foreach(Process p in processList)
+            {
+                p.Kill();
+            }
         }
     }
 }
