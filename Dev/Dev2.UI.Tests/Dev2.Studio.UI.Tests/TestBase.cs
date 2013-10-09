@@ -572,10 +572,9 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void ClickNewRemoteWarewolfServerExpectedRemoteWarewolfServerOpens()
         {
-            var _docManager = new DocManagerUIMap();
             var _explorer = new ExplorerUIMap();
 
-            _docManager.ClickOpenTabPage("Explorer");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
             var getLocalServer = _explorer.GetLocalServer();
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
             for (var i = 0; i < 6; i++)
