@@ -158,6 +158,11 @@ namespace Dev2.Studio.ActivityDesigners
             ActivityHelper.HandleMouseDoubleClick(e);
         }
 
+        protected override void OnPreviewDragEnter(DragEventArgs e)
+        {
+            ActivityHelper.HandleDragEnter(e);
+        }
+
         void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             ShowQuickVariableInput = !ShowQuickVariableInput;

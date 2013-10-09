@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
+using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Dev2.Common;
@@ -125,6 +126,14 @@ namespace Dev2.Utilities
             if(!(e.OriginalSource is IScrollInfo))
             {
                 e.Handled = true;
+            }
+        }
+
+        public static void HandleDragEnter(DragEventArgs e)
+        {
+            if(e != null)
+            {
+               // e.Handled = true;
             }
         }
     }

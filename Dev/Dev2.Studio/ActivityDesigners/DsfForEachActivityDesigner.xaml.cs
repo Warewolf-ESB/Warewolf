@@ -150,9 +150,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             ActivityHelper.HandleMouseDoubleClick(e);
         }
+        
         protected override void OnPreviewDragEnter(DragEventArgs e)
         {
-            // 2013.07.29: Ashley Lewis for bug 9949 - workaround for Automatic-drill-down
+           ActivityHelper.HandleDragEnter(e);
         }
     }
 }

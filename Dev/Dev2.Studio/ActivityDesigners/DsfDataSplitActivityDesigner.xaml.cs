@@ -163,7 +163,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void DsfDataSplitActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ActivityHelper.HandleMouseDoubleClick(e);
-        }        
+        }
+
+        protected override void OnPreviewDragEnter(DragEventArgs e)
+        {
+            ActivityHelper.HandleDragEnter(e);
+        }
 
         void SetValuetxt_KeyUp(object sender, KeyEventArgs e)
         {

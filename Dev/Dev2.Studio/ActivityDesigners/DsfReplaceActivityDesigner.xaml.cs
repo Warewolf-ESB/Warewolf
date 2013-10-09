@@ -23,6 +23,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ActivityHelper.HandleMouseDoubleClick(e);
         }
 
+        protected override void OnPreviewDragEnter(DragEventArgs e)
+        {
+            ActivityHelper.HandleDragEnter(e);
+        }
+
         void DsfReplaceActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
         {
             UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;

@@ -165,6 +165,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ActivityHelper.HandleMouseDoubleClick(e);
         }
 
+        protected override void OnPreviewDragEnter(DragEventArgs e)
+        {
+            ActivityHelper.HandleDragEnter(e);
+        }
+
         private void SetValuetxt_KeyUp(object sender, KeyEventArgs e)
         {
             Resultsdg.AddRow();

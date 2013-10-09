@@ -88,6 +88,11 @@ namespace Dev2.Studio.ActivityDesigners
             ActivityHelper.HandleMouseDoubleClick(e);
         }
 
+        protected override void OnPreviewDragEnter(DragEventArgs e)
+        {
+            ActivityHelper.HandleDragEnter(e);
+        }
+
         #endregion
 
         void DsfRandomActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)

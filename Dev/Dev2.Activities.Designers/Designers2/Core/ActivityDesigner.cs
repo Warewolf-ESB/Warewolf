@@ -10,6 +10,7 @@ using Dev2.Activities.Designers2.Core.Adorners;
 using Dev2.Activities.Designers2.Core.Errors;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Studio.Core.Activities.Services;
+using Dev2.Utilities;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -154,6 +155,11 @@ namespace Dev2.Activities.Designers2.Core
         protected void OnDesignerManagementServiceCollapseAllRequested(object sender, EventArgs e)
         {
             ViewModel.Collapse();
+        }
+
+        protected override void OnPreviewDragEnter(DragEventArgs e)
+        {
+            ActivityHelper.HandleDragEnter(e);
         }
     }
 }

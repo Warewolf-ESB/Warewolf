@@ -170,6 +170,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ActivityHelper.HandleMouseDoubleClick(e);
         }
 
+        protected override void OnPreviewDragEnter(DragEventArgs e)
+        {
+            ActivityHelper.HandleDragEnter(e);
+        }
+
         void SetValuetxt_KeyUp(object sender, KeyEventArgs e)
         {
             List<ICaseConvertTO> collection = ModelItem.Properties["ConvertCollection"].ComputedValue as List<ICaseConvertTO>;
