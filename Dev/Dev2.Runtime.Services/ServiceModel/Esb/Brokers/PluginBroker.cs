@@ -308,9 +308,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         {
             var dataBrowser = DataBrowserFactory.CreateDataBrowser();
             var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
+
             if (pluginResult != null)
             {
-                dataSourceShape.Paths.AddRange(dataBrowser.Map(pluginResult));
+                var tmpData = dataBrowser.Map(pluginResult);
+                dataSourceShape.Paths.AddRange(tmpData);
             }
 
             var result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);

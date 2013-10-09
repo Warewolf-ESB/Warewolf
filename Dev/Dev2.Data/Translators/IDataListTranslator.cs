@@ -57,7 +57,6 @@ namespace Dev2.DataList.Contract
         /// </returns>
         IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors);
 
-
         /// <summary>
         /// Converts from a binary representation in the specified <see cref="Format" /> to the standard
         /// binary representation of a datalist.
@@ -78,6 +77,7 @@ namespace Dev2.DataList.Contract
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
         string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors);
+
 
     }
 }

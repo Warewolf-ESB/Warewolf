@@ -55,6 +55,9 @@ namespace Dev2.Tests.Runtime.ESB.Brokers
             #endregion
 
             var result = broker.TestPluginResult(poco);
+
+            // It appears as though the result.ToRecordsetList() is causing the sway ;)
+
             var recordsets = result.ToRecordsetList();
 
             Assert.AreEqual(3, recordsets.Count);
@@ -83,6 +86,84 @@ namespace Dev2.Tests.Runtime.ESB.Brokers
                         break;
                 }
             }
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("PluginBroker_TestPlugin")]
+        public void PluginBroker_TestPlugin_WhenPocoInput_ValidRecordsetPaths()
+        {
+            //------------Setup for test--------------------------
+
+            var broker = new PluginBroker();
+            var poco = PocoTestFactory.CreateCompany();
+
+            //------------Execute Test---------------------------
+
+            var result = broker.TestPluginResult(poco);
+
+            var recordsets = result.ToRecordsetList();
+
+
+            //------------Assert Results-------------------------
+            //var shapeList = result.DataSourceShapes[0];
+
+            //// --- Assert Display Paths
+            Assert.AreEqual(3, recordsets.Count);
+            //Assert.AreEqual("Departments.Capacity", shapeList.Paths[1].DisplayPath);
+            //Assert.AreEqual("Departments.Count", shapeList.Paths[2].DisplayPath);
+            //Assert.AreEqual("Departments().Name", shapeList.Paths[3].DisplayPath);
+            //Assert.AreEqual("Departments().Employees.Capacity", shapeList.Paths[4].DisplayPath);
+            //Assert.AreEqual("Departments().Employees.Count", shapeList.Paths[5].DisplayPath);
+            //Assert.AreEqual("Departments.Employees().Name", shapeList.Paths[6].DisplayPath);
+
+            //// --- Assert Actual Paths
+            //Assert.AreEqual("Name", shapeList.Paths[0].ActualPath);
+            //Assert.AreEqual("Departments.Capacity", shapeList.Paths[1].ActualPath);
+            //Assert.AreEqual("Departments.Count", shapeList.Paths[2].ActualPath);
+            //Assert.AreEqual("Departments().Name", shapeList.Paths[3].ActualPath);
+            //Assert.AreEqual("Departments().Employees.Capacity", shapeList.Paths[4].ActualPath);
+            //Assert.AreEqual("Departments().Employees.Count", shapeList.Paths[5].ActualPath);
+            //Assert.AreEqual("Departments().Employees().Name", shapeList.Paths[6].ActualPath);
+
+        }
+
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("PluginBroker_TestPlugin")]
+        public void PluginBroker_TestPlugin_WhenPocoInput_ValidUserPaths()
+        {
+            //------------Setup for test--------------------------
+
+            var broker = new PluginBroker();
+            var poco = PocoTestFactory.CreateCompany();
+
+            //------------Execute Test---------------------------
+
+            var result = broker.TestPluginResult(poco);
+
+            //------------Assert Results-------------------------
+            var shapeList = result.DataSourceShapes[0];
+
+            // --- Assert Display Paths
+            Assert.AreEqual("Name", shapeList.Paths[0].DisplayPath);
+            Assert.AreEqual("Departments.Capacity", shapeList.Paths[1].DisplayPath);
+            Assert.AreEqual("Departments.Count", shapeList.Paths[2].DisplayPath);
+            Assert.AreEqual("Departments().Name", shapeList.Paths[3].DisplayPath);
+            Assert.AreEqual("Departments().Employees.Capacity", shapeList.Paths[4].DisplayPath);
+            Assert.AreEqual("Departments().Employees.Count", shapeList.Paths[5].DisplayPath);
+            Assert.AreEqual("Departments.Employees().Name", shapeList.Paths[6].DisplayPath);
+
+            // --- Assert Actual Paths
+            Assert.AreEqual("Name", shapeList.Paths[0].ActualPath);
+            Assert.AreEqual("Departments.Capacity", shapeList.Paths[1].ActualPath);
+            Assert.AreEqual("Departments.Count", shapeList.Paths[2].ActualPath);
+            Assert.AreEqual("Departments().Name", shapeList.Paths[3].ActualPath);
+            Assert.AreEqual("Departments().Employees.Capacity", shapeList.Paths[4].ActualPath);
+            Assert.AreEqual("Departments().Employees.Count", shapeList.Paths[5].ActualPath);
+            Assert.AreEqual("Departments().Employees().Name", shapeList.Paths[6].ActualPath);
+
         }
 
         [TestMethod]
@@ -128,7 +209,7 @@ namespace Dev2.Tests.Runtime.ESB.Brokers
 </Company>";
             #endregion
 
-            List<string> expectedExpressions = new List<string>
+            List<string> expectedActualPaths = new List<string>
                                                                 {
                                                                     "Company:Name",
                                                                     "Company.Motto",
@@ -141,6 +222,19 @@ namespace Dev2.Tests.Runtime.ESB.Brokers
                                                                     "Company().OuterNestedRecordSet().InnerNestedRecordSet:ItemValue"
                                                                  };
 
+            List<string> expectedUserVisiblePaths = new List<string>
+                                                                {
+                                                                    "Company:Name",
+                                                                    "Company.Motto",
+                                                                    "Company.PreviousMotto",
+                                                                    "Company.Departments:TestAttrib",
+                                                                    "Company.Departments().Department:Name",
+                                                                    "Company.Departments.Department.Employees().Person:Name",
+                                                                    "Company.Departments.Department.Employees().Person:Surename",
+                                                                    "Company().InlineRecordSet",
+                                                                    "Company.OuterNestedRecordSet().InnerNestedRecordSet:ItemValue"
+                                                                 };
+
             //------------Execute Test---------------------------
 
             var result = pluginBroker.TestPluginResult(xmlFragment);
@@ -149,10 +243,13 @@ namespace Dev2.Tests.Runtime.ESB.Brokers
 
             var xmlPaths = result.DataSourceShapes[0].Paths;
 
-            List<string> resultExpressions = xmlPaths.Select(value => value.ActualPath).ToList();
+            List<string> resultActualPaths = xmlPaths.Select(value => value.ActualPath).ToList();
 
+            List<string> resultUserVisiblePaths = xmlPaths.Select(value => value.DisplayPath).ToList();
 
-            CollectionAssert.AreEqual(expectedExpressions, resultExpressions);
+            CollectionAssert.AreEqual(expectedActualPaths, resultActualPaths);
+
+            CollectionAssert.AreEqual(expectedUserVisiblePaths, resultUserVisiblePaths);
         }
 
         [TestMethod]
