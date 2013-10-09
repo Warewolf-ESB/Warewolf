@@ -15,6 +15,7 @@ using Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.PluginSourceMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -46,7 +47,8 @@ namespace Dev2.Studio.UI.Tests
         ToolboxUIMap _toolboxUiMap;
         WorkflowDesignerUIMap _workflowDesignerUiMap;
         OutputUIMap _outputUiMap;
-        UIMap map;
+        UIMap _map;
+        WebServiceWizardUIMap _webServiceWizardUiMap;
 
         #endregion
 
@@ -66,7 +68,8 @@ namespace Dev2.Studio.UI.Tests
         public DebugUIMap DebugUiMap { get { return _debugUiMap ?? (_debugUiMap = new DebugUIMap()); } }
         public RibbonUIMap RibbonUiMap { get { return _ribbonUiMap ?? (_ribbonUiMap = new RibbonUIMap()); } }
         public OutputUIMap OutputUiMap { get { return _outputUiMap ?? (_outputUiMap = new OutputUIMap()); } }
-        public UIMap UIMap { get { return map ?? (map = new UIMap()); } }
+        public UIMap UIMap { get { return _map ?? (_map = new UIMap()); } }
+        public WebServiceWizardUIMap WebServiceWizardUiMap { get { return _webServiceWizardUiMap ?? (_webServiceWizardUiMap = new WebServiceWizardUIMap()); } }
         
         #endregion
 
@@ -131,6 +134,7 @@ namespace Dev2.Studio.UI.Tests
             if(child != null) Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(Window));
         }
 
+        
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
@@ -232,6 +236,30 @@ namespace Dev2.Studio.UI.Tests
             DatabaseSourceUiMap.ClickSaveConnection();
             SaveDialogUiMap.ClickSave();
             Playback.Wait(120);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("RemoteServerUITests")]
+        public void RemoteServerUITests_EditRemoteWebSource_WebSourceIsEdited()
+        {
+            const string TextToSearchWith = "WebSource";
+            OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
+            Playback.Wait(120);
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            SaveDialogUiMap.ClickSave();
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("RemoteServerUITests")]
+        public void RemoteServerUITests_EditRemoteWebService_WebServiceIsEdited()
+        {
+            const string TextToSearchWith = "WebService";
+            OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
+            Playback.Wait(120);
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            SaveDialogUiMap.ClickSave();
         }
 
         [TestMethod]
