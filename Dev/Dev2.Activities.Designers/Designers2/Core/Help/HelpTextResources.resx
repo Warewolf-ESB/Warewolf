@@ -293,4 +293,7 @@ To traverse an retrieve the raw response from a webpage, enter it in here.</valu
   <data name="SqlBulkInsertInputColumnHelpText" xml:space="preserve">
     <value>Sql Bulk Insert Input Column Help Text goes here</value>
   </data>
+  <data name="SqlBulkInsertResultHelpText" xml:space="preserve">
+    <value>Sql Bulk Insert Result Help Text goes here</value>
+  </data>
 </root>

@@ -5,19 +5,18 @@
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                               xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
-                               xmlns:system="clr-namespace:System;assembly=mscorlib"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.SqlBulkInsert"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:dto="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
-                               Width="230"
-                               MaxWidth="230"
+                               Width="260"
+                               MaxWidth="260"
+                               Padding="5"
                                mc:Ignorable="d"
-                               d:DesignHeight="230"
-                               d:DesignWidth="230"
+                               d:DesignHeight="260"
+                               d:DesignWidth="260"
                                d:DataContext="{d:DesignInstance local:SqlBulkInsertDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
@@ -25,75 +24,171 @@
                             Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
     </core:ActivityDesignerTemplate.Resources>
 
-    <controls:Dev2DataGrid x:Name="SmallDataGrid"
-                           ItemsSource="{Binding ModelItem.InputMappings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                           
-                           Style="{StaticResource SpacedActivityDataGridStyle}"
-                           HeadersVisibility="Column"
-                           CanUserReorderColumns="False"
-                           MinHeight="56">
-        
-        <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
-        
-        <DataGrid.Columns>        
-            <DataGridTemplateColumn Width="*"
-                                    Header="Input Data or [[Variable]]"
-                                    d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <ui:IntellisenseTextBox AllowUserInsertLine="False"
-                                                VerticalAlignment="Center"
-                                                WrapInBrackets="True"
-                                                Text="{Binding InputColumn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
-                                                Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
-                            <i:Interaction.Behaviors>
-                                <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertInputColumnHelpText}"
-                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                <errors:ErrorsSetter Source="{Binding}"
-                                                     SourcePropertyName="InputColumn"
-                                                     SourcePropertyValue="{Binding InputColumn, UpdateSourceTrigger=PropertyChanged}"
-                                                     Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                            </i:Interaction.Behaviors>
-                            <AutomationProperties.AutomationId>
-                                <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
-                                    <Binding Path="DataContext.ModelItem.AutomationID"
-                                             RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                                    <Binding Path="IndexNumber" />
-                                </MultiBinding>
-                            </AutomationProperties.AutomationId>
-                        </ui:IntellisenseTextBox>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-            <DataGridTemplateColumn Header="To Table"
-                                    IsReadOnly="True"
-                                    Width="*">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <Label Content="="
-                               VerticalAlignment="Center" />
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+        <Label Grid.Column="0"
+               Grid.Row="0"
+               Content="DB"
+               Margin="0" 
+               Padding="0,3"/>
+        <ComboBox Grid.Column="1"
+                  Grid.Row="0" 
+                  Style="{StaticResource ActivityComboBoxStyle}"   
+                  ItemsSource="{Binding Databases, Mode=TwoWay}" 
+                  DisplayMemberPath="ResourceName"
+                  SelectedItem="{Binding ModelItem.Database, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                      
+                  Margin="0,2,1,2" 
+                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
+        </ComboBox>
+        <Button Grid.Column="2"
+                Grid.Row="0"
+                Content="..."
+                Command="{Binding EditDatabaseCommand}"
+                Margin="2,2,1,2"
+                Height="23"
+                Width="23"
+                MinWidth="23"
+                MinHeight="23"
+                ToolTip="Edit Database Source"                
+                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditDatabaseCommand_AutoID}" />
 
-            <DataGridTemplateColumn Width="*"
-                                    d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <Label Content="{Binding OutputColumnName, UpdateSourceTrigger=PropertyChanged}"
-                               VerticalAlignment="Center">
-                             <AutomationProperties.AutomationId>
-                                <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
-                                    <Binding Path="DataContext.ModelItem.AutomationID"
-                                             RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                                    <Binding Path="IndexNumber" />
-                                </MultiBinding>
-                            </AutomationProperties.AutomationId>
-                        </Label>        
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-        </DataGrid.Columns>
-    </controls:Dev2DataGrid>
+        <Label Grid.Column="0"
+               Grid.Row="1"
+               Content="Table"
+               Margin="0"
+               Padding="0,3"/>
+        <ComboBox Grid.Column="1"
+                  Grid.Row="1" 
+                  Style="{StaticResource ActivityComboBoxStyle}"   
+                  ItemsSource="{Binding Tables, Mode=TwoWay}" 
+                  DisplayMemberPath="TableName"
+                  SelectedItem="{Binding ModelItem.TableName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                      
+                  Margin="0,2,1,2" 
+                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_TableName_AutoID}">
+        </ComboBox>
+        <Button Grid.Column="2"
+                Grid.Row="1"
+                Content="()"
+                Command="{Binding RefreshTablesCommand}"
+                Margin="2,2,1,2"
+                Height="23"
+                Width="23"
+                MinWidth="23"
+                MinHeight="23"
+                ToolTip="Refresh tables"                
+                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RefreshTablesCommand_AutoID}" />
+
+        <controls:Dev2DataGrid Grid.Row="2"
+                               Grid.Column="0"
+                               Grid.ColumnSpan="3"
+                               x:Name="SmallDataGrid"
+                               ItemsSource="{Binding ModelItem.InputMappings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               Style="{StaticResource SpacedActivityDataGridStyle}"
+                               HeadersVisibility="Column"
+                               CanUserReorderColumns="False"
+                               MinHeight="0"
+                               Margin="0,3">
+
+            <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="*"
+                                        MinWidth="150"
+                                        Header="Input Data or [[Variable]]"
+                                        d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ui:IntellisenseTextBox AllowUserInsertLine="False"
+                                                    VerticalAlignment="Center"
+                                                    WrapInBrackets="True"
+                                                    Text="{Binding InputColumn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
+                                <i:Interaction.Behaviors>
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertInputColumnHelpText}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <errors:ErrorsSetter Source="{Binding}"
+                                                         SourcePropertyName="InputColumn"
+                                                         SourcePropertyValue="{Binding InputColumn, UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                </i:Interaction.Behaviors>
+                                <AutomationProperties.AutomationId>
+                                    <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                        <Binding Path="DataContext.ModelItem.AutomationID"
+                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                        <Binding Path="IndexNumber" />
+                                    </MultiBinding>
+                                </AutomationProperties.AutomationId>
+                            </ui:IntellisenseTextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="To Table"
+                                        IsReadOnly="True"
+                                        Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="="
+                                   VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="*"
+                                        d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding OutputColumnName, UpdateSourceTrigger=PropertyChanged}"
+                                   VerticalAlignment="Center">
+                                <AutomationProperties.AutomationId>
+                                    <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
+                                        <Binding Path="DataContext.ModelItem.AutomationID"
+                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                        <Binding Path="IndexNumber" />
+                                    </MultiBinding>
+                                </AutomationProperties.AutomationId>
+                            </Label>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </controls:Dev2DataGrid>
+
+        
+        <Label Grid.Row="3"
+               Grid.Column="0"
+               Content="Result"
+               Margin="0" 
+               Padding="0,3"/>
+        <ui:IntellisenseTextBox Grid.Row="3"
+                                Grid.Column="1"
+                                Grid.ColumnSpan="2"
+                                DefaultText="[[BulkInsertResult]]"
+                                WrapInBrackets="True"
+                                Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Margin="0,2"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
+            <i:Interaction.Behaviors>
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertResultHelpText}"
+                                 DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="Result"
+                                     SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+
+    </Grid>
 </core:ActivityDesignerTemplate>

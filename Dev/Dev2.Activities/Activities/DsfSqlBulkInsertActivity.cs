@@ -2,6 +2,7 @@
 using System.Activities;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -26,7 +27,7 @@ namespace Dev2.Activities
         }
 
         [Inputs("Database")]
-        public string Database { get; set; }
+        public DbSource Database { get; set; }
 
         [Inputs("TableName")]
         public string TableName { get; set; }
@@ -46,7 +47,7 @@ namespace Dev2.Activities
         public bool KeepIdentity { get; set; }
 
         public bool KeepLock { get; set; }
-        
+
         public ISqlBulkInserter SqlBulkInserter
         {
             get

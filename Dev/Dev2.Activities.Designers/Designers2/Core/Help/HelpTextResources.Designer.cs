@@ -454,6 +454,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sql Bulk Insert Result Help Text goes here.
+        /// </summary>
+        public static string SqlBulkInsertResultHelpText {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertResultHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To supply additional header information in your get request, put the header info in here..
         /// </summary>
         public static string WebRequestHeaderHelpText {
