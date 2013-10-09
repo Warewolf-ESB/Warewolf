@@ -7,6 +7,8 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps;
+using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -1083,10 +1085,15 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             var count = 0;
             while(steps.Count < expectedStepCount && count <= timeout)
             {
-                Keyboard.SendKeys("{F5}");
-                Playback.Wait(500);
-                Keyboard.SendKeys("{F5}");
-                Playback.Wait(500);
+                SendKeys.SendWait("{F5}");
+                if (WizardsUIMap.WaitForWizard(5000))
+                {
+                    SendKeys.SendWait("{F5}");
+                }
+                else
+                {
+                    throw new UITestControlNotFoundException("Debug input dialog not shown within the given timeout");
+                }
                 DocManagerUIMap.ClickOpenTabPage("Output");
                 steps = OutputUIMap.GetOutputWindow();
                 count++;

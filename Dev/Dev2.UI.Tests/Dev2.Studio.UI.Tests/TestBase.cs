@@ -66,7 +66,7 @@ namespace Dev2.CodedUI.Tests
         
 
         // PBI 8601 (Task 8855)
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void QuickVariableInputFromListTest()
        {
             Clipboard.Clear();
@@ -219,7 +219,7 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         [TestCategory("DsfActivityTests")]
         [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands.")]
-        [Owner("Massimo Guerrera")]
+        [Owner("Massimo Guerrera")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         // ReSharper disable InconsistentNaming
         public void DsfActivityDesigner_CodedUI_DroppingActivityOntoDesigner_MappingToBeExpanded()
         // ReSharper restore InconsistentNaming
@@ -282,7 +282,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void UnsavedStar_UITest_WhenWorkflowIsChanged_ExpectStarIsShowing()
         {
             //------------Setup for test--------------------------
@@ -308,7 +308,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         // Should be unit test
         public void TypeInCalcBoxExpectedTooltipAppears()
         {
@@ -416,7 +416,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         #endregion
-          
+
         [TestMethod]
         public void DragAWorkflowIntoAndOutOfAForEach_Expected_NoErrors()
         {

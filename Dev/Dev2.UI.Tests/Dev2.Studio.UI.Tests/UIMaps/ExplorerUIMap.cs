@@ -152,8 +152,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public int CountServers()
         {
-            UITestControl returnControl = new UITestControl();
-            WpfTree uITvExplorerTree = this.UIBusinessDesignStudioWindow.UINavigationViewUserCoCustom.UITvExplorerTree;
+            WpfTree uITvExplorerTree = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UINavigationViewUserCoCustom.UITvExplorerTree;
             return uITvExplorerTree.GetChildren().Count;
         }
 
@@ -353,6 +352,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Keyboard.SendKeys("{Down}");
             Keyboard.SendKeys("{Down}");
             Keyboard.SendKeys("{Down}");
+            Keyboard.SendKeys("{Down}");
+            Keyboard.SendKeys("{Down}");
             Keyboard.SendKeys("{Enter}");
         }
 
@@ -443,9 +444,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             SendKeys.SendWait("{ENTER}");
         }
 
-        public void ClosePane(UITestControl theTab)
+        public static void ClosePane(UITestControl theTab)
         {
-            Mouse.Click(new Point(theTab.BoundingRectangle.Right - 100, theTab.BoundingRectangle.Y + 500));
+            var tabXCoord = theTab.BoundingRectangle.X;
+            var width = theTab.BoundingRectangle.Width;
+            var tabYCoord = theTab.BoundingRectangle.Y;
+            Mouse.Move(new Point(tabXCoord + width - 100, tabYCoord + 500));
             Playback.Wait(2500);
         }
     }

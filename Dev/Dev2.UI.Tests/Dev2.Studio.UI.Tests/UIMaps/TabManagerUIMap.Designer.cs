@@ -8,6 +8,8 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
+
 namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 {
     using Microsoft.VisualStudio.TestTools.UITesting;
@@ -32,6 +34,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public UITestControl FindTabByName(string name)
         {
+            ExplorerUIMap.ClosePane(GetActiveTab());
             #region Variable Declarations
             UIBusinessDesignStudioWindow2 theWindow = new UIBusinessDesignStudioWindow2();
             UIUI_TabManager_AutoIDTabList1 tabMgr = new UIUI_TabManager_AutoIDTabList1(theWindow);

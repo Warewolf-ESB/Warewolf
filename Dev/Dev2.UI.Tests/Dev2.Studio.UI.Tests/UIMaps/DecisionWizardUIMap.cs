@@ -111,26 +111,5 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
                 SendKeys.SendWait("{DELETE}");
             }
         }
-
-        /// <summary>
-        /// Returns true if found in the timeout period.
-        /// </summary>
-        public bool WaitForDialog(int timeOut)
-        {
-            Type type = null;
-            var timeNow = 0;
-            while (type != typeof(WpfImage))
-            {
-                timeNow = timeNow + 100;
-                Playback.Wait(100);
-                var tryGetDialog = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-                type = tryGetDialog.GetType();
-                if (timeNow > timeOut)
-                {
-                    break;
-                }
-            }
-            return type == typeof(WpfImage);
-        }
     }
 }

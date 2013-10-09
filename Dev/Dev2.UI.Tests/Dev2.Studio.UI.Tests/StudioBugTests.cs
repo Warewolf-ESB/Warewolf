@@ -18,11 +18,13 @@ using Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WebpageServiceWizardUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
 using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
@@ -62,7 +64,7 @@ namespace Dev2.Studio.UI.Tests
 
         #region Test
         // Bug 6501
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void DeleteFirstDatagridRow_Expected_RowIsNotDeleted()
         {
 
@@ -139,7 +141,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         //2013.06.06: Ashley Lewis for 9448 - Dsf Activity Title - shows up as "DSFActivity" After a service has been dragged onto a workflow.
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void AddSecondServiceToWorkFlowExpectedDisplayTitleNotDsfActivity()
         {
             RibbonUIMap.CreateNewWorkflow();
@@ -166,7 +168,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [TestCategory("UITest")]
         [Description("for bug 9717 - copy paste multiple decisions (2013.06.22)")]
-        [Owner("Ashley")]
+        [Owner("Ashley")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void CopyDecisionsWithContextMenuAndPasteExpectedNoWizardsDisplayed()
         {
             //Initialize
@@ -178,13 +180,27 @@ namespace Dev2.Studio.UI.Tests
             var decision = ToolboxUIMap.FindControl("Decision");
             //Drag on two decisions
             ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
-            Thread.Sleep(1000);
-            SendKeys.SendWait("{TAB}{ENTER}");
+            if (WizardsUIMap.WaitForWizard(5000))
+            {
+                Playback.Wait(2000);
+                _decisionWizardUiMap.HitDoneWithKeyboard();
+            }
+            else
+            {
+                Assert.Fail("Decision wizard not shown within the given timeout");
+            }
             var newPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             newPoint.Y = newPoint.Y + 200;
             ToolboxUIMap.DragControlToWorkflowDesigner(decision, newPoint);
-            Thread.Sleep(2500);
-            SendKeys.SendWait("{TAB}{ENTER}");
+            if(WizardsUIMap.WaitForWizard(5000))
+            {
+                Playback.Wait(2000);
+                _decisionWizardUiMap.HitDoneWithKeyboard();
+            }
+            else
+            {
+                Assert.Fail("Decision wizard not shown within the given timeout");
+            }
             //Rubberband select them
             var startDragPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             startDragPoint.X = startDragPoint.X - 100;
@@ -209,7 +225,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [TestCategory("UITest")]
         [Description("Test for 'All Tools' workflow: The workflow is openned. The icons must display. The tab must be able to close again")]
-        [Owner("Ashley")]
+        [Owner("Ashley")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         // ReSharper disable InconsistentNaming
         public void StudioTooling_StudioToolingUITest_CanToolsDisplay_NoExceptionsThrown()
         // ReSharper restore InconsistentNaming
@@ -266,7 +282,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [TestCategory("Toolbox_Icons")]
         [Description("Toolbox icons display")]
-        [Owner("Ashley Lewis")]
+        [Owner("Ashley Lewis")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         // ReSharper disable InconsistentNaming
         public void Toolbox_UITest_OpenToolbox_IconsAreDisplayed()
         // ReSharper restore InconsistentNaming
@@ -377,7 +393,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.EnterExplorerSearchText("Bug_10011_DbService");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
             // Get wizard window
-            var wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            var wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if(DatabaseServiceWizardUIMap.IsControlADbServiceWizard(wizardWindow))
             {
                 // Tab to mappings
@@ -409,7 +425,7 @@ namespace Dev2.Studio.UI.Tests
             {
                 Assert.Fail("DbService Wizard Failed to Load");
             }
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
+            TabManagerUIMap.CloseAllTabs();
         }
 
         /// <summary>
@@ -427,20 +443,19 @@ namespace Dev2.Studio.UI.Tests
         {
             //Create testing workflow
             RibbonUIMap.CreateNewWorkflow();
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            var theTab = TabManagerUIMap.GetActiveTab();
 
             //Drag on multiassign
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             var thePoint = new Point(theStartButton.BoundingRectangle.X + 30, theStartButton.BoundingRectangle.Y + 100);
             ToolboxUIMap.DragControlToWorkflowDesigner("MultiAssign", thePoint);
+            WorkflowDesignerUIMap.Adorner_ClickDoneButton(theTab, "MultiAssign");
 
-            WorkflowDesignerUIMap.Adorner_ClickDoneButton(theTab, "MultiAssignDesigner");
-
-            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "MultiAssignDesigner", 0);
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "MultiAssign", 0);
 
             //Set up multi assign
-            Keyboard.SendKeys("[[AssignThis]]{TAB}Some Data");
+            SendKeys.SendWait("[[AssignThis]]{TAB}Some Data");
 
             //issue with debug not showing up - run until debug output comes through
             WorkflowDesignerUIMap.RunWorkflowUntilOutputStepCountAtLeast(2, 5);
@@ -466,9 +481,11 @@ namespace Dev2.Studio.UI.Tests
         public void Tabs_UnsavedStar_SwitchingTabs_DoesNotChangeUnsavedStatus()
         // ReSharper restore InconsistentNaming
         {
+            var firstName = "Test" + Guid.NewGuid().ToString().Substring(24);
+            var secondName = "Test" + Guid.NewGuid().ToString().Substring(24);
             // Create first workflow
             RibbonUIMap.CreateNewWorkflow();
-            var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            var theTab = TabManagerUIMap.GetActiveTab();
             var theStartNode = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "StartSymbol");
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
@@ -476,51 +493,63 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "BUGS", "PBI_9957_UITEST",
                 new Point(theStartNode.BoundingRectangle.X + 20,
                             theStartNode.BoundingRectangle.Y + 100));
-            Keyboard.SendKeys(_workflowDesignerUIMap.UIBusinessDesignStudioWindow, "^S");
-            Playback.Wait(1000);
-            Keyboard.SendKeys(_workflowDesignerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0], "{TAB}{TAB}{TAB}{TAB}{TAB}test1{ENTER}");
-            Playback.Wait(1000);
+            RibbonUIMap.ClickRibbonMenuItem("Save");
+            if (WizardsUIMap.WaitForWizard(5000))
+            {
+                SaveDialogUIMap.ClickAndTypeInNameTextbox(firstName);
+                Playback.Wait(1000);
+            }
+            else
+            {
+                Assert.Fail("Save dialog did not display with the given timeout period");
+            }
 
             // Create second workflow
             RibbonUIMap.CreateNewWorkflow();
-            theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            theTab = TabManagerUIMap.GetActiveTab();
             theStartNode = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "StartSymbol");
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolboxUIMap.FindToolboxItemByAutomationId("MultiAssign"),
                 new Point(theStartNode.BoundingRectangle.X + 20,
                             theStartNode.BoundingRectangle.Y + 100));
-            Keyboard.SendKeys(_workflowDesignerUIMap.UIBusinessDesignStudioWindow, "^S");
-            Playback.Wait(1000);
-            Keyboard.SendKeys(_workflowDesignerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0], "{TAB}{TAB}{TAB}{TAB}{TAB}test2{ENTER}");
-            Playback.Wait(1000);
+            RibbonUIMap.ClickRibbonMenuItem("Save");
+            if (WizardsUIMap.WaitForWizard(5000))
+            {
+                SaveDialogUIMap.ClickAndTypeInNameTextbox(secondName);
+                Playback.Wait(1000);
+            }
+            else
+            {
+                Assert.Fail("Save dialog did not display with the given timeout period");
+            }
 
             // Switch between tabs ensuring the star is never added to their name
             UITestControl tryGetTab = null;
-            tryGetTab = TabManagerUIMap.FindTabByName("test2");
+            tryGetTab = TabManagerUIMap.FindTabByName(secondName);
             Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
-            Mouse.Click(TabManagerUIMap.FindTabByName("test2"));
+            Mouse.Click(TabManagerUIMap.FindTabByName(secondName));
             tryGetTab = null;
-            tryGetTab = TabManagerUIMap.FindTabByName("test1");
+            tryGetTab = TabManagerUIMap.FindTabByName(firstName);
             Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
-            Mouse.Click(TabManagerUIMap.FindTabByName("test1"));
+            Mouse.Click(TabManagerUIMap.FindTabByName(firstName));
             tryGetTab = null;
-            tryGetTab = TabManagerUIMap.FindTabByName("test2");
+            tryGetTab = TabManagerUIMap.FindTabByName(secondName);
             Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
-            Mouse.Click(TabManagerUIMap.FindTabByName("test2"));
+            Mouse.Click(TabManagerUIMap.FindTabByName(secondName));
 
             // Test Cleanup
-            DoCleanup("test1", true);
-            DoCleanup("test1 *", true);
-            DoCleanup("test2", true);
-            DoCleanup("test2 *", true);
+            DoCleanup(firstName, true);
+            DoCleanup(firstName+" *", true);
+            DoCleanup(secondName, true);
+            DoCleanup(secondName+" *", true);
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("test1");
-            ExplorerUIMap.RightClickDeleteProject("localhost", "WORKFLOWS", "Unassigned", "test1");
+            ExplorerUIMap.EnterExplorerSearchText(firstName);
+            ExplorerUIMap.RightClickDeleteProject("localhost", "WORKFLOWS", "Unassigned", firstName);
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("test2");
-            ExplorerUIMap.RightClickDeleteProject("localhost", "WORKFLOWS", "Unassigned", "test2");
+            ExplorerUIMap.EnterExplorerSearchText(secondName);
+            ExplorerUIMap.RightClickDeleteProject("localhost", "WORKFLOWS", "Unassigned", secondName);
         }
 
         [TestMethod]
@@ -579,7 +608,8 @@ namespace Dev2.Studio.UI.Tests
         {
             // The workflow so we have a second tab
             DocManagerUIMap.ClickOpenTabPage("Explorer");
-
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("Base64ToString");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
             DocManagerUIMap.ClickOpenTabPage("Explorer");
 
@@ -643,7 +673,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [TestCategory("UITest")]
         [Description("for bug 9802 - Foreach drill down test (2013.06.28)")]
-        [Owner("Ashley")]
+        [Owner("Ashley")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void DragAMultiAssignIntoAndOutOfAForEach_NoDrillDown()
         {
             // Create the workflow
@@ -1032,6 +1062,8 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
+        #region map UI Map
+
         public UIMap UIMap
         {
             get
@@ -1045,8 +1077,29 @@ namespace Dev2.Studio.UI.Tests
             }
         }
 
-        #endregion UI Maps
-
         private UIMap map;
+        
+        #endregion
+
+        #region Save Dialog UI Map
+
+        public SaveDialogUIMap SaveDialogUIMap
+        {
+            get
+            {
+                if((_saveDialogUIMap == null))
+                {
+                    _saveDialogUIMap = new SaveDialogUIMap();
+                }
+
+                return _saveDialogUIMap;
+            }
+        }
+
+        private SaveDialogUIMap _saveDialogUIMap;
+        
+        #endregion
+
+        #endregion UI Maps
     }
 }

@@ -8,6 +8,7 @@ using Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
@@ -83,8 +84,13 @@ namespace Dev2.Studio.UI.Tests
         [TestCleanup]
         public void TestCleanup()
         {
-            //close any open dialogs
-            SendKeys.SendWait("{ESCAPE}");
+            //close any open wizards
+            var tryFindDialog = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            if (tryFindDialog.GetType() == typeof (WpfImage))
+            {
+                Mouse.Click(tryFindDialog);
+                SendKeys.SendWait("{ESCAPE}");
+            }
             //close any open tabs
             TabManagerUiMap.CloseAllTabs();
             DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
@@ -252,7 +258,7 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "DBSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            if (DecisionWizardUiMap.WaitForDialog(5000))
+            if(WizardsUIMap.WaitForWizard(5000))
             {
                 DatabaseSourceUiMap.ClickSaveConnection();
                 SaveDialogUiMap.ClickSave();
@@ -279,7 +285,7 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "WebSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            if (DecisionWizardUiMap.WaitForDialog(5000))
+            if(WizardsUIMap.WaitForWizard(5000))
             {
                 SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
                 SaveDialogUiMap.ClickSave();
@@ -306,7 +312,7 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "WebService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            if (DecisionWizardUiMap.WaitForDialog(5000))
+            if(WizardsUIMap.WaitForWizard(5000))
             {
                 Playback.Wait(120);
                 SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
@@ -329,12 +335,12 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")]
+        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void RemoteServerUITests_EditRemoteDbService_DbServiceIsEdited()
         {
             const string TextToSearchWith = "DBService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            if (DecisionWizardUiMap.WaitForDialog(5000))
+            if(WizardsUIMap.WaitForWizard(5000))
             {
                 DatabaseServiceWizardUiMap.DatabaseServiceClickCancel();
                 var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
@@ -355,12 +361,12 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")]
+        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void RemoteServerUITests_EditRemoteEmailSource_EmailSourceIsEdited()
         {
             const string TextToSearchWith = "EmailSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            if (DecisionWizardUiMap.WaitForDialog(5000))
+            if(WizardsUIMap.WaitForWizard(5000))
             {
                 EmailSourceWizardUiMap.ClickCancel();
                 var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
@@ -386,7 +392,7 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "PluginSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            if (DecisionWizardUiMap.WaitForDialog(5000))
+            if(WizardsUIMap.WaitForWizard(5000))
             {
                 PluginSourceMap.ClickSave();
                 var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
@@ -412,7 +418,7 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "PluginService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            if (DecisionWizardUiMap.WaitForDialog(5000))
+            if(WizardsUIMap.WaitForWizard(5000))
             {
                 PluginServiceWizardUiMap.ClickTestAndOk();
                 PluginServiceWizardUiMap.ClickSave();

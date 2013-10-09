@@ -109,6 +109,7 @@
     <Compile Include="UIMaps\WebServiceWizardUIMap.Designer.cs">
       <DependentUpon>WebServiceWizardUIMap.uitest</DependentUpon>
     </Compile>
+    <Compile Include="UIMaps\WizardsUIMap.cs" />
     <Compile Include="Wizards.cs" />
     <Compile Include="UIMaps\ActivityDropWindowUIMap.cs">
       <DependentUpon>ActivityDropWindowUIMap.uitest</DependentUpon>

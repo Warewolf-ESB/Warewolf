@@ -8,6 +8,7 @@ using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,7 +18,7 @@ namespace Dev2.Studio.UI.Tests
     /// <summary>
     ///    These are UI tests around the auto connectors
     /// </summary>
-    [CodedUITest]
+    [CodedUITest][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
     public class AutoConnectorTests
     {
         #region Properties
@@ -134,7 +135,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("AutoConnectorTests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("AutoConnectorTests")]
         public void AutoConnectorTests_DragActivityOnStartAutoConnectorNode_AConnectorIsCreated()
         {
             CreateWorkflow();
@@ -151,7 +152,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("AutoConnectorTests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("AutoConnectorTests")]
         public void AutoConnectorTests_DragAToolOnStartAutoConnectorNode_AConnectorIsCreated()
         {
             CreateWorkflow();
@@ -166,7 +167,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("AutoConnectorTests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("AutoConnectorTests")]
         public void AutoConnectorTests_DragAToolOnALineBetweenConnectors_ASecondConnectorIsCreated()
         {
             //Drag a tool to the design surface
@@ -194,7 +195,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("AutoConnectorTests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("AutoConnectorTests")]
         public void AutoConnectorTests_DragAnActivityOnALineBetweenConnectors_ASecondConnectorIsCreated()
         {
             //Drag an activity to the design surface
@@ -245,7 +246,7 @@ namespace Dev2.Studio.UI.Tests
                 throw new Exception("MultiAssignDesigner not found on active tab");
             }
 
-            if (DecisionWizardUIMap.WaitForDialog(5000))
+            if(WizardsUIMap.WaitForWizard(5000))
             {
                 Playback.Wait(2000);
                 DecisionWizardUIMap.ClickCancel();
@@ -269,7 +270,7 @@ namespace Dev2.Studio.UI.Tests
             Point point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
             //Drag a control to the design surface
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
-            if (DecisionWizardUIMap.WaitForDialog(5000))
+            if(WizardsUIMap.WaitForWizard(5000))
             {
                 Playback.Wait(2000);
                 DecisionWizardUIMap.ClickCancel();

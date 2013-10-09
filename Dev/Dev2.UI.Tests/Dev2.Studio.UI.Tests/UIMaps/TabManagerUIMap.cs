@@ -78,9 +78,12 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             while(!close.TryGetClickablePoint(out point) && timeout < totalTimeOut)
             {
                 //try close explorer pane
-                Mouse.Click(new Point(control.BoundingRectangle.X + 400, control.BoundingRectangle.Y + 500));
-                Mouse.Move(new Point(control.BoundingRectangle.X, control.BoundingRectangle.Y + 500));
-                Playback.Wait(1000);
+                ExplorerUIMap.ClosePane(control);
+                //this is for close all tabs:
+                //the tab switch caused by closing the tab
+                //triggers show resource in explorer tree
+                //causing the explorer pane to pop out
+                //blocking the tab close button for the next tab close
                 timeout++;
             }
             if (timeout < totalTimeOut)
@@ -102,17 +105,10 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public void CloseAllTabs()
         {
-            var explorerUiMap = new ExplorerUIMap();
             int openTabs = GetTabCount();
             var canCloseTab = true;
             while(openTabs != 0 && canCloseTab)
             {
-                //try close explorer pane
-                explorerUiMap.ClosePane(GetActiveTab());
-                //the tab switch caused by closing the tab
-                //triggers show resource in explorer tree
-                //causing the explorer pane to pop out
-                //blocking the tab close button for the next tab close
                 canCloseTab = CloseTab_Click_No(GetActiveTabName());
                 openTabs = GetTabCount();
             }

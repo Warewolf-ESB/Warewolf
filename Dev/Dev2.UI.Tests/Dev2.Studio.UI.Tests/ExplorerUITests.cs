@@ -17,10 +17,6 @@ namespace Dev2.Studio.UI.Tests
     [CodedUITest, System.Runtime.InteropServices.GuidAttribute("DAA88B10-98C4-488E-ACB2-1256C95CE8F0")]
     public class ExplorerUITests
     {
-        public ExplorerUITests()
-        {
-        }
-
         [TestMethod]
         public void SearchAndRefresh_AttemptToSearch_ExpectedSearchFilteredByAllItems()
         {
@@ -30,64 +26,11 @@ namespace Dev2.Studio.UI.Tests
             int allResources = ExplorerUIMap.GetCategoryItems().Count;
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("Integration");
+            Playback.Wait(2000);
             int allResourcesAfterSearch = ExplorerUIMap.GetCategoryItems().Count;
             ExplorerUIMap.ClearExplorerSearchText();            
             Assert.IsTrue(allResources>allResourcesAfterSearch);
         }
-
-        #region Deprecated Test
-        //2013.03.11: Ashley Lewis - Bug 9124
-        [TestMethod]
-        public void TryConnectWhereBusyConnectingExpectedWizardCanCreateAndDeleteBoth()
-        {
-            //Initialize
-            var connectionWizard = new ServerWizard();
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            var expected = ExplorerUIMap.CountServers() + 2;
-            var firstNewServer = Guid.NewGuid().ToString().Substring(0, 5);
-            var secondNewServer = Guid.NewGuid().ToString().Substring(0, 5);          
-
-            //Create first server.
-            var explorerPane = ExplorerUIMap.ClickConnectControl("Button");
-            Mouse.Click(explorerPane, new Point(5, 5));
-
-            System.Threading.Thread.Sleep(100);
-            connectionWizard.ClickNewServerAddress();
-            Keyboard.SendKeys(@"http://RSAKLFSVRTFSBLD:77/dsf{TAB}{TAB}{ENTER}");
-            System.Threading.Thread.Sleep(100);
-            Keyboard.SendKeys("{TAB}{ENTER}");
-            System.Threading.Thread.Sleep(100);
-            Keyboard.SendKeys("{ENTER}CODEDUITEST" + firstNewServer + "{ENTER}");
-            System.Threading.Thread.Sleep(100);
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}" + firstNewServer + "{ENTER}");
-
-            //Try create second server
-            explorerPane = ExplorerUIMap.ClickConnectControl("Button");
-            Mouse.Click(explorerPane, new Point(5, 5));
-
-            System.Threading.Thread.Sleep(100);
-            connectionWizard.ClickNewServerAddress();
-            Keyboard.SendKeys(@"http://RSAKLFSVRWRWBLD:77/dsf{TAB}{TAB}{ENTER}");
-            System.Threading.Thread.Sleep(100);
-            Keyboard.SendKeys("{TAB}{ENTER}");
-            System.Threading.Thread.Sleep(100);
-            Keyboard.SendKeys("{ENTER}CODEDUITEST" + secondNewServer + "{ENTER}");
-            System.Threading.Thread.Sleep(100);
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}" + secondNewServer + "{ENTER}");
-
-            //Assert
-            System.Threading.Thread.Sleep(5000);//Servers need time to initialize before they can be counted
-            Assert.AreEqual(expected, ExplorerUIMap.CountServers());
-
-            //Clean up
-            ExplorerUIMap.Server_RightClick_Delete(firstNewServer);
-            ExplorerUIMap.ConnectedServer_RightClick_Delete(secondNewServer);
-            ExplorerUIMap.DoRefresh();
-            new TestBase().DoCleanup(firstNewServer);
-            new TestBase().DoCleanup(secondNewServer);
-        }
-
-        #endregion
 
         #region Additional test attributes
 
