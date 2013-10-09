@@ -1,4 +1,6 @@
-﻿using Dev2.Core.Tests.Utils;
+﻿using System.Windows.Controls;
+using Dev2.Core.Tests.Utils;
+using Dev2.DataList.Contract;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -160,6 +162,58 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 
                 Assert.AreEqual(ExpectedText, textBox.Text, "Expected [ " + ExpectedText + " ] But got [ " + textBox.Text + " ]");
                 Assert.AreEqual(true, textBox.HasError, "Expected [ True ] But got [ " + textBox.HasError + " ]");
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("IntellisenseTextBoxTests_SetText")]
+        public void IntellisenseTextBoxTests_SetText_FilterTypeIsRecordsetFieldsButTextIsScalar_ToolTipHasErrorMessage()
+        {
+            var textBox = new IntellisenseTextBox();
+            textBox.FilterType = enIntellisensePartType.RecordsetFields;
+            textBox.Text = "[[var]]";
+            var toolTipText = ((ToolTip)textBox.ToolTip).Content as string;
+            Assert.IsTrue(textBox.HasError);
+            Assert.IsTrue(toolTipText.Contains("Scalar is not allowed"));
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("IntellisenseTextBoxTests_SetText")]
+        public void IntellisenseTextBoxTests_SetText_FilterTypeIsRecordsetFieldsAndTextIsRecordset_ToolTipHasNoErrorMessage()
+        {
+            var textBox = new IntellisenseTextBox();
+            textBox.FilterType = enIntellisensePartType.RecordsetFields;
+            textBox.Text = "[[var()]]";
+            var toolTipText = ((ToolTip)textBox.ToolTip).Content as string;
+            Assert.IsFalse(textBox.HasError);
+            Assert.IsTrue(toolTipText.Trim().Length == 0);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("IntellisenseTextBoxTests_SetText")]
+        public void IntellisenseTextBoxTests_SetText_FilterTypeIsScalarsOnlyAndTextIsScalar_ToolTipHasNoErrorMessage()
+        {
+            var textBox = new IntellisenseTextBox();
+            textBox.FilterType = enIntellisensePartType.ScalarsOnly;
+            textBox.Text = "[[var]]";
+            var toolTipText = ((ToolTip)textBox.ToolTip).Content as string;
+            Assert.IsFalse(textBox.HasError);
+            Assert.IsTrue(toolTipText.Trim().Length == 0);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("IntellisenseTextBoxTests_SetText")]
+        public void IntellisenseTextBoxTests_SetText_FilterTypeIsScalarsOnlyButTextIsRecordset_ToolTipHaErrorMessage()
+        {
+            var textBox = new IntellisenseTextBox();
+            textBox.FilterType = enIntellisensePartType.ScalarsOnly;
+            textBox.Text = "[[var()]]";
+            var toolTipText = ((ToolTip)textBox.ToolTip).Content as string;
+            Assert.IsTrue(textBox.HasError);
+            Assert.IsTrue(toolTipText.Contains("Recordset is not allowed"));
         }
     }
 }

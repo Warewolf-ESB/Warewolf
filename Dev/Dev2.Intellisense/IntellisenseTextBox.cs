@@ -13,7 +13,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Studio.InterfaceImplementors;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.UI
 {
@@ -600,7 +599,8 @@ namespace Dev2.UI
         private string _textOnPopup;
         private object _cachedState;
 
-        private ToolTip _toolTip;
+        ToolTip _toolTip;
+
         private bool _forcedOpen;
         private bool _fromPopup;
         #endregion
@@ -884,15 +884,15 @@ namespace Dev2.UI
             return new DefaultIntellisenseProvider();
         }
 
-        private void EnsureIntellisenseResults(string text, bool forceUpdate, IntellisenseDesiredResultSet desiredResultSet)
+        void EnsureIntellisenseResults(string text, bool forceUpdate, IntellisenseDesiredResultSet desiredResultSet)
         {
-            if (!DesignerProperties.GetIsInDesignMode(this))
+            if(!DesignerProperties.GetIsInDesignMode(this))
             {
                 bool calculateMode = false;
 
-                if (AllowUserCalculateMode)
+                if(AllowUserCalculateMode)
                 {
-                    if (text.Length > 0 && text[0] == '=')
+                    if(text.Length > 0 && text[0] == '=')
                     {
                         calculateMode = true;
                         text = text.Substring(1);
@@ -900,14 +900,15 @@ namespace Dev2.UI
 
                     IsInCalculateMode = calculateMode;
                 }
-                else if (IsInCalculateMode) calculateMode = true;
+                else if(IsInCalculateMode)
+                    calculateMode = true;
 
 
                 KeyValuePair<int, int> currentResultInputKey = new KeyValuePair<int, int>(text.Length, text.GetHashCode());
 
-                if (!forceUpdate)
+                if(!forceUpdate)
                 {
-                    if (currentResultInputKey.Key != _lastResultInputKey.Key || currentResultInputKey.Value != _lastResultInputKey.Value)
+                    if(currentResultInputKey.Key != _lastResultInputKey.Key || currentResultInputKey.Value != _lastResultInputKey.Value)
                     {
                         forceUpdate = true;
                     }
@@ -915,20 +916,21 @@ namespace Dev2.UI
 
                 _lastResultInputKey = currentResultInputKey;
 
-                if (forceUpdate)
+                if(forceUpdate)
                 {
                     IIntellisenseProvider provider = IntellisenseProvider;
                     var context = new IntellisenseProviderContext { TextBox = this, FilterType = FilterType, DesiredResultSet = desiredResultSet, InputText = text, CaretPosition = CaretIndex, CaretPositionOnPopup = _caretPositionOnPopup, TextOnPopup = _textOnPopup };
 
-                    if ((context.IsInCalculateMode = calculateMode) && AllowUserCalculateMode)
+                    if((context.IsInCalculateMode = calculateMode) && AllowUserCalculateMode)
                     {
-                        if (CaretIndex > 0) context.CaretPosition = CaretIndex - 1;
+                        if(CaretIndex > 0)
+                            context.CaretPosition = CaretIndex - 1;
 
-                        if (_textOnPopup.Length > 0 && _textOnPopup[0] == '=')
+                        if(_textOnPopup.Length > 0 && _textOnPopup[0] == '=')
                         {
                             context.TextOnPopup = _textOnPopup.Substring(1);
 
-                            if (_caretPositionOnPopup > 0)
+                            if(_caretPositionOnPopup > 0)
                             {
                                 context.CaretPositionOnPopup = _caretPositionOnPopup - 1;
                             }
@@ -943,16 +945,16 @@ namespace Dev2.UI
                     {
                         results = provider.GetIntellisenseResults(context);
                     }
-                    // ReSharper disable EmptyGeneralCatchClause
+                        // ReSharper disable EmptyGeneralCatchClause
                     catch
-                    // ReSharper restore EmptyGeneralCatchClause
+                        // ReSharper restore EmptyGeneralCatchClause
                     {
                         //This try catch is to prevent the intellisense box from ever being crashed from a provider.
                         //This catch is intentionally blanks since if a provider throws an exception the intellisense
                         //box should simbly ignore that provider.
                     }
 
-                    if (results != null && results.Count > 0)
+                    if(results != null && results.Count > 0)
                     {
                         _cachedState = context.State;
                         StringBuilder ttErrorBuilder = new StringBuilder();
@@ -962,11 +964,11 @@ namespace Dev2.UI
                         int errorCount = 0;
                         IntellisenseProviderResult popup = null;
 
-                        for (int i = 0; i < results.Count; i++)
+                        for(int i = 0; i < results.Count; i++)
                         {
                             IntellisenseProviderResult currentResult = results[i];
 
-                            if (currentResult.IsError)
+                            if(currentResult.IsError)
                             {
                                 hasError = true;
 
@@ -976,22 +978,22 @@ namespace Dev2.UI
                             }
 
 
-                            if (!currentResult.IsError)
+                            if(!currentResult.IsError)
                             {
-                                if (!currentResult.IsPopup)
+                                if(!currentResult.IsPopup)
                                 {
-                                    if (!cleared)
+                                    if(!cleared)
                                     {
                                         cleared = true;
-                                        if (_listBox != null)
+                                        if(_listBox != null)
                                         {
-                                        _listBox.Items.Clear();
-                                    }
+                                            _listBox.Items.Clear();
+                                        }
                                     }
 
-                                    if (_listBox != null)
+                                    if(_listBox != null)
                                     {
-                                    _listBox.Items.Add(currentResult);
+                                        _listBox.Items.Add(currentResult);
                                     }
                                     ttValueBuilder.AppendLine(currentResult.Name);
                                 }
@@ -1005,19 +1007,19 @@ namespace Dev2.UI
                         _lastResultHasError = hasError;
                         ttValueBuilder.Clear();
 
-                        if (popup == null)
+                        if(popup == null)
                         {
                             _fromPopup = false;
-                            _toolTip.Content = _lastResultHasError ? ttErrorBuilder.ToString() 
-                                : ttValueBuilder.ToString();
-                            }
+                            _toolTip.Content = _lastResultHasError ? ttErrorBuilder.ToString()
+                                                   : ttValueBuilder.ToString();
+                        }
 
-                        if (popup != null)
+                        if(popup != null)
                         {
                             _fromPopup = true;
                             var description = popup.Description;
 
-                            if (_lastResultHasError)
+                            if(_lastResultHasError)
                             {
                                 //ttValueBuilder.Clear();
                                 ttValueBuilder.AppendLine();
@@ -1027,29 +1029,30 @@ namespace Dev2.UI
 
                             _toolTip.Content = description;
                             _toolTip.IsOpen = _forcedOpen = true;
+                            ToolTip = _toolTip;
                         }
-                        else if (_forcedOpen)
+                        else if(_forcedOpen)
                         {
                             _toolTip.IsOpen = _forcedOpen = false;
                         }
 
-                        if (!cleared)
+                        if(!cleared)
                         {
-                            if (IsOpen)
+                            if(IsOpen)
                             {
                                 IsOpen = false;
 
-                                if (popup == null)
+                                if(popup == null)
                                 {
                                     _toolTip.IsOpen = _forcedOpen = false;
                                 }
                             }
 
-                            if (_listBox != null)
+                            if(_listBox != null)
                             {
-                            _listBox.Items.Clear();
+                                _listBox.Items.Clear();
+                            }
                         }
-                    }
                     }
                     else
                     {
@@ -1058,42 +1061,63 @@ namespace Dev2.UI
                         var hasError = false;
                         var errorCount = 0;
 
-                        if (_listBox != null)
-                            {
-                            foreach (var currentResult in 
+                        if(_listBox != null)
+                        {
+                            foreach(var currentResult in
                                 _listBox.Items.Cast<object>().OfType<IntellisenseProviderResult>()
-                                .Where(currentResult => currentResult.IsError))
+                                        .Where(currentResult => currentResult.IsError))
+                            {
+                                hasError = true;
+
+                                ttErrorBuilder.Append(++errorCount);
+                                ttErrorBuilder.Append(") ");
+                                ttErrorBuilder.AppendLine(currentResult.Description);
+                            }
+                        }
+
+                        if(text.Contains("[[") && text.Contains("]]"))
+                        {
+                            if(FilterType == enIntellisensePartType.RecordsetFields || FilterType == enIntellisensePartType.RecorsetsOnly)
+                            {
+                                if(!(text.Contains("(") && text.Contains(")")))
                                 {
                                     hasError = true;
-
-                                    ttErrorBuilder.Append(++errorCount);
-                                    ttErrorBuilder.Append(") ");
-                                    ttErrorBuilder.AppendLine(currentResult.Description);
+                                    ttErrorBuilder.AppendLine("Scalar is not allowed");
+                                    _toolTip.IsOpen = true;
                                 }
+                            }
+                            else if(FilterType == enIntellisensePartType.ScalarsOnly)
+                            {
+                                if(text.Contains("(") && text.Contains(")"))
+                                {
+                                    hasError = true;
+                                    ttErrorBuilder.AppendLine("Recordset is not allowed");
+                                    _toolTip.IsOpen = true;
+                                }
+                            }
                         }
 
                         _lastResultHasError = hasError;
                         _fromPopup = false;
 
-                        _toolTip.Content = _lastResultHasError ? ttErrorBuilder.ToString() 
-                            : ttValueBuilder.ToString();
+                        _toolTip.Content = _lastResultHasError ? ttErrorBuilder.ToString()
+                                               : ttValueBuilder.ToString();
+                        ToolTip = _toolTip;
 
-                        if (_forcedOpen)
+                        if(_forcedOpen)
                         {
                             _toolTip.IsOpen = _forcedOpen = false;
                         }
 
-                        _lastResultHasError = false;
-
-                        if (IsOpen)
+                        if(IsOpen)
                         {
                             IsOpen = false;
                         }
 
-                        if (_listBox != null)
+                        if(_listBox != null)
                         {
-                        _listBox.Items.Clear();
-                    }
+                            _listBox.Items.Clear();
+                        }
                     }
 
                     EnsureErrorStatus();
