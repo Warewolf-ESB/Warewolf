@@ -28,7 +28,7 @@ using Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-//2013.10.10: Ashley Lewis: Merged gated checkins test change to source code
+
 namespace Dev2.Studio.UI.Tests
 {
     /// <summary>
