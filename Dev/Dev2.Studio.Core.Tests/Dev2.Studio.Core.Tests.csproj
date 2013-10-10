@@ -154,6 +154,7 @@
     <Compile Include="ConverterTests\MathFunctionToDoubleConverterTests.cs" />
     <Compile Include="ConverterTests\IntEnsureMinConverterTests.cs" />
     <Compile Include="ConverterTests\IntInRangeToVisibilityConverterTests.cs" />
+    <Compile Include="DataList\ActivityDataMappingBuilderTest.cs" />
     <Compile Include="DebugOutputViewModelTest.Append.cs" />
     <Compile Include="Factories\WorkSurfaceContextFactoryTests.cs" />
     <Compile Include="MainViewModelMock.cs" />

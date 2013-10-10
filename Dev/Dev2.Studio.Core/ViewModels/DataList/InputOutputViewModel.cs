@@ -228,8 +228,7 @@ namespace Dev2.Studio.ViewModels.DataList
         public object Clone()
         {
 
-            IObjectCloner<IDataListItemModel> cloner = new ObjectCloner<IDataListItemModel>();
-            //Collection<IDataListItemModel> tmpDataList = cloner.CloneObservableCollection(this.DataList);            
+            IObjectCloner<IDataListItemModel> cloner = new ObjectCloner<IDataListItemModel>();           
             IInputOutputViewModel result = new InputOutputViewModel(this.Name, this.Value, this.MapsTo, this.DefaultValue, this.Required, this.RecordSetName, this.EmptyToNull);
 
             return result;

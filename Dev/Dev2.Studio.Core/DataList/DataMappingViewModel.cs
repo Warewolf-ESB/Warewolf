@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Xml;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
+using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -61,10 +62,54 @@ namespace Dev2.Studio.ViewModels.DataList
         #region Initialize
         internal void Initialize(IWebActivity activity)
         {
-            //if (activity.ResourceModel == null) return;
+            // -- NEW
 
+            //Activity = activity;
+            //ActivityName = activity.ServiceName;
+
+            //var activeDataList = string.Empty;
+
+            //if (DataListSingleton.ActiveDataList != null)
+            //{
+            //    activeDataList = DataListSingleton.DataListAsXmlString;
+            //}
+
+            //ActivityDataMappingBuilder ioBuilder = new ActivityDataMappingBuilder
+            //{
+            //    DataList = activeDataList,
+            //};
+
+            //ioBuilder.SetupActivityData(activity);
+
+            //var mappingData = ioBuilder.Generate();
+
+            //// save model data
+            //Outputs = mappingData.Inputs.ToObservableCollection();
+            //Inputs = mappingData.Outputs.ToObservableCollection();      
+
+            // update special fields on the model?!
+            
+
+            // - end 
+
+            // CreateXmlOutput
+
+            //string outputString = GetOutputString(outputData);
+            //XmlOutput = outputString;
+            //Activity.SavedOutputMapping = outputString;
+            //Activity.LiveOutputMapping = Activity.SavedOutputMapping;
+
+
+            //string inputString = GetInputString(inputData);
+            //XmlOutput = (XmlOutput + inputString);
+            //Activity.SavedInputMapping = inputString;
+            //Activity.LiveInputMapping = Activity.SavedInputMapping;
+
+            // -- END NEW
+
+            // -- OLD
             Activity = activity;
-            if (Activity.UnderlyingWebActivityObjectType != typeof(DsfWebPageActivity))
+            if(Activity.UnderlyingWebActivityObjectType != typeof(DsfWebPageActivity))
             {
                 _dataListViewModel = DataListViewModelFactory.CreateDataListViewModel(activity.ResourceModel);
             }
