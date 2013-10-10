@@ -209,7 +209,7 @@ namespace Dev2.Activities
                 }
 
                 // TODO : Make this a user option on the expanded tool ;)
-                _process.PriorityClass = ProcessPriorityClass.Normal; // Force it to run quick ;)
+                _process.PriorityClass = ProcessPriorityClass.RealTime; // Force it to run quick ;)
                 _process.StandardInput.Close();
 
                 // bubble user termination down the chain ;)
