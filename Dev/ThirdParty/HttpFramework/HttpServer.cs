@@ -750,7 +750,11 @@ namespace HttpFramework
 
 
             Init();
-            _httpListener = new HttpListener(address, port, _components.Get<IHttpContextFactory>()) { LogWriter = LogWriter };
+
+            // TODO : Add cert here ;)
+            //X509Certificate cert = new X509Certificate(@"C:\ssl\certs\ca.cer");
+
+            _httpListener = new HttpListener(address, port, _components.Get<IHttpContextFactory>(),cert) { LogWriter = LogWriter };
 		    _httpListener.RequestReceived += OnRequest;
 		    _httpListener.Start(50);
 		    _httpListener.ExceptionThrown += _exceptionHandler;
