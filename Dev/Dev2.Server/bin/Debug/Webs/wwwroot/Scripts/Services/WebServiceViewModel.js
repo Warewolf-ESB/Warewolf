@@ -12,10 +12,10 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     var $requestBody = $("#requestBody");
     var $addResponseDialog = $("#addResponseDialog");
     
-    $("#addResponseButton").length>0?$("#addResponseButton")
+    $("#addResponseButton").length > 0 ? $("#addResponseButton")
       .text("")
       .append('<img height="16px" width="16px" src="images/edit.png" />')
-      .button():null;
+      .button() : null;
     
     self.$webSourceDialogContainer = $("#webSourceDialogContainer");
 
@@ -36,7 +36,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
 
     self.sourceAddress = ko.observable("");
     
-    self.placeHolderRequestBody = ko.computed(function() {
+    self.placeHolderRequestBody = ko.computed(function () {
         return self.data.source() ? "" : "e.g. CountryName=[[CountryName]]";
     });
     self.placeHolderRequestUrl = ko.computed(function () {
@@ -90,7 +90,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     self.hasSourceSelectionChanged = false;
 	self.hasPasteHappened = false;
 
-    self.pushRequestVariable = function(varName, varSrc, varValue) {
+    self.pushRequestVariable = function (varName, varSrc, varValue) {
         var oldVar = $.grep(self.data.method.Parameters(), function (e) { return e.Name == varName; });
         if (oldVar.length == 0) {
             self.data.method.Parameters.push({ Name: varName, Src: varSrc, Value: varValue, DefaultValue: varValue, IsRequired: false, EmptyToNull: false });
@@ -113,7 +113,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     };
 
     self.getParameter = function (text, start) {
-        var result = { name: "", value: "" , nameStart: 0, nameEnd: 0, valueStart: 0, valueEnd: 0 };
+        var result = { name: "", value: "", nameStart: 0, nameEnd: 0, valueStart: 0, valueEnd: 0 };
 
         result.nameEnd = start - 1;
         result.nameStart = text.lastIndexOf("&", result.nameEnd);
@@ -196,7 +196,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
             paramValues = new Array(paramNames.length);
         }
 
-        $.each(paramNames, function(index, paramName) {
+        $.each(paramNames, function (index, paramName) {
             var varName = paramName;
             if (varSrc == SRC_URL) {
                 if (paramName.substr(0, 2) != "[[") {
@@ -223,24 +223,24 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         });
     };
 
-	self.ProperlyHandleVariableInput = function(newValue){
+    self.ProperlyHandleVariableInput = function (newValue) {
 		// handle more normal use cases ;)
 			
 		// find ? then substring
 		var indexOfQuestionMark = newValue.indexOf("?");
 		
-		if(indexOfQuestionMark >= 0){
+        if (indexOfQuestionMark >= 0) {
 		
 			// create working string 
-			var tmpValue = newValue.substring((indexOfQuestionMark+1));
+            var tmpValue = newValue.substring((indexOfQuestionMark + 1));
 			// generate pairs
 			var pairs = tmpValue.split("&");
 			
 			// now match pairs ;)
-			for(var i = 0; i < pairs.length; i++){
+            for (var i = 0; i < pairs.length; i++) {
 				
 				var tmp = pairs[i];
-
+				
 				var subPairs = tmp.split("=");
 				
 				if (subPairs.length == 2) {
@@ -267,6 +267,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
 				}
 			}
 		}
+        
 	};
 
     self.updateVariables = function (varSrc, newValue) {
@@ -276,12 +277,30 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
 		
         if (self.hasSourceSelectionChanged) {
 		
+            // when paste do this ;)
+            if (self.hasPasteHappened) {
 		
-			if(self.hasPasteHappened){
-				// when paste call this ;)
 				self.ProperlyHandleVariableInput(newValue);
 				self.hasPasteHappened = false;
-			}else{
+                
+                // process any /[[var]]/abc style fragments ;)
+
+                var end = newValue.indexOf("?");
+                
+                if (end < 0) {
+                    end = newValue.length;
+                }
+                
+                // Scan for [[]] regions prior to the variable request string ;)
+                var prefix = newValue.substring(0, end);
+                var paramVars = prefix.match(/\[\[\w*\]\]/g); // match our variables!
+
+                for (var i = 0; i < paramVars.length; i++) {
+                    var value = paramVars[i].replace("[[","").replace("]]","");
+                    self.pushRequestVariable(value, "", "");
+                }
+
+            } else {
 				self.updateAllVariables(varSrc, newValue);
 			}
 			
@@ -295,28 +314,28 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
                 var param = self.getParameter(newValue, start);
 
 				var afterParam = "";
-				var offSet = start+(param.name.length);
+                var offSet = start + (param.name.length);
 				
-				if(offSet < newValue.length){
+                if (offSet < newValue.length) {
 					afterParam = newValue.substring(offSet);
 				}
-                
+				
 				// handle the case of ]]= and &= correctly 
 				if (param.name.indexOf("[[") < 0 && param.name.indexOf("=") < 0 && param.name.length > 0 && afterParam.indexOf("[") != 0) {
-				    self.pushRequestVariable(param.name, varSrc, param.value);
+					self.pushRequestVariable(param.name, varSrc, param.value);
 
-				    var prefix = newValue.slice(0, param.valueStart);
-				    var postfix = newValue.slice(param.valueEnd, newValue.length);
-				    var paramValue = "[[" + param.name + "]]";
-				    newValue = prefix.concat(paramValue).concat(postfix);					
+					var prefix = newValue.slice(0, param.valueStart);
+					var postfix = newValue.slice(param.valueEnd, newValue.length);
+					var paramValue = "[[" + param.name + "]]";
+					newValue = prefix.concat(paramValue).concat(postfix);
+					
 
-
-				    self.updateVariablesText(varSrc, newValue, start + paramValue.length);
+					self.updateVariablesText(varSrc, newValue, start + paramValue.length);
 				}
-                
+
             } else if (self.isCloseBracketPressed) {
                 self.extractAndPushRequestVariable(newValue, start, varSrc);
-            }else{
+            } else {
 			
 				// handle more normal use cass ;)
 				self.ProperlyHandleVariableInput(newValue);
@@ -454,7 +473,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     
     self.hasTestResults = ko.observable(false);
     
-    self.hasInputs = ko.computed(function() {
+    self.hasInputs = ko.computed(function () {
         return self.data.method.Parameters().length > 0;
     });
     
@@ -518,7 +537,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
             }
 
             // This will be invoked by loadSource 
-            self.onLoadSourceCompleted = function() {
+            self.onLoadSourceCompleted = function () {
                 if (result.Method) {
                     self.data.method.Name(result.Method.Name);
                     self.data.method.Parameters(result.Method.Parameters);
@@ -617,6 +636,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
             self.saveViewModel.showDialog(true);
         } else {
             // else use new action ;)
+            self.saveViewModel.IsDialoglessSave = true;
             self.saveViewModel.save();
         }
     };    

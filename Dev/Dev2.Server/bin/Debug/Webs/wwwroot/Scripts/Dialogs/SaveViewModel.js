@@ -16,6 +16,8 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     //2013.06.08: Ashley Lewis for PBI 9458
     self.currentEnvironment = ko.observable(environment);
     self.inTitleEnvironment = false;
+
+    self.IsDialogLess = false;
     
     self.onSaveCompleted = null;
     self.isWindowClosedOnSave = true;
@@ -273,7 +275,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
 
     self.save = function () {
 
-        if (!self.isFormValid()) {
+        if (!self.IsDialogLess && !self.isFormValid()) {
             return;
         }
 
