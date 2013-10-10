@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Runtime.DurableInstancing;
 using System.Threading;
-using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Network.Execution;
 using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
@@ -114,9 +110,11 @@ namespace Dev2.DynamicServices
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                 IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
 
+
                 wfApp.Extensions.Add(dataTransferObject);
                 wfApp.Extensions.Add(compiler);
                 wfApp.Extensions.Add(parser);
+                
             }
 
             return wfApp;
@@ -136,15 +134,21 @@ namespace Dev2.DynamicServices
         /// <returns></returns>
         private IDSFDataObject InvokeWorkflowImpl(Activity workflowActivity, IDSFDataObject dataTransferObject, IList<object> executionExtensions, Guid instanceId, IWorkspace workspace, string bookmarkName, bool isDebug, out ErrorResultTO errors)
         {
+
+            IExecutionToken exeToken = new ExecutionToken() { IsUserCanceled = false };
+
             ExecutionStatusCallbackDispatcher.Instance.Post(dataTransferObject.ExecutionCallbackID, ExecutionStatusCallbackMessageType.StartedCallback);
             WorkflowApplication wfApp = InitEntryPoint(workflowActivity, dataTransferObject, executionExtensions, instanceId, workspace, bookmarkName, isDebug);
             errors = new ErrorResultTO();
 
             if(wfApp != null)
             {
+                // add termination token
+                wfApp.Extensions.Add(exeToken);
+
                 using(ManualResetEventSlim waitHandle = new ManualResetEventSlim(false))
                 {
-                    WorkflowApplicationRun run = new WorkflowApplicationRun(this, waitHandle, dataTransferObject, wfApp, workspace, executionExtensions, FetchParentInstanceID(dataTransferObject), isDebug, errors);
+                    WorkflowApplicationRun run = new WorkflowApplicationRun(this, waitHandle, dataTransferObject, wfApp, workspace, executionExtensions, FetchParentInstanceID(dataTransferObject), isDebug, errors, exeToken);
 
 
                     if(instanceId == Guid.Empty)
@@ -229,6 +233,7 @@ namespace Dev2.DynamicServices
             private IList<object> _executionExtensions;
             private ManualResetEventSlim _waitHandle;
             private IDSFDataObject _result;
+            private IExecutionToken _executionToken;
             #endregion
 
             #region Public Properties
@@ -241,7 +246,7 @@ namespace Dev2.DynamicServices
             #endregion
 
             #region Constructor
-            public WorkflowApplicationRun(WorkflowApplicationFactory owner, ManualResetEventSlim waitHandle, IDSFDataObject dataTransferObject, WorkflowApplication instance, IWorkspace workspace, IList<object> executionExtensions, Guid parentWorkflowInstanceId, bool isDebug, ErrorResultTO errors)
+            public WorkflowApplicationRun(WorkflowApplicationFactory owner, ManualResetEventSlim waitHandle, IDSFDataObject dataTransferObject, WorkflowApplication instance, IWorkspace workspace, IList<object> executionExtensions, Guid parentWorkflowInstanceId, bool isDebug, ErrorResultTO errors, IExecutionToken executionToken)
             {
                 _owner = owner;
                 _waitHandle = waitHandle;
@@ -251,11 +256,13 @@ namespace Dev2.DynamicServices
                 _executionExtensions = executionExtensions;
                 _isDebug = isDebug;
                 _parentWorkflowInstanceID = parentWorkflowInstanceId;
+                _executionToken = executionToken;
 
                 _instance.PersistableIdle = OnPersistableIdle;
                 _instance.Unloaded = OnUnloaded;
                 _instance.Completed = OnCompleted;
                 _instance.OnUnhandledException = OnUnhandledException;
+
                 AllErrors = errors;
             }
 
@@ -330,11 +337,14 @@ namespace Dev2.DynamicServices
             {
                 try
                 {
+                    // signal user termination ;)
+                    _executionToken.IsUserCanceled = true;
+
                     // This was cancel which left the activities resident in the background and caused chaos!
-                    _instance.Terminate(new Exception("User Termination"));
+                    _instance.Terminate(new Exception("User Termination"));   
                 }
-                catch(TimeoutException e)
-                {
+                catch
+            {
                     //Empty so that the exception does not bubble up. The timeout is set this way to ensure that the workflow stops immediately
                 }
 
