@@ -757,6 +757,11 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Timeout = "[[timeout]]",
                 Database = new DbSource(),
                 TableName = "TestTable",
+                CheckConstraints = true,
+                FireTriggers = true,
+                KeepIdentity = true,
+                UseInternalTransaction = true,
+                KeepTableLock = true,
                 InputMappings = dataColumnMappings,
                 Result = "[[result]]"
             };
@@ -766,9 +771,22 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = CheckActivityDebugInputOutput(act, dataListShape,dataListWithData, out inRes, out outRes);
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
-            Assert.AreEqual(7, inRes.Count);
+            Assert.AreEqual(12, inRes.Count);
             var debugInputs = inRes[0].FetchResultsList();
+            
+            Assert.AreEqual(1, debugInputs.Count);
 
+            Assert.AreEqual("Check Constraints", debugInputs[0].Value);
+            debugInputs = inRes[1].FetchResultsList();
+            Assert.AreEqual("Keep Identity", debugInputs[0].Value);
+            debugInputs = inRes[2].FetchResultsList();
+            Assert.AreEqual("Keep Table Lock", debugInputs[0].Value);
+            debugInputs = inRes[3].FetchResultsList();
+            Assert.AreEqual("Fire Triggers", debugInputs[0].Value);
+            debugInputs = inRes[4].FetchResultsList();
+            Assert.AreEqual("Use Internal Transaction", debugInputs[0].Value);
+
+            debugInputs = inRes[5].FetchResultsList();
             Assert.AreEqual(12,debugInputs.Count);
             Assert.AreEqual("1",debugInputs[0].Value);
             Assert.AreEqual(DebugItemResultType.Label,debugInputs[0].Type);
@@ -800,7 +818,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Jill", debugInputs[11].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugInputs[11].Type);
 
-           debugInputs = inRes[1].FetchResultsList();
+           debugInputs = inRes[6].FetchResultsList();
 
            Assert.AreEqual("2", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
@@ -818,7 +836,7 @@ namespace Dev2.Tests.Activities.ActivityTests
            Assert.AreEqual("1999", debugInputs[5].Value);
            Assert.AreEqual(DebugItemResultType.Value, debugInputs[5].Type);
 
-           debugInputs = inRes[3].FetchResultsList();
+           debugInputs = inRes[8].FetchResultsList();
 
            Assert.AreEqual("4", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
@@ -836,7 +854,7 @@ namespace Dev2.Tests.Activities.ActivityTests
            Assert.AreEqual("Hello", debugInputs[5].Value);
            Assert.AreEqual(DebugItemResultType.Value, debugInputs[5].Type);
 
-           debugInputs = inRes[4].FetchResultsList();
+           debugInputs = inRes[9].FetchResultsList();
 
            Assert.AreEqual("5", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
@@ -973,6 +991,220 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             return dataColumnMappings;
         }
+
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSqlBulkInsertActivity_UpdateForEachInputs")]
+        public void DsfSqlBulkInsertActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string BatchSize = "[[batchsize]]";
+            const string TimeOut = "[[timeout]]";
+            const string TableName = "TestTable";
+            const string Result = "[[res]]";
+            var dataColumnMappings = DataColumnMappingsMixedMappings();
+            var act = new DsfSqlBulkInsertActivity
+            {
+                BatchSize = "[[batchsize]]",
+                Timeout = "[[timeout]]",
+                Database = new DbSource(),
+                TableName = "TestTable",
+                InputMappings = dataColumnMappings,
+                Result = Result
+            };
+
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(BatchSize, act.BatchSize);
+            Assert.AreEqual(TimeOut, act.Timeout);
+            Assert.AreEqual(TableName, act.TableName);
+            Assert.AreEqual(Result, act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSqlBulkInsertActivity_UpdateForEachInputs")]
+        public void DsfSqlBulkInsertActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
+        {
+            //------------Setup for test--------------------------
+            const string BatchSize = "[[batchsize]]";
+            const string TimeOut = "[[timeout]]";
+            const string TableName = "TestTable";
+            const string Result = "[[res]]";
+            var dataColumnMappings = DataColumnMappingsMixedMappings();
+            var act = new DsfSqlBulkInsertActivity
+            {
+                BatchSize = "[[batchsize]]",
+                Timeout = "[[timeout]]",
+                Database = new DbSource(),
+                TableName = "TestTable",
+                InputMappings = dataColumnMappings,
+                Result = Result
+            };
+            var tuple1 = new Tuple<string, string>(BatchSize, "Test");
+            var tuple2 = new Tuple<string, string>(TimeOut, "Test2");
+            var tuple3 = new Tuple<string, string>(TableName, "Test3");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2,tuple3 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test2", act.Timeout);
+            Assert.AreEqual("Test", act.BatchSize);
+            Assert.AreEqual("Test3", act.TableName);
+            Assert.AreEqual(Result, act.Result);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSqlBulkInsertActivity_UpdateForEachOutputs")]
+        public void DsfSqlBulkInsertActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string Result = "[[res]]";
+            var dataColumnMappings = DataColumnMappingsMixedMappings();
+            var act = new DsfSqlBulkInsertActivity
+            {
+                BatchSize = "[[batchsize]]",
+                Timeout = "[[timeout]]",
+                Database = new DbSource(),
+                TableName = "TestTable",
+                InputMappings = dataColumnMappings,
+                Result = Result
+            };
+
+            act.UpdateForEachOutputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Result, act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSqlBulkInsertActivity_UpdateForEachOutputs")]
+        public void DsfSqlBulkInsertActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            const string Result = "[[res]]";
+            var dataColumnMappings = DataColumnMappingsMixedMappings();
+            var act = new DsfSqlBulkInsertActivity
+            {
+                BatchSize = "[[batchsize]]",
+                Timeout = "[[timeout]]",
+                Database = new DbSource(),
+                TableName = "TestTable",
+                InputMappings = dataColumnMappings,
+                Result = Result
+            };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>("Test2", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Result, act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSqlBulkInsertActivity_UpdateForEachOutputs")]
+        public void DsfSqlBulkInsertActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
+        {
+            //------------Setup for test--------------------------
+            const string Result = "[[res]]";
+            var dataColumnMappings = DataColumnMappingsMixedMappings();
+            var act = new DsfSqlBulkInsertActivity
+            {
+                BatchSize = "[[batchsize]]",
+                Timeout = "[[timeout]]",
+                Database = new DbSource(),
+                TableName = "TestTable",
+                InputMappings = dataColumnMappings,
+                Result = Result
+            };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSqlBulkInsertActivity_GetForEachInputs")]
+        public void DsfSqlBulkInsertActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            const string BatchSize = "[[batchsize]]";
+            const string TimeOut = "[[timeout]]";
+            const string TableName = "TestTable";
+            const string Result = "[[res]]";
+            var dataColumnMappings = DataColumnMappingsMixedMappings();
+            var act = new DsfSqlBulkInsertActivity
+            {
+                BatchSize = "[[batchsize]]",
+                Timeout = "[[timeout]]",
+                Database = new DbSource(),
+                TableName = "TestTable",
+                InputMappings = dataColumnMappings,
+                Result = "[[result]]"
+            };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachInputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(10, dsfForEachItems.Count);
+            Assert.AreEqual(BatchSize, dsfForEachItems[0].Name);
+            Assert.AreEqual(BatchSize, dsfForEachItems[0].Value);
+            Assert.AreEqual(TimeOut, dsfForEachItems[1].Name);
+            Assert.AreEqual(TimeOut, dsfForEachItems[1].Value);
+            Assert.AreEqual(TableName, dsfForEachItems[2].Name);
+            Assert.AreEqual(TableName, dsfForEachItems[2].Value);
+            Assert.AreEqual("[[recset1(*).field1]]", dsfForEachItems[3].Name);
+            Assert.AreEqual("[[recset1(*).field1]]", dsfForEachItems[3].Value);
+            Assert.AreEqual("[[recset1().field2]]", dsfForEachItems[4].Name);
+            Assert.AreEqual("[[recset1().field2]]", dsfForEachItems[4].Value);
+            Assert.AreEqual("[[rec().f2]]", dsfForEachItems[5].Name);
+            Assert.AreEqual("[[rec().f2]]", dsfForEachItems[5].Value);
+            Assert.AreEqual("[[val]]", dsfForEachItems[6].Name);
+            Assert.AreEqual("[[val]]", dsfForEachItems[6].Value);
+            Assert.AreEqual("[[rec(*).f1]]", dsfForEachItems[7].Name);
+            Assert.AreEqual("[[rec(*).f1]]", dsfForEachItems[7].Value);
+            Assert.AreEqual("[[recset1(*).field3]]", dsfForEachItems[8].Name);
+            Assert.AreEqual("[[recset1(*).field3]]", dsfForEachItems[8].Value);
+            Assert.AreEqual("[[recset1(*).field4]]", dsfForEachItems[9].Name);
+            Assert.AreEqual("[[recset1(*).field4]]", dsfForEachItems[9].Value);
+            
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSqlBulkInsertActivity_GetForEachOutputs")]
+        public void DsfSqlBulkInsertActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
+        {
+            //------------Setup for test--------------------------
+            const string Result = "[[res]]";
+            var dataColumnMappings = DataColumnMappingsMixedMappings();
+            var act = new DsfSqlBulkInsertActivity
+            {
+                BatchSize = "[[batchsize]]",
+                Timeout = "[[timeout]]",
+                Database = new DbSource(),
+                TableName = "TestTable",
+                InputMappings = dataColumnMappings,
+                Result = Result
+            };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual(Result, dsfForEachItems[0].Name);
+            Assert.AreEqual(Result, dsfForEachItems[0].Value);
+        }
+
 
         #region Private Test Methods
 

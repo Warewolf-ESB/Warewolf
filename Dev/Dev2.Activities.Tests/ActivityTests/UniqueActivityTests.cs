@@ -543,8 +543,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfRandomActivity_UpdateForEachInputs")]
-        public void DsfRandomActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
+        [TestCategory("DsfUniqueActivity_UpdateForEachInputs")]
+        public void DsfUniqueActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------
             const string InFields = "[[Numeric(1).num]]";
@@ -561,8 +561,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfRandomActivity_UpdateForEachInputs")]
-        public void DsfRandomActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
+        [TestCategory("DsfUniqueActivity_UpdateForEachInputs")]
+        public void DsfUniqueActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
         {
             //------------Setup for test--------------------------
             const string InFields = "[[Numeric(1).num]]";
@@ -582,8 +582,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfRandomActivity_UpdateForEachOutputs")]
-        public void DsfRandomActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
+        [TestCategory("DsfUniqueActivity_UpdateForEachOutputs")]
+        public void DsfUniqueActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------
             const string InFields = "[[Numeric(1).num]]";
@@ -598,8 +598,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfRandomActivity_UpdateForEachOutputs")]
-        public void DsfRandomActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
+        [TestCategory("DsfUniqueActivity_UpdateForEachOutputs")]
+        public void DsfUniqueActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
         {
             //------------Setup for test--------------------------
             const string InFields = "[[Numeric(1).num]]";
@@ -617,8 +617,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfRandomActivity_UpdateForEachOutputs")]
-        public void DsfRandomActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
+        [TestCategory("DsfUniqueActivity_UpdateForEachOutputs")]
+        public void DsfUniqueActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
         {
             //------------Setup for test--------------------------
             const string InFields = "[[Numeric(1).num]]";
@@ -635,8 +635,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfRandomActivity_GetForEachInputs")]
-        public void DsfRandomActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        [TestCategory("DsfUniqueActivity_GetForEachInputs")]
+        public void DsfUniqueActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
         {
             //------------Setup for test--------------------------
             const string InFields = "[[Numeric(1).num]]";
@@ -656,8 +656,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfRandomActivity_GetForEachOutputs")]
-        public void DsfRandomActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
+        [TestCategory("DsfUniqueActivity_GetForEachOutputs")]
+        public void DsfUniqueActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
         {
             //------------Setup for test--------------------------
             const string InFields = "[[Numeric(1).num]]";

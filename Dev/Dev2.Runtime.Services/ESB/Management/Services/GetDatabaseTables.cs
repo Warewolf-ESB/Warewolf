@@ -30,7 +30,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             string database;
             string tableName;
             values.TryGetValue("Database", out database);
-            values.TryGetValue("TableName", out tableName);
 
             var dbSource = JsonConvert.DeserializeObject<DbSource>(database);
 
@@ -65,7 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var ds = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = @"<DataList><Database/><TableName/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>"
+                DataListSpecification = @"<DataList><Database/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>"
             };
 
             var sa = new ServiceAction

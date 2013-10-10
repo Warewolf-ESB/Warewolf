@@ -88,7 +88,7 @@ namespace Dev2.Activities
             {
                 if(toUpsert.IsDebug)
                 {
-
+                    AddOptionsDebugItems();
                 }
                 var dataTableToInsert = BuildDataTableToInsert();
                 SqlBulkInserter.CurrentOptions = BuildSqlBulkCopyOptions();
@@ -149,6 +149,40 @@ namespace Dev2.Activities
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
+            }
+        }
+
+        void AddOptionsDebugItems()
+        {
+            if(CheckConstraints)
+            {
+                var debugItem = new DebugItem();
+                debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = "Check Constraints" });
+                _debugInputs.Add(debugItem);
+            }
+            if(KeepIdentity)
+            {
+                var debugItem = new DebugItem();
+                debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = "Keep Identity" });
+                _debugInputs.Add(debugItem);
+            }
+            if(KeepTableLock)
+            {
+                var debugItem = new DebugItem();
+                debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = "Keep Table Lock" });
+                _debugInputs.Add(debugItem);
+            }
+            if(FireTriggers)
+            {
+                var debugItem = new DebugItem();
+                debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = "Fire Triggers" });
+                _debugInputs.Add(debugItem);
+            }
+            if(UseInternalTransaction)
+            {
+                var debugItem = new DebugItem();
+                debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = "Use Internal Transaction" });
+                _debugInputs.Add(debugItem);
             }
         }
 
@@ -214,7 +248,7 @@ namespace Dev2.Activities
 
         void AddDebugInputItem(string inputColumn, string outputColumnName, IBinaryDataListEntry expressionsEntry, Type outputColumnDataType, int maxLength, Guid executionID, int indexCounter)
         {
-            DebugItem itemToAdd = new DebugItem();
+            var itemToAdd = new DebugItem();
 
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCounter.ToString(CultureInfo.InvariantCulture) });
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Insert Into" });
@@ -231,7 +265,7 @@ namespace Dev2.Activities
             var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, expression, false, out errorsResultTO);
             var itemToAdd = new DebugItem();
 
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = debugOutputIndexCounter.ToString()});
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = debugOutputIndexCounter.ToString(CultureInfo.InvariantCulture)});
 
             itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, expressionsEntry, executionID, enDev2ArgumentType.Output));
             _debugOutputs.Add(itemToAdd);
@@ -281,20 +315,53 @@ namespace Dev2.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
+            if(updates != null)
+            {
+                foreach(Tuple<string, string> t in updates)
+                {
+                    // locate all updates for this tuple
+                    Tuple<string, string> t1 = t;
+                    var items = InputMappings.Where(c => !string.IsNullOrEmpty(c.InputColumn) && c.InputColumn.Equals(t1.Item1));
+
+                    // issues updates
+                    foreach(var a in items)
+                    {
+                        a.InputColumn = t.Item2;
+                    }
+                    
+                    if(TableName == t.Item1)
+                    {
+                        TableName = t.Item2;
+                    }
+                    if(BatchSize == t.Item1)
+                    {
+                        BatchSize = t.Item2;
+                    }
+                    if(Timeout == t.Item1)
+                    {
+                        Timeout = t.Item2;
+                    }
+                }
+            }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
+            if(updates != null && updates.Count == 1)
+            {
+                Result = updates[0].Item2;
+            }
         }
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
-            return null;
+            var items = (new[] { BatchSize, Timeout, TableName }).Union(InputMappings.Where(c => !string.IsNullOrEmpty(c.InputColumn)).Select(c => c.InputColumn)).ToArray();
+            return GetForEachItems(items);
         }
 
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
-            return null;
+            return GetForEachItems(Result);
         }
         #endregion
 
