@@ -43,7 +43,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses
             return uIRecordedFeedbackWindow;
         }
 
-        private WpfButton StartRecordingButton()
+        private Point StartRecordingButtonPoint()
         {
             // Get the Studio
             WpfWindow theStudio = new WpfWindow();
@@ -53,22 +53,23 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses
 
             theStudio.Find();
 
-            // Get the AiD
-            WpfButton theButton = new WpfButton(theStudio);
-            theStudio.SearchProperties[WpfWindow.PropertyNames.AutomationId] = "MainView_StartStopFeedbackRecording";
-            theButton.Find();
-
-            return theButton;
+            return new Point(theStudio.BoundingRectangle.Right - 50, theStudio.Top + 35);
 
         }
 
         private WpfWindow GetFeedbackWindow()
         {
-            WpfWindow feedbackWindow = new WpfWindow();
-            feedbackWindow.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            feedbackWindow.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
-            feedbackWindow.WindowTitles.Add("Feedback");
-            return feedbackWindow;
+            var window = new UIBusinessDesignStudioWindow();
+            var findFeedbackWindow = window.GetParent().GetChildren();
+            foreach (var child in findFeedbackWindow)
+            {
+                var getTitle = child.GetChildren()[0].Name;
+                if (getTitle == "Feedback")
+                {
+                    return child as WpfWindow;
+                }
+            }
+            throw new UITestControlNotFoundException("Cannot find feedback window");
         }
 
         private WpfButton FeedbackWindow_CancelButton()
@@ -81,7 +82,16 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses
 
         private WpfButton FeedbackWindow_OpenDefaultEmailButton()
         {
-            WpfButton theButton = new WpfButton(GetFeedbackWindow());
+            var feedbackWindow = GetFeedbackWindow();
+            var children = feedbackWindow.GetChildren();
+            foreach (var child in children)
+            {
+                if (child.GetProperty("AutomationId").ToString() == "FeebackView_Send")
+                {
+                    return child as WpfButton;
+                }
+            }
+            WpfButton theButton = new WpfButton(feedbackWindow);
             theButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "FeebackView_Send";
             theButton.Find();
             return theButton;

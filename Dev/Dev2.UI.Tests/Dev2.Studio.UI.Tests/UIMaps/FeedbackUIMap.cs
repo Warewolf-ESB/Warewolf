@@ -34,8 +34,8 @@
 
         public void ClickStartStopRecordingButton()
         {
-            WpfButton theButton = StartRecordingButton();
-            Mouse.Click(theButton, new Point(5, 5));
+            Point theButtonPosition = StartRecordingButtonPoint();
+            Mouse.Click(theButtonPosition);
         }
 
         public void FeedbackWindow_ClickCancel()
