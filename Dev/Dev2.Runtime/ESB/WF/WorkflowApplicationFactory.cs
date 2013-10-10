@@ -330,12 +330,14 @@ namespace Dev2.DynamicServices
             {
                 try
                 {
-                    _instance.Cancel(new TimeSpan(0,0,0,0,1));
+                    // This was cancel which left the activities resident in the background and caused chaos!
+                    _instance.Terminate(new Exception("User Termination"));
                 }
                 catch(TimeoutException e)
-            {
+                {
                     //Empty so that the exception does not bubble up. The timeout is set this way to ensure that the workflow stops immediately
                 }
+
                 ExecutableServiceRepository.Instance.Remove(this);
                 AssociatedServices.ForEach(s => s.Terminate());
                 Dispose();
