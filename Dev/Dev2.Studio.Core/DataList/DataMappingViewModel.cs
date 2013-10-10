@@ -64,158 +64,153 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             // -- NEW
 
-            //Activity = activity;
-            //ActivityName = activity.ServiceName;
+            Activity = activity;
+            ActivityName = activity.ServiceName;
 
-            //var activeDataList = string.Empty;
+            var activeDataList = string.Empty;
 
-            //if (DataListSingleton.ActiveDataList != null)
-            //{
-            //    activeDataList = DataListSingleton.DataListAsXmlString;
-            //}
+            if(DataListSingleton.ActiveDataList != null)
+            {
+                activeDataList = DataListSingleton.DataListAsXmlString;
+            }
 
-            //ActivityDataMappingBuilder ioBuilder = new ActivityDataMappingBuilder
-            //{
-            //    DataList = activeDataList,
-            //};
+            ActivityDataMappingBuilder ioBuilder = new ActivityDataMappingBuilder
+            {
+                DataList = activeDataList,
+            };
 
-            //ioBuilder.SetupActivityData(activity);
+            ioBuilder.SetupActivityData(activity);
 
-            //var mappingData = ioBuilder.Generate();
+            var mappingData = ioBuilder.Generate();
 
-            //// save model data
-            //Outputs = mappingData.Inputs.ToObservableCollection();
-            //Inputs = mappingData.Outputs.ToObservableCollection();      
+            // save model data
+            Outputs = mappingData.Outputs.ToObservableCollection();
+            Inputs = mappingData.Inputs.ToObservableCollection();      
 
             // update special fields on the model?!
-            
 
-            // - end 
+            var toSaveOutputMapping = ioBuilder.SavedOutputMapping;
+            var toSaveInputMapping = ioBuilder.SavedInputMapping;
 
-            // CreateXmlOutput
+            XmlOutput = toSaveOutputMapping;
+            Activity.SavedOutputMapping = toSaveOutputMapping;
+            Activity.LiveOutputMapping = toSaveOutputMapping;
 
-            //string outputString = GetOutputString(outputData);
-            //XmlOutput = outputString;
-            //Activity.SavedOutputMapping = outputString;
-            //Activity.LiveOutputMapping = Activity.SavedOutputMapping;
-
-
-            //string inputString = GetInputString(inputData);
-            //XmlOutput = (XmlOutput + inputString);
-            //Activity.SavedInputMapping = inputString;
-            //Activity.LiveInputMapping = Activity.SavedInputMapping;
+            XmlOutput = (XmlOutput + toSaveInputMapping);
+            Activity.SavedInputMapping = toSaveInputMapping;
+            Activity.LiveInputMapping = toSaveInputMapping;
 
             // -- END NEW
 
             // -- OLD
-            Activity = activity;
-            if(Activity.UnderlyingWebActivityObjectType != typeof(DsfWebPageActivity))
-            {
-                _dataListViewModel = DataListViewModelFactory.CreateDataListViewModel(activity.ResourceModel);
-            }
-            IList<IInputOutputViewModel> liveOutputMappingCopy = new List<IInputOutputViewModel>();
-            IList<IInputOutputViewModel> liveInputMappingCopy = new List<IInputOutputViewModel>();
-            if (string.IsNullOrEmpty(activity.SavedInputMapping) && string.IsNullOrEmpty(activity.SavedOutputMapping) && Activity.ResourceModel != null)
-            {
+            //Activity = activity;
+            //if(Activity.UnderlyingWebActivityObjectType != typeof(DsfWebPageActivity))
+            //{
+            //    _dataListViewModel = DataListViewModelFactory.CreateDataListViewModel(activity.ResourceModel);
+            //}
+            //IList<IInputOutputViewModel> liveOutputMappingCopy = new List<IInputOutputViewModel>();
+            //IList<IInputOutputViewModel> liveInputMappingCopy = new List<IInputOutputViewModel>();
+            //if (string.IsNullOrEmpty(activity.SavedInputMapping) && string.IsNullOrEmpty(activity.SavedOutputMapping) && Activity.ResourceModel != null)
+            //{
 
 
-                string liveDataListAsInputMapping;
-                string liveDataListAsOutputMapping;
+            //    string liveDataListAsInputMapping;
+            //    string liveDataListAsOutputMapping;
 
-                ActivityName = activity.ServiceName;
+            //    ActivityName = activity.ServiceName;
 
                 
-                XmlDocument xDoc = new XmlDocument();
-                xDoc.LoadXml(Activity.ResourceModel.ServiceDefinition);
-                if (Activity.ResourceModel.ResourceType == ResourceType.WorkflowService)
-                {
-                    liveDataListAsInputMapping = DataListFactory.GenerateMappingFromDataList(_dataListViewModel.Resource.DataList, enDev2ArgumentType.Input, enDev2ColumnArgumentDirection.Input);
-                    liveDataListAsOutputMapping = DataListFactory.GenerateMappingFromDataList(_dataListViewModel.Resource.DataList, enDev2ArgumentType.Output, enDev2ColumnArgumentDirection.Output);
-                }
-                else
-                {
-                    var input = xDoc.SelectSingleNode(StringResources.DataMapping_InputXpathExpression);
-                    var output = xDoc.SelectSingleNode(StringResources.DataMapping_OutputXpathExpression);
+            //    XmlDocument xDoc = new XmlDocument();
+            //    xDoc.LoadXml(Activity.ResourceModel.ServiceDefinition);
+            //    if (Activity.ResourceModel.ResourceType == ResourceType.WorkflowService)
+            //    {
+            //        liveDataListAsInputMapping = DataListFactory.GenerateMappingFromDataList(_dataListViewModel.Resource.DataList, enDev2ArgumentType.Input, enDev2ColumnArgumentDirection.Input);
+            //        liveDataListAsOutputMapping = DataListFactory.GenerateMappingFromDataList(_dataListViewModel.Resource.DataList, enDev2ArgumentType.Output, enDev2ColumnArgumentDirection.Output);
+            //    }
+            //    else
+            //    {
+            //        var input = xDoc.SelectSingleNode(StringResources.DataMapping_InputXpathExpression);
+            //        var output = xDoc.SelectSingleNode(StringResources.DataMapping_OutputXpathExpression);
 
-                    if (input == null || output == null)
-                    {
-                        return;
-                    }
+            //        if (input == null || output == null)
+            //        {
+            //            return;
+            //        }
 
-                    liveDataListAsInputMapping = input.OuterXml;
-                    liveDataListAsOutputMapping = output.OuterXml;
+            //        liveDataListAsInputMapping = input.OuterXml;
+            //        liveDataListAsOutputMapping = output.OuterXml;
 
-                }
+            //    }
                 
 
-                activity.LiveInputMapping = liveDataListAsInputMapping;
-                activity.LiveOutputMapping = liveDataListAsOutputMapping;
+            //    activity.LiveInputMapping = liveDataListAsInputMapping;
+            //    activity.LiveOutputMapping = liveDataListAsOutputMapping;
 
-                IList<IDev2Definition> liveOutput = DataMappingListFactory.CreateListOutputMapping(Activity.LiveOutputMapping);
-                liveOutputMappingCopy = InputOutputViewModelFactory.CreateListToDisplayOutputs(liveOutput);
+            //    IList<IDev2Definition> liveOutput = DataMappingListFactory.CreateListOutputMapping(Activity.LiveOutputMapping);
+            //    liveOutputMappingCopy = InputOutputViewModelFactory.CreateListToDisplayOutputs(liveOutput);
 
-                IList<IDev2Definition> liveInput = DataMappingListFactory.CreateListInputMapping(Activity.LiveInputMapping);
-                liveInputMappingCopy = InputOutputViewModelFactory.CreateListToDisplayInputs(liveInput);
+            //    IList<IDev2Definition> liveInput = DataMappingListFactory.CreateListInputMapping(Activity.LiveInputMapping);
+            //    liveInputMappingCopy = InputOutputViewModelFactory.CreateListToDisplayInputs(liveInput);
 
-                if (string.IsNullOrEmpty(Activity.SavedInputMapping) && string.IsNullOrEmpty(Activity.SavedOutputMapping))
-                {
-                    Activity.SavedInputMapping = Activity.LiveInputMapping;
-                    Activity.SavedOutputMapping = Activity.LiveOutputMapping;
-                }
-                else
-                {
-                    IList<IDev2Definition> savedOutput = DataMappingListFactory.CreateListOutputMapping(Activity.SavedOutputMapping);
-                    IList<IInputOutputViewModel> savedOutputMappingCopy = InputOutputViewModelFactory.CreateListToDisplayOutputs(savedOutput);
-                    if (liveOutputMappingCopy.Any())
-                    {
-                        int outputsCounter = 0;
-                        while (outputsCounter < liveOutputMappingCopy.Count)
-                        {
-                            try
-                            {
-                                liveOutputMappingCopy[outputsCounter] = savedOutputMappingCopy.First(c => c.DisplayName == liveOutputMappingCopy[outputsCounter].DisplayName);
-                            }
-                            catch (Exception)
-                            {
-                            }
-                            outputsCounter++;
-                        }
-                        CurrentlySelectedOutput = liveOutputMappingCopy[0];
-                    }
+            //    if (string.IsNullOrEmpty(Activity.SavedInputMapping) && string.IsNullOrEmpty(Activity.SavedOutputMapping))
+            //    {
+            //        Activity.SavedInputMapping = Activity.LiveInputMapping;
+            //        Activity.SavedOutputMapping = Activity.LiveOutputMapping;
+            //    }
+            //    else
+            //    {
+            //        IList<IDev2Definition> savedOutput = DataMappingListFactory.CreateListOutputMapping(Activity.SavedOutputMapping);
+            //        IList<IInputOutputViewModel> savedOutputMappingCopy = InputOutputViewModelFactory.CreateListToDisplayOutputs(savedOutput);
+            //        if (liveOutputMappingCopy.Any())
+            //        {
+            //            int outputsCounter = 0;
+            //            while (outputsCounter < liveOutputMappingCopy.Count)
+            //            {
+            //                try
+            //                {
+            //                    liveOutputMappingCopy[outputsCounter] = savedOutputMappingCopy.First(c => c.DisplayName == liveOutputMappingCopy[outputsCounter].DisplayName);
+            //                }
+            //                catch (Exception)
+            //                {
+            //                }
+            //                outputsCounter++;
+            //            }
+            //            CurrentlySelectedOutput = liveOutputMappingCopy[0];
+            //        }
 
-                    IList<IDev2Definition> savedInput = DataMappingListFactory.CreateListInputMapping(Activity.SavedInputMapping);
-                    IList<IInputOutputViewModel> savedInputMappingCopy = InputOutputViewModelFactory.CreateListToDisplayInputs(savedInput);
-                    if (liveInputMappingCopy.Any())
-                    {
-                        int inputsCounter = 0;
-                        while (inputsCounter < liveInputMappingCopy.Count)
-                        {
-                            try
-                            {
-                                liveInputMappingCopy[inputsCounter] = savedInputMappingCopy.First(c => c.DisplayName == liveInputMappingCopy[inputsCounter].DisplayName);
-                            }
-                            catch (Exception)
-                            {
-                            }
-                            inputsCounter++;
-                        }
+            //        IList<IDev2Definition> savedInput = DataMappingListFactory.CreateListInputMapping(Activity.SavedInputMapping);
+            //        IList<IInputOutputViewModel> savedInputMappingCopy = InputOutputViewModelFactory.CreateListToDisplayInputs(savedInput);
+            //        if (liveInputMappingCopy.Any())
+            //        {
+            //            int inputsCounter = 0;
+            //            while (inputsCounter < liveInputMappingCopy.Count)
+            //            {
+            //                try
+            //                {
+            //                    liveInputMappingCopy[inputsCounter] = savedInputMappingCopy.First(c => c.DisplayName == liveInputMappingCopy[inputsCounter].DisplayName);
+            //                }
+            //                catch (Exception)
+            //                {
+            //                }
+            //                inputsCounter++;
+            //            }
 
-                        CurrentlySelectedInput = liveInputMappingCopy[0];
-                    }
-                }
-            }
-            else
-            {
-                IList<IDev2Definition> liveOutput = DataMappingListFactory.CreateListOutputMapping(Activity.SavedOutputMapping);
-                liveOutputMappingCopy = InputOutputViewModelFactory.CreateListToDisplayOutputs(liveOutput);
+            //            CurrentlySelectedInput = liveInputMappingCopy[0];
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    IList<IDev2Definition> liveOutput = DataMappingListFactory.CreateListOutputMapping(Activity.SavedOutputMapping);
+            //    liveOutputMappingCopy = InputOutputViewModelFactory.CreateListToDisplayOutputs(liveOutput);
 
-                IList<IDev2Definition> liveInput = DataMappingListFactory.CreateListInputMapping(Activity.SavedInputMapping);
-                liveInputMappingCopy = InputOutputViewModelFactory.CreateListToDisplayInputs(liveInput);
-            }
+            //    IList<IDev2Definition> liveInput = DataMappingListFactory.CreateListInputMapping(Activity.SavedInputMapping);
+            //    liveInputMappingCopy = InputOutputViewModelFactory.CreateListToDisplayInputs(liveInput);
+            //}
 
-            Outputs = liveOutputMappingCopy.ToObservableCollection();
-            Inputs = liveInputMappingCopy.ToObservableCollection();            
-            CreateXmlOutput(Outputs, Inputs);
+            //Outputs = liveOutputMappingCopy.ToObservableCollection();
+            //Inputs = liveInputMappingCopy.ToObservableCollection();            
+            //CreateXmlOutput(Outputs, Inputs);
         }
 
         #endregion Initialize

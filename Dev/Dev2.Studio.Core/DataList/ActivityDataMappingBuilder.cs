@@ -123,9 +123,22 @@ namespace Dev2.DataList
             var inputParser = DataListFactory.CreateInputParser();
 
             var inputList = GenerateMapping(SavedInputMapping, ActivityInputDefinitions, inputParser);
+            
             var outputList = GenerateMapping(SavedOutputMapping, ActivityOutputDefinitions, outputParser);
 
             result = new MappingViewModelTO(inputList, outputList);
+
+            // and set the data to save?!
+            if(string.IsNullOrEmpty(SavedInputMapping))
+            {
+                SavedInputMapping = ActivityInputDefinitions;
+            }
+
+            if(string.IsNullOrEmpty(SavedOutputMapping))
+            {
+                SavedOutputMapping = ActivityOutputDefinitions;
+            }
+
            
             return result;
         }
@@ -167,7 +180,24 @@ namespace Dev2.DataList
 
             foreach(var def in concreteDefinitions)
             {
-                var viewModel = new InputOutputViewModel(def.Name, def.Value, def.MapsTo, def.DefaultValue,
+
+                // TODO : Examine the DataList for matches?!
+
+                var injectValue = def.Value;
+
+                if(!string.IsNullOrEmpty(injectValue))
+                {
+                    injectValue = DataListUtil.AddBracketsToValueIfNotExist(injectValue);
+                }
+
+                var injectMapsTo = def.MapsTo;
+
+                if (!string.IsNullOrEmpty(injectMapsTo))
+                {
+                    injectMapsTo = DataListUtil.AddBracketsToValueIfNotExist(injectMapsTo);
+                }
+
+                var viewModel = new InputOutputViewModel(def.Name, injectValue, injectMapsTo, def.DefaultValue,
                                                          def.IsRequired, def.RecordSetName, def.EmptyToNull);
 
                 result.Add(viewModel);
