@@ -614,7 +614,6 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
             self.saveViewModel.showDialog(true);
         } else {
             // else use new action ;)
-            self.saveViewModel.IsDialoglessSave = true;
             self.saveViewModel.save();
         }
     };    

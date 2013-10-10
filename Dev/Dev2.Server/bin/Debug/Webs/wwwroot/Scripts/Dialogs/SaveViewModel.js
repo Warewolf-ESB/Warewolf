@@ -16,8 +16,6 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     //2013.06.08: Ashley Lewis for PBI 9458
     self.currentEnvironment = ko.observable(environment);
     self.inTitleEnvironment = false;
-    
-    self.IsDialoglessSave = false;
 
     self.onSaveCompleted = null;
     self.isWindowClosedOnSave = true;
@@ -274,10 +272,8 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     });
 
     self.save = function () {
-        // for some strange reason the form is seen as invalid in some cases ?!
-        // even though if we did show the dialog it would be seen as valid.
-        // ensure we have a dialog to show if this is the case
-        if (!self.IsDialoglessSave && !self.isFormValid()) {
+
+        if (!self.isFormValid()) {
             return;
         }
 

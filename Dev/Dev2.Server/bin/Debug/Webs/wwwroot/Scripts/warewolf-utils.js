@@ -1,7 +1,7 @@
 ﻿var utils = namespace('Warewolf.Utils');
 
 utils.caseInsensitiveSort = function (left, right) {
-     return left.toLowerCase() == right.toLowerCase() ? 0 : (left.toLowerCase() < right.toLowerCase() ? -1 : 1);
+    return left.toLowerCase() == right.toLowerCase() ? 0 : (left.toLowerCase() < right.toLowerCase() ? -1 : 1);
 };
 
 utils.resourceNameCaseInsensitiveSort = function (left, right) {
@@ -40,16 +40,17 @@ utils.selectAndScrollToListItem = function (itemText, $scrollBox, $scrollBoxHeig
     // Find the element and select it - this way seems to be more reliable than using $("li.selectable span:contains('" + itemText + "')");
     var listItems = [];
     if ($scrollBox.length > 0) {
-        $.each($scrollBox.get(0).children, function(index, child) {
+        $.each($scrollBox.get(0).children, function (index, child) {
             if (child.nodeName.toLowerCase() === "ol") {
                 listItems = child.children;
                 return true;
             }
         });
     }
-        
+
     $.each(listItems, function (index, listItem) {
-        if (listItem.innerText.toLowerCase().indexOf(itemTextLower) !== -1) {
+
+        if (listItem.innerText.toLowerCase().trim() == itemTextLower) {
             var $li = $(listItem);
             utils.selectListItem($li);
             $scrollBox.scrollTo($li, $scrollBoxHeight);
@@ -83,7 +84,7 @@ utils.makeClearFilterButton = function (buttonID) {
     }
 };
 
-utils.parseBaseURL = function(baseURL) {
+utils.parseBaseURL = function (baseURL) {
     pathArray = baseURL.split('/');
     host = pathArray[0] + "//" + pathArray[1] + pathArray[2];
 
@@ -100,7 +101,7 @@ utils.isValidUrl = function (uri) {
     return result;
 };
 
-utils.decodeFullStops = function(expression) {
+utils.decodeFullStops = function (expression) {
     while (expression.indexOf("%2E") > -1) {
         expression = expression.replace("%2E", ".");
     }
@@ -154,7 +155,7 @@ utils.postTimestamped = function (viewModel, timestampProp, url, jsonData, callb
     var searchStr = window.location.search;
     searchStr += (searchStr ? "&" : "?") + "t=" + timestamp;
     viewModel[timestampProp] = timestamp;
-    
+
     $.post(url + searchStr, jsonData, function (result) {
         if (callback) {
             var requestTimeStr = getParameterByName("t", this.url);
@@ -168,10 +169,10 @@ utils.postTimestamped = function (viewModel, timestampProp, url, jsonData, callb
 
 utils.findRemoveListItems = function (data, name) {
     var arr = [], i;
-    
+
     for (i = 0; i < data.length; i++) {
         if (data[i] != name) arr.push(data[i]);
     };
-    
+
     return arr;
 };
