@@ -673,7 +673,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 expression = expression.Replace("().", string.Concat("(", indexToUse, ")."));
                             }
                         }
-
                         IBinaryDataListItem item = dlEntry.FetchScalar();
                         CreateScalarDebugItems(expression, item.TheValue, dlId, results);
                     }

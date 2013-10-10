@@ -176,8 +176,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                     KeepIdentity = true,
                     UseInternalTransaction = true,
                     KeepTableLock = false,
-                    BatchSize = 10,
-                    Timeout = 120,
+                    BatchSize = "10",
+                    Timeout = "120",
                     SqlBulkInserter = mockSqlBulkInserter.Object,
                     Result = "[[result]]"
                 }
@@ -198,6 +198,52 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepNulls));
             Assert.AreEqual(120, returnedSqlBulkCopy.BulkCopyTimeout);
             Assert.AreEqual(10, returnedSqlBulkCopy.BatchSize); 
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSqlBulkInsertActivity_Execute")]
+        public void DsfSqlBulkInsertActivity_Execute_OptionsSetMixedUsingDataList_HasSqlBulkCopyWithOptionsWithValues()
+        {
+            //------------Setup for test--------------------------
+            var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
+            SqlBulkCopy returnedSqlBulkCopy = null;
+            mockSqlBulkInserter = mockSqlBulkInserter.SetupAllProperties();
+            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>())).Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedSqlBulkCopy = sqlBulkCopy); ;
+            TestStartNode = new FlowStep
+            {
+                Action = new DsfSqlBulkInsertActivity
+                {
+                    InputMappings = null, 
+                    BatchSize = "[[batchsize]]",
+                    Database =  new DbSource(),
+                    TableName = "TestTable",
+                    CheckConstraints = true,
+                    FireTriggers = false,
+                    KeepIdentity = true,
+                    UseInternalTransaction = true,
+                    KeepTableLock = false,
+                    Timeout = "[[timeout]]",
+                    SqlBulkInserter = mockSqlBulkInserter.Object,
+                    Result = "[[result]]"
+                }
+            };
+
+            CurrentDl = "<root><recset1><field1/></recset1><batchsize/><timeout/></root>";
+            TestData = "<root><recset1><field1/></recset1><batchsize>100</batchsize><timeout>240</timeout></root>";
+            //------------Execute Test---------------------------
+            ExecuteProcess();
+            //------------Assert Results-------------------------
+            mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
+            Assert.IsNotNull(mockSqlBulkInserter.Object.CurrentOptions);  
+            Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.CheckConstraints));
+            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.FireTriggers));
+            Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepIdentity));
+            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.TableLock));
+            Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.UseInternalTransaction));
+            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepNulls));
+            Assert.AreEqual(240, returnedSqlBulkCopy.BulkCopyTimeout);
+            Assert.AreEqual(100, returnedSqlBulkCopy.BatchSize); 
         }
 
         [TestMethod]
@@ -701,12 +747,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
             mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()));
             var dataColumnMappings = DataColumnMappingsMixedMappings();
-            const string dataListWithData = "<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1>Jane</field1><field2>3</field2><field3>G</field3><field4>26.4</field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1><rec><f1>JJU</f1><f2>89</f2></rec><rec><f1>KKK</f1><f2>67</f2></rec><val>Hello</val></root>";
-            const string dataListShape = "<root><recset1><field1/><field2/><field3/><field4/></recset1><rec><f1/><f2/></rec><val/><result/></root>";
+            const string dataListWithData = "<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1>Jane</field1><field2>3</field2><field3>G</field3><field4>26.4</field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1><rec><f1>JJU</f1><f2>89</f2></rec><rec><f1>KKK</f1><f2>67</f2></rec><val>Hello</val><batchsize>100</batchsize><timeout>240</timeout></root>";
+            const string dataListShape = "<root><recset1><field1/><field2/><field3/><field4/></recset1><rec><f1/><f2/></rec><val/><result/><batchsize/><timeout/></root>";
             SetupArguments(dataListWithData, dataListShape, mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
             var act = new DsfSqlBulkInsertActivity
             {
                 SqlBulkInserter = mockSqlBulkInserter.Object,
+                BatchSize = "[[batchsize]]",
+                Timeout = "[[timeout]]",
                 Database = new DbSource(),
                 TableName = "TestTable",
                 InputMappings = dataColumnMappings,
@@ -813,10 +861,30 @@ namespace Dev2.Tests.Activities.ActivityTests
            Assert.AreEqual("KKK", debugInputs[8].Value);
            Assert.AreEqual(DebugItemResultType.Value, debugInputs[8].Type);
 
-           Assert.AreEqual(1, outRes.Count);
+           Assert.AreEqual(3, outRes.Count);
            var debugOutputs = outRes[0].FetchResultsList();
 
            Assert.AreEqual("1", debugOutputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugOutputs[0].Type);
+           Assert.AreEqual("[[batchsize]]", debugOutputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugOutputs[1].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugOutputs[2].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugOutputs[2].Type);
+           Assert.AreEqual("100", debugOutputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugOutputs[3].Type);
+
+           debugOutputs = outRes[1].FetchResultsList();
+           Assert.AreEqual("2", debugOutputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugOutputs[0].Type);
+           Assert.AreEqual("[[timeout]]", debugOutputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugOutputs[1].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugOutputs[2].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugOutputs[2].Type);
+           Assert.AreEqual("240", debugOutputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugOutputs[3].Type);
+
+           debugOutputs = outRes[2].FetchResultsList();
+           Assert.AreEqual("3", debugOutputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugOutputs[0].Type);
            Assert.AreEqual("[[result]]", debugOutputs[1].Value);
            Assert.AreEqual(DebugItemResultType.Variable, debugOutputs[1].Type);
