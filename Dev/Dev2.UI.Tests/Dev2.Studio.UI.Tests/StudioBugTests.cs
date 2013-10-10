@@ -328,9 +328,10 @@ namespace Dev2.Studio.UI.Tests
 
             //Click step
             DocManagerUIMap.ClickOpenTabPage("Output");
+            Playback.Wait(100);
             var step = OutputUIMap.GetOutputWindow();
+            Mouse.Click(step[2]);
             Mouse.Click(step[1]);
-            Mouse.Click(step[0]);
 
             //Assert the design surface activity is highlighted
             var workflow = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);

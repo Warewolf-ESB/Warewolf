@@ -25,6 +25,7 @@ namespace Dev2.Studio.UI.Tests
     ///     These are UI tests based on using a remote server
     /// </summary>
     [CodedUITest]
+    [Ignore]//TFSBLD down
     public class RemoteServerUiTests
     {
         #region Fields
@@ -89,7 +90,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_ConnectToRemoteServerFromExplorer_RemoteServerConnected()
         {
             DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
@@ -100,7 +101,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_CreateRemoteWorkFlow_WorkflowIsCreated()
         {
             DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
@@ -112,7 +113,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteWorkFlow_WorkflowIsEdited()
         {
             const string TextToSearchWith = "Find Records";
@@ -126,7 +127,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_ViewRemoteWorkFlowInBrowser_WorkflowIsExecuted()
         {
             const string TextToSearchWith = "Find Records";
@@ -150,7 +151,7 @@ namespace Dev2.Studio.UI.Tests
         
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_DragAndDropWorkflowFromRemoteServerOnALocalHostCreatedWorkflow_WorkFlowIsDropped()
         {
             const string TextToSearchWith = "Internal Recursive Copy";
@@ -177,7 +178,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")] [Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")] 
         public void RemoteServerUITests_DragAndDropWorkflowFromALocalServerOnARemoteServerCreatedWorkflow_WorkFlowIsDropped()
         {
             const string TextToSearchWith = "Utility - Assign";
@@ -204,7 +205,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_OpenWorkflowOnRemoteServerAndOpenWorkflowWithSameNameOnLocalHost_WorkflowIsOpened()
         {
             const string TextToSearchWith = "Find Records";
@@ -220,7 +221,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_DebugARemoteWorkflowWhenLocalWorkflowWithSameNameIsOpen_WorkflowIsExecuted()
         {
             const string TextToSearchWith = "Find Records";
@@ -295,7 +296,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteDbService_DbServiceIsEdited()
         {
             const string TextToSearchWith = "DBService";
@@ -312,7 +313,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteEmailSource_EmailSourceIsEdited()
         {
             const string TextToSearchWith = "EmailSource";
@@ -329,7 +330,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemotePluginSource_PluginSourceIsEdited()
         {
             const string TextToSearchWith = "PluginSource";
@@ -364,7 +365,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_AddExecuteRenameAndDeleteALocalWorlFlow_ProcessCompletesSuccessfully()
         {
             ProcessAWorkflow(LocalHostServerName, "WORKFLOWS", "Unassigned");

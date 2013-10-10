@@ -118,7 +118,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         //PBI_8853
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
         {
             var preCount = TabManagerUIMap.GetTabCount();
@@ -128,7 +128,7 @@ namespace Dev2.CodedUI.Tests
             var postCount = TabManagerUIMap.GetTabCount();
             Assert.IsTrue(postCount == preCount + 1, "Tab quantity has not been increased");
             Assert.IsTrue(activeTabName.Contains("Unsaved"), "Active workflow is not an unsaved workflow");
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
+            TabManagerUIMap.CloseAllTabs();
         }
 
         [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
@@ -145,7 +145,7 @@ namespace Dev2.CodedUI.Tests
 
         #endregion New PBI Tests
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
         {
             // Create the workflow
@@ -185,30 +185,28 @@ namespace Dev2.CodedUI.Tests
         }
 
         ////PBI 9461
-        [TestMethod]
-        public void ChangingResourceExpectedPopUpWarningWithViewDependancies()
+        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        public void ChangingResourceExpectedPopUpWarningWithShowAffected()
         {
             // Open the workflow
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("NewForeachUpgrade");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", "NewForeachUpgradeDifferentExecutionTests");
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
             //Edit the inputs and outputs
             DocManagerUIMap.ClickOpenTabPage("Variables");
             VariablesUIMap.CheckScalarInputAndOuput(0);
             VariablesUIMap.CheckScalarInput(0);
 
             //Save the workflow
-            SendKeys.SendWait("^S");
+            RibbonUIMap.ClickRibbonMenuItem("Save");
         
-            //Click the view dependancies button
+            //Click the show affected button
             ResourceChangedPopUpUIMap.ClickViewDependancies();
 
-            Assert.AreEqual(TabManagerUIMap.GetActiveTabName(),"NewForeachUpgradeDifferentExecutionTests*Dependant...");
+            Assert.AreEqual(TabManagerUIMap.GetActiveTabName(),"ForEachUpgradeTest");
 
-            DoCleanup("NewForeachUpgradeDifferentExecutionTests",true);                    
+            TabManagerUIMap.CloseAllTabs();    
         }
 
         #region Auto Expand Of Mapping On Drop
@@ -414,14 +412,14 @@ namespace Dev2.CodedUI.Tests
 
         #endregion
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void DragAWorkflowIntoAndOutOfAForEach_Expected_NoErrors()
         {
             // Create the workflow
             RibbonUIMap.CreateNewWorkflow();
 
             // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -437,6 +435,8 @@ namespace Dev2.CodedUI.Tests
 
             // Get a sample workflow, and drag it onto the "Drop Activity Here" part of the ForEach box
             DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
             UITestControl testFlow = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
             ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25));
 
@@ -455,7 +455,7 @@ namespace Dev2.CodedUI.Tests
             UITestControl forEachControl = workflowDesignerUIMap.FindControlByAutomationId(theTab, "ForEach");
 
             // Move the mouse to the contained CalculateTaxReturns box
-            Mouse.Move(new Point(forEachControl.BoundingRectangle.X + 25, forEachControl.BoundingRectangle.Y + 25));
+            Mouse.Move(new Point(forEachControl.BoundingRectangle.X + 75, forEachControl.BoundingRectangle.Y + 75));
 
             // Click it
             Mouse.Click();
@@ -468,9 +468,9 @@ namespace Dev2.CodedUI.Tests
             UITestControl calcTaxReturnsControl = workflowDesignerUIMap.FindControlByAutomationId(theTab, "CalculateTaxReturns");
 
             // Its not on the design surface, must be in foreach
-            Assert.IsNull(calcTaxReturnsControl, "Could not drop it ;(");
+            Assert.IsNotNull(calcTaxReturnsControl, "Could not drop it ;(");
 
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
+            TabManagerUIMap.CloseAllTabs();
 
         }
 
@@ -548,14 +548,14 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void ClickShowMapping_Expected_InputOutputAdornersAreDisplayed()
         {
             // Create the workflow
             RibbonUIMap.CreateNewWorkflow();
 
             // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -564,6 +564,8 @@ namespace Dev2.CodedUI.Tests
             DocManagerUIMap.ClickOpenTabPage("Explorer");
 
             // Get a sample workflow
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("TestFlow");
             UITestControl testFlow = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "TEST", "TestFlow");
 
             // Drag it on
@@ -583,13 +585,13 @@ namespace Dev2.CodedUI.Tests
         {
             RibbonUIMap.CreateNewWorkflow();
 
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
 
             // Get a point underneath the start button for the workflow
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 100);
 
-            // Open the Toolbox
+            // Open the Explorer
             DocManagerUIMap.ClickOpenTabPage("Explorer");
 
             // Get a sample workflow

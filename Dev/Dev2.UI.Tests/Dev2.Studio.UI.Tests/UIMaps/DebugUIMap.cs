@@ -1,4 +1,6 @@
-﻿namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
+﻿using System.Windows;
+
+namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
 {
     using System;
     using System.Collections.Generic;
@@ -94,5 +96,27 @@
         }
 
         UIBusinessDesignStudioWindow _uiBusinessDesignStudioWindow;
+
+        /// <summary>
+        /// Returns true if found in the timeout period.
+        /// </summary>
+        public static bool WaitForDebugWindow(int timeOut)
+        {
+            var uiBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
+            Type type = null;
+            var timeNow = 0;
+            while(type != typeof(WpfWindow))
+            {
+                timeNow = timeNow + 100;
+                Playback.Wait(100);
+                var tryGetDialog = uiBusinessDesignStudioWindow.GetChildren()[0];
+                type = tryGetDialog.GetType();
+                if(timeNow > timeOut)
+                {
+                    break;
+                }
+            }
+            return type == typeof(WpfWindow);
+        }
     }
 }

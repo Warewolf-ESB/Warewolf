@@ -56,8 +56,6 @@ namespace Dev2.Studio.UI.Tests
             //close any open tabs
             TabManagerUiMap.CloseAllTabs();
             DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
-            //reset active server
-            ExplorerUiMap.ClickServerInServerDDL(LocalHostServerName);
             ExplorerUiMap.ClearExplorerSearchText();
         }
         
@@ -77,7 +75,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.ClearExplorerSearchText();
             ExplorerUiMap.EnterExplorerSearchText("Bug_10011");
             ExplorerUiMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug_10011");
-            var theTab = TabManagerUiMap.FindTabByName(TabManagerUiMap.GetActiveTabName());
+            var theTab = TabManagerUiMap.GetActiveTab();
             // Edit the DbService
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUiMap.ClearExplorerSearchText();
@@ -85,7 +83,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
             // Get wizard window
             var wizardWindow = DatabaseServiceWizardUiMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            if(DatabaseServiceWizardUiMap.IsControlADbServiceWizard(wizardWindow))
+            if(WizardsUIMap.WaitForWizard(5000))
             {
                 // Tab to mappings
                 DatabaseServiceWizardUiMap.TabToOutputMappings(wizardWindow);
@@ -95,10 +93,7 @@ namespace Dev2.Studio.UI.Tests
                 SendKeys.SendWait("{TAB}");
                 SendKeys.SendWait("{DEL}");
                 // Save
-                DatabaseServiceWizardUiMap.KeyboardOK();
-                SendKeys.SendWait("{TAB}utility");
-                DatabaseServiceWizardUiMap.SaveDialogClickFirstFolder();
-                SendKeys.SendWait("{TAB}{ENTER}");
+                DatabaseServiceWizardUiMap.ClickOK();
                 ResourceChangedPopUpUiMap.ClickCancel();
 
                 ExplorerUiMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
@@ -154,26 +149,24 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.ClearExplorerSearchText();
             ExplorerUiMap.EnterExplorerSearchText("PBI_9957_UITEST");
             ExplorerUiMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "PBI_9957_UITEST");
-            var theTab = TabManagerUiMap.FindTabByName(TabManagerUiMap.GetActiveTabName());
+            var theTab = TabManagerUiMap.GetActiveTab();
             // Edit the DbService
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUiMap.ClearExplorerSearchText();
             ExplorerUiMap.EnterExplorerSearchText("Bug_10011_DbService");
             ExplorerUiMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
             // Get wizard window
-            var wizardWindow = DatabaseServiceWizardUiMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            if(DatabaseServiceWizardUiMap.IsControlADbServiceWizard(wizardWindow))
+            if(WizardsUIMap.WaitForWizard(5000))
             {
+                var wizardWindow = DatabaseServiceWizardUiMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+
                 // Tab to mappings
                 DatabaseServiceWizardUiMap.TabToInputMappings(wizardWindow);
                 // Set input mapping to required
-                Keyboard.SendKeys(wizardWindow, "{TAB}");
-                Keyboard.SendKeys(wizardWindow, "{SPACE}");
+                SendKeys.SendWait("{TAB}");
+                SendKeys.SendWait(" ");
                 // Save
-                DatabaseServiceWizardUiMap.KeyboardOK();
-                Keyboard.SendKeys("{TAB}utility");
-                DatabaseServiceWizardUiMap.SaveDialogClickFirstFolder();
-                Keyboard.SendKeys(wizardWindow, "{TAB}{ENTER}");
+                DatabaseServiceWizardUiMap.ClickOK();
                 ResourceChangedPopUpUiMap.ClickCancel();
 
                 // Fix Errors
@@ -195,5 +188,20 @@ namespace Dev2.Studio.UI.Tests
             }
             TabManagerUiMap.CloseAllTabs();
         }
+
+        public UIMap UIMap
+        {
+            get
+            {
+                if((this.map == null))
+                {
+                    this.map = new UIMap();
+                }
+
+                return this.map;
+            }
+        }
+
+        private UIMap map;
     }
 }

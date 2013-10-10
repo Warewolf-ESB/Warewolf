@@ -31,6 +31,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                     break;
                 }
             }
+            //wait for render
             Playback.Wait(2000);
             return type == typeof(WpfImage);
         }

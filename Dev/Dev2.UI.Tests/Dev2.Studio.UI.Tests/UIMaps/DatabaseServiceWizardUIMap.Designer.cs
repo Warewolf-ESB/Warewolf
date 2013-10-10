@@ -9,6 +9,7 @@
 // ------------------------------------------------------------------------------
 
 using System.Threading;
+using System.Windows.Forms;
 using Dev2.CodedUI.Tests;
 using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 
@@ -77,7 +78,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         /// </summary>
         public void KeyboardOK()
         {
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
         }
 
         /// <summary>
@@ -141,20 +142,20 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 
         public void TabToMappingsTab(UITestControl control)
         {
-            Keyboard.SendKeys(control, "{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
-            Keyboard.SendKeys(control, "{RIGHT}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
+            SendKeys.SendWait("{RIGHT}");
         }
 
         public void TabToOutputMappings(UITestControl control)
         {
             TabToMappingsTab(control);
-            Keyboard.SendKeys(control, "{TAB}{TAB}{TAB}{TAB}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");
         }
 
         public void TabToInputMappings(UITestControl control)
         {
             TabToMappingsTab(control);
-            Keyboard.SendKeys(control, "{TAB}");
+            SendKeys.SendWait("{TAB}");
         }
 
         public bool IsControlADbServiceWizard(UITestControl wizardWindow)
@@ -170,6 +171,20 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 
             // Click image
             Mouse.Click(uIItemImage, new Point(467, 149));
+        }
+
+        /// <summary>
+        /// DbServiceClickOK
+        /// </summary>
+        public void ClickOK()
+        {
+            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+
+            // Click image
+            Mouse.Click(uIItemImage, new Point(774, 520));
+
+            // Click image
+            Mouse.Click(uIItemImage, new Point(608, 471));
         }
         
         #region Properties
