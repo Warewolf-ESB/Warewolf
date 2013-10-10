@@ -240,7 +240,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
             for (var i = 0; i < pairs.length; i++) {
 				
 				var tmp = pairs[i];
-				
+
 				var subPairs = tmp.split("=");
 				
 				if (subPairs.length == 2) {
@@ -280,20 +280,10 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
             // when paste do this ;)
             if (self.hasPasteHappened) {
 		
-				self.ProperlyHandleVariableInput(newValue);
 				self.hasPasteHappened = false;
-                
-                // process any /[[var]]/abc style fragments ;)
 
-                var end = newValue.indexOf("?");
-                
-                if (end < 0) {
-                    end = newValue.length;
-                }
-                
                 // Scan for [[]] regions prior to the variable request string ;)
-                var prefix = newValue.substring(0, end);
-                var paramVars = prefix.match(/\[\[\w*\]\]/g); // match our variables!
+				var paramVars = newValue.match(/\[\[\w*\]\]/g); // match our variables!
 
                 for (var i = 0; i < paramVars.length; i++) {
                     var value = paramVars[i].replace("[[","").replace("]]","");
@@ -319,20 +309,20 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
                 if (offSet < newValue.length) {
 					afterParam = newValue.substring(offSet);
 				}
-				
+                
 				// handle the case of ]]= and &= correctly 
 				if (param.name.indexOf("[[") < 0 && param.name.indexOf("=") < 0 && param.name.length > 0 && afterParam.indexOf("[") != 0) {
-					self.pushRequestVariable(param.name, varSrc, param.value);
+				    self.pushRequestVariable(param.name, varSrc, param.value);
 
-					var prefix = newValue.slice(0, param.valueStart);
-					var postfix = newValue.slice(param.valueEnd, newValue.length);
-					var paramValue = "[[" + param.name + "]]";
-					newValue = prefix.concat(paramValue).concat(postfix);
-					
+				    var prefix = newValue.slice(0, param.valueStart);
+				    var postfix = newValue.slice(param.valueEnd, newValue.length);
+				    var paramValue = "[[" + param.name + "]]";
+				    newValue = prefix.concat(paramValue).concat(postfix);					
 
-					self.updateVariablesText(varSrc, newValue, start + paramValue.length);
+
+				    self.updateVariablesText(varSrc, newValue, start + paramValue.length);
 				}
-
+                
             } else if (self.isCloseBracketPressed) {
                 self.extractAndPushRequestVariable(newValue, start, varSrc);
             } else {

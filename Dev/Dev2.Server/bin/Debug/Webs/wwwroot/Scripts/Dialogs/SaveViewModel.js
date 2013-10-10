@@ -16,7 +16,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     //2013.06.08: Ashley Lewis for PBI 9458
     self.currentEnvironment = ko.observable(environment);
     self.inTitleEnvironment = false;
-
+    
     self.IsDialogLess = false;
     
     self.onSaveCompleted = null;
@@ -275,6 +275,8 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
 
     self.save = function () {
 
+        // there is an issue when not showing the save dialog on edit where the darn thing never closes
+        // the IsDialogLess property is here to avoid annoying behavior
         if (!self.IsDialogLess && !self.isFormValid()) {
             return;
         }
