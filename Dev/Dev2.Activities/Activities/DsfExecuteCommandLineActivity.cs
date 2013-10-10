@@ -199,10 +199,7 @@ namespace Dev2.Activities
                 
                 StringBuilder reader = outputReader;
                 
-                _process.OutputDataReceived += (sender, args) =>
-                {
-                    reader.AppendLine(args.Data);
-                };
+                _process.OutputDataReceived += (sender, args) => reader.AppendLine(args.Data);
                 
                 errorReader = _process.StandardError;
 
