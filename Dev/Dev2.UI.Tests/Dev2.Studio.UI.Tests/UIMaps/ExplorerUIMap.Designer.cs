@@ -220,51 +220,61 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             serviceTypeListItem.SearchProperties.Add("AutomationId", "UI_" + serviceType + "_AutoID");
             serviceTypeListItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
 
-            serviceTypeListItem.Find();
-
-
-            if (!serviceTypeListItem.TryGetClickablePoint(out p) && !overrideDblClickBehavior)
-            {                
-                // This is causing the window to shrink
-                Mouse.DoubleClick(new Point(serviceTypeListItem.BoundingRectangle.X + 50, serviceTypeListItem.BoundingRectangle.Y + 5));
-            }
-            else
+            if (serviceTypeListItem.TryFind())
             {
-                Mouse.Click(new Point(serviceTypeListItem.BoundingRectangle.X + 50, serviceTypeListItem.BoundingRectangle.Y + 5));
+                if (!serviceTypeListItem.TryGetClickablePoint(out p) && !overrideDblClickBehavior)
+                {
+                    // This is causing the window to shrink
+                    Mouse.DoubleClick(new Point(serviceTypeListItem.BoundingRectangle.X + 50,
+                                                serviceTypeListItem.BoundingRectangle.Y + 5));
+                }
+                else
+                {
+                    Mouse.Click(new Point(serviceTypeListItem.BoundingRectangle.X + 50,
+                                          serviceTypeListItem.BoundingRectangle.Y + 5));
+                }
+
+                Thread.Sleep(300);
+
+                // Can we see the folder? (AKA: Is the type list maximised?)
+                UITestControl folderNameListItem = new UITestControl(serviceTypeListItem);
+                folderNameListItem.SearchProperties.Add("AutomationId",
+                                                        "UI_" +
+                                                        ((folderName != "Unassigned")
+                                                             ? folderName.ToUpper()
+                                                             : folderName) + "_AutoID");
+                folderNameListItem.Find();
+                if (!folderNameListItem.TryGetClickablePoint(out p) && !overrideDblClickBehavior)
+                {
+                    Mouse.DoubleClick(new Point(folderNameListItem.BoundingRectangle.X + 50,
+                                                folderNameListItem.BoundingRectangle.Y + 5));
+                }
+                else
+                {
+                    Mouse.Click(new Point(folderNameListItem.BoundingRectangle.X + 50,
+                                          folderNameListItem.BoundingRectangle.Y + 5));
+                }
+
+                Thread.Sleep(300);
+
+                // Can we see the file? (AKA: Is the folder maximised?)
+                UITestControl projectNameListItem = new UITestControl(folderNameListItem);
+                projectNameListItem.SearchProperties.Add("AutomationId", "UI_" + projectName + "_AutoID");
+                projectNameListItem.Find();
+                if (!projectNameListItem.TryGetClickablePoint(out p) && !overrideDblClickBehavior)
+                {
+                    Mouse.DoubleClick(new Point(projectNameListItem.BoundingRectangle.X + 50,
+                                                projectNameListItem.BoundingRectangle.Y + 5));
+                }
+                else
+                {
+                    Mouse.Click(new Point(projectNameListItem.BoundingRectangle.X + 50,
+                                          projectNameListItem.BoundingRectangle.Y + 5));
+                }
+
+                return projectNameListItem;
             }
-
-            Thread.Sleep(300);
-
-            // Can we see the folder? (AKA: Is the type list maximised?)
-            UITestControl folderNameListItem = new UITestControl(serviceTypeListItem);
-            folderNameListItem.SearchProperties.Add("AutomationId", "UI_" + ((folderName != "Unassigned") ? folderName.ToUpper() : folderName) + "_AutoID");
-            folderNameListItem.Find();
-            if (!folderNameListItem.TryGetClickablePoint(out p) && !overrideDblClickBehavior)
-            {
-                Mouse.DoubleClick(new Point(folderNameListItem.BoundingRectangle.X + 50, folderNameListItem.BoundingRectangle.Y + 5));
-            }
-            else
-            {
-                Mouse.Click(new Point(folderNameListItem.BoundingRectangle.X + 50, folderNameListItem.BoundingRectangle.Y + 5));
-            }
-
-            Thread.Sleep(300);
-
-            // Can we see the file? (AKA: Is the folder maximised?)
-            UITestControl projectNameListItem = new UITestControl(folderNameListItem);
-            projectNameListItem.SearchProperties.Add("AutomationId", "UI_" + projectName + "_AutoID");
-            projectNameListItem.Find();
-            if (!projectNameListItem.TryGetClickablePoint(out p) && !overrideDblClickBehavior)
-            {
-                Mouse.DoubleClick(new Point(projectNameListItem.BoundingRectangle.X + 50, projectNameListItem.BoundingRectangle.Y + 5));
-            }
-            else
-            {
-                Mouse.Click(new Point(projectNameListItem.BoundingRectangle.X + 50, projectNameListItem.BoundingRectangle.Y + 5));
-            }
-
-           return projectNameListItem;                       
-
+            return null;
         }
 
         private UITestControl GetCategory(string serverName, string serviceType, string categoryName)

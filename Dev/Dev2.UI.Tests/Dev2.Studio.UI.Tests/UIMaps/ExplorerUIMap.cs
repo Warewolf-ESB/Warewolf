@@ -182,7 +182,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public bool ServiceExists(string serverName, string serviceType, string folderName, string projectName)
         {
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
-            return theControl.Exists;
+            return theControl != null && theControl.Exists;
         }
 
         /// <summary>
@@ -446,6 +446,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public static void ClosePane(UITestControl theTab)
         {
+            //step into tab to find the far right coordinate
             UITestControl findContentPane = null;
             foreach (var child in theTab.GetChildren())
             {
@@ -457,6 +458,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             }
             var tabFarRightCoord = findContentPane.BoundingRectangle.Right;
             var tabYCoord = findContentPane.Top;
+            //click relative to the right side of the tab (should be well clear of the explorer tab)
             Mouse.Click(new Point(tabFarRightCoord - 100, tabYCoord + 500));
             Playback.Wait(2500);
         }

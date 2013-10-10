@@ -85,6 +85,11 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                 //causing the explorer pane to pop out
                 //blocking the tab close button for the next tab close
                 timeout++;
+                if(timeout>3)
+                {
+                    //try moving mouse over the pane (only necessary when an unsaved workflow has just been saved)
+                    Mouse.Move(new Point(UIBusinessDesignStudioWindow.Left + 200, UIBusinessDesignStudioWindow.Top + 200));
+                }
             }
             if (timeout < totalTimeOut)
             {

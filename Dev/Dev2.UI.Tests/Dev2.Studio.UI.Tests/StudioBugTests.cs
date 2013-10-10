@@ -415,11 +415,27 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RenameResource_WithDashes")]
         public void RenameResource_WithDashes_ResourceRenamed()
         {
+            TabManagerUIMap.CloseAllTabs();
+            const string newTestResourceWithDashes = "New-Test-Resource-With-Dashes";
+            const string oldResourceName = "OldResourceName";
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
+            if(ExplorerUIMap.ServiceExists("Localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes))
+            {
+                ExplorerUIMap.RightClickDeleteProject("Localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes);
+            }
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText(oldResourceName);
+            if(ExplorerUIMap.ServiceExists("Localhost", "WORKFLOWS", "Unassigned", oldResourceName))
+            {
+                ExplorerUIMap.RightClickDeleteProject("Localhost", "WORKFLOWS", "Unassigned", oldResourceName);
+            }
             RibbonUIMap.CreateNewWorkflow();
             SendKeys.SendWait("^s");
-            if (WizardsUIMap.WaitForWizard(5000))
+            if(WizardsUIMap.WaitForWizard(5000))
             {
-                SaveDialogUIMap.ClickAndTypeInNameTextbox("OldResourceName");
+                SaveDialogUIMap.ClickAndTypeInNameTextbox(oldResourceName);
             }
             else
             {
@@ -428,14 +444,14 @@ namespace Dev2.Studio.UI.Tests
             TabManagerUIMap.CloseAllTabs();
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("OldResourceName");
-            ExplorerUIMap.RightClickRenameProject("Localhost", "WORKFLOWS", "Unassigned", "OldResourceName");
+            ExplorerUIMap.EnterExplorerSearchText(oldResourceName);
+            ExplorerUIMap.RightClickRenameProject("Localhost", "WORKFLOWS", "Unassigned", oldResourceName);
             SendKeys.SendWait("New-Test-Resource-With-Dashes{ENTER}");
             DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClickRefreshButton();
+            ExplorerUIMap.DoRefresh();
             ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("New-Test-Resource-With-Dashes");
-            ExplorerUIMap.DoubleClickOpenProject("Localhost", "WORKFLOWS", "Unassigned", "New-Test-Resource-With-Dashes");
+            ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
+            ExplorerUIMap.DoubleClickOpenProject("Localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes);
             SendKeys.SendWait("^s{F5}");
             Playback.Wait(1000);
             SendKeys.SendWait("{F5}");

@@ -1,4 +1,5 @@
-﻿using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
+﻿using System.Windows.Input;
+using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
@@ -67,45 +68,41 @@ namespace Dev2.CodedUI.Tests
         [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void QuickVariableInputFromListTest()
        {
-            Clipboard.Clear();
-            // Create the workflow
-            RibbonUIMap.CreateNewWorkflow();
+           Clipboard.Clear();
+           // Create the workflow
+           RibbonUIMap.CreateNewWorkflow();
 
-            // Get some variables
-            UITestControl theTab = TabManagerUIMap.GetActiveTab();
-            Point startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
-            Point point = new Point(startPoint.X, startPoint.Y + 200);
+           // Get some variables
+           UITestControl theTab = TabManagerUIMap.GetActiveTab();
+           Point startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+           Point point = new Point(startPoint.X, startPoint.Y + 200);
 
-            // Drag the tool onto the workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, point);
+           // Drag the tool onto the workflow
+           DocManagerUIMap.ClickOpenTabPage("Toolbox");
+           UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
+           ToolboxUIMap.DragControlToWorkflowDesigner(theControl, point);
 
-            //click done
-            WorkflowDesignerUIMap.Adorner_ClickDoneButton(theTab, "MultiAssignDesigner");
+           //Get Mappings button
+           UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign", "Open Quick Variable Input");
 
-            //Get Mappings button
-            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign", "Open Quick Variable Input");
+           // Click it
+           Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
+           Mouse.Click();
 
-            // Click it
-            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
-            Mouse.Click();
+           // Enter some invalid data
+           WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",", "some(<).", "_suf", "varOne,varTwo,varThree");
 
-            // Enter some invalid data
-            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",", "some(<).", "_suf", "varOne,varTwo,varThree");
+           // Click done
+           WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
 
-            // Click done
-            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
-
-            var errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab ,"Prefix contains invalid characters");
-            Assert.IsNotNull(errorControl);
+           var errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Prefix contains invalid characters");
+           Assert.IsNotNull(errorControl, "No error displayed for incorrect QVI input");
 
             // Assert clicking an error focusses the correct textbox
             Mouse.Click(errorControl.GetChildren()[0]);
-            Keyboard.SendKeys("^A^X");
 
             // enter some correct data
-            SendKeys.SendWait("pre_");
+            SendKeys.SendWait("^a^xpre_");
 
             WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
 

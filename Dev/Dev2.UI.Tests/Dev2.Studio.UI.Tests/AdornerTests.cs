@@ -266,5 +266,21 @@ namespace Dev2.Studio.UI.Tests
             //Assert workflow opened after a time out.
             Assert.IsNotNull(waitForTabToOpen);
         }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("HelpButtonAdorner_CollapseHelp")]
+        public void WorkflowdesignSurface_CollapseHelp()
+        {
+            //New workflow with a multiassign on it
+            RibbonUiMap.CreateNewWorkflow();
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            var theTab = TabManagerUiMap.GetActiveTab();
+            var pointUnderStartNode = WorkflowDesignerUiMap.GetPointUnderStartNode(theTab);
+            ToolboxUiMap.DragControlToWorkflowDesigner("Assign", pointUnderStartNode);
+            //click expand help
+            Mouse.Click(WorkflowDesignerUiMap.GetOpenHelpButton(theTab, "Assign"));
+            Assert.IsTrue(WorkflowDesignerUiMap.GetHelpPane(theTab, "Only variables go in here").Exists);
+        }
     }
 }

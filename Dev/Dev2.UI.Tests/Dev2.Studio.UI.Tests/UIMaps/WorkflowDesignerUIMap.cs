@@ -160,7 +160,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             foreach(UITestControl theControl in splurtChildChildren)
             {
                 string automationId = theControl.GetProperty("AutomationId").ToString();
-                if(automationId.Contains(controlAutomationId))
+                if (automationId.Contains(controlAutomationId))
+                {
+                    result.Add(theControl);
+                }
+                else if (theControl.FriendlyName.Contains(controlAutomationId))
                 {
                     result.Add(theControl);
                 }
@@ -1261,6 +1265,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             var middle = new Point(UIBusinessDesignStudioWindow.Left + UIBusinessDesignStudioWindow.Width / 2, UIBusinessDesignStudioWindow.Top + UIBusinessDesignStudioWindow.Height / 4);
             Mouse.Click(middle);
             Keyboard.SendKeys("^w");
+        }
+
+        public UITestControl GetHelpPane(UITestControl theTab, string controlAutomationId, int index = 0)
+        {
+            return GetAllControlsOnDesignSurface(theTab, controlAutomationId)[index];
         }
     }
 }
