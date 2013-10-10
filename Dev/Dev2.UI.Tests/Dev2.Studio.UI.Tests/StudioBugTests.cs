@@ -27,7 +27,6 @@ using Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
 namespace Dev2.Studio.UI.Tests
@@ -295,139 +294,6 @@ namespace Dev2.Studio.UI.Tests
             }
         }
 
-        [TestMethod]
-        [TestCategory("UITest")]
-        [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, the mappings on the service are changed and hitting the fix errors adorner should change the activity instance's mappings")]
-        [Owner("Ashley")]
-        // ReSharper disable InconsistentNaming
-        public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_DbServiceMappingsFixed()
-        // ReSharper restore InconsistentNaming
-        {
-            Clipboard.Clear();
-            // Open the Workflow
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("Bug_10011");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug_10011");
-            var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-            // Edit the DbService
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("Bug_10011_DbService");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
-            // Get wizard window
-            var wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            if(DatabaseServiceWizardUIMap.IsControlADbServiceWizard(wizardWindow))
-            {
-                // Tab to mappings
-                DatabaseServiceWizardUIMap.TabToOutputMappings(wizardWindow);
-                // Remove column 1+2's mapping
-                SendKeys.SendWait("{TAB}");
-                SendKeys.SendWait("{DEL}");
-                SendKeys.SendWait("{TAB}");
-                SendKeys.SendWait("{DEL}");
-                // Save
-                DatabaseServiceWizardUIMap.KeyboardOK();
-                SendKeys.SendWait("{TAB}utility");
-                DatabaseServiceWizardUIMap.SaveDialogClickFirstFolder();
-                SendKeys.SendWait("{TAB}{ENTER}");
-                ResourceChangedPopUpUIMap.ClickCancel();
-
-                ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
-                // Get wizard window
-                wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-                if(DatabaseServiceWizardUIMap.IsControlADbServiceWizard(wizardWindow))
-                {
-                    // Tab to mappings
-                    DatabaseServiceWizardUIMap.TabToOutputMappings(wizardWindow);
-                    // Replace column 1's mapping
-                    SendKeys.SendWait("{TAB}");
-                    SendKeys.SendWait("Column1");
-                    // Save
-                    DatabaseServiceWizardUIMap.KeyboardOK();
-                    SendKeys.SendWait("{TAB}utility");
-                    DatabaseServiceWizardUIMap.SaveDialogClickFirstFolder();
-                    SendKeys.SendWait("{TAB}{ENTER}");
-                    ResourceChangedPopUpUIMap.ClickCancel();
-                }
-                else
-                {
-                    Assert.Fail("DbService Wizard Failed to Load");
-                }
-
-                // Fix Errors
-                if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService(DsfActivityDesigner)"))
-                {
-                    // Assert mapping does not exist
-                    Assert.IsFalse(WorkflowDesignerUIMap.DoesActivityDataMappingContainText(WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Bug_10011_DbService(DsfActivityDesigner)"), "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
-                }
-                else
-                {
-                    Assert.Fail("'Fix Errors' button not visible");
-                }
-            }
-            else
-            {
-                Assert.Fail("DbService Wizard Failed to Load");
-            }
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
-        }
-
-        [TestMethod]
-        [TestCategory("UITest")]
-        [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, mappings on the service are set to required and hitting the fix errors adorner should prompt the user to add required mappings to the activity instance's mappings")]
-        [Owner("Ashley")]
-        // ReSharper disable InconsistentNaming
-        public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_UserIsPromptedToAddRequiredDbServiceMappings()
-        // ReSharper restore InconsistentNaming
-        {
-            // Open the Workflow
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("PBI_9957_UITEST");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "PBI_9957_UITEST");
-            var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-            // Edit the DbService
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("Bug_10011_DbService");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
-            // Get wizard window
-            var wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            if(DatabaseServiceWizardUIMap.IsControlADbServiceWizard(wizardWindow))
-            {
-                // Tab to mappings
-                DatabaseServiceWizardUIMap.TabToInputMappings(wizardWindow);
-                // Set input mapping to required
-                Keyboard.SendKeys(wizardWindow, "{TAB}");
-                Keyboard.SendKeys(wizardWindow, "{SPACE}");
-                // Save
-                DatabaseServiceWizardUIMap.KeyboardOK();
-                Keyboard.SendKeys("{TAB}utility");
-                DatabaseServiceWizardUIMap.SaveDialogClickFirstFolder();
-                Keyboard.SendKeys(wizardWindow, "{TAB}{ENTER}");
-                ResourceChangedPopUpUIMap.ClickCancel();
-
-                // Fix Errors
-                if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService(DsfActivityDesigner)"))
-                {
-                    //Assert mappings are prompting the user to add required mapping
-                    var getOpenMappingToggle = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Bug_10011_DbService(DsfActivityDesigner)", "OpenMappingsToggle");
-                    var getCloseMappingButton = getOpenMappingToggle.GetChildren()[1];
-                    Assert.IsTrue(getCloseMappingButton.Height != -1, "Fix Error does not prompt the user to input required mappings");
-                }
-                else
-                {
-                    Assert.Fail("'Fix Errors' button not visible");
-                }
-            }
-            else
-            {
-                Assert.Fail("DbService Wizard Failed to Load");
-            }
-            TabManagerUIMap.CloseAllTabs();
-        }
-
         /// <summary>
         /// Debugs the output_ click step_ activity is highlighted.
         /// </summary>
@@ -594,7 +460,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         // Bug 6617
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void OpeningDependancyWindowTwiceKeepsItOpen()
         {
             // The workflow so we have a second tab

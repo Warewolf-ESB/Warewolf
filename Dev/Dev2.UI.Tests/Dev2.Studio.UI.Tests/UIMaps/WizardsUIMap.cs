@@ -12,47 +12,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 {
     class WizardsUIMap
     {
-        #region Mappings
-
-        private class UIBusinessDesignStudioWindowForWizards : WpfWindow
-        {
-
-            public UIBusinessDesignStudioWindowForWizards()
-            {
-                SearchProperties.Add(new PropertyExpression(UITestControl.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-                SearchProperties.Add(new PropertyExpression(UITestControl.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
-            }
-
-            public WpfImage UIItemImage
-            {
-                get
-                {
-                    if((mUIItemImage == null))
-                    {
-                        mUIItemImage = new WpfImage(this);
-                        mUIItemImage.WindowTitles.Add(TestBase.GetStudioWindowName());
-                    }
-                    return mUIItemImage;
-                }
-            }
-
-            private WpfImage mUIItemImage;
-        }
-        private UIBusinessDesignStudioWindowForWizards UIBusinessDesignStudioWindow
-        {
-            get
-            {
-                if((mUIBusinessDesignStudioWindow == null))
-                {
-                    mUIBusinessDesignStudioWindow = new UIBusinessDesignStudioWindowForWizards();
-                }
-                return mUIBusinessDesignStudioWindow;
-            }
-        }
-        private UIBusinessDesignStudioWindowForWizards mUIBusinessDesignStudioWindow; 
-
-	    #endregion
-
         /// <summary>
         /// Returns true if found in the timeout period.
         /// </summary>
@@ -72,6 +31,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                     break;
                 }
             }
+            Playback.Wait(2000);
             return type == typeof(WpfImage);
         }
     }
