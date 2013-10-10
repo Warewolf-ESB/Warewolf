@@ -39,7 +39,7 @@ using System.Windows.Forms;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using Point = System.Drawing.Point;
-
+//2013.10.10: Ashley Lewis - merged gated checkins test change to code base
 namespace Dev2.CodedUI.Tests
 {
 
