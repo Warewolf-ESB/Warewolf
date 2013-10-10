@@ -14,7 +14,6 @@ using Dev2.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Dev2.Util;
-using Microsoft.JScript;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
@@ -31,10 +30,10 @@ namespace Dev2.Activities
             : base("SQL Bulk Insert")
         {
             InputMappings = new List<DataColumnMapping>();
-            _timeout = 30;
+            _timeout = 0;
         }
 
-        public IList<DataColumnMapping> InputMappings{ get; set; }
+        public IList<DataColumnMapping> InputMappings { get; set; }
 
         [Inputs("Database")]
         public DbSource Database { get; set; }
@@ -114,11 +113,11 @@ namespace Dev2.Activities
                     var listOfIterators = GetIteratorsFromInputMappings(compiler, executionID, allErrors, dataObject, iteratorCollection, out errorResultTO);
                     FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
                 }
-                var sqlBulkCopy = new SqlBulkCopy(Database.ConnectionString, SqlBulkInserter.CurrentOptions) { BulkCopyTimeout = Timeout, BatchSize = BatchSize,DestinationTableName = TableName};
+                var sqlBulkCopy = new SqlBulkCopy(Database.ConnectionString, SqlBulkInserter.CurrentOptions) { BulkCopyTimeout = Timeout, BatchSize = BatchSize, DestinationTableName = TableName };
                 SqlBulkInserter.Insert(sqlBulkCopy, dataTableToInsert);
                 toUpsert.Add(Result, "Success");
                 compiler.Upsert(executionID, toUpsert, out errors);
-                AddDebugOutputItemFromEntry(Result, compiler,executionID);
+                AddDebugOutputItemFromEntry(Result, compiler, executionID);
             }
             catch(Exception e)
             {
@@ -143,7 +142,7 @@ namespace Dev2.Activities
             }
         }
 
-        
+
 
         static void FillDataTableWithDataFromDataList(IDev2IteratorCollection iteratorCollection, DataTable dataTableToInsert, List<IDev2DataListEvaluateIterator> listOfIterators)
         {
@@ -171,7 +170,7 @@ namespace Dev2.Activities
                 allErrors.MergeErrors(errorsResultTO);
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, expressionsEntry, row.OutputColumn.DataType,row.OutputColumn.MaxLength, executionID, indexCounter);
+                    AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, expressionsEntry, row.OutputColumn.DataType, row.OutputColumn.MaxLength, executionID, indexCounter);
                     indexCounter++;
                 }
                 var itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
@@ -182,31 +181,31 @@ namespace Dev2.Activities
             return listOfIterators;
         }
 
-        void AddDebugInputItem(string inputColumn, string outputColumnName, IBinaryDataListEntry expressionsEntry, Type outputColumnDataType,int maxLength, Guid executionID,int indexCounter)
+        void AddDebugInputItem(string inputColumn, string outputColumnName, IBinaryDataListEntry expressionsEntry, Type outputColumnDataType, int maxLength, Guid executionID, int indexCounter)
         {
             DebugItem itemToAdd = new DebugItem();
 
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCounter.ToString(CultureInfo.InvariantCulture) });
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Insert Into" });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = outputColumnName+" "+outputColumnDataType+"("+maxLength+")" });
-            
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = outputColumnName + " " + outputColumnDataType + "(" + maxLength + ")" });
+
             itemToAdd.AddRange(CreateDebugItemsFromEntry(inputColumn, expressionsEntry, executionID, enDev2ArgumentType.Input));
 
             _debugInputs.Add(itemToAdd);
         }
 
-        void AddDebugOutputItemFromEntry(string expression, IDataListCompiler compiler,Guid executionID)
+        void AddDebugOutputItemFromEntry(string expression, IDataListCompiler compiler, Guid executionID)
         {
             ErrorResultTO errorsResultTO;
             var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, expression, false, out errorsResultTO);
             var itemToAdd = new DebugItem();
 
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "1"});
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "1" });
 
             itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, expressionsEntry, executionID, enDev2ArgumentType.Output));
             _debugOutputs.Add(itemToAdd);
         }
-        
+
         SqlBulkCopyOptions BuildSqlBulkCopyOptions()
         {
             var sqlBulkOptions = SqlBulkCopyOptions.Default;

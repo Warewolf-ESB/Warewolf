@@ -105,12 +105,11 @@
         <Setter Property="WrapInBrackets" Value="True"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="AllowUserInsertLine" Value="False"/>
-        <Setter Property="IntellisenseProvider" Value="{StaticResource CalculateCompositeIntellisenseProvider}"/>
     </Style>
     
     <Style x:Key="ActivityMapppingIntellisenseTextBoxStyle"
            TargetType="{x:Type ui:IntellisenseTextBox}">
-        <Setter Property="WrapInBrackets" Value="True"/>
+        <Setter Property="WrapInBrackets" Value="False"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Margin" Value="0,3"/>
         <Setter Property="Width" Value="Auto"/>

@@ -90,7 +90,9 @@
         <controls:Dev2DataGrid Grid.Row="2"
                                Grid.Column="0"
                                Grid.ColumnSpan="3"
-                               x:Name="SmallDataGrid"                               
+                               x:Name="SmallDataGrid"           
+                               HeadersVisibility="None"
+                               Height="78"
                                ItemsSource="{Binding ModelItem.InputMappings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource ActivityMapppingDataGridStyle}">
 
@@ -164,7 +166,8 @@
         <ui:IntellisenseTextBox Grid.Row="3"
                                 Grid.Column="1"
                                 Grid.ColumnSpan="2"
-                                DefaultText="[[InsertSuccess]]"                                
+                                DefaultText="[[InsertSuccess]]"   
+                                WrapInBrackets="True"
                                 Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
                                 ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipResult}"

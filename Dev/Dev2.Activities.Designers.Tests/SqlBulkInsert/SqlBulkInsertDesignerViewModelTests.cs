@@ -144,6 +144,33 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             VerifyColumns(dbTable.Columns, actual);
         }
 
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_Database")]
+        public void SqlBulkInsertDesignerViewModel_Database_ChangedWithUserSelectedTablename_LoadsTableColumns()
+        {
+            //------------Setup for test--------------------------
+            var tables = CreatTableList();
+            var databases = CreateDatabaseList(2);
+            var viewModel = CreateViewModel(databases, tables);
+
+            var dbSource = databases[0];
+            viewModel.Database = dbSource;
+
+            var dbTable = tables[0];
+
+            //------------Execute Test---------------------------
+            viewModel.TableName = dbTable.TableName;
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.TableName);
+
+            var actual = viewModel.InputMappings.Select(m => m.OutputColumn).ToList();
+
+            VerifyColumns(dbTable.Columns, actual);
+        }
+
         static void VerifyTables(List<DbTable> tables, TestSqlBulkInsertDesignerViewModel viewModel)
         {
             for(var i = 0; i < tables.Count; i++)
