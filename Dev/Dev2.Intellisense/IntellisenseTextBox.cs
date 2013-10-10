@@ -1527,6 +1527,10 @@ namespace Dev2.UI
 
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {
+            if(e.ClickCount >= 3)
+            {
+                SelectAll();
+            }
             IInputElement directlyOver = Mouse.DirectlyOver;
             bool isItemSelected = false;
             object context = null;
