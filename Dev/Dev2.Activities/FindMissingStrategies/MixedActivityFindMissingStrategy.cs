@@ -68,6 +68,19 @@ namespace Dev2.FindMissingStrategies
                     }
                 }
             }
+            else if(activityType == typeof(DsfSqlBulkInsertActivity))
+            {
+                var sbiAct = activity as DsfSqlBulkInsertActivity;
+                if(sbiAct != null)
+                {
+                    results.AddRange(InternalFindMissing(sbiAct.InputMappings));
+                    if(!string.IsNullOrEmpty(sbiAct.Result))
+                    {
+                        results.Add(sbiAct.Result);
+                    }
+                }
+            }
+
             return results;
         }        
 

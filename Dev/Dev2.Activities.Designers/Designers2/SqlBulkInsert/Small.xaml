@@ -44,9 +44,9 @@
         <ComboBox Grid.Column="1"
                   Grid.Row="0" 
                   Style="{StaticResource ActivityMapppingComboBoxStyle}"   
-                  ItemsSource="{Binding Databases, Mode=TwoWay}" 
+                  ItemsSource="{Binding Databases}" 
                   DisplayMemberPath="ResourceName"
-                  SelectedItem="{Binding ModelItem.Database, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                        
+                  SelectedItem="{Binding SelectedDatabase, Mode=TwoWay}"                                        
                   ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipDatabase}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
            <i:Interaction.Behaviors>
@@ -69,10 +69,9 @@
         <ComboBox Grid.Column="1"
                   Grid.Row="1"
                   Style="{StaticResource ActivityMapppingComboBoxStyle}"
-                  ItemsSource="{Binding Tables, Mode=TwoWay}"
+                  ItemsSource="{Binding Tables}"
                   DisplayMemberPath="TableName"
-                  SelectedValuePath="TableName"
-                  SelectedValue="{Binding ModelItem.TableName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding SelectedTable, Mode=TwoWay}"
                   ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipTableName}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_TableName_AutoID}">
             <i:Interaction.Behaviors>

@@ -4,6 +4,7 @@ using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Util;
 
 namespace Dev2.TO
 {
@@ -13,6 +14,7 @@ namespace Dev2.TO
         string _inputColumn;
         DbColumn _outputColumn;
 
+        [FindMissing]
         public string InputColumn { get { return _inputColumn; } set { OnPropertyChanged(ref _inputColumn, value); } }
 
         public DbColumn OutputColumn { get { return _outputColumn; } set { OnPropertyChanged(ref _outputColumn, value); } }

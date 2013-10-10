@@ -9,6 +9,7 @@ using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Diagnostics;
+using Dev2.Enums;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -1205,6 +1206,21 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(Result, dsfForEachItems[0].Value);
         }
 
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DsfSqlBulkInsertActivity_GetFindMissingType")]
+        public void DsfSqlBulkInsertActivity_GetFindMissingType_MixedActivity()
+        {
+            //------------Setup for test--------------------------
+            var activity = new DsfSqlBulkInsertActivity();
+
+            //------------Execute Test---------------------------
+            var findMissingType = activity.GetFindMissingType();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(enFindMissingType.MixedActivity, findMissingType);
+        }
 
         #region Private Test Methods
 

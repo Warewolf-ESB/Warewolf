@@ -1,7 +1,6 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -12,7 +11,6 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.TO;
@@ -25,6 +23,8 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
     {
         readonly IEnvironmentModel _environmentModel;
         readonly DbSource _newDbSource;
+
+        static readonly IEnumerable<DbTable> EmptyDbTables = new DbTable[0];
 
         static IEnvironmentModel GetActiveEnvironment()
         {
@@ -64,7 +64,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             Tables = new ObservableCollection<DbTable>();
 
             EditDatabaseCommand = new RelayCommand(o => EditDatabase(), o => CanEditDatabase);
-            RefreshTablesCommand = new RelayCommand(o => LoadDatabaseTables(), o => CanEditDatabase);
+            RefreshTablesCommand = new RelayCommand(o => LoadDatabaseTables(SelectedDatabase), o => CanEditDatabase);
 
             LoadDatabases();
         }
@@ -77,7 +77,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         public ObservableCollection<DbTable> Tables { get; private set; }
 
-        public bool CanEditDatabase { get { return Database != null; } }
+        public bool CanEditDatabase { get { return SelectedDatabase != null; } }
 
         public ICommand EditDatabaseCommand { get; private set; }
 
@@ -92,29 +92,48 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         public static readonly DependencyProperty IsRefreshingProperty =
             DependencyProperty.Register("IsRefreshing", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
 
+        public DbSource SelectedDatabase
+        {
+            get { return (DbSource)GetValue(SelectedDatabaseProperty); }
+            set { SetValue(SelectedDatabaseProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectedDatabase.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedDatabaseProperty =
+            DependencyProperty.Register("SelectedDatabase", typeof(DbSource), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(null, OnSelectedDatabaseChanged));
+
+        static void OnSelectedDatabaseChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var viewModel = (SqlBulkInsertDesignerViewModel)d;
+            var dbSource = (DbSource)e.NewValue;
+            viewModel.Database = dbSource;
+            viewModel.LoadDatabaseTables(dbSource);
+        }
+
+        public DbTable SelectedTable
+        {
+            get { return (DbTable)GetValue(SelectedTableProperty); }
+            set { SetValue(SelectedTableProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedTableProperty =
+            DependencyProperty.Register("SelectedTable", typeof(DbTable), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(null, OnSelectedTableChanged));
+
+        static void OnSelectedTableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var viewModel = (SqlBulkInsertDesignerViewModel)d;
+            var dbTable = (DbTable)e.NewValue;
+            viewModel.TableName = dbTable == null ? null : dbTable.TableName;
+            viewModel.LoadTableColumns(dbTable);
+        }
 
         // DO NOT bind to these properties - these are here for convenience only!!!
-        DbSource Database { get { return GetProperty<DbSource>(); } }
-        string TableName { get { return GetProperty<string>(); } }
-
-        protected override void OnModelItemPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch(e.PropertyName)
-            {
-                case "Database":
-                    LoadDatabaseTables();
-                    break;
-
-                case "TableName":
-                    LoadTableColumns();
-                    break;
-            }
-        }
+        DbSource Database { set { SetProperty(value); } }
+        string TableName { set { SetProperty(value); } }
 
         void LoadDatabases()
         {
             Databases.Clear();
-
             Databases.Add(_newDbSource);
 
             var sources = ResourceRepository.FindSourcesByType(_environmentModel, enSourceType.SqlDatabase)
@@ -127,22 +146,30 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             }
         }
 
-        void LoadDatabaseTables()
+        void LoadDatabaseTables(DbSource dbSource)
         {
             IsRefreshing = true;
             try
             {
-                var dbSource = Database;
-                //if(Database == _newDbSource)
+                //if(dbSource == _newDbSource)
                 //{
                 //    CreateDatabase();
                 //}
 
+                // Save selection --> ComboBox binding clears selection when Tables collection is cleared
+                var currentTableName = SelectedTable == null ? null : SelectedTable.TableName;
+
                 Tables.Clear();
-                var tables = GetDatabaseTables();
+                var tables = GetDatabaseTables(dbSource);
                 foreach(var table in tables)
                 {
                     Tables.Add(table);
+                }
+
+                if(currentTableName != null)
+                {
+                    // Restore selection
+                    SelectedTable = Tables.FirstOrDefault(t => t.TableName == currentTableName);
                 }
             }
             finally
@@ -151,16 +178,16 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             }
         }
 
-        void LoadTableColumns()
+        void LoadTableColumns(DbTable dbTable)
         {
-            var table = Tables.FirstOrDefault(t => t.TableName == TableName);
-            if(table == null)
+            ModelItemCollection.Clear();
+
+            if(dbTable == null)
             {
                 return;
             }
 
-            ModelItemCollection.Clear();
-            foreach(var mapping in table.Columns.Select(column => new DataColumnMapping { OutputColumn = column }))
+            foreach(var mapping in dbTable.Columns.Select(column => new DataColumnMapping { OutputColumn = column }))
             {
                 ModelItemCollection.Add(mapping);
             }
@@ -174,17 +201,16 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         {
         }
 
-        void SetDatabase(DbSource dbSource)
+        IEnumerable<DbTable> GetDatabaseTables(DbSource dbSource)
         {
-            ModelItem.SetProperty("Database", dbSource);
-        }
+            if(dbSource == null)
+            {
+                return EmptyDbTables;
+            }
 
-        IEnumerable<DbTable> GetDatabaseTables()
-        {
             dynamic request = new UnlimitedObject();
             request.Service = "GetDatabaseTablesService";
-            request.Database = JsonConvert.SerializeObject(Database);
-            request.TableName = TableName;
+            request.Database = JsonConvert.SerializeObject(dbSource);
 
             var workspaceID = _environmentModel.Connection.WorkspaceID;
 

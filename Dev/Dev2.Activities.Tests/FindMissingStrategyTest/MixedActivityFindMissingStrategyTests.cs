@@ -2,9 +2,12 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Activities;
 using Dev2.Enums;
 using Dev2.Factories;
 using Dev2.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -97,5 +100,31 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         }
 
         #endregion
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("MixedActivityFindMissingStrategy_GetActivityFields")]
+        public void MixedActivityFindMissingStrategy_GetActivityFields_DsfSqlBulkInsertActivity_AllFindMissingFieldsToBeReturned()
+        {
+            //------------Setup for test--------------------------
+            var activity = new DsfSqlBulkInsertActivity();
+            activity.Result = "[[Result]]";
+            activity.InputMappings = new List<DataColumnMapping>
+            {
+                new DataColumnMapping { InputColumn  = "[[rs().Field1]]", OutputColumn = new DbColumn()}, 
+                new DataColumnMapping { InputColumn  = "[[rs().Field2]]", OutputColumn = new DbColumn()}, 
+            };
+
+            var fac = new Dev2FindMissingStrategyFactory();
+            var strategy = fac.CreateFindMissingStrategy(enFindMissingType.MixedActivity);
+
+            //------------Execute Test---------------------------
+            var actual = strategy.GetActivityFields(activity);
+
+            //------------Assert Results-------------------------
+            var expected = new List<string> { "[[rs().Field1]]", "[[rs().Field2]]", "[[Result]]" };
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }

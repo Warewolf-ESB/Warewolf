@@ -11,6 +11,7 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
+using Dev2.Enums;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Dev2.Util;
@@ -67,6 +68,12 @@ namespace Dev2.Activities
                 _sqlBulkInserter = value;
             }
         }
+
+        public override enFindMissingType GetFindMissingType()
+        {
+            return enFindMissingType.MixedActivity;
+        }
+
         #region Overrides of DsfNativeActivity<string>
 
         /// <summary>
