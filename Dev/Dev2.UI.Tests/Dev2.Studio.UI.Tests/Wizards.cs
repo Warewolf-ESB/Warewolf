@@ -124,7 +124,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// <summary>
         /// News the database service shortcut key expected database service opens.
         /// </summary>
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
@@ -138,7 +138,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void ClickNewPluginServiceShortcutKeyExpectedPluginServiceOpens()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
@@ -238,15 +238,16 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void SaveDecisionWithBlankFieldsExpectedDecisionSaved()
         {
+            Clipboard.Clear();
             //Initialize
             RibbonUIMap.CreateNewWorkflow();
 
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             //Set variable
             DocManagerUIMap.ClickOpenTabPage("Variables");
             VariablesUIMap.ClickVariableName(0);
-            Keyboard.SendKeys("VariableName");
+            SendKeys.SendWait("VariableName");
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             var decision = ToolboxUIMap.FindControl("Decision");
             ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
@@ -262,7 +263,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             actual = Clipboard.GetData(DataFormats.Text);
             Assert.AreEqual("[[VariableName]]", actual, "Decision intellisense doesn't work");
             _decisionWizardUiMap.SendTabs(6);
-            Keyboard.SendKeys("{ENTER}");
+            SendKeys.SendWait("{ENTER}");
 
             //Assert can save blank decision
             decision = new WorkflowDesignerUIMap().FindControlByAutomationId(theTab, "FlowDecisionDesigner");
@@ -281,20 +282,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void ClickNewRemoteWarewolfServerExpectedRemoteWarewolfServerOpens()
         {
-            var _explorer = new ExplorerUIMap();
-
             DocManagerUIMap.ClickOpenTabPage("Explorer");
-            var getLocalServer = _explorer.GetLocalServer();
-            Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
-            for (var i = 0; i < 6; i++)
-            {
-                Keyboard.SendKeys("{DOWN}");
-            }
-            Keyboard.SendKeys("{ENTER}");
-            Playback.Wait(1000);
-
-
-            Playback.Wait(100);
+            ExplorerUIMap.ClickNewServerButton();
             UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
             if (uiTestControl == null)
             {

@@ -85,8 +85,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         /// </summary>
         public void GetFirstIntellisense(string startWith, bool deleteText = false, Point mousePoint = default(Point))
         {
+            var wizard = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             SendKeys.SendWait(startWith);
-            Thread.Sleep(250);
+            Playback.Wait(250);
 
             if (mousePoint != default(Point) )
             {
@@ -95,20 +96,17 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
             }
             else
             {
-                SendKeys.SendWait("{DOWN}");
-                Thread.Sleep(250);
-                SendKeys.SendWait("{ENTER}");     
+                Keyboard.SendKeys(wizard, "{DOWN}");
+                Playback.Wait(250);
+                Keyboard.SendKeys(wizard, "{ENTER}");     
             }
 
             if (deleteText)
             {
-                Thread.Sleep(250);
-                SendKeys.SendWait("^A");
-                Thread.Sleep(250);
-                SendKeys.SendWait("^C");
-
-                Thread.Sleep(250);
-                SendKeys.SendWait("{DELETE}");
+                SendKeys.SendWait("^a");
+                Playback.Wait(250);
+                SendKeys.SendWait("^x");
+                Playback.Wait(250);
             }
         }
     }

@@ -474,7 +474,7 @@ namespace Dev2.CodedUI.Tests
 
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void DragADecisionIntoForEachExpectNotAddedToForEach()
         {
             // Create the workflow
@@ -509,7 +509,7 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void DragASwitchIntoForEachExpectNotAddedToForEach()
         {
             // Create the workflow
@@ -972,7 +972,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void UnsavedWorkflowsPersistingOnStudioRestartExpectedWorkflowStillOpen()
         {
             Process[] procMan = Process.GetProcessesByName("Dev2.Studio");
@@ -1005,7 +1005,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         // BUG 9078
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void StudioExit_Give_TabOpened_Expected_AllRunningProcessStop()
         {
             // TODO : Refactor into another scenario 

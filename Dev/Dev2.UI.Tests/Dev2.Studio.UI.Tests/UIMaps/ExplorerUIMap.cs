@@ -17,7 +17,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
     public partial class ExplorerUIMap
     {
-        public UITestControl ClickConnectControl(string controlType)
+        public UITestControl GetConnectControl(string controlType)
         {
             var uiControl = UIBusinessDesignStudioWindow.GetChildren()
                                                         .First(c => c.FriendlyName == "UI_DocManager_AutoID" && c.ControlType.Name == "Custom")
@@ -459,6 +459,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             var tabYCoord = findContentPane.Top;
             Mouse.Click(new Point(tabFarRightCoord - 100, tabYCoord + 500));
             Playback.Wait(2500);
+        }
+
+        public void ClickNewServerButton()
+        {
+            var firstConnectControlButton = GetConnectControl("Button");
+            var nextConnectControlButtonPosition = new Point(firstConnectControlButton.Left + 35, firstConnectControlButton.Top + 10);
+            Mouse.Click(nextConnectControlButtonPosition);
         }
     }
 }
