@@ -3,15 +3,18 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
+using Dev2.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Dev2.Util;
+using Microsoft.JScript;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
@@ -97,6 +100,10 @@ namespace Dev2.Activities
 
             try
             {
+                if(toUpsert.IsDebug)
+                {
+
+                }
                 var dataTableToInsert = BuildDataTableToInsert();
                 SqlBulkInserter.CurrentOptions = BuildSqlBulkCopyOptions();
 
@@ -115,6 +122,20 @@ namespace Dev2.Activities
             catch(Exception e)
             {
                 Console.WriteLine(e);
+            }
+            finally
+            {
+                // Handle Errors
+                if(allErrors.HasErrors())
+                {
+                    DisplayAndWriteError("DsfSqlBulkInsertActivity", allErrors);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                }
+                if(toUpsert.IsDebug)
+                {
+                    DispatchDebugState(context, StateType.Before);
+                    DispatchDebugState(context, StateType.After);
+                }
             }
         }
 
@@ -137,13 +158,15 @@ namespace Dev2.Activities
         {
             errorsResultTO = new ErrorResultTO();
             var listOfIterators = new List<IDev2DataListEvaluateIterator>();
+            var indexCounter = 1;
             foreach(var row in InputMappings)
             {
                 var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, row.InputColumn, false, out errorsResultTO);
                 allErrors.MergeErrors(errorsResultTO);
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, expressionsEntry, row.OutputColumn.DataType, executionID);
+                    AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, expressionsEntry, row.OutputColumn.DataType,row.OutputColumn.MaxLength, executionID, indexCounter);
+                    indexCounter++;
                 }
                 var itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
 
@@ -153,8 +176,17 @@ namespace Dev2.Activities
             return listOfIterators;
         }
 
-        void AddDebugInputItem(string inputColumn, string outputColumnName, IBinaryDataListEntry expressionsEntry, Type outputColumnDataType, Guid executionID)
+        void AddDebugInputItem(string inputColumn, string outputColumnName, IBinaryDataListEntry expressionsEntry, Type outputColumnDataType,int maxLength, Guid executionID,int indexCounter)
         {
+            DebugItem itemToAdd = new DebugItem();
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCounter.ToString(CultureInfo.InvariantCulture) });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Insert Into" });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = outputColumnName+" "+outputColumnDataType+"("+maxLength+")" });
+            
+            itemToAdd.AddRange(CreateDebugItemsFromEntry(inputColumn, expressionsEntry, executionID, enDev2ArgumentType.Input));
+
+            _debugInputs.Add(itemToAdd);
         }
 
         SqlBulkCopyOptions BuildSqlBulkCopyOptions()
@@ -191,7 +223,7 @@ namespace Dev2.Activities
             {
                 var dataColumn = new DataColumn { ColumnName = dataColumnMapping.OutputColumn.ColumnName, DataType = dataColumnMapping.OutputColumn.DataType };
                 if(dataColumn.DataType == typeof(String))
-        {
+                {
                     dataColumn.MaxLength = dataColumnMapping.OutputColumn.MaxLength;
                 }
                 dataTableToInsert.Columns.Add(dataColumn);
@@ -201,14 +233,14 @@ namespace Dev2.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-    }
+        }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
-    {
-    }
+        {
+        }
 
         public override IList<DsfForEachItem> GetForEachInputs()
-    {
+        {
             return null;
         }
 
@@ -216,6 +248,32 @@ namespace Dev2.Activities
         {
             return null;
         }
+        #endregion
+
+        #region GetDebugInputs
+
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        {
+            foreach(IDebugItem debugInput in _debugInputs)
+            {
+                debugInput.FlushStringBuilder();
+            }
+            return _debugInputs;
+        }
+
+        #endregion
+
+        #region GetDebugOutputs
+
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        {
+            foreach(IDebugItem debugOutput in _debugOutputs)
+            {
+                debugOutput.FlushStringBuilder();
+            }
+            return _debugOutputs;
+        }
+
         #endregion
     }
 }

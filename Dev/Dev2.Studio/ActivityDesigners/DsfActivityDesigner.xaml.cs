@@ -20,6 +20,7 @@ using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.ActivityViewModels;
 using Dev2.Util.ExtensionMethods;
+using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -572,7 +573,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
         void DsfActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true;
+            ActivityHelper.HandleMouseDoubleClick(e);
         }
 
         protected bool IsSelected { get; set; }

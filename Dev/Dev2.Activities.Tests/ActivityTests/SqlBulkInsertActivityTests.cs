@@ -3,8 +3,12 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Reflection.Emit;
+using System.Runtime.Remoting;
 using ActivityUnitTests;
 using Dev2.Activities;
+using Dev2.Common;
+using Dev2.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -648,56 +652,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
             mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()))
                 .Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedDataTable = dataTable);
-            var dataColumnMappings = new List<DataColumnMapping>
-            {
-                new DataColumnMapping
-                {
-                    InputColumn = "[[recset1(*).field1]]",
-                    OutputColumn = new DbColumn {ColumnName = "TestCol",
-                    DataType = typeof(String),
-                    MaxLength = 100},
-                }, new DataColumnMapping
-                {
-                    InputColumn = "[[recset1().field2]]",
-                    OutputColumn = new DbColumn { ColumnName = "TestCol2",
-                    DataType = typeof(Int32),
-                    MaxLength = 100 }
-                }
-                , new DataColumnMapping
-                {
-                    InputColumn = "[[rec().f2]]",
-                    OutputColumn = new DbColumn { ColumnName = "Col2",
-                    DataType = typeof(Int32),
-                    MaxLength = 100 }
-                }
-                , new DataColumnMapping
-                {
-                    InputColumn = "[[val]]",
-                    OutputColumn = new DbColumn { ColumnName = "Val",
-                    DataType = typeof(String),
-                    MaxLength = 100 }
-                }
-                , new DataColumnMapping
-                {
-                    InputColumn = "[[rec(*).f1]]",
-                    OutputColumn = new DbColumn { ColumnName = "Col1",
-                    DataType = typeof(string),
-                    MaxLength = 100 }
-                },
-                new DataColumnMapping
-                {
-                    InputColumn = "[[recset1(*).field3]]",
-                    OutputColumn = new DbColumn { ColumnName = "TestCol3",
-                    DataType = typeof(char),
-                    MaxLength = 100 }
-                }, new DataColumnMapping
-                {
-                    InputColumn = "[[recset1(*).field4]]",
-                    OutputColumn = new DbColumn { ColumnName = "TestCol4",
-                    DataType = typeof(decimal),
-                    MaxLength = 100 }
-                }
-            };
+            var dataColumnMappings = DataColumnMappingsMixedMappings();
             SetupArguments("<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1>Jane</field1><field2>3</field2><field3>G</field3><field4>26.4</field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1><rec><f1>JJU</f1><f2>89</f2></rec><rec><f1>KKK</f1><f2>67</f2></rec><val>Hello</val></root>", "<root><recset1><field1/><field2/><field3/><field4/></recset1><rec><f1/><f2/></rec><val/></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
             //------------Execute Test---------------------------
             ExecuteProcess();
@@ -730,6 +685,148 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Hello", returnedDataTable.Rows[2]["Val"]);
             Assert.AreEqual("KKK", returnedDataTable.Rows[2]["Col1"]);
             Assert.AreEqual(67, returnedDataTable.Rows[2]["Col2"]);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSqlBulkInsertActivity_Execute")]
+        public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsAndDataFromDataListStarWithOneScalarAndAppendMixedRecsets_HasDebug()
+        {
+            //------------Setup for test--------------------------
+            var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
+            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()));
+            var dataColumnMappings = DataColumnMappingsMixedMappings();
+            const string dataListWithData = "<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1>Jane</field1><field2>3</field2><field3>G</field3><field4>26.4</field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1><rec><f1>JJU</f1><f2>89</f2></rec><rec><f1>KKK</f1><f2>67</f2></rec><val>Hello</val></root>";
+            const string dataListShape = "<root><recset1><field1/><field2/><field3/><field4/></recset1><rec><f1/><f2/></rec><val/></root>";
+            SetupArguments(dataListWithData, dataListShape, mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
+            var act = new DsfSqlBulkInsertActivity
+            {
+                SqlBulkInserter = mockSqlBulkInserter.Object,
+                InputMappings = dataColumnMappings,
+                Result = "[[result]]"
+            };
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+            //------------Execute Test---------------------------
+            var result = CheckActivityDebugInputOutput(act, dataListShape,dataListWithData, out inRes, out outRes);
+            //------------Assert Results-------------------------
+            mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
+            Assert.AreEqual(7, inRes.Count);
+            var debugInputs = inRes[0].FetchResultsList();
+
+            Assert.AreEqual(12,debugInputs.Count);
+            Assert.AreEqual("1",debugInputs[0].Value);
+            Assert.AreEqual(DebugItemResultType.Label,debugInputs[0].Type);
+
+            Assert.AreEqual("Insert Into",debugInputs[1].Value);
+            Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
+
+            Assert.AreEqual("TestCol System.String(100)", debugInputs[2].Value);
+            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
+
+            Assert.AreEqual("[[recset1(1).field1]]", debugInputs[3].Value);
+            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[3].Type);
+            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[4].Value);
+            Assert.AreEqual(DebugItemResultType.Label, debugInputs[4].Type);
+            Assert.AreEqual("Bob", debugInputs[5].Value);
+            Assert.AreEqual(DebugItemResultType.Value, debugInputs[5].Type);
+
+            Assert.AreEqual("[[recset1(2).field1]]", debugInputs[6].Value);
+            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[6].Type);
+            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[7].Value);
+            Assert.AreEqual(DebugItemResultType.Label, debugInputs[7].Type);
+            Assert.AreEqual("Jane", debugInputs[8].Value);
+            Assert.AreEqual(DebugItemResultType.Value, debugInputs[8].Type); 
+            
+            Assert.AreEqual("[[recset1(3).field1]]", debugInputs[9].Value);
+            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[9].Type);
+            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[10].Value);
+            Assert.AreEqual(DebugItemResultType.Label, debugInputs[10].Type);
+            Assert.AreEqual("Jill", debugInputs[11].Value);
+            Assert.AreEqual(DebugItemResultType.Value, debugInputs[11].Type);
+
+            debugInputs = inRes[1].FetchResultsList();
+
+            DataListRemoval(result.DataListID);
+        }
+
+        static List<DataColumnMapping> DataColumnMappingsMixedMappings()
+        {
+            var dataColumnMappings = new List<DataColumnMapping>
+            {
+                new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field1]]",
+                    OutputColumn = new DbColumn
+                    {
+                        ColumnName = "TestCol",
+                        DataType = typeof(String),
+                        MaxLength = 100
+                    },
+                },
+                new DataColumnMapping
+                {
+                    InputColumn = "[[recset1().field2]]",
+                    OutputColumn = new DbColumn
+                    {
+                        ColumnName = "TestCol2",
+                        DataType = typeof(Int32),
+                        MaxLength = 100
+                    }
+                }
+                , new DataColumnMapping
+                {
+                    InputColumn = "[[rec().f2]]",
+                    OutputColumn = new DbColumn
+                    {
+                        ColumnName = "Col2",
+                        DataType = typeof(Int32),
+                        MaxLength = 100
+                    }
+                }
+                , new DataColumnMapping
+                {
+                    InputColumn = "[[val]]",
+                    OutputColumn = new DbColumn
+                    {
+                        ColumnName = "Val",
+                        DataType = typeof(String),
+                        MaxLength = 100
+                    }
+                }
+                , new DataColumnMapping
+                {
+                    InputColumn = "[[rec(*).f1]]",
+                    OutputColumn = new DbColumn
+                    {
+                        ColumnName = "Col1",
+                        DataType = typeof(string),
+                        MaxLength = 100
+                    }
+                },
+                new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field3]]",
+                    OutputColumn = new DbColumn
+                    {
+                        ColumnName = "TestCol3",
+                        DataType = typeof(char),
+                        MaxLength = 100
+                    }
+                },
+                new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field4]]",
+                    OutputColumn = new DbColumn
+                    {
+                        ColumnName = "TestCol4",
+                        DataType = typeof(decimal),
+                        MaxLength = 100
+                    }
+                }
+            };
+            return dataColumnMappings;
         }
 
         #region Private Test Methods
