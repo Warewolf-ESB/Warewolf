@@ -28,7 +28,7 @@ using Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-
+//10.10.2013: Ashley Lewis: Testing gated check in on a machine other than my own... i need to make some sort of change to trigger the gated check-in
 namespace Dev2.Studio.UI.Tests
 {
     /// <summary>
