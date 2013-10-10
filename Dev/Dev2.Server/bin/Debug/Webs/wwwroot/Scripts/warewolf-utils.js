@@ -50,6 +50,7 @@ utils.selectAndScrollToListItem = function (itemText, $scrollBox, $scrollBoxHeig
 
     $.each(listItems, function (index, listItem) {
 
+        // this was an index of issue ;(
         if (listItem.innerText.toLowerCase().trim() == itemTextLower) {
             var $li = $(listItem);
             utils.selectListItem($li);

@@ -16,7 +16,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     //2013.06.08: Ashley Lewis for PBI 9458
     self.currentEnvironment = ko.observable(environment);
     self.inTitleEnvironment = false;
-
+    
     self.onSaveCompleted = null;
     self.isWindowClosedOnSave = true;
     self.viewModel = baseViewModel;
@@ -285,7 +285,6 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
         var jsonData = ko.toJSON(self.data);
         if (saveUri) {
            
-
             $.post(saveUri + window.location.search, jsonData, function (result) {
                 if (!result.IsValid) {
                     $saveForm.dialog("close");
