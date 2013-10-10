@@ -1,10 +1,5 @@
-﻿using System;
-using System.Drawing;
-using Dev2.CodedUI.Tests;
-using Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 

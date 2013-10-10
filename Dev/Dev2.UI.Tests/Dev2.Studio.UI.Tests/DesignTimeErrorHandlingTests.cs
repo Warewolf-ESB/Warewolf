@@ -138,7 +138,7 @@ namespace Dev2.Studio.UI.Tests
             {
                 Assert.Fail("DbService Wizard Failed to Load");
             }
-            DoCleanup(TabManagerUiMap.GetActiveTabName(), true);
+            TabManagerUiMap.CloseAllTabs();
         }
 
         [TestMethod]

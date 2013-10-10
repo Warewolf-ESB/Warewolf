@@ -10,6 +10,7 @@ using Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WebpageServiceWizardUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses;
@@ -496,17 +497,13 @@ namespace Dev2.CodedUI.Tests
             // Open the toolbox, and drag the control onto the Workflow
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", requiredPoint);
-            Playback.Wait(500);
+
             // Cancel Decision Wizard
-            try
+            if (WizardsUIMap.WaitForWizard(5000))
             {
                 var decisionWizardUiMap = new DecisionWizardUIMap();
                 decisionWizardUiMap.ClickCancel();
                 Assert.Fail("Got droped ;(");
-            }
-            catch
-            {
-                Assert.IsTrue(true);
             }
 
             TabManagerUIMap.CloseAllTabs();

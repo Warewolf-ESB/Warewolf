@@ -416,9 +416,14 @@ namespace Dev2.Studio.UI.Tests
         {
             RibbonUIMap.CreateNewWorkflow();
             SendKeys.SendWait("^s");
-            Playback.Wait(5000);
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}OldResourceName{ENTER}");
-            Playback.Wait(5000);
+            if (WizardsUIMap.WaitForWizard(5000))
+            {
+                SaveDialogUIMap.ClickAndTypeInNameTextbox("OldResourceName");
+            }
+            else
+            {
+                Assert.Fail("Save wizard did not display in the given time period");
+            }
             TabManagerUIMap.CloseAllTabs();
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
@@ -426,6 +431,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.RightClickRenameProject("Localhost", "WORKFLOWS", "Unassigned", "OldResourceName");
             SendKeys.SendWait("New-Test-Resource-With-Dashes{ENTER}");
             DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClickRefreshButton();
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("New-Test-Resource-With-Dashes");
             ExplorerUIMap.DoubleClickOpenProject("Localhost", "WORKFLOWS", "Unassigned", "New-Test-Resource-With-Dashes");
@@ -447,6 +453,8 @@ namespace Dev2.Studio.UI.Tests
         public void MakeSureDeployedItemsAreNotFiltered()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("Base64ToString");
             ExplorerUIMap.RightClickDeployProject("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
             // Wait for it to open!
             Thread.Sleep(5000);
@@ -490,9 +498,9 @@ namespace Dev2.Studio.UI.Tests
         {
             // Click the Deploy button in the Ribbon
             RibbonUIMap.ClickRibbonMenuItem("Deploy");
-            Thread.Sleep(3000);
+            Playback.Wait(2000);
 
-            UITestControl deployTab = TabManagerUIMap.FindTabByName("Deploy Resources");
+            UITestControl deployTab = TabManagerUIMap.FindTabByName("Deploy");
 
             // Make sure the Deploy button is disabled
             Assert.IsTrue(!DeployViewUIMap.IsDeployButtonEnabled(deployTab));

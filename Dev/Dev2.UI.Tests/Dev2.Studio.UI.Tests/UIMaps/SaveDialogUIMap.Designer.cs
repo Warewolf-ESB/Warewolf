@@ -61,7 +61,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
             Mouse.Click(uIItemImage, new Point(145, 364));
 
             // Type text in 'Wpf' window
-            SendKeys.SendWait(textToType + "{TAB}{TAB}{ENTER}");
+            SendKeys.SendWait(textToType);
+            Playback.Wait(500);
+            SendKeys.SendWait("{TAB}{TAB}{ENTER}");
         }
         
         /// <summary>

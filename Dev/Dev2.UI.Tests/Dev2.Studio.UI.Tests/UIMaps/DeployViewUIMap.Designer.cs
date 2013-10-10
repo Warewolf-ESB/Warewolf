@@ -20,33 +20,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
     [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public partial class DeployViewUIMap
     {
-
-        private void DeployTabSomeStuffItDoes()
-        {
-            //#region Variable Declarations
-            //WpfComboBox uIUI_SourceServercbx_AComboBox = this.UIBusinessDesignStudioWindow.UIDeployResourcesCustom.UIDeployUserControlCustom.UIUI_SourceServercbx_AComboBox;
-            //WpfTreeItem uIUI_SourceServer_HUMATreeItem = this.UIBusinessDesignStudioWindow2.UISourceNavigationViewCustom.UITvExplorerTree.UIDev2StudioCoreViewMoTreeItem.UIUI_SourceServer_WORKTreeItem.UIUI_SourceServer_HUMATreeItem;
-            //WpfCheckBox uIUI_CheckBoxMineWebpaCheckBox = this.UIBusinessDesignStudioWindow2.UISourceNavigationViewCustom.UITvExplorerTree.UIDev2StudioCoreViewMoTreeItem.UIUI_SourceServer_WORKTreeItem.UIUI_SourceServer_HUMATreeItem.UIUI_SourceServer_MineTreeItem.UIUI_CheckBoxMineWebpaCheckBox;
-            //WpfButton uIDeployButton = this.UIBusinessDesignStudioWindow2.UIDeployResourcesCustom.UIDeployUserControlCustom.UIDeployButton;
-            //WpfTreeItem uIDev2StudioCoreViewMoTreeItem1 = this.UIBusinessDesignStudioWindow2.UITargetNavigationViewCustom.UITvExplorerTree.UIDev2StudioCoreViewMoTreeItem2.UIDev2StudioCoreViewMoTreeItem1.UIDev2StudioCoreViewMoTreeItem.UIDev2StudioCoreViewMoTreeItem1;
-            //#endregion
-
-            //// Select 'Dev2.Studio.Core.InterfaceImplementors.ServerDTO' in 'UI_SourceServercbx_AutoID' combo box
-            ////uIUI_SourceServercbx_AComboBox.SelectedItem = this.DeployTabSomeStuffItDoesParams.UIUI_SourceServercbx_AComboBoxSelectedItem;
-
-            //// Expand 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' -> 'UI_SourceServer_WORKFLOW SERVICES_AutoID' -> 'UI_SourceServer_HUMAN INTERFACE WORKFLOW_AutoID' tree item
-            //uIUI_SourceServer_HUMATreeItem.Expanded = this.DeployTabSomeStuffItDoesParams.UIUI_SourceServer_HUMATreeItemExpanded;
-
-            //// Select 'UI_CheckBoxMineWebpage_AutoID' check box
-            //uIUI_CheckBoxMineWebpaCheckBox.Checked = this.DeployTabSomeStuffItDoesParams.UIUI_CheckBoxMineWebpaCheckBoxChecked;
-
-            //// Click 'Deploy' button
-            //Mouse.Click(uIDeployButton, new Point(5, 12));
-
-            //// Click 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' -> 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' -> 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' -> 'Dev2.Studio.Core.ViewModels.NavigationItemViewMode...' tree item
-            //Mouse.Click(uIDev2StudioCoreViewMoTreeItem1, new Point(45, 7));
-        }
-
         private UITestControl DestinationServerTreeviewExplorer(UITestControl theTab)
         {
             UITestControlCollection allChildren = DeployTabsChildren(theTab);
@@ -91,8 +64,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
 
         private WpfEdit GetSourceServerFilterBox(UITestControl theTab)
         {
-
-            WpfEdit editControl = new WpfEdit();
             UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
             foreach (UITestControl theControl in requiredChildren)
             {
@@ -107,8 +78,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
 
         private WpfEdit GetDestinationServerFilterBox(UITestControl theTab)
         {
-
-            WpfEdit editControl = new WpfEdit();
             UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
             foreach (UITestControl theControl in requiredChildren)
             {
@@ -189,7 +158,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
         private UITestControlCollection GetDeployUserControlChildren(UITestControl theTab)
         {
             UITestControlCollection theCollection = theTab.GetChildren();
-            UITestControl splurtControl = theCollection[4];
+            UITestControl splurtControl = theCollection[6];
             UITestControlCollection DeployUserControlChildren = splurtControl.GetChildren()[0].GetChildren();
             return DeployUserControlChildren;
 
