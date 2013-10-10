@@ -240,10 +240,12 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
 			for(var i = 0; i < pairs.length; i++){
 				
 				var tmp = pairs[i];
-				
+
 				var subPairs = tmp.split("=");
 				
 				if (subPairs.length == 2) {
+
+
 				    var varName = subPairs[1].replace("[[", "").replace("]]", "");
 
 				    var targetEnd = varName.indexOf("&");
@@ -298,19 +300,20 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
 				if(offSet < newValue.length){
 					afterParam = newValue.substring(offSet);
 				}
-				
+                
 				// handle the case of ]]= and &= correctly 
-				if(param.name.indexOf("[[") < 0 && param.name.indexOf("=") < 0 && param.name.length > 0 && afterParam.indexOf("[") != 0 ){
-					self.pushRequestVariable(param.name, varSrc, param.value);
+				if (param.name.indexOf("[[") < 0 && param.name.indexOf("=") < 0 && param.name.length > 0 && afterParam.indexOf("[") != 0) {
+				    self.pushRequestVariable(param.name, varSrc, param.value);
 
-					var prefix = newValue.slice(0, param.valueStart);
-					var postfix = newValue.slice(param.valueEnd, newValue.length);
-					var paramValue = "[[" + param.name + "]]";
-					newValue = prefix.concat(paramValue).concat(postfix);
-					
-					self.updateVariablesText(varSrc, newValue, start + paramValue.length);
+				    var prefix = newValue.slice(0, param.valueStart);
+				    var postfix = newValue.slice(param.valueEnd, newValue.length);
+				    var paramValue = "[[" + param.name + "]]";
+				    newValue = prefix.concat(paramValue).concat(postfix);					
+
+
+				    self.updateVariablesText(varSrc, newValue, start + paramValue.length);
 				}
-
+                
             } else if (self.isCloseBracketPressed) {
                 self.extractAndPushRequestVariable(newValue, start, varSrc);
             }else{
