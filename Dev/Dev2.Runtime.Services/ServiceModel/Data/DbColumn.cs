@@ -20,6 +20,8 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public Type DataType { get; set; }
 
+        public SqlDbType SqlDataType { get; set; }
+
         public int MaxLength { get; set; }
 
         public string DataTypeName
@@ -32,12 +34,12 @@ namespace Dev2.Runtime.ServiceModel.Data
                 }
 
                 // TODO: Implement Mapping CLR Parameter Data: http://technet.microsoft.com/en-us/library/ms131092.aspx
-                if(DataType == typeof(string))
+                if(SqlDataType == SqlDbType.VarChar)
                 {
-                    return string.Format("{0} ({1})", DataType.Name, MaxLength);
+                    return string.Format("{0} ({1})", SqlDataType, MaxLength);
                 }
 
-                return DataType.Name;
+                return SqlDataType.ToString();
 
             }
         }

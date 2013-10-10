@@ -1,8 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -28,28 +33,45 @@ namespace Dev2.Runtime.ESB.Management.Services
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
             string database;
-            string tableName;
             values.TryGetValue("Database", out database);
 
             var dbSource = JsonConvert.DeserializeObject<DbSource>(database);
-
-            var tables = new List<DbTable>();
-
-            for(var i = 0; i < 10; i++)
+            DataTable tableInfo = null;
+            DataTable columnInfo = null;
+            using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
-                tables.AddRange(new List<DbTable>
+                // Connect to the database then retrieve the schema information.
+                connection.Open();
+                columnInfo = connection.GetSchema("Columns");
+            }
+            var tables = new List<DbTable>();
+            if(columnInfo != null)
+            {
+                foreach(DataRow row in columnInfo.Rows)
                 {
-                    new DbTable
+                    var tableName = row["TABLE_NAME"] as string;
+                    var dbTable = tables.Find(table => table.TableName == tableName);
+                    if(dbTable == null)
                     {
-                        TableName = "Table" + i, Columns = new List<DbColumn>
+                        dbTable = new DbTable();
+                        dbTable.TableName = tableName;
+                        dbTable.Columns = new List<DbColumn>();
+                        tables.Add(dbTable);
+                    }
+                    var columnName = row["COLUMN_NAME"] as string;
+                    var dbColumn = new DbColumn{ColumnName = columnName};
+
+                    SqlDbType sqlDataType;
+                    var typeValue = row["DATA_TYPE"] as string;
+                    if(Enum.TryParse(typeValue, true, out sqlDataType))
                         {
-                            new DbColumn { ColumnName = "Column" + i + "_1", DataType = typeof(string), MaxLength = 50 },
-                            new DbColumn { ColumnName = "Column" + i + "_2", DataType = typeof(int) },
-                            new DbColumn { ColumnName = "Column" + i + "_3", DataType = typeof(double) },
-                            new DbColumn { ColumnName = "Column" + i + "_4", DataType = typeof(float) }
+                        dbColumn.SqlDataType = sqlDataType;
+                        dbColumn.DataType = typeof(string);
+                    }
+                    var columnLength = row["CHARACTER_MAXIMUM_LENGTH"] is int ? (int)row["CHARACTER_MAXIMUM_LENGTH"] : -1;
+                    dbColumn.MaxLength = columnLength;
+                    dbTable.Columns.Add(dbColumn);
                         }
-                    },
-                });
             }
 
             return JsonConvert.SerializeObject(tables);

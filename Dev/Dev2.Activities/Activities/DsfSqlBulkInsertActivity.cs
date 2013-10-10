@@ -238,6 +238,7 @@ namespace Dev2.Activities
             var indexCounter = 1;
             foreach(var row in InputMappings)
             {
+                if(String.IsNullOrEmpty(row.InputColumn)) continue;
                 var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, row.InputColumn, false, out errorsResultTO);
                 allErrors.MergeErrors(errorsResultTO);
                 if(dataObject.IsDebugMode())
@@ -310,6 +311,7 @@ namespace Dev2.Activities
             var dataTableToInsert = new DataTable();
             foreach(var dataColumnMapping in InputMappings)
             {
+                if(String.IsNullOrEmpty(dataColumnMapping.InputColumn)) continue;
                 var dataColumn = new DataColumn { ColumnName = dataColumnMapping.OutputColumn.ColumnName, DataType = dataColumnMapping.OutputColumn.DataType };
                 if(dataColumn.DataType == typeof(String))
                 {
