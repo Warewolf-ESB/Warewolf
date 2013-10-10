@@ -67,6 +67,9 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             RefreshTablesCommand = new RelayCommand(o => LoadDatabaseTables(SelectedDatabase), o => CanEditDatabase);
 
             LoadDatabases();
+
+            SetSelectedDatabase(Database);
+            SetSelectedTable(TableName);
         }
 
         public override string CollectionName { get { return "InputMappings"; } }
@@ -128,8 +131,8 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         }
 
         // DO NOT bind to these properties - these are here for convenience only!!!
-        DbSource Database { set { SetProperty(value); } }
-        string TableName { set { SetProperty(value); } }
+        DbSource Database { get { return GetProperty<DbSource>(); } set { SetProperty(value); } }
+        string TableName { get { return GetProperty<string>(); } set { SetProperty(value); } }
 
         void LoadDatabases()
         {
@@ -169,7 +172,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 if(currentTableName != null)
                 {
                     // Restore selection
-                    SelectedTable = Tables.FirstOrDefault(t => t.TableName == currentTableName);
+                    SetSelectedTable(currentTableName);
                 }
             }
             finally
@@ -222,5 +225,14 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         void DoPreview(object sender, PreviewRequestedEventArgs e)
         {
         }
-    }
+
+        void SetSelectedDatabase(DbSource dbSource)
+        {
+            SelectedDatabase = dbSource == null ? null : Databases.FirstOrDefault(d => d.ResourceID == dbSource.ResourceID);
+        }
+
+        void SetSelectedTable(string tableName)
+        {
+            SelectedTable = Tables.FirstOrDefault(t => t.TableName == tableName);
+        }    }
 }
