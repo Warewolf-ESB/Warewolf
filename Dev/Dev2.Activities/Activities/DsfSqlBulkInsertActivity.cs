@@ -91,7 +91,7 @@ namespace Dev2.Activities
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
             var compiler = DataListFactory.CreateDataListCompiler();
-            var toUpsert = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
+            var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
             toUpsert.IsDebug = (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke);
             toUpsert.ResourceID = dataObject.ResourceID;
             var errorResultTO = new ErrorResultTO();
@@ -114,14 +114,18 @@ namespace Dev2.Activities
                     var listOfIterators = GetIteratorsFromInputMappings(compiler, executionID, allErrors, dataObject, iteratorCollection, out errorResultTO);
                     FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
                 }
-                var sqlBulkCopy = new SqlBulkCopy("", SqlBulkInserter.CurrentOptions);
-                sqlBulkCopy.BulkCopyTimeout = Timeout;
-                sqlBulkCopy.BatchSize = BatchSize;
+                var sqlBulkCopy = new SqlBulkCopy(Database.ConnectionString, SqlBulkInserter.CurrentOptions) { BulkCopyTimeout = Timeout, BatchSize = BatchSize,DestinationTableName = TableName};
                 SqlBulkInserter.Insert(sqlBulkCopy, dataTableToInsert);
+                toUpsert.Add(Result, "Success");
+                compiler.Upsert(executionID, toUpsert, out errors);
+                AddDebugOutputItemFromEntry(Result, compiler,executionID);
             }
             catch(Exception e)
             {
-                Console.WriteLine(e);
+                toUpsert.Add(Result, "Failure");
+                compiler.Upsert(executionID, toUpsert, out errors);
+                AddDebugOutputItemFromEntry(Result, compiler, executionID);
+                allErrors.AddError(e.Message);
             }
             finally
             {
@@ -138,6 +142,8 @@ namespace Dev2.Activities
                 }
             }
         }
+
+        
 
         static void FillDataTableWithDataFromDataList(IDev2IteratorCollection iteratorCollection, DataTable dataTableToInsert, List<IDev2DataListEvaluateIterator> listOfIterators)
         {
@@ -189,6 +195,18 @@ namespace Dev2.Activities
             _debugInputs.Add(itemToAdd);
         }
 
+        void AddDebugOutputItemFromEntry(string expression, IDataListCompiler compiler,Guid executionID)
+        {
+            ErrorResultTO errorsResultTO;
+            var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, expression, false, out errorsResultTO);
+            var itemToAdd = new DebugItem();
+
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "1"});
+
+            itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, expressionsEntry, executionID, enDev2ArgumentType.Output));
+            _debugOutputs.Add(itemToAdd);
+        }
+        
         SqlBulkCopyOptions BuildSqlBulkCopyOptions()
         {
             var sqlBulkOptions = SqlBulkCopyOptions.Default;

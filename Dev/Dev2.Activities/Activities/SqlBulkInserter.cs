@@ -10,7 +10,11 @@ namespace Dev2.Activities
         public SqlBulkCopyOptions CurrentOptions { get; set; }
 
         public void Insert(SqlBulkCopy sqlBulkCopy, DataTable dataTableToInsert)
-        {            
+        {
+            using(sqlBulkCopy)
+            {
+                sqlBulkCopy.WriteToServer(dataTableToInsert);
+            }
         }
 
         #endregion

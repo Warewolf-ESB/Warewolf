@@ -123,7 +123,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Action = new DsfSqlBulkInsertActivity
                 {
-                    InputMappings = null, 
+                    InputMappings = null,
+                    Database = new DbSource(),
+                    TableName = "TestTable",
                     CheckConstraints = true,
                     FireTriggers = true,
                     KeepIdentity = true,
@@ -167,6 +169,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Action = new DsfSqlBulkInsertActivity
                 {
                     InputMappings = null, 
+                    Database =  new DbSource(),
+                    TableName = "TestTable",
                     CheckConstraints = true,
                     FireTriggers = false,
                     KeepIdentity = true,
@@ -698,11 +702,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()));
             var dataColumnMappings = DataColumnMappingsMixedMappings();
             const string dataListWithData = "<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1>Jane</field1><field2>3</field2><field3>G</field3><field4>26.4</field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1><rec><f1>JJU</f1><f2>89</f2></rec><rec><f1>KKK</f1><f2>67</f2></rec><val>Hello</val></root>";
-            const string dataListShape = "<root><recset1><field1/><field2/><field3/><field4/></recset1><rec><f1/><f2/></rec><val/></root>";
+            const string dataListShape = "<root><recset1><field1/><field2/><field3/><field4/></recset1><rec><f1/><f2/></rec><val/><result/></root>";
             SetupArguments(dataListWithData, dataListShape, mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
             var act = new DsfSqlBulkInsertActivity
             {
                 SqlBulkInserter = mockSqlBulkInserter.Object,
+                Database = new DbSource(),
+                TableName = "TestTable",
                 InputMappings = dataColumnMappings,
                 Result = "[[result]]"
             };
@@ -807,6 +813,18 @@ namespace Dev2.Tests.Activities.ActivityTests
            Assert.AreEqual("KKK", debugInputs[8].Value);
            Assert.AreEqual(DebugItemResultType.Value, debugInputs[8].Type);
 
+           Assert.AreEqual(1, outRes.Count);
+           var debugOutputs = outRes[0].FetchResultsList();
+
+           Assert.AreEqual("1", debugOutputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugOutputs[0].Type);
+           Assert.AreEqual("[[result]]", debugOutputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugOutputs[1].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugOutputs[2].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugOutputs[2].Type);
+           Assert.AreEqual("Success", debugOutputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugOutputs[3].Type);
+
             DataListRemoval(result.DataListID);
         }
 
@@ -890,12 +908,22 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData,ISqlBulkInserter sqlBulkInserter, IList<DataColumnMapping> inputMappings, string resultString)
+        private void SetupArguments(string currentDL, string testData,ISqlBulkInserter sqlBulkInserter, IList<DataColumnMapping> inputMappings, string resultString,DbSource dbSource = null,string destinationTableName = null)
         {
+            if(dbSource == null)
+            {
+                dbSource = new DbSource();                
+            }
+            if(destinationTableName == null)
+            {
+                destinationTableName = "SomeTestTable";
+            }
             TestStartNode = new FlowStep
             {
                 Action = new DsfSqlBulkInsertActivity
                 {
+                    Database = dbSource,
+                    TableName = destinationTableName,
                     InputMappings = inputMappings, 
                     SqlBulkInserter = sqlBulkInserter,
                     Result = resultString
