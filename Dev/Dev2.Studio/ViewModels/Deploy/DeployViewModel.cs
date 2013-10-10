@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
@@ -499,11 +500,11 @@ namespace Dev2.Studio.ViewModels.Deploy
             {
                 SelectedSourceServer = server;
             }
-
             if(connectTarget)
             {
                 SelectedDestinationServer = server;
             }
+            EventPublisher.Publish(new UpdateSelectedServer(server.Environment,connectSource));
         }
 
         /// <summary>
@@ -689,7 +690,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 var ctx = message.Context;
                 if(ctx.Equals(SourceContext))
                 {
-                    AddServer(message.Server, true, false);
+                    AddServer(message.Server, true, false);                    
                 }
                 else if(ctx.Equals(DestinationContext))
                 {

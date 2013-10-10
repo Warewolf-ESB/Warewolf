@@ -323,6 +323,7 @@
     <Compile Include="Messages\ConfigureCaseExpressionMessage.cs" />
     <Compile Include="Messages\ConfigureDecisionExpressionMessage.cs" />
     <Compile Include="Messages\ConfigureSwitchExpressionMessage.cs" />
+    <Compile Include="Messages\UpdateSelectedServer.cs" />
     <Compile Include="Messages\UpdateWorksurfaceDisplayName.cs" />
     <Compile Include="Messages\DataListItemSelectedMessage.cs" />
     <Compile Include="Messages\DebugResourceMessage.cs" />

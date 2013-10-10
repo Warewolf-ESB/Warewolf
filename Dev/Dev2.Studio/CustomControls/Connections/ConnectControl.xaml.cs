@@ -22,7 +22,7 @@ namespace Dev2.UI
     /// <summary>
     /// Interaction logic for ConnectControl.xaml
     /// </summary>
-    public partial class ConnectControl : IConnectControl,INotifyPropertyChanged
+    public partial class ConnectControl : IConnectControl,INotifyPropertyChanged,IHandle<UpdateSelectedServer>
     {
         readonly IEventAggregator _eventPublisher;
         ConnectControlViewModel _viewModel;
@@ -296,7 +296,17 @@ namespace Dev2.UI
             }
         }
 
-        
+        public void Handle(UpdateSelectedServer updateSelectedServer)
+        {
+            if(updateSelectedServer.IsSourceServer && LabelText.Contains("Source"))
+            {
+                ViewModel.ChangeSelected(updateSelectedServer.EnvironmentModel);
+            }
+            else if(!updateSelectedServer.IsSourceServer && LabelText.Contains("Destination"))
+            {
+                ViewModel.ChangeSelected(updateSelectedServer.EnvironmentModel);
+            }
+        }
 
         void OnLoaded(object sender, RoutedEventArgs e)
         {

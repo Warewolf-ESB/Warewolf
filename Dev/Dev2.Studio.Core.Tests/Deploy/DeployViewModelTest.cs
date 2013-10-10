@@ -6,6 +6,7 @@ using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
+using Dev2.Messages;
 using Dev2.Providers.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -170,13 +171,23 @@ namespace Dev2.Core.Tests
         {
             ServerDTO server;
             DeployViewModel vm;
-            var envID = SetupVMForMessages(out server, out vm);
+            IEnvironmentModel publishedEnvironmentModel = null;
+            bool publishedIsSource = false;
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<UpdateSelectedServer>())).Callback<Object>(updateSelectedServer =>
+            {
+                publishedEnvironmentModel = ((UpdateSelectedServer)updateSelectedServer).EnvironmentModel;
+                publishedIsSource = ((UpdateSelectedServer)updateSelectedServer).IsSourceServer;
+            });
+            var envID = SetupVMForMessages(out server, out vm, mockEventAggregator);
 
             var sourceCtx = vm.SourceContext;
 
             var msg = new AddServerToDeployMessage(server, sourceCtx);
             vm.Handle(msg);
             Assert.IsTrue(vm.SelectedSourceServer.ID.Equals(envID.ToString()));
+            Assert.IsTrue(publishedIsSource);
+            Assert.AreEqual(server.Environment, publishedEnvironmentModel);
         }
 
 
@@ -185,14 +196,23 @@ namespace Dev2.Core.Tests
         {
             ServerDTO server;
             DeployViewModel vm;
-            var envID = SetupVMForMessages(out server, out vm);
+            IEnvironmentModel publishedEnvironmentModel = null;
+            bool publishedIsSource = true;
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<UpdateSelectedServer>())).Callback<Object>(updateSelectedServer =>
+            {
+                publishedEnvironmentModel = ((UpdateSelectedServer)updateSelectedServer).EnvironmentModel;
+                publishedIsSource = ((UpdateSelectedServer)updateSelectedServer).IsSourceServer;
+            });
+            var envID = SetupVMForMessages(out server, out vm,mockEventAggregator);
 
             var destCtx = vm.DestinationContext;
 
             var msg = new AddServerToDeployMessage(server, destCtx);
             vm.Handle(msg);
             Assert.IsTrue(vm.SelectedDestinationServer.ID.Equals(envID.ToString()));
-
+            Assert.IsFalse(publishedIsSource);
+            Assert.AreEqual(server.Environment,publishedEnvironmentModel);
         }
 
         [TestMethod]
@@ -253,7 +273,7 @@ namespace Dev2.Core.Tests
 
         #region CreateEnvironmentRepositoryMock
 
-        private static Guid SetupVMForMessages(out ServerDTO server, out DeployViewModel vm)
+        private static Guid SetupVMForMessages(out ServerDTO server, out DeployViewModel vm,Mock<IEventAggregator> mockEventAggregator = null)
         {
             ImportService.CurrentContext = _okayContext;
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
@@ -263,8 +283,11 @@ namespace Dev2.Core.Tests
             var serverProvider = new Mock<IServerProvider>();
             serverProvider.Setup(s => s.Load()).Returns(new List<IServer> { server });
             var repo = CreateEnvironmentRepositoryMock();
-
-            vm = new DeployViewModel(serverProvider.Object, repo.Object, new Mock<IEventAggregator>().Object);
+            if(mockEventAggregator == null)
+            {
+                mockEventAggregator = new Mock<IEventAggregator>();
+            }
+            vm = new DeployViewModel(serverProvider.Object, repo.Object, mockEventAggregator.Object);
             return envID;
         }
 
