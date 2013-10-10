@@ -290,10 +290,91 @@ To traverse an retrieve the raw response from a webpage, enter it in here.</valu
   <data name="DateTimeAddTimeTypeHelpText" xml:space="preserve">
     <value>Select the unit of time to add or subtract. This is ignored if the unit is blank or 0.</value>
   </data>
-  <data name="SqlBulkInsertInputColumnHelpText" xml:space="preserve">
-    <value>Sql Bulk Insert Input Column Help Text goes here</value>
+  <data name="SqlBulkInsertHelpInputColumn" xml:space="preserve">
+    <value>To bulk insert data into a table, put the data to insert in here.
+Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.</value>
   </data>
-  <data name="SqlBulkInsertResultHelpText" xml:space="preserve">
-    <value>Sql Bulk Insert Result Help Text goes here</value>
+  <data name="SqlBulkInsertHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or the record numbers with errors.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="SqlBulkInsertHelpBatchSize" xml:space="preserve">
+    <value>The number of rows you would like to insert at a time.
+The default will be 0 which will do everything at once.</value>
+  </data>
+  <data name="SqlBulkInsertHelpCheckConstraints" xml:space="preserve">
+    <value>Check constraints while data is being inserted. By default, constraints are not checked.</value>
+  </data>
+  <data name="SqlBulkInsertHelpDatabase" xml:space="preserve">
+    <value>Select a preconfigured database source or "New Database Source..." to add a new one.</value>
+  </data>
+  <data name="SqlBulkInsertHelpFireTriggers" xml:space="preserve">
+    <value>When specified, cause the server to fire the insert triggers for the rows being inserted into the database.</value>
+  </data>
+  <data name="SqlBulkInsertHelpKeepIdentity" xml:space="preserve">
+    <value>Preserve source identity values. When not specified, identity values are assigned by the destination.</value>
+  </data>
+  <data name="SqlBulkInsertHelpKeepTableLock" xml:space="preserve">
+    <value>Obtain a bulk update lock for the duration of the bulk copy operation. When not specified, row locks are used.</value>
+  </data>
+  <data name="SqlBulkInsertHelpTableName" xml:space="preserve">
+    <value>Select a table to perform the bulk insert into.
+If the table schema has changed or recently added to the source, click the refresh button.</value>
+  </data>
+  <data name="SqlBulkInsertHelpTimeout" xml:space="preserve">
+    <value>The number of seconds you would like the operation to complete in.
+All batches in total must complete within this time period.
+The default will be 0 which will be no time constraint.</value>
+  </data>
+  <data name="SqlBulkInsertHelpUseInternalTransaction" xml:space="preserve">
+    <value>When specified, each batch of the bulk-copy operation will occur within a transaction.</value>
+  </data>
+  <data name="SqlBulkInsertToolTipBatchSize" xml:space="preserve">
+    <value>Number
+[[Scalar]]   
+[[Recordset(n).Field]]      
+[[Recordset().Field]]</value>
+  </data>
+  <data name="SqlBulkInsertToolTipCheckConstraints" xml:space="preserve">
+    <value>Check constraints while data is being inserted.</value>
+  </data>
+  <data name="SqlBulkInsertToolTipDatabase" xml:space="preserve">
+    <value>Select a preconfigured database source or "New Database Source..." to add a new one.</value>
+  </data>
+  <data name="SqlBulkInsertToolTipFireTriggers" xml:space="preserve">
+    <value>When specified, cause the server to fire the insert triggers for the rows being inserted into the database.</value>
+  </data>
+  <data name="SqlBulkInsertToolTipInputColumn" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="SqlBulkInsertToolTipKeepIdentity" xml:space="preserve">
+    <value>Preserve source identity values.</value>
+  </data>
+  <data name="SqlBulkInsertToolTipKeepTableLock" xml:space="preserve">
+    <value>Obtain a bulk update lock for the duration of the bulk copy operation.</value>
+  </data>
+  <data name="SqlBulkInsertToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="SqlBulkInsertToolTipTableName" xml:space="preserve">
+    <value>Select a table to perform the bulk insert into.</value>
+  </data>
+  <data name="SqlBulkInsertToolTipTimeout" xml:space="preserve">
+    <value>Number
+[[Scalar]]   
+[[Recordset(n).Field]]      
+[[Recordset().Field]]</value>
+  </data>
+  <data name="SqlBulkInsertToolTipUseInternalTransaction" xml:space="preserve">
+    <value>When specified, each batch of the bulk-copy operation will occur within a transaction.</value>
   </data>
 </root>

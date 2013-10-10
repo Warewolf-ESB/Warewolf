@@ -445,20 +445,221 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sql Bulk Insert Input Column Help Text goes here.
+        ///   Looks up a localized string similar to The number of rows you would like to insert at a time.
+        ///The default will be 0 which will do everything at once..
         /// </summary>
-        public static string SqlBulkInsertInputColumnHelpText {
+        public static string SqlBulkInsertHelpBatchSize {
             get {
-                return ResourceManager.GetString("SqlBulkInsertInputColumnHelpText", resourceCulture);
+                return ResourceManager.GetString("SqlBulkInsertHelpBatchSize", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sql Bulk Insert Result Help Text goes here.
+        ///   Looks up a localized string similar to Check constraints while data is being inserted. By default, constraints are not checked..
         /// </summary>
-        public static string SqlBulkInsertResultHelpText {
+        public static string SqlBulkInsertHelpCheckConstraints {
             get {
-                return ResourceManager.GetString("SqlBulkInsertResultHelpText", resourceCulture);
+                return ResourceManager.GetString("SqlBulkInsertHelpCheckConstraints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured database source or &quot;New Database Source...&quot; to add a new one..
+        /// </summary>
+        public static string SqlBulkInsertHelpDatabase {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertHelpDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When specified, cause the server to fire the insert triggers for the rows being inserted into the database..
+        /// </summary>
+        public static string SqlBulkInsertHelpFireTriggers {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertHelpFireTriggers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To bulk insert data into a table, put the data to insert in here.
+        ///Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL..
+        /// </summary>
+        public static string SqlBulkInsertHelpInputColumn {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertHelpInputColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preserve source identity values. When not specified, identity values are assigned by the destination..
+        /// </summary>
+        public static string SqlBulkInsertHelpKeepIdentity {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertHelpKeepIdentity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obtain a bulk update lock for the duration of the bulk copy operation. When not specified, row locks are used..
+        /// </summary>
+        public static string SqlBulkInsertHelpKeepTableLock {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertHelpKeepTableLock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or the record numbers with errors.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string SqlBulkInsertHelpResult {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a table to perform the bulk insert into.
+        ///If the table schema has changed or recently added to the source, click the refresh button..
+        /// </summary>
+        public static string SqlBulkInsertHelpTableName {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertHelpTableName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The number of seconds you would like the operation to complete in.
+        ///All batches in total must complete within this time period.
+        ///The default will be 0 which will be no time constraint..
+        /// </summary>
+        public static string SqlBulkInsertHelpTimeout {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertHelpTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When specified, each batch of the bulk-copy operation will occur within a transaction..
+        /// </summary>
+        public static string SqlBulkInsertHelpUseInternalTransaction {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertHelpUseInternalTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]      
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string SqlBulkInsertToolTipBatchSize {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipBatchSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check constraints while data is being inserted..
+        /// </summary>
+        public static string SqlBulkInsertToolTipCheckConstraints {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipCheckConstraints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured database source or &quot;New Database Source...&quot; to add a new one..
+        /// </summary>
+        public static string SqlBulkInsertToolTipDatabase {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When specified, cause the server to fire the insert triggers for the rows being inserted into the database..
+        /// </summary>
+        public static string SqlBulkInsertToolTipFireTriggers {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipFireTriggers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string SqlBulkInsertToolTipInputColumn {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipInputColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preserve source identity values..
+        /// </summary>
+        public static string SqlBulkInsertToolTipKeepIdentity {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipKeepIdentity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obtain a bulk update lock for the duration of the bulk copy operation..
+        /// </summary>
+        public static string SqlBulkInsertToolTipKeepTableLock {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipKeepTableLock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string SqlBulkInsertToolTipResult {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a table to perform the bulk insert into..
+        /// </summary>
+        public static string SqlBulkInsertToolTipTableName {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipTableName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]      
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string SqlBulkInsertToolTipTimeout {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When specified, each batch of the bulk-copy operation will occur within a transaction..
+        /// </summary>
+        public static string SqlBulkInsertToolTipUseInternalTransaction {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipUseInternalTransaction", resourceCulture);
             }
         }
         

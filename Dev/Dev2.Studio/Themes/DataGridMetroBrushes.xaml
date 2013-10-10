@@ -13,5 +13,6 @@
     <SolidColorBrush x:Key="DataGridPressedBackgroundBrush" Color="{StaticResource Color_024b}" />
     <SolidColorBrush x:Key="DataGridPressedBorderBrush" Color="{StaticResource Color_024b}" />
     <SolidColorBrush x:Key="DataGridSelectedBackgroundBrush" Color="{StaticResource Color_026b}" />
-    
+    <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundBrush" Color="#F0F0F0" />
+
 </ResourceDictionary>

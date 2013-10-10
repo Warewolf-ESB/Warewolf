@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Preview;
 using Dev2.Common;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -47,6 +49,12 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             dynamic mi = ModelItem;
             ModelItemCollection = mi.InputMappings;
 
+            PreviewViewModel = new PreviewViewModel
+            {
+                InputsVisibility = Visibility.Collapsed,
+            };
+            PreviewViewModel.PreviewRequested += DoPreview;
+
             _newDbSource = new DbSource
             {
                 ResourceName = "New Database Source..."
@@ -63,6 +71,8 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         public override string CollectionName { get { return "InputMappings"; } }
 
+        public PreviewViewModel PreviewViewModel { get; private set; }
+
         public ObservableCollection<DbSource> Databases { get; private set; }
 
         public ObservableCollection<DbTable> Tables { get; private set; }
@@ -72,6 +82,16 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         public ICommand EditDatabaseCommand { get; private set; }
 
         public ICommand RefreshTablesCommand { get; private set; }
+
+        public bool IsRefreshing
+        {
+            get { return (bool)GetValue(IsRefreshingProperty); }
+            set { SetValue(IsRefreshingProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsRefreshingProperty =
+            DependencyProperty.Register("IsRefreshing", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
+
 
         // DO NOT bind to these properties - these are here for convenience only!!!
         DbSource Database { get { return GetProperty<DbSource>(); } }
@@ -109,17 +129,25 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         void LoadDatabaseTables()
         {
-            var dbSource = Database;
-            //if(Database == _newDbSource)
-            //{
-            //    CreateDatabase();
-            //}
-
-            Tables.Clear();
-            var tables = GetDatabaseTables();
-            foreach(var table in tables)
+            IsRefreshing = true;
+            try
             {
-                Tables.Add(table);
+                var dbSource = Database;
+                //if(Database == _newDbSource)
+                //{
+                //    CreateDatabase();
+                //}
+
+                Tables.Clear();
+                var tables = GetDatabaseTables();
+                foreach(var table in tables)
+                {
+                    Tables.Add(table);
+                }
+            }
+            finally
+            {
+                IsRefreshing = false;
             }
         }
 
@@ -163,6 +191,10 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             var result = _environmentModel.Connection.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID);
 
             return JsonConvert.DeserializeObject<List<DbTable>>(result);
+        }
+
+        void DoPreview(object sender, PreviewRequestedEventArgs e)
+        {
         }
     }
 }
