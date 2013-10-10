@@ -350,6 +350,7 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
             self.saveViewModel.showDialog(true);
         } else {
             // else use new action ;)
+            self.saveViewModel.IsDialoglessSave = true;
             self.saveViewModel.save();
         }
     };    

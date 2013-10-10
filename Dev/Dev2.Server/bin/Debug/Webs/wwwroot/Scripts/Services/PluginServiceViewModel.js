@@ -342,6 +342,7 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
             self.saveViewModel.showDialog(true);
         } else {
             // else use new action ;)
+            self.saveViewModel.IsDialoglessSave = true;
             self.saveViewModel.save();
         }
     };
