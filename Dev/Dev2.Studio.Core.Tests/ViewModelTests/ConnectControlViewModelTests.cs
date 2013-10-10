@@ -58,7 +58,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            ConnectControlViewModel.BuildConnectControlViewModel(null, null);
+            new ConnectControlViewModelBuilder().BuildConnectControlViewModel(null, null);
             //------------Assert Results-------------------------
         }
 
@@ -71,7 +71,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             //------------Setup for test--------------------------
             var resourceModel = new ResourceModel(null);
             //------------Execute Test---------------------------
-            ConnectControlViewModel.BuildConnectControlViewModel(resourceModel, null);
+            new ConnectControlViewModelBuilder().BuildConnectControlViewModel(resourceModel, null);
             //------------Assert Results-------------------------
         }
 
@@ -84,7 +84,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var resourceModel = new ResourceModel(null);
             var mainViewModelActiveEnvironment = new Mock<IEnvironmentModel>().Object;
             //------------Execute Test---------------------------
-            var controlViewModel = ConnectControlViewModel.BuildConnectControlViewModel(resourceModel, mainViewModelActiveEnvironment);
+            var controlViewModel = new ConnectControlViewModelBuilder().BuildConnectControlViewModel(resourceModel, mainViewModelActiveEnvironment);
             //------------Assert Results-------------------------
             Assert.IsNotNull(controlViewModel);
             Assert.IsNotNull(controlViewModel.ActiveEnvironment);
@@ -101,7 +101,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var resourceModel = new ResourceModel(resourceModelEnvironmentModel);
             var mainViewModelActiveEnvironment = new Mock<IEnvironmentModel>().Object;
             //------------Execute Test---------------------------
-            var controlViewModel = ConnectControlViewModel.BuildConnectControlViewModel(resourceModel, mainViewModelActiveEnvironment);
+            var controlViewModel = new ConnectControlViewModelBuilder().BuildConnectControlViewModel(resourceModel, mainViewModelActiveEnvironment);
             //------------Assert Results-------------------------
             Assert.IsNotNull(controlViewModel);
             Assert.IsNotNull(controlViewModel.ActiveEnvironment);
@@ -118,7 +118,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var resourceModel = new EnvironmentTreeViewModel(new Mock<IEventAggregator>().Object, null, treeViewModelEnvironmentModel);
             var mainViewModelActiveEnvironment = new Mock<IEnvironmentModel>().Object;
             //------------Execute Test---------------------------
-            var controlViewModel = ConnectControlViewModel.BuildConnectControlViewModel(resourceModel, mainViewModelActiveEnvironment);
+            var controlViewModel = new ConnectControlViewModelBuilder().BuildConnectControlViewModel(resourceModel, mainViewModelActiveEnvironment);
             //------------Assert Results-------------------------
             Assert.IsNotNull(controlViewModel);
             Assert.IsNotNull(controlViewModel.ActiveEnvironment);

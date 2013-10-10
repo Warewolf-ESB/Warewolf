@@ -14,25 +14,25 @@ using Moq;
 namespace Dev2.Core.Tests.Utils
 {
     [TestClass]
-    public class ShowResourceChangeUtilTests
+    public class ResourceChangeHandlerTests
     {
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ShowResourceChangedUtil_Construct")]
+        [TestCategory("ResourceChangeHandler_Construct")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ShowResourceChangedUtil_Constructor_WithNullEventPublisher_ThrowsArgumentNullException()
+        public void ResourceChangeHandler_Constructor_WithNullEventPublisher_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            new ShowResourceChangedUtil(null);
+            new ResourceChangeHandler(null);
             //------------Assert Results-------------------------
         }     
         
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ShowResourceChangedUtil_ShowResourceChanged")]
+        [TestCategory("ResourceChangeHandler_ShowResourceChanged")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ShowResourceChangedUtil_ShowResourceChanged_WithNullResource_ThrowsArgumentNullException()
+        public void ResourceChangeHandlerShowResourceChanged_WithNullResource_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
             var showResourceChangedUtil = CreateShowResourceChangedUtil();
@@ -43,9 +43,9 @@ namespace Dev2.Core.Tests.Utils
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ShowResourceChangedUtil_ShowResourceChanged")]
+        [TestCategory("ResourceChangeHandler_ShowResourceChanged")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ShowResourceChangedUtil_ShowResourceChanged_WithNullList_ThrowsArgumentNullException()
+        public void ResourceChangeHandler_ShowResourceChanged_WithNullList_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
             var showResourceChangedUtil = CreateShowResourceChangedUtil();
@@ -56,8 +56,8 @@ namespace Dev2.Core.Tests.Utils
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ShowResourceChangedUtil_ShowResourceChanged")]
-        public void ShowResourceChangedUtil_ShowResourceChanged_WithOneDependant_FiresAddWorkSurfaceMessageMessage()
+        [TestCategory("ResourceChangeHandler_ShowResourceChanged")]
+        public void ResourceChangeHandler_ShowResourceChanged_WithOneDependant_FiresAddWorkSurfaceMessageMessage()
         {
             //------------Setup for test--------------------------
             var mockAggregator = new Mock<IEventAggregator>();
@@ -81,8 +81,8 @@ namespace Dev2.Core.Tests.Utils
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ShowResourceChangedUtil_ShowResourceChanged")]
-        public void ShowResourceChangedUtil_ShowResourceChanged_WithMoreThanOneDependant_FiresShowReverseDependencyVisualizerMessage()
+        [TestCategory("ResourceChangeHandler_ShowResourceChanged")]
+        public void ResourceChangeHandler_ShowResourceChanged_WithMoreThanOneDependant_FiresShowReverseDependencyVisualizerMessage()
         {
             //------------Setup for test--------------------------
             var mockAggregator = new Mock<IEventAggregator>();
@@ -103,14 +103,14 @@ namespace Dev2.Core.Tests.Utils
             mockAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<ShowReverseDependencyVisualizer>()), Times.Once());
         }
 
-        static ShowResourceChangedUtil CreateShowResourceChangedUtil()
+        static ResourceChangeHandler CreateShowResourceChangedUtil()
         {
             return CreateShowResourceChangedUtil(new Mock<IEventAggregator>().Object);
         }
         
-        static ShowResourceChangedUtil CreateShowResourceChangedUtil(IEventAggregator eventAggregator)
+        static ResourceChangeHandler CreateShowResourceChangedUtil(IEventAggregator eventAggregator)
         {
-            return new ShowResourceChangedUtil(eventAggregator);
+            return new ResourceChangeHandler(eventAggregator);
         }
     }
 }

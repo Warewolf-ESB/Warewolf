@@ -300,7 +300,7 @@ namespace Dev2.UI
 
         void OnLoaded(object sender, RoutedEventArgs e)
         {
-            ViewModel = ConnectControlViewModel.BuildConnectControlViewModel(((IMainViewModel)Application.Current.MainWindow.DataContext).DeployResource, ((IMainViewModel)Application.Current.MainWindow.DataContext).ActiveEnvironment);
+            ViewModel = new ConnectControlViewModelBuilder().BuildConnectControlViewModel(((IMainViewModel)Application.Current.MainWindow.DataContext).DeployResource, ((IMainViewModel)Application.Current.MainWindow.DataContext).ActiveEnvironment);
             // 2013.09.02 - BUG 10221 - set default server selection
             ViewModel.LoadServers();
             ViewModel.SelectedServer = ViewModel.GetSelectedServer(ViewModel.Servers, LabelText);

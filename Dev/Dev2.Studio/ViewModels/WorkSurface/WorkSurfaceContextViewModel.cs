@@ -530,7 +530,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 return;
             }
-            var showResourceChangedUtil = new ShowResourceChangedUtil(EventPublisher);
+            var showResourceChangedUtil = new ResourceChangeHandler(EventPublisher);
             showResourceChangedUtil.ShowResourceChanged(resource, compileMessageList.Dependants);            
         }
 

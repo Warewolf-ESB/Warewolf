@@ -8,7 +8,7 @@ namespace Dev2.Studio.Webs.Callbacks
 {
     public class ShowDependencyProvider:IShowDependencyProvider
     {
-        readonly ShowResourceChangedUtil _showResourceChangedUtil;
+        readonly ResourceChangeHandler _resourceChangeHandler;
 
         public ShowDependencyProvider()
             : this(EventPublishers.Aggregator)
@@ -17,7 +17,7 @@ namespace Dev2.Studio.Webs.Callbacks
 
         public ShowDependencyProvider(IEventAggregator eventPublisher)
         {
-            _showResourceChangedUtil = new ShowResourceChangedUtil(eventPublisher);
+            _resourceChangeHandler = new ResourceChangeHandler(eventPublisher);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
         }
 
@@ -25,7 +25,7 @@ namespace Dev2.Studio.Webs.Callbacks
 
         public void ShowDependencyViewer(IContextualResourceModel resource, IList<string> numberOfDependants)
         {
-            _showResourceChangedUtil.ShowResourceChanged(resource, numberOfDependants);
+            _resourceChangeHandler.ShowResourceChanged(resource, numberOfDependants);
         }
 
         #endregion

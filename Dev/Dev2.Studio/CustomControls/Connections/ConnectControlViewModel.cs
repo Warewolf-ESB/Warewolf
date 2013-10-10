@@ -43,30 +43,6 @@ namespace Dev2.UI
             IsSelectedFromDropDown = true;
         }
 
-        public static ConnectControlViewModel BuildConnectControlViewModel(SimpleBaseViewModel deployResource, IEnvironmentModel mainViewModelActiveEnvironment)
-        {
-            // Moved code incorrectly put into ConnectViewModel back here
-            var abstractTreeViewModel = deployResource as AbstractTreeViewModel;
-            IEnvironmentModel activeEnvironment = null;
-            if(abstractTreeViewModel != null)
-            {
-                activeEnvironment = abstractTreeViewModel.EnvironmentModel;
-            }
-            else
-            {
-                var resourceModel = deployResource as ResourceModel;
-                if(resourceModel != null)
-                {
-                    activeEnvironment = resourceModel.Environment;
-                }
-            }
-            if(activeEnvironment == null)
-            {
-                activeEnvironment = mainViewModelActiveEnvironment;
-            }
-            return new ConnectControlViewModel(activeEnvironment);
-        }
-
         public IServer GetSelectedServer(ObservableCollection<IServer> servers, string labelText)
         {
             if(servers == null || servers.Count == 0)

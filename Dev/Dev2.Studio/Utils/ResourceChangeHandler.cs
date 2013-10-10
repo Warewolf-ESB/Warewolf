@@ -10,10 +10,10 @@ using Dev2.Studio.Views.ResourceManagement;
 
 namespace Dev2.Utils
 {
-    public class ShowResourceChangedUtil
+    public class ResourceChangeHandler
     {
         readonly IEventAggregator _eventPublisher;
-        public ShowResourceChangedUtil(IEventAggregator eventPublisher)
+        public ResourceChangeHandler(IEventAggregator eventPublisher)
         {
             if(eventPublisher == null)
             {
