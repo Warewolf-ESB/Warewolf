@@ -746,7 +746,66 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Jill", debugInputs[11].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugInputs[11].Type);
 
-            debugInputs = inRes[1].FetchResultsList();
+           debugInputs = inRes[1].FetchResultsList();
+
+           Assert.AreEqual("2", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
+
+           Assert.AreEqual("Insert Into", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
+
+           Assert.AreEqual("TestCol2 System.Int32(100)", debugInputs[2].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
+
+           Assert.AreEqual("[[recset1(3).field2]]", debugInputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[3].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[4].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[4].Type);
+           Assert.AreEqual("1999", debugInputs[5].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugInputs[5].Type);
+
+           debugInputs = inRes[3].FetchResultsList();
+
+           Assert.AreEqual("4", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
+
+           Assert.AreEqual("Insert Into", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
+
+           Assert.AreEqual("Val System.String(100)", debugInputs[2].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
+
+           Assert.AreEqual("[[val]]", debugInputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[3].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[4].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[4].Type);
+           Assert.AreEqual("Hello", debugInputs[5].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugInputs[5].Type);
+
+           debugInputs = inRes[4].FetchResultsList();
+
+           Assert.AreEqual("5", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
+
+           Assert.AreEqual("Insert Into", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
+
+           Assert.AreEqual("Col1 System.String(100)", debugInputs[2].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
+
+           Assert.AreEqual("[[rec(1).f1]]", debugInputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[3].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[4].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[4].Type);
+           Assert.AreEqual("JJU", debugInputs[5].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugInputs[5].Type);
+
+           Assert.AreEqual("[[rec(2).f1]]", debugInputs[6].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[6].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[7].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[7].Type);
+           Assert.AreEqual("KKK", debugInputs[8].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugInputs[8].Type);
 
             DataListRemoval(result.DataListID);
         }
@@ -761,7 +820,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                     OutputColumn = new DbColumn
                     {
                         ColumnName = "TestCol",
-                        DataType = typeof(String),
+                    DataType = typeof(String),
                         MaxLength = 100
                     },
                 },
@@ -771,7 +830,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                     OutputColumn = new DbColumn
                     {
                         ColumnName = "TestCol2",
-                        DataType = typeof(Int32),
+                    DataType = typeof(Int32),
                         MaxLength = 100
                     }
                 }
@@ -781,7 +840,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                     OutputColumn = new DbColumn
                     {
                         ColumnName = "Col2",
-                        DataType = typeof(Int32),
+                    DataType = typeof(Int32),
                         MaxLength = 100
                     }
                 }
@@ -791,7 +850,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                     OutputColumn = new DbColumn
                     {
                         ColumnName = "Val",
-                        DataType = typeof(String),
+                    DataType = typeof(String),
                         MaxLength = 100
                     }
                 }
@@ -801,7 +860,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                     OutputColumn = new DbColumn
                     {
                         ColumnName = "Col1",
-                        DataType = typeof(string),
+                    DataType = typeof(string),
                         MaxLength = 100
                     }
                 },
@@ -811,7 +870,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                     OutputColumn = new DbColumn
                     {
                         ColumnName = "TestCol3",
-                        DataType = typeof(char),
+                    DataType = typeof(char),
                         MaxLength = 100
                     }
                 },
@@ -821,7 +880,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                     OutputColumn = new DbColumn
                     {
                         ColumnName = "TestCol4",
-                        DataType = typeof(decimal),
+                    DataType = typeof(decimal),
                         MaxLength = 100
                     }
                 }
