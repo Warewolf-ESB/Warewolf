@@ -1,5 +1,6 @@
 ﻿
 
+using Dev2.Providers.Logs;
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -394,9 +395,8 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
                     error = "MAPI Invalid parameter.";
                     break;
             }
-
-            // Debug statements do not belong in product code ;)
-            //Debug.WriteLine("Error sending MAPI Email. Error: " + error + " (code = " + errorCode + ").");
+            string message = string.Format("Error sending MAPI Email. Error: " + error + " (code = " + errorCode + ").");
+            Logger.Error(message);
         }
         #endregion Private Methods
 
