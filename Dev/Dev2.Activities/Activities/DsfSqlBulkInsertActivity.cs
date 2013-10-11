@@ -307,7 +307,7 @@ namespace Dev2.Activities
                 allErrors.MergeErrors(errorsResultTO);
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, expressionsEntry, row.OutputColumn.DataType, row.OutputColumn.MaxLength, executionID, indexCounter);
+                    AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, expressionsEntry, row.OutputColumn.SystemDataType, executionID, indexCounter);
                     indexCounter++;
                 }
                 var itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
@@ -318,7 +318,7 @@ namespace Dev2.Activities
             return listOfIterators;
         }
 
-        void AddDebugInputItem(string inputColumn, string outputColumnName, IBinaryDataListEntry expressionsEntry, Type outputColumnDataType, int maxLength, Guid executionID, int indexCounter)
+        void AddDebugInputItem(string inputColumn, string outputColumnName, IBinaryDataListEntry expressionsEntry, string outputColumnDataType, Guid executionID, int indexCounter)
         {
             var itemToAdd = new DebugItem();
 
@@ -326,7 +326,7 @@ namespace Dev2.Activities
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Insert" });
             itemToAdd.AddRange(CreateDebugItemsFromEntry(inputColumn, expressionsEntry, executionID, enDev2ArgumentType.Input));
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Into" });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = outputColumnName + " " + outputColumnDataType + "(" + maxLength + ")" });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = outputColumnName + " " + outputColumnDataType});
             
             _debugInputs.Add(itemToAdd);
         }

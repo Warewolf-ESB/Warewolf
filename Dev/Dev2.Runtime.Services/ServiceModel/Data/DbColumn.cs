@@ -51,6 +51,26 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
+        public string SystemDataType
+        {
+            get
+            {
+                if(DataType == null)
+                {
+                    return string.Empty;
+                }
+
+                // TODO: Implement Mapping CLR Parameter Data: http://technet.microsoft.com/en-us/library/ms131092.aspx
+                if(DataType == typeof(string))
+                {
+                    return string.Format("{0}({1})", DataType.Name, MaxLength);
+                }
+
+                return DataType.Name;
+
+            }
+        }
+
         public static Type ConvertSqlDbType(SqlDbType sqlDbType)
         {
             // http://msdn.microsoft.com/en-us/library/system.data.sqldbtype.aspx

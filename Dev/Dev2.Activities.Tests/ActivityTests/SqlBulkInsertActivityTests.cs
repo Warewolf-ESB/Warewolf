@@ -819,7 +819,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Into", debugInputs[11].Value);
             Assert.AreEqual(DebugItemResultType.Label, debugInputs[11].Type);
 
-            Assert.AreEqual("TestCol System.String(100)", debugInputs[12].Value);
+            Assert.AreEqual("TestCol String(100)", debugInputs[12].Value);
             Assert.AreEqual(DebugItemResultType.Variable, debugInputs[12].Type);
 
            debugInputs = inRes[6].FetchResultsList();
@@ -840,7 +840,7 @@ namespace Dev2.Tests.Activities.ActivityTests
            Assert.AreEqual("Into", debugInputs[5].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[5].Type);
 
-           Assert.AreEqual("TestCol2 System.Int32(100)", debugInputs[6].Value);
+           Assert.AreEqual("TestCol2 Int32", debugInputs[6].Value);
            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[6].Type);
 
            debugInputs = inRes[8].FetchResultsList();
@@ -861,7 +861,7 @@ namespace Dev2.Tests.Activities.ActivityTests
            Assert.AreEqual("Into", debugInputs[5].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[5].Type);
 
-           Assert.AreEqual("Val System.String(100)", debugInputs[6].Value);
+           Assert.AreEqual("Val String(100)", debugInputs[6].Value);
            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[6].Type);
 
            debugInputs = inRes[9].FetchResultsList();
@@ -889,7 +889,7 @@ namespace Dev2.Tests.Activities.ActivityTests
            Assert.AreEqual("Into", debugInputs[8].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[8].Type);
 
-           Assert.AreEqual("Col1 System.String(100)", debugInputs[9].Value);
+           Assert.AreEqual("Col1 String(100)", debugInputs[9].Value);
            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[9].Type);
 
            debugInputs = inRes[12].FetchResultsList();
