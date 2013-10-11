@@ -33,7 +33,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             string database;
             string tableName;
             values.TryGetValue("Database", out database);
-            values.TryGetValue("Tablename", out tableName);
+            values.TryGetValue("TableName", out tableName);
+
+            var dbColumns = new List<DbColumn>();
 
             var dbSource = JsonConvert.DeserializeObject<DbSource>(database);
             DataTable columnInfo;
@@ -41,9 +43,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 // Connect to the database then retrieve the schema information.
                 connection.Open();
-                columnInfo = connection.GetSchema("Columns", new[] { "DBName", null, tableName });
+
+                // See http://msdn.microsoft.com/en-us/library/cc716722.aspx for restrictions
+                var restrictions = new string[4];
+                restrictions[0] = dbSource.DatabaseName;
+                restrictions[2] = tableName.Trim(new[] { '"' });
+                columnInfo = connection.GetSchema("Columns", restrictions);
             }
-            var dbColumns = new List<DbColumn>();
+
             if(columnInfo != null)
             {
                 foreach(DataRow row in columnInfo.Rows)
@@ -74,7 +81,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var ds = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = @"<DataList><Database/><Tablename/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>"
+                DataListSpecification = @"<DataList><Database/><TableName/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>"
             };
 
             var sa = new ServiceAction

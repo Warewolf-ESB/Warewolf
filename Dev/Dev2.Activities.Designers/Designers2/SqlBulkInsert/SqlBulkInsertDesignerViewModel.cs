@@ -17,6 +17,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Threading;
 using Dev2.TO;
 using Newtonsoft.Json;
 using Unlimited.Framework;
@@ -29,6 +30,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         readonly IEnvironmentModel _environmentModel;
         readonly DbSource _newDbSource;
         readonly bool _isInitializing;
+        readonly IAsyncWorker _asyncWorker = new AsyncWorker();
 
         static readonly IEnumerable<DbTable> EmptyDbTables = new DbTable[0];
         static readonly IEnumerable<DbColumn> EmptyDbColumns = new DbColumn[0];
@@ -173,7 +175,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         }
 
         public static readonly DependencyProperty IsTimeoutFocusedProperty =
-            DependencyProperty.Register("IsTimeoutFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));       
+            DependencyProperty.Register("IsTimeoutFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
 
         #region DO NOT bind to these properties - these are here for internal view model use only!!!
 
@@ -240,23 +242,25 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             var selectedTableName = GetTableName(SelectedTable);
 
             IsRefreshing = true;
-            try
+            Tables.Clear();
+
+            var tables = EmptyDbTables;
+            _asyncWorker.Start(() =>
             {
-                Tables.Clear();
-                var tables = GetDatabaseTables(dbSource);
+                tables = GetDatabaseTables(dbSource);
+            }, () =>
+            {
                 foreach(var table in tables)
                 {
                     Tables.Add(table);
                 }
-            }
-            finally
-            {
                 IsRefreshing = false;
 
                 // Restore selection or select first in list
                 var selectedTable = Tables.FirstOrDefault(t => t.TableName == selectedTableName) ?? Tables.FirstOrDefault();
                 SelectedTable = selectedTable;
-            }
+
+            });
         }
 
         void LoadTableColumns(DbSource dbSource, DbTable dbTable)
@@ -276,9 +280,13 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             ModelItemCollection.Clear();
 
             IsRefreshing = true;
-            try
+
+            var columns = EmptyDbColumns;
+            _asyncWorker.Start(() =>
             {
-                var columns = GetDatabaseTableColumns(dbSource, dbTable);
+                columns = GetDatabaseTableColumns(dbSource, dbTable);
+            }, () =>
+            {
                 foreach(var mapping in columns.Select(column => new DataColumnMapping { OutputColumn = column }))
                 {
                     var oldColumn = oldColumns.FirstOrDefault(c => c.OutputColumn.ColumnName == mapping.OutputColumn.ColumnName);
@@ -289,11 +297,8 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
                     ModelItemCollection.Add(mapping);
                 }
-            }
-            finally
-            {
                 IsRefreshing = false;
-            }
+            });
         }
 
         void EditDbSource()
