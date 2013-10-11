@@ -900,8 +900,10 @@ namespace Dev2.UI
 
                     IsInCalculateMode = calculateMode;
                 }
-                else if(IsInCalculateMode)
+                else if (IsInCalculateMode)
+                {
                     calculateMode = true;
+                }
 
 
                 KeyValuePair<int, int> currentResultInputKey = new KeyValuePair<int, int>(text.Length, text.GetHashCode());

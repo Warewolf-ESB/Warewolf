@@ -67,7 +67,7 @@ namespace Dev2.CodedUI.Tests
         // PBI 8601 (Task 8855)
         [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
         public void QuickVariableInputFromListTest()
-       {
+        {
            Clipboard.Clear();
            // Create the workflow
            RibbonUIMap.CreateNewWorkflow();

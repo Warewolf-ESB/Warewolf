@@ -191,7 +191,7 @@ namespace Dev2.DynamicServices
 
                             errors.AddError(e2.Message);
 
-                            return run.DataTransferObject;
+                            return run.DataTransferObject.Clone();
                         }
                         catch(Exception ex)
                         {
@@ -201,14 +201,14 @@ namespace Dev2.DynamicServices
 
                             ExecutionStatusCallbackDispatcher.Instance.Post(dataTransferObject.ExecutionCallbackID, ExecutionStatusCallbackMessageType.ErrorCallback);
 
-                            return run.DataTransferObject;
+                            return run.DataTransferObject.Clone();
                         }
                     }
 
                     Interlocked.Decrement(ref Balance);
                     dataTransferObject = run.DataTransferObject.Clone();
                     // avoid memory leak ;)
-                    //run.Dispose();
+                    run.Dispose();
                 }
             }
             else
@@ -341,11 +341,22 @@ namespace Dev2.DynamicServices
                     _executionToken.IsUserCanceled = true;
 
                     // This was cancel which left the activities resident in the background and caused chaos!
-                    _instance.Terminate(new Exception("User Termination"));   
+                    _instance.Terminate(new Exception("User Termination"));
                 }
                 catch
-            {
+                {
                     //Empty so that the exception does not bubble up. The timeout is set this way to ensure that the workflow stops immediately
+                }
+                finally
+                {
+                    try
+                    {
+                        GC.WaitForFullGCComplete(2000);
+                    }
+                    catch
+                    {
+                        // just swallow it ;)
+                    }
                 }
 
                 ExecutableServiceRepository.Instance.Remove(this);
@@ -454,7 +465,8 @@ namespace Dev2.DynamicServices
                     if(DataTransferObject != null) DataTransferObject.NumberOfSteps = _previousNumberOfSteps;
                 }
 
-                ExecutionStatusCallbackDispatcher.Instance.Post(_result.ExecutionCallbackID, ExecutionStatusCallbackMessageType.CompletedCallback);
+                // Not compatable with run.Dispose() ;)
+                //ExecutionStatusCallbackDispatcher.Instance.Post(_result.ExecutionCallbackID, ExecutionStatusCallbackMessageType.CompletedCallback);
 
             }
 
