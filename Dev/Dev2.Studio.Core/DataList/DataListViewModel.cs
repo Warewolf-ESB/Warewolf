@@ -381,7 +381,6 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 throw new Exception(errorString);
             }
-            AddRecordsetNamesIfMissing();
         }
         public void InitializeDataListViewModel()
         {
@@ -786,6 +785,8 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             varNode.Children = ScalarCollection;
             BaseCollection.Add(varNode);
+
+            AddRecordsetNamesIfMissing();
 
             DataListHeaderItemModel recordsetsNode = DataListItemModelFactory.CreateDataListHeaderItem("Recordset");
             if (RecsetCollection.Count == 0)
