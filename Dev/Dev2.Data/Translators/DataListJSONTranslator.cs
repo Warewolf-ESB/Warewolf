@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
@@ -193,6 +194,11 @@ namespace Dev2.Server.DataList.Translators
             return result.ToString();
         }
 
+        public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors)
+        {
+            errors = null;
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Processes the scalar.

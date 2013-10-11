@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using System.Xml;
 using Dev2.Common;
@@ -229,6 +230,12 @@ namespace Dev2.Server.DataList.Translators
 
         public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
         {
+            throw new NotImplementedException();
+        }
+
+        public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors)
+        {
+            errors = null;
             throw new NotImplementedException();
         }
 

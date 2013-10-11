@@ -92,13 +92,13 @@ namespace Dev2.Activities
             var allErrors = new ErrorResultTO();
             var executionID = DataListExecutionID.Get(context);
             var debugOutputIndexCounter = 1;
+            
             try
             {
                 if(toUpsert.IsDebug)
                 {
                     AddOptionsDebugItems();
                 }
-
                 IDev2DataListEvaluateIterator batchItr;
                 IDev2DataListEvaluateIterator timeoutItr;
                 var parametersIteratorCollection = BuildParametersIteratorCollection(compiler, executionID, out batchItr, out timeoutItr);
@@ -116,19 +116,23 @@ namespace Dev2.Activities
                 }
                 if(sqlBulkCopy != null)
                 {
-                    var dataTableToInsert = BuildDataTableToInsert();
-                    SqlBulkInserter.CurrentOptions = BuildSqlBulkCopyOptions();
-                    if(InputMappings != null && InputMappings.Count > 0)
+                    DataTable dataTableToInsert = null;
+                    if(!BuiltUsingSingleRecset(sqlBulkCopy,compiler,executionID,out dataTableToInsert))
                     {
-                        var iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
-                        allErrors.MergeErrors(errorResultTO);
-                        var listOfIterators = GetIteratorsFromInputMappings(compiler, executionID, allErrors, dataObject, iteratorCollection, out errorResultTO);
-                        FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
-                        foreach(var dataColumnMapping in InputMappings)
+                        dataTableToInsert = BuildDataTableToInsert();
+                        SqlBulkInserter.CurrentOptions = BuildSqlBulkCopyOptions();
+                        if(InputMappings != null && InputMappings.Count > 0)
                         {
-                            if(!String.IsNullOrEmpty(dataColumnMapping.InputColumn))
+                            var iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
+                            allErrors.MergeErrors(errorResultTO);
+                            var listOfIterators = GetIteratorsFromInputMappings(compiler, executionID, allErrors, dataObject, iteratorCollection, out errorResultTO);
+                            FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
+                            foreach(var dataColumnMapping in InputMappings)
                             {
-                                sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(dataColumnMapping.OutputColumn.ColumnName, dataColumnMapping.OutputColumn.ColumnName));
+                                if(!String.IsNullOrEmpty(dataColumnMapping.InputColumn))
+                                {
+                                    sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(dataColumnMapping.OutputColumn.ColumnName, dataColumnMapping.OutputColumn.ColumnName));
+                                }
                             }
                         }
                     }
@@ -159,6 +163,47 @@ namespace Dev2.Activities
                     DispatchDebugState(context, StateType.After);
                 }
             }
+        }
+
+        bool BuiltUsingSingleRecset(SqlBulkCopy sqlBulkCopy,IDataListCompiler compiler,Guid executionID, out DataTable dataTableToInsert)
+        {
+            if(InputMappings.All(mapping => DataListUtil.IsValueRecordset(mapping.InputColumn) || String.IsNullOrEmpty(mapping.InputColumn)))
+            {
+                var currentRecSetName = "";
+                var hasMultiple = false;
+                foreach(var dataColumnMapping in InputMappings)
+                {
+                    var inputColumn = dataColumnMapping.InputColumn;
+                    if(!String.IsNullOrEmpty(inputColumn))
+                    {
+                        if(string.IsNullOrEmpty(currentRecSetName))
+                        {
+                            currentRecSetName = DataListUtil.ExtractRecordsetNameFromValue(inputColumn);
+                        }
+                        var currentRecSetType = DataListUtil.GetRecordsetIndexType(inputColumn);
+                        if(DataListUtil.ExtractRecordsetNameFromValue(inputColumn) != currentRecSetName || currentRecSetType == enRecordsetIndexType.Blank || currentRecSetType == enRecordsetIndexType.Numeric || currentRecSetType == enRecordsetIndexType.Error)
+                        {
+                            hasMultiple = true;
+                            break;
+                        }
+                    }
+                }
+                if(!hasMultiple)
+                {
+                    var expressionsEntry = compiler.FetchBinaryDataList(executionID, out errors);
+                    dataTableToInsert = compiler.ConvertToDataTable(expressionsEntry, currentRecSetName, out errors);
+                    foreach(var dataColumnMapping in InputMappings)
+                    {
+                        if(!String.IsNullOrEmpty(dataColumnMapping.InputColumn))
+                        {
+                            sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(DataListUtil.ExtractFieldNameFromValue(dataColumnMapping.InputColumn), dataColumnMapping.OutputColumn.ColumnName));
+                        }
+                    }
+                    return true;
+                }
+            }
+            dataTableToInsert = null;
+            return false;
         }
 
         SqlBulkCopy SetupSqlBulkCopy(IDev2DataListEvaluateIterator batchItr, IDev2IteratorCollection parametersIteratorCollection, IDev2DataListEvaluateIterator timeoutItr, IDev2DataListUpsertPayloadBuilder<string> toUpsert, IDataListCompiler compiler, Guid executionID, ref int debugOutputIndexCounter)
@@ -322,7 +367,6 @@ namespace Dev2.Activities
                     indexCounter++;
                 }
                 var itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
-
                 iteratorCollection.AddIterator(itr);
                 listOfIterators.Add(itr);
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.IO;
 using System.Text;
 using Dev2.DataList.Contract;
@@ -101,6 +102,12 @@ namespace Dev2.Server.DataList.Translators
 
         public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
         {
+            throw new NotImplementedException();
+        }
+
+        public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors)
+        {
+            errors = null;
             throw new NotImplementedException();
         }
     }

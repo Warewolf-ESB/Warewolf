@@ -41,6 +41,30 @@ namespace Dev2.Data.Translators
         public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
+        }       
+        
+        public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors)
+        {
+            var dbData = new DataTable();
+            IBinaryDataListEntry entry;
+            errors = null;
+            string error;
+            if(input.TryGetEntry(recsetName, out entry, out error))
+            {
+                if(entry.IsRecordset)
+                {
+                    var cols = entry.Columns;
+                    var dataColumns = cols.ToList().ConvertAll(column => new DataColumn(column.ColumnName));
+                    dbData.Columns.AddRange(dataColumns.ToArray());
+                    var fetchRecordsetIndexes = entry.FetchRecordsetIndexes();
+                    while(fetchRecordsetIndexes.HasMore())
+                    {
+                        var binaryDataListItems = entry.FetchRowAt(fetchRecordsetIndexes.FetchNextIndex(), out error);
+                        dbData.LoadDataRow(binaryDataListItems.Select(item => item.TheValue as object).ToArray(), LoadOption.OverwriteChanges);
+                    }
+                }
+            }
+            return dbData;
         }
 
         public Guid Populate(object input, Guid targetDLID, out ErrorResultTO errors)

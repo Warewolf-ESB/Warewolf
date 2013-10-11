@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.Data;
+using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.SystemTemplates;
 using Dev2.Data.SystemTemplates.Models;
@@ -590,6 +591,11 @@ namespace Dev2.DataList.Contract
         public string ConvertAndFilter(Guid curDlid, DataListFormat typeOf, string filterShape, out ErrorResultTO errors)
         {
             return _svrCompiler.ConvertAndFilter(null, curDlid, filterShape, typeOf, out errors);
+        }
+
+        public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors)
+        {
+            return _svrCompiler.ConvertToDataTable(input, recsetName, out errors);
         }
 
         /// <summary>

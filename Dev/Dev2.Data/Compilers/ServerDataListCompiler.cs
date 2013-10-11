@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
@@ -1035,6 +1036,12 @@ namespace Dev2.Server.Datalist
         {
 
             return UpsertSystemTag<IBinaryDataListEntry>(curDLID, tag, val, out errors);
+        }
+
+        public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors)
+        {
+            IDataListTranslator t = _dlServer.GetTranslator(DataListFormat.CreateFormat(GlobalConstants._DATATABLE));
+            return t.ConvertToDataTable(input, recsetName, out errors);
         }
 
         void ProcessRecordsetGroup(RecordsetGroup rsGroup, IBinaryDataList targeDataList, out ErrorResultTO errors)

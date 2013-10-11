@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -388,6 +389,12 @@ namespace Dev2.Data.Translators
             result.Append("</" + _rootTag + ">");
 
             return result.ToString();
+        }
+
+        public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors)
+        {
+            errors = null;
+            throw new NotImplementedException();
         }
 
         public DataListFormat HandlesType()

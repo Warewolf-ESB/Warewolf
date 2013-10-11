@@ -1,4 +1,5 @@
-﻿using Dev2.Data.Binary_Objects;
+﻿using System.Data;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.TO;
@@ -344,6 +345,8 @@ namespace Dev2.DataList.Contract
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
         string ConvertAndFilter(Guid curDlid, DataListFormat typeOf, string filterShape, out ErrorResultTO errors);
+
+        DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts from to.

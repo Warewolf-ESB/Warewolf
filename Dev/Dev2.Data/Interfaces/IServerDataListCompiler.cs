@@ -1,4 +1,5 @@
-﻿using Dev2.DataList.Contract;
+﻿using System.Data;
+using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.TO;
@@ -319,6 +320,6 @@ namespace Dev2.Server.Datalist {
 
         #endregion
 
-        
+        DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors);
     }
 }

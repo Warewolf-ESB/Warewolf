@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.Data;
+using Dev2.Common;
 using Dev2.Data.Translators;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -283,5 +284,10 @@ namespace Dev2.Server.DataList.Translators
             throw new NotImplementedException();
         }
 
+        public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors)
+        {
+            errors = null;
+            throw new NotImplementedException();
+        }
     }
 }

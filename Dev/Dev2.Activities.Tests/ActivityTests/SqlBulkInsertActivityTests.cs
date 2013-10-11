@@ -475,11 +475,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsNotNull(returnedDataTable);
             Assert.AreEqual(4, returnedDataTable.Columns.Count);
             Assert.AreEqual(3,returnedDataTable.Rows.Count);
-            
-            Assert.AreEqual("Bob", returnedDataTable.Rows[0]["TestCol"]);
-            Assert.AreEqual(2, returnedDataTable.Rows[0]["TestCol2"]);
-            Assert.AreEqual('C', returnedDataTable.Rows[0]["TestCol3"]);
-            Assert.AreEqual(21.2m, returnedDataTable.Rows[0]["TestCol4"]);
+
+            Assert.AreEqual("Bob", returnedDataTable.Rows[0]["field1"]);
+            Assert.AreEqual(2, returnedDataTable.Rows[0]["field2"]);
+            Assert.AreEqual('C', returnedDataTable.Rows[0]["field3"]);
+            Assert.AreEqual(21.2m, returnedDataTable.Rows[0]["field4"]);
 
             Assert.AreEqual("Jane", returnedDataTable.Rows[1]["TestCol"]);
             Assert.AreEqual(3, returnedDataTable.Rows[1]["TestCol2"]);
