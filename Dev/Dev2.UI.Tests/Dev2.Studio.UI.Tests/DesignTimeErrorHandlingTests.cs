@@ -69,18 +69,20 @@ namespace Dev2.Studio.UI.Tests
         public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_DbServiceMappingsFixed()
         // ReSharper restore InconsistentNaming
         {
+            const string workflowToUse = "Bug_10011";
+            const string serviceToUse = "Bug_10011_DbService";
             Clipboard.Clear();
             // Open the Workflow
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUiMap.ClearExplorerSearchText();
-            ExplorerUiMap.EnterExplorerSearchText("Bug_10011");
-            ExplorerUiMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug_10011");
+            ExplorerUiMap.EnterExplorerSearchText(workflowToUse);
+            ExplorerUiMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", workflowToUse);
             var theTab = TabManagerUiMap.GetActiveTab();
             // Edit the DbService
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUiMap.ClearExplorerSearchText();
-            ExplorerUiMap.EnterExplorerSearchText("Bug_10011_DbService");
-            ExplorerUiMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
+            ExplorerUiMap.EnterExplorerSearchText(serviceToUse);
+            ExplorerUiMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", serviceToUse);
             // Get wizard window
             var wizardWindow = DatabaseServiceWizardUiMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if(WizardsUIMap.WaitForWizard(5000))
@@ -94,9 +96,13 @@ namespace Dev2.Studio.UI.Tests
                 SendKeys.SendWait("{DEL}");
                 // Save
                 DatabaseServiceWizardUiMap.ClickOK();
-                ResourceChangedPopUpUiMap.ClickCancel();
 
-                ExplorerUiMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
+                if (ResourceChangedPopUpUIMap.WaitForDialog(5000))
+                {
+                    ResourceChangedPopUpUiMap.ClickCancel();
+                }
+
+                ExplorerUiMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", serviceToUse);
                 // Get wizard window
                 wizardWindow = DatabaseServiceWizardUiMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
                 if(WizardsUIMap.WaitForWizard(5000))
@@ -119,10 +125,10 @@ namespace Dev2.Studio.UI.Tests
                 }
 
                 // Fix Errors
-                if(WorkflowDesignerUiMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService(DsfActivityDesigner)"))
+                if(WorkflowDesignerUiMap.Adorner_ClickFixErrors(theTab, serviceToUse+"(DsfActivityDesigner)"))
                 {
                     // Assert mapping does not exist
-                    Assert.IsFalse(WorkflowDesignerUiMap.DoesActivityDataMappingContainText(WorkflowDesignerUiMap.FindControlByAutomationId(theTab, "Bug_10011_DbService(DsfActivityDesigner)"), "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
+                    Assert.IsFalse(WorkflowDesignerUiMap.DoesActivityDataMappingContainText(WorkflowDesignerUiMap.FindControlByAutomationId(theTab, serviceToUse+"(DsfActivityDesigner)"), "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
                 }
                 else
                 {
@@ -167,7 +173,11 @@ namespace Dev2.Studio.UI.Tests
                 SendKeys.SendWait(" ");
                 // Save
                 DatabaseServiceWizardUiMap.ClickOK();
-                ResourceChangedPopUpUiMap.ClickCancel();
+
+                if (ResourceChangedPopUpUIMap.WaitForDialog(5000))
+                {
+                    ResourceChangedPopUpUiMap.ClickCancel();
+                }
 
                 // Fix Errors
                 if(WorkflowDesignerUiMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService(DsfActivityDesigner)"))
