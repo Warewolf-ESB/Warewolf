@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Dev2.Composition;
+using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Services.Communication;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Utils;
@@ -107,6 +108,120 @@ OS version : ");
             feedbackViewModel.Send(mockCommService.Object);
 
             Assert.AreEqual("RecordingLog.log;ServerLog.log;StudioLog.log", feedbackViewModel.Attachments);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("FeedbackViewModel_IsOutlookInstalled")]
+        public void FeedbackViewModel_IsOutlookInstalled_IsTrue_SendMessageButtonCaptionIsSetToOpenMail()
+        {
+            var mockSysInfo = new Mock<ISystemInfoService>();
+            mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
+
+            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
+
+            var mockCommService = new Mock<ICommService<EmailCommMessage>>();
+            mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
+
+            var attacheFiles = new Dictionary<string, string>
+            {
+                {"RecordingLog", "RecordingLog.log"},
+                {"ServerLog", "ServerLog.log"},
+                {"StudioLog", "StudioLog.log"}
+            };
+
+            var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = (e) => true };
+            feedbackViewModel.IsOutlookInstalled = () => true;
+
+            Assert.AreEqual("Open Outlook Mail", feedbackViewModel.SendMessageButtonCaption);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("FeedbackViewModel_IsOutlookInstalled")]
+        public void FeedbackViewModel_IsOutlookInstalled_IsFalse_SendMessageButtonCaptionIsSetToGotoCommunity()
+        {
+            var mockSysInfo = new Mock<ISystemInfoService>();
+            mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
+
+            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
+
+            var mockCommService = new Mock<ICommService<EmailCommMessage>>();
+            mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
+
+            var attacheFiles = new Dictionary<string, string>
+            {
+                {"RecordingLog", "RecordingLog.log"},
+                {"ServerLog", "ServerLog.log"},
+                {"StudioLog", "StudioLog.log"}
+            };
+
+            var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = (e) => true };
+            feedbackViewModel.IsOutlookInstalled = () => false;
+
+            Assert.AreEqual("Go to Community", feedbackViewModel.SendMessageButtonCaption);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("FeedbackViewModel_Send")]
+        public void FeedbackViewModel_Send_OutlookIsNotInstalled_BrowserIsOpenedToCommunity()
+        {
+            var mockSysInfo = new Mock<ISystemInfoService>();
+            mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
+
+            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
+
+            var mockCommService = new Mock<ICommService<EmailCommMessage>>();
+            mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
+
+            var attacheFiles = new Dictionary<string, string>
+            {
+                {"RecordingLog", "RecordingLog.log"},
+                {"ServerLog", "ServerLog.log"},
+                {"StudioLog", "StudioLog.log"}
+            };
+
+            var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = (e) => true };
+
+            var popupController = new Mock<IBrowserPopupController>();
+            popupController.Setup(m => m.ShowPopup(It.IsAny<string>())).Verifiable();
+            feedbackViewModel.BrowserPopupController = popupController.Object;
+            feedbackViewModel.IsOutlookInstalled = () => false;
+            feedbackViewModel.Send();
+
+            popupController.Verify(m => m.ShowPopup(It.IsAny<string>()), Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("FeedbackViewModel_Send")]
+        public void FeedbackViewModel_OutlookIsInstalled_BrowserIsNotOpenedToCommunity()
+        {
+            var mockSysInfo = new Mock<ISystemInfoService>();
+            mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
+
+            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
+
+            var mockCommService = new Mock<ICommService<EmailCommMessage>>();
+            mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
+
+            var attacheFiles = new Dictionary<string, string>
+            {
+                {"RecordingLog", "RecordingLog.log"},
+                {"ServerLog", "ServerLog.log"},
+                {"StudioLog", "StudioLog.log"}
+            };
+
+            var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = (e) => true };
+
+            var popupController = new Mock<IBrowserPopupController>();
+            popupController.Setup(m => m.ShowPopup(It.IsAny<string>())).Verifiable();
+            feedbackViewModel.BrowserPopupController = popupController.Object;
+            feedbackViewModel.IsOutlookInstalled = () => true;
+            feedbackViewModel.Send();
+
+            popupController.Verify(m => m.ShowPopup(It.IsAny<string>()), Times.Never());
         }
 
         [TestMethod]

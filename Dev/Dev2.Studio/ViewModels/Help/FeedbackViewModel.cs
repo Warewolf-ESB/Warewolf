@@ -281,21 +281,12 @@ namespace Dev2.Studio.ViewModels.Help
         /// </value>
         public bool HasStudioLogAttachment { get { return DoesFileExists(StudioLogAttachmentPath); } }
 
-
-        /// <summary>
-        /// Get a value indicating whether to give a option to send and email. Some users may not have an Outlook installation
-        /// </summary>
-        public bool SendEmailVisibility
-        {
-            get { return IsOutlookInstalled(); }
-        }
-
         /// <summary>
         /// Get a value displayed on the button be it allowing user to send mail or to go to the community
         /// </summary>
         public string SendMessageButtonCaption
         {
-            get { return IsOutlookInstalled() ? "Open Mail" : "Go to Community"; }
+            get { return IsOutlookInstalled() ? "Open Outlook Mail" : "Go to Community"; }
         }
 
         /// <summary>
@@ -321,7 +312,7 @@ namespace Dev2.Studio.ViewModels.Help
         /// <summary>
         /// Browser Popup
         /// </summary>
-        public IBrowserPopupController BrowserPopupController { get; private set; }
+        public IBrowserPopupController BrowserPopupController { get; set; }
 
         public ICommand SendCommand
         {
@@ -440,11 +431,14 @@ namespace Dev2.Studio.ViewModels.Help
             }
         }
 
-        public static bool IsOutlookInstalled()
+        /// <summary>
+        /// Function to determine if outlook is installed machine running the studio
+        /// </summary>
+        public Func<bool> IsOutlookInstalled = () =>
         {
             try
             {
-                Type type = Type.GetTypeFromCLSID(new Guid("0006F03A-0000-0000-C000-000000000046")); 
+                Type type = Type.GetTypeFromCLSID(new Guid("0006F03A-0000-0000-C000-000000000046"));
                 if(type == null)
                     return false;
                 object obj = Activator.CreateInstance(type);
@@ -455,7 +449,7 @@ namespace Dev2.Studio.ViewModels.Help
             {
                 return false;
             }
-        }
+        };
 
         /// <summary>
         /// Cancels the feedback
