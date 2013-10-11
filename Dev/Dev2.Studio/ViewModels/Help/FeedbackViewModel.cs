@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Input;
 using Dev2.Composition;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Services.Communication;
@@ -58,6 +59,7 @@ namespace Dev2.Studio.ViewModels.Help
             Init(sysInfo, attachedFiles);
             SelectedCategory = "Feedback";
             DisplayName = "Feedback";
+            BrowserPopupController = new ExternalBrowserPopupController();
         }
 
         /// <summary>
@@ -278,6 +280,24 @@ namespace Dev2.Studio.ViewModels.Help
         /// <c>true</c> if this instance has an attachment; otherwise, <c>false</c>.
         /// </value>
         public bool HasStudioLogAttachment { get { return DoesFileExists(StudioLogAttachmentPath); } }
+
+
+        /// <summary>
+        /// Get a value indicating whether to give a option to send and email. Some users may not have an Outlook installation
+        /// </summary>
+        public bool SendEmailVisibility
+        {
+            get { return IsOutlookInstalled(); }
+        }
+
+        /// <summary>
+        /// Get a value displayed on the button be it allowing user to send mail or to go to the community
+        /// </summary>
+        public string SendMessageButtonCaption
+        {
+            get { return IsOutlookInstalled() ? "Open Mail" : "Go to Community"; }
+        }
+
         /// <summary>
         /// Gets or sets the sys info service to retreieve system info from.
         /// </summary>
@@ -297,6 +317,11 @@ namespace Dev2.Studio.ViewModels.Help
         /// <author>Jurie.smit</author>
         /// <datetime>2013/01/14-09:17 AM</datetime>
         public MapiEmailCommService<EmailCommMessage> EmailCommService { get; set; }
+
+        /// <summary>
+        /// Browser Popup
+        /// </summary>
+        public IBrowserPopupController BrowserPopupController { get; private set; }
 
         public ICommand SendCommand
         {
@@ -403,19 +428,26 @@ namespace Dev2.Studio.ViewModels.Help
         /// <datetime>2013/01/14-09:19 AM</datetime>
         public void Send()
         {
-            IsOutlookInstalled();
-            var emailCommService = new MapiEmailCommService<EmailCommMessage>();
-            Send(emailCommService);
+            if(IsOutlookInstalled())
+            {
+                var emailCommService = new MapiEmailCommService<EmailCommMessage>();
+                Send(emailCommService);
+            }
+            else
+            {
+                BrowserPopupController.ShowPopup(StringResources.Uri_Community_HomePage);
+            }
         }
 
         public static bool IsOutlookInstalled()
         {
             try
             {
-                Type type = Type.GetTypeFromCLSID(new Guid("0006F03A-0000-0000-C000-000000000046")); //Outlook.Application
-                if(type == null) return false;
+                Type type = Type.GetTypeFromCLSID(new Guid("0006F03A-0000-0000-C000-000000000046")); 
+                if(type == null)
+                    return false;
                 object obj = Activator.CreateInstance(type);
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                Marshal.ReleaseComObject(obj);
                 return true;
             }
             catch(COMException)

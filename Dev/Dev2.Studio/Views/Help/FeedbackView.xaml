@@ -74,8 +74,8 @@
 
         <Button Content="Cancel" MinWidth="100"  Grid.Row="7" HorizontalAlignment="Left" VerticalAlignment="Top" Command="{Binding CancelCommand}" Margin="15,4,15,0"
                 AutomationProperties.AutomationId="FeebackView_Cancel"/>
-        <Button Content="Open default email" MinWidth="120"  Grid.Row="7" HorizontalAlignment="Right" 
-                Width="150"
+        <Button Content="{Binding SendMessageButtonCaption}" MinWidth="120"  Grid.Row="7" HorizontalAlignment="Right" 
+                Width="150" 
                 VerticalAlignment="Top" Command="{Binding SendCommand}" Margin="0,5,15,15"
                 AutomationProperties.AutomationId="FeebackView_Send"/>
     </Grid>
