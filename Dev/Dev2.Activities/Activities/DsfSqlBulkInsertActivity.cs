@@ -114,18 +114,24 @@ namespace Dev2.Activities
                         sqlBulkCopy = SetupSqlBulkCopy(batchItr, parametersIteratorCollection, timeoutItr, toUpsert, compiler, executionID, ref debugOutputIndexCounter);
                     }
                 }
-                var dataTableToInsert = BuildDataTableToInsert();
-                SqlBulkInserter.CurrentOptions = BuildSqlBulkCopyOptions();
-                if(InputMappings != null && InputMappings.Count > 0)
-                {
-                    var iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
-                    allErrors.MergeErrors(errorResultTO);
-                    var listOfIterators = GetIteratorsFromInputMappings(compiler, executionID, allErrors, dataObject, iteratorCollection, out errorResultTO);
-                    FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
-                }
-
                 if(sqlBulkCopy != null)
                 {
+                    var dataTableToInsert = BuildDataTableToInsert();
+                    SqlBulkInserter.CurrentOptions = BuildSqlBulkCopyOptions();
+                    if(InputMappings != null && InputMappings.Count > 0)
+                    {
+                        var iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
+                        allErrors.MergeErrors(errorResultTO);
+                        var listOfIterators = GetIteratorsFromInputMappings(compiler, executionID, allErrors, dataObject, iteratorCollection, out errorResultTO);
+                        FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
+                        foreach(var dataColumnMapping in InputMappings)
+                        {
+                            if(!String.IsNullOrEmpty(dataColumnMapping.InputColumn))
+                            {
+                                sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(dataColumnMapping.OutputColumn.ColumnName, dataColumnMapping.OutputColumn.ColumnName));
+                            }
+                        }
+                    }
                     SqlBulkInserter.Insert(sqlBulkCopy, dataTableToInsert);
                     toUpsert.Add(Result, "Success");
                     compiler.Upsert(executionID, toUpsert, out errors);
@@ -134,7 +140,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
-                toUpsert.Add(Result, "Failure");
+                toUpsert.Add(Result, string.Format("Failure: {0}", e.Message));
                 compiler.Upsert(executionID, toUpsert, out errors);
                 AddDebugOutputItemFromEntry(Result, compiler, executionID, debugOutputIndexCounter);
                 allErrors.AddError(e.Message);

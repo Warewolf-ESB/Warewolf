@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
+using System.Runtime.Serialization;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
-using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -34,12 +32,18 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             string database;
             values.TryGetValue("Database", out database);
-
+            if(string.IsNullOrEmpty(database))
+            {
+                throw new InvalidDataContractException("No database set.");
+            }
             var dbSource = JsonConvert.DeserializeObject<DbSource>(database);
+            if(dbSource == null)
+            {
+                throw new InvalidDataContractException(string.Format("Invalid database sent {0}.", database));
+            }
             DataTable columnInfo;
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
-                // Connect to the database then retrieve the schema information.
                 connection.Open();
                 columnInfo = connection.GetSchema("Tables");
             }
@@ -52,9 +56,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var dbTable = tables.Find(table => table.TableName == tableName);
                     if(dbTable == null)
                     {
-                        dbTable = new DbTable();
-                        dbTable.TableName = tableName;
-                        dbTable.Columns = new List<DbColumn>();
+                        dbTable = new DbTable { TableName = tableName, Columns = new List<DbColumn>() };
                         tables.Add(dbTable);
                     }
                 }

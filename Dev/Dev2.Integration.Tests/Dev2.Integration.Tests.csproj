@@ -247,6 +247,7 @@
     <Compile Include="Dev2.Application.Server.Tests\InternalServices\FindDriveServiceTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\InternalServices\FindNetworkComputerServiceTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\InternalServices\FindResourceServiceTest.cs" />
+    <Compile Include="Dev2.Application.Server.Tests\InternalServices\GetDatabaseTablesServiceTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\InternalServices\SaveResourceServiceTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\RelativeUriResourceTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\ServerLifecycleManagerTest.cs" />

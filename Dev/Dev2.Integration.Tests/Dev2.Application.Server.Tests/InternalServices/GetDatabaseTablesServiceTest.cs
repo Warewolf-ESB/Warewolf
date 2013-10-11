@@ -1,33 +1,29 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Integration.Tests.Helpers;
 using System.Xml.Linq;
+using Dev2.DynamicServices;
+using Dev2.Integration.Tests.Helpers;
+using Dev2.Runtime.ServiceModel.Data;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 
-namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices {
+// ReSharper disable InconsistentNaming
+namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
+{
     /// <summary>
     /// Summary description for FindDependenciesServiceTest
     /// </summary>
     [TestClass]
-    public class FindDependenciesServiceTest {
+    public class GetDatabaseTablesServiceTest {
         
         private string _webserverURI = ServerSettings.WebserverURI;
-        private TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext {
-            get {
-                return testContextInstance;
-            }
-            set {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //
@@ -52,15 +48,19 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices 
         #endregion
 
         [TestMethod]
-        public void FindDependencies_ExistingService_Expected_AllDependanciesReturned() {
-            string postData = String.Format("{0}{1}", _webserverURI, "FindDependencyService?ResourceName=Button");
-            XElement response = XElement.Parse(TestHelper.PostDataToWebserver(postData));
+        public void GetTablesForDatabase_GivenDatabaseSource_Expected_AllTablesForDatabase()
+        {
+            var dbSource = new DbSource();
+            dbSource.DatabaseName = "Cities";
+            dbSource.Server = "RSAKLFSVRGENDEV";
+            dbSource.AuthenticationType = AuthenticationType.User;
+            dbSource.ServerType = enSourceType.SqlDatabase;
+            dbSource.UserID = "testUser";
+            dbSource.Password = "test123";
+            //dbSource.ConnectionString = "Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Cities;User ID=testUser;Password=test123;";
 
-            IEnumerable<XNode> nodes = response.DescendantNodes();
-            int count = nodes.Count();
-            // More than 3 nodes indicate that the service returned dependancies
-            Assert.IsTrue(count > 3);
-
+            string postData = String.Format("{0}{1}", _webserverURI, string.Format("GetDatabaseTablesService?Database={0}", dbSource));
+            var response = TestHelper.PostDataToWebserver(postData);
         }
 
     }
