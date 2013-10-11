@@ -136,6 +136,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ExternalService_EditService")]
+        [Ignore]//Ashley: Earmarked for grooming
         public void ExternalService_EditService_EditWithNoSecondSaveDialog_ExpectOneDialog()
         {
             //------------Setup for test--------------------------
@@ -233,7 +234,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [TestCategory("UITest")]
         [Description("Test that clicking on the help button does indeed open an example workflow")]
-        [Owner("Tshepo")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [Owner("Tshepo")]
         public void AdornerHelpButtonOpenAnExampleWorlkflowTest()
         {
             // Create the workflow

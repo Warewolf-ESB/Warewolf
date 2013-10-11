@@ -1,5 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using System;
+using System.Drawing;
+using Dev2.CodedUI.Tests;
+using Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 
@@ -12,7 +17,7 @@ namespace Dev2.Studio.UI.Tests
     [CodedUITest, System.Runtime.InteropServices.GuidAttribute("DAA88B10-98C4-488E-ACB2-1256C95CE8F0")]
     public class ExplorerUITests
     {
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void SearchAndRefresh_AttemptToSearch_ExpectedSearchFilteredByAllItems()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");

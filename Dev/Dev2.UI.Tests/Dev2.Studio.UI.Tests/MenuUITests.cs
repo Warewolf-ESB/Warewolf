@@ -60,7 +60,7 @@ namespace Dev2.Studio.UI.Tests
             }
         }
 
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void DebugAWorkFlow_EnsureSaveIsEnabledAfterCompletion()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");

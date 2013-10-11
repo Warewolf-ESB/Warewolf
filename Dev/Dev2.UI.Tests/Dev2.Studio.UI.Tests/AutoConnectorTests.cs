@@ -18,7 +18,7 @@ namespace Dev2.Studio.UI.Tests
     /// <summary>
     ///    These are UI tests around the auto connectors
     /// </summary>
-    [CodedUITest][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+    [CodedUITest]
     public class AutoConnectorTests
     {
         #region Properties
