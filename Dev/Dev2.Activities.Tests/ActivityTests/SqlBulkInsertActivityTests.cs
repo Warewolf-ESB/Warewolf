@@ -788,97 +788,109 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Use Internal Transaction", debugInputs[0].Value);
 
             debugInputs = inRes[5].FetchResultsList();
-            Assert.AreEqual(12,debugInputs.Count);
+            Assert.AreEqual(13,debugInputs.Count);
             Assert.AreEqual("1",debugInputs[0].Value);
             Assert.AreEqual(DebugItemResultType.Label,debugInputs[0].Type);
 
-            Assert.AreEqual("Insert Into",debugInputs[1].Value);
+            Assert.AreEqual("Insert",debugInputs[1].Value);
             Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
 
-            Assert.AreEqual("TestCol System.String(100)", debugInputs[2].Value);
+            Assert.AreEqual("[[recset1(1).field1]]", debugInputs[2].Value);
             Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
+            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[3].Value);
+            Assert.AreEqual(DebugItemResultType.Label, debugInputs[3].Type);
+            Assert.AreEqual("Bob", debugInputs[4].Value);
+            Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
 
-            Assert.AreEqual("[[recset1(1).field1]]", debugInputs[3].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[3].Type);
-            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[4].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[4].Type);
-            Assert.AreEqual("Bob", debugInputs[5].Value);
-            Assert.AreEqual(DebugItemResultType.Value, debugInputs[5].Type);
-
-            Assert.AreEqual("[[recset1(2).field1]]", debugInputs[6].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[6].Type);
-            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[7].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[7].Type);
-            Assert.AreEqual("Jane", debugInputs[8].Value);
-            Assert.AreEqual(DebugItemResultType.Value, debugInputs[8].Type); 
+            Assert.AreEqual("[[recset1(2).field1]]", debugInputs[5].Value);
+            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[5].Type);
+            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[6].Value);
+            Assert.AreEqual(DebugItemResultType.Label, debugInputs[6].Type);
+            Assert.AreEqual("Jane", debugInputs[7].Value);
+            Assert.AreEqual(DebugItemResultType.Value, debugInputs[7].Type); 
             
-            Assert.AreEqual("[[recset1(3).field1]]", debugInputs[9].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[9].Type);
-            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[10].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[10].Type);
-            Assert.AreEqual("Jill", debugInputs[11].Value);
-            Assert.AreEqual(DebugItemResultType.Value, debugInputs[11].Type);
+            Assert.AreEqual("[[recset1(3).field1]]", debugInputs[8].Value);
+            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[8].Type);
+            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[9].Value);
+            Assert.AreEqual(DebugItemResultType.Label, debugInputs[9].Type);
+            Assert.AreEqual("Jill", debugInputs[10].Value);
+            Assert.AreEqual(DebugItemResultType.Value, debugInputs[10].Type);
+
+            Assert.AreEqual("Into", debugInputs[11].Value);
+            Assert.AreEqual(DebugItemResultType.Label, debugInputs[11].Type);
+
+            Assert.AreEqual("TestCol System.String(100)", debugInputs[12].Value);
+            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[12].Type);
 
            debugInputs = inRes[6].FetchResultsList();
 
            Assert.AreEqual("2", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
-           Assert.AreEqual("Insert Into", debugInputs[1].Value);
+           Assert.AreEqual("Insert", debugInputs[1].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
-
-           Assert.AreEqual("TestCol2 System.Int32(100)", debugInputs[2].Value);
+            
+           Assert.AreEqual("[[recset1(3).field2]]", debugInputs[2].Value);
            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[3].Type);
+           Assert.AreEqual("1999", debugInputs[4].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
 
-           Assert.AreEqual("[[recset1(3).field2]]", debugInputs[3].Value);
-           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[3].Type);
-           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[4].Value);
-           Assert.AreEqual(DebugItemResultType.Label, debugInputs[4].Type);
-           Assert.AreEqual("1999", debugInputs[5].Value);
-           Assert.AreEqual(DebugItemResultType.Value, debugInputs[5].Type);
+           Assert.AreEqual("Into", debugInputs[5].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[5].Type);
+
+           Assert.AreEqual("TestCol2 System.Int32(100)", debugInputs[6].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[6].Type);
 
            debugInputs = inRes[8].FetchResultsList();
 
            Assert.AreEqual("4", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
-           Assert.AreEqual("Insert Into", debugInputs[1].Value);
+           Assert.AreEqual("Insert", debugInputs[1].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
-
-           Assert.AreEqual("Val System.String(100)", debugInputs[2].Value);
+            
+           Assert.AreEqual("[[val]]", debugInputs[2].Value);
            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[3].Type);
+           Assert.AreEqual("Hello", debugInputs[4].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
 
-           Assert.AreEqual("[[val]]", debugInputs[3].Value);
-           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[3].Type);
-           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[4].Value);
-           Assert.AreEqual(DebugItemResultType.Label, debugInputs[4].Type);
-           Assert.AreEqual("Hello", debugInputs[5].Value);
-           Assert.AreEqual(DebugItemResultType.Value, debugInputs[5].Type);
+           Assert.AreEqual("Into", debugInputs[5].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[5].Type);
+
+           Assert.AreEqual("Val System.String(100)", debugInputs[6].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[6].Type);
 
            debugInputs = inRes[9].FetchResultsList();
 
            Assert.AreEqual("5", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
-           Assert.AreEqual("Insert Into", debugInputs[1].Value);
+           Assert.AreEqual("Insert", debugInputs[1].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
 
-           Assert.AreEqual("Col1 System.String(100)", debugInputs[2].Value);
+           Assert.AreEqual("[[rec(1).f1]]", debugInputs[2].Value);
            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[3].Type);
+           Assert.AreEqual("JJU", debugInputs[4].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
 
-           Assert.AreEqual("[[rec(1).f1]]", debugInputs[3].Value);
-           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[3].Type);
-           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[4].Value);
-           Assert.AreEqual(DebugItemResultType.Label, debugInputs[4].Type);
-           Assert.AreEqual("JJU", debugInputs[5].Value);
-           Assert.AreEqual(DebugItemResultType.Value, debugInputs[5].Type);
+           Assert.AreEqual("[[rec(2).f1]]", debugInputs[5].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[5].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[6].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[6].Type);
+           Assert.AreEqual("KKK", debugInputs[7].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugInputs[7].Type);
 
-           Assert.AreEqual("[[rec(2).f1]]", debugInputs[6].Value);
-           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[6].Type);
-           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[7].Value);
-           Assert.AreEqual(DebugItemResultType.Label, debugInputs[7].Type);
-           Assert.AreEqual("KKK", debugInputs[8].Value);
-           Assert.AreEqual(DebugItemResultType.Value, debugInputs[8].Type);
+           Assert.AreEqual("Into", debugInputs[8].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[8].Type);
+
+           Assert.AreEqual("Col1 System.String(100)", debugInputs[9].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[9].Type);
 
            Assert.AreEqual(3, outRes.Count);
            var debugOutputs = outRes[0].FetchResultsList();

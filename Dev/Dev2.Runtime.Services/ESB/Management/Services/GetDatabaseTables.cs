@@ -59,21 +59,19 @@ namespace Dev2.Runtime.ESB.Management.Services
                         tables.Add(dbTable);
                     }
                     var columnName = row["COLUMN_NAME"] as string;
-                    var dbColumn = new DbColumn{ColumnName = columnName};
+                    var dbColumn = new DbColumn { ColumnName = columnName };
 
                     SqlDbType sqlDataType;
                     var typeValue = row["DATA_TYPE"] as string;
                     if(Enum.TryParse(typeValue, true, out sqlDataType))
-                        {
+                    {
                         dbColumn.SqlDataType = sqlDataType;
-                        dbColumn.DataType = typeof(string);
                     }
                     var columnLength = row["CHARACTER_MAXIMUM_LENGTH"] is int ? (int)row["CHARACTER_MAXIMUM_LENGTH"] : -1;
                     dbColumn.MaxLength = columnLength;
                     dbTable.Columns.Add(dbColumn);
-                        }
+                }
             }
-
             return JsonConvert.SerializeObject(tables);
         }
 

@@ -130,7 +130,7 @@ namespace Dev2.Activities
                 if(String.IsNullOrEmpty(BatchSize) && String.IsNullOrEmpty(Timeout))
                 {
                     var sqlBulkCopy = new SqlBulkCopy(Database.ConnectionString, SqlBulkInserter.CurrentOptions) { DestinationTableName = TableName };
-                SqlBulkInserter.Insert(sqlBulkCopy, dataTableToInsert);
+                    SqlBulkInserter.Insert(sqlBulkCopy, dataTableToInsert);
                 }
                 toUpsert.Add(Result, "Success");
                 compiler.Upsert(executionID, toUpsert, out errors);
@@ -259,11 +259,11 @@ namespace Dev2.Activities
             var itemToAdd = new DebugItem();
 
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCounter.ToString(CultureInfo.InvariantCulture) });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Insert Into" });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Insert" });
+            itemToAdd.AddRange(CreateDebugItemsFromEntry(inputColumn, expressionsEntry, executionID, enDev2ArgumentType.Input));
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Into" });
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = outputColumnName + " " + outputColumnDataType + "(" + maxLength + ")" });
             
-            itemToAdd.AddRange(CreateDebugItemsFromEntry(inputColumn, expressionsEntry, executionID, enDev2ArgumentType.Input));
-
             _debugInputs.Add(itemToAdd);
         }
 
