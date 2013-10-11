@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Dev2.Common.ExtMethods;
+﻿using Dev2.Common.ExtMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.ExtMethods
@@ -72,6 +69,26 @@ namespace Dev2.Tests.ExtMethods
             //------------Assert Results-------------------------
 
             Assert.AreEqual("FPR", result);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DoubleMetaphone_GenerateDoubleMetaphone")]
+        public void DoubleMetaphone_GenerateDoubleMetaphone_NormalUsage_GoodResult3()
+        {
+            //------------Setup for test--------------------------
+            string variable = "f1a";
+            string variable2 = "f1";
+
+
+            //------------Execute Test---------------------------
+            var result = variable.GenerateDoubleMetaphone();
+            var result2 = variable2.GenerateDoubleMetaphone();
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual("F", result);
+            Assert.AreEqual("F", result2);
         }
 
     }

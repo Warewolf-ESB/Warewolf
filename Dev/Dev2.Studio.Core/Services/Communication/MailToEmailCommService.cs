@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using Dev2.Studio.Core.Services.Communication.Mapi;
+﻿using System.Diagnostics;
 
 namespace Dev2.Studio.Core.Services.Communication
 {

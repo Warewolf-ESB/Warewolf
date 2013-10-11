@@ -1,15 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
+using Dev2.Common.ExtMethods;
+using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
-using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.DataList;
 
 namespace Dev2.DataList
 {
+    /// <summary>
+    /// Used to perform fuzzy matching of sorts ;)
+    /// </summary>
+    class FuzzyMatchVO
+    {
+        internal IList<IDev2Definition> FuzzyDefinitions { get; private set; }
+
+        internal IList<string> FuzzyValueHash { get; private set; }
+        internal IList<string> FuzzyMapsToHash { get; private set; }
+
+        internal FuzzyMatchVO(IList<IDev2Definition> defs)
+        {
+            FuzzyDefinitions = defs;
+
+            // bootstrap hashes ;)
+            foreach (var def in defs)
+            {
+                if (!string.IsNullOrEmpty(def.Value))
+                {
+                    FuzzyValueHash.Add(def.Value.GenerateDoubleMetaphone());
+                }
+
+                if (!string.IsNullOrEmpty(def.MapsTo))
+                {
+                    FuzzyMapsToHash.Add(def.MapsTo.GenerateDoubleMetaphone());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Fetches the match.
+        /// </summary>
+        /// <param name="token">The token.</param>
+        /// <param name="useValueHash">if set to <c>true</c> [use value hash].</param>
+        /// <returns></returns>
+        internal string FetchMatch(string token, bool useValueHash)
+        {
+            return string.Empty;
+        }
+    }
 
     /// <summary>
     /// Used to return the mapping view models ;)
@@ -99,13 +141,27 @@ namespace Dev2.DataList
                     string serviceDefinition = activity.ResourceModel.ServiceDefinition;
                     if (!string.IsNullOrEmpty(serviceDefinition))
                     {
+                        string inputs = string.Empty;
+                        string outputs = string.Empty;
 
-                        var inputs = ExtractMappingData(serviceDefinition, "Inputs");
-                        var outputs = ExtractMappingData(serviceDefinition, "Outputs");
+                        // handle workflows differently ;)
+                        if (activity.ResourceModel.ResourceType == ResourceType.WorkflowService)
+                        {
+                            var datalist = activity.ResourceModel.DataList;
+                            var compiler = DataListFactory.CreateDataListCompiler();
+
+                            inputs = compiler.GenerateSerializableDefsFromDataList(datalist, enDev2ColumnArgumentDirection.Input);
+                            outputs = compiler.GenerateSerializableDefsFromDataList(datalist, enDev2ColumnArgumentDirection.Output);
+                        }
+                        else
+                        {
+                            // handle services ;)
+                            inputs = ExtractMappingData(serviceDefinition, "Inputs");
+                            outputs = ExtractMappingData(serviceDefinition, "Outputs");
+                        }
 
                         ActivityInputDefinitions = inputs;
-                        ActivityOutputDefinitions = outputs;
-
+                        ActivityOutputDefinitions = outputs;     
                     }
                 }
             }
@@ -156,13 +212,43 @@ namespace Dev2.DataList
 
             if (string.IsNullOrEmpty(savedMappingData))
             {
-                result = CreateMappingList(mappingDefinitions, parser);
+                // TODO : Inject fuzzy matching logic here ;)
+                var fuzzyMatchDefinitions = GenerateMatchFragmentsFromDataList();
+
+                result = CreateMappingList(mappingDefinitions, parser, fuzzyMatchDefinitions);
             }
             else
             {
+                
+                // generate the master view ;)
+                var masterView = CreateMappingList(mappingDefinitions, parser);
+
                 // use existing data ;)
-                result = CreateMappingList(savedMappingData, parser);
+                var existingView = CreateMappingList(savedMappingData, parser);
+
+                // Now adjust for the difference between the two views ;)
+                result = ReconsileExitingAndMasterView(masterView, existingView);
             }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Reconsiles the exiting and master view.
+        /// </summary>
+        /// <param name="masterView">The master view.</param>
+        /// <param name="existingView">The existing view.</param>
+        /// <returns></returns>
+        private IList<IInputOutputViewModel> ReconsileExitingAndMasterView(IList<IInputOutputViewModel> masterView, IList<IInputOutputViewModel> existingView)
+        {
+            IList<IInputOutputViewModel> result = null;
+
+            var equalityCompareImpl = new InputOutputViewModelEqualityComparer();
+
+            var intersectionResult = existingView.Intersect(masterView, equalityCompareImpl);
+
+            // ordering maters ;)
+            result = intersectionResult.Union(masterView, equalityCompareImpl).ToList();
 
             return result;
         }
@@ -172,22 +258,32 @@ namespace Dev2.DataList
         /// </summary>
         /// <param name="mappingDefinitions">The mapping definitions.</param>
         /// <param name="parser">The parser.</param>
+        /// <param name="fuzzyMatch">The fuzzy match.</param>
         /// <returns></returns>
-        private IList<IInputOutputViewModel> CreateMappingList(string mappingDefinitions, IDev2LanguageParser parser)
+        private IList<IInputOutputViewModel> CreateMappingList(string mappingDefinitions, IDev2LanguageParser parser, FuzzyMatchVO fuzzyMatch = null)
         {
             IList<IInputOutputViewModel> result = new List<IInputOutputViewModel>();
             IList<IDev2Definition> concreteDefinitions = parser.ParseAndAllowBlanks(mappingDefinitions);
-
-            
-            object matchSet = GenerateMatchFragmentsFromDataList();
 
             foreach(var def in concreteDefinitions)
             {
                 var injectValue = def.Value;
 
-                if(!string.IsNullOrEmpty(injectValue))
+                if (!string.IsNullOrEmpty(injectValue))
                 {
                     injectValue = DataListUtil.AddBracketsToValueIfNotExist(injectValue);
+                }
+                else
+                {
+                    if(!def.IsRecordSet)
+                    {
+                        injectValue = DataListUtil.AddBracketsToValueIfNotExist(def.Name);
+                    }
+                    else
+                    {
+                        var tmp = DataListUtil.ComposeIntoUserVisibleRecordset(def.RecordSetName, string.Empty, def.Name);
+                        injectValue = DataListUtil.AddBracketsToValueIfNotExist(tmp);
+                    }
                 }
 
                 var injectMapsTo = def.MapsTo;
@@ -196,9 +292,28 @@ namespace Dev2.DataList
                 {
                     injectMapsTo = DataListUtil.AddBracketsToValueIfNotExist(injectMapsTo);
                 }
+                else
+                {
+                    if(def.IsRecordSet)
+                    {
+                        var tmp = injectValue.Replace("()", "(*)");
+                        injectMapsTo = tmp; // tag it as the same ;)
+                    }
+                    else
+                    {
+                        injectMapsTo = injectValue; // tag it as the same ;)
+                    }
+                }
 
-                var viewModel = new InputOutputViewModel(def.Name, injectValue, injectMapsTo, def.DefaultValue,
-                                                         def.IsRequired, def.RecordSetName, def.EmptyToNull);
+                // TODO : perform fuzzy matching ;)
+                /*if (fuzzyMatch != null)
+                {
+                    injectValue = FilterForFuzzyMatch(injectValue, true, fuzzyMatch);
+
+                    injectMapsTo = FilterForFuzzyMatch(injectMapsTo, false, fuzzyMatch);
+                }*/
+
+                var viewModel = new InputOutputViewModel(def.Name, injectValue, injectMapsTo, def.DefaultValue, def.IsRequired, def.RecordSetName, def.EmptyToNull);
 
                 result.Add(viewModel);
             }
@@ -206,15 +321,47 @@ namespace Dev2.DataList
             return result;
         }
 
-        private object GenerateMatchFragmentsFromDataList()
+        /// <summary>
+        /// Filters for fuzzy match.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="useValueHash">if set to <c>true</c> [use value hash].</param>
+        /// <param name="fuzzyMatch">The fuzzy match.</param>
+        private string FilterForFuzzyMatch(string value, bool useValueHash, FuzzyMatchVO fuzzyMatch)
         {
-            // TODO : Examine the DataList for matches?! - Scalar are easy, its rs matches that become interesting?!
-            if (string.IsNullOrEmpty(DataList))
+            var result = value;
+            var fuzzyInject = fuzzyMatch.FetchMatch(value, true);
+            if(!string.IsNullOrEmpty(fuzzyInject))
             {
-
+                result = fuzzyInject;
             }
 
-            return null;
+            return result;
+        }
+
+        /// <summary>
+        /// Generates the match fragments from data list.
+        /// </summary>
+        /// <returns></returns>
+        private FuzzyMatchVO GenerateMatchFragmentsFromDataList()
+        {
+            FuzzyMatchVO result = null;
+
+            IList<IDev2Definition> resultList = new List<IDev2Definition>();
+
+            if (string.IsNullOrEmpty(DataList))
+            {
+                var compiler = DataListFactory.CreateDataListCompiler();
+
+                if (string.IsNullOrEmpty(DataList))
+                {
+                    resultList = compiler.GenerateDefsFromDataList(DataList);
+                }
+            }
+
+            result = new FuzzyMatchVO(resultList);
+
+            return result;
         }
 
         /// <summary>

@@ -81,7 +81,6 @@ namespace Dev2.Studio.ViewModels.DataList
             Inputs = mappingData.Inputs.ToObservableCollection();      
 
             // update special fields on the model?!
-
             var toSaveOutputMapping = ioBuilder.SavedOutputMapping;
             var toSaveInputMapping = ioBuilder.SavedInputMapping;
 

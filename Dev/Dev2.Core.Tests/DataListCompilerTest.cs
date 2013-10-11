@@ -248,6 +248,61 @@ namespace Dev2.Tests
 
         #region Generate Defintion Tests
 
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataListCompiler_GenerateSerializableDefsFromDataList")]
+        public void DataListCompiler_GenerateSerializableDefsFromDataList_WhenOutputs_ValidOutputs()
+        {
+            //------------Setup for test--------------------------
+
+            const string datalistFragment = @"<DataList>
+    <result Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
+    <recset1 Description="""" IsEditable=""True"" ColumnIODirection=""None"">
+      <f1 Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+    </recset1>
+    <recset2 Description="""" IsEditable=""True"" ColumnIODirection=""None"">
+      <f2 Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+    </recset2>
+  </DataList>";
+
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
+            
+            //------------Execute Test---------------------------
+
+            var result = dataListCompiler.GenerateSerializableDefsFromDataList(datalistFragment, enDev2ColumnArgumentDirection.Output);
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual(@"<Outputs><Output Name=""result"" MapsTo="""" Value="""" /></Outputs>", result);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataListCompiler_GenerateSerializableDefsFromDataList")]
+        public void DataListCompiler_GenerateSerializableDefsFromDataList_WhenInputs_ValidInputs()
+        {
+            //------------Setup for test--------------------------
+
+            const string datalistFragment = @"<DataList>
+    <result Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
+    <recset1 Description="""" IsEditable=""True"" ColumnIODirection=""None"">
+      <f1 Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+    </recset1>
+    <recset2 Description="""" IsEditable=""True"" ColumnIODirection=""None"">
+      <f2 Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+    </recset2>
+  </DataList>";
+
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
+
+            //------------Execute Test---------------------------
+
+            var result = dataListCompiler.GenerateSerializableDefsFromDataList(datalistFragment, enDev2ColumnArgumentDirection.Input);
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual(@"<Inputs><Input Name=""result"" Source="""" /></Inputs>", result);
+        }
 
         [TestMethod]
         public void GenerateDefsFromDataListWhereDataListExpectResultsToMatchIODirectionForInput()

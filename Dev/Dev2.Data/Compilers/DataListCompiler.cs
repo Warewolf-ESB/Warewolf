@@ -1021,6 +1021,23 @@ namespace Dev2.DataList.Contract
             return dataList;
         }
 
+        public string GenerateSerializableDefsFromDataList(string datalist, enDev2ColumnArgumentDirection direction)
+        {
+            DefinitionBuilder db = new DefinitionBuilder();
+
+            if (direction == enDev2ColumnArgumentDirection.Input)
+            {
+                db.ArgumentType = enDev2ArgumentType.Input;    
+            }else if (direction == enDev2ColumnArgumentDirection.Output)
+            {
+                db.ArgumentType = enDev2ArgumentType.Output;
+            }
+            
+            db.Definitions = GenerateDefsFromDataList(datalist, direction);
+
+            return db.Generate();
+        }
+
         public IList<IDev2Definition> GenerateDefsFromDataList(string dataList)
         {
             return GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Both);

@@ -67,6 +67,13 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         string GenerateDataListFromDefs(IList<IDev2Definition> definitions, bool pushToServer, out ErrorResultTO errors, bool withData = false);
 
+        /// <summary>
+        /// Generates the serializable defs from data list.
+        /// </summary>
+        /// <param name="datalist">The datalist.</param>
+        /// <param name="direction">The direction.</param>
+        /// <returns></returns>
+        string GenerateSerializableDefsFromDataList(string datalist, enDev2ColumnArgumentDirection direction);
 
         /// <summary>
         /// Generate IO definitions from the DL

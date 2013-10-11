@@ -240,6 +240,7 @@
     <Compile Include="DataList\ActivityDataMappingBuilder.cs" />
     <Compile Include="DataList\DataListValidator.cs" />
     <Compile Include="DataList\DataListViewModel.cs" />
+    <Compile Include="DataList\InputOutputViewModelEqualityComparer.cs" />
     <Compile Include="DataList\DataMappingViewModel.cs" />
     <Compile Include="Factories\DataListViewModelFactory.cs" />
     <Compile Include="Factories\DataMappingListFactory.cs" />

@@ -218,10 +218,12 @@ namespace Dev2.Activities
                     if(!_process.HasExited)
                     {
                         var isWaitingForUserInput = ModalChecker.IsWaitingForUserInput(_process);
+                        
                         if(!isWaitingForUserInput)
                         {
                             continue;
                         }
+
                         _process.Kill();
                         throw new ApplicationException("The process required user input.");
                     }
