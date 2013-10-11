@@ -83,7 +83,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 case SqlDbType.Bit:
                     return typeof(bool);
                 case SqlDbType.Char:
-                    return typeof(string);
+                    return typeof(char);
                 case SqlDbType.DateTime:
                     return typeof(DateTime);
                 case SqlDbType.Decimal:

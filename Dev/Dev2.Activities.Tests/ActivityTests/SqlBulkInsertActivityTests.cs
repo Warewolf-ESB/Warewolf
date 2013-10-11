@@ -772,7 +772,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = CheckActivityDebugInputOutput(act, dataListShape,dataListWithData, out inRes, out outRes);
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
-            Assert.AreEqual(14, inRes.Count);
+            Assert.AreEqual(21, inRes.Count);
             var debugInputs = inRes[0].FetchResultsList();
             
             Assert.AreEqual(1, debugInputs.Count);
@@ -788,7 +788,27 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Use Internal Transaction", debugInputs[0].Value);
 
             debugInputs = inRes[5].FetchResultsList();
-            Assert.AreEqual(13,debugInputs.Count);
+            Assert.AreEqual("Batchsize: ", debugInputs[0].Value);
+            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
+            Assert.AreEqual("[[batchsize]]", debugInputs[1].Value);
+            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
+            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[2].Value);
+            Assert.AreEqual(DebugItemResultType.Label, debugInputs[2].Type);
+            Assert.AreEqual("100", debugInputs[3].Value);
+            Assert.AreEqual(DebugItemResultType.Value, debugInputs[3].Type);
+
+            debugInputs = inRes[6].FetchResultsList();
+            Assert.AreEqual("Timeout: ", debugInputs[0].Value);
+            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
+            Assert.AreEqual("[[timeout]]", debugInputs[1].Value);
+            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
+            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[2].Value);
+            Assert.AreEqual(DebugItemResultType.Label, debugInputs[2].Type);
+            Assert.AreEqual("240", debugInputs[3].Value);
+            Assert.AreEqual(DebugItemResultType.Value, debugInputs[3].Type);
+
+            debugInputs = inRes[7].FetchResultsList();
+            Assert.AreEqual(11,debugInputs.Count);
             Assert.AreEqual("1",debugInputs[0].Value);
             Assert.AreEqual(DebugItemResultType.Label,debugInputs[0].Type);
 
@@ -816,13 +836,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Jill", debugInputs[10].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugInputs[10].Type);
 
-            Assert.AreEqual("Into", debugInputs[11].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[11].Type);
+            debugInputs = inRes[8].FetchResultsList();
+            Assert.AreEqual("Into", debugInputs[0].Value);
+            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
-            Assert.AreEqual("TestCol String(100)", debugInputs[12].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[12].Type);
+            Assert.AreEqual("TestCol varchar (100)", debugInputs[1].Value);
+            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
 
-           debugInputs = inRes[6].FetchResultsList();
+           debugInputs = inRes[9].FetchResultsList();
 
            Assert.AreEqual("2", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
@@ -837,13 +858,14 @@ namespace Dev2.Tests.Activities.ActivityTests
            Assert.AreEqual("1999", debugInputs[4].Value);
            Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
 
-           Assert.AreEqual("Into", debugInputs[5].Value);
-           Assert.AreEqual(DebugItemResultType.Label, debugInputs[5].Type);
+           debugInputs = inRes[10].FetchResultsList();
+           Assert.AreEqual("Into", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
-           Assert.AreEqual("TestCol2 Int32", debugInputs[6].Value);
-           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[6].Type);
+           Assert.AreEqual("TestCol2 int", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
 
-           debugInputs = inRes[8].FetchResultsList();
+           debugInputs = inRes[13].FetchResultsList();
 
            Assert.AreEqual("4", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
@@ -858,13 +880,14 @@ namespace Dev2.Tests.Activities.ActivityTests
            Assert.AreEqual("Hello", debugInputs[4].Value);
            Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
 
-           Assert.AreEqual("Into", debugInputs[5].Value);
-           Assert.AreEqual(DebugItemResultType.Label, debugInputs[5].Type);
+           debugInputs = inRes[14].FetchResultsList();
+           Assert.AreEqual("Into", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
-           Assert.AreEqual("Val String(100)", debugInputs[6].Value);
-           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[6].Type);
+           Assert.AreEqual("Val varchar (100)", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
 
-           debugInputs = inRes[9].FetchResultsList();
+           debugInputs = inRes[15].FetchResultsList();
 
            Assert.AreEqual("5", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
@@ -885,33 +908,14 @@ namespace Dev2.Tests.Activities.ActivityTests
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[6].Type);
            Assert.AreEqual("KKK", debugInputs[7].Value);
            Assert.AreEqual(DebugItemResultType.Value, debugInputs[7].Type);
-
-           Assert.AreEqual("Into", debugInputs[8].Value);
-           Assert.AreEqual(DebugItemResultType.Label, debugInputs[8].Type);
-
-           Assert.AreEqual("Col1 String(100)", debugInputs[9].Value);
-           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[9].Type);
-
-           debugInputs = inRes[12].FetchResultsList();
-           Assert.AreEqual("Batchsize: ", debugInputs[0].Value);
+            
+            debugInputs = inRes[16].FetchResultsList();
+           Assert.AreEqual("Into", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
-           Assert.AreEqual("[[batchsize]]", debugInputs[1].Value);
-           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
-           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[2].Value);
-           Assert.AreEqual(DebugItemResultType.Label, debugInputs[2].Type);
-           Assert.AreEqual("100", debugInputs[3].Value);
-           Assert.AreEqual(DebugItemResultType.Value, debugInputs[3].Type);
 
-           debugInputs = inRes[13].FetchResultsList();
-           Assert.AreEqual("Timeout: ", debugInputs[0].Value);
-           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
-           Assert.AreEqual("[[timeout]]", debugInputs[1].Value);
+           Assert.AreEqual("Col1 varchar (100)", debugInputs[1].Value);
            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
-           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[2].Value);
-           Assert.AreEqual(DebugItemResultType.Label, debugInputs[2].Type);
-           Assert.AreEqual("240", debugInputs[3].Value);
-           Assert.AreEqual(DebugItemResultType.Value, debugInputs[3].Type);
-
+         
            Assert.AreEqual(1, outRes.Count);
            var debugOutputs = outRes[0].FetchResultsList();
            
@@ -937,7 +941,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                     OutputColumn = new DbColumn
                     {
                         ColumnName = "TestCol",
-                    DataType = typeof(String),
+                        DataType = typeof(String),
+                        SqlDataType = SqlDbType.VarChar,
                         MaxLength = 100
                     },
                 },
@@ -947,7 +952,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                     OutputColumn = new DbColumn
                     {
                         ColumnName = "TestCol2",
-                    DataType = typeof(Int32),
+                        DataType = typeof(Int32),
+                        SqlDataType = SqlDbType.Int,
                         MaxLength = 100
                     }
                 }
@@ -957,7 +963,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                     OutputColumn = new DbColumn
                     {
                         ColumnName = "Col2",
-                    DataType = typeof(Int32),
+                        DataType = typeof(Int32),
+                        SqlDataType = SqlDbType.Int,
                         MaxLength = 100
                     }
                 }
@@ -967,7 +974,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                     OutputColumn = new DbColumn
                     {
                         ColumnName = "Val",
-                    DataType = typeof(String),
+                        DataType = typeof(String),
+                        SqlDataType = SqlDbType.VarChar,
                         MaxLength = 100
                     }
                 }
@@ -977,7 +985,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                     OutputColumn = new DbColumn
                     {
                         ColumnName = "Col1",
-                    DataType = typeof(string),
+                        DataType = typeof(string),
+                        SqlDataType = SqlDbType.VarChar,
                         MaxLength = 100
                     }
                 },
@@ -987,7 +996,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                     OutputColumn = new DbColumn
                     {
                         ColumnName = "TestCol3",
-                    DataType = typeof(char),
+                        DataType = typeof(char),
+                        SqlDataType = SqlDbType.Char,
                         MaxLength = 100
                     }
                 },
@@ -997,7 +1007,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                     OutputColumn = new DbColumn
                     {
                         ColumnName = "TestCol4",
-                    DataType = typeof(decimal),
+                        DataType = typeof(decimal),
+                        SqlDataType = SqlDbType.Decimal,
                         MaxLength = 100
                     }
                 }
