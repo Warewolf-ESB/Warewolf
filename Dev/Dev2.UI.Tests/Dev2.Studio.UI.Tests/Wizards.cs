@@ -2,10 +2,7 @@
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Input;
-using Dev2.CodedUI.Tests;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses;
@@ -13,15 +10,11 @@ using Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
 
 namespace Dev2.Studio.UI.Tests.UIMaps
 {
-    /// <summary>
-    /// Summary description for CodedUITest1
-    /// </summary>
     [CodedUITest]
     public class Wizards : UIMapBase
     {
@@ -43,7 +36,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             }
         }
         private TestContext testContextInstance;
-        
+
         #endregion
 
         #region Cleanup

@@ -1,26 +1,17 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using Dev2.CodedUI.Tests;
+﻿using System.Windows.Forms;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 
-
 namespace Dev2.Studio.UI.Tests
 {
-    /// <summary>
-    /// Summary description for ExplorerUITests
-    /// </summary>
     [CodedUITest, System.Runtime.InteropServices.GuidAttribute("DAA88B10-98C4-488E-ACB2-1256C95CE8F0")]
     public class ExplorerUITests
     {
