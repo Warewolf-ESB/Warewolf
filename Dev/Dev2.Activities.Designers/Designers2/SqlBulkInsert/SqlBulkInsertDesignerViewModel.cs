@@ -8,6 +8,7 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.DynamicServices;
+using Dev2.Providers.Errors;
 using Dev2.Providers.Logs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
@@ -30,6 +31,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         readonly bool _isInitializing;
 
         static readonly IEnumerable<DbTable> EmptyDbTables = new DbTable[0];
+        static readonly IEnumerable<DbColumn> EmptyDbColumns = new DbColumn[0];
 
         static IEnvironmentModel GetActiveEnvironment()
         {
@@ -134,12 +136,76 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             var viewModel = (SqlBulkInsertDesignerViewModel)d;
             var dbTable = (DbTable)e.NewValue;
             viewModel.TableName = dbTable == null ? null : dbTable.TableName;
-            viewModel.LoadTableColumns(dbTable);
+            viewModel.LoadTableColumns(viewModel.SelectedDatabase, dbTable);
         }
 
-        // DO NOT bind to these properties - these are here for convenience only!!!
-        DbSource Database { get { return GetProperty<DbSource>(); } set { SetProperty(value); } }
-        string TableName { get { return GetProperty<string>(); } set { SetProperty(value); } }
+        public bool IsSelectedDatabaseFocused
+        {
+            get { return (bool)GetValue(IsSelectedDatabaseFocusedProperty); }
+            set { SetValue(IsSelectedDatabaseFocusedProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsSelectedDatabaseFocusedProperty =
+            DependencyProperty.Register("IsSelectedDatabaseFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
+
+        public bool IsSelectedTableFocused
+        {
+            get { return (bool)GetValue(IsSelectedTableFocusedProperty); }
+            set { SetValue(IsSelectedTableFocusedProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsSelectedTableFocusedProperty =
+            DependencyProperty.Register("IsSelectedTableFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
+
+        public bool IsBatchSizeFocused
+        {
+            get { return (bool)GetValue(IsBatchSizeFocusedProperty); }
+            set { SetValue(IsBatchSizeFocusedProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsBatchSizeFocusedProperty =
+            DependencyProperty.Register("IsBatchSizeFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
+
+        public bool IsTimeoutFocused
+        {
+            get { return (bool)GetValue(IsTimeoutFocusedProperty); }
+            set { SetValue(IsTimeoutFocusedProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsTimeoutFocusedProperty =
+            DependencyProperty.Register("IsTimeoutFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));       
+
+        #region DO NOT bind to these properties - these are here for internal view model use only!!!
+
+        DbSource Database
+        {
+            get { return GetProperty<DbSource>(); }
+            set
+            {
+                if(!_isInitializing)
+                {
+                    SetProperty(value);
+                }
+            }
+        }
+
+        string TableName
+        {
+            get { return GetProperty<string>(); }
+            set
+            {
+                if(!_isInitializing)
+                {
+                    SetProperty(value);
+                }
+            }
+        }
+
+        string BatchSize { get { return GetProperty<string>(); } }
+
+        string Timeout { get { return GetProperty<string>(); } }
+
+        #endregion
 
         void LoadDatabases()
         {
@@ -193,7 +259,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             }
         }
 
-        void LoadTableColumns(DbTable dbTable)
+        void LoadTableColumns(DbSource dbSource, DbTable dbTable)
         {
             if(IsRefreshing)
             {
@@ -209,15 +275,24 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             var oldColumns = ModelItemCollection.Select(mi => (DataColumnMapping)mi.GetCurrentValue()).ToList();
             ModelItemCollection.Clear();
 
-            foreach(var mapping in dbTable.Columns.Select(column => new DataColumnMapping { OutputColumn = column }))
+            IsRefreshing = true;
+            try
             {
-                var oldColumn = oldColumns.FirstOrDefault(c => c.OutputColumn.ColumnName == mapping.OutputColumn.ColumnName);
-                if(oldColumn != null)
+                var columns = GetDatabaseTableColumns(dbSource, dbTable);
+                foreach(var mapping in columns.Select(column => new DataColumnMapping { OutputColumn = column }))
                 {
-                    mapping.InputColumn = oldColumn.InputColumn;
-                }
+                    var oldColumn = oldColumns.FirstOrDefault(c => c.OutputColumn.ColumnName == mapping.OutputColumn.ColumnName);
+                    if(oldColumn != null)
+                    {
+                        mapping.InputColumn = oldColumn.InputColumn;
+                    }
 
-                ModelItemCollection.Add(mapping);
+                    ModelItemCollection.Add(mapping);
+                }
+            }
+            finally
+            {
+                IsRefreshing = false;
             }
         }
 
@@ -266,6 +341,26 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             return tables ?? EmptyDbTables;
         }
 
+        IEnumerable<DbColumn> GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable)
+        {
+            if(dbSource == null || dbTable == null)
+            {
+                return EmptyDbColumns;
+            }
+
+            dynamic request = new UnlimitedObject();
+            request.Service = "GetDatabaseColumnsForTableService";
+            request.Database = JsonConvert.SerializeObject(dbSource);
+            request.TableName = JsonConvert.SerializeObject(dbTable.TableName);
+
+            var workspaceID = _environmentModel.Connection.WorkspaceID;
+
+            var result = _environmentModel.Connection.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID);
+
+            var tables = JsonConvert.DeserializeObject<List<DbColumn>>(result);
+            return tables ?? EmptyDbColumns;
+        }
+
         void SetSelectedDatabase(DbSource dbSource)
         {
             SelectedDatabase = dbSource == null ? null : Databases.FirstOrDefault(d => d.ResourceID == dbSource.ResourceID);
@@ -279,6 +374,43 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         static string GetTableName(DbTable table)
         {
             return table == null ? null : table.TableName;
+        }
+
+        public override void Validate()
+        {
+            base.Validate();
+
+            var errors = Errors ?? new List<IActionableErrorInfo>();
+            if(SelectedDatabase == null)
+            {
+                errors.Add(new ActionableErrorInfo(() => IsSelectedDatabaseFocused = true) { ErrorType = ErrorType.Critical, Message = "A database must be selected." });
+            }
+            if(SelectedTable == null)
+            {
+                errors.Add(new ActionableErrorInfo(() => IsSelectedTableFocused = true) { ErrorType = ErrorType.Critical, Message = "A table must be selected." });
+            }
+
+            var batchSize = BatchSize;
+            if(!string.IsNullOrEmpty(batchSize))
+            {
+                int value;
+                if(!int.TryParse(batchSize, out value) || value <= 0)
+                {
+                    errors.Add(new ActionableErrorInfo(() => IsBatchSizeFocused = true) { ErrorType = ErrorType.Critical, Message = "Batch size must be a number greater than zero." });
+                }
+            }
+
+            var timeout = Timeout;
+            if(!string.IsNullOrEmpty(timeout))
+            {
+                int value;
+                if(!int.TryParse(timeout, out value) || value <= 0)
+                {
+                    errors.Add(new ActionableErrorInfo(() => IsTimeoutFocused = true) { ErrorType = ErrorType.Critical, Message = "Timeout must be a number greater than zero." });
+                }
+            }
+
+            Errors = errors.Count == 0 ? null : errors;
         }
     }
 }

@@ -11,6 +11,7 @@
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:dto="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
+                               xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                Width="260"
                                MaxWidth="260"
                                Padding="10,7,10,10"
@@ -48,6 +49,7 @@
                   DisplayMemberPath="ResourceName"
                   SelectedItem="{Binding SelectedDatabase, Mode=TwoWay}"                                        
                   ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipDatabase}"
+                  attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedDatabaseFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
            <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpDatabase}"
@@ -73,6 +75,7 @@
                   DisplayMemberPath="TableName"
                   SelectedItem="{Binding SelectedTable, Mode=TwoWay}"
                   ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipTableName}"
+                  attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedTableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_TableName_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpTableName}"

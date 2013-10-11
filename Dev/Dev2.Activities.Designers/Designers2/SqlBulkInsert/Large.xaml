@@ -11,6 +11,7 @@
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:dto="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
+                               xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                Width="350"
                                MinWidth="350"
                                MinHeight="306"
@@ -62,6 +63,7 @@
                   DisplayMemberPath="ResourceName"
                   SelectedItem="{Binding SelectedDatabase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"            
                   ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipDatabase}"
+                  attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedDatabaseFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpDatabase}"
@@ -87,6 +89,7 @@
                   DisplayMemberPath="TableName"
                   SelectedItem="{Binding SelectedTable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipTableName}"
+                  attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedTableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_TableName_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpTableName}"
@@ -225,6 +228,7 @@
                                     Text="{Binding ModelItem.BatchSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
                                     ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipBatchSize}"
+                                    attachedProperties:FocusSetter.IsFocused="{Binding IsBatchSizeFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_BatchSize_AutoID}">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpBatchSize}"
@@ -246,6 +250,7 @@
                                     Text="{Binding ModelItem.Timeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
                                     ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipTimeout}"
+                                    attachedProperties:FocusSetter.IsFocused="{Binding IsTimeoutFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Timeout_AutoID}">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpTimeout}"
