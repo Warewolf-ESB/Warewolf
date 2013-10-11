@@ -5,6 +5,7 @@ using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -116,6 +117,7 @@ namespace Dev2.Studio.UI.Tests
 
         #region Ribbon UI Map
 
+        private RibbonUIMap _ribbonUiMap;
         public RibbonUIMap RibbonUiMap
         {
             get
@@ -129,14 +131,14 @@ namespace Dev2.Studio.UI.Tests
             }
         }
 
-        private RibbonUIMap _ribbonUiMap;
+        private DatabaseServiceWizardUIMap _databaseServiceWizardUiMap;
+        public DatabaseServiceWizardUIMap DatabaseServiceWizardUiMap { get { return _databaseServiceWizardUiMap ?? (_databaseServiceWizardUiMap = new DatabaseServiceWizardUIMap()); } }
 
         #endregion
 
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ExternalService_EditService")]
-        [Ignore]//Ashley: Earmarked for grooming
         public void ExternalService_EditService_EditWithNoSecondSaveDialog_ExpectOneDialog()
         {
             //------------Setup for test--------------------------
@@ -154,15 +156,15 @@ namespace Dev2.Studio.UI.Tests
             //Get Adorner buttons
             var button = WorkflowDesignerUiMap.Adorner_GetButton(theTab, "TravsTestService", "Edit");
 
-            // -- DO DB Services
+            // -- DO DB Services --
 
-            // move to show adorner buttons ;)
-            Mouse.Move(new Point(1030, 445));
+            WorkflowDesignerUiMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
 
             Playback.Wait(500);
             Mouse.Click(button);
             Playback.Wait(1000);
-            Mouse.Click(new Point(840, 270)); // click on the second tab ;)
+
+            DatabaseServiceWizardUiMap.ClickMappingTab();
             Keyboard.SendKeys("{TAB}");
             Playback.Wait(500);
             Keyboard.SendKeys("zzz");
@@ -170,18 +172,19 @@ namespace Dev2.Studio.UI.Tests
             Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{ENTER}");
             
 
-            // -- DO Web Services
+            // -- DO Web Services --
 
             //Get Adorner buttons
             button = WorkflowDesignerUiMap.Adorner_GetButton(theTab, "FetchCities", "Edit");
 
             // move to show adorner buttons ;)
-            Mouse.Move(new Point(1030, 600));
+            WorkflowDesignerUiMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
 
             Playback.Wait(500);
             Mouse.Click(button);
             Playback.Wait(1000);
-            Mouse.Click(new Point(780, 270)); // click on the second tab ;)
+            DatabaseServiceWizardUiMap.ClickMappingTab();
+            //Mouse.Click(new Point(780, 270)); // click on the second tab ;)
             Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}");
             Playback.Wait(500);
             Keyboard.SendKeys("zzz");
@@ -190,24 +193,24 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(1000);
 
 
-            // DO Plugin Services
+            // -- DO Plugin Services --
 
             //Get Adorner buttons
             button = WorkflowDesignerUiMap.Adorner_GetButton(theTab, "DummyService", "Edit");
 
             // move to show adorner buttons ;)
-            Mouse.Move(new Point(1030, 740));
+            WorkflowDesignerUiMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
 
             Playback.Wait(500);
             Mouse.Click(button);
             Playback.Wait(1000);
-            Mouse.Click(new Point(780, 270)); // click on the second tab ;)
+            DatabaseServiceWizardUiMap.ClickMappingTab(); // click on the second tab ;)
             Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}");
             Playback.Wait(500);
             Keyboard.SendKeys("zzz");
             // -- wizard closed, account for darn dialog ;(
             Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
-            
+
 
             //------------Assert Results-------------------------
 
@@ -224,7 +227,7 @@ namespace Dev2.Studio.UI.Tests
             }
 
             if(!WorkflowDesignerUiMap.Adorner_ClickFixErrors(theTab, "DummyService(DsfActivityDesigner)"))
-        {
+            {
                 Assert.Fail("'Fix Errors' button not visible");
             }
 

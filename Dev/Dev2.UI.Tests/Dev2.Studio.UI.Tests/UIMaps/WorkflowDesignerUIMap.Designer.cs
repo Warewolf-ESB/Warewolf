@@ -31,6 +31,18 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
     public partial class WorkflowDesignerUIMap
     {
 
+        /// <summary>
+        /// Gets the adorner hover point.
+        /// </summary>
+        /// <param name="boundingRectangle">The bounding rectangle.</param>
+        /// <returns></returns>
+        public void MoveMouseForAdornersToAppear(Rectangle boundingRectangle)
+        {
+            var p =  new Point((boundingRectangle.X - 25), (boundingRectangle.Y +60));
+
+            Mouse.Move(p);
+        }
+
         public void designerClickNameTextbox()
         {
             #region Variable Declarations

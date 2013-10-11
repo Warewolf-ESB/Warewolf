@@ -55,13 +55,13 @@
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="CefSharp, Version=1.25.0.25466, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\..\..\Dev\Binaries\CefSharp\CefSharp.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="CefSharp, Version=1.25.5.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\CefSharp\CefSharp.dll</HintPath>
     </Reference>
-    <Reference Include="CefSharp.Wpf, Version=1.25.0.25471, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\..\..\Dev\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="CefSharp.Wpf, Version=1.25.5.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="Dev2.Studio.Core.Fakes">
       <HintPath>FakesAssemblies\Dev2.Studio.Core.Fakes.dll</HintPath>
