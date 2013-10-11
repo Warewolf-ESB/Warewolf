@@ -436,6 +436,7 @@ namespace Dev2.Studio.ViewModels.Help
             else
             {
                 BrowserPopupController.ShowPopup(StringResources.Uri_Community_HomePage);
+                RequestClose(ViewModelDialogResults.Okay);
             }
         }
 
