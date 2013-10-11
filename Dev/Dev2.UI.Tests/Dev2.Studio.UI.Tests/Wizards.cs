@@ -11,6 +11,7 @@ using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
@@ -24,6 +25,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
     [CodedUITest]
     public class Wizards : UIMapBase
     {
+        #region Context Init
+
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -40,6 +43,30 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             }
         }
         private TestContext testContextInstance;
+        
+        #endregion
+
+        #region Cleanup
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            var window = new UIBusinessDesignStudioWindow();
+            //close any open wizards
+            var tryFindDialog = window.GetChildren()[0].GetChildren()[0];
+            if(tryFindDialog.GetType() == typeof(WpfImage))
+            {
+                Mouse.Click(tryFindDialog);
+                SendKeys.SendWait("{ESCAPE}");
+                Assert.Fail("Resource changed dialog hanging after test, might not have rendered properly");
+            }
+            //close any open tabs
+            TabManagerUIMap.CloseAllTabs();
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+        }
+
+        #endregion
 
         #region Service Wizards
 

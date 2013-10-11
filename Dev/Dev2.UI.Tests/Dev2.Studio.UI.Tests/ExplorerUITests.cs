@@ -24,7 +24,6 @@ namespace Dev2.Studio.UI.Tests
     [CodedUITest, System.Runtime.InteropServices.GuidAttribute("DAA88B10-98C4-488E-ACB2-1256C95CE8F0")]
     public class ExplorerUITests
     {
-
         #region Cleanup
 
         [TestCleanup]
