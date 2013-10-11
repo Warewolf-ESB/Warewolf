@@ -227,8 +227,8 @@ OS version : ");
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("FeedbackViewModel_OutlookIsInstalled_OutlookIsSetAsADefaultMailClient")]
-        public void FeedbackViewModel_OutlookIsInstalled_X()
+        [TestCategory("FeedbackViewModel_GetDefaultMailClient")]
+        public void FeedbackViewModel_GetDefaultMailClient_OutlookIsInstalled_MailClientIsOutlook()
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
