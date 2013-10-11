@@ -8,6 +8,7 @@ using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Utils;
 using Dev2.Studio.ViewModels.Help;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Win32;
 using Moq;
 
 namespace Dev2.Core.Tests.ViewModelTests
@@ -196,7 +197,7 @@ OS version : ");
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FeedbackViewModel_Send")]
-        public void FeedbackViewModel_OutlookIsInstalled_BrowserIsNotOpenedToCommunity()
+        public void FeedbackViewModel_Send_OutlookIsInstalled_BrowserIsNotOpenedToCommunity()
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
@@ -222,6 +223,37 @@ OS version : ");
             feedbackViewModel.Send();
 
             popupController.Verify(m => m.ShowPopup(It.IsAny<string>()), Times.Never());
+       }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("FeedbackViewModel_OutlookIsInstalled_OutlookIsSetAsADefaultMailClient")]
+        public void FeedbackViewModel_OutlookIsInstalled_X()
+        {
+            var mockSysInfo = new Mock<ISystemInfoService>();
+            mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
+
+            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
+
+            var mockCommService = new Mock<ICommService<EmailCommMessage>>();
+            mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
+
+            var attacheFiles = new Dictionary<string, string>
+            {
+                { "RecordingLog", "RecordingLog.log" },
+                { "ServerLog", "ServerLog.log" },
+                { "StudioLog", "StudioLog.log" }
+            };
+
+            var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = (e) => true };
+
+            var popupController = new Mock<IBrowserPopupController>();
+            popupController.Setup(m => m.ShowPopup(It.IsAny<string>())).Verifiable();
+            feedbackViewModel.BrowserPopupController = popupController.Object;
+            var isOutlookInstalled = feedbackViewModel.IsOutlookInstalled();
+            object mailClient = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Clients\Mail", "", "none") as string;
+            Assert.IsTrue(isOutlookInstalled);
+            Assert.AreEqual("Microsoft Outlook", mailClient);
         }
 
         [TestMethod]

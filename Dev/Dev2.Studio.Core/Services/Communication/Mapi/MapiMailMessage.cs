@@ -147,7 +147,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         public void ShowDialog()
         {
             // Create the mail message in an STA thread
-            Thread t = new Thread(new ThreadStart(_ShowMail));
+            var t = new Thread(new ThreadStart(_ShowMail));
             t.IsBackground = true;
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
@@ -166,7 +166,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         /// </summary>
         private void _ShowMail(object ignore)
         {
-            MAPIHelperInterop.MapiMessage message = new MAPIHelperInterop.MapiMessage();
+            var message = new MAPIHelperInterop.MapiMessage();
 
             using (RecipientCollection.InteropRecipientCollection interopRecipients
                 = _recipientCollection.GetInteropRepresentation())

@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Dev2.Providers.Logs;
 using Dev2.Studio.Core.Services.Communication.Mapi;
 
 namespace Dev2.Studio.Core.Services.Communication
@@ -25,6 +26,7 @@ namespace Dev2.Studio.Core.Services.Communication
         /// <datetime>2013/01/14-09:10 AM</datetime>
         public void SendCommunication(T message)
         {
+            Logger.TraceInfo();
             var mapiMessage = new MapiMailMessage(message.Subject, message.Content);
             mapiMessage.Recipients.Add(message.To);
             if(!String.IsNullOrEmpty(message.AttachmentLocation))
