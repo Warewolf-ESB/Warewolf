@@ -302,7 +302,7 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   </data>
   <data name="SqlBulkInsertHelpBatchSize" xml:space="preserve">
     <value>The number of rows you would like to insert at a time.
-The default will be 0 which will do everything at once.</value>
+The default is blank which will do everything at once.</value>
   </data>
   <data name="SqlBulkInsertHelpCheckConstraints" xml:space="preserve">
     <value>Check constraints while data is being inserted. By default, constraints are not checked.</value>
@@ -326,7 +326,7 @@ If the table schema has changed or recently added to the source, click the refre
   <data name="SqlBulkInsertHelpTimeout" xml:space="preserve">
     <value>The number of seconds you would like the operation to complete in.
 All batches in total must complete within this time period.
-The default will be 0 which will be no time constraint.</value>
+The default is blank which will be no time constraint.</value>
   </data>
   <data name="SqlBulkInsertHelpUseInternalTransaction" xml:space="preserve">
     <value>When specified, each batch of the bulk-copy operation will occur within a transaction.</value>

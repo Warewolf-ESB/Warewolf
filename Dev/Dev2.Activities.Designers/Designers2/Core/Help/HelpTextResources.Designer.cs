@@ -446,7 +446,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         
         /// <summary>
         ///   Looks up a localized string similar to The number of rows you would like to insert at a time.
-        ///The default will be 0 which will do everything at once..
+        ///The default is blank which will do everything at once..
         /// </summary>
         public static string SqlBulkInsertHelpBatchSize {
             get {
@@ -534,7 +534,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         /// <summary>
         ///   Looks up a localized string similar to The number of seconds you would like the operation to complete in.
         ///All batches in total must complete within this time period.
-        ///The default will be 0 which will be no time constraint..
+        ///The default is blank which will be no time constraint..
         /// </summary>
         public static string SqlBulkInsertHelpTimeout {
             get {

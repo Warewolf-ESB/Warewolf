@@ -131,7 +131,7 @@
 
                 <DataGridTemplateColumn Width="SizeToCells"
                                         MinWidth="65"     
-                                        Header="To Table"     
+                                        Header="To Field"     
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"                                        
                                         d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
                     <DataGridTemplateColumn.CellTemplate>

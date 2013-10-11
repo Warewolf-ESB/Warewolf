@@ -1,4 +1,3 @@
-using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,7 +6,6 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Activities.Preview;
 using Dev2.Common;
 using Dev2.DynamicServices;
 using Dev2.Providers.Logs;
@@ -29,6 +27,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         readonly IEventAggregator _eventPublisher;
         readonly IEnvironmentModel _environmentModel;
         readonly DbSource _newDbSource;
+        readonly bool _isInitializing;
 
         static readonly IEnumerable<DbTable> EmptyDbTables = new DbTable[0];
 
@@ -57,12 +56,6 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             dynamic mi = ModelItem;
             ModelItemCollection = mi.InputMappings;
 
-            PreviewViewModel = new PreviewViewModel
-            {
-                InputsVisibility = Visibility.Collapsed,
-            };
-            PreviewViewModel.PreviewRequested += DoPreview;
-
             _newDbSource = new DbSource
             {
                 ResourceName = "New Database Source..."
@@ -74,15 +67,21 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             EditDatabaseCommand = new RelayCommand(o => EditDbSource(), o => CanEditDatabase);
             RefreshTablesCommand = new RelayCommand(o => LoadDatabaseTables(SelectedDatabase), o => CanEditDatabase);
 
-            LoadDatabases();
+            _isInitializing = true;
+            try
+            {
+                LoadDatabases();
 
-            SetSelectedDatabase(Database);
-            SetSelectedTable(TableName);
+                SetSelectedDatabase(Database);
+                SetSelectedTable(TableName);
+            }
+            finally
+            {
+                _isInitializing = false;
+            }
         }
 
         public override string CollectionName { get { return "InputMappings"; } }
-
-        public PreviewViewModel PreviewViewModel { get; private set; }
 
         public ObservableCollection<DbSource> Databases { get; private set; }
 
@@ -144,7 +143,13 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         void LoadDatabases()
         {
-            Databases.Clear();
+            if(!_isInitializing)
+            {
+                Databases.Clear();
+                Tables.Clear();
+                ModelItemCollection.Clear();
+            }
+
             Databases.Add(_newDbSource);
 
             var sources = ResourceRepository.FindSourcesByType(_environmentModel, enSourceType.SqlDatabase)
@@ -165,42 +170,53 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 return;
             }
 
+            // Save selection --> ComboBox binding clears selection when Tables collection is cleared
+            var selectedTableName = GetTableName(SelectedTable);
+
             IsRefreshing = true;
             try
             {
-                // Save selection --> ComboBox binding clears selection when Tables collection is cleared
-                var selectedTable = SelectedTable;
-
                 Tables.Clear();
                 var tables = GetDatabaseTables(dbSource);
                 foreach(var table in tables)
                 {
                     Tables.Add(table);
                 }
-
-                if(selectedTable != null)
-                {
-                    // Restore selection
-                    SetSelectedTable(selectedTable);
-                }
             }
             finally
             {
                 IsRefreshing = false;
+
+                // Restore selection or select first in list
+                var selectedTable = Tables.FirstOrDefault(t => t.TableName == selectedTableName) ?? Tables.FirstOrDefault();
+                SelectedTable = selectedTable;
             }
         }
 
         void LoadTableColumns(DbTable dbTable)
         {
-            ModelItemCollection.Clear();
-
-            if(dbTable == null)
+            if(IsRefreshing)
             {
                 return;
             }
 
+            if(dbTable == null)
+            {
+                ModelItemCollection.Clear();
+                return;
+            }
+
+            var oldColumns = ModelItemCollection.Select(mi => (DataColumnMapping)mi.GetCurrentValue()).ToList();
+            ModelItemCollection.Clear();
+
             foreach(var mapping in dbTable.Columns.Select(column => new DataColumnMapping { OutputColumn = column }))
             {
+                var oldColumn = oldColumns.FirstOrDefault(c => c.OutputColumn.ColumnName == mapping.OutputColumn.ColumnName);
+                if(oldColumn != null)
+                {
+                    mapping.InputColumn = oldColumn.InputColumn;
+                }
+
                 ModelItemCollection.Add(mapping);
             }
         }
@@ -210,7 +226,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             if(SelectedDatabase != null)
             {
                 var selectedDatabase = SelectedDatabase;
-                var selectedTable = SelectedTable;
+                var selectedTableName = GetTableName(SelectedTable);
                 var resourceModel = _environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == SelectedDatabase.ResourceName);
                 if(resourceModel != null)
                 {
@@ -219,7 +235,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                     LoadDatabases();
 
                     SetSelectedDatabase(selectedDatabase);
-                    SetSelectedTable(selectedTable);
+                    SetSelectedTable(selectedTableName);
                 }
             }
         }
@@ -246,11 +262,8 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
             var result = _environmentModel.Connection.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID);
 
-            return JsonConvert.DeserializeObject<List<DbTable>>(result);
-        }
-
-        void DoPreview(object sender, PreviewRequestedEventArgs e)
-        {
+            var tables = JsonConvert.DeserializeObject<List<DbTable>>(result);
+            return tables ?? EmptyDbTables;
         }
 
         void SetSelectedDatabase(DbSource dbSource)
@@ -258,14 +271,14 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             SelectedDatabase = dbSource == null ? null : Databases.FirstOrDefault(d => d.ResourceID == dbSource.ResourceID);
         }
 
-        void SetSelectedTable(DbTable table)
-        {
-            SetSelectedTable(table == null ? null : table.TableName);
-        }
-
         void SetSelectedTable(string tableName)
         {
             SelectedTable = Tables.FirstOrDefault(t => t.TableName == tableName);
+        }
+
+        static string GetTableName(DbTable table)
+        {
+            return table == null ? null : table.TableName;
         }
     }
 }

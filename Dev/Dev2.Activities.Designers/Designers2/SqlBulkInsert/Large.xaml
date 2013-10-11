@@ -11,12 +11,11 @@
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:dto="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
-                               xmlns:preview="clr-namespace:Dev2.Activities.Preview"
-                               MinWidth="350"
                                Width="350"
+                               MinWidth="350"
+                               MinHeight="306"
                                MaxWidth="Infinity"
-                               MaxHeight="Infinity"
-                               MinHeight="250"
+                               MaxHeight="Infinity"                               
                                Padding="10,7,10,10"
                                mc:Ignorable="d"
                                d:DesignHeight="260"
@@ -48,7 +47,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
        </Grid.RowDefinitions>
@@ -105,7 +103,7 @@
         <controls:Dev2DataGrid Grid.Row="2"
                                Grid.Column="0"
                                Grid.ColumnSpan="3"
-                               x:Name="LargeDataGrid"
+                               x:Name="LargeDataGrid"                              
                                ItemsSource="{Binding ModelItem.InputMappings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource ActivityMapppingDataGridStyle}"
                                Margin="0,3">
@@ -146,7 +144,7 @@
 
                 <DataGridTemplateColumn Width="SizeToCells"
                                         MinWidth="65"      
-                                        Header="To Table"
+                                        Header="To Field"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
                     <DataGridTemplateColumn.CellTemplate>
@@ -244,7 +242,7 @@
                    Style="{StaticResource ActivityMapppingLabelStyle}" />
             <ui:IntellisenseTextBox Grid.Row="0"
                                     Grid.Column="4"
-                                    DefaultText="[[Timeout]]"
+                                    DefaultText="[[Seconds]]"
                                     Text="{Binding ModelItem.Timeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
                                     ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipTimeout}"
@@ -372,12 +370,6 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-
-        <preview:PreviewView Grid.Row="5"
-                             Grid.Column="0"
-                             Grid.ColumnSpan="3"
-                             Margin="-2,0"
-                             DataContext="{Binding PreviewViewModel}" />
 
     </Grid>
     
