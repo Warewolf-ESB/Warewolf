@@ -20,6 +20,7 @@ using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
 using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
@@ -452,10 +453,14 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
             ExplorerUIMap.DoubleClickOpenProject("Localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes);
-            SendKeys.SendWait("^s{F5}");
-            Playback.Wait(1000);
-            SendKeys.SendWait("{F5}");
-            Playback.Wait(1000);
+            SendKeys.SendWait("^s");
+
+            RibbonUIMap.ClickRibbonMenuItem("Debug");
+            if (DebugUIMap.WaitForDebugWindow(5000))
+            {
+                SendKeys.SendWait("{F5}");
+                Playback.Wait(1000);
+            }
             TabManagerUIMap.CloseAllTabs();
         }
 
@@ -979,7 +984,26 @@ namespace Dev2.Studio.UI.Tests
         }
 
         private SaveDialogUIMap _saveDialogUIMap;
-        
+
+        #endregion
+
+        #region Save Dialog UI Map
+
+        public DebugUIMap DebugUIMap
+        {
+            get
+            {
+                if((_debugUIMap == null))
+                {
+                    _debugUIMap = new DebugUIMap();
+                }
+
+                return _debugUIMap;
+            }
+        }
+
+        private DebugUIMap _debugUIMap;
+
         #endregion
 
         #endregion UI Maps
