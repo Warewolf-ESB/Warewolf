@@ -3,6 +3,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Caliburn.Micro;
 using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
@@ -26,7 +27,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var viewModel = new SqlBulkInsertDesignerViewModel(CreateModelItem(), null);
+            var viewModel = new SqlBulkInsertDesignerViewModel(CreateModelItem(), null, null);
 
 
             //------------Assert Results-------------------------
@@ -35,7 +36,22 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlBulkInsertDesignerViewModel_Constructor")]
-        public void SqlBulkInsertDesignerViewModel_Constructor_InitializesProperties()
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void SqlBulkInsertDesignerViewModel_Constructor_EventAggregatorIsNull_ThrowsArgumentNullException()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var viewModel = new SqlBulkInsertDesignerViewModel(CreateModelItem(), new Mock<IEnvironmentModel>().Object, null);
+
+
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_Constructor")]
+        public void SqlBulkInsertDesignerViewModel_Constructor_EmptyInitializesProperties()
         {
             //------------Setup for test--------------------------
             const int DatabaseCount = 2;
@@ -183,7 +199,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var viewModel = CreateViewModel(databases);
 
             var dbSource1 = databases.Keys.First();
-            var dbTable1 =  databases[dbSource1][0];
+            var dbTable1 = databases[dbSource1][0];
 
             viewModel.TableName = dbTable1.TableName;
             viewModel.Database = dbSource1;
@@ -223,9 +239,9 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             }
         }
 
-        static TestSqlBulkInsertDesignerViewModel CreateViewModel(Dictionary<DbSource, List<DbTable>> sources)
+        static TestSqlBulkInsertDesignerViewModel CreateViewModel(Dictionary<DbSource, List<DbTable>> sources, IEventAggregator eventAggregator = null)
         {
-            var sourceDefs = sources == null ? null : sources.Select(s => s.Key.ToXml().ToString());          
+            var sourceDefs = sources == null ? null : sources.Select(s => s.Key.ToXml().ToString());
 
             var envModel = new Mock<IEnvironmentModel>();
             envModel.Setup(e => e.Connection.WorkspaceID).Returns(Guid.NewGuid());
@@ -244,10 +260,14 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                     tableJson = JsonConvert.SerializeObject(tables);
                 })
                 .Returns(() => tableJson);
-            
+
+            if(eventAggregator == null)
+            {
+                eventAggregator = new Mock<IEventAggregator>().Object;
+            }
 
             var modelItem = CreateModelItem();
-            return new TestSqlBulkInsertDesignerViewModel(modelItem, envModel.Object);
+            return new TestSqlBulkInsertDesignerViewModel(modelItem, envModel.Object, eventAggregator);
         }
 
 
@@ -278,7 +298,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                                 columns.Add(new DbColumn { ColumnName = dbName + "_Column_" + j + "_" + k, DataType = typeof(string), MaxLength = 50 });
                                 break;
                             case 1:
-                                columns.Add(new DbColumn { ColumnName = dbName + "_Column_" + j + "_" + k, DataType = typeof(int)});
+                                columns.Add(new DbColumn { ColumnName = dbName + "_Column_" + j + "_" + k, DataType = typeof(int) });
                                 break;
                             case 2:
                                 columns.Add(new DbColumn { ColumnName = dbName + "_Column_" + j + "_" + k, DataType = typeof(double) });

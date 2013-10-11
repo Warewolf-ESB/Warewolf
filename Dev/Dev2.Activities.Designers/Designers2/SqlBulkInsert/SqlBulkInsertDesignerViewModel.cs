@@ -1,18 +1,23 @@
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Preview;
 using Dev2.Common;
 using Dev2.DynamicServices;
+using Dev2.Providers.Logs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.TO;
 using Newtonsoft.Json;
 using Unlimited.Framework;
@@ -21,6 +26,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 {
     public class SqlBulkInsertDesignerViewModel : ActivityCollectionDesignerViewModel<DataColumnMapping>
     {
+        readonly IEventAggregator _eventPublisher;
         readonly IEnvironmentModel _environmentModel;
         readonly DbSource _newDbSource;
 
@@ -33,15 +39,17 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         }
 
         public SqlBulkInsertDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, GetActiveEnvironment())
+            : this(modelItem, GetActiveEnvironment(), EventPublishers.Aggregator)
         {
         }
 
-        public SqlBulkInsertDesignerViewModel(ModelItem modelItem, IEnvironmentModel environmentModel)
+        public SqlBulkInsertDesignerViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
             : base(modelItem)
         {
             VerifyArgument.IsNotNull("environmentModel", environmentModel);
             _environmentModel = environmentModel;
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            _eventPublisher = eventPublisher;
 
             AddTitleBarLargeToggle();
             AddTitleBarHelpToggle();
@@ -63,7 +71,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             Databases = new ObservableCollection<DbSource>();
             Tables = new ObservableCollection<DbTable>();
 
-            EditDatabaseCommand = new RelayCommand(o => EditDatabase(), o => CanEditDatabase);
+            EditDatabaseCommand = new RelayCommand(o => EditDbSource(), o => CanEditDatabase);
             RefreshTablesCommand = new RelayCommand(o => LoadDatabaseTables(SelectedDatabase), o => CanEditDatabase);
 
             LoadDatabases();
@@ -151,16 +159,17 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         void LoadDatabaseTables(DbSource dbSource)
         {
+            if(dbSource == _newDbSource)
+            {
+                CreateDbSource();
+                return;
+            }
+
             IsRefreshing = true;
             try
             {
-                //if(dbSource == _newDbSource)
-                //{
-                //    CreateDatabase();
-                //}
-
                 // Save selection --> ComboBox binding clears selection when Tables collection is cleared
-                var currentTableName = SelectedTable == null ? null : SelectedTable.TableName;
+                var selectedTable = SelectedTable;
 
                 Tables.Clear();
                 var tables = GetDatabaseTables(dbSource);
@@ -169,10 +178,10 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                     Tables.Add(table);
                 }
 
-                if(currentTableName != null)
+                if(selectedTable != null)
                 {
                     // Restore selection
-                    SetSelectedTable(currentTableName);
+                    SetSelectedTable(selectedTable);
                 }
             }
             finally
@@ -196,12 +205,30 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             }
         }
 
-        void EditDatabase()
+        void EditDbSource()
         {
+            if(SelectedDatabase != null)
+            {
+                var selectedDatabase = SelectedDatabase;
+                var selectedTable = SelectedTable;
+                var resourceModel = _environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == SelectedDatabase.ResourceName);
+                if(resourceModel != null)
+                {
+                    Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
+                    _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
+                    LoadDatabases();
+
+                    SetSelectedDatabase(selectedDatabase);
+                    SetSelectedTable(selectedTable);
+                }
+            }
         }
 
-        void CreateDatabase()
+        void CreateDbSource()
         {
+            Logger.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard));
+            _eventPublisher.Publish(new ShowNewResourceWizard("DbSource"));
+            LoadDatabases();
         }
 
         IEnumerable<DbTable> GetDatabaseTables(DbSource dbSource)
@@ -231,8 +258,14 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             SelectedDatabase = dbSource == null ? null : Databases.FirstOrDefault(d => d.ResourceID == dbSource.ResourceID);
         }
 
+        void SetSelectedTable(DbTable table)
+        {
+            SetSelectedTable(table == null ? null : table.TableName);
+        }
+
         void SetSelectedTable(string tableName)
         {
             SelectedTable = Tables.FirstOrDefault(t => t.TableName == tableName);
-        }    }
+        }
+    }
 }
