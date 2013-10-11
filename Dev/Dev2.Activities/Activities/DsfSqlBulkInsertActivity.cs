@@ -9,6 +9,7 @@ using Dev2.Common;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
@@ -114,19 +115,9 @@ namespace Dev2.Activities
                 
                 while(parametersIteratorCollection.HasMoreData())
                 {
-                    var batchSize = int.Parse(parametersIteratorCollection.FetchNextRow(batchItr).TheValue);
-                    var timeout = int.Parse(parametersIteratorCollection.FetchNextRow(timeoutItr).TheValue);
-                    if(toUpsert.IsDebug)
-                    {
-                        AddDebugOutputItemFromEntry(BatchSize, compiler, executionID, debugOutputIndexCounter);
-                        debugOutputIndexCounter++;
-                        AddDebugOutputItemFromEntry(Timeout, compiler, executionID, debugOutputIndexCounter);
-                        debugOutputIndexCounter++;
-                    }
-                    var sqlBulkCopy = new SqlBulkCopy(Database.ConnectionString, SqlBulkInserter.CurrentOptions) { BulkCopyTimeout = timeout, BatchSize = batchSize, DestinationTableName = TableName };
+                    var sqlBulkCopy = SetupSqlBulkCopy(batchItr, parametersIteratorCollection, timeoutItr, toUpsert, compiler, executionID, ref debugOutputIndexCounter);
                     SqlBulkInserter.Insert(sqlBulkCopy, dataTableToInsert);
                 }
-
                 if(String.IsNullOrEmpty(BatchSize) && String.IsNullOrEmpty(Timeout))
                 {
                     var sqlBulkCopy = new SqlBulkCopy(Database.ConnectionString, SqlBulkInserter.CurrentOptions) { DestinationTableName = TableName };
@@ -155,6 +146,79 @@ namespace Dev2.Activities
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
+                }
+            }
+        }
+
+        SqlBulkCopy SetupSqlBulkCopy(IDev2DataListEvaluateIterator batchItr, IDev2IteratorCollection parametersIteratorCollection, IDev2DataListEvaluateIterator timeoutItr, IDev2DataListUpsertPayloadBuilder<string> toUpsert, IDataListCompiler compiler, Guid executionID, ref int debugOutputIndexCounter)
+        {
+            var batchSize = -1;
+            var timeout = -1;
+            GetParameterValuesForBatchSizeAndTimeOut(batchItr, parametersIteratorCollection, timeoutItr, ref batchSize, ref timeout);
+            AddBatchSizeAndTimeOutToDebug(toUpsert, compiler, executionID, ref debugOutputIndexCounter);
+            var sqlBulkCopy = new SqlBulkCopy(Database.ConnectionString, SqlBulkInserter.CurrentOptions) { DestinationTableName = TableName };
+            if(batchSize != -1)
+            {
+                sqlBulkCopy.BatchSize = batchSize;
+            }
+            if(timeout != -1)
+            {
+                sqlBulkCopy.BulkCopyTimeout = timeout;
+            }
+            return sqlBulkCopy;
+        }
+
+        void AddBatchSizeAndTimeOutToDebug(IDev2DataListUpsertPayloadBuilder<string> toUpsert, IDataListCompiler compiler, Guid executionID, ref int debugOutputIndexCounter)
+        {
+            if(toUpsert.IsDebug)
+            {
+                if(!string.IsNullOrEmpty(BatchSize))
+                {
+                    AddDebugInputItemFromEntry(BatchSize,"Batchsize: ", compiler, executionID);
+                    debugOutputIndexCounter++;
+                }
+                if(!String.IsNullOrEmpty(Timeout))
+                {
+                    AddDebugInputItemFromEntry(Timeout,"Timeout: ", compiler, executionID);
+                    debugOutputIndexCounter++;
+                }
+            }
+        }
+
+        static void GetParameterValuesForBatchSizeAndTimeOut(IDev2DataListEvaluateIterator batchItr, IDev2IteratorCollection parametersIteratorCollection, IDev2DataListEvaluateIterator timeoutItr, ref int batchSize, ref int timeout)
+        {
+            GetBatchSize(batchItr, parametersIteratorCollection,ref batchSize);
+            GetTimeOut(parametersIteratorCollection, timeoutItr, ref timeout);
+        }
+
+        static void GetTimeOut(IDev2IteratorCollection parametersIteratorCollection, IDev2DataListEvaluateIterator timeoutItr, ref int timeout)
+        {
+            if(timeoutItr != null)
+            {
+                var timeoutString = parametersIteratorCollection.FetchNextRow(timeoutItr).TheValue;
+                if(!String.IsNullOrEmpty(timeoutString))
+                {
+                    int parsedValue;
+                    if(int.TryParse(timeoutString, out parsedValue))
+                    {
+                        timeout = parsedValue;
+                    }
+                }
+            }
+        }
+
+        static void GetBatchSize(IDev2DataListEvaluateIterator batchItr, IDev2IteratorCollection parametersIteratorCollection, ref int batchSize)
+        {
+            if(batchItr != null)
+            {
+                var batchSizeString = parametersIteratorCollection.FetchNextRow(batchItr).TheValue;
+                if(!String.IsNullOrEmpty(batchSizeString))
+                {
+                    int parsedValue;
+                    if(int.TryParse(batchSizeString, out parsedValue))
+                    {
+                        batchSize = parsedValue;
+                    }
                 }
             }
         }
@@ -277,6 +341,19 @@ namespace Dev2.Activities
 
             itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, expressionsEntry, executionID, enDev2ArgumentType.Output));
             _debugOutputs.Add(itemToAdd);
+        }
+        
+        void AddDebugInputItemFromEntry(string expression,string parameterName, IDataListCompiler compiler, Guid executionID)
+        {
+            ErrorResultTO errorsResultTO;
+            var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, expression, false, out errorsResultTO);
+            var itemToAdd = new DebugItem();
+
+            //itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = debugOutputIndexCounter.ToString(CultureInfo.InvariantCulture)});
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = parameterName });
+
+            itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, expressionsEntry, executionID, enDev2ArgumentType.Input));
+            _debugInputs.Add(itemToAdd);
         }
         
         SqlBulkCopyOptions BuildSqlBulkCopyOptions()

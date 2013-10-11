@@ -772,7 +772,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = CheckActivityDebugInputOutput(act, dataListShape,dataListWithData, out inRes, out outRes);
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
-            Assert.AreEqual(12, inRes.Count);
+            Assert.AreEqual(14, inRes.Count);
             var debugInputs = inRes[0].FetchResultsList();
             
             Assert.AreEqual(1, debugInputs.Count);
@@ -892,29 +892,29 @@ namespace Dev2.Tests.Activities.ActivityTests
            Assert.AreEqual("Col1 System.String(100)", debugInputs[9].Value);
            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[9].Type);
 
-           Assert.AreEqual(3, outRes.Count);
+           debugInputs = inRes[12].FetchResultsList();
+           Assert.AreEqual("Batchsize: ", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
+           Assert.AreEqual("[[batchsize]]", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[2].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[2].Type);
+           Assert.AreEqual("100", debugInputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugInputs[3].Type);
+
+           debugInputs = inRes[13].FetchResultsList();
+           Assert.AreEqual("Timeout: ", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
+           Assert.AreEqual("[[timeout]]", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[2].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[2].Type);
+           Assert.AreEqual("240", debugInputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugInputs[3].Type);
+
+           Assert.AreEqual(1, outRes.Count);
            var debugOutputs = outRes[0].FetchResultsList();
-
-           Assert.AreEqual("1", debugOutputs[0].Value);
-           Assert.AreEqual(DebugItemResultType.Label, debugOutputs[0].Type);
-           Assert.AreEqual("[[batchsize]]", debugOutputs[1].Value);
-           Assert.AreEqual(DebugItemResultType.Variable, debugOutputs[1].Type);
-           Assert.AreEqual(GlobalConstants.EqualsExpression, debugOutputs[2].Value);
-           Assert.AreEqual(DebugItemResultType.Label, debugOutputs[2].Type);
-           Assert.AreEqual("100", debugOutputs[3].Value);
-           Assert.AreEqual(DebugItemResultType.Value, debugOutputs[3].Type);
-
-           debugOutputs = outRes[1].FetchResultsList();
-           Assert.AreEqual("2", debugOutputs[0].Value);
-           Assert.AreEqual(DebugItemResultType.Label, debugOutputs[0].Type);
-           Assert.AreEqual("[[timeout]]", debugOutputs[1].Value);
-           Assert.AreEqual(DebugItemResultType.Variable, debugOutputs[1].Type);
-           Assert.AreEqual(GlobalConstants.EqualsExpression, debugOutputs[2].Value);
-           Assert.AreEqual(DebugItemResultType.Label, debugOutputs[2].Type);
-           Assert.AreEqual("240", debugOutputs[3].Value);
-           Assert.AreEqual(DebugItemResultType.Value, debugOutputs[3].Type);
-
-           debugOutputs = outRes[2].FetchResultsList();
+           
            Assert.AreEqual("3", debugOutputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugOutputs[0].Type);
            Assert.AreEqual("[[result]]", debugOutputs[1].Value);
