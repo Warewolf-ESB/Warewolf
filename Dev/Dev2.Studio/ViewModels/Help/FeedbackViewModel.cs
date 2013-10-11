@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -402,8 +403,25 @@ namespace Dev2.Studio.ViewModels.Help
         /// <datetime>2013/01/14-09:19 AM</datetime>
         public void Send()
         {
+            IsOutlookInstalled();
             var emailCommService = new MapiEmailCommService<EmailCommMessage>();
             Send(emailCommService);
+        }
+
+        public static bool IsOutlookInstalled()
+        {
+            try
+            {
+                Type type = Type.GetTypeFromCLSID(new Guid("0006F03A-0000-0000-C000-000000000046")); //Outlook.Application
+                if(type == null) return false;
+                object obj = Activator.CreateInstance(type);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                return true;
+            }
+            catch(COMException)
+            {
+                return false;
+            }
         }
 
         /// <summary>
