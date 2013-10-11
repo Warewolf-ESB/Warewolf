@@ -130,8 +130,8 @@ namespace Dev2.Core.Tests {
             _dataMappingViewModel.CreateXmlOutput(_dataMappingViewModel.Outputs, _dataMappingViewModel.Inputs);
             string result1 = _dataMappingViewModel.Activity.LiveInputMapping;
             string result2 = _dataMappingViewModel.Activity.LiveOutputMapping;
-            Assert.AreEqual(@"<Outputs><Output Name=""vehicleVin"" MapsTo=""VIN"" Value="""" /><Output Name=""vehicleColor"" MapsTo=""VehicleColor"" Value="""" /><Output Name=""speed"" MapsTo=""speed"" Value="""" Recordset=""Fines"" /><Output Name=""date"" MapsTo=""date"" Value=""Fines.Date"" Recordset=""Fines"" /><Output Name=""location"" MapsTo=""location"" Value="""" Recordset=""Fines"" /></Outputs>", result2);
-            Assert.AreEqual(@"<Inputs><Input Name=""reg"" Source="""" DefaultValue=""NUD2347""><Validator Type=""Required"" /></Input><Input Name=""asdfsad"" Source=""registration223"" DefaultValue=""w3rt24324""><Validator Type=""Required"" /></Input><Input Name=""number"" Source="""" /></Inputs>", result1);
+            Assert.AreEqual(@"<Outputs><Output Name=""vehicleVin"" MapsTo=""[[VIN]]"" Value="""" /><Output Name=""vehicleColor"" MapsTo=""[[VehicleColor]]"" Value="""" /><Output Name=""speed"" MapsTo=""[[speed]]"" Value="""" Recordset=""Fines"" /><Output Name=""date"" MapsTo=""[[date]]"" Value=""[[Fines.Date]]"" Recordset=""Fines"" /><Output Name=""location"" MapsTo=""[[location]]"" Value="""" Recordset=""Fines"" /></Outputs>", result2);
+            Assert.AreEqual(@"<Inputs><Input Name=""reg"" Source="""" DefaultValue=""NUD2347""><Validator Type=""Required"" /></Input><Input Name=""asdfsad"" Source=""[[registration223]]"" DefaultValue=""w3rt24324""><Validator Type=""Required"" /></Input><Input Name=""number"" Source="""" /></Inputs>", result1);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace Dev2.Core.Tests {
             mockAct.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
             mockAct.Setup(c => c.ResourceModel).Returns(Dev2MockFactory.SetupResourceModelWithOnlyInputsMock().Object);
 
-            string value = "123";
+            string value = "[[123]]";
 
             DataMappingViewModel dataMappingViewModel = new DataMappingViewModel(mockAct.Object);
             dataMappingViewModel.Inputs[0].MapsTo = value;
@@ -171,7 +171,7 @@ namespace Dev2.Core.Tests {
             mockAct.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
             mockAct.Setup(c => c.ResourceModel).Returns(Dev2MockFactory.SetupResourceModelWithOnlyOuputsMock().Object);
 
-            string value = "123";
+            string value = "[[123]]";
 
             DataMappingViewModel dataMappingViewModel = new DataMappingViewModel(mockAct.Object);
             dataMappingViewModel.Outputs[0].Value = value;
@@ -190,8 +190,8 @@ namespace Dev2.Core.Tests {
             mockAct.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
             mockAct.Setup(c => c.ResourceModel).Returns(Dev2MockFactory.SetupResourceModelMock().Object);
 
-            string inputValue = "123";
-            string outputValue = "1234";
+            string inputValue = "[[123]]";
+            string outputValue = "[[1234]]";
 
             DataMappingViewModel dataMappingViewModel = new DataMappingViewModel(mockAct.Object);
             dataMappingViewModel.Inputs[0].MapsTo = inputValue;

@@ -127,7 +127,7 @@ namespace Dev2.DataList
             var outputList = GenerateMapping(SavedOutputMapping, ActivityOutputDefinitions, outputParser);
 
             result = new MappingViewModelTO(inputList, outputList);
-
+           
             // and set the data to save?!
             if(string.IsNullOrEmpty(SavedInputMapping))
             {
@@ -178,11 +178,11 @@ namespace Dev2.DataList
             IList<IInputOutputViewModel> result = new List<IInputOutputViewModel>();
             IList<IDev2Definition> concreteDefinitions = parser.ParseAndAllowBlanks(mappingDefinitions);
 
+            
+            object matchSet = GenerateMatchFragmentsFromDataList();
+
             foreach(var def in concreteDefinitions)
             {
-
-                // TODO : Examine the DataList for matches?!
-
                 var injectValue = def.Value;
 
                 if(!string.IsNullOrEmpty(injectValue))
@@ -204,6 +204,17 @@ namespace Dev2.DataList
             }
 
             return result;
+        }
+
+        private object GenerateMatchFragmentsFromDataList()
+        {
+            // TODO : Examine the DataList for matches?! - Scalar are easy, its rs matches that become interesting?!
+            if (string.IsNullOrEmpty(DataList))
+            {
+
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -235,20 +246,5 @@ namespace Dev2.DataList
 
             return result;
         }
-
-        //private string ConvertModelDataToString(IList<IInputOutputViewModel> modelData)
-        //{
-        //    string outputString = string.Empty;
-        //    IList<IDev2Definition> outputs = new List<IDev2Definition>();
-        //    if(modelData.Count != 0)
-        //    {
-        //        foreach(IInputOutputViewModel otp in modelData)
-        //        {
-        //            outputs.Add(otp.GetGenerationTO());
-        //        }
-        //        outputString = DataMappingListFactory.GenerateMapping(outputs, enDev2ArgumentType.Output);
-        //    }
-        //    return outputString;
-        //}
     }
 }
