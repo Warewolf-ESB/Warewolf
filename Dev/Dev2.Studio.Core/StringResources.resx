@@ -776,7 +776,22 @@ Would you like to start the setup now?</value>
   <data name="DialogTitle_FolderHasDependencies" xml:space="preserve">
     <value>Folder has dependants</value>
   </data>
-    <data name="Resource_ID_must_be_a_Guid" xml:space="preserve">
+  <data name="Resource_ID_must_be_a_Guid" xml:space="preserve">
     <value>Resource ID must be a Guid</value>
+  </data>
+  <data name="Pack_Uri_DatabaseService_Image" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/DatabaseService-32.png</value>
+  </data>
+  <data name="Pack_Uri_EmailSource_Image" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/ToolSendEmail-32.png</value>
+  </data>
+  <data name="Pack_Uri_PluginService_Image" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png</value>
+  </data>
+  <data name="Pack_Uri_WebService_Image" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/WebService-32.png</value>
+  </data>
+  <data name="Pack_Uri_WorkflowService_Image" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png</value>
   </data>
 </root>

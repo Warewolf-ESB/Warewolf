@@ -253,6 +253,25 @@ namespace BusinessDesignStudio.Unit.Tests
         }
 
         [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ResourceRepository_HydrateResourceModel")]
+        public void ResourceRepository_HydrateResourceModel_ResourceHasAnInvalidIconPath_IconPathIsDefaultedToResourceTypeDefaultIcon()
+        {
+            //------------Setup for test--------------------------
+            var resourceRepository = GetResourceRepository();
+            // create the required dynamic ;)
+            var data = GetTestData();
+            data = data.Replace("@@@@", "pack://application:,,,/Warewolf Studio;component/images/Non-ExistentFile.png");
+            data = data.Replace("WorkflowService", "PluginService");
+            var uo = new UnlimitedObject(data);
+            //------------Execute Test---------------------------
+            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(model);
+            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png");
+        }
+
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceRepository_HydrateResourceModel")]
         public void ResourceRepository_HydrateResourceModel_ResourceTypeIsWorkflowService_IconPathIsValid()

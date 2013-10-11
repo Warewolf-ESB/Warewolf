@@ -549,25 +549,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return null;
         }
 
-        readonly Func<dynamic, bool> _doesPathExist = (data) =>
-        {
-            try
-            {
-                new BitmapImage(new Uri(data.IconPath));
-                return true;
-            }
-            catch(Exception)
-            {
-                var message = string.Format("Resource Name : {0} does not has an invalid path : {1}", data.GetValue("Name"), data.IconPath);
-                Logger.Error(message);
-                return false;
-            }
-        }; 
-
         private string GetIconPath(dynamic data)
         {
             var iconPath = data.IconPath as string;
-            if(string.IsNullOrEmpty(iconPath) || !iconPath.Contains(".png") || !_doesPathExist(data))
+            if(string.IsNullOrEmpty(iconPath) || !iconPath.Contains(".png") || !DoesPathExist(data.IconPath, data.GetValue("Name")))
             {
                 var type = data.GetValue("ResourceType");
                 ResourceType resType;
@@ -580,21 +565,21 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     {
                         case ResourceType.DbService:
                         case ResourceType.DbSource:
-                            iconPath = "pack://application:,,,/Warewolf Studio;component/images/DatabaseService-32.png";
+                            iconPath = StringResources.Pack_Uri_DatabaseService_Image;
                             break;
                         case ResourceType.EmailSource:
-                            iconPath = "pack://application:,,,/Warewolf Studio;component/images/ToolSendEmail-32.png";
+                            iconPath = StringResources.Pack_Uri_EmailSource_Image;
                             break;
                         case ResourceType.PluginService:
                         case ResourceType.PluginSource:
-                            iconPath = "pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png";
+                            iconPath = StringResources.Pack_Uri_PluginService_Image;
                             break;
                         case ResourceType.WebService:
                         case ResourceType.WebSource:
-                            iconPath = "pack://application:,,,/Warewolf Studio;component/images/WebService-32.png";
+                            iconPath = StringResources.Pack_Uri_WebService_Image;
                             break;
                         case ResourceType.WorkflowService:
-                            iconPath = "pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png";
+                            iconPath = StringResources.Pack_Uri_WorkflowService_Image;
                             break;
                     }
                 }
@@ -606,6 +591,21 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
             return iconPath;
         }
+
+        private bool DoesPathExist(string path, string name)
+        {
+            try
+            {
+                new BitmapImage(new Uri(path));
+                return true;
+            }
+            catch(Exception)
+            {
+                var message = string.Format("Resource Name : {0} has an invalid path : {1}", name, path);
+                Logger.Error(message);
+                return false;
+            }
+        } 
 
         #endregion Methods
 
