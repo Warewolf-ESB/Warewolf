@@ -65,7 +65,7 @@ namespace Dev2.CodedUI.Tests
         
 
         // PBI 8601 (Task 8855)
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void QuickVariableInputFromListTest()
         {
            Clipboard.Clear();
@@ -115,7 +115,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         //PBI_8853
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
         {
             var preCount = TabManagerUIMap.GetTabCount();
@@ -128,7 +128,7 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void ClickNewWorkflowExpectedWorkflowOpens()
         {
             var preCount = TabManagerUIMap.GetTabCount();
@@ -142,7 +142,7 @@ namespace Dev2.CodedUI.Tests
 
         #endregion New PBI Tests
 
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
         {
             // Create the workflow
@@ -182,7 +182,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         ////PBI 9461
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void ChangingResourceExpectedPopUpWarningWithShowAffected()
         {
             // Open the workflow
@@ -212,7 +212,7 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         [TestCategory("DsfActivityTests")]
         [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands.")]
-        [Owner("Massimo Guerrera")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [Owner("Massimo Guerrera")]
         // ReSharper disable InconsistentNaming
         public void DsfActivityDesigner_CodedUI_DroppingActivityOntoDesigner_MappingToBeExpanded()
         // ReSharper restore InconsistentNaming
@@ -275,7 +275,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void UnsavedStar_UITest_WhenWorkflowIsChanged_ExpectStarIsShowing()
         {
             //------------Setup for test--------------------------
@@ -301,7 +301,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         // Should be unit test
         public void TypeInCalcBoxExpectedTooltipAppears()
         {
@@ -354,7 +354,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         // Regression Test
         public void CheckAddMissingIsWorkingWhenManuallyAddingVariableExpectedToShowVariablesAsUnUsed()
         {
@@ -379,7 +379,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup("CalculateTaxReturns", true);
         }
 
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         // Regression Test
         public void ValidDatalistSearchTest()
         {
@@ -409,7 +409,7 @@ namespace Dev2.CodedUI.Tests
 
         #endregion
 
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void DragAWorkflowIntoAndOutOfAForEach_Expected_NoErrors()
         {
             // Create the workflow
@@ -471,7 +471,7 @@ namespace Dev2.CodedUI.Tests
 
         }
 
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void DragADecisionIntoForEachExpectNotAddedToForEach()
         {
             // Create the workflow
@@ -506,7 +506,7 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void DragASwitchIntoForEachExpectNotAddedToForEach()
         {
             // Create the workflow
@@ -545,7 +545,7 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void ClickShowMapping_Expected_InputOutputAdornersAreDisplayed()
         {
             // Create the workflow
@@ -577,7 +577,7 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
         {
             const string resourceToUse = "CalculateTaxReturns";
@@ -796,7 +796,7 @@ namespace Dev2.CodedUI.Tests
 
         #region Groomed Test
 
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void CheckIfDebugProcessingBarIsShowingDurningExecutionExpectedToShowDuringExecutionOnly()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
@@ -982,7 +982,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void UnsavedWorkflowsPersistingOnStudioRestartExpectedWorkflowStillOpen()
         {
             Process[] procMan = Process.GetProcessesByName("Dev2.Studio");
@@ -1015,7 +1015,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         // BUG 9078
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void StudioExit_Give_TabOpened_Expected_AllRunningProcessStop()
         {
             // TODO : Refactor into another scenario 

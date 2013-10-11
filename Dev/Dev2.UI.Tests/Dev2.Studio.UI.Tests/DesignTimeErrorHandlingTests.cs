@@ -46,12 +46,12 @@ namespace Dev2.Studio.UI.Tests
         {
             var window = new UIBusinessDesignStudioWindow();
             //close any open wizards
-            var tryFindDialog = window.GetChildren()[0].GetChildren()[0];
-            if(tryFindDialog.GetType() == typeof(WpfImage))
+            var tryFindDialog = window.GetChildren()[0];
+            if(tryFindDialog.GetType() == typeof(WpfWindow))
             {
                 Mouse.Click(tryFindDialog);
                 SendKeys.SendWait("{ESCAPE}");
-                Assert.Fail("Dialog hanging after test, might not have rendered properly");
+                Assert.Fail("Resource changed dialog hanging after test, might not have rendered properly");
             }
             //close any open tabs
             TabManagerUiMap.CloseAllTabs();
@@ -97,7 +97,7 @@ namespace Dev2.Studio.UI.Tests
                 // Save
                 DatabaseServiceWizardUiMap.ClickOK();
 
-                if (ResourceChangedPopUpUIMap.WaitForDialog(5000))
+                if(ResourceChangedPopUpUIMap.WaitForDialog(5000))
                 {
                     ResourceChangedPopUpUiMap.ClickCancel();
                 }
@@ -125,10 +125,10 @@ namespace Dev2.Studio.UI.Tests
                 }
 
                 // Fix Errors
-                if(WorkflowDesignerUiMap.Adorner_ClickFixErrors(theTab, serviceToUse+"(DsfActivityDesigner)"))
+                if(WorkflowDesignerUiMap.Adorner_ClickFixErrors(theTab, serviceToUse + "(DsfActivityDesigner)"))
                 {
                     // Assert mapping does not exist
-                    Assert.IsFalse(WorkflowDesignerUiMap.DoesActivityDataMappingContainText(WorkflowDesignerUiMap.FindControlByAutomationId(theTab, serviceToUse+"(DsfActivityDesigner)"), "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
+                    Assert.IsFalse(WorkflowDesignerUiMap.DoesActivityDataMappingContainText(WorkflowDesignerUiMap.FindControlByAutomationId(theTab, serviceToUse + "(DsfActivityDesigner)"), "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
                 }
                 else
                 {
@@ -139,7 +139,6 @@ namespace Dev2.Studio.UI.Tests
             {
                 Assert.Fail("DbService Wizard Failed to Load");
             }
-            TabManagerUiMap.CloseAllTabs();
         }
 
         [TestMethod]
@@ -196,7 +195,6 @@ namespace Dev2.Studio.UI.Tests
             {
                 Assert.Fail("DbService Wizard Failed to Load");
             }
-            TabManagerUiMap.CloseAllTabs();
         }
 
         public UIMap UIMap

@@ -258,6 +258,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                 Thread.Sleep(300);
 
                 // Can we see the file? (AKA: Is the folder maximised?)
+                var test = folderNameListItem.GetChildren();
+                test = test;
                 UITestControl projectNameListItem = new UITestControl(folderNameListItem);
                 projectNameListItem.SearchProperties.Add("AutomationId", "UI_" + projectName + "_AutoID");
                 projectNameListItem.Find();

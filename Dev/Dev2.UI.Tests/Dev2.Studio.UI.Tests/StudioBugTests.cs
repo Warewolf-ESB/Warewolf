@@ -64,7 +64,7 @@ namespace Dev2.Studio.UI.Tests
 
         #region Test
         // Bug 6501
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void DeleteFirstDatagridRow_Expected_RowIsNotDeleted()
         {
 
@@ -122,7 +122,7 @@ namespace Dev2.Studio.UI.Tests
 
 
         //2013.05.29: Ashley Lewis for bug 9455 - Dont allow copy paste workflow xaml to another workflow
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void CopyWorkFlowWithContextMenuCopyAndPasteToAnotherWorkflowExpectedNothingCopied()
         {
             Clipboard.SetText(" ");
@@ -141,7 +141,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         //2013.06.06: Ashley Lewis for 9448 - Dsf Activity Title - shows up as "DSFActivity" After a service has been dragged onto a workflow.
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void AddSecondServiceToWorkFlowExpectedDisplayTitleNotDsfActivity()
         {
             RibbonUIMap.CreateNewWorkflow();
@@ -168,7 +168,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [TestCategory("UITest")]
         [Description("for bug 9717 - copy paste multiple decisions (2013.06.22)")]
-        [Owner("Ashley")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [Owner("Ashley")]
         public void CopyDecisionsWithContextMenuAndPasteExpectedNoWizardsDisplayed()
         {
             //Initialize
@@ -225,7 +225,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [TestCategory("UITest")]
         [Description("Test for 'All Tools' workflow: The workflow is openned. The icons must display. The tab must be able to close again")]
-        [Owner("Ashley")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [Owner("Ashley")]
         // ReSharper disable InconsistentNaming
         public void StudioTooling_StudioToolingUITest_CanToolsDisplay_NoExceptionsThrown()
         // ReSharper restore InconsistentNaming
@@ -282,7 +282,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [TestCategory("Toolbox_Icons")]
         [Description("Toolbox icons display")]
-        [Owner("Ashley Lewis")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void Toolbox_UITest_OpenToolbox_IconsAreDisplayed()
         // ReSharper restore InconsistentNaming
@@ -411,59 +411,6 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
         }
 
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("RenameResource_WithDashes")]
-        public void RenameResource_WithDashes_ResourceRenamed()
-        {
-            TabManagerUIMap.CloseAllTabs();
-            const string newTestResourceWithDashes = "New-Test-Resource-With-Dashes";
-            const string oldResourceName = "OldResourceName";
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
-            if(ExplorerUIMap.ServiceExists("Localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes))
-            {
-                ExplorerUIMap.RightClickDeleteProject("Localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes);
-            }
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText(oldResourceName);
-            if(ExplorerUIMap.ServiceExists("Localhost", "WORKFLOWS", "Unassigned", oldResourceName))
-            {
-                ExplorerUIMap.RightClickDeleteProject("Localhost", "WORKFLOWS", "Unassigned", oldResourceName);
-            }
-            RibbonUIMap.CreateNewWorkflow();
-            SendKeys.SendWait("^s");
-            if(WizardsUIMap.WaitForWizard(5000))
-            {
-                SaveDialogUIMap.ClickAndTypeInNameTextbox(oldResourceName);
-            }
-            else
-            {
-                Assert.Fail("Save wizard did not display in the given time period");
-            }
-            TabManagerUIMap.CloseAllTabs();
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText(oldResourceName);
-            ExplorerUIMap.RightClickRenameProject("Localhost", "WORKFLOWS", "Unassigned", oldResourceName);
-            SendKeys.SendWait("New-Test-Resource-With-Dashes{ENTER}");
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.DoRefresh();
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
-            ExplorerUIMap.DoubleClickOpenProject("Localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes);
-            SendKeys.SendWait("^s");
-
-            RibbonUIMap.ClickRibbonMenuItem("Debug");
-            if (DebugUIMap.WaitForDebugWindow(5000))
-            {
-                SendKeys.SendWait("{F5}");
-                Playback.Wait(1000);
-            }
-            TabManagerUIMap.CloseAllTabs();
-        }
-
         #endregion Test
 
 
@@ -490,7 +437,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         // Bug 6617
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void OpeningDependancyWindowTwiceKeepsItOpen()
         {
             // The workflow so we have a second tab
@@ -560,14 +507,14 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [TestCategory("UITest")]
         [Description("for bug 9802 - Foreach drill down test (2013.06.28)")]
-        [Owner("Ashley")][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [Owner("Ashley")]
         public void DragAMultiAssignIntoAndOutOfAForEach_NoDrillDown()
         {
             // Create the workflow
             RibbonUIMap.CreateNewWorkflow();
 
             // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -596,28 +543,6 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
-
-        private int GetInstanceUnderParent(UITestControl control)
-        {
-            UITestControl parent = control.GetParent();
-            UITestControlCollection col = parent.GetChildren();
-            int index = 1;
-
-            foreach(UITestControl child in col)
-            {
-                if(child.Equals(control))
-                {
-                    break;
-                }
-
-                if(child.ControlType == control.ControlType)
-                {
-                    index++;
-                }
-            }
-            return index;
-        }
-
         #region Additional test attributes
 
         // You can use the following additional attributes as you write your tests:
@@ -640,6 +565,8 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
+        #region Context Init
+
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -656,6 +583,8 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         private TestContext _testContextInstance;
+        
+        #endregion
 
         #region UI Maps
 
@@ -987,7 +916,7 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
-        #region Save Dialog UI Map
+        #region Debug Input UI Map
 
         public DebugUIMap DebugUIMap
         {

@@ -124,7 +124,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// <summary>
         /// News the database service shortcut key expected database service opens.
         /// </summary>
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
@@ -138,7 +138,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
         }
 
-        [TestMethod][Ignore]//Ashley: WORKING OK - Bring back in when all the tests are OK like this one
+        [TestMethod]
         public void ClickNewPluginServiceShortcutKeyExpectedPluginServiceOpens()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");

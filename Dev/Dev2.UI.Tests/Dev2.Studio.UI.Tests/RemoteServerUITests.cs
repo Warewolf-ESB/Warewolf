@@ -25,7 +25,6 @@ namespace Dev2.Studio.UI.Tests
     ///     These are UI tests based on using a remote server
     /// </summary>
     [CodedUITest]
-    [Ignore]//TFSBLD down
     public class RemoteServerUiTests
     {
         #region Fields
