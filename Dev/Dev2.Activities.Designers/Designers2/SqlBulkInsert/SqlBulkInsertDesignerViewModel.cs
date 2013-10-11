@@ -69,7 +69,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             Tables = new ObservableCollection<DbTable>();
 
             EditDatabaseCommand = new RelayCommand(o => EditDbSource(), o => CanEditDatabase);
-            RefreshTablesCommand = new RelayCommand(o => LoadDatabaseTables(SelectedDatabase), o => CanEditDatabase);
+            RefreshTablesCommand = new RelayCommand(o => LoadDatabaseTables(SelectedDatabase), o => CanRefreshTables);
 
             _isInitializing = true;
             try
@@ -92,6 +92,8 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         public ObservableCollection<DbTable> Tables { get; private set; }
 
         public bool CanEditDatabase { get { return SelectedDatabase != null; } }
+
+        public bool CanRefreshTables { get { return SelectedTable != null; } }
 
         public ICommand EditDatabaseCommand { get; private set; }
 
@@ -243,6 +245,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
             IsRefreshing = true;
             Tables.Clear();
+            ModelItemCollection.Clear();
 
             var tables = EmptyDbTables;
             _asyncWorker.Start(() =>
