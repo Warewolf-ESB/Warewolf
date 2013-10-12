@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Network;
 using System.Xml.Linq;
-using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.DynamicServices;
-using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Network;
-using Dev2.Studio.Core.Wizards.Interfaces;
 
 namespace Dev2.Studio.Core
 {
@@ -97,6 +93,7 @@ namespace Dev2.Studio.Core
         public event EventHandler ItemAdded;
 
         public IEnvironmentModel Source { get; private set; }
+        public IEnvironmentModel ActiveEnvironment { get; set; }
 
         public bool IsLoaded { get; set; }
 
@@ -334,7 +331,7 @@ namespace Dev2.Studio.Core
         {
             var index = _environments.IndexOf(environment);
 
-            if (index == -1)
+            if(index == -1)
             {
                 _environments.Add(environment);
             }
@@ -515,7 +512,7 @@ namespace Dev2.Studio.Core
 
         public static string GetAppServerUriFromConnectionString(string connectionstring)
         {
-            if (string.IsNullOrWhiteSpace(connectionstring))
+            if(string.IsNullOrWhiteSpace(connectionstring))
             {
                 return string.Empty;
             }
@@ -564,11 +561,11 @@ namespace Dev2.Studio.Core
         void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
-            if (!_isDisposed)
+            if(!_isDisposed)
             {
                 // If disposing equals true, dispose all managed
                 // and unmanaged resources.
-                if (disposing)
+                if(disposing)
                 {
                     // TODO 
                 }

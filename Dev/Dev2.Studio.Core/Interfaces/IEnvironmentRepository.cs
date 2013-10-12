@@ -7,7 +7,7 @@ namespace Dev2.Studio.Core.Interfaces
     public interface IEnvironmentRepository : IFrameworkRepository<IEnvironmentModel>
     {
         IEnvironmentModel Source { get; }
-
+        IEnvironmentModel ActiveEnvironment { get; set; }
         
         bool IsLoaded { get; set; }
 

@@ -51,13 +51,8 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             TableName = "Select a Table..."
         };
 
-        static IEnvironmentModel GetActiveEnvironment()
-        {
-            return EnvironmentRepository.Instance.Source;
-        }
-
         public SqlBulkInsertDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, new AsyncWorker(), GetActiveEnvironment(), EventPublishers.Aggregator)
+            : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
         {
         }
 

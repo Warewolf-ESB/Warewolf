@@ -750,6 +750,7 @@ namespace Dev2.Core.Tests
         {
             CreateResourceRepo();
             var mockEnv = new Mock<IEnvironmentRepository>();
+            mockEnv.SetupProperty(g => g.ActiveEnvironment); // Start tracking changes
             mockEnv.Setup(g => g.All()).Returns(new List<IEnvironmentModel>());
             mockEnv.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
             mockEnv.Setup(repository => repository.Source).Returns(new Mock<IEnvironmentModel>().Object);
@@ -1769,6 +1770,17 @@ namespace Dev2.Core.Tests
                 CreateFullExportsAndVmWithEmptyRepo();
                 _mainViewModel.Handle(new SetActiveEnvironmentMessage(mockEnv.Object));
                 _eventAggregator.Verify(c => c.Publish(It.IsAny<UpdateActiveEnvironmentMessage>()), Times.Once());
+        }
+
+        [TestMethod]
+        [TestCategory("MainViewModel_SetActiveEnvironmentMessage")]
+        [Owner("Trevor Williams-Ros")]
+        public void MainViewModel_SetActiveEnvironmentMessage_SetsActiveEnvironmentOnEnvironmentRepository()
+        {
+            Mock<IEnvironmentModel> mockEnv = Dev2MockFactory.SetupEnvironmentModel();
+            CreateFullExportsAndVmWithEmptyRepo();
+            _mainViewModel.Handle(new SetActiveEnvironmentMessage(mockEnv.Object));
+            Assert.AreSame(mockEnv.Object, _mainViewModel.EnvironmentRepository.ActiveEnvironment);
         }
 
         [TestMethod]

@@ -475,6 +475,7 @@ namespace Dev2.Studio.ViewModels
         {
             Logger.TraceInfo(message.GetType().Name);
             ActiveEnvironment = message.EnvironmentModel;
+            EnvironmentRepository.ActiveEnvironment = ActiveEnvironment;
             Logger.TraceInfo("Publish message of type - " + typeof(UpdateActiveEnvironmentMessage));
             _eventPublisher.Publish(new UpdateActiveEnvironmentMessage(ActiveEnvironment));
         }
