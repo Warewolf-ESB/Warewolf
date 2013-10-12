@@ -11,7 +11,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
     internal class TestSqlBulkInsertDesignerViewModel : SqlBulkInsertDesignerViewModel
     {
         public TestSqlBulkInsertDesignerViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
-            : base(modelItem, environmentModel, eventPublisher)
+            : base(modelItem, new TestAsyncWorker(), environmentModel, eventPublisher)
         {
         }
 
@@ -20,5 +20,19 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
         public string TableName { get { return GetProperty<string>(); } set { SetProperty(value); } }
 
         public IList<DataColumnMapping> InputMappings { get { return GetProperty<IList<DataColumnMapping>>(); } set { SetProperty(value); } }
+
+        public int OnSelectedDatabaseChangedHitCount { get; private set; }
+        protected override void OnSelectedDatabaseChanged()
+        {
+            OnSelectedDatabaseChangedHitCount++;
+            base.OnSelectedDatabaseChanged();
+        }
+
+        public int OnSelectedTableChangedHitCount { get; private set; }
+        protected override void OnSelectedTableChanged()
+        {
+            OnSelectedTableChangedHitCount++;
+            base.OnSelectedTableChanged();
+        }
     }
 }

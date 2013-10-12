@@ -103,6 +103,7 @@
     <Compile Include="QuickVariableInput\QuickVariableInputViewModelTests.AddCommand.cs" />
     <Compile Include="QuickVariableInput\QuickVariableInputViewModelTests.Preview.cs" />
     <Compile Include="QuickVariableInput\QuickVariableInputViewModelTests.ClearCommand.cs" />
+    <Compile Include="TestAsyncWorker.cs" />
     <Compile Include="SqlBulkInsert\TestSqlBulkInsertDesignerViewModel.cs" />
     <Compile Include="SqlBulkInsert\SqlBulkInsertDesignerViewModelTests.cs" />
     <Compile Include="UtilTests\ForEachDesignerUtilsTests.cs" />

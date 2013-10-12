@@ -11,6 +11,7 @@ using Dev2.Common;
 using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Logs;
+using Dev2.Runtime.Configuration.ViewModels;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
@@ -29,7 +30,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
     {
         readonly IEventAggregator _eventPublisher;
         readonly IEnvironmentModel _environmentModel;
-        readonly IAsyncWorker _asyncWorker = new AsyncWorker();
+        readonly IAsyncWorker _asyncWorker;
 
         bool _isInitializing;
 
@@ -52,18 +53,19 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         static IEnvironmentModel GetActiveEnvironment()
         {
-            // TODO: Fix
             return EnvironmentRepository.Instance.Source;
         }
 
         public SqlBulkInsertDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, GetActiveEnvironment(), EventPublishers.Aggregator)
+            : this(modelItem, new AsyncWorker(), GetActiveEnvironment(), EventPublishers.Aggregator)
         {
         }
 
-        public SqlBulkInsertDesignerViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
+        public SqlBulkInsertDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
             : base(modelItem)
         {
+            VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
+            _asyncWorker = asyncWorker;
             VerifyArgument.IsNotNull("environmentModel", environmentModel);
             _environmentModel = environmentModel;
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
@@ -254,19 +256,15 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         void RefreshTables()
         {
-            // Save selection --> ComboBox binding clears selection when Tables collection is cleared
-            var selectedTableName = GetTableName(SelectedTable);
+            IsRefreshing = true;
 
             LoadDatabaseTables(() =>
             {
-                // Restore selection or prompt for selection
-                var selectedTable = Tables.FirstOrDefault(t => t.TableName == selectedTableName);
-                if(selectedTable == null)
+                SetSelectedTable(TableName);
+                LoadTableColumns(() =>
                 {
-                    Tables.Insert(0, SelectDbTable);
-                    selectedTable = SelectDbTable;
-                }
-                SelectedTable = selectedTable;
+                    IsRefreshing = false;
+                });
             });
         }
 
@@ -358,15 +356,12 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         void EditDbSource()
         {
-            if(SelectedDatabase != null)
+            var resourceModel = _environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == SelectedDatabase.ResourceName);
+            if(resourceModel != null)
             {
-                var resourceModel = _environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == SelectedDatabase.ResourceName);
-                if(resourceModel != null)
-                {
-                    Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
-                    _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
-                    RefreshDatabases();
-                }
+                Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
+                _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
+                RefreshDatabases();
             }
         }
 
@@ -460,11 +455,11 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             base.Validate();
 
             var errors = Errors ?? new List<IActionableErrorInfo>();
-            if(SelectedDatabase == null)
+            if(!IsDatabaseSelected)
             {
                 errors.Add(new ActionableErrorInfo(() => IsSelectedDatabaseFocused = true) { ErrorType = ErrorType.Critical, Message = "A database must be selected." });
             }
-            if(SelectedTable == null)
+            if(!IsTableSelected)
             {
                 errors.Add(new ActionableErrorInfo(() => IsSelectedTableFocused = true) { ErrorType = ErrorType.Critical, Message = "A table must be selected." });
             }
