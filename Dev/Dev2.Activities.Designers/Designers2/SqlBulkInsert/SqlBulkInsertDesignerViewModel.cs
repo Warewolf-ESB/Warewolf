@@ -1,3 +1,4 @@
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,12 +29,26 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
     {
         readonly IEventAggregator _eventPublisher;
         readonly IEnvironmentModel _environmentModel;
-        readonly DbSource _newDbSource;
-        readonly bool _isInitializing;
         readonly IAsyncWorker _asyncWorker = new AsyncWorker();
+
+        bool _isInitializing;
 
         static readonly IEnumerable<DbTable> EmptyDbTables = new DbTable[0];
         static readonly IEnumerable<DbColumn> EmptyDbColumns = new DbColumn[0];
+        static readonly DbSource NewDbSource = new DbSource
+        {
+            ResourceID = Guid.NewGuid(),
+            ResourceName = "New Database Source..."
+        };
+        static readonly DbSource SelectDbSource = new DbSource
+        {
+            ResourceID = Guid.NewGuid(),
+            ResourceName = "Select a Database..."
+        };
+        static readonly DbTable SelectDbTable = new DbTable
+        {
+            TableName = "Select a Table..."
+        };
 
         static IEnvironmentModel GetActiveEnvironment()
         {
@@ -60,30 +75,16 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             dynamic mi = ModelItem;
             ModelItemCollection = mi.InputMappings;
 
-            _newDbSource = new DbSource
-            {
-                ResourceName = "New Database Source..."
-            };
-
             Databases = new ObservableCollection<DbSource>();
             Tables = new ObservableCollection<DbTable>();
 
-            EditDatabaseCommand = new RelayCommand(o => EditDbSource(), o => CanEditDatabase);
-            RefreshTablesCommand = new RelayCommand(o => LoadDatabaseTables(SelectedDatabase), o => CanRefreshTables);
+            EditDatabaseCommand = new RelayCommand(o => EditDbSource(), o => IsDatabaseSelected);
+            RefreshTablesCommand = new RelayCommand(o => RefreshTables(), o => IsTableSelected);
 
-            _isInitializing = true;
-            try
-            {
-                LoadDatabases();
-
-                SetSelectedDatabase(Database);
-                SetSelectedTable(TableName);
-            }
-            finally
-            {
-                _isInitializing = false;
-            }
+            RefreshDatabases(true);
         }
+
+        #region Properties
 
         public override string CollectionName { get { return "InputMappings"; } }
 
@@ -91,28 +92,20 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         public ObservableCollection<DbTable> Tables { get; private set; }
 
-        public bool CanEditDatabase { get { return SelectedDatabase != null; } }
-
-        public bool CanRefreshTables { get { return SelectedTable != null; } }
-
         public ICommand EditDatabaseCommand { get; private set; }
 
         public ICommand RefreshTablesCommand { get; private set; }
 
-        public bool IsRefreshing
-        {
-            get { return (bool)GetValue(IsRefreshingProperty); }
-            set { SetValue(IsRefreshingProperty, value); }
-        }
+        public bool IsDatabaseSelected { get { return SelectedDatabase != SelectDbSource; } }
+
+        public bool IsTableSelected { get { return SelectedTable != SelectDbTable; } }
+
+        public bool IsRefreshing { get { return (bool)GetValue(IsRefreshingProperty); } set { SetValue(IsRefreshingProperty, value); } }
 
         public static readonly DependencyProperty IsRefreshingProperty =
             DependencyProperty.Register("IsRefreshing", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
 
-        public DbSource SelectedDatabase
-        {
-            get { return (DbSource)GetValue(SelectedDatabaseProperty); }
-            set { SetValue(SelectedDatabaseProperty, value); }
-        }
+        public DbSource SelectedDatabase { get { return (DbSource)GetValue(SelectedDatabaseProperty); } set { SetValue(SelectedDatabaseProperty, value); } }
 
         // Using a DependencyProperty as the backing store for SelectedDatabase.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedDatabaseProperty =
@@ -121,16 +114,14 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         static void OnSelectedDatabaseChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var viewModel = (SqlBulkInsertDesignerViewModel)d;
-            var dbSource = (DbSource)e.NewValue;
-            viewModel.Database = dbSource;
-            viewModel.LoadDatabaseTables(dbSource);
+            if(viewModel.IsRefreshing)
+            {
+                return;
+            }
+            viewModel.OnSelectedDatabaseChanged();
         }
 
-        public DbTable SelectedTable
-        {
-            get { return (DbTable)GetValue(SelectedTableProperty); }
-            set { SetValue(SelectedTableProperty, value); }
-        }
+        public DbTable SelectedTable { get { return (DbTable)GetValue(SelectedTableProperty); } set { SetValue(SelectedTableProperty, value); } }
 
         public static readonly DependencyProperty SelectedTableProperty =
             DependencyProperty.Register("SelectedTable", typeof(DbTable), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(null, OnSelectedTableChanged));
@@ -138,46 +129,34 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         static void OnSelectedTableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var viewModel = (SqlBulkInsertDesignerViewModel)d;
-            var dbTable = (DbTable)e.NewValue;
-            viewModel.TableName = dbTable == null ? null : dbTable.TableName;
-            viewModel.LoadTableColumns(viewModel.SelectedDatabase, dbTable);
+            if(viewModel.IsRefreshing)
+            {
+                return;
+            }
+            viewModel.OnSelectedTableChanged();
         }
 
-        public bool IsSelectedDatabaseFocused
-        {
-            get { return (bool)GetValue(IsSelectedDatabaseFocusedProperty); }
-            set { SetValue(IsSelectedDatabaseFocusedProperty, value); }
-        }
+        public bool IsSelectedDatabaseFocused { get { return (bool)GetValue(IsSelectedDatabaseFocusedProperty); } set { SetValue(IsSelectedDatabaseFocusedProperty, value); } }
 
         public static readonly DependencyProperty IsSelectedDatabaseFocusedProperty =
             DependencyProperty.Register("IsSelectedDatabaseFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
 
-        public bool IsSelectedTableFocused
-        {
-            get { return (bool)GetValue(IsSelectedTableFocusedProperty); }
-            set { SetValue(IsSelectedTableFocusedProperty, value); }
-        }
+        public bool IsSelectedTableFocused { get { return (bool)GetValue(IsSelectedTableFocusedProperty); } set { SetValue(IsSelectedTableFocusedProperty, value); } }
 
         public static readonly DependencyProperty IsSelectedTableFocusedProperty =
             DependencyProperty.Register("IsSelectedTableFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
 
-        public bool IsBatchSizeFocused
-        {
-            get { return (bool)GetValue(IsBatchSizeFocusedProperty); }
-            set { SetValue(IsBatchSizeFocusedProperty, value); }
-        }
+        public bool IsBatchSizeFocused { get { return (bool)GetValue(IsBatchSizeFocusedProperty); } set { SetValue(IsBatchSizeFocusedProperty, value); } }
 
         public static readonly DependencyProperty IsBatchSizeFocusedProperty =
             DependencyProperty.Register("IsBatchSizeFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
 
-        public bool IsTimeoutFocused
-        {
-            get { return (bool)GetValue(IsTimeoutFocusedProperty); }
-            set { SetValue(IsTimeoutFocusedProperty, value); }
-        }
+        public bool IsTimeoutFocused { get { return (bool)GetValue(IsTimeoutFocusedProperty); } set { SetValue(IsTimeoutFocusedProperty, value); } }
 
         public static readonly DependencyProperty IsTimeoutFocusedProperty =
             DependencyProperty.Register("IsTimeoutFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
+
+        #endregion
 
         #region DO NOT bind to these properties - these are here for internal view model use only!!!
 
@@ -211,84 +190,154 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         #endregion
 
-        void LoadDatabases()
+        protected virtual void OnSelectedDatabaseChanged()
         {
-            if(!_isInitializing)
-            {
-                Databases.Clear();
-                Tables.Clear();
-                ModelItemCollection.Clear();
-            }
-
-            Databases.Add(_newDbSource);
-
-            var sources = ResourceRepository.FindSourcesByType(_environmentModel, enSourceType.SqlDatabase)
-                .Select(o => new DbSource(o.xmlData))
-                .OrderBy(r => r.ResourceName);
-
-            foreach(var dbSource in sources)
-            {
-                Databases.Add(dbSource);
-            }
-        }
-
-        void LoadDatabaseTables(DbSource dbSource)
-        {
-            if(dbSource == _newDbSource)
+            if(SelectedDatabase == NewDbSource)
             {
                 CreateDbSource();
                 return;
             }
 
+            IsRefreshing = true;
+
+            // Save selection
+            var selectedTableName = GetTableName(SelectedTable);
+
+            Databases.Remove(SelectDbSource);
+            Database = SelectedDatabase;
+
+            Tables.Clear();
+            LoadDatabaseTables(() =>
+            {
+                // Restore Selection
+                SetSelectedTable(selectedTableName);
+                LoadTableColumns(() => { IsRefreshing = false; });
+            });
+        }
+
+        protected virtual void OnSelectedTableChanged()
+        {
+            if(SelectedTable != null)
+            {
+                IsRefreshing = true;
+                Tables.Remove(SelectDbTable);
+                TableName = SelectedTable.TableName;
+                LoadTableColumns(() => { IsRefreshing = false; });
+            }
+        }
+
+        void RefreshDatabases(bool isInitializing = false)
+        {
+            IsRefreshing = true;
+            if(isInitializing)
+            {
+                _isInitializing = true;
+            }
+
+            LoadDatabases(() =>
+            {
+                SetSelectedDatabase(Database);
+                LoadDatabaseTables(() =>
+                {
+                    SetSelectedTable(TableName);
+                    LoadTableColumns(() =>
+                    {
+                        IsRefreshing = false;
+                        if(isInitializing)
+                        {
+                            _isInitializing = false;
+                        }
+                    });
+                });
+            });
+        }
+
+        void RefreshTables()
+        {
             // Save selection --> ComboBox binding clears selection when Tables collection is cleared
             var selectedTableName = GetTableName(SelectedTable);
 
-            IsRefreshing = true;
-            Tables.Clear();
-            ModelItemCollection.Clear();
-
-            var tables = EmptyDbTables;
-            _asyncWorker.Start(() =>
+            LoadDatabaseTables(() =>
             {
-                tables = GetDatabaseTables(dbSource);
-            }, () =>
+                // Restore selection or prompt for selection
+                var selectedTable = Tables.FirstOrDefault(t => t.TableName == selectedTableName);
+                if(selectedTable == null)
+                {
+                    Tables.Insert(0, SelectDbTable);
+                    selectedTable = SelectDbTable;
+                }
+                SelectedTable = selectedTable;
+            });
+        }
+
+        void LoadDatabases(System.Action continueWith = null)
+        {
+            Databases.Clear();
+            Databases.Add(NewDbSource);
+
+            _asyncWorker.Start(() => GetDatabases().OrderBy(r => r.ResourceName), databases =>
+            {
+                foreach(var database in databases)
+                {
+                    Databases.Add(database);
+                }
+                if(continueWith != null)
+                {
+                    continueWith();
+                }
+            });
+        }
+
+        void LoadDatabaseTables(System.Action continueWith = null)
+        {
+            Tables.Clear();
+
+            if(!IsDatabaseSelected)
+            {
+                if(continueWith != null)
+                {
+                    continueWith();
+                }
+                return;
+            }
+
+            // Get Selected values on UI thread BEFORE starting asyncWorker
+            var selectedDatabase = SelectedDatabase;
+            _asyncWorker.Start(() => GetDatabaseTables(selectedDatabase).OrderBy(t => t.TableName), tables =>
             {
                 foreach(var table in tables)
                 {
                     Tables.Add(table);
                 }
-                IsRefreshing = false;
-
-                // Restore selection or select first in list
-                var selectedTable = Tables.FirstOrDefault(t => t.TableName == selectedTableName) ?? Tables.FirstOrDefault();
-                SelectedTable = selectedTable;
-
+                if(continueWith != null)
+                {
+                    continueWith();
+                }
             });
         }
 
-        void LoadTableColumns(DbSource dbSource, DbTable dbTable)
+        void LoadTableColumns(System.Action continueWith = null)
         {
-            if(IsRefreshing)
+            if(!IsTableSelected || _isInitializing)
             {
-                return;
-            }
-
-            if(dbTable == null)
-            {
-                ModelItemCollection.Clear();
+                if(!_isInitializing)
+                {
+                    ModelItemCollection.Clear();
+                }
+                if(continueWith != null)
+                {
+                    continueWith();
+                }
                 return;
             }
 
             var oldColumns = ModelItemCollection.Select(mi => (DataColumnMapping)mi.GetCurrentValue()).ToList();
             ModelItemCollection.Clear();
 
-            IsRefreshing = true;
-
-            var columns = EmptyDbColumns;
-            _asyncWorker.Start(() =>
-            {
-                columns = GetDatabaseTableColumns(dbSource, dbTable);
-            }, () =>
+            // Get Selected values on UI thread BEFORE starting asyncWorker
+            var selectedDatabase = SelectedDatabase;
+            var selectedTable = SelectedTable;
+            _asyncWorker.Start(() => GetDatabaseTableColumns(selectedDatabase, selectedTable), columns =>
             {
                 foreach(var mapping in columns.Select(column => new DataColumnMapping { OutputColumn = column }))
                 {
@@ -300,7 +349,10 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
                     ModelItemCollection.Add(mapping);
                 }
-                IsRefreshing = false;
+                if(continueWith != null)
+                {
+                    continueWith();
+                }
             });
         }
 
@@ -308,17 +360,12 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         {
             if(SelectedDatabase != null)
             {
-                var selectedDatabase = SelectedDatabase;
-                var selectedTableName = GetTableName(SelectedTable);
                 var resourceModel = _environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == SelectedDatabase.ResourceName);
                 if(resourceModel != null)
                 {
                     Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
                     _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
-                    LoadDatabases();
-
-                    SetSelectedDatabase(selectedDatabase);
-                    SetSelectedTable(selectedTableName);
+                    RefreshDatabases();
                 }
             }
         }
@@ -327,7 +374,13 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         {
             Logger.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard));
             _eventPublisher.Publish(new ShowNewResourceWizard("DbSource"));
-            LoadDatabases();
+            RefreshDatabases();
+        }
+
+        IEnumerable<DbSource> GetDatabases()
+        {
+            return ResourceRepository.FindSourcesByType(_environmentModel, enSourceType.SqlDatabase)
+                .Select(o => new DbSource(o.xmlData));
         }
 
         IEnumerable<DbTable> GetDatabaseTables(DbSource dbSource)
@@ -371,12 +424,30 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         void SetSelectedDatabase(DbSource dbSource)
         {
-            SelectedDatabase = dbSource == null ? null : Databases.FirstOrDefault(d => d.ResourceID == dbSource.ResourceID);
+            var selectedDatabase = dbSource == null ? null : Databases.FirstOrDefault(d => d.ResourceID == dbSource.ResourceID);
+            if(selectedDatabase == null)
+            {
+                if(Databases.FirstOrDefault(d => d.Equals(SelectDbSource)) == null)
+                {
+                    Databases.Insert(0, SelectDbSource);
+                }
+                selectedDatabase = SelectDbSource;
+            }
+            SelectedDatabase = selectedDatabase;
         }
 
         void SetSelectedTable(string tableName)
         {
-            SelectedTable = Tables.FirstOrDefault(t => t.TableName == tableName);
+            var selectedTable = Tables.FirstOrDefault(t => t.TableName == tableName);
+            if(selectedTable == null)
+            {
+                if(Tables.FirstOrDefault(t => t.Equals(SelectDbTable)) == null)
+                {
+                    Tables.Insert(0, SelectDbTable);
+                }
+                selectedTable = SelectDbTable;
+            }
+            SelectedTable = selectedTable;
         }
 
         static string GetTableName(DbTable table)
@@ -404,7 +475,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 int value;
                 if(!int.TryParse(batchSize, out value) || value <= 0)
                 {
-                    errors.Add(new ActionableErrorInfo(() => IsBatchSizeFocused = true) { ErrorType = ErrorType.Critical, Message = "Batch size must be a number greater than zero." });
+                    errors.Add(new ActionableErrorInfo(() => IsBatchSizeFocused = true) { ErrorType = ErrorType.Critical, Message = "Batch size must be a number greater than zero or left blank." });
                 }
             }
 
@@ -414,7 +485,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 int value;
                 if(!int.TryParse(timeout, out value) || value <= 0)
                 {
-                    errors.Add(new ActionableErrorInfo(() => IsTimeoutFocused = true) { ErrorType = ErrorType.Critical, Message = "Timeout must be a number greater than zero." });
+                    errors.Add(new ActionableErrorInfo(() => IsTimeoutFocused = true) { ErrorType = ErrorType.Critical, Message = "Timeout must be a number greater than zero or left blank." });
                 }
             }
 

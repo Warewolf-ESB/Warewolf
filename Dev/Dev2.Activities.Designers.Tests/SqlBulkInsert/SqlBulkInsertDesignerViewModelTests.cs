@@ -69,7 +69,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             Assert.IsNotNull(viewModel.Databases);
             Assert.IsNotNull(viewModel.Tables);
             Assert.IsNull(viewModel.Database);
-            Assert.IsFalse(viewModel.CanEditDatabase);
+            Assert.IsFalse(viewModel.IsDatabaseSelected);
 
             Assert.AreEqual("InputMappings", viewModel.CollectionName);
             Assert.AreEqual(DatabaseCount + 1, viewModel.Databases.Count);
@@ -87,14 +87,14 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             viewModel.Database = databases.Keys.First();
 
             Assert.IsNotNull(viewModel.Database);
-            Assert.IsTrue(viewModel.CanEditDatabase);
+            Assert.IsTrue(viewModel.IsDatabaseSelected);
 
             //------------Execute Test---------------------------
             viewModel.Database = null;
 
             //------------Assert Results-------------------------
             Assert.IsNull(viewModel.Database);
-            Assert.IsFalse(viewModel.CanEditDatabase);
+            Assert.IsFalse(viewModel.IsDatabaseSelected);
         }
 
         [TestMethod]
@@ -111,7 +111,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.Database);
-            Assert.IsTrue(viewModel.CanEditDatabase);
+            Assert.IsTrue(viewModel.IsDatabaseSelected);
         }
 
         [TestMethod]
@@ -130,7 +130,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.Database);
-            Assert.IsTrue(viewModel.CanEditDatabase);
+            Assert.IsTrue(viewModel.IsDatabaseSelected);
 
             VerifyTables(databases[dbSource], viewModel);
         }
