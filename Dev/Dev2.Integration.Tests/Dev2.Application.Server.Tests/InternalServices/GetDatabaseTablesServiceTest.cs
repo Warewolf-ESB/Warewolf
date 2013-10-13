@@ -61,6 +61,11 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
 
             string postData = String.Format("{0}{1}", _webserverURI, string.Format("GetDatabaseTablesService?Database={0}", dbSource));
             var response = TestHelper.PostDataToWebserver(postData);
+            StringAssert.Contains(response,"\"TableName\":\"sysdiagrams\"");
+            StringAssert.Contains(response,"\"TableName\":\"DummyInsert\"");
+            StringAssert.Contains(response,"\"TableName\":\"City\"");
+            StringAssert.Contains(response,"\"TableName\":\"Country\"");
+            StringAssert.Contains(response,"\"TableName\":\"WorldCities\"");
         }
 
     }

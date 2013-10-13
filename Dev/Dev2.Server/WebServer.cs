@@ -183,10 +183,18 @@ namespace Dev2
 
                             foreach (string keyValuePair in keyValuePairs)
                             {
-                                var keyValue = keyValuePair.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
+                                var keyValue = keyValuePair.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);                                
                                 string formFieldValue = string.Empty;
-                                if (keyValue.Length > 1)
+                                if(keyValue.Length > 1)
                                 {
+                                    if(keyValue[1].StartsWith("{") && keyValue[keyValue.Length-1].EndsWith("}"))
+                                    {
+                                        var parameterName = keyValue[0];
+                                        var jsonData = keyValue.ToList();
+                                        jsonData.Remove(parameterName);
+                                        formData.CreateElement(parameterName).SetValue(string.Join("=",jsonData));
+                                        break;
+                                    }
                                     formFieldValue = HttpUtility.UrlDecode(keyValue[1]);
                                     try
                                     {
@@ -196,8 +204,8 @@ namespace Dev2
                                     {
                                         ServerLogger.LogError(ex);
                                     }
+                                    formData.CreateElement(keyValue[0]).SetValue(formFieldValue);
                                 }
-                                formData.CreateElement(keyValue[0]).SetValue(formFieldValue);
                             }
                         }
                     }
