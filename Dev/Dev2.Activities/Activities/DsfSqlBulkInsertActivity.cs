@@ -167,7 +167,7 @@ namespace Dev2.Activities
 
         bool BuiltUsingSingleRecset(SqlBulkCopy sqlBulkCopy,IDataListCompiler compiler,Guid executionID, out DataTable dataTableToInsert)
         {
-            if(InputMappings.All(mapping => DataListUtil.IsValueRecordset(mapping.InputColumn) || String.IsNullOrEmpty(mapping.InputColumn)))
+            if(InputMappings!=null && InputMappings.All(mapping => DataListUtil.IsValueRecordset(mapping.InputColumn) || String.IsNullOrEmpty(mapping.InputColumn)))
             {
                 var currentRecSetName = "";
                 var hasMultiple = false;

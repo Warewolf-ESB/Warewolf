@@ -477,19 +477,19 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(3,returnedDataTable.Rows.Count);
 
             Assert.AreEqual("Bob", returnedDataTable.Rows[0]["field1"]);
-            Assert.AreEqual(2, returnedDataTable.Rows[0]["field2"]);
-            Assert.AreEqual('C', returnedDataTable.Rows[0]["field3"]);
-            Assert.AreEqual(21.2m, returnedDataTable.Rows[0]["field4"]);
+            Assert.AreEqual("2", returnedDataTable.Rows[0]["field2"]);
+            Assert.AreEqual("C", returnedDataTable.Rows[0]["field3"]);
+            Assert.AreEqual("21.2", returnedDataTable.Rows[0]["field4"]);
 
-            Assert.AreEqual("Jane", returnedDataTable.Rows[1]["TestCol"]);
-            Assert.AreEqual(3, returnedDataTable.Rows[1]["TestCol2"]);
-            Assert.AreEqual('G', returnedDataTable.Rows[1]["TestCol3"]);
-            Assert.AreEqual(26.4m, returnedDataTable.Rows[1]["TestCol4"]);
+            Assert.AreEqual("Jane", returnedDataTable.Rows[1]["field1"]);
+            Assert.AreEqual("3", returnedDataTable.Rows[1]["field2"]);
+            Assert.AreEqual("G", returnedDataTable.Rows[1]["field3"]);
+            Assert.AreEqual("26.4", returnedDataTable.Rows[1]["field4"]);
 
-            Assert.AreEqual("Jill", returnedDataTable.Rows[2]["TestCol"]);
-            Assert.AreEqual(1999, returnedDataTable.Rows[2]["TestCol2"]);
-            Assert.AreEqual('Z', returnedDataTable.Rows[2]["TestCol3"]);
-            Assert.AreEqual(60m, returnedDataTable.Rows[2]["TestCol4"]);
+            Assert.AreEqual("Jill", returnedDataTable.Rows[2]["field1"]);
+            Assert.AreEqual("1999", returnedDataTable.Rows[2]["field2"]);
+            Assert.AreEqual("Z", returnedDataTable.Rows[2]["field3"]);
+            Assert.AreEqual("60", returnedDataTable.Rows[2]["field4"]);
         }
 
         [TestMethod]

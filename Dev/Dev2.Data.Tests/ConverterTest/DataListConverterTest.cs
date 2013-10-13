@@ -231,6 +231,85 @@ namespace Dev2.Data.Tests.ConverterTest
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListTranslator_ToDataTable")]
+        // ReSharper disable once InconsistentNaming
+        public void DataListTranslator_ToDataTable_WithDataList_PopulatedDataTable()
+        {
+            //------------Setup for test--------------------------
+            var compiler = DataListFactory.CreateDataListCompiler();
+            var dbData = new DataTable("rs");
+            dbData.Columns.Add("val", typeof(string));
+            dbData.Columns.Add("otherVal", typeof(int));
+            dbData.Rows.Add("aaa", 1);
+            dbData.Rows.Add("zzz", 2);
+            ErrorResultTO errors;
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, "<root><rs><val/><otherVal/></rs></root>", out errors);
+            var fetchBinaryDataList = compiler.FetchBinaryDataList(dlID, out errors);
+            //------------Execute Test---------------------------
+            var convertToDataTable = compiler.ConvertToDataTable(fetchBinaryDataList, "rs", out errors);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(convertToDataTable);
+            Assert.AreEqual(2,convertToDataTable.Columns.Count);
+            Assert.IsTrue(convertToDataTable.Columns.Contains("val"));
+            Assert.IsTrue(convertToDataTable.Columns.Contains("otherVal"));
+            Assert.AreEqual(2,convertToDataTable.Rows.Count);
+            Assert.AreEqual("aaa",convertToDataTable.Rows[0]["val"]);
+            Assert.AreEqual("1",convertToDataTable.Rows[0]["otherVal"]);
+            Assert.AreEqual("zzz", convertToDataTable.Rows[1]["val"]);
+            Assert.AreEqual("2", convertToDataTable.Rows[1]["otherVal"]);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListTranslator_ToDataTable")]
+        public void DataListTranslator_ToDataTable_WhenNullDataList_ExpectError()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            //------------Execute Test---------------------------
+            var convertToDataTable = compiler.ConvertToDataTable(null, "rs", out errors);
+            //------------Assert Results-------------------------
+            Assert.IsNull(convertToDataTable);
+            Assert.AreEqual(1, errors.FetchErrors().Count);
+            Assert.AreEqual("Value cannot be null.\r\nParameter name: input", errors.FetchErrors()[0]);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListTranslator_ToDataTable")]
+        public void DataListTranslator_ToDataTable_WhenNullRecsetName_ExpectError()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            //------------Execute Test---------------------------
+            var convertToDataTable = compiler.ConvertToDataTable(null, null, out errors);
+            //------------Assert Results-------------------------
+            Assert.IsNull(convertToDataTable);
+            Assert.AreEqual(1, errors.FetchErrors().Count);
+            Assert.AreEqual("Value cannot be null.\r\nParameter name: recsetName", errors.FetchErrors()[0]);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListTranslator_ToDataTable")]
+        public void DataListTranslator_ToDataTable_WhenEmptyRecsetName_ExpectError()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            //------------Execute Test---------------------------
+            var convertToDataTable = compiler.ConvertToDataTable(null, "", out errors);
+            //------------Assert Results-------------------------
+            Assert.IsNull(convertToDataTable);
+            Assert.AreEqual(1, errors.FetchErrors().Count);
+            Assert.AreEqual("Value cannot be null.\r\nParameter name: recsetName", errors.FetchErrors()[0]);
+        }
+
+
+        [TestMethod]
         [TestCategory("DataTableTranslator_UnitTest")]
         [Description("Test that a DataTableTranslator will throw exception on mult rec set in shape")]
         [Owner("Travis Frisinger")]

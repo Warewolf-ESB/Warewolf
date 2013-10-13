@@ -45,6 +45,14 @@ namespace Dev2.Data.Translators
         
         public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors)
         {
+            if(String.IsNullOrEmpty(recsetName))
+            {
+                throw new ArgumentNullException("recsetName");
+            }
+            if(input == null)
+            {
+                throw new ArgumentNullException("input");
+            }
             var dbData = new DataTable();
             IBinaryDataListEntry entry;
             errors = null;
