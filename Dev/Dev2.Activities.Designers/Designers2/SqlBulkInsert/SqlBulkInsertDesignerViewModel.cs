@@ -8,10 +8,10 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
+using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Logs;
-using Dev2.Runtime.Configuration.ViewModels;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
@@ -104,7 +104,6 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         public DbSource SelectedDatabase { get { return (DbSource)GetValue(SelectedDatabaseProperty); } set { SetValue(SelectedDatabaseProperty, value); } }
 
-        // Using a DependencyProperty as the backing store for SelectedDatabase.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedDatabaseProperty =
             DependencyProperty.Register("SelectedDatabase", typeof(DbSource), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(null, OnSelectedDatabaseChanged));
 
@@ -153,6 +152,24 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         public static readonly DependencyProperty IsTimeoutFocusedProperty =
             DependencyProperty.Register("IsTimeoutFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
 
+        public bool IsInputMappingsFocused
+        {
+            get { return (bool)GetValue(IsInputMappingsFocusedProperty); }
+            set { SetValue(IsInputMappingsFocusedProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsInputMappingsFocusedProperty =
+            DependencyProperty.Register("IsInputMappingsFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
+
+        public bool IsResultFocused
+        {
+            get { return (bool)GetValue(IsResultFocusedProperty); }
+            set { SetValue(IsResultFocusedProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsResultFocusedProperty =
+            DependencyProperty.Register("IsResultFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
+
         #endregion
 
         #region DO NOT bind to these properties - these are here for internal view model use only!!!
@@ -184,6 +201,8 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         string BatchSize { get { return GetProperty<string>(); } }
 
         string Timeout { get { return GetProperty<string>(); } }
+
+        string Result { get { return GetProperty<string>(); } }
 
         #endregion
 
@@ -449,37 +468,111 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         {
             base.Validate();
 
-            var errors = Errors ?? new List<IActionableErrorInfo>();
+            var errors = new List<IActionableErrorInfo>();
+            if(Errors != null)
+            {
+                errors.AddRange(Errors);
+            }
+            errors.AddRange(ValidateValues());
+            errors.AddRange(ValidateVariables());
+
+            Errors = errors.Count == 0 ? null : errors;
+        }
+
+        IEnumerable<IActionableErrorInfo> ValidateValues()
+        {
             if(!IsDatabaseSelected)
             {
-                errors.Add(new ActionableErrorInfo(() => IsSelectedDatabaseFocused = true) { ErrorType = ErrorType.Critical, Message = "A database must be selected." });
+                yield return new ActionableErrorInfo(() => IsSelectedDatabaseFocused = true) { ErrorType = ErrorType.Critical, Message = "A database must be selected." };
             }
             if(!IsTableSelected)
             {
-                errors.Add(new ActionableErrorInfo(() => IsSelectedTableFocused = true) { ErrorType = ErrorType.Critical, Message = "A table must be selected." });
+                yield return new ActionableErrorInfo(() => IsSelectedTableFocused = true) { ErrorType = ErrorType.Critical, Message = "A table must be selected." };
             }
 
             var batchSize = BatchSize;
-            if(!string.IsNullOrEmpty(batchSize))
+            if(!string.IsNullOrEmpty(batchSize) && !IsVariable(batchSize))
             {
                 int value;
                 if(!int.TryParse(batchSize, out value) || value <= 0)
                 {
-                    errors.Add(new ActionableErrorInfo(() => IsBatchSizeFocused = true) { ErrorType = ErrorType.Critical, Message = "Batch size must be a number greater than zero or left blank." });
+                    yield return new ActionableErrorInfo(() => IsBatchSizeFocused = true) { ErrorType = ErrorType.Critical, Message = "Batch size must be a number greater than zero or left blank." };
                 }
             }
 
             var timeout = Timeout;
-            if(!string.IsNullOrEmpty(timeout))
+            if(!string.IsNullOrEmpty(timeout) && !IsVariable(timeout))
             {
                 int value;
                 if(!int.TryParse(timeout, out value) || value <= 0)
                 {
-                    errors.Add(new ActionableErrorInfo(() => IsTimeoutFocused = true) { ErrorType = ErrorType.Critical, Message = "Timeout must be a number greater than zero or left blank." });
+                    yield return new ActionableErrorInfo(() => IsTimeoutFocused = true) { ErrorType = ErrorType.Critical, Message = "Timeout must be a number greater than zero or left blank." };
                 }
             }
 
-            Errors = errors.Count == 0 ? null : errors;
+            var nonEmptyCount = ModelItemCollection.Count(mi => !string.IsNullOrEmpty(((DataColumnMapping)mi.GetCurrentValue()).InputColumn));
+            if(nonEmptyCount == 0)
+            {
+                yield return new ActionableErrorInfo(() => IsInputMappingsFocused = true) { ErrorType = ErrorType.Critical, Message = "At least one input mapping must be provided." };
+            }
+        }
+
+        IEnumerable<IActionableErrorInfo> ValidateVariables()
+        {
+            var parser = new Dev2DataLanguageParser();
+
+            var error = ValidateVariable(parser, BatchSize, () => IsBatchSizeFocused = true);
+            if(error != null)
+            {
+                error.Message = "Batch Size " + error.Message;
+                yield return error;
+            }
+
+            error = ValidateVariable(parser, Timeout, () => IsTimeoutFocused = true);
+            if(error != null)
+            {
+                error.Message = "Timeout " + error.Message;
+                yield return error;
+            }
+
+            error = ValidateVariable(parser, Result, () => IsResultFocused = true);
+            if(error != null)
+            {
+                error.Message = "Result " + error.Message;
+                yield return error;
+            }
+
+            foreach(DataColumnMapping dc in ModelItemCollection.Select(mi => mi.GetCurrentValue()))
+            {
+                error = ValidateVariable(parser, dc.InputColumn, () => IsInputMappingsFocused = true);
+                if(error != null)
+                {
+                    error.Message = "Input Mapping To Field '" + dc.OutputColumn.ColumnName + "' " + error.Message;
+                    yield return error;
+                }
+            }
+        }
+
+        static IActionableErrorInfo ValidateVariable(Dev2DataLanguageParser parser, string variable, System.Action focusAction)
+        {
+            if(!string.IsNullOrEmpty(variable))
+            {
+                try
+                {
+                    parser.MakeParts(variable);
+                }
+                catch(Exception ex)
+                {
+                    return new ActionableErrorInfo(focusAction) { ErrorType = ErrorType.Critical, Message = ex.Message };
+                }
+            }
+            return null;
+        }
+
+        static bool IsVariable(string variable)
+        {
+            var regions = DataListCleaningUtils.SplitIntoRegions(variable).Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+            return regions.Count > 0;
         }
     }
 }

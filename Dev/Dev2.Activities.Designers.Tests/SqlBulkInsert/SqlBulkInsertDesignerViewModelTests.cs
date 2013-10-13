@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.SqlBulkInsert;
@@ -212,7 +211,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var modelItem = CreateModelItem();
             modelItem.SetProperty("Database", initialDatabase);
             modelItem.SetProperty("TableName", initialTable.TableName);
-            modelItem.SetProperty("InputMappings", initialTable.Columns.Select(c => new DataColumnMapping{ OutputColumn = c }).ToList());
+            modelItem.SetProperty("InputMappings", initialTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c }).ToList());
 
             var viewModel = CreateViewModel(modelItem, databases);
 
@@ -220,7 +219,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             //------------Execute Test---------------------------
             viewModel.SelectedDatabase = selectedDatabase;
-            
+
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, viewModel.OnSelectedDatabaseChangedHitCount);
@@ -235,7 +234,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SqlBulkInsertDesignerViewModel_Database")]        
+        [TestCategory("SqlBulkInsertDesignerViewModel_Database")]
         public void SqlBulkInsertDesignerViewModel_SelectedDatabase_ChangedAndTableNameDoesNotExists_ClearsTableNameAndTableColumns()
         {
             //------------Setup for test--------------------------
@@ -262,7 +261,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, viewModel.OnSelectedDatabaseChangedHitCount);            
+            Assert.AreEqual(1, viewModel.OnSelectedDatabaseChangedHitCount);
             Assert.AreEqual("Select a Table...", viewModel.SelectedTable.TableName);
 
             // Skip "Select a Table" 
@@ -280,7 +279,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var databases = CreateDatabases(2);
             var viewModel = CreateViewModel(databases);
 
-            var dbSource = databases.Keys.First();           
+            var dbSource = databases.Keys.First();
             var dbTable = databases[dbSource][0];
 
             //------------Execute Test---------------------------
@@ -405,7 +404,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlBulkInsertDesignerViewModel_Validate")]
-        public void SqlBulkInsertDesignerViewModel_Validate_SetsErrors()
+        public void SqlBulkInsertDesignerViewModel_Validate_InvalidValues_SetsErrors()
         {
             //------------Setup for test--------------------------
             var databases = CreateDatabases(2);
@@ -415,23 +414,35 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Execute Test---------------------------
             viewModel.ModelItem.SetProperty("BatchSize", "a");
             viewModel.ModelItem.SetProperty("Timeout", "a");
-            Verify_Validate_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutSizeValid: false);
+            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutValid: false);
 
             viewModel.ModelItem.SetProperty("BatchSize", "-1");
             viewModel.ModelItem.SetProperty("Timeout", "-1");
-            Verify_Validate_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutSizeValid: false);
+            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutValid: false);
 
             viewModel.ModelItem.SetProperty("BatchSize", "0");
             viewModel.ModelItem.SetProperty("Timeout", "0");
-            Verify_Validate_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutSizeValid: false);
+            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutValid: false);
+        }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_Validate")]
+        public void SqlBulkInsertDesignerViewModel_Validate_ValidValues_DoesNotSetErrors()
+        {
+            //------------Setup for test--------------------------
+            var databases = CreateDatabases(2);
+            var viewModel = CreateViewModel(databases);
+
+
+            //------------Execute Test---------------------------
             viewModel.ModelItem.SetProperty("BatchSize", "");
             viewModel.ModelItem.SetProperty("Timeout", "");
-            Verify_Validate_SetsErrors(viewModel, isBatchSizeValid: true, isTimeoutSizeValid: true);
+            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: true, isTimeoutValid: true);
 
             viewModel.ModelItem.SetProperty("BatchSize", "20");
             viewModel.ModelItem.SetProperty("Timeout", "20");
-            Verify_Validate_SetsErrors(viewModel, isBatchSizeValid: true, isTimeoutSizeValid: true);
+            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: true, isTimeoutValid: true);
 
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
@@ -441,10 +452,10 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             viewModel.ModelItem.SetProperty("Timeout", (string)null);
             viewModel.SelectedDatabase = selectedDatabase;
             viewModel.SelectedTable = selectedTable;
-            Verify_Validate_SetsErrors(viewModel, isBatchSizeValid: true, isTimeoutSizeValid: true);
+            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: true, isTimeoutValid: true);
         }
 
-        void Verify_Validate_SetsErrors(TestSqlBulkInsertDesignerViewModel viewModel, bool isBatchSizeValid, bool isTimeoutSizeValid)
+        void Verify_Validate_Values_SetsErrors(TestSqlBulkInsertDesignerViewModel viewModel, bool isBatchSizeValid, bool isTimeoutValid)
         {
             //------------Execute Test---------------------------
             viewModel.Errors = null;
@@ -452,10 +463,172 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(viewModel.IsDatabaseSelected, viewModel.Errors == null ||viewModel.Errors.FirstOrDefault(e => e.Message == "A database must be selected.") == null);
+            Assert.AreEqual(viewModel.IsDatabaseSelected, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "A database must be selected.") == null);
             Assert.AreEqual(viewModel.IsTableSelected, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "A table must be selected.") == null);
             Assert.AreEqual(isBatchSizeValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Batch size must be a number greater than zero or left blank.") == null);
-            Assert.AreEqual(isTimeoutSizeValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Timeout must be a number greater than zero or left blank.") == null);
+            Assert.AreEqual(isTimeoutValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Timeout must be a number greater than zero or left blank.") == null);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_Validate")]
+        public void SqlBulkInsertDesignerViewModel_Validate_InputMappingsHasAllEmptyInputColumns_SetsErrors()
+        {
+            //------------Setup for test--------------------------
+            var databases = CreateDatabases(2);
+
+            var selectedDatabase = databases.Keys.First();
+            var selectedTables = databases[selectedDatabase];
+            var selectedTable = selectedTables[3];
+
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("Database", selectedDatabase);
+            modelItem.SetProperty("TableName", selectedTable.TableName);
+            modelItem.SetProperty("InputMappings", selectedTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c }).ToList());
+
+            var viewModel = CreateViewModel(modelItem, databases);
+
+            var inputMapping = viewModel.InputMappings.FirstOrDefault(m => !string.IsNullOrEmpty(m.InputColumn));
+            Assert.IsNull(inputMapping);
+
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.Errors);
+            Assert.IsNotNull(viewModel.Errors.FirstOrDefault(e => e.Message == "At least one input mapping must be provided."));
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_Validate")]
+        public void SqlBulkInsertDesignerViewModel_Validate_InputMappingsHasOneNonEmptyInputColumn_DoesNotSetErrors()
+        {
+            //------------Setup for test--------------------------
+            var databases = CreateDatabases(2);
+
+            var selectedDatabase = databases.Keys.First();
+            var selectedTables = databases[selectedDatabase];
+            var selectedTable = selectedTables[3];
+
+            var n = 0;
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("Database", selectedDatabase);
+            modelItem.SetProperty("TableName", selectedTable.TableName);
+            modelItem.SetProperty("InputMappings", selectedTable.Columns
+                .Select(c => new DataColumnMapping { OutputColumn = c, InputColumn = n++ == 0 ? "[[rs(*).f1]]" : null }).ToList());
+
+            var viewModel = CreateViewModel(modelItem, databases);
+
+            var inputMapping = viewModel.InputMappings.FirstOrDefault(m => !string.IsNullOrEmpty(m.InputColumn));
+            Assert.IsNotNull(inputMapping);
+
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            Assert.IsNull(viewModel.Errors);
+        }
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_Validate")]
+        public void SqlBulkInsertDesignerViewModel_Validate_InvalidVariables_SetsErrors()
+        {
+            //------------Setup for test--------------------------
+            var databases = CreateDatabases(2);
+
+            var selectedDatabase = databases.Keys.First();
+            var selectedTables = databases[selectedDatabase];
+            var selectedTable = selectedTables[3];
+            var inputMappings = selectedTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c }).ToList();
+            var inputMapping = inputMappings[0];
+            inputMapping.InputColumn = "rs(*).f1]]";
+
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("Database", selectedDatabase);
+            modelItem.SetProperty("TableName", selectedTable.TableName);
+            modelItem.SetProperty("InputMappings", inputMappings);
+
+            var viewModel = CreateViewModel(modelItem, databases);
+
+            //------------Execute Test---------------------------
+            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: false, isBatchSizeValid: true, isTimeoutValid: true, isResultValid: true, toField: inputMapping.OutputColumn.ColumnName);
+
+            inputMapping.InputColumn = null;
+
+            modelItem.SetProperty("BatchSize", "a]]");
+            modelItem.SetProperty("Timeout", "");
+            modelItem.SetProperty("Result", "");
+            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: false, isTimeoutValid: true, isResultValid: true);
+
+            modelItem.SetProperty("BatchSize", "");
+            modelItem.SetProperty("Timeout", "a]]");
+            modelItem.SetProperty("Result", "");
+            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: true, isTimeoutValid: false, isResultValid: true);
+
+            modelItem.SetProperty("BatchSize", "");
+            modelItem.SetProperty("Timeout", "");
+            modelItem.SetProperty("Result", "a]]");
+            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: true, isTimeoutValid: true, isResultValid: false);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_Validate")]
+        public void SqlBulkInsertDesignerViewModel_Validate_ValidVariables_DoesNotSetErrors()
+        {
+            //------------Setup for test--------------------------
+            var databases = CreateDatabases(2);
+
+            var selectedDatabase = databases.Keys.First();
+            var selectedTables = databases[selectedDatabase];
+            var selectedTable = selectedTables[3];
+            var inputMappings = selectedTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c }).ToList();
+            var inputMapping = inputMappings[0];
+            inputMapping.InputColumn = "[[rs(*).f1]]";
+
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("Database", selectedDatabase);
+            modelItem.SetProperty("TableName", selectedTable.TableName);
+            modelItem.SetProperty("InputMappings", inputMappings);
+
+            var viewModel = CreateViewModel(modelItem, databases);
+
+            //------------Execute Test---------------------------
+            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: true, isTimeoutValid: true, isResultValid: true, toField: inputMapping.OutputColumn.ColumnName);
+
+            inputMapping.InputColumn = null;
+
+            modelItem.SetProperty("BatchSize", "[[a]]");
+            modelItem.SetProperty("Timeout", "");
+            modelItem.SetProperty("Result", "");
+            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: true, isTimeoutValid: true, isResultValid: true);
+
+            modelItem.SetProperty("BatchSize", "");
+            modelItem.SetProperty("Timeout", "[[a]]");
+            modelItem.SetProperty("Result", "");
+            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: true, isTimeoutValid: true, isResultValid: true);
+
+            modelItem.SetProperty("BatchSize", "");
+            modelItem.SetProperty("Timeout", "");
+            modelItem.SetProperty("Result", "[[a]]");
+            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: true, isTimeoutValid: true, isResultValid: true);
+        }
+
+        void Verify_Validate_Variables_SetsErrors(TestSqlBulkInsertDesignerViewModel viewModel, bool isInputMappingsValid, bool isBatchSizeValid, bool isTimeoutValid, bool isResultValid, string toField = "")
+        {
+            //------------Execute Test---------------------------
+            viewModel.Errors = null;
+            viewModel.Validate();
+
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(isInputMappingsValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Input Mapping To Field '" + toField + "' Invalid syntax - You have a close ( ]] ) without a related open ( [[ )") == null);
+            Assert.AreEqual(isBatchSizeValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Batch Size Invalid syntax - You have a close ( ]] ) without a related open ( [[ )") == null);
+            Assert.AreEqual(isTimeoutValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Timeout Invalid syntax - You have a close ( ]] ) without a related open ( [[ )") == null);
+            Assert.AreEqual(isResultValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Result Invalid syntax - You have a close ( ]] ) without a related open ( [[ )") == null);
         }
 
         static void VerifyTables(List<DbTable> expectedTables, List<DbTable> actualTables)

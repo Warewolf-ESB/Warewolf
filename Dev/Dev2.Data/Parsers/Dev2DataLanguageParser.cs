@@ -14,7 +14,7 @@ namespace Dev2.DataList.Contract
         private const string _cdataStart = "<![CDATA[";
         private const string _cdataEnd = "]]>";
 
-        internal Dev2DataLanguageParser() { }
+        public Dev2DataLanguageParser() { }
 
         #region Public Methods
 

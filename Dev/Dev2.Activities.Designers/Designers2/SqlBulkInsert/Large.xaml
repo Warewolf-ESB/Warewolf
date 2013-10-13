@@ -365,6 +365,7 @@
                                 Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
                                 ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipResult}"
+                                attachedProperties:FocusSetter.IsFocused="{Binding IsResultFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpResult}"
