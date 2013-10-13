@@ -92,6 +92,7 @@
     <Compile Include="UIMap.cs" />
     <Compile Include="UIMap.Designer.cs" />
     <Compile Include="UIMapBase.cs" />
+    <Compile Include="UIMaps\PopupDialogUIMap.cs" />
     <Compile Include="UIMaps\EmailSourceWizardUIMap.cs">
       <DependentUpon>EmailSourceWizardUIMap.uitest</DependentUpon>
     </Compile>

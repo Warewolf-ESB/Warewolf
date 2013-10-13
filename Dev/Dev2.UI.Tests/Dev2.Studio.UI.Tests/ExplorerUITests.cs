@@ -104,7 +104,6 @@ namespace Dev2.Studio.UI.Tests
                 SendKeys.SendWait("{F5}");
                 Playback.Wait(1000);
             }
-            TabManagerUIMap.CloseAllTabs();
         }
 
         #region Additional test attributes

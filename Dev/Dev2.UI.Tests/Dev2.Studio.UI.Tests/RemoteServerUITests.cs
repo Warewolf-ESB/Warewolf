@@ -403,7 +403,10 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.ClearExplorerSearchText();
             ExplorerUiMap.EnterExplorerSearchText(RenameTo);
             ExplorerUiMap.RightClickDeleteProject(serverName, serviceType, folderName, RenameTo);
-            SendKeys.SendWait("{ENTER}{ENTER}");
+            if(PopupDialogUIMap.WaitForDialog(5000))
+            {
+                SendKeys.SendWait("{ENTER}{ENTER}");
+            }
         }
         #endregion
 
