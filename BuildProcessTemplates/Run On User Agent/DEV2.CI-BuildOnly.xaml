@@ -389,367 +389,363 @@
           </If.Then>
         </If>
       </Sequence>
-      <If Condition="[1 = 1]" sap2010:WorkflowViewState.IdRef="If_52">
-        <If.Else>
-          <TryCatch DisplayName="Try Compile, Test, and Associate Changesets and Work Items" sap2010:WorkflowViewState.IdRef="TryCatch_4" mtbwt:BuildTrackingParticipant.Importance="Low">
-            <TryCatch.Finally>
-              <Sequence DisplayName="Revert Workspace and Copy Files to Drop Location" sap2010:WorkflowViewState.IdRef="Sequence_27" mtbwt:BuildTrackingParticipant.Importance="Low">
-                <mtbwa:InvokeForReason DisplayName="Revert Workspace for Shelveset Builds" sap2010:WorkflowViewState.IdRef="InvokeForReason_7" Reason="ValidateShelveset, CheckInShelveset">
-                  <mtbwa:RevertWorkspace DisplayName="Revert Workspace" sap2010:WorkflowViewState.IdRef="RevertWorkspace_1" Workspace="[Workspace]" />
-                </mtbwa:InvokeForReason>
-                <If Condition="[Not String.IsNullOrEmpty(DropLocation)]" DisplayName="If DropLocation is Set" sap2010:WorkflowViewState.IdRef="If_37" mtbwt:BuildTrackingParticipant.Importance="Low">
-                  <If.Then>
-                    <mtbwa:CopyDirectory Destination="[DropLocation]" DisplayName="Drop Files to Drop Location" sap2010:WorkflowViewState.IdRef="CopyDirectory_2" Source="[BinariesDirectory]" />
-                  </If.Then>
-                </If>
-              </Sequence>
-            </TryCatch.Finally>
-            <TryCatch.Try>
-              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_15" mtbwt:BuildTrackingParticipant.Importance="None">
-                <Sequence.Variables>
-                  <Variable x:TypeArguments="s:Exception" Name="compilationException" />
-                  <Variable x:TypeArguments="scg:IList(mtvc:Changeset)" Name="associatedChangesets" />
-                  <Variable x:TypeArguments="x:Boolean" Name="treatTestFailureAsBuildFailure" />
-                </Sequence.Variables>
-                <Parallel DisplayName="Compile, Test, and Associate Changesets and Work Items" sap2010:WorkflowViewState.IdRef="Parallel_1">
-                  <TryCatch DisplayName="Try Compile and Test" sap2010:WorkflowViewState.IdRef="TryCatch_1" mtbwt:BuildTrackingParticipant.Importance="Low">
-                    <TryCatch.Try>
-                      <Sequence DisplayName="Compile and Test" sap2010:WorkflowViewState.IdRef="Sequence_13">
-                        <ForEach x:TypeArguments="mtbwa:PlatformConfiguration" DisplayName="For Each Configuration in BuildSettings.PlatformConfigurations" sap2010:WorkflowViewState.IdRef="ForEach`1_4" mtbwt:BuildTrackingParticipant.Importance="Low" Values="[BuildSettings.PlatformConfigurations]">
-                          <ActivityAction x:TypeArguments="mtbwa:PlatformConfiguration">
-                            <ActivityAction.Argument>
-                              <DelegateInArgument x:TypeArguments="mtbwa:PlatformConfiguration" Name="platformConfiguration" />
-                            </ActivityAction.Argument>
-                            <Sequence DisplayName="Compile and Test for Configuration" sap2010:WorkflowViewState.IdRef="Sequence_12" mtbwt:BuildTrackingParticipant.Importance="Low">
-                              <Sequence.Variables>
-                                <Variable x:TypeArguments="x:String" Name="outputDirectory" />
-                                <Variable x:TypeArguments="x:String" Name="logFileDropLocation" />
-                              </Sequence.Variables>
-                              <Sequence DisplayName="Initialize Variables" sap2010:WorkflowViewState.IdRef="Sequence_11" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                <Assign x:TypeArguments="x:String" DisplayName="Create OutputDirectory Per Platform and Configuration" sap2010:WorkflowViewState.IdRef="Assign`1_7" mtbwt:BuildTrackingParticipant.Importance="Low" To="[outputDirectory]" Value="[If (platformConfiguration.IsEmpty Or BuildSettings.PlatformConfigurations.Count = 1, BinariesDirectory, If (platformConfiguration.IsPlatformEmptyOrAnyCpu, BinariesDirectory + &quot;\&quot; + platformConfiguration.Configuration, BinariesDirectory + &quot;\&quot; + platformConfiguration.Platform + &quot;\&quot; + platformConfiguration.Configuration))]" />
-                                <If Condition="[Not String.IsNullOrEmpty(DropLocation)]" DisplayName="If DropLocation is Set" sap2010:WorkflowViewState.IdRef="If_11" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                  <If.Then>
-                                    <Assign x:TypeArguments="x:String" DisplayName="Initialize LogFile Drop Location" sap2010:WorkflowViewState.IdRef="Assign`1_8" mtbwt:BuildTrackingParticipant.Importance="Low" To="[logFileDropLocation]" Value="[If (platformConfiguration.IsEmpty Or BuildSettings.PlatformConfigurations.Count = 1, BuildDropProvider.CombinePaths(DropLocation, &quot;logs&quot;), If (platformConfiguration.IsPlatformEmptyOrAnyCpu, BuildDropProvider.CombinePaths(DropLocation, &quot;logs&quot;, platformConfiguration.Configuration), BuildDropProvider.CombinePaths(DropLocation, &quot;logs&quot;, platformConfiguration.Platform, platformConfiguration.Configuration)))]" />
-                                  </If.Then>
-                                </If>
-                              </Sequence>
-                              <If Condition="[BuildSettings.HasProjectsToBuild]" DisplayName="If BuildSettings.HasProjectsToBuild" sap2010:WorkflowViewState.IdRef="If_12" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                <If.Then>
-                                  <ForEach x:TypeArguments="x:String" DisplayName="For Each Project in BuildSettings.ProjectsToBuild" sap2010:WorkflowViewState.IdRef="ForEach`1_3" mtbwt:BuildTrackingParticipant.Importance="Low" Values="[BuildSettings.ProjectsToBuild]">
-                                    <ActivityAction x:TypeArguments="x:String">
-                                      <ActivityAction.Argument>
-                                        <DelegateInArgument x:TypeArguments="x:String" Name="serverBuildProjectItem" />
-                                      </ActivityAction.Argument>
-                                      <TryCatch DisplayName="Try to Compile the Project" sap2010:WorkflowViewState.IdRef="TryCatch_5" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                        <TryCatch.Try>
-                                          <Sequence DisplayName="Compile the Project" sap2010:WorkflowViewState.IdRef="Sequence_18" mtbwt:BuildTrackingParticipant.Importance="Low">
+      <TryCatch DisplayName="Try Compile, Test, and Associate Changesets and Work Items" sap2010:WorkflowViewState.IdRef="TryCatch_4" mtbwt:BuildTrackingParticipant.Importance="Low">
+        <TryCatch.Finally>
+          <Sequence DisplayName="Revert Workspace and Copy Files to Drop Location" sap2010:WorkflowViewState.IdRef="Sequence_27" mtbwt:BuildTrackingParticipant.Importance="Low">
+            <mtbwa:InvokeForReason DisplayName="Revert Workspace for Shelveset Builds" sap2010:WorkflowViewState.IdRef="InvokeForReason_7" Reason="ValidateShelveset, CheckInShelveset">
+              <mtbwa:RevertWorkspace DisplayName="Revert Workspace" sap2010:WorkflowViewState.IdRef="RevertWorkspace_1" Workspace="[Workspace]" />
+            </mtbwa:InvokeForReason>
+            <If Condition="[Not String.IsNullOrEmpty(DropLocation)]" DisplayName="If DropLocation is Set" sap2010:WorkflowViewState.IdRef="If_37" mtbwt:BuildTrackingParticipant.Importance="Low">
+              <If.Then>
+                <mtbwa:CopyDirectory Destination="[DropLocation]" DisplayName="Drop Files to Drop Location" sap2010:WorkflowViewState.IdRef="CopyDirectory_2" Source="[BinariesDirectory]" />
+              </If.Then>
+            </If>
+          </Sequence>
+        </TryCatch.Finally>
+        <TryCatch.Try>
+          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_15" mtbwt:BuildTrackingParticipant.Importance="None">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="s:Exception" Name="compilationException" />
+              <Variable x:TypeArguments="scg:IList(mtvc:Changeset)" Name="associatedChangesets" />
+              <Variable x:TypeArguments="x:Boolean" Name="treatTestFailureAsBuildFailure" />
+            </Sequence.Variables>
+            <Parallel DisplayName="Compile, Test, and Associate Changesets and Work Items" sap2010:WorkflowViewState.IdRef="Parallel_1">
+              <TryCatch DisplayName="Try Compile and Test" sap2010:WorkflowViewState.IdRef="TryCatch_1" mtbwt:BuildTrackingParticipant.Importance="Low">
+                <TryCatch.Try>
+                  <Sequence DisplayName="Compile and Test" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                    <ForEach x:TypeArguments="mtbwa:PlatformConfiguration" DisplayName="For Each Configuration in BuildSettings.PlatformConfigurations" sap2010:WorkflowViewState.IdRef="ForEach`1_4" mtbwt:BuildTrackingParticipant.Importance="Low" Values="[BuildSettings.PlatformConfigurations]">
+                      <ActivityAction x:TypeArguments="mtbwa:PlatformConfiguration">
+                        <ActivityAction.Argument>
+                          <DelegateInArgument x:TypeArguments="mtbwa:PlatformConfiguration" Name="platformConfiguration" />
+                        </ActivityAction.Argument>
+                        <Sequence DisplayName="Compile and Test for Configuration" sap2010:WorkflowViewState.IdRef="Sequence_12" mtbwt:BuildTrackingParticipant.Importance="Low">
+                          <Sequence.Variables>
+                            <Variable x:TypeArguments="x:String" Name="outputDirectory" />
+                            <Variable x:TypeArguments="x:String" Name="logFileDropLocation" />
+                          </Sequence.Variables>
+                          <Sequence DisplayName="Initialize Variables" sap2010:WorkflowViewState.IdRef="Sequence_11" mtbwt:BuildTrackingParticipant.Importance="Low">
+                            <Assign x:TypeArguments="x:String" DisplayName="Create OutputDirectory Per Platform and Configuration" sap2010:WorkflowViewState.IdRef="Assign`1_7" mtbwt:BuildTrackingParticipant.Importance="Low" To="[outputDirectory]" Value="[If (platformConfiguration.IsEmpty Or BuildSettings.PlatformConfigurations.Count = 1, BinariesDirectory, If (platformConfiguration.IsPlatformEmptyOrAnyCpu, BinariesDirectory + &quot;\&quot; + platformConfiguration.Configuration, BinariesDirectory + &quot;\&quot; + platformConfiguration.Platform + &quot;\&quot; + platformConfiguration.Configuration))]" />
+                            <If Condition="[Not String.IsNullOrEmpty(DropLocation)]" DisplayName="If DropLocation is Set" sap2010:WorkflowViewState.IdRef="If_11" mtbwt:BuildTrackingParticipant.Importance="Low">
+                              <If.Then>
+                                <Assign x:TypeArguments="x:String" DisplayName="Initialize LogFile Drop Location" sap2010:WorkflowViewState.IdRef="Assign`1_8" mtbwt:BuildTrackingParticipant.Importance="Low" To="[logFileDropLocation]" Value="[If (platformConfiguration.IsEmpty Or BuildSettings.PlatformConfigurations.Count = 1, BuildDropProvider.CombinePaths(DropLocation, &quot;logs&quot;), If (platformConfiguration.IsPlatformEmptyOrAnyCpu, BuildDropProvider.CombinePaths(DropLocation, &quot;logs&quot;, platformConfiguration.Configuration), BuildDropProvider.CombinePaths(DropLocation, &quot;logs&quot;, platformConfiguration.Platform, platformConfiguration.Configuration)))]" />
+                              </If.Then>
+                            </If>
+                          </Sequence>
+                          <If Condition="[BuildSettings.HasProjectsToBuild]" DisplayName="If BuildSettings.HasProjectsToBuild" sap2010:WorkflowViewState.IdRef="If_12" mtbwt:BuildTrackingParticipant.Importance="Low">
+                            <If.Then>
+                              <ForEach x:TypeArguments="x:String" DisplayName="For Each Project in BuildSettings.ProjectsToBuild" sap2010:WorkflowViewState.IdRef="ForEach`1_3" mtbwt:BuildTrackingParticipant.Importance="Low" Values="[BuildSettings.ProjectsToBuild]">
+                                <ActivityAction x:TypeArguments="x:String">
+                                  <ActivityAction.Argument>
+                                    <DelegateInArgument x:TypeArguments="x:String" Name="serverBuildProjectItem" />
+                                  </ActivityAction.Argument>
+                                  <TryCatch DisplayName="Try to Compile the Project" sap2010:WorkflowViewState.IdRef="TryCatch_5" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                    <TryCatch.Try>
+                                      <Sequence DisplayName="Compile the Project" sap2010:WorkflowViewState.IdRef="Sequence_18" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                        <Sequence.Variables>
+                                          <Variable x:TypeArguments="x:String" Name="localProject" />
+                                          <Variable x:TypeArguments="x:String" Default="[outputDirectory]" Name="outputDirectoryPerProject" />
+                                        </Sequence.Variables>
+                                        <mtbwa:ConvertWorkspaceItem DisplayName="Convert Server Path to Local Path" sap2010:WorkflowViewState.IdRef="ConvertWorkspaceItem_2" mtbwt:BuildTrackingParticipant.Importance="Low" Input="[serverBuildProjectItem]" Result="[localProject]" Workspace="[Workspace]" />
+                                        <If Condition="[SolutionSpecificBuildOutputs]" DisplayName="If Build Outputs are Solution-Specific" sap2010:WorkflowViewState.IdRef="If_26" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                          <If.Then>
+                                            <Sequence DisplayName="Update Output Directory" sap2010:WorkflowViewState.IdRef="Sequence_17" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                              <Assign x:TypeArguments="x:String" DisplayName="Set Solution-Specific Output Directory" sap2010:WorkflowViewState.IdRef="Assign`1_11" mtbwt:BuildTrackingParticipant.Importance="Low" To="[outputDirectoryPerProject]" Value="[System.IO.Path.Combine(outputDirectory, System.IO.Path.GetFileNameWithoutExtension(localProject))]" />
+                                              <If Condition="[System.IO.Directory.Exists(outputDirectoryPerProject)]" DisplayName="If Output Directory Exists" sap2010:WorkflowViewState.IdRef="If_25" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                                <If.Then>
+                                                  <mtbwa:WriteBuildWarning DisplayName="Write Duplicate Project Names Warning" sap2010:WorkflowViewState.IdRef="WriteBuildWarning_3" Message="[String.Format(&quot;{0} conflicts with another solution/project. Build outputs for solutions/projects with the same name will be copied to the same directory. To separate the build outputs, change the name of one of the solutions/projects.&quot;, System.IO.Path.GetFileNameWithoutExtension(localProject))]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                                                </If.Then>
+                                              </If>
+                                            </Sequence>
+                                          </If.Then>
+                                        </If>
+                                        <mtbwa:MSBuild CommandLineArguments="[String.Format(&quot;/p:SkipInvalidConfigurations=true {0}&quot;, MSBuildArguments)]" Configuration="[platformConfiguration.Configuration]" DisplayName="Run MSBuild for Project" GenerateVSPropsFile="[True]" sap2010:WorkflowViewState.IdRef="MSBuild_3" LogFileDropLocation="[logFileDropLocation]" MaxProcesses="[If (MSBuildMultiProc, 0, 1)]" OutDir="[outputDirectoryPerProject]" Platform="[platformConfiguration.Platform]" Project="[localProject]" RunCodeAnalysis="[RunCodeAnalysis]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" TargetsNotLogged="[New String() {&quot;GetNativeManifest&quot;, &quot;GetCopyToOutputDirectoryItems&quot;, &quot;GetTargetPath&quot;}]" ToolPlatform="[MSBuildPlatform]" Verbosity="[Verbosity]" />
+                                      </Sequence>
+                                    </TryCatch.Try>
+                                    <TryCatch.Catches>
+                                      <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_4">
+                                        <ActivityAction x:TypeArguments="s:Exception">
+                                          <ActivityAction.Argument>
+                                            <DelegateInArgument x:TypeArguments="s:Exception" Name="ex" />
+                                          </ActivityAction.Argument>
+                                          <Sequence DisplayName="Handle Exception" sap2010:WorkflowViewState.IdRef="Sequence_19">
                                             <Sequence.Variables>
-                                              <Variable x:TypeArguments="x:String" Name="localProject" />
-                                              <Variable x:TypeArguments="x:String" Default="[outputDirectory]" Name="outputDirectoryPerProject" />
+                                              <Variable x:TypeArguments="scg:ICollection(mtbc:IQueuedBuild)" Name="failedRequests" />
                                             </Sequence.Variables>
-                                            <mtbwa:ConvertWorkspaceItem DisplayName="Convert Server Path to Local Path" sap2010:WorkflowViewState.IdRef="ConvertWorkspaceItem_2" mtbwt:BuildTrackingParticipant.Importance="Low" Input="[serverBuildProjectItem]" Result="[localProject]" Workspace="[Workspace]" />
-                                            <If Condition="[SolutionSpecificBuildOutputs]" DisplayName="If Build Outputs are Solution-Specific" sap2010:WorkflowViewState.IdRef="If_26" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                            <mtbwa:SetBuildProperties CompilationStatus="[Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Failed]" DisplayName="Set CompilationStatus to Failed" sap2010:WorkflowViewState.IdRef="SetBuildProperties_7" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="CompilationStatus" />
+                                            <If Condition="[CreateWorkItem]" DisplayName="If CreateWorkItem" sap2010:WorkflowViewState.IdRef="If_27" mtbwt:BuildTrackingParticipant.Importance="Low">
                                               <If.Then>
-                                                <Sequence DisplayName="Update Output Directory" sap2010:WorkflowViewState.IdRef="Sequence_17" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                                  <Assign x:TypeArguments="x:String" DisplayName="Set Solution-Specific Output Directory" sap2010:WorkflowViewState.IdRef="Assign`1_11" mtbwt:BuildTrackingParticipant.Importance="Low" To="[outputDirectoryPerProject]" Value="[System.IO.Path.Combine(outputDirectory, System.IO.Path.GetFileNameWithoutExtension(localProject))]" />
-                                                  <If Condition="[System.IO.Directory.Exists(outputDirectoryPerProject)]" DisplayName="If Output Directory Exists" sap2010:WorkflowViewState.IdRef="If_25" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                                <mtbwa:InvokeForReason DisplayName="Create Work Item for non-Shelveset Builds" sap2010:WorkflowViewState.IdRef="InvokeForReason_6" Reason="Manual, IndividualCI, BatchedCI, Schedule, ScheduleForced, UserCreated">
+                                                  <mtbwa:OpenWorkItem AssignedTo="[BuildDetail.RequestedFor]" Comment="[&quot;This work item was created by TFS Build on a build failure.&quot;]" CustomFields="[New Dictionary(Of String, String) From { {&quot;System.Reason&quot;, &quot;Build Failure&quot;}, {&quot;Microsoft.VSTS.TCM.ReproSteps&quot;, &quot;Start the build using TFS Build&quot;}, {&quot;Priority&quot;, &quot;1&quot;}, {&quot;Severity&quot;, &quot;1 - Critical&quot;} }]" DisplayName="Create Work Item" sap2010:WorkflowViewState.IdRef="OpenWorkItem_1" Title="[String.Format(&quot;Build Failure in Build: {0}&quot;, BuildDetail.BuildNumber)]" Type="[&quot;Bug&quot;]" />
+                                                </mtbwa:InvokeForReason>
+                                              </If.Then>
+                                            </If>
+                                            <mtbwa:GetApprovedRequests DisplayName="Get Requests Approved for Check In" sap2010:WorkflowViewState.IdRef="GetApprovedRequests_1" mtbwt:BuildTrackingParticipant.Importance="None" Result="[failedRequests]" />
+                                            <mtbwa:RetryRequests Behavior="[Microsoft.TeamFoundation.Build.Workflow.Activities.RetryBehavior.DoNotBatch]" DisplayName="Mark Requests for Retry" sap2010:WorkflowViewState.IdRef="RetryRequests_2" mtbwt:BuildTrackingParticipant.Importance="Low" Requests="[failedRequests]" />
+                                            <Rethrow DisplayName="Rethrow the exception so the build will stop" sap2010:WorkflowViewState.IdRef="Rethrow_1" mtbwt:BuildTrackingParticipant.Importance="Low" />
+                                          </Sequence>
+                                        </ActivityAction>
+                                      </Catch>
+                                    </TryCatch.Catches>
+                                  </TryCatch>
+                                </ActivityAction>
+                              </ForEach>
+                            </If.Then>
+                          </If>
+                          <If Condition="[Not DisableTests]" DisplayName="If Not DisableTests" sap2010:WorkflowViewState.IdRef="If_13" mtbwt:BuildTrackingParticipant.Importance="Low">
+                            <If.Then>
+                              <Sequence DisplayName="Run Tests" sap2010:WorkflowViewState.IdRef="Sequence_20" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                <If Condition="[Not TestSpecs Is Nothing]" DisplayName="If Not TestSpecs Is Nothing" sap2010:WorkflowViewState.IdRef="If_28" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                  <If.Then>
+                                    <ForEach x:TypeArguments="mtbwa:TestSpec" DisplayName="For Each TestSpec in TestSpecs" sap2010:WorkflowViewState.IdRef="ForEach`1_9" mtbwt:BuildTrackingParticipant.Importance="Low" Values="[TestSpecs]">
+                                      <ActivityAction x:TypeArguments="mtbwa:TestSpec">
+                                        <ActivityAction.Argument>
+                                          <DelegateInArgument x:TypeArguments="mtbwa:TestSpec" Name="spec" />
+                                        </ActivityAction.Argument>
+                                        <TryCatch DisplayName="Try Run Tests" sap2010:WorkflowViewState.IdRef="TryCatch_6" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                          <TryCatch.Try>
+                                            <If Condition="[TypeOf spec Is Microsoft.TeamFoundation.Build.Workflow.Activities.AgileTestPlatformSpec]" DisplayName="If spec Is AgileTestPlatformSpec" sap2010:WorkflowViewState.IdRef="If_35" mtbwt:BuildTrackingParticipant.Importance="None">
+                                              <If.Then>
+                                                <Sequence DisplayName="Run Visual Studio Test Runner for Test Sources" sap2010:WorkflowViewState.IdRef="Sequence_25" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                                  <Sequence.Variables>
+                                                    <Variable x:TypeArguments="mtbwa:AgileTestPlatformSpec" Name="agileTestPlatformAssembly" />
+                                                    <Variable x:TypeArguments="scg:IEnumerable(x:String)" Name="agileTestPlatformAssemblies" />
+                                                  </Sequence.Variables>
+                                                  <Assign x:TypeArguments="mtbwa:AgileTestPlatformSpec" DisplayName="Assign spec to agileTestPlatformAssembly" sap2010:WorkflowViewState.IdRef="Assign`1_14" mtbwt:BuildTrackingParticipant.Importance="Low" To="[agileTestPlatformAssembly]" Value="[DirectCast(spec, Microsoft.TeamFoundation.Build.Workflow.Activities.AgileTestPlatformSpec)]" />
+                                                  <mtbwa:FindMatchingFiles DisplayName="Find Visual Studio Test Platform Test Assemblies" sap2010:WorkflowViewState.IdRef="FindMatchingFiles_3" mtbwt:BuildTrackingParticipant.Importance="Low" MatchPattern="[String.Format(&quot;{0}\{1}&quot;, outputDirectory, agileTestPlatformAssembly.AssemblyFileSpec)]" Result="[agileTestPlatformAssemblies]" />
+                                                  <If Condition="[agileTestPlatformAssemblies.Count() &gt; 0]" DisplayName="If Visual Studio Test Platform Test Assemblies Found" sap2010:WorkflowViewState.IdRef="If_40" mtbwt:BuildTrackingParticipant.Importance="Low">
                                                     <If.Then>
-                                                      <mtbwa:WriteBuildWarning DisplayName="Write Duplicate Project Names Warning" sap2010:WorkflowViewState.IdRef="WriteBuildWarning_3" Message="[String.Format(&quot;{0} conflicts with another solution/project. Build outputs for solutions/projects with the same name will be copied to the same directory. To separate the build outputs, change the name of one of the solutions/projects.&quot;, System.IO.Path.GetFileNameWithoutExtension(localProject))]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                                                      <If Condition="[agileTestPlatformAssembly.HasRunSettingsFile]" DisplayName="If agileTestPlatformAssembly.HasRunSettingsFile" sap2010:WorkflowViewState.IdRef="If_39" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                                        <If.Then>
+                                                          <Sequence DisplayName="Find Run Settings File And Run Visual Studio Test Runner" sap2010:WorkflowViewState.IdRef="Sequence_28" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                                            <Sequence.Variables>
+                                                              <Variable x:TypeArguments="x:String" Name="localRunSettings" />
+                                                            </Sequence.Variables>
+                                                            <mtbwa:GenerateRunSettings DisplayName="Generate Run Settings File" sap2010:WorkflowViewState.IdRef="GenerateRunSettings_1" mtbwt:BuildTrackingParticipant.Importance="Low" Result="[localRunSettings]" RunSettingsForTestRun="[agileTestPlatformAssembly.RunSettingsForTestRun]" Workspace="[Workspace]" />
+                                                            <mtbwa:RunTests OnTestCompleted="{x:Null}" OnTestRunCompleted="{x:Null}" DisableAutoFakes="False" DisplayName="Run Visual Studio Test Runner for Test Sources" ExecutionPlatform="[agileTestPlatformAssembly.ExecutionPlatform]" ExecutionTimeout="0" Flavor="[platformConfiguration.Configuration]" sap2010:WorkflowViewState.IdRef="RunTests_1" Platform="[platformConfiguration.Platform]" RunName="[agileTestPlatformAssembly.RunName]" RunSettings="[localRunSettings]" TestCaseFilter="[agileTestPlatformAssembly.TestCaseFilter]" TestSources="[agileTestPlatformAssemblies]" TreatTestAdapterErrorsAsWarnings="[False]" />
+                                                          </Sequence>
+                                                        </If.Then>
+                                                        <If.Else>
+                                                          <mtbwa:RunTests OnTestCompleted="{x:Null}" OnTestRunCompleted="{x:Null}" DisableAutoFakes="False" DisplayName="Run Visual Studio Test Runner for Test Sources" ExecutionPlatform="[agileTestPlatformAssembly.ExecutionPlatform]" ExecutionTimeout="[0]" Flavor="[platformConfiguration.Configuration]" sap2010:WorkflowViewState.IdRef="RunTests_2" Platform="[platformConfiguration.Platform]" RunName="[agileTestPlatformAssembly.RunName]" TestCaseFilter="[agileTestPlatformAssembly.TestCaseFilter]" TestSources="[agileTestPlatformAssemblies]" TreatTestAdapterErrorsAsWarnings="[False]">
+                                                            <mtbwa:RunTests.RunSettings>
+                                                              <InArgument x:TypeArguments="x:String">
+                                                                <Literal x:TypeArguments="x:String" Value="" />
+                                                              </InArgument>
+                                                            </mtbwa:RunTests.RunSettings>
+                                                          </mtbwa:RunTests>
+                                                        </If.Else>
+                                                      </If>
                                                     </If.Then>
                                                   </If>
                                                 </Sequence>
                                               </If.Then>
-                                            </If>
-                                            <mtbwa:MSBuild CommandLineArguments="[String.Format(&quot;/p:SkipInvalidConfigurations=true {0}&quot;, MSBuildArguments)]" Configuration="[platformConfiguration.Configuration]" DisplayName="Run MSBuild for Project" GenerateVSPropsFile="[True]" sap2010:WorkflowViewState.IdRef="MSBuild_3" LogFileDropLocation="[logFileDropLocation]" MaxProcesses="[If (MSBuildMultiProc, 0, 1)]" OutDir="[outputDirectoryPerProject]" Platform="[platformConfiguration.Platform]" Project="[localProject]" RunCodeAnalysis="[RunCodeAnalysis]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" TargetsNotLogged="[New String() {&quot;GetNativeManifest&quot;, &quot;GetCopyToOutputDirectoryItems&quot;, &quot;GetTargetPath&quot;}]" ToolPlatform="[MSBuildPlatform]" Verbosity="[Verbosity]" />
-                                          </Sequence>
-                                        </TryCatch.Try>
-                                        <TryCatch.Catches>
-                                          <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_4">
-                                            <ActivityAction x:TypeArguments="s:Exception">
-                                              <ActivityAction.Argument>
-                                                <DelegateInArgument x:TypeArguments="s:Exception" Name="ex" />
-                                              </ActivityAction.Argument>
-                                              <Sequence DisplayName="Handle Exception" sap2010:WorkflowViewState.IdRef="Sequence_19">
-                                                <Sequence.Variables>
-                                                  <Variable x:TypeArguments="scg:ICollection(mtbc:IQueuedBuild)" Name="failedRequests" />
-                                                </Sequence.Variables>
-                                                <mtbwa:SetBuildProperties CompilationStatus="[Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Failed]" DisplayName="Set CompilationStatus to Failed" sap2010:WorkflowViewState.IdRef="SetBuildProperties_7" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="CompilationStatus" />
-                                                <If Condition="[CreateWorkItem]" DisplayName="If CreateWorkItem" sap2010:WorkflowViewState.IdRef="If_27" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                              <If.Else>
+                                                <If Condition="[TypeOf spec Is Microsoft.TeamFoundation.Build.Workflow.Activities.TestMetadataFileSpec]" DisplayName="If spec Is TestMetadataFileSpec" sap2010:WorkflowViewState.IdRef="If_34" mtbwt:BuildTrackingParticipant.Importance="None">
                                                   <If.Then>
-                                                    <mtbwa:InvokeForReason DisplayName="Create Work Item for non-Shelveset Builds" sap2010:WorkflowViewState.IdRef="InvokeForReason_6" Reason="Manual, IndividualCI, BatchedCI, Schedule, ScheduleForced, UserCreated">
-                                                      <mtbwa:OpenWorkItem AssignedTo="[BuildDetail.RequestedFor]" Comment="[&quot;This work item was created by TFS Build on a build failure.&quot;]" CustomFields="[New Dictionary(Of String, String) From { {&quot;System.Reason&quot;, &quot;Build Failure&quot;}, {&quot;Microsoft.VSTS.TCM.ReproSteps&quot;, &quot;Start the build using TFS Build&quot;}, {&quot;Priority&quot;, &quot;1&quot;}, {&quot;Severity&quot;, &quot;1 - Critical&quot;} }]" DisplayName="Create Work Item" sap2010:WorkflowViewState.IdRef="OpenWorkItem_1" Title="[String.Format(&quot;Build Failure in Build: {0}&quot;, BuildDetail.BuildNumber)]" Type="[&quot;Bug&quot;]" />
-                                                    </mtbwa:InvokeForReason>
-                                                  </If.Then>
-                                                </If>
-                                                <mtbwa:GetApprovedRequests DisplayName="Get Requests Approved for Check In" sap2010:WorkflowViewState.IdRef="GetApprovedRequests_1" mtbwt:BuildTrackingParticipant.Importance="None" Result="[failedRequests]" />
-                                                <mtbwa:RetryRequests Behavior="[Microsoft.TeamFoundation.Build.Workflow.Activities.RetryBehavior.DoNotBatch]" DisplayName="Mark Requests for Retry" sap2010:WorkflowViewState.IdRef="RetryRequests_2" mtbwt:BuildTrackingParticipant.Importance="Low" Requests="[failedRequests]" />
-                                                <Rethrow DisplayName="Rethrow the exception so the build will stop" sap2010:WorkflowViewState.IdRef="Rethrow_1" mtbwt:BuildTrackingParticipant.Importance="Low" />
-                                              </Sequence>
-                                            </ActivityAction>
-                                          </Catch>
-                                        </TryCatch.Catches>
-                                      </TryCatch>
-                                    </ActivityAction>
-                                  </ForEach>
-                                </If.Then>
-                              </If>
-                              <If Condition="[Not DisableTests]" DisplayName="If Not DisableTests" sap2010:WorkflowViewState.IdRef="If_13" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                <If.Then>
-                                  <Sequence DisplayName="Run Tests" sap2010:WorkflowViewState.IdRef="Sequence_20" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                    <If Condition="[Not TestSpecs Is Nothing]" DisplayName="If Not TestSpecs Is Nothing" sap2010:WorkflowViewState.IdRef="If_28" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                      <If.Then>
-                                        <ForEach x:TypeArguments="mtbwa:TestSpec" DisplayName="For Each TestSpec in TestSpecs" sap2010:WorkflowViewState.IdRef="ForEach`1_9" mtbwt:BuildTrackingParticipant.Importance="Low" Values="[TestSpecs]">
-                                          <ActivityAction x:TypeArguments="mtbwa:TestSpec">
-                                            <ActivityAction.Argument>
-                                              <DelegateInArgument x:TypeArguments="mtbwa:TestSpec" Name="spec" />
-                                            </ActivityAction.Argument>
-                                            <TryCatch DisplayName="Try Run Tests" sap2010:WorkflowViewState.IdRef="TryCatch_6" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                              <TryCatch.Try>
-                                                <If Condition="[TypeOf spec Is Microsoft.TeamFoundation.Build.Workflow.Activities.AgileTestPlatformSpec]" DisplayName="If spec Is AgileTestPlatformSpec" sap2010:WorkflowViewState.IdRef="If_35" mtbwt:BuildTrackingParticipant.Importance="None">
-                                                  <If.Then>
-                                                    <Sequence DisplayName="Run Visual Studio Test Runner for Test Sources" sap2010:WorkflowViewState.IdRef="Sequence_25" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                                    <Sequence DisplayName="Run MSTest for Metadata File" sap2010:WorkflowViewState.IdRef="Sequence_29">
                                                       <Sequence.Variables>
-                                                        <Variable x:TypeArguments="mtbwa:AgileTestPlatformSpec" Name="agileTestPlatformAssembly" />
-                                                        <Variable x:TypeArguments="scg:IEnumerable(x:String)" Name="agileTestPlatformAssemblies" />
+                                                        <Variable x:TypeArguments="mtbwa:TestMetadataFileSpec" Name="testMetadataFile" />
+                                                        <Variable x:TypeArguments="x:String" Name="localTestMetadata" />
                                                       </Sequence.Variables>
-                                                      <Assign x:TypeArguments="mtbwa:AgileTestPlatformSpec" DisplayName="Assign spec to agileTestPlatformAssembly" sap2010:WorkflowViewState.IdRef="Assign`1_14" mtbwt:BuildTrackingParticipant.Importance="Low" To="[agileTestPlatformAssembly]" Value="[DirectCast(spec, Microsoft.TeamFoundation.Build.Workflow.Activities.AgileTestPlatformSpec)]" />
-                                                      <mtbwa:FindMatchingFiles DisplayName="Find Visual Studio Test Platform Test Assemblies" sap2010:WorkflowViewState.IdRef="FindMatchingFiles_3" mtbwt:BuildTrackingParticipant.Importance="Low" MatchPattern="[String.Format(&quot;{0}\{1}&quot;, outputDirectory, agileTestPlatformAssembly.AssemblyFileSpec)]" Result="[agileTestPlatformAssemblies]" />
-                                                      <If Condition="[agileTestPlatformAssemblies.Count() &gt; 0]" DisplayName="If Visual Studio Test Platform Test Assemblies Found" sap2010:WorkflowViewState.IdRef="If_40" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                                        <If.Then>
-                                                          <If Condition="[agileTestPlatformAssembly.HasRunSettingsFile]" DisplayName="If agileTestPlatformAssembly.HasRunSettingsFile" sap2010:WorkflowViewState.IdRef="If_39" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                                            <If.Then>
-                                                              <Sequence DisplayName="Find Run Settings File And Run Visual Studio Test Runner" sap2010:WorkflowViewState.IdRef="Sequence_28" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                                                <Sequence.Variables>
-                                                                  <Variable x:TypeArguments="x:String" Name="localRunSettings" />
-                                                                </Sequence.Variables>
-                                                                <mtbwa:GenerateRunSettings DisplayName="Generate Run Settings File" sap2010:WorkflowViewState.IdRef="GenerateRunSettings_1" mtbwt:BuildTrackingParticipant.Importance="Low" Result="[localRunSettings]" RunSettingsForTestRun="[agileTestPlatformAssembly.RunSettingsForTestRun]" Workspace="[Workspace]" />
-                                                                <mtbwa:RunTests OnTestCompleted="{x:Null}" OnTestRunCompleted="{x:Null}" DisableAutoFakes="False" DisplayName="Run Visual Studio Test Runner for Test Sources" ExecutionPlatform="[agileTestPlatformAssembly.ExecutionPlatform]" ExecutionTimeout="0" Flavor="[platformConfiguration.Configuration]" sap2010:WorkflowViewState.IdRef="RunTests_1" Platform="[platformConfiguration.Platform]" RunName="[agileTestPlatformAssembly.RunName]" RunSettings="[localRunSettings]" TestCaseFilter="[agileTestPlatformAssembly.TestCaseFilter]" TestSources="[agileTestPlatformAssemblies]" TreatTestAdapterErrorsAsWarnings="[False]" />
-                                                              </Sequence>
-                                                            </If.Then>
-                                                            <If.Else>
-                                                              <mtbwa:RunTests OnTestCompleted="{x:Null}" OnTestRunCompleted="{x:Null}" DisableAutoFakes="False" DisplayName="Run Visual Studio Test Runner for Test Sources" ExecutionPlatform="[agileTestPlatformAssembly.ExecutionPlatform]" ExecutionTimeout="[0]" Flavor="[platformConfiguration.Configuration]" sap2010:WorkflowViewState.IdRef="RunTests_2" Platform="[platformConfiguration.Platform]" RunName="[agileTestPlatformAssembly.RunName]" TestCaseFilter="[agileTestPlatformAssembly.TestCaseFilter]" TestSources="[agileTestPlatformAssemblies]" TreatTestAdapterErrorsAsWarnings="[False]">
-                                                                <mtbwa:RunTests.RunSettings>
-                                                                  <InArgument x:TypeArguments="x:String">
-                                                                    <Literal x:TypeArguments="x:String" Value="" />
-                                                                  </InArgument>
-                                                                </mtbwa:RunTests.RunSettings>
-                                                              </mtbwa:RunTests>
-                                                            </If.Else>
-                                                          </If>
-                                                        </If.Then>
-                                                      </If>
+                                                      <Assign x:TypeArguments="mtbwa:TestMetadataFileSpec" DisplayName="Assign spec to testMetadataFile" sap2010:WorkflowViewState.IdRef="Assign`1_16" mtbwt:BuildTrackingParticipant.Importance="Low" To="[testMetadataFile]" Value="[DirectCast(spec, Microsoft.TeamFoundation.Build.Workflow.Activities.TestMetadataFileSpec)]" />
+                                                      <mtbwa:ConvertWorkspaceItem DisplayName="Convert Server Path to Local Path" sap2010:WorkflowViewState.IdRef="ConvertWorkspaceItem_3" mtbwt:BuildTrackingParticipant.Importance="Low" Input="[testMetadataFile.MetadataFileName]" Result="[localTestMetadata]" Workspace="[Workspace]" />
+                                                      <mtbwa:MSTest Category="[testMetadataFile.CategoryFilter]" CommandLineArguments="[testMetadataFile.MSTestCommandLineArgs]" DisplayName="Run MSTest for Metadata File" Flavor="[platformConfiguration.Configuration]" sap2010:WorkflowViewState.IdRef="MSTest_1" MaxPriority="[testMetadataFile.MaximumPriority]" MinPriority="[testMetadataFile.MinimumPriority]" PathToResultsFilesRoot="[TestResultsDirectory]" Platform="[platformConfiguration.Platform]" RunTitle="[testMetadataFile.RunName]" SearchPathRoot="[outputDirectory]" TestLists="[testMetadataFile.TestLists]" TestMetadata="[localTestMetadata]" TestSettings="[String.Empty]" />
                                                     </Sequence>
                                                   </If.Then>
                                                   <If.Else>
-                                                    <If Condition="[TypeOf spec Is Microsoft.TeamFoundation.Build.Workflow.Activities.TestMetadataFileSpec]" DisplayName="If spec Is TestMetadataFileSpec" sap2010:WorkflowViewState.IdRef="If_34" mtbwt:BuildTrackingParticipant.Importance="None">
-                                                      <If.Then>
-                                                        <Sequence DisplayName="Run MSTest for Metadata File" sap2010:WorkflowViewState.IdRef="Sequence_29">
-                                                          <Sequence.Variables>
-                                                            <Variable x:TypeArguments="mtbwa:TestMetadataFileSpec" Name="testMetadataFile" />
-                                                            <Variable x:TypeArguments="x:String" Name="localTestMetadata" />
-                                                          </Sequence.Variables>
-                                                          <Assign x:TypeArguments="mtbwa:TestMetadataFileSpec" DisplayName="Assign spec to testMetadataFile" sap2010:WorkflowViewState.IdRef="Assign`1_16" mtbwt:BuildTrackingParticipant.Importance="Low" To="[testMetadataFile]" Value="[DirectCast(spec, Microsoft.TeamFoundation.Build.Workflow.Activities.TestMetadataFileSpec)]" />
-                                                          <mtbwa:ConvertWorkspaceItem DisplayName="Convert Server Path to Local Path" sap2010:WorkflowViewState.IdRef="ConvertWorkspaceItem_3" mtbwt:BuildTrackingParticipant.Importance="Low" Input="[testMetadataFile.MetadataFileName]" Result="[localTestMetadata]" Workspace="[Workspace]" />
-                                                          <mtbwa:MSTest Category="[testMetadataFile.CategoryFilter]" CommandLineArguments="[testMetadataFile.MSTestCommandLineArgs]" DisplayName="Run MSTest for Metadata File" Flavor="[platformConfiguration.Configuration]" sap2010:WorkflowViewState.IdRef="MSTest_1" MaxPriority="[testMetadataFile.MaximumPriority]" MinPriority="[testMetadataFile.MinimumPriority]" PathToResultsFilesRoot="[TestResultsDirectory]" Platform="[platformConfiguration.Platform]" RunTitle="[testMetadataFile.RunName]" SearchPathRoot="[outputDirectory]" TestLists="[testMetadataFile.TestLists]" TestMetadata="[localTestMetadata]" TestSettings="[String.Empty]" />
-                                                        </Sequence>
-                                                      </If.Then>
-                                                      <If.Else>
-                                                        <Sequence DisplayName="Run MSTest for Test Assemblies" sap2010:WorkflowViewState.IdRef="Sequence_31" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                                          <Sequence.Variables>
-                                                            <Variable x:TypeArguments="mtbwa:TestAssemblySpec" Name="testAssembly" />
-                                                            <Variable x:TypeArguments="scg:IEnumerable(x:String)" Name="testAssemblies" />
-                                                            <Variable x:TypeArguments="x:String" Default="[String.Empty]" Name="testFlavor" />
-                                                            <Variable x:TypeArguments="x:String" Default="[String.Empty]" Name="testPlatform" />
-                                                          </Sequence.Variables>
-                                                          <Assign x:TypeArguments="mtbwa:TestAssemblySpec" DisplayName="Assign spec to testAssembly" sap2010:WorkflowViewState.IdRef="Assign`1_17" mtbwt:BuildTrackingParticipant.Importance="Low" To="[testAssembly]" Value="[DirectCast(spec, Microsoft.TeamFoundation.Build.Workflow.Activities.TestAssemblySpec)]" />
-                                                          <mtbwa:FindMatchingFiles DisplayName="Find Test Assemblies" sap2010:WorkflowViewState.IdRef="FindMatchingFiles_4" mtbwt:BuildTrackingParticipant.Importance="Low" MatchPattern="[String.Format(&quot;{0}\{1}&quot;, outputDirectory, testAssembly.AssemblyFileSpec)]" Result="[testAssemblies]" />
-                                                          <If Condition="[testAssemblies.Count() &gt; 0]" DisplayName="If Test Assemblies Found" sap2010:WorkflowViewState.IdRef="If_42" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                                            <If.Then>
-                                                              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_35">
-                                                                <If Condition="[testAssembly.HasTestSettingsFile]" DisplayName="If testAssembly.HasTestSettingsFile" sap2010:WorkflowViewState.IdRef="If_41" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                                                  <If.Then>
-                                                                    <Sequence DisplayName="Find Test Settings File And Run MSTest" sap2010:WorkflowViewState.IdRef="Sequence_30" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                                                      <Sequence.Variables>
-                                                                        <Variable x:TypeArguments="x:String" Name="localTestSettings" />
-                                                                      </Sequence.Variables>
-                                                                      <mtbwa:ConvertWorkspaceItem DisplayName="Convert Server Path to Local Path" sap2010:WorkflowViewState.IdRef="ConvertWorkspaceItem_4" mtbwt:BuildTrackingParticipant.Importance="Low" Input="[testAssembly.TestSettingsFileName]" Result="[localTestSettings]" Workspace="[Workspace]" />
-                                                                      <mtbwa:MSTest Category="[testAssembly.CategoryFilter]" CommandLineArguments="[testAssembly.MSTestCommandLineArgs]" DisplayName="Run MSTest for Test Assemblies" Flavor="[platformConfiguration.Configuration]" sap2010:WorkflowViewState.IdRef="MSTest_2" MaxPriority="[testAssembly.MaximumPriority]" MinPriority="[testAssembly.MinimumPriority]" PathToResultsFilesRoot="[TestResultsDirectory]" Platform="[platformConfiguration.Platform]" RunTitle="[testAssembly.RunName]" SearchPathRoot="[outputDirectory]" TestContainers="[testAssemblies]" TestSettings="[localTestSettings]" />
-                                                                    </Sequence>
-                                                                  </If.Then>
-                                                                  <If.Else>
-                                                                    <mtbwa:MSTest Category="[testAssembly.CategoryFilter]" CommandLineArguments="[testAssembly.MSTestCommandLineArgs]" DisplayName="Run MSTest for Test Assemblies" Flavor="[platformConfiguration.Configuration]" sap2010:WorkflowViewState.IdRef="MSTest_3" MaxPriority="[testAssembly.MaximumPriority]" MinPriority="[testAssembly.MinimumPriority]" PathToResultsFilesRoot="[TestResultsDirectory]" Platform="[platformConfiguration.Platform]" RunTitle="[testAssembly.RunName]" SearchPathRoot="[outputDirectory]" TestContainers="[testAssemblies]" />
-                                                                  </If.Else>
-                                                                </If>
-                                                              </Sequence>
-                                                            </If.Then>
-                                                          </If>
-                                                        </Sequence>
-                                                      </If.Else>
-                                                    </If>
+                                                    <Sequence DisplayName="Run MSTest for Test Assemblies" sap2010:WorkflowViewState.IdRef="Sequence_31" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                                      <Sequence.Variables>
+                                                        <Variable x:TypeArguments="mtbwa:TestAssemblySpec" Name="testAssembly" />
+                                                        <Variable x:TypeArguments="scg:IEnumerable(x:String)" Name="testAssemblies" />
+                                                        <Variable x:TypeArguments="x:String" Default="[String.Empty]" Name="testFlavor" />
+                                                        <Variable x:TypeArguments="x:String" Default="[String.Empty]" Name="testPlatform" />
+                                                      </Sequence.Variables>
+                                                      <Assign x:TypeArguments="mtbwa:TestAssemblySpec" DisplayName="Assign spec to testAssembly" sap2010:WorkflowViewState.IdRef="Assign`1_17" mtbwt:BuildTrackingParticipant.Importance="Low" To="[testAssembly]" Value="[DirectCast(spec, Microsoft.TeamFoundation.Build.Workflow.Activities.TestAssemblySpec)]" />
+                                                      <mtbwa:FindMatchingFiles DisplayName="Find Test Assemblies" sap2010:WorkflowViewState.IdRef="FindMatchingFiles_4" mtbwt:BuildTrackingParticipant.Importance="Low" MatchPattern="[String.Format(&quot;{0}\{1}&quot;, outputDirectory, testAssembly.AssemblyFileSpec)]" Result="[testAssemblies]" />
+                                                      <If Condition="[testAssemblies.Count() &gt; 0]" DisplayName="If Test Assemblies Found" sap2010:WorkflowViewState.IdRef="If_42" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                                        <If.Then>
+                                                          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_35">
+                                                            <If Condition="[testAssembly.HasTestSettingsFile]" DisplayName="If testAssembly.HasTestSettingsFile" sap2010:WorkflowViewState.IdRef="If_41" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                                              <If.Then>
+                                                                <Sequence DisplayName="Find Test Settings File And Run MSTest" sap2010:WorkflowViewState.IdRef="Sequence_30" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                                                  <Sequence.Variables>
+                                                                    <Variable x:TypeArguments="x:String" Name="localTestSettings" />
+                                                                  </Sequence.Variables>
+                                                                  <mtbwa:ConvertWorkspaceItem DisplayName="Convert Server Path to Local Path" sap2010:WorkflowViewState.IdRef="ConvertWorkspaceItem_4" mtbwt:BuildTrackingParticipant.Importance="Low" Input="[testAssembly.TestSettingsFileName]" Result="[localTestSettings]" Workspace="[Workspace]" />
+                                                                  <mtbwa:MSTest Category="[testAssembly.CategoryFilter]" CommandLineArguments="[testAssembly.MSTestCommandLineArgs]" DisplayName="Run MSTest for Test Assemblies" Flavor="[platformConfiguration.Configuration]" sap2010:WorkflowViewState.IdRef="MSTest_2" MaxPriority="[testAssembly.MaximumPriority]" MinPriority="[testAssembly.MinimumPriority]" PathToResultsFilesRoot="[TestResultsDirectory]" Platform="[platformConfiguration.Platform]" RunTitle="[testAssembly.RunName]" SearchPathRoot="[outputDirectory]" TestContainers="[testAssemblies]" TestSettings="[localTestSettings]" />
+                                                                </Sequence>
+                                                              </If.Then>
+                                                              <If.Else>
+                                                                <mtbwa:MSTest Category="[testAssembly.CategoryFilter]" CommandLineArguments="[testAssembly.MSTestCommandLineArgs]" DisplayName="Run MSTest for Test Assemblies" Flavor="[platformConfiguration.Configuration]" sap2010:WorkflowViewState.IdRef="MSTest_3" MaxPriority="[testAssembly.MaximumPriority]" MinPriority="[testAssembly.MinimumPriority]" PathToResultsFilesRoot="[TestResultsDirectory]" Platform="[platformConfiguration.Platform]" RunTitle="[testAssembly.RunName]" SearchPathRoot="[outputDirectory]" TestContainers="[testAssemblies]" />
+                                                              </If.Else>
+                                                            </If>
+                                                          </Sequence>
+                                                        </If.Then>
+                                                      </If>
+                                                    </Sequence>
                                                   </If.Else>
                                                 </If>
-                                              </TryCatch.Try>
-                                              <TryCatch.Catches>
-                                                <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_5">
-                                                  <ActivityAction x:TypeArguments="s:Exception">
-                                                    <ActivityAction.Argument>
-                                                      <DelegateInArgument x:TypeArguments="s:Exception" Name="testException" />
-                                                    </ActivityAction.Argument>
-                                                    <Sequence DisplayName="Handle Test Run Exception" sap2010:WorkflowViewState.IdRef="Sequence_26">
-                                                      <Sequence.Variables>
-                                                        <Variable x:TypeArguments="scg:ICollection(mtbc:IQueuedBuild)" Name="failedRequests" />
-                                                      </Sequence.Variables>
-                                                      <If Condition="[Not (TypeOf testException Is Microsoft.TeamFoundation.Build.Workflow.Activities.TestFailureException)]" DisplayName="If testException is NOT TestFailureException" sap2010:WorkflowViewState.IdRef="If_38" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                                        <If.Then>
-                                                          <mtbwa:WriteBuildError DisplayName="Write Test Failure Message" sap2010:WorkflowViewState.IdRef="WriteBuildError_3" Message="[testException.Message]" />
-                                                        </If.Then>
-                                                      </If>
-                                                      <mtbwa:SetBuildProperties DisplayName="Set TestStatus to Failed" sap2010:WorkflowViewState.IdRef="SetBuildProperties_8" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="TestStatus" TestStatus="[Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Failed]" />
-                                                      <If Condition="[spec.FailBuildOnFailure]" DisplayName="If spec.FailBuildOnFailure" sap2010:WorkflowViewState.IdRef="If_36" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                                        <If.Then>
-                                                          <Assign x:TypeArguments="x:Boolean" DisplayName="Set treatTestFailureAsBuildFailure to True" sap2010:WorkflowViewState.IdRef="Assign`1_15" mtbwt:BuildTrackingParticipant.Importance="Low" To="[treatTestFailureAsBuildFailure]" Value="[True]" />
-                                                        </If.Then>
-                                                      </If>
-                                                      <mtbwa:GetApprovedRequests DisplayName="Get Requests Approved for Check In" sap2010:WorkflowViewState.IdRef="GetApprovedRequests_2" mtbwt:BuildTrackingParticipant.Importance="None" Result="[failedRequests]" />
-                                                      <mtbwa:RetryRequests Behavior="[Microsoft.TeamFoundation.Build.Workflow.Activities.RetryBehavior.DoNotBatch]" DisplayName="Mark Requests for Retry" sap2010:WorkflowViewState.IdRef="RetryRequests_3" mtbwt:BuildTrackingParticipant.Importance="Low" Requests="[failedRequests]" />
-                                                    </Sequence>
-                                                  </ActivityAction>
-                                                </Catch>
-                                              </TryCatch.Catches>
-                                            </TryCatch>
-                                          </ActivityAction>
-                                        </ForEach>
-                                      </If.Then>
-                                    </If>
-                                  </Sequence>
+                                              </If.Else>
+                                            </If>
+                                          </TryCatch.Try>
+                                          <TryCatch.Catches>
+                                            <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_5">
+                                              <ActivityAction x:TypeArguments="s:Exception">
+                                                <ActivityAction.Argument>
+                                                  <DelegateInArgument x:TypeArguments="s:Exception" Name="testException" />
+                                                </ActivityAction.Argument>
+                                                <Sequence DisplayName="Handle Test Run Exception" sap2010:WorkflowViewState.IdRef="Sequence_26">
+                                                  <Sequence.Variables>
+                                                    <Variable x:TypeArguments="scg:ICollection(mtbc:IQueuedBuild)" Name="failedRequests" />
+                                                  </Sequence.Variables>
+                                                  <If Condition="[Not (TypeOf testException Is Microsoft.TeamFoundation.Build.Workflow.Activities.TestFailureException)]" DisplayName="If testException is NOT TestFailureException" sap2010:WorkflowViewState.IdRef="If_38" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                                    <If.Then>
+                                                      <mtbwa:WriteBuildError DisplayName="Write Test Failure Message" sap2010:WorkflowViewState.IdRef="WriteBuildError_3" Message="[testException.Message]" />
+                                                    </If.Then>
+                                                  </If>
+                                                  <mtbwa:SetBuildProperties DisplayName="Set TestStatus to Failed" sap2010:WorkflowViewState.IdRef="SetBuildProperties_8" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="TestStatus" TestStatus="[Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Failed]" />
+                                                  <If Condition="[spec.FailBuildOnFailure]" DisplayName="If spec.FailBuildOnFailure" sap2010:WorkflowViewState.IdRef="If_36" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                                    <If.Then>
+                                                      <Assign x:TypeArguments="x:Boolean" DisplayName="Set treatTestFailureAsBuildFailure to True" sap2010:WorkflowViewState.IdRef="Assign`1_15" mtbwt:BuildTrackingParticipant.Importance="Low" To="[treatTestFailureAsBuildFailure]" Value="[True]" />
+                                                    </If.Then>
+                                                  </If>
+                                                  <mtbwa:GetApprovedRequests DisplayName="Get Requests Approved for Check In" sap2010:WorkflowViewState.IdRef="GetApprovedRequests_2" mtbwt:BuildTrackingParticipant.Importance="None" Result="[failedRequests]" />
+                                                  <mtbwa:RetryRequests Behavior="[Microsoft.TeamFoundation.Build.Workflow.Activities.RetryBehavior.DoNotBatch]" DisplayName="Mark Requests for Retry" sap2010:WorkflowViewState.IdRef="RetryRequests_3" mtbwt:BuildTrackingParticipant.Importance="Low" Requests="[failedRequests]" />
+                                                </Sequence>
+                                              </ActivityAction>
+                                            </Catch>
+                                          </TryCatch.Catches>
+                                        </TryCatch>
+                                      </ActivityAction>
+                                    </ForEach>
+                                  </If.Then>
+                                </If>
+                              </Sequence>
+                            </If.Then>
+                            <If.Else>
+                              <If Condition="[(Not TestSpecs Is Nothing) And (TestSpecs.Count &gt; 0)]" DisplayName="If TestSpecs Is Not Nothing or Empty" sap2010:WorkflowViewState.IdRef="If_29" mtbwt:BuildTrackingParticipant.Importance="Low">
+                                <If.Then>
+                                  <mtbwa:WriteBuildWarning DisplayName="Write Warning" sap2010:WorkflowViewState.IdRef="WriteBuildWarning_4" Message="No automated tests will be run for this build because tests have been disabled for this build definition. To enable these tests, edit this build definition and set the Disable Tests process parameter to false." mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
                                 </If.Then>
-                                <If.Else>
-                                  <If Condition="[(Not TestSpecs Is Nothing) And (TestSpecs.Count &gt; 0)]" DisplayName="If TestSpecs Is Not Nothing or Empty" sap2010:WorkflowViewState.IdRef="If_29" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                    <If.Then>
-                                      <mtbwa:WriteBuildWarning DisplayName="Write Warning" sap2010:WorkflowViewState.IdRef="WriteBuildWarning_4" Message="No automated tests will be run for this build because tests have been disabled for this build definition. To enable these tests, edit this build definition and set the Disable Tests process parameter to false." mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                                    </If.Then>
-                                  </If>
-                                </If.Else>
                               </If>
-                            </Sequence>
-                          </ActivityAction>
-                        </ForEach>
-                        <If Condition="[BuildDetail.CompilationStatus = Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Unknown]" DisplayName="If CompilationStatus = Unknown" sap2010:WorkflowViewState.IdRef="If_14" mtbwt:BuildTrackingParticipant.Importance="Low">
-                          <If.Then>
-                            <mtbwa:SetBuildProperties CompilationStatus="[Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Succeeded]" DisplayName="Set CompilationStatus to Succeeded" sap2010:WorkflowViewState.IdRef="SetBuildProperties_4" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="CompilationStatus" />
-                          </If.Then>
-                        </If>
-                        <If Condition="[BuildDetail.TestStatus = Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Unknown]" DisplayName="If TestStatus = Unknown" sap2010:WorkflowViewState.IdRef="If_15" mtbwt:BuildTrackingParticipant.Importance="Low">
-                          <If.Then>
-                            <mtbwa:SetBuildProperties DisplayName="Set TestStatus to Succeeded" sap2010:WorkflowViewState.IdRef="SetBuildProperties_5" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="TestStatus" TestStatus="[Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Succeeded]" />
-                          </If.Then>
-                        </If>
-                        <If Condition="[treatTestFailureAsBuildFailure And (BuildDetail.TestStatus = Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Failed)]" DisplayName="If TreatTestFailureAsBuildFailure And (TestStatus = Failed)" sap2010:WorkflowViewState.IdRef="If_16" mtbwt:BuildTrackingParticipant.Importance="Low">
-                          <If.Then>
-                            <mtbwa:SetBuildProperties DisplayName="Set Status to Failed" sap2010:WorkflowViewState.IdRef="SetBuildProperties_6" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="Status" Status="[Microsoft.TeamFoundation.Build.Client.BuildStatus.Failed]" />
-                          </If.Then>
-                        </If>
-                      </Sequence>
-                    </TryCatch.Try>
-                    <TryCatch.Catches>
-                      <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_1">
-                        <ActivityAction x:TypeArguments="s:Exception">
-                          <ActivityAction.Argument>
-                            <DelegateInArgument x:TypeArguments="s:Exception" Name="compilationExceptionArgument" />
-                          </ActivityAction.Argument>
-                          <Assign x:TypeArguments="s:Exception" DisplayName="Save the Compilation Exception" sap2010:WorkflowViewState.IdRef="Assign`1_9" mtbwt:BuildTrackingParticipant.Importance="None" To="[compilationException]" Value="[compilationExceptionArgument]" />
-                        </ActivityAction>
-                      </Catch>
-                    </TryCatch.Catches>
-                  </TryCatch>
-                  <If Condition="[AssociateChangesetsAndWorkItems]" DisplayName="If AssociateChangesetsAndWorkItems" sap2010:WorkflowViewState.IdRef="If_18" mtbwt:BuildTrackingParticipant.Importance="Low">
+                            </If.Else>
+                          </If>
+                        </Sequence>
+                      </ActivityAction>
+                    </ForEach>
+                    <If Condition="[BuildDetail.CompilationStatus = Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Unknown]" DisplayName="If CompilationStatus = Unknown" sap2010:WorkflowViewState.IdRef="If_14" mtbwt:BuildTrackingParticipant.Importance="Low">
+                      <If.Then>
+                        <mtbwa:SetBuildProperties CompilationStatus="[Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Succeeded]" DisplayName="Set CompilationStatus to Succeeded" sap2010:WorkflowViewState.IdRef="SetBuildProperties_4" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="CompilationStatus" />
+                      </If.Then>
+                    </If>
+                    <If Condition="[BuildDetail.TestStatus = Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Unknown]" DisplayName="If TestStatus = Unknown" sap2010:WorkflowViewState.IdRef="If_15" mtbwt:BuildTrackingParticipant.Importance="Low">
+                      <If.Then>
+                        <mtbwa:SetBuildProperties DisplayName="Set TestStatus to Succeeded" sap2010:WorkflowViewState.IdRef="SetBuildProperties_5" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="TestStatus" TestStatus="[Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Succeeded]" />
+                      </If.Then>
+                    </If>
+                    <If Condition="[treatTestFailureAsBuildFailure And (BuildDetail.TestStatus = Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Failed)]" DisplayName="If TreatTestFailureAsBuildFailure And (TestStatus = Failed)" sap2010:WorkflowViewState.IdRef="If_16" mtbwt:BuildTrackingParticipant.Importance="Low">
+                      <If.Then>
+                        <mtbwa:SetBuildProperties DisplayName="Set Status to Failed" sap2010:WorkflowViewState.IdRef="SetBuildProperties_6" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="Status" Status="[Microsoft.TeamFoundation.Build.Client.BuildStatus.Failed]" />
+                      </If.Then>
+                    </If>
+                  </Sequence>
+                </TryCatch.Try>
+                <TryCatch.Catches>
+                  <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                    <ActivityAction x:TypeArguments="s:Exception">
+                      <ActivityAction.Argument>
+                        <DelegateInArgument x:TypeArguments="s:Exception" Name="compilationExceptionArgument" />
+                      </ActivityAction.Argument>
+                      <Assign x:TypeArguments="s:Exception" DisplayName="Save the Compilation Exception" sap2010:WorkflowViewState.IdRef="Assign`1_9" mtbwt:BuildTrackingParticipant.Importance="None" To="[compilationException]" Value="[compilationExceptionArgument]" />
+                    </ActivityAction>
+                  </Catch>
+                </TryCatch.Catches>
+              </TryCatch>
+              <If Condition="[AssociateChangesetsAndWorkItems]" DisplayName="If AssociateChangesetsAndWorkItems" sap2010:WorkflowViewState.IdRef="If_18" mtbwt:BuildTrackingParticipant.Importance="Low">
+                <If.Then>
+                  <If Condition="[CreateLabel]" DisplayName="If CreateLabel and AssociateChangesetsAndWorkItems" sap2010:WorkflowViewState.IdRef="If_17" mtbwt:BuildTrackingParticipant.Importance="Low">
                     <If.Then>
-                      <If Condition="[CreateLabel]" DisplayName="If CreateLabel and AssociateChangesetsAndWorkItems" sap2010:WorkflowViewState.IdRef="If_17" mtbwt:BuildTrackingParticipant.Importance="Low">
-                        <If.Then>
-                          <mtbwa:InvokeForReason DisplayName="Associate Changesets and Work Items for non-Shelveset Builds" sap2010:WorkflowViewState.IdRef="InvokeForReason_4" Reason="Manual, IndividualCI, BatchedCI, Schedule, ScheduleForced, UserCreated">
-                            <mtbwa:AssociateChangesetsAndWorkItems DisplayName="Associate Changesets and Work Items" sap2010:WorkflowViewState.IdRef="AssociateChangesetsAndWorkItems_1" Result="[associatedChangesets]" />
-                          </mtbwa:InvokeForReason>
-                        </If.Then>
-                        <If.Else>
-                          <mtbwa:WriteBuildWarning DisplayName="Write Associate Changesets and Work Items Warning" sap2010:WorkflowViewState.IdRef="WriteBuildWarning_2" Message="Cannot Associate Changesets and Work Items because the Label Sources option is set to False." mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                        </If.Else>
-                      </If>
-                    </If.Then>
-                  </If>
-                </Parallel>
-                <If Condition="[Not compilationException Is Nothing]" DisplayName="If a Compilation Exception Occurred" sap2010:WorkflowViewState.IdRef="If_19" mtbwt:BuildTrackingParticipant.Importance="Low">
-                  <If.Then>
-                    <Throw DisplayName="Rethrow Compilation Exception" Exception="[compilationException]" sap2010:WorkflowViewState.IdRef="Throw_1" mtbwt:BuildTrackingParticipant.Importance="Low" />
-                  </If.Then>
-                </If>
-                <Parallel DisplayName="Get Impacted Tests, Index Sources and Publish Symbols" sap2010:WorkflowViewState.IdRef="Parallel_2">
-                  <If Condition="[PerformTestImpactAnalysis]" DisplayName="If PerformTestImpactAnalysis" sap2010:WorkflowViewState.IdRef="If_20" mtbwt:BuildTrackingParticipant.Importance="Low">
-                    <If.Then>
-                      <Sequence DisplayName="Get Impacted Tests" sap2010:WorkflowViewState.IdRef="Sequence_14" mtbwt:BuildTrackingParticipant.Importance="Low">
-                        <Sequence.Variables>
-                          <Variable x:TypeArguments="scg:IEnumerable(x:String)" Name="assemblies" />
-                        </Sequence.Variables>
-                        <mtbwa:FindMatchingFiles DisplayName="Find Build Outputs" sap2010:WorkflowViewState.IdRef="FindMatchingFiles_1" mtbwt:BuildTrackingParticipant.Importance="Low" MatchPattern="[String.Format(&quot;{0}\**\*.dll;{0}\**\*.exe&quot;, BinariesDirectory)]" Result="[assemblies]" />
-                        <mttbb:GetImpactedTests BaselineBuildDropLocation="{x:Null}" CodeChanges="{x:Null}" ImpactedTests="{x:Null}" Assemblies="[assemblies]" AssociatedChangesets="[associatedChangesets]" BinariesRoot="[BinariesDirectory]" Build="[BuildDetail]" DisplayName="Get Impacted Tests" sap2010:WorkflowViewState.IdRef="GetImpactedTests_1" Workspace="[Workspace]" />
-                      </Sequence>
-                    </If.Then>
-                  </If>
-                  <If Condition="[SourceAndSymbolServerSettings.IndexSources Or SourceAndSymbolServerSettings.HasSymbolStorePath]" DisplayName="If SourceAndSymbolServerSettings.IndexSources Or SourceAndSymbolServerSettings.HasSymbolStorePath" sap2010:WorkflowViewState.IdRef="If_23" mtbwt:BuildTrackingParticipant.Importance="Low">
-                    <If.Then>
-                      <mtbwa:InvokeForReason DisplayName="Index Sources and Publish Symbols for Triggered Builds" sap2010:WorkflowViewState.IdRef="InvokeForReason_5" Reason="Triggered">
-                        <mtbwa:InvokeForReason.Variables>
-                          <Variable x:TypeArguments="scg:IEnumerable(x:String)" Name="symbolFiles" />
-                        </mtbwa:InvokeForReason.Variables>
-                        <mtbwa:FindMatchingFiles DisplayName="Find Symbol Files" sap2010:WorkflowViewState.IdRef="FindMatchingFiles_2" mtbwt:BuildTrackingParticipant.Importance="Low" MatchPattern="[String.Format(&quot;{0}\**\*.pdb&quot;, BinariesDirectory)]" Result="[symbolFiles]" />
-                        <If Condition="[SourceAndSymbolServerSettings.IndexSources]" DisplayName="If SourceAndSymbolServerSettings.IndexSources" sap2010:WorkflowViewState.IdRef="If_21" mtbwt:BuildTrackingParticipant.Importance="Low">
-                          <If.Then>
-                            <TryCatch DisplayName="Try Index Sources" sap2010:WorkflowViewState.IdRef="TryCatch_2" mtbwt:BuildTrackingParticipant.Importance="Low">
-                              <TryCatch.Try>
-                                <mtbwa:IndexSources DisplayName="Index Sources" FileList="[symbolFiles]" sap2010:WorkflowViewState.IdRef="IndexSources_1" />
-                              </TryCatch.Try>
-                              <TryCatch.Catches>
-                                <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_2">
-                                  <ActivityAction x:TypeArguments="s:Exception">
-                                    <ActivityAction.Argument>
-                                      <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
-                                    </ActivityAction.Argument>
-                                    <mtbwa:WriteBuildError DisplayName="Write Indexing Sources Error" sap2010:WorkflowViewState.IdRef="WriteBuildError_1" Message="[exception.Message]" />
-                                  </ActivityAction>
-                                </Catch>
-                              </TryCatch.Catches>
-                            </TryCatch>
-                          </If.Then>
-                        </If>
-                        <If Condition="[SourceAndSymbolServerSettings.HasSymbolStorePath]" DisplayName="If SourceAndSymbolServerSettings.HasSymbolStorePath" sap2010:WorkflowViewState.IdRef="If_22" mtbwt:BuildTrackingParticipant.Importance="Low">
-                          <If.Then>
-                            <TryCatch DisplayName="Try Publish Symbols" sap2010:WorkflowViewState.IdRef="TryCatch_3" mtbwt:BuildTrackingParticipant.Importance="Low">
-                              <TryCatch.Try>
-                                <mtbwa:SharedResourceScope DisplayName="Synchronize Access to Symbol Store" sap2010:WorkflowViewState.IdRef="SharedResourceScope_1" mtbwt:BuildTrackingParticipant.Importance="Low" MaxExecutionTime="[TimeSpan.Zero]" MaxWaitTime="[New TimeSpan(1, 0, 0)]" ResourceName="[SourceAndSymbolServerSettings.SymbolStorePath]">
-                                  <mtbwa:PublishSymbols DisplayName="Publish Symbols" FileList="[symbolFiles]" sap2010:WorkflowViewState.IdRef="PublishSymbols_1" ProductName="[BuildDetail.BuildDefinition.Name]" StorePath="[SourceAndSymbolServerSettings.SymbolStorePath]" Version="[BuildDetail.BuildNumber]" />
-                                </mtbwa:SharedResourceScope>
-                              </TryCatch.Try>
-                              <TryCatch.Catches>
-                                <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_3">
-                                  <ActivityAction x:TypeArguments="s:Exception">
-                                    <ActivityAction.Argument>
-                                      <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
-                                    </ActivityAction.Argument>
-                                    <mtbwa:WriteBuildError DisplayName="Write Publishing Symbols Error" sap2010:WorkflowViewState.IdRef="WriteBuildError_2" Message="[exception.Message]" />
-                                  </ActivityAction>
-                                </Catch>
-                              </TryCatch.Catches>
-                            </TryCatch>
-                          </If.Then>
-                        </If>
+                      <mtbwa:InvokeForReason DisplayName="Associate Changesets and Work Items for non-Shelveset Builds" sap2010:WorkflowViewState.IdRef="InvokeForReason_4" Reason="Manual, IndividualCI, BatchedCI, Schedule, ScheduleForced, UserCreated">
+                        <mtbwa:AssociateChangesetsAndWorkItems DisplayName="Associate Changesets and Work Items" sap2010:WorkflowViewState.IdRef="AssociateChangesetsAndWorkItems_1" Result="[associatedChangesets]" />
                       </mtbwa:InvokeForReason>
                     </If.Then>
+                    <If.Else>
+                      <mtbwa:WriteBuildWarning DisplayName="Write Associate Changesets and Work Items Warning" sap2010:WorkflowViewState.IdRef="WriteBuildWarning_2" Message="Cannot Associate Changesets and Work Items because the Label Sources option is set to False." mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                    </If.Else>
                   </If>
-                </Parallel>
-              </Sequence>
-            </TryCatch.Try>
-          </TryCatch>
-        </If.Else>
-      </If>
+                </If.Then>
+              </If>
+            </Parallel>
+            <If Condition="[Not compilationException Is Nothing]" DisplayName="If a Compilation Exception Occurred" sap2010:WorkflowViewState.IdRef="If_19" mtbwt:BuildTrackingParticipant.Importance="Low">
+              <If.Then>
+                <Throw DisplayName="Rethrow Compilation Exception" Exception="[compilationException]" sap2010:WorkflowViewState.IdRef="Throw_1" mtbwt:BuildTrackingParticipant.Importance="Low" />
+              </If.Then>
+            </If>
+            <Parallel DisplayName="Get Impacted Tests, Index Sources and Publish Symbols" sap2010:WorkflowViewState.IdRef="Parallel_2">
+              <If Condition="[PerformTestImpactAnalysis]" DisplayName="If PerformTestImpactAnalysis" sap2010:WorkflowViewState.IdRef="If_20" mtbwt:BuildTrackingParticipant.Importance="Low">
+                <If.Then>
+                  <Sequence DisplayName="Get Impacted Tests" sap2010:WorkflowViewState.IdRef="Sequence_14" mtbwt:BuildTrackingParticipant.Importance="Low">
+                    <Sequence.Variables>
+                      <Variable x:TypeArguments="scg:IEnumerable(x:String)" Name="assemblies" />
+                    </Sequence.Variables>
+                    <mtbwa:FindMatchingFiles DisplayName="Find Build Outputs" sap2010:WorkflowViewState.IdRef="FindMatchingFiles_1" mtbwt:BuildTrackingParticipant.Importance="Low" MatchPattern="[String.Format(&quot;{0}\**\*.dll;{0}\**\*.exe&quot;, BinariesDirectory)]" Result="[assemblies]" />
+                    <mttbb:GetImpactedTests BaselineBuildDropLocation="{x:Null}" CodeChanges="{x:Null}" ImpactedTests="{x:Null}" Assemblies="[assemblies]" AssociatedChangesets="[associatedChangesets]" BinariesRoot="[BinariesDirectory]" Build="[BuildDetail]" DisplayName="Get Impacted Tests" sap2010:WorkflowViewState.IdRef="GetImpactedTests_1" Workspace="[Workspace]" />
+                  </Sequence>
+                </If.Then>
+              </If>
+              <If Condition="[SourceAndSymbolServerSettings.IndexSources Or SourceAndSymbolServerSettings.HasSymbolStorePath]" DisplayName="If SourceAndSymbolServerSettings.IndexSources Or SourceAndSymbolServerSettings.HasSymbolStorePath" sap2010:WorkflowViewState.IdRef="If_23" mtbwt:BuildTrackingParticipant.Importance="Low">
+                <If.Then>
+                  <mtbwa:InvokeForReason DisplayName="Index Sources and Publish Symbols for Triggered Builds" sap2010:WorkflowViewState.IdRef="InvokeForReason_5" Reason="Triggered">
+                    <mtbwa:InvokeForReason.Variables>
+                      <Variable x:TypeArguments="scg:IEnumerable(x:String)" Name="symbolFiles" />
+                    </mtbwa:InvokeForReason.Variables>
+                    <mtbwa:FindMatchingFiles DisplayName="Find Symbol Files" sap2010:WorkflowViewState.IdRef="FindMatchingFiles_2" mtbwt:BuildTrackingParticipant.Importance="Low" MatchPattern="[String.Format(&quot;{0}\**\*.pdb&quot;, BinariesDirectory)]" Result="[symbolFiles]" />
+                    <If Condition="[SourceAndSymbolServerSettings.IndexSources]" DisplayName="If SourceAndSymbolServerSettings.IndexSources" sap2010:WorkflowViewState.IdRef="If_21" mtbwt:BuildTrackingParticipant.Importance="Low">
+                      <If.Then>
+                        <TryCatch DisplayName="Try Index Sources" sap2010:WorkflowViewState.IdRef="TryCatch_2" mtbwt:BuildTrackingParticipant.Importance="Low">
+                          <TryCatch.Try>
+                            <mtbwa:IndexSources DisplayName="Index Sources" FileList="[symbolFiles]" sap2010:WorkflowViewState.IdRef="IndexSources_1" />
+                          </TryCatch.Try>
+                          <TryCatch.Catches>
+                            <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+                              <ActivityAction x:TypeArguments="s:Exception">
+                                <ActivityAction.Argument>
+                                  <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                                </ActivityAction.Argument>
+                                <mtbwa:WriteBuildError DisplayName="Write Indexing Sources Error" sap2010:WorkflowViewState.IdRef="WriteBuildError_1" Message="[exception.Message]" />
+                              </ActivityAction>
+                            </Catch>
+                          </TryCatch.Catches>
+                        </TryCatch>
+                      </If.Then>
+                    </If>
+                    <If Condition="[SourceAndSymbolServerSettings.HasSymbolStorePath]" DisplayName="If SourceAndSymbolServerSettings.HasSymbolStorePath" sap2010:WorkflowViewState.IdRef="If_22" mtbwt:BuildTrackingParticipant.Importance="Low">
+                      <If.Then>
+                        <TryCatch DisplayName="Try Publish Symbols" sap2010:WorkflowViewState.IdRef="TryCatch_3" mtbwt:BuildTrackingParticipant.Importance="Low">
+                          <TryCatch.Try>
+                            <mtbwa:SharedResourceScope DisplayName="Synchronize Access to Symbol Store" sap2010:WorkflowViewState.IdRef="SharedResourceScope_1" mtbwt:BuildTrackingParticipant.Importance="Low" MaxExecutionTime="[TimeSpan.Zero]" MaxWaitTime="[New TimeSpan(1, 0, 0)]" ResourceName="[SourceAndSymbolServerSettings.SymbolStorePath]">
+                              <mtbwa:PublishSymbols DisplayName="Publish Symbols" FileList="[symbolFiles]" sap2010:WorkflowViewState.IdRef="PublishSymbols_1" ProductName="[BuildDetail.BuildDefinition.Name]" StorePath="[SourceAndSymbolServerSettings.SymbolStorePath]" Version="[BuildDetail.BuildNumber]" />
+                            </mtbwa:SharedResourceScope>
+                          </TryCatch.Try>
+                          <TryCatch.Catches>
+                            <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_3">
+                              <ActivityAction x:TypeArguments="s:Exception">
+                                <ActivityAction.Argument>
+                                  <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                                </ActivityAction.Argument>
+                                <mtbwa:WriteBuildError DisplayName="Write Publishing Symbols Error" sap2010:WorkflowViewState.IdRef="WriteBuildError_2" Message="[exception.Message]" />
+                              </ActivityAction>
+                            </Catch>
+                          </TryCatch.Catches>
+                        </TryCatch>
+                      </If.Then>
+                    </If>
+                  </mtbwa:InvokeForReason>
+                </If.Then>
+              </If>
+            </Parallel>
+          </Sequence>
+        </TryCatch.Try>
+      </TryCatch>
       <If Condition="[BuildDetail.CompilationStatus = BuildPhaseStatus.Succeeded]" DisplayName="If Compiled Successfully" sap2010:WorkflowViewState.IdRef="If_43">
         <If.Then>
           <Sequence DisplayName="End Phase 1" sap2010:WorkflowViewState.IdRef="Sequence_34">
@@ -809,19 +805,19 @@
         </If.Then>
         <If.Else>
           <Sequence DisplayName="End Phase 1" sap2010:WorkflowViewState.IdRef="Sequence_32">
-            <mtbwa:WriteBuildMessage DisplayName="Inform Developer of Status" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_3" Message="******** Unit test run, FAILED. Aborting call to Warewolf build server... ********" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+            <mtbwa:WriteBuildMessage DisplayName="Inform Developer of Status" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_3" Message="******** Compilation run, FAILED. Aborting call to Warewolf build server... ********" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
           </Sequence>
         </If.Else>
       </If>
       <mtbwa:CheckInGatedChanges DisplayName="Check In Gated Changes" sap2010:WorkflowViewState.IdRef="CheckInGatedChanges_1" IgnoreErrors="True" />
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="------------------- Build DONE -------------------" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="GetBuildDetail_1" sap:VirtualizedContainerService.HintSize="3373,22" />
-      <sap2010:ViewStateData Id="WriteBuildMessage_1" sap:VirtualizedContainerService.HintSize="3373,22" />
+      <sap2010:ViewStateData Id="GetBuildDetail_1" sap:VirtualizedContainerService.HintSize="3248,22" />
+      <sap2010:ViewStateData Id="WriteBuildMessage_1" sap:VirtualizedContainerService.HintSize="3248,22" />
       <sap2010:ViewStateData Id="UpdateBuildNumber_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="InvokeForReason_1" sap:VirtualizedContainerService.HintSize="464,146" />
       <sap2010:ViewStateData Id="Assign_9" sap:VirtualizedContainerService.HintSize="242,60" />
@@ -846,7 +842,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="464,356" />
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="3373,1310">
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="3248,1310">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -872,7 +868,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="If_4" sap:VirtualizedContainerService.HintSize="464,356" />
-      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="3351,1200">
+      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="3226,1200">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -930,20 +926,20 @@
       <sap2010:ViewStateData Id="Assign_8" sap:VirtualizedContainerService.HintSize="818,60" />
       <sap2010:ViewStateData Id="RetryRequests_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="SyncWorkspace_1" sap:VirtualizedContainerService.HintSize="818,157" />
-      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="3351,2971">
+      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="3226,2971">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="CopyDirectory_7" sap:VirtualizedContainerService.HintSize="3351,22" />
-      <sap2010:ViewStateData Id="CopyDirectory_1" sap:VirtualizedContainerService.HintSize="3351,22" />
+      <sap2010:ViewStateData Id="CopyDirectory_7" sap:VirtualizedContainerService.HintSize="3226,22" />
+      <sap2010:ViewStateData Id="CopyDirectory_1" sap:VirtualizedContainerService.HintSize="3226,22" />
       <sap2010:ViewStateData Id="LabelWorkspace_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="SetBuildProperties_3" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="InvokeForReason_3" sap:VirtualizedContainerService.HintSize="222,208" />
       <sap2010:ViewStateData Id="WriteBuildMessage_2" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_10" sap:VirtualizedContainerService.HintSize="3351,51">
+      <sap2010:ViewStateData Id="If_10" sap:VirtualizedContainerService.HintSize="3226,51">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -999,7 +995,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="If_46" sap:VirtualizedContainerService.HintSize="464,356" />
-      <sap2010:ViewStateData Id="Sequence_37" sap:VirtualizedContainerService.HintSize="3351,2596">
+      <sap2010:ViewStateData Id="Sequence_37" sap:VirtualizedContainerService.HintSize="3226,2596">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1054,7 +1050,7 @@
       <sap2010:ViewStateData Id="GetApprovedRequests_1" sap:VirtualizedContainerService.HintSize="464,22" />
       <sap2010:ViewStateData Id="RetryRequests_2" sap:VirtualizedContainerService.HintSize="464,22" />
       <sap2010:ViewStateData Id="Rethrow_1" sap:VirtualizedContainerService.HintSize="464,22" />
-      <sap2010:ViewStateData Id="Sequence_19" sap:VirtualizedContainerService.HintSize="486,623">
+      <sap2010:ViewStateData Id="Sequence_19" sap:VirtualizedContainerService.HintSize="486,666">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1250,7 +1246,6 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="TryCatch_4" sap:VirtualizedContainerService.HintSize="3226,7160" />
-      <sap2010:ViewStateData Id="If_52" sap:VirtualizedContainerService.HintSize="3351,7308" />
       <sap2010:ViewStateData Id="InvokeProcess_10" sap:VirtualizedContainerService.HintSize="200,264" />
       <sap2010:ViewStateData Id="CreateDirectory_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="CreateDirectory_2" sap:VirtualizedContainerService.HintSize="200,22" />
@@ -1287,15 +1282,15 @@
       <sap2010:ViewStateData Id="If_43" sap:VirtualizedContainerService.HintSize="3226,1546" />
       <sap2010:ViewStateData Id="CheckInGatedChanges_1" sap:VirtualizedContainerService.HintSize="3226,22" />
       <sap2010:ViewStateData Id="WriteBuildMessage_6" sap:VirtualizedContainerService.HintSize="3226,22" />
-      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="3373,16244" />
-      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="3395,17842">
+      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="3248,16096" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="3270,17694">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="3435,17922" />
+      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="3310,17774" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
