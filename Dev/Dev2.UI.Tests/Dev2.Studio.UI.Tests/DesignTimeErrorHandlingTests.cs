@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests
 {
-    [CodedUITest][Ignore]//Ashley: 13/10/2013 - this test clean up doesnt work and I dont know why
+    [CodedUITest]
     public class DesignTimeErrorHandlingTests
     {
         #region Fields
@@ -45,7 +45,7 @@ namespace Dev2.Studio.UI.Tests
         public void TestCleanup()
         {
             var window = new UIBusinessDesignStudioWindow();
-            //close any open wizards
+            //close any open dialogs
             var tryFindDialog = window.GetChildren()[0];
             if(tryFindDialog.GetType() == typeof(WpfWindow))
             {
