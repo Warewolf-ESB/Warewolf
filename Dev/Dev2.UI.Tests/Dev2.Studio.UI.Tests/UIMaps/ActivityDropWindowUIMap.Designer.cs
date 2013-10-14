@@ -99,14 +99,46 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses
         /// <summary>
         /// DoubleClickAFolder
         /// </summary>
-        public void DoubleClickAFolder()
+        public void DoubleClickFirstWorkflowFolder()
         {
-            #region Variable Declarations
-            WpfTreeItem uIDev2StudioViewModelsTreeItem1 = this.UIWorkflowWindow.UITheNavigationViewCustom.UITvExplorerTree.UIDev2StudioViewModelsTreeItem.UIDev2StudioViewModelsTreeItem1.UIDev2StudioViewModelsTreeItem;
-            #endregion
-
-            // Click 'Dev2.Studio.ViewModels.Navigation.EnvironmentTreeV...' -> 'Dev2.Studio.ViewModels.Navigation.ServiceTypeTreeV...' -> 'Dev2.Studio.ViewModels.Navigation.CategoryTreeView...' tree item
-            Mouse.DoubleClick(uIDev2StudioViewModelsTreeItem1, new Point(57, 9));
+            var studioWindow = new UIBusinessDesignStudioWindow();
+            var SelectActivityDialog = studioWindow.GetChildren()[0];
+            foreach (var child in SelectActivityDialog.GetChildren())
+            {
+                var navViewAutoID = child.GetProperty("AutomationID").ToString();
+                if (navViewAutoID.Contains("TheNavigationView"))
+                {
+                    foreach (var navigationViewChid in child.GetChildren())
+                    {
+                        var navAutoID = navigationViewChid.GetProperty("AutomationID").ToString();
+                        if (navAutoID.Contains("TheNavigationView"))
+                        {
+                            foreach (var navChid in child.GetChildren())
+                            {
+                                var autoID = navChid.GetProperty("AutomationID").ToString();
+                                if (autoID.Contains("localhost"))
+                                {
+                                    foreach (var treeChild in child.GetChildren())
+                                    {
+                                        var workflowsAutoID = treeChild.GetProperty("AutomationID").ToString();
+                                        if (workflowsAutoID.Contains("WORKFLOW"))
+                                        {
+                                            foreach (var folder in treeChild.GetChildren())
+                                            {
+                                                var folderAutoID = folder.ControlType;
+                                                if (folderAutoID == "TreeItem")
+                                                {
+                                                    Mouse.DoubleClick(folder, new Point(57, 9));
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         
         /// <summary>

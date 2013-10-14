@@ -312,12 +312,16 @@ namespace Dev2.Studio.UI.Tests
             //Set up multi assign
             SendKeys.SendWait("[[AssignThis]]{TAB}Some Data");
 
-            //issue with debug not showing up - run until debug output comes through
+            //run and wait until debug output comes through
             WorkflowDesignerUIMap.RunWorkflowAndWaitUntilOutputStepCountAtLeast(2);
 
             //Click step
             var step = OutputUIMap.GetOutputWindow();
             DocManagerUIMap.ClickOpenTabPage("Output");
+            Mouse.Click(step[2]);
+            Playback.Wait(100);
+            Mouse.Click(step[1]);
+            Playback.Wait(100);
             Mouse.Click(step[2]);
             Playback.Wait(100);
             Mouse.Click(step[1]);
@@ -465,12 +469,13 @@ namespace Dev2.Studio.UI.Tests
         public void EnterFilterOnDestinationServer_Expected_DeployedItemsStillVisible()
         {
             // Choose to deploy one of our own items
-            //ExplorerUIMap.DoRefresh();
             DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
             ExplorerUIMap.RightClickDeployProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
 
             // Set ourself as the destination server
-            UITestControl deployTab = TabManagerUIMap.FindTabByName("Deploy Resources");
+            UITestControl deployTab = TabManagerUIMap.FindTabByName("Deploy");
             DeployViewUIMap.ChooseDestinationServer(deployTab, "localhost");
 
             // Make sure the Destination server has items

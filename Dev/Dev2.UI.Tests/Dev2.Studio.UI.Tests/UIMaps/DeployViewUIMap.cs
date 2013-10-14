@@ -152,7 +152,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
         public void EnterTextInDestinationServerFilterBox(UITestControl theTab, string text)
         {
             WpfEdit theBox = GetDestinationServerFilterBox(theTab);
-            theBox.Text = text;
+            Mouse.Click(new Point(theBox.BoundingRectangle.X + 15, theBox.BoundingRectangle.Y + 15));
+            SendKeys.SendWait(text);
         }
 
         private UITestControlCollection GetWebsiteGridBlocks(UITestControl theTab)

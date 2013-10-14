@@ -89,9 +89,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
             foreach (UITestControl theControl in requiredChildren)
             {
-                if (theControl.GetProperty("AutomationId").ToString() == "UI_DestinationServerSearchtxt_AutoID")
+                var autoID = theControl.GetProperty("AutomationId").ToString();
+                if(autoID == "TargetNavigationView")
                 {
-                    return (WpfEdit)theControl;
+                    foreach(var child in theControl.GetChildren())
+                    {
+                        var childAutoID = child.GetProperty("AutomationId").ToString();
+                        if(childAutoID == "FilterTextBox")
+                        {
+                            return (WpfEdit)theControl.GetChildren()[0];
+                        }
+                    }
                 }
             }
 
