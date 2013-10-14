@@ -541,6 +541,37 @@ namespace Dev2.Studio.UI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
+        [TestMethod]
+        [TestCategory("UITest")]
+        [Owner("Tshepo Ntlhokoa")]
+        public void DragAStartNodeOntoATool_HoverOverAToolForAWhile_NoDrillDownShouldHappen()
+        {
+            // Create the workflow
+            RibbonUIMap.CreateNewWorkflow();
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            var workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Drag an assign onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
+            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
+
+            //Drag Start Node
+            Mouse.StartDragging(theStartButton, MouseButtons.Left);
+            UITestControl assign = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Assign");
+            var point = new Point(assign.BoundingRectangle.X + 150, assign.BoundingRectangle.Y + 50);
+            //Hover over the multi assign for 5 seconds
+            Mouse.Move(point);
+            Playback.Wait(5000);
+
+            //Get the active tab and compare against the original tab
+            UITestControl activeTab = TabManagerUIMap.GetActiveTab();
+            Assert.AreEqual(theTab , activeTab);
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
+        }
+
         #endregion
 
         #region Additional test attributes
