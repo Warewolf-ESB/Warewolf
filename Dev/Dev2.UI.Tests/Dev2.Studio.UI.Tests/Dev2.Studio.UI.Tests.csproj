@@ -74,6 +74,7 @@
     <Compile Include="Bootstrap\StringResourcesTest1.Designer.cs" />
     <Compile Include="Bootstrap\UIBootstrap.cs" />
     <Compile Include="AutoConnectorTests.cs" />
+    <Compile Include="SqlBulkInsertUITests.cs" />
     <Compile Include="DesignTimeErrorHandlingTests.cs" />
     <Compile Include="RemoteServerUITests.cs" />
     <Compile Include="MenuUITests.cs" />
