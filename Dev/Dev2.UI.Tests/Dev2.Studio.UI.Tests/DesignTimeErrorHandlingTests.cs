@@ -116,7 +116,10 @@ namespace Dev2.Studio.UI.Tests
                     SendKeys.SendWait("{TAB}utility");
                     DatabaseServiceWizardUiMap.SaveDialogClickFirstFolder();
                     SendKeys.SendWait("{TAB}{ENTER}");
-                    ResourceChangedPopUpUiMap.ClickCancel();
+                    if (ResourceChangedPopUpUIMap.WaitForDialog(5000))
+                    {
+                        ResourceChangedPopUpUiMap.ClickCancel();
+                    }
                 }
                 else
                 {
