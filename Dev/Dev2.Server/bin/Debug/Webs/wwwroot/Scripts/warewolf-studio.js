@@ -24,6 +24,7 @@ studio.save = function (value) {
 };
 
 studio.saveAndClose = function (value) {
+    
     if (studio.isAvailable()) {
         Dev2Awesomium.Save(JSON.stringify(value), true);
     }

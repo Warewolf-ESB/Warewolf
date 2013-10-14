@@ -374,13 +374,9 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
 
         // if new do old action, CANNOT USE Guid.IsEmpty as this does not work!
         if (self.data.resourceID() == "00000000-0000-0000-0000-000000000000") {
-            alert("in save 1");
             self.saveViewModel.showDialog(true);
         } else {
             // else use new action ;)
-
-            alert("in save 2");
-
             self.saveViewModel.IsDialogLess = true;
             self.saveViewModel.save();
         }
