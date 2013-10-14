@@ -292,7 +292,8 @@ To traverse an retrieve the raw response from a webpage, enter it in here.</valu
   </data>
   <data name="SqlBulkInsertHelpInputColumn" xml:space="preserve">
     <value>To bulk insert data into a table, put the data to insert in here.
-Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.</value>
+Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.
+NOTE: A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.</value>
   </data>
   <data name="SqlBulkInsertHelpResult" xml:space="preserve">
     <value>Only variables go in here.
@@ -302,7 +303,8 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   </data>
   <data name="SqlBulkInsertHelpBatchSize" xml:space="preserve">
     <value>The number of rows you would like to insert at a time.
-The default is blank which will do everything at once.</value>
+The default is 0 which will do everything in 1 batch.
+If you specify 50, then 50 rows will be bulk inserted at a time.</value>
   </data>
   <data name="SqlBulkInsertHelpCheckConstraints" xml:space="preserve">
     <value>Check constraints while data is being inserted. By default, constraints are not checked.</value>
@@ -326,7 +328,9 @@ If the table schema has changed or recently added to the source, click the refre
   <data name="SqlBulkInsertHelpTimeout" xml:space="preserve">
     <value>The number of seconds you would like the operation to complete in.
 All batches in total must complete within this time period.
-The default is blank which will be no time constraint.</value>
+The default is 0 which will be no time constraint.
+If you specify 30, then 30 seconds will be allowed for the entire operation to complete before timing out.
+Note, the timeout is purely for the actual SQL connection and not the preparation of the data to be inserted.</value>
   </data>
   <data name="SqlBulkInsertHelpUseInternalTransaction" xml:space="preserve">
     <value>When specified, each batch of the bulk-copy operation will occur within a transaction.</value>
@@ -376,5 +380,14 @@ The default is blank which will be no time constraint.</value>
   </data>
   <data name="SqlBulkInsertToolTipUseInternalTransaction" xml:space="preserve">
     <value>When specified, each batch of the bulk-copy operation will occur within a transaction.</value>
+  </data>
+  <data name="String" xml:space="preserve">
+    <value>To bulk insert data into a table, put the data to insert in here.</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.</value>
+  </data>
+  <data name="String2" xml:space="preserve">
+    <value>NOTE: A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.</value>
   </data>
 </root>

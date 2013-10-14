@@ -446,7 +446,8 @@ namespace Dev2.Activities.Designers2.Core.Help {
         
         /// <summary>
         ///   Looks up a localized string similar to The number of rows you would like to insert at a time.
-        ///The default is blank which will do everything at once..
+        ///The default is 0 which will do everything in 1 batch.
+        ///If you specify 50, then 50 rows will be bulk inserted at a time..
         /// </summary>
         public static string SqlBulkInsertHelpBatchSize {
             get {
@@ -483,7 +484,8 @@ namespace Dev2.Activities.Designers2.Core.Help {
         
         /// <summary>
         ///   Looks up a localized string similar to To bulk insert data into a table, put the data to insert in here.
-        ///Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL..
+        ///Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.
+        ///NOTE: A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance..
         /// </summary>
         public static string SqlBulkInsertHelpInputColumn {
             get {
@@ -534,7 +536,9 @@ namespace Dev2.Activities.Designers2.Core.Help {
         /// <summary>
         ///   Looks up a localized string similar to The number of seconds you would like the operation to complete in.
         ///All batches in total must complete within this time period.
-        ///The default is blank which will be no time constraint..
+        ///The default is 0 which will be no time constraint.
+        ///If you specify 30, then 30 seconds will be allowed for the entire operation to complete before timing out.
+        ///Note, the timeout is purely for the actual SQL connection and not the preparation of the data to be inserted..
         /// </summary>
         public static string SqlBulkInsertHelpTimeout {
             get {
@@ -660,6 +664,33 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string SqlBulkInsertToolTipUseInternalTransaction {
             get {
                 return ResourceManager.GetString("SqlBulkInsertToolTipUseInternalTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To bulk insert data into a table, put the data to insert in here..
+        /// </summary>
+        public static string String {
+            get {
+                return ResourceManager.GetString("String", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL..
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NOTE: A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance..
+        /// </summary>
+        public static string String2 {
+            get {
+                return ResourceManager.GetString("String2", resourceCulture);
             }
         }
         
