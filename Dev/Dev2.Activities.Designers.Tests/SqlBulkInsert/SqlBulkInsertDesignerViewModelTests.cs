@@ -299,6 +299,33 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_SelectedTable")]
+        public void SqlBulkInsertDesignerViewModel_SelectedTable_Changed_LoadsDefaultInputColumnMappings()
+        {
+            //------------Setup for test--------------------------
+            var databases = CreateDatabases(2);
+            var viewModel = CreateViewModel(databases);
+
+            var selectedDatabase = databases.Keys.First();
+            var selectedTable = databases[selectedDatabase][0];
+
+            //------------Execute Test---------------------------
+            viewModel.SelectedDatabase = selectedDatabase;
+            viewModel.SelectedTable = selectedTable;
+
+            //------------Assert Results-------------------------
+            var actualInputColumns = viewModel.InputMappings.Select(m => m.InputColumn).ToList();
+
+            var expectedInputColumns = selectedTable.Columns.Select(c => string.Format("[[{0}(*).{1}]]", selectedTable.TableName, c.ColumnName)).ToList();
+
+            for(var i = 0; i < expectedInputColumns.Count; i++)
+            {
+                Assert.AreEqual(expectedInputColumns[i], actualInputColumns[i]);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlBulkInsertDesignerViewModel_RefreshTablesCommand")]
         public void SqlBulkInsertDesignerViewModel_RefreshTablesCommand_ReloadsTableAndColumns()
         {
@@ -632,6 +659,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             Assert.AreEqual(isTimeoutValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Timeout Invalid syntax - You have a close ( ]] ) without a related open ( [[ )") == null);
             Assert.AreEqual(isResultValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Result Invalid syntax - You have a close ( ]] ) without a related open ( [[ )") == null);
         }
+
 
         static void VerifyTables(List<DbTable> expectedTables, List<DbTable> actualTables)
         {

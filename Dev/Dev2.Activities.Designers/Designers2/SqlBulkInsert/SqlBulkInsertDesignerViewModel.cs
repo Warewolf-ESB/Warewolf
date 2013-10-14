@@ -358,6 +358,10 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                     {
                         mapping.InputColumn = oldColumn.InputColumn;
                     }
+                    if(string.IsNullOrEmpty(mapping.InputColumn))
+                    {
+                        mapping.InputColumn = string.Format("[[{0}(*).{1}]]", selectedTable.TableName, mapping.OutputColumn.ColumnName);
+                    }
 
                     ModelItemCollection.Add(mapping);
                 }
@@ -574,5 +578,6 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             var regions = DataListCleaningUtils.SplitIntoRegions(variable).Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
             return regions.Count > 0;
         }
+
     }
 }
