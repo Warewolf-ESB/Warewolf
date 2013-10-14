@@ -311,7 +311,8 @@ namespace Dev2.DataList
                     if (autoAddBrackets)
                     {
                         // When output mapping we need to replace the recordset name if present with MasterRecordset
-                        if (isOutputMapping && def.IsRecordSet)
+                        // 
+                        if(isOutputMapping && def.IsRecordSet && fuzzyMatch != null)
                         {
                             var field = DataListUtil.ExtractFieldNameFromValue(injectValue);
 
@@ -320,29 +321,56 @@ namespace Dev2.DataList
                                 field = def.Name;
                             }
 
-                            if (fuzzyMatch != null && def.IsRecordSet)
+
+                            if (string.IsNullOrEmpty(masterRecordsetName))
+                            {
+                                string recordsetName = fuzzyMatch.FetchMatch(def.Name);
+                                if (!string.IsNullOrEmpty(recordsetName))
+                                {
+                                    masterRecordsetName = recordsetName;
+                                }
+                                else
+                                {
+                                    // we have no match, use the current mapping value ;)
+                                    masterRecordsetName = DataListUtil.ExtractRecordsetNameFromValue(injectValue);
+                                }
+                            }
+
+                            injectValue = FormatString(masterRecordsetName, field);
+                            
+                        }
+                        else
+                        {
+                            if (def.IsRecordSet)
                             {
                                 if (string.IsNullOrEmpty(masterRecordsetName))
                                 {
-                                    string recordsetName = fuzzyMatch.FetchMatch(def.Name);
-                                    if (!string.IsNullOrEmpty(recordsetName))
+                                    string recordsetName = def.RecordSetName;
+                                    if (fuzzyMatch != null)
                                     {
+                                        recordsetName = fuzzyMatch.FetchMatch(def.Name);
                                         masterRecordsetName = recordsetName;
                                     }
                                     else
                                     {
-                                        // we have no match, use the current mapping value ;)
-                                        masterRecordsetName = DataListUtil.ExtractRecordsetNameFromValue(injectValue);
+                                        masterRecordsetName = def.RecordSetName;
                                     }
                                 }
 
-                                injectValue = DataListUtil.ComposeIntoUserVisibleRecordset(masterRecordsetName, string.Empty, field);
-                                injectValue = DataListUtil.AddBracketsToValueIfNotExist(injectValue);
+                                injectValue = FormatString(masterRecordsetName, def.Name);
                             }
-                        }
-                        else
-                        {
-                            injectValue = DataListUtil.AddBracketsToValueIfNotExist(injectValue);
+                            else
+                            {
+                                if (!IsWorkflow)
+                                {
+                                    injectValue = DataListUtil.AddBracketsToValueIfNotExist(injectValue);
+                                }
+                                else
+                                {
+                                    injectValue = DataListUtil.AddBracketsToValueIfNotExist(def.Name);
+                                }
+                            }
+                            
                         }
                     }
                 }
