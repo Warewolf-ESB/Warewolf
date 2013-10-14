@@ -400,11 +400,6 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         IEnumerable<DbTable> GetDatabaseTables(DbSource dbSource)
         {
-            if(dbSource == null)
-            {
-                return EmptyDbTables;
-            }
-
             dynamic request = new UnlimitedObject();
             request.Service = "GetDatabaseTablesService";
             request.Database = JsonConvert.SerializeObject(dbSource);
@@ -419,11 +414,6 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         IEnumerable<DbColumn> GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable)
         {
-            if(dbSource == null || dbTable == null)
-            {
-                return EmptyDbColumns;
-            }
-
             dynamic request = new UnlimitedObject();
             request.Service = "GetDatabaseColumnsForTableService";
             request.Database = JsonConvert.SerializeObject(dbSource);
