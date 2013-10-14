@@ -134,6 +134,8 @@
     <Compile Include="Services\DeleteLogTests.cs" />
     <Compile Include="Services\FetchDebugItemFileTests.cs" />
     <Compile Include="Services\FindLogDirectoryTests.cs" />
+    <Compile Include="Services\GetDatabaseColumnsForTableTests.cs" />
+    <Compile Include="Services\GetDatabaseTablesTests.cs" />
     <Compile Include="Services\GetDugStatesTest.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
     <Compile Include="ServiceModel\WebModelTests.cs" />

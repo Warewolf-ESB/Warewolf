@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.Serialization;
@@ -30,14 +31,26 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// <returns></returns>
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
+            if(values == null)
+            {
+                throw new InvalidDataContractException("No parameter values provided.");
+            }
             string database;
+            DbSource dbSource = null;
             values.TryGetValue("Database", out database);
             if(string.IsNullOrEmpty(database))
             {
                 throw new InvalidDataContractException("No database set.");
             }
-            var dbSource = JsonConvert.DeserializeObject<DbSource>(database);
-            if(dbSource == null)
+            try
+            {
+                dbSource = JsonConvert.DeserializeObject<DbSource>(database);
+            }
+            catch(Exception e)
+            {
+                throw new InvalidDataContractException(string.Format("Invalid JSON data for Database parameter. Exception: {0}", e.Message));
+            }
+            if(String.IsNullOrEmpty(dbSource.DatabaseName) || String.IsNullOrEmpty(dbSource.Server))
             {
                 throw new InvalidDataContractException(string.Format("Invalid database sent {0}.", database));
             }

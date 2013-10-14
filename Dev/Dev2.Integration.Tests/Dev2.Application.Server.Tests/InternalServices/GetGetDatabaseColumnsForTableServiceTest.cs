@@ -1,21 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
 using Dev2.DynamicServices;
 using Dev2.Integration.Tests.Helpers;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 
-// ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
 {
     /// <summary>
     /// Summary description for FindDependenciesServiceTest
     /// </summary>
     [TestClass]
-    public class GetDatabaseTablesServiceTest {
+    public class GetGetDatabaseColumnsForTableServiceTest {
         
         private string _webserverURI = ServerSettings.WebserverURI;
 
@@ -48,7 +43,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         #endregion
 
         [TestMethod]
-        public void GetTablesForDatabase_GivenDatabaseSource_Expected_AllTablesForDatabase()
+        // ReSharper disable once InconsistentNaming
+        public void GetDatabaseColumnsForTable_GivenDatabaseSourceWithTableName_Expected_AllColumnsForTableInDatabase()
         {
             var dbSource = new DbSource();
             dbSource.DatabaseName = "Cities";
@@ -59,13 +55,17 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
             dbSource.Password = "test123";
             //dbSource.ConnectionString = "Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Cities;User ID=testUser;Password=test123;";
 
-            string postData = String.Format("{0}{1}", _webserverURI, string.Format("GetDatabaseTablesService?Database={0}", dbSource));
+            string postData = String.Format("{0}{1}", _webserverURI, string.Format("GetDatabaseColumnsForTableService?Database={0}&TableName={1}", dbSource, "Country"));
             var response = TestHelper.PostDataToWebserver(postData);
-            StringAssert.Contains(response,"\"TableName\":\"sysdiagrams\"");
-            StringAssert.Contains(response,"\"TableName\":\"DummyInsert\"");
-            StringAssert.Contains(response,"\"TableName\":\"City\"");
-            StringAssert.Contains(response,"\"TableName\":\"Country\"");
-            StringAssert.Contains(response,"\"TableName\":\"WorldCities\"");
+            StringAssert.Contains(response, "\"ColumnName\":\"CountryID\"");
+            StringAssert.Contains(response, "\"SqlDataType\":8");
+            StringAssert.Contains(response, "\"DataTypeName\":\"int\"");
+            StringAssert.Contains(response, "\"SystemDataType\":\"Int32\"");
+            StringAssert.Contains(response, "\"ColumnName\":\"Description\"");
+            StringAssert.Contains(response, "\"SqlDataType\":22");
+            StringAssert.Contains(response, "\"MaxLength\":50");
+            StringAssert.Contains(response, "\"DataTypeName\":\"varchar (50)\"");
+            StringAssert.Contains(response, "\"SystemDataType\":\"String(50)\"");
         }
     }
 }

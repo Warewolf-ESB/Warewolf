@@ -105,6 +105,7 @@ namespace Dev2.Activities
                 IDev2DataListEvaluateIterator timeoutItr;
                 var parametersIteratorCollection = BuildParametersIteratorCollection(compiler, executionID, out batchItr, out timeoutItr);
                 SqlBulkCopy sqlBulkCopy = null;
+                SqlBulkInserter.CurrentOptions = BuildSqlBulkCopyOptions();
                 if(String.IsNullOrEmpty(BatchSize) && String.IsNullOrEmpty(Timeout))
                 {
                     sqlBulkCopy = new SqlBulkCopy(Database.ConnectionString, SqlBulkInserter.CurrentOptions) { DestinationTableName = TableName };
@@ -118,11 +119,11 @@ namespace Dev2.Activities
                 }
                 if(sqlBulkCopy != null)
                 {
-                    DataTable dataTableToInsert = null;
-                    if(!BuiltUsingSingleRecset(sqlBulkCopy,compiler,executionID,out dataTableToInsert))
+                    DataTable dataTableToInsert;
+                    if(!BuiltUsingSingleRecset(sqlBulkCopy,compiler,executionID,dataObject,out dataTableToInsert))
                     {
                         dataTableToInsert = BuildDataTableToInsert();
-                        SqlBulkInserter.CurrentOptions = BuildSqlBulkCopyOptions();
+                        
                         if(InputMappings != null && InputMappings.Count > 0)
                         {
                             var iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
@@ -167,7 +168,7 @@ namespace Dev2.Activities
             }
         }
 
-        bool BuiltUsingSingleRecset(SqlBulkCopy sqlBulkCopy,IDataListCompiler compiler,Guid executionID, out DataTable dataTableToInsert)
+        bool BuiltUsingSingleRecset(SqlBulkCopy sqlBulkCopy, IDataListCompiler compiler, Guid executionID, IDSFDataObject dataObject, out DataTable dataTableToInsert)
         {
             if(InputMappings!=null && InputMappings.All(mapping => DataListUtil.IsValueRecordset(mapping.InputColumn) || String.IsNullOrEmpty(mapping.InputColumn)))
             {
@@ -192,12 +193,19 @@ namespace Dev2.Activities
                 }
                 if(!hasMultiple)
                 {
-                    var expressionsEntry = compiler.FetchBinaryDataList(executionID, out errors);
-                    dataTableToInsert = compiler.ConvertToDataTable(expressionsEntry, currentRecSetName, out errors);
+                    var binaryDataList = compiler.FetchBinaryDataList(executionID, out errors);
+                    dataTableToInsert = compiler.ConvertToDataTable(binaryDataList, currentRecSetName, out errors);
+                    var indexCounter = 1;
                     foreach(var dataColumnMapping in InputMappings)
                     {
                         if(!String.IsNullOrEmpty(dataColumnMapping.InputColumn))
                         {
+                            if(dataObject.IsDebugMode())
+                            {
+                                var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, dataColumnMapping.InputColumn, false, out errors);
+                                AddDebugInputItem(dataColumnMapping.InputColumn, dataColumnMapping.OutputColumn.ColumnName, expressionsEntry, dataColumnMapping.OutputColumn.DataTypeName, executionID, indexCounter);
+                                indexCounter++;
+                            }
                             sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(DataListUtil.ExtractFieldNameFromValue(dataColumnMapping.InputColumn), dataColumnMapping.OutputColumn.ColumnName));
                         }
                     }
@@ -283,36 +291,27 @@ namespace Dev2.Activities
 
         void AddOptionsDebugItems()
         {
-            if(CheckConstraints)
-            {
-                var debugItem = new DebugItem();
-                debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = "Check Constraints" });
-                _debugInputs.Add(debugItem);
-            }
-            if(KeepIdentity)
-            {
-                var debugItem = new DebugItem();
-                debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = "Keep Identity" });
-                _debugInputs.Add(debugItem);
-            }
-            if(KeepTableLock)
-            {
-                var debugItem = new DebugItem();
-                debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = "Keep Table Lock" });
-                _debugInputs.Add(debugItem);
-            }
-            if(FireTriggers)
-            {
-                var debugItem = new DebugItem();
-                debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = "Fire Triggers" });
-                _debugInputs.Add(debugItem);
-            }
-            if(UseInternalTransaction)
-            {
-                var debugItem = new DebugItem();
-                debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = "Use Internal Transaction" });
-                _debugInputs.Add(debugItem);
-            }
+            
+            var debugItem = new DebugItem();
+            debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = string.Format("Check Constraints: {0}", CheckConstraints?"YES":"NO") });
+            _debugInputs.Add(debugItem);
+            
+            debugItem = new DebugItem();
+            debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = string.Format("Keep Identity: {0}", KeepIdentity ? "YES" : "NO") });
+            _debugInputs.Add(debugItem);
+            
+            debugItem = new DebugItem();
+            debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = string.Format("Keep Table Lock: {0}", KeepTableLock ? "YES" : "NO") });
+            _debugInputs.Add(debugItem);
+            
+            debugItem = new DebugItem();
+            debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = string.Format("Fire Triggers: {0}", FireTriggers ? "YES" : "NO") });
+            _debugInputs.Add(debugItem);
+            
+            debugItem = new DebugItem();
+            debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = string.Format("Use Internal Transaction: {0}", UseInternalTransaction ? "YES" : "NO") });
+            _debugInputs.Add(debugItem);
+            
         }
 
         IDev2IteratorCollection BuildParametersIteratorCollection(IDataListCompiler compiler, Guid executionID,out IDev2DataListEvaluateIterator batchIterator,out IDev2DataListEvaluateIterator timeOutIterator)

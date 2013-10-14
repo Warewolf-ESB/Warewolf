@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Runtime.Serialization;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
@@ -30,11 +31,23 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// <returns></returns>
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
+            if(values == null)
+            {
+                throw new InvalidDataContractException("No parameter values provided.");
+            }
             string database;
             string tableName;
             values.TryGetValue("Database", out database);
             values.TryGetValue("TableName", out tableName);
+            if(string.IsNullOrEmpty(database))
+            {
+                throw new InvalidDataContractException("No database set.");
+            }
 
+            if(string.IsNullOrEmpty(tableName))
+            {
+                throw new InvalidDataContractException("No TableName set.");
+            }
             var dbColumns = new List<DbColumn>();
 
             var dbSource = JsonConvert.DeserializeObject<DbSource>(database);

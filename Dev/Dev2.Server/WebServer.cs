@@ -193,7 +193,7 @@ namespace Dev2
                                         var jsonData = keyValue.ToList();
                                         jsonData.Remove(parameterName);
                                         formData.CreateElement(parameterName).SetValue(string.Join("=",jsonData));
-                                        break;
+                                        continue;
                                     }
                                     formFieldValue = HttpUtility.UrlDecode(keyValue[1]);
                                     try
