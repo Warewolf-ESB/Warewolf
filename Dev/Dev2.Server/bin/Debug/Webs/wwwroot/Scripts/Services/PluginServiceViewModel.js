@@ -338,7 +338,8 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
     self.save = function () {
 
         // if new do old action
-        if (Guid.IsEmpty(self.data.resourceID())) {
+        // Guid.IsEmpty does not work!
+        if (self.data.resourceID() == "00000000-0000-0000-0000-000000000000") {
             self.saveViewModel.showDialog(true);
         } else {
             // else use new action ;)
