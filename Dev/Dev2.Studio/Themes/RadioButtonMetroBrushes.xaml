@@ -18,6 +18,6 @@
     <SolidColorBrush x:Key="RadioButtonFocusedBorderBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="RadioButtonInvalidUnfocusedBorderBrush" Color="{StaticResource Color_029b}" />
     <SolidColorBrush x:Key="RadioButtonInvalidFocusedBorderBrush" Color="{StaticResource Color_028b}" />
-    <SolidColorBrush x:Key="RadioButtonCheckBackgroundBrush" Color="{StaticResource Color_009b}" />
+    <SolidColorBrush x:Key="RadioButtonCheckBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
     
 </ResourceDictionary>

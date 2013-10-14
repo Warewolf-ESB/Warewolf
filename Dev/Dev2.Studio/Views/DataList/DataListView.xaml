@@ -164,8 +164,8 @@
                     <Grid HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="37" SharedSizeGroup="B" />
-                            <ColumnDefinition Width="37" SharedSizeGroup="C" />
+                            <ColumnDefinition Width="38" SharedSizeGroup="B" />
+                            <ColumnDefinition Width="38" SharedSizeGroup="C" />
                             <ColumnDefinition Width="Auto" SharedSizeGroup="A" />
                         </Grid.ColumnDefinitions>
 
@@ -255,11 +255,11 @@
                                 <ColumnDefinition SharedSizeGroup="A" />
                             </Grid.ColumnDefinitions>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" Margin="0,0,5,0"/>
-                                <TextBlock Grid.Column="0" Text="Name" FontWeight="SemiBold"/>      
+                                <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" Margin="0,0,5,0" Foreground="Black"/>
+                                <TextBlock Grid.Column="0" Text="Name" FontWeight="SemiBold" Foreground="Black"/>      
                              </StackPanel>
-                            <TextBlock Grid.Column="1" Text="Input" HorizontalAlignment="Center" FontWeight="SemiBold"/>
-                            <TextBlock Grid.Column="2" Text="Ouput" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="1" Text="Input" HorizontalAlignment="Center" FontWeight="SemiBold" Foreground="Black"/>
+                            <TextBlock Grid.Column="2" Text="Output" HorizontalAlignment="Center" FontWeight="SemiBold" Foreground="Black"/>
                         </Grid>
                     </StackPanel>
                 </HierarchicalDataTemplate>

@@ -178,8 +178,10 @@
                                 <core:ActivityDesignerToggleButton Width="20"
                                                               Height="20"
                                                               ToolTip="{Binding ToolTip}"
-                                                              IsChecked="{Binding IsChecked, Mode=TwoWay}"
-                                                              Content="{Binding Image, Mode=TwoWay}" />
+                                                              IsChecked="{Binding IsChecked, Mode=TwoWay}"                                                                                                                               
+                                                              Content="{Binding Image, Mode=TwoWay}">
+                                    
+                                </core:ActivityDesignerToggleButton>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                         <ItemsControl.ItemsPanel>
