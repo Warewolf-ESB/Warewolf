@@ -622,7 +622,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     self.save = function () {
 
         // if new do old action
-        if (self.data.resourceID() == "00000000-0000-0000-0000-000000000000") {
+        if (Guid.IsEmpty(self.data.resourceID())) {
             self.saveViewModel.showDialog(true);
         } else {
             // else use new action ;)
