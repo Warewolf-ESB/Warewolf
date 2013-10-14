@@ -153,7 +153,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_DragAndDropWorkflowFromRemoteServerOnALocalHostCreatedWorkflow_WorkFlowIsDropped()
         {
-            const string TextToSearchWith = "Internal Recursive Copy";
+            const string TextToSearchWith = "Find Records";
             DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
             //Ensure that we're in localhost
             ExplorerUiMap.ClickServerInServerDDL(LocalHostServerName);
@@ -166,13 +166,13 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.ClearExplorerSearchText();
 
             ExplorerUiMap.EnterExplorerSearchText(TextToSearchWith);
-            ExplorerUiMap.DragControlToWorkflowDesigner(RemoteServerName, "WORKFLOWS", "UTILITY", TextToSearchWith, point);
+            ExplorerUiMap.DragControlToWorkflowDesigner(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith, point);
 
             OpenMenuItem("Debug");
             SendKeys.SendWait("{F5}");
             Playback.Wait(1000);
 
-            Assert.IsFalse(OutputUIMap.IsAnyStepsInError());
+            Assert.IsFalse(OutputUIMap.IsAnyStepsInError(), "The remote workflow threw errors when executed locally");
         }
 
         [TestMethod]
