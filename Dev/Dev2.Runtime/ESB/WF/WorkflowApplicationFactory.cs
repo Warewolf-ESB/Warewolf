@@ -343,14 +343,15 @@ namespace Dev2.DynamicServices
                     // This was cancel which left the activities resident in the background and caused chaos!
                     _instance.Terminate(new Exception("User Termination"));
                 }
-                catch
+                catch(Exception e)
                 {
-                    //Empty so that the exception does not bubble up. The timeout is set this way to ensure that the workflow stops immediately
+                    ServerLogger.LogError(e);
                 }
                 finally
                 {
                     try
                     {
+                        // flush memory usage ;)
                         GC.WaitForFullGCComplete(2000);
                     }
                     catch
