@@ -22,12 +22,12 @@ namespace Dev2.Tests.Activities.ActivityTests
     [TestClass]
     public class SqlBulkInsertActivityTests : BaseActivityUnitTest
     {
-        public TestContext TestContext { get; set; }
+        public TestContext TestContext { get; set; }    
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Construct")]
-        public void DsfSqlBulkInsertActivity_Construct_Paramterless_InputMappingsNotNull()
+        public void DsfSqlBulkInsertActivity_Construct_Paramterless_SetsDefaultPropertyValues()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
@@ -35,6 +35,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.IsNotNull(dsfSqlBulkInsertActivity);
             Assert.AreEqual("SQL Bulk Insert", dsfSqlBulkInsertActivity.DisplayName);
+            Assert.AreEqual("0", dsfSqlBulkInsertActivity.Timeout);
+            Assert.AreEqual("0", dsfSqlBulkInsertActivity.BatchSize);
         }
 
         [TestMethod]
@@ -106,7 +108,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.TableLock));  
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.UseInternalTransaction));  
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepNulls));
-            Assert.AreEqual(30, returnedSqlBulkCopy.BulkCopyTimeout);
+            Assert.AreEqual(0, returnedSqlBulkCopy.BulkCopyTimeout);
             Assert.AreEqual(0, returnedSqlBulkCopy.BatchSize);
         }
 
@@ -151,7 +153,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.TableLock));
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.UseInternalTransaction));
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepNulls));
-            Assert.AreEqual(30, returnedSqlBulkCopy.BulkCopyTimeout);
+            Assert.AreEqual(0, returnedSqlBulkCopy.BulkCopyTimeout);
             Assert.AreEqual(0, returnedSqlBulkCopy.BatchSize);
         }
 

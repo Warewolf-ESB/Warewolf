@@ -491,22 +491,22 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             }
 
             var batchSize = BatchSize;
-            if(!string.IsNullOrEmpty(batchSize) && !IsVariable(batchSize))
+            if(!IsVariable(batchSize))
             {
                 int value;
-                if(!int.TryParse(batchSize, out value) || value <= 0)
+                if(!int.TryParse(batchSize, out value) || value < 0)
                 {
-                    yield return new ActionableErrorInfo(() => IsBatchSizeFocused = true) { ErrorType = ErrorType.Critical, Message = "Batch size must be a number greater than zero or left blank." };
+                    yield return new ActionableErrorInfo(() => IsBatchSizeFocused = true) { ErrorType = ErrorType.Critical, Message = "Batch size must be a number greater than or equal to zero." };
                 }
             }
 
             var timeout = Timeout;
-            if(!string.IsNullOrEmpty(timeout) && !IsVariable(timeout))
+            if(!IsVariable(timeout))
             {
                 int value;
-                if(!int.TryParse(timeout, out value) || value <= 0)
+                if(!int.TryParse(timeout, out value) || value < 0)
                 {
-                    yield return new ActionableErrorInfo(() => IsTimeoutFocused = true) { ErrorType = ErrorType.Critical, Message = "Timeout must be a number greater than zero or left blank." };
+                    yield return new ActionableErrorInfo(() => IsTimeoutFocused = true) { ErrorType = ErrorType.Critical, Message = "Timeout must be a number greater than or equal to zero." };
                 }
             }
 

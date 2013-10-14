@@ -30,6 +30,8 @@ namespace Dev2.Activities
             : base("SQL Bulk Insert")
         {
             InputMappings = new List<DataColumnMapping>();
+            Timeout = "0";
+            BatchSize = "0";
         }
 
         public IList<DataColumnMapping> InputMappings { get; set; }

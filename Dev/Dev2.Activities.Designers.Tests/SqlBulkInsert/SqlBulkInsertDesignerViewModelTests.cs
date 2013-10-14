@@ -412,16 +412,20 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
 
             //------------Execute Test---------------------------
+            viewModel.ModelItem.SetProperty("BatchSize", "");
+            viewModel.ModelItem.SetProperty("Timeout", "");
+            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutValid: false);
+
+            viewModel.ModelItem.SetProperty("BatchSize", (string)null);
+            viewModel.ModelItem.SetProperty("Timeout", (string)null);
+            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutValid: false);
+            
             viewModel.ModelItem.SetProperty("BatchSize", "a");
             viewModel.ModelItem.SetProperty("Timeout", "a");
             Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutValid: false);
 
             viewModel.ModelItem.SetProperty("BatchSize", "-1");
             viewModel.ModelItem.SetProperty("Timeout", "-1");
-            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutValid: false);
-
-            viewModel.ModelItem.SetProperty("BatchSize", "0");
-            viewModel.ModelItem.SetProperty("Timeout", "0");
             Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutValid: false);
         }
 
@@ -436,8 +440,8 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
 
             //------------Execute Test---------------------------
-            viewModel.ModelItem.SetProperty("BatchSize", "");
-            viewModel.ModelItem.SetProperty("Timeout", "");
+            viewModel.ModelItem.SetProperty("BatchSize", "0");
+            viewModel.ModelItem.SetProperty("Timeout", "0");
             Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: true, isTimeoutValid: true);
 
             viewModel.ModelItem.SetProperty("BatchSize", "20");
@@ -448,8 +452,6 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var selectedTables = databases[selectedDatabase];
             var selectedTable = selectedTables[1];
 
-            viewModel.ModelItem.SetProperty("BatchSize", (string)null);
-            viewModel.ModelItem.SetProperty("Timeout", (string)null);
             viewModel.SelectedDatabase = selectedDatabase;
             viewModel.SelectedTable = selectedTable;
             Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: true, isTimeoutValid: true);
@@ -465,8 +467,8 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Assert Results-------------------------
             Assert.AreEqual(viewModel.IsDatabaseSelected, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "A database must be selected.") == null);
             Assert.AreEqual(viewModel.IsTableSelected, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "A table must be selected.") == null);
-            Assert.AreEqual(isBatchSizeValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Batch size must be a number greater than zero or left blank.") == null);
-            Assert.AreEqual(isTimeoutValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Timeout must be a number greater than zero or left blank.") == null);
+            Assert.AreEqual(isBatchSizeValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Batch size must be a number greater than or equal to zero.") == null);
+            Assert.AreEqual(isTimeoutValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Timeout must be a number greater than or equal to zero.") == null);
         }
 
         [TestMethod]
