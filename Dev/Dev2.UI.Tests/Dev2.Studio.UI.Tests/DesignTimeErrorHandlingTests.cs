@@ -84,62 +84,50 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", serviceToUse);
             // Get wizard window
             var wizardWindow = DatabaseServiceWizardUiMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            if(WizardsUIMap.WaitForWizard(5000))
+            WizardsUIMap.WaitForWizard(5000);
+            // Tab to mappings
+            DatabaseServiceWizardUiMap.TabToOutputMappings(wizardWindow);
+            // Remove column 1+2's mapping
+            SendKeys.SendWait("{TAB}");
+            SendKeys.SendWait("{DEL}");
+            SendKeys.SendWait("{TAB}");
+            SendKeys.SendWait("{DEL}");
+            // Save
+            DatabaseServiceWizardUiMap.ClickOK();
+
+            if(ResourceChangedPopUpUIMap.WaitForDialog(5000))
             {
-                // Tab to mappings
-                DatabaseServiceWizardUiMap.TabToOutputMappings(wizardWindow);
-                // Remove column 1+2's mapping
-                SendKeys.SendWait("{TAB}");
-                SendKeys.SendWait("{DEL}");
-                SendKeys.SendWait("{TAB}");
-                SendKeys.SendWait("{DEL}");
-                // Save
-                DatabaseServiceWizardUiMap.ClickOK();
+                ResourceChangedPopUpUiMap.ClickCancel();
+            }
 
-                if(ResourceChangedPopUpUIMap.WaitForDialog(5000))
-                {
-                    ResourceChangedPopUpUiMap.ClickCancel();
-                }
+            ExplorerUiMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", serviceToUse);
+            // Get wizard window
+            wizardWindow = DatabaseServiceWizardUiMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            WizardsUIMap.WaitForWizard(5000);
+            // Tab to mappings
+            DatabaseServiceWizardUiMap.TabToOutputMappings(wizardWindow);
+            // Replace column 1's mapping
+            SendKeys.SendWait("{TAB}");
+            SendKeys.SendWait("Column1");
+            // Save
+            DatabaseServiceWizardUiMap.KeyboardOK();
+            SendKeys.SendWait("{TAB}utility");
+            DatabaseServiceWizardUiMap.SaveDialogClickFirstFolder();
+            SendKeys.SendWait("{TAB}{ENTER}");
+            if (ResourceChangedPopUpUIMap.WaitForDialog(5000))
+            {
+                ResourceChangedPopUpUiMap.ClickCancel();
+            }
 
-                ExplorerUiMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", serviceToUse);
-                // Get wizard window
-                wizardWindow = DatabaseServiceWizardUiMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-                if(WizardsUIMap.WaitForWizard(5000))
-                {
-                    // Tab to mappings
-                    DatabaseServiceWizardUiMap.TabToOutputMappings(wizardWindow);
-                    // Replace column 1's mapping
-                    SendKeys.SendWait("{TAB}");
-                    SendKeys.SendWait("Column1");
-                    // Save
-                    DatabaseServiceWizardUiMap.KeyboardOK();
-                    SendKeys.SendWait("{TAB}utility");
-                    DatabaseServiceWizardUiMap.SaveDialogClickFirstFolder();
-                    SendKeys.SendWait("{TAB}{ENTER}");
-                    if (ResourceChangedPopUpUIMap.WaitForDialog(5000))
-                    {
-                        ResourceChangedPopUpUiMap.ClickCancel();
-                    }
-                }
-                else
-                {
-                    Assert.Fail("DbService Wizard Failed to Load");
-                }
-
-                // Fix Errors
-                if(WorkflowDesignerUiMap.Adorner_ClickFixErrors(theTab, serviceToUse + "(DsfActivityDesigner)"))
-                {
-                    // Assert mapping does not exist
-                    Assert.IsFalse(WorkflowDesignerUiMap.DoesActivityDataMappingContainText(WorkflowDesignerUiMap.FindControlByAutomationId(theTab, serviceToUse + "(DsfActivityDesigner)"), "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
-                }
-                else
-                {
-                    Assert.Fail("'Fix Errors' button not visible");
-                }
+            // Fix Errors
+            if(WorkflowDesignerUiMap.Adorner_ClickFixErrors(theTab, serviceToUse + "(DsfActivityDesigner)"))
+            {
+                // Assert mapping does not exist
+                Assert.IsFalse(WorkflowDesignerUiMap.DoesActivityDataMappingContainText(WorkflowDesignerUiMap.FindControlByAutomationId(theTab, serviceToUse + "(DsfActivityDesigner)"), "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
             }
             else
             {
-                Assert.Fail("DbService Wizard Failed to Load");
+                Assert.Fail("'Fix Errors' button not visible");
             }
         }
 
@@ -163,39 +151,33 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.EnterExplorerSearchText("Bug_10011_DbService");
             ExplorerUiMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
             // Get wizard window
-            if(WizardsUIMap.WaitForWizard(5000))
+            WizardsUIMap.WaitForWizard(5000);
+            var wizardWindow = DatabaseServiceWizardUiMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+
+            // Tab to mappings
+            DatabaseServiceWizardUiMap.TabToInputMappings(wizardWindow);
+            // Set input mapping to required
+            SendKeys.SendWait("{TAB}");
+            SendKeys.SendWait(" ");
+            // Save
+            DatabaseServiceWizardUiMap.ClickOK();
+
+            if (ResourceChangedPopUpUIMap.WaitForDialog(5000))
             {
-                var wizardWindow = DatabaseServiceWizardUiMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+                ResourceChangedPopUpUiMap.ClickCancel();
+            }
 
-                // Tab to mappings
-                DatabaseServiceWizardUiMap.TabToInputMappings(wizardWindow);
-                // Set input mapping to required
-                SendKeys.SendWait("{TAB}");
-                SendKeys.SendWait(" ");
-                // Save
-                DatabaseServiceWizardUiMap.ClickOK();
-
-                if (ResourceChangedPopUpUIMap.WaitForDialog(5000))
-                {
-                    ResourceChangedPopUpUiMap.ClickCancel();
-                }
-
-                // Fix Errors
-                if(WorkflowDesignerUiMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService(DsfActivityDesigner)"))
-                {
-                    //Assert mappings are prompting the user to add required mapping
-                    var getOpenMappingToggle = WorkflowDesignerUiMap.Adorner_GetButton(theTab, "Bug_10011_DbService(DsfActivityDesigner)", "OpenMappingsToggle");
-                    var getCloseMappingButton = getOpenMappingToggle.GetChildren()[1];
-                    Assert.IsTrue(getCloseMappingButton.Height != -1, "Fix Error does not prompt the user to input required mappings");
-                }
-                else
-                {
-                    Assert.Fail("'Fix Errors' button not visible");
-                }
+            // Fix Errors
+            if(WorkflowDesignerUiMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService(DsfActivityDesigner)"))
+            {
+                //Assert mappings are prompting the user to add required mapping
+                var getOpenMappingToggle = WorkflowDesignerUiMap.Adorner_GetButton(theTab, "Bug_10011_DbService(DsfActivityDesigner)", "OpenMappingsToggle");
+                var getCloseMappingButton = getOpenMappingToggle.GetChildren()[1];
+                Assert.IsTrue(getCloseMappingButton.Height != -1, "Fix Error does not prompt the user to input required mappings");
             }
             else
             {
-                Assert.Fail("DbService Wizard Failed to Load");
+                Assert.Fail("'Fix Errors' button not visible");
             }
         }
 

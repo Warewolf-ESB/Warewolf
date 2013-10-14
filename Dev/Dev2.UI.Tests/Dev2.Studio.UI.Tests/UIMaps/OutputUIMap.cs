@@ -81,7 +81,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             return true;
         }
 
-        public static UITestControlCollection GetOutputWindow()
+        public UITestControlCollection GetOutputWindow()
         {
             WpfTree debugOutputControlTree = OutputTree();
             return debugOutputControlTree.Nodes;
@@ -231,11 +231,25 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             return errorResults[0].Height != -1;
         }
 
-        public static bool IsAnyStepsInError()
+        public bool IsAnyStepsInError()
         {
-            Playback.Wait(10000);
             var debugOutput = GetOutputWindow().ToList();
             return debugOutput.Any(IsStepInError);
+        }
+
+        public void WaitForStepCount(int expectedStepCount, int timeOut)
+        {
+            const int interval = 100;
+            int count = 0;
+            while(GetOutputWindow().Count < expectedStepCount && count <= timeOut)
+            {
+                Playback.Wait(interval);
+                count = count + interval;
+            }
+            if(count == timeOut && GetOutputWindow().Count < expectedStepCount)
+            {
+                throw new Exception("Debug output never reached the expected step count in the given time out");
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
+﻿using System.Windows.Forms;
+
+namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
 {
     using System.Drawing;
     using Microsoft.VisualStudio.TestTools.UITesting;
@@ -143,7 +145,8 @@
         public void EnterTextInSourceServerFilterBox(UITestControl theTab, string text)
         {
             WpfEdit theBox = GetSourceServerFilterBox(theTab);
-            theBox.Text = text;
+            Mouse.Click(new Point(theBox.BoundingRectangle.X + 15, theBox.BoundingRectangle.Y + 15));
+            SendKeys.SendWait(text);
         }
 
         public void EnterTextInDestinationServerFilterBox(UITestControl theTab, string text)

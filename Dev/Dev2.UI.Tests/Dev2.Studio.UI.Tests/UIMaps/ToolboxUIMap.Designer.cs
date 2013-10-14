@@ -173,60 +173,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
                     }    
                 }
             }
-
-
-
-            /*
-             * Find the list of items and locate the correct item from here ;)
-             * 
-             * 
-             */
-
-            // Click 'Toolbox' tab
-            //Mouse.Click(uIToolboxTabPage, new Point(25, 41));
-
-            // Click 'Decision' label
-            //Mouse.Click(uIDecisionText1, new Point(4, 7));
-
-            // Move 'Control Flow' -> 'Unlimited.Applications.BusinessDesignStudio.Activi...' tree item to 'Flowchart' custom control
-            //uIFlowchartCustom.EnsureClickable(new Point(306, 125));
-
-            //// Much faster! \o/
-            //UITestControl dockManager = this.UIBusinessDesignStudioWindow.UIDockManagerCustom;
-            //dockManager.Find();
-            //WpfCustom uIToolboxCustom = new WpfCustom(dockManager);
-
-            //uIToolboxCustom.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "PART_UnpinnedTabAreaLeft";
-            //uIToolboxCustom.WindowTitles.Add("Warewolf");
-
-            ////uIToolboxCustom.SearchProperties["ControlType"] = "TabPage";
-            ////uIToolboxCustom.SearchProperties["Name"] = "Toolbox";
-            //uIToolboxCustom.Find();
-            //UITestControlCollection childCollection = uIToolboxCustom.GetChildren();
-
-            //UITestControlCollection uiTestControlCollection = childCollection[2].GetChildren();
-
-            //UITestControlCollection uiTestControlCollection1 = uiTestControlCollection[6].GetChildren();
-
-            //UITestControlCollection testControlCollection = uiTestControlCollection1[1].GetChildren();
-
-            //foreach (UITestControl subItem in testControlCollection)
-            //{
-            //    string friendlyName = subItem.FriendlyName;
-            //    if (subItem.GetChildren().Count > 0)
-            //    {
-            //        UITestControlCollection subChildCollection = subItem.GetChildren();
-            //        foreach (UITestControl subSubItem in subChildCollection)
-            //        {
-            //            string autoID = subSubItem.GetProperty("AutomationID").ToString();
-            //            if (autoID.Contains(itemAutomationID))
-            //            {
-            //                return subSubItem;
-            //            }
-            //        }
-            //    }
-            //}
-
             return null;
         }
         public UITestControlCollection GetAllTools()

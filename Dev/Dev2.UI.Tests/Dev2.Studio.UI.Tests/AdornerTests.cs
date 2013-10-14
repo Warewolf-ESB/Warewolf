@@ -5,6 +5,7 @@ using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -146,7 +147,7 @@ namespace Dev2.Studio.UI.Tests
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUiMap.ClearExplorerSearchText();
             ExplorerUiMap.EnterExplorerSearchText("Edit Service Workflow");
-            ExplorerUiMap.DoubleClickOpenProject("RemoteConnection", "WORKFLOWS", "UI TEST", "Edit Service Workflow");
+            ExplorerUiMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "UI TEST", "Edit Service Workflow");
 
             //------------Execute Test---------------------------
 
@@ -163,6 +164,8 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(500);
             Mouse.Click(button);
             Playback.Wait(1000);
+
+            WizardsUIMap.WaitForWizard(5000);
 
             DatabaseServiceWizardUiMap.ClickMappingTab();
             Keyboard.SendKeys("{TAB}");
@@ -183,6 +186,9 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(500);
             Mouse.Click(button);
             Playback.Wait(1000);
+
+            WizardsUIMap.WaitForWizard(5000);
+
             DatabaseServiceWizardUiMap.ClickMappingTab();
             //Mouse.Click(new Point(780, 270)); // click on the second tab ;)
             Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}");
@@ -204,6 +210,9 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(500);
             Mouse.Click(button);
             Playback.Wait(1000);
+
+            WizardsUIMap.WaitForWizard(5000);
+
             DatabaseServiceWizardUiMap.ClickMappingTab(); // click on the second tab ;)
             Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}");
             Playback.Wait(500);
@@ -234,7 +243,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         [TestCategory("UITest")]
         [Description("Test that clicking on the help button does indeed open an example workflow")]
         [Owner("Tshepo")]
@@ -271,7 +280,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsNotNull(waitForTabToOpen);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         [Owner("Ashley Lewis")]
         [TestCategory("HelpButtonAdorner_CollapseHelp")]
         public void WorkflowdesignSurface_CollapseHelp()

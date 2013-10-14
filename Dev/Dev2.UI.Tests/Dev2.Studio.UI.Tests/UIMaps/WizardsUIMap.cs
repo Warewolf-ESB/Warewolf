@@ -1,10 +1,5 @@
 ﻿using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dev2.CodedUI.Tests;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
@@ -15,25 +10,38 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// <summary>
         /// Returns true if found in the timeout period.
         /// </summary>
-        public static bool WaitForWizard(int timeOut)
+        public static void WaitForWizard(int timeOut, bool throwIfNotFound = true)
         {
             var uiBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
-            Type type = null;
+            Type type = uiBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0].GetType();
+            const int interval = 100;
             var timeNow = 0;
             while(type != typeof(WpfImage))
             {
-                timeNow = timeNow + 100;
-                Playback.Wait(100);
-                var tryGetDialog = uiBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-                type = tryGetDialog.GetType();
+                Playback.Wait(interval);
+                timeNow = timeNow + interval;
                 if(timeNow > timeOut)
                 {
                     break;
                 }
+                var tryGetDialog = uiBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+                type = tryGetDialog.GetType();
+            }
+            if(type != typeof(WpfImage) && throwIfNotFound)
+            {
+                throw new UITestControlNotFoundException("Popup dialog not displayed within the given time out period.");
             }
             //wait for render
             Playback.Wait(2000);
-            return type == typeof(WpfImage);
+        }
+
+        public static bool TryWaitForWizard(int timeOut)
+        {
+            WaitForWizard(timeOut, false);
+            var uiBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
+            var tryGetDialog = uiBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            var type = tryGetDialog.GetType();
+            return type == typeof (WpfImage);
         }
     }
 }

@@ -258,22 +258,14 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                 Thread.Sleep(300);
 
                 // Can we see the file? (AKA: Is the folder maximised?)
-                var test = folderNameListItem.GetChildren();
-                test = test;
                 UITestControl projectNameListItem = new UITestControl(folderNameListItem);
                 projectNameListItem.SearchProperties.Add("AutomationId", "UI_" + projectName + "_AutoID");
-                projectNameListItem.Find();
+                projectNameListItem.TryFind();
                 if (!projectNameListItem.TryGetClickablePoint(out p) && !overrideDblClickBehavior)
                 {
                     Mouse.DoubleClick(new Point(projectNameListItem.BoundingRectangle.X + 50,
                                                 projectNameListItem.BoundingRectangle.Y + 5));
                 }
-                else
-                {
-                    Mouse.Click(new Point(projectNameListItem.BoundingRectangle.X + 50,
-                                          projectNameListItem.BoundingRectangle.Y + 5));
-                }
-
                 return projectNameListItem;
             }
             return null;
@@ -360,9 +352,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public void EnterExplorerSearchText(string textToSearchWith)
         {
-            #region Variable Declarations
-            WpfEdit uIUI_DataListSearchtxtEdit = new UIWarewolfWindow().UITheNavigationViewCustom.UIFilterTextBoxEdit.UIUI_DataListSearchtxtEdit;
-            #endregion
+            var studioWindow = new UIWarewolfWindow();
+            WpfEdit uIUI_DataListSearchtxtEdit = studioWindow.UITheNavigationViewCustom.UIFilterTextBoxEdit.UIUI_DataListSearchtxtEdit;
 
             // Click 'UI_DataListSearchtxt_AutoID' text box
             Mouse.Click(uIUI_DataListSearchtxtEdit, new Point(12, 8));
@@ -477,14 +468,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public void ClearExplorerSearchText()
         {
-            #region Variable Declarations
-            WpfEdit uIUI_DataListSearchtxtEdit = new UIWarewolfWindow().UITheNavigationViewCustom.UIFilterTextBoxEdit.UIUI_DataListSearchtxtEdit;
-            #endregion
-
-            // Click 'UI_DataListSearchtxt_AutoID' text box
-            Mouse.Click(uIUI_DataListSearchtxtEdit, new Point(12, 8));
+            var studioWindow = new UIWarewolfWindow();
+            WpfEdit searchTextbox = studioWindow.UITheNavigationViewCustom.UIFilterTextBoxEdit.UIUI_DataListSearchtxtEdit;
             DocManagerUIMap.ClickOpenTabPage("Explorer");
-            Mouse.Click(uIUI_DataListSearchtxtEdit, new Point(5, 5));
+            Mouse.Click(searchTextbox, new Point(5, 5));
             SendKeys.SendWait("{HOME}");
             SendKeys.SendWait("+{END}");
             SendKeys.SendWait("{DELETE}");

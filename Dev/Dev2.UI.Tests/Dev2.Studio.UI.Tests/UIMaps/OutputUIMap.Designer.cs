@@ -21,7 +21,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
     public partial class OutputUIMap
     {
 
-        private static WpfTree OutputTree()
+        private WpfTree OutputTree()
         {
             WpfTree OutputTree = UIBusinessDesignStudioWindow.UIDebugOutputCustom.UIItemTree;
             return OutputTree;

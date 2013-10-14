@@ -67,6 +67,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void ClickNewPluginServiceExpectedPluginServiceOpens()
         {
             RibbonUIMap.ClickRibbonMenu("Plugin Service");
+            WizardsUIMap.WaitForWizard(5000, false);
             UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if(uiTestControl == null)
             {
@@ -77,7 +78,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             PluginServiceWizardUIMap.ClickCancel();
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         public void WebServiceWizardCreateServiceAndSourceExpectedServiceCreated()
         {
             //Initialization
@@ -136,15 +137,14 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             SendKeys.SendWait("{CTRL}{SHIFT}W");
 
-            Playback.Wait(5000);
+            WizardsUIMap.WaitForWizard(5000);
             WebServiceWizardUIMap.Cancel();
-            SendKeys.SendWait("{ESC}");
         }
 
         /// <summary>
         /// News the database service shortcut key expected database service opens.
         /// </summary>
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
@@ -158,7 +158,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         public void ClickNewPluginServiceShortcutKeyExpectedPluginServiceOpens()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");

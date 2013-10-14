@@ -65,7 +65,7 @@ namespace Dev2.CodedUI.Tests
         
 
         // PBI 8601 (Task 8855)
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         public void QuickVariableInputFromListTest()
         {
            Clipboard.Clear();
@@ -128,7 +128,7 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         public void ClickNewWorkflowExpectedWorkflowOpens()
         {
             var preCount = TabManagerUIMap.GetTabCount();
@@ -197,9 +197,13 @@ namespace Dev2.CodedUI.Tests
 
             //Save the workflow
             RibbonUIMap.ClickRibbonMenuItem("Save");
+
+            PopupDialogUIMap.WaitForDialog();
         
             //Click the show affected button
             ResourceChangedPopUpUIMap.ClickViewDependancies();
+
+            Playback.Wait(5000);
 
             Assert.AreEqual(TabManagerUIMap.GetActiveTabName(),"ForEachUpgradeTest");
 
@@ -209,7 +213,7 @@ namespace Dev2.CodedUI.Tests
         #region Auto Expand Of Mapping On Drop
 
         //PBI 9939
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         [TestCategory("DsfActivityTests")]
         [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands.")]
         [Owner("Massimo Guerrera")]
@@ -275,7 +279,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         public void UnsavedStar_UITest_WhenWorkflowIsChanged_ExpectStarIsShowing()
         {
             //------------Setup for test--------------------------
@@ -301,7 +305,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         // Should be unit test
         public void TypeInCalcBoxExpectedTooltipAppears()
         {
@@ -354,7 +358,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         // Regression Test
         public void CheckAddMissingIsWorkingWhenManuallyAddingVariableExpectedToShowVariablesAsUnUsed()
         {
@@ -379,7 +383,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup("CalculateTaxReturns", true);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         // Regression Test
         public void ValidDatalistSearchTest()
         {
@@ -409,7 +413,7 @@ namespace Dev2.CodedUI.Tests
 
         #endregion
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         public void DragAWorkflowIntoAndOutOfAForEach_Expected_NoErrors()
         {
             // Create the workflow
@@ -496,7 +500,7 @@ namespace Dev2.CodedUI.Tests
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", requiredPoint);
 
             // Cancel Decision Wizard
-            if (WizardsUIMap.WaitForWizard(5000))
+            if (WizardsUIMap.TryWaitForWizard(5000))
             {
                 var decisionWizardUiMap = new DecisionWizardUIMap();
                 decisionWizardUiMap.ClickCancel();
@@ -506,7 +510,7 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         public void DragASwitchIntoForEachExpectNotAddedToForEach()
         {
             // Create the workflow
@@ -545,7 +549,7 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         public void ClickShowMapping_Expected_InputOutputAdornersAreDisplayed()
         {
             // Create the workflow
@@ -577,7 +581,7 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
         {
             const string resourceToUse = "CalculateTaxReturns";
@@ -654,23 +658,12 @@ namespace Dev2.CodedUI.Tests
         {
             // Create the Workflow
             RibbonUIMap.CreateNewWorkflow();
-            //DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "WorkflowServiceDropWorkflow");
 
             // Get the tab
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-
-            // And click it to make sure it's focused
-            TabManagerUIMap.Click(theTab);
-
-            // Wait a bit for user noticability
-            Playback.Wait(150);
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             // Get the location of the Start button
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-
-            // And click it for UI responsiveness :P
-            WorkflowDesignerUIMap.ClickControl(theStartButton);
 
             // Get a point underneath the start button
             Point p = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
@@ -827,30 +820,30 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void ClickHelpFeedback_Expected_FeedbackWindowOpens()
         {
-            //RibbonUIMap.ClickRibbonMenuItem("Feedback");
-            //Playback.Wait(500);
-            //var dialogPrompt = DocManagerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            //if (dialogPrompt.GetType() != typeof(WpfWindow))
-            //{
-            //    Assert.Fail("Error - Clicking the Feedback button does not create the Feedback Window");
-            //}
-            //SendKeys.SendWait("{ENTER}");
-            //SendKeys.SendWait("{ENTER}");
+            RibbonUIMap.ClickRibbonMenuItem("Feedback");
+            Playback.Wait(500);
+            var dialogPrompt = DocManagerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            if(dialogPrompt.GetType() != typeof(WpfWindow))
+            {
+                Assert.Fail("Error - Clicking the Feedback button does not create the Feedback Window");
+            }
+            SendKeys.SendWait("{ENTER}");
+            SendKeys.SendWait("{ENTER}");
 
-            //// Wait for the init, then click around a bit
-            //Playback.Wait(2500);
-            //DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //Playback.Wait(500);
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //Playback.Wait(500);
+            // Wait for the init, then click around a bit
+            Playback.Wait(2500);
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            Playback.Wait(500);
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            Playback.Wait(500);
 
-            //// Click stop, then make sure the Feedback window has appeared.
-            //FeedbackUIMap.ClickStartStopRecordingButton();
-            //Playback.Wait(500);
-            //if (!FeedbackUIMap.DoesFeedbackWindowExist())
-            //{
-            //    Assert.Fail("The Feedback window did not appear after the recording has been stopped.");
-            //}
+            // Click stop, then make sure the Feedback window has appeared.
+            FeedbackUIMap.ClickStartStopRecordingButton();
+            Playback.Wait(500);
+            if(!FeedbackUIMap.DoesFeedbackWindowExist())
+            {
+                Assert.Fail("The Feedback window did not appear after the recording has been stopped.");
+            }
 
             // Click Open default email
             FeedbackUIMap.FeedbackWindow_ClickOpenDefaultEmail();
@@ -905,7 +898,7 @@ namespace Dev2.CodedUI.Tests
             RibbonUIMap.CreateNewWorkflow();
 
             // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -962,6 +955,7 @@ namespace Dev2.CodedUI.Tests
 
             // Open the Debug Menu, and enter some values
             RibbonUIMap.ClickRibbonMenuItem("Debug");
+            PopupDialogUIMap.WaitForDialog();
             DebugUIMap.ClickItem(0);
             SendKeys.SendWait("soValue");
             DebugUIMap.ClickItem(1);
@@ -978,17 +972,20 @@ namespace Dev2.CodedUI.Tests
             // Change to the XML tab, and make sure everything's OK
             DebugUIMap.ClickXMLTab();
 
+            //Close dialog
+            DebugUIMap.CloseDebugWindow_ByCancel();
+
             // Rest of test blocked by lack of Automation ID
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
+            TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         public void UnsavedWorkflowsPersistingOnStudioRestartExpectedWorkflowStillOpen()
         {
             Process[] procMan = Process.GetProcessesByName("Dev2.Studio");
 
             RibbonUIMap.CreateNewWorkflow();
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             var multiAssign = ToolboxUIMap.FindControl("Assign");
             ToolboxUIMap.DragControlToWorkflowDesigner(multiAssign, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
@@ -1014,30 +1011,6 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        // BUG 9078
-        [TestMethod]
-        public void StudioExit_Give_TabOpened_Expected_AllRunningProcessStop()
-        {
-            // TODO : Refactor into another scenario 
-
-            Process[] procMan = Process.GetProcessesByName("Dev2.Studio");
-
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
-            if(procMan.Any())
-            {
-                // Exit the Studio
-                DocManagerUIMap.CloseStudio();
-                // Wait For the Studio to exit
-                Playback.Wait(2000);
-                Assert.IsFalse(Process.GetProcessesByName("Dev2.Studio").Any());
-            }
-            var restartProcess = procMan.FirstOrDefault();
-            if(restartProcess != null) restartProcess.Start();
-            Playback.Wait(5000);
-            DoCleanup("CalculateTaxReturns");
-        }
-
         // Bug 8747
         [TestMethod]
         public void DebugBuriedErrors_Expected_OnlyErrorStepIsInError()
@@ -1051,7 +1024,7 @@ namespace Dev2.CodedUI.Tests
 
             // Run debug
             SendKeys.SendWait("{F5}");
-            Playback.Wait(1500);
+            PopupDialogUIMap.WaitForDialog();
             Keyboard.SendKeys("{F5}");
 
             // Open the Output

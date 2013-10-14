@@ -6,10 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -615,8 +612,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         public string AssignControl_GetVariableName(UITestControl theTab, string controlAutomationId, int itemInList)
         {
             var middleBox = AssignControl_GetSmallViewTable(theTab, controlAutomationId, itemInList);
+            // Get the cell
+            var getCell = middleBox.Rows[itemInList].GetChildren()[2];
             // Get the textbox
-            var control = (WpfEdit)middleBox.Rows[itemInList].GetChildren()[2].GetChildren()[0];
+            var control = (WpfEdit)getCell.GetChildren()[0];
             return control.Text;
         }
 
@@ -1084,7 +1083,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             return thePixel == Blue && thePixel != White;
         }
 
-        public void RunWorkflowUntilOutputStepCountAtLeast(int expectedStepCount, int timeout)
+        public void RunWorkflowAndWaitUntilOutputStepCountAtLeast(int expectedStepCount, int timeout = 5000)
         {
             SendKeys.SendWait("{F5}");
             if(DebugUIMap.WaitForDebugWindow(5000))
@@ -1101,7 +1100,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             while(steps.Count < expectedStepCount && count <= timeout)
             {
                 Playback.Wait(100);
-                steps = OutputUIMap.GetOutputWindow();
+                steps = new OutputUIMap().GetOutputWindow();
                 count++;
             }
         }
