@@ -325,24 +325,24 @@ namespace Dev2.DataList
                                     {
                                         // we have no match, use the current mapping value ;)
                                         masterRecordsetName = DataListUtil.ExtractRecordsetNameFromValue(injectValue);
-                                    }   
+                                    }
                                 }
 
-                                injectValue = DataListUtil.ComposeIntoUserVisibleRecordset(masterRecordsetName, string.Empty, field);
-                        injectValue = DataListUtil.AddBracketsToValueIfNotExist(injectValue);
-                        //}
+                                injectValue = DataListUtil.ComposeIntoUserVisibleRecordset(masterRecordsetName,
+                                                                                           string.Empty, field);
+                                injectValue = DataListUtil.AddBracketsToValueIfNotExist(injectValue);
+                            }
 
-                    }
-                }
-                else
-                {
-                            injectValue = DataListUtil.AddBracketsToValueIfNotExist(injectValue);    
+                        }
+                        else
+                        {
+                            injectValue = DataListUtil.AddBracketsToValueIfNotExist(injectValue);
                         }
                     }
                 }
                 else
                 {
-                    if(!def.IsRecordSet)
+                    if (!def.IsRecordSet)
                     {
                         injectValue = DataListUtil.AddBracketsToValueIfNotExist(def.Name);
                     }
@@ -352,12 +352,12 @@ namespace Dev2.DataList
                         {
                             var field = def.Name;
 
-                            if(fuzzyMatch != null && def.IsRecordSet)
+                            if (fuzzyMatch != null && def.IsRecordSet)
                             {
-                                if(string.IsNullOrEmpty(masterRecordsetName))
+                                if (string.IsNullOrEmpty(masterRecordsetName))
                                 {
                                     string recordsetName = fuzzyMatch.FetchMatch(def.Name);
-                                    if(!string.IsNullOrEmpty(recordsetName))
+                                    if (!string.IsNullOrEmpty(recordsetName))
                                     {
                                         masterRecordsetName = recordsetName;
                                     }
@@ -368,15 +368,20 @@ namespace Dev2.DataList
                                     }
                                 }
 
-                                injectValue = DataListUtil.ComposeIntoUserVisibleRecordset(masterRecordsetName, string.Empty, field);
+                                injectValue = DataListUtil.ComposeIntoUserVisibleRecordset(masterRecordsetName,
+                                                                                           string.Empty, field);
                                 injectValue = DataListUtil.AddBracketsToValueIfNotExist(injectValue);
                             }
-                        }else{
-
-                        var tmp = DataListUtil.ComposeIntoUserVisibleRecordset(def.RecordSetName, string.Empty, def.Name);
-                        injectValue = DataListUtil.AddBracketsToValueIfNotExist(tmp);
+                            else
+                            {
+                                injectValue = FormatString(def.RecordSetName, def.Name);
+                            }
+                        }
+                        else
+                        {
+                            injectValue = FormatString(def.RecordSetName, def.Name);
+                        }
                     }
-                }
                 }
 
                 var injectMapsTo = def.MapsTo;
@@ -399,18 +404,6 @@ namespace Dev2.DataList
                     }
                 }
 
-                // TODO : perform fuzzy matching ;)
-                //var recordsetName = def.RecordSetName;
-                //if(fuzzyMatch != null && string.IsNullOrEmpty(masterRecordsetName) && def.IsRecordSet)
-                //{
-                //    recordsetName = fuzzyMatch.FetchMatch(def.Name);
-                //    masterRecordsetName = recordsetName;
-
-                //}else if (!string.IsNullOrEmpty(masterRecordsetName) && def.IsRecordSet)
-                //{
-                //    recordsetName = masterRecordsetName;
-                //}
-
                 // def.RecordSetName -> recordsetName
                 var viewModel = new InputOutputViewModel(def.Name, injectValue, injectMapsTo, def.DefaultValue, def.IsRequired, def.RecordSetName, def.EmptyToNull);
 
@@ -418,6 +411,18 @@ namespace Dev2.DataList
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Formats the string.
+        /// </summary>
+        /// <param name="recset">The recset.</param>
+        /// <param name="field">The field.</param>
+        /// <returns></returns>
+        private string FormatString(string recset, string field)
+        {
+            var tmp = DataListUtil.ComposeIntoUserVisibleRecordset(recset, string.Empty,field);
+            return DataListUtil.AddBracketsToValueIfNotExist(tmp);
         }
 
         /// <summary>
