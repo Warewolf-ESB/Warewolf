@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Studio.UI.Tests.Bootstrap
 {
     /// <summary>
-    /// Used to bootstrap the server for integration test runs ;)
+    /// Used to bootstrap the server for coded ui test runs ;)
     /// </summary>
     [TestClass()]
     public class Bootstrap
@@ -28,7 +28,7 @@ namespace Dev2.Studio.UI.Tests.Bootstrap
                 proc.StartInfo.FileName = runBatFileDir;
                 proc.StartInfo.RedirectStandardError = true;
                 proc.StartInfo.RedirectStandardOutput = true;
-                proc.StartInfo.UseShellExecute = false;
+                proc.StartInfo.UseShellExecute = true;
                 proc.Start();
             }
         }
@@ -46,7 +46,7 @@ namespace Dev2.Studio.UI.Tests.Bootstrap
                 proc.StartInfo.FileName = cleanupBatFileDir;
                 proc.StartInfo.RedirectStandardError = true;
                 proc.StartInfo.RedirectStandardOutput = true;
-                proc.StartInfo.UseShellExecute = false;
+                proc.StartInfo.UseShellExecute = true;
                 proc.Start();
             }
         }
