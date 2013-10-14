@@ -18,6 +18,7 @@ using Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Point = System.Drawing.Point;
 
 namespace Dev2.Studio.UI.Tests
 {
@@ -73,11 +74,19 @@ namespace Dev2.Studio.UI.Tests
         {
             //close any open wizards
             var tryFindDialog = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            Point point;
             if (tryFindDialog.GetType() == typeof (WpfImage))
             {
-                Mouse.Click(tryFindDialog);
-                SendKeys.SendWait("{ESCAPE}");
-                Assert.Fail("Dialog hanging after test, might not have rendered properly");
+                if (tryFindDialog.TryGetClickablePoint(out point))
+                {
+                    Mouse.Click(tryFindDialog);
+                    SendKeys.SendWait("{ESCAPE}");
+                    Assert.Fail("Dialog hanging after test, might not have rendered properly");
+                }
+                else
+                {
+                    SendKeys.SendWait("{ESCAPE}");
+                }
             }
             //close any open tabs
             TabManagerUiMap.CloseAllTabs();
