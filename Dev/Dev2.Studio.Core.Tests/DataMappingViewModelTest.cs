@@ -130,8 +130,8 @@ namespace Dev2.Core.Tests {
             _dataMappingViewModel.CreateXmlOutput(_dataMappingViewModel.Outputs, _dataMappingViewModel.Inputs);
             string result1 = _dataMappingViewModel.Activity.LiveInputMapping;
             string result2 = _dataMappingViewModel.Activity.LiveOutputMapping;
-            Assert.AreEqual(@"<Outputs><Output Name=""vehicleVin"" MapsTo=""[[VIN]]"" Value="""" /><Output Name=""vehicleColor"" MapsTo=""[[VehicleColor]]"" Value="""" /><Output Name=""speed"" MapsTo=""[[speed]]"" Value="""" Recordset=""Fines"" /><Output Name=""date"" MapsTo=""[[date]]"" Value=""[[Fines.Date]]"" Recordset=""Fines"" /><Output Name=""location"" MapsTo=""[[location]]"" Value="""" Recordset=""Fines"" /></Outputs>", result2);
-            Assert.AreEqual(@"<Inputs><Input Name=""reg"" Source="""" DefaultValue=""NUD2347""><Validator Type=""Required"" /></Input><Input Name=""asdfsad"" Source=""[[registration223]]"" DefaultValue=""w3rt24324""><Validator Type=""Required"" /></Input><Input Name=""number"" Source="""" /></Inputs>", result1);
+            Assert.AreEqual("<Outputs><Output Name=\"vehicleVin\" MapsTo=\"[[VIN]]\" Value=\"[[vehicleVin]]\" /><Output Name=\"vehicleColor\" MapsTo=\"[[VehicleColor]]\" Value=\"[[vehicleColor]]\" /><Output Name=\"speed\" MapsTo=\"[[speed]]\" Value=\"[[Fines().speed]]\" Recordset=\"Fines\" /><Output Name=\"date\" MapsTo=\"[[date]]\" Value=\"[[Fines.Date]]\" Recordset=\"Fines\" /><Output Name=\"location\" MapsTo=\"[[location]]\" Value=\"[[Fines().location]]\" Recordset=\"Fines\" /></Outputs>", result2);
+            Assert.AreEqual("<Inputs><Input Name=\"reg\" Source=\"[[reg]]\" DefaultValue=\"NUD2347\"><Validator Type=\"Required\" /></Input><Input Name=\"asdfsad\" Source=\"[[registration223]]\" DefaultValue=\"w3rt24324\"><Validator Type=\"Required\" /></Input><Input Name=\"number\" Source=\"[[number]]\" /></Inputs>", result1);
         }
 
         /// <summary>
