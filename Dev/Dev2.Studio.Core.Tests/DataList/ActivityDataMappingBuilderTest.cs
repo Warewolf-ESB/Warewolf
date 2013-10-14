@@ -826,6 +826,7 @@ namespace Dev2.Core.Tests.DataList
             //------------Setup for test--------------------------
 
             #region ServiceDef
+
             var serviceDefStr = @"<Service ID=""8912e8db-074f-43e4-85ea-9376162d3332"" Version=""1.0"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"" Name=""fileTest"" ResourceType=""WorkflowService"" IsValid=""true"">
   <DisplayName>fileTest</DisplayName>
   <Category>Mo</Category>
@@ -897,8 +898,7 @@ namespace Dev2.Core.Tests.DataList
 
             // now check data
             Assert.AreEqual("[[recset1(*).f1]]", result.Inputs[0].MapsTo);
-            // should be recset2 under old method, but given how this needs work on, we always assume a single recordset for output mapping ;)
-            Assert.AreEqual("[[recset1(*).f2]]", result.Inputs[1].MapsTo);
+            Assert.AreEqual("[[recset2(*).f2]]", result.Inputs[1].MapsTo);
 
             Assert.AreEqual("[[result]]", result.Outputs[0].Value);
 
@@ -1072,7 +1072,7 @@ namespace Dev2.Core.Tests.DataList
 
             // now check data
             Assert.AreEqual("[[recordSet(*).vale]]", result.Inputs[0].MapsTo);
-            Assert.AreEqual("[[recordSet(*).valeSecond]]", result.Inputs[1].MapsTo);
+            Assert.AreEqual("[[recset1(*).valeSecond]]", result.Inputs[1].MapsTo);
 
             // check counts first
             Assert.AreEqual(0, result.Outputs.Count);
@@ -1156,7 +1156,7 @@ namespace Dev2.Core.Tests.DataList
 
             // now check data
             Assert.AreEqual("[[recordSet().vale]]", result.Outputs[0].Value);
-            Assert.AreEqual("[[recordSet().valeSecond]]", result.Outputs[1].Value);
+            Assert.AreEqual("[[recset1().valeSecond]]", result.Outputs[1].Value);
 
             // check counts first
             Assert.AreEqual(0, result.Inputs.Count);

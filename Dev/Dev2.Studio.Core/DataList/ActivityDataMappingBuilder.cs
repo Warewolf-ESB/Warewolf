@@ -24,7 +24,7 @@ namespace Dev2.DataList
         internal FuzzyMatchVO(IDictionary<string, string> matches)
         {
             _recordsetColumnsToName = matches;
-                }
+        }
 
         /// <summary>
         /// Fetches the match.
@@ -321,20 +321,24 @@ namespace Dev2.DataList
                                 field = def.Name;
                             }
 
-
-                            if (string.IsNullOrEmpty(masterRecordsetName))
+                            string recordsetName = fuzzyMatch.FetchMatch(def.Name);
+                            if (!string.IsNullOrEmpty(recordsetName))
                             {
-                                string recordsetName = fuzzyMatch.FetchMatch(def.Name);
-                                if (!string.IsNullOrEmpty(recordsetName))
+                                masterRecordsetName = recordsetName;
+                            }
+                            else
+                            {
+                                // we have no match, use the current mapping value ;)
+                                if (!IsWorkflow)
                                 {
-                                    masterRecordsetName = recordsetName;
+                                    masterRecordsetName = DataListUtil.ExtractRecordsetNameFromValue(injectValue);
                                 }
                                 else
                                 {
-                                    // we have no match, use the current mapping value ;)
-                                    masterRecordsetName = DataListUtil.ExtractRecordsetNameFromValue(injectValue);
+                                    masterRecordsetName = def.RecordSetName;
                                 }
                             }
+
 
                             injectValue = FormatString(masterRecordsetName, field);
                             
@@ -343,18 +347,23 @@ namespace Dev2.DataList
                         {
                             if (def.IsRecordSet)
                             {
-                                if (string.IsNullOrEmpty(masterRecordsetName))
+
+                                string recordsetName = def.RecordSetName;
+                                if (fuzzyMatch != null)
                                 {
-                                    string recordsetName = def.RecordSetName;
-                                    if (fuzzyMatch != null)
+                                    recordsetName = fuzzyMatch.FetchMatch(def.Name);
+                                    if (!String.IsNullOrEmpty(recordsetName))
                                     {
-                                        recordsetName = fuzzyMatch.FetchMatch(def.Name);
                                         masterRecordsetName = recordsetName;
                                     }
                                     else
                                     {
                                         masterRecordsetName = def.RecordSetName;
                                     }
+                                }
+                                else
+                                {
+                                    masterRecordsetName = def.RecordSetName;
                                 }
 
                                 injectValue = FormatString(masterRecordsetName, def.Name);
@@ -482,11 +491,14 @@ namespace Dev2.DataList
                     {
                         // build map for each column in a recordset ;)
                         foreach (var col in rs.Columns)
-                {
-                            tmp[col.ColumnName] = rs.Namespace;
+                        {
+                            if (!tmp.Keys.Contains(col.ColumnName))
+                            {
+                                tmp[col.ColumnName] = rs.Namespace;
+                            }
                         }
+                    }
                 }
-            }
 
                 result = new FuzzyMatchVO(tmp);
                 
