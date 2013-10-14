@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Linq;
 using Caliburn.Micro;
+using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
@@ -446,7 +447,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             viewModel.ModelItem.SetProperty("BatchSize", (string)null);
             viewModel.ModelItem.SetProperty("Timeout", (string)null);
             Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutValid: false);
-            
+
             viewModel.ModelItem.SetProperty("BatchSize", "a");
             viewModel.ModelItem.SetProperty("Timeout", "a");
             Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutValid: false);
@@ -660,6 +661,104 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             Assert.AreEqual(isResultValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Result Invalid syntax - You have a close ( ]] ) without a related open ( [[ )") == null);
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_AddToCollection")]
+        public void SqlBulkInsertDesignerViewModel_AddToCollection_AlwaysUpdatesInputMappings()
+        {
+            Verify_AddToCollection_AlwaysUpdatesInputMappings(overwrite: true);
+            Verify_AddToCollection_AlwaysUpdatesInputMappings(overwrite: false);
+        }
+
+        void Verify_AddToCollection_AlwaysUpdatesInputMappings(bool overwrite)
+        {
+            //------------Setup for test--------------------------
+            var databases = CreateDatabases(2);
+            var viewModel = CreateViewModel(databases);
+
+            var selectedDatabase = databases.Keys.First();
+            var selectedTable = databases[selectedDatabase][0];
+
+            viewModel.SelectedDatabase = selectedDatabase;
+            viewModel.SelectedTable = selectedTable;
+
+            foreach(var mapping in viewModel.InputMappings)
+            {
+                var expectedInputColumn = string.Format("[[{0}(*).{1}]]", selectedTable.TableName, mapping.OutputColumn.ColumnName);
+                Assert.AreEqual(expectedInputColumn, mapping.InputColumn);
+            }
+
+            var expectedInputColumns = selectedTable.Columns.Select(c => string.Format("[[rs(*).{0}]]", c.ColumnName)).ToList();
+
+            //------------Execute Test---------------------------
+            viewModel.TestAddToCollection(expectedInputColumns, overwrite);
+
+            //------------Assert Results-------------------------
+            var actualInputColumns = viewModel.InputMappings.Select(m => m.InputColumn).ToList();
+            for(var i = 0; i < expectedInputColumns.Count; i++)
+            {
+                Assert.AreEqual(expectedInputColumns[i], actualInputColumns[i]);
+            }
+        }
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_ShowQuickVariableInputProperty")]
+        public void SqlBulkInsertDesignerViewModel_ShowQuickVariableInputProperty_IsFalse_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var databases = CreateDatabases(2);
+            var viewModel = CreateViewModel(databases);
+
+            var selectedDatabase = databases.Keys.First();
+            var selectedTable = databases[selectedDatabase][0];
+
+            viewModel.SelectedDatabase = selectedDatabase;
+            viewModel.SelectedTable = selectedTable;
+
+            //------------Execute Test---------------------------
+            viewModel.ShowQuickVariableInput = false;
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(viewModel.QuickVariableInputViewModel.Overwrite);
+            Assert.IsTrue(viewModel.QuickVariableInputViewModel.IsOverwriteEnabled);
+            Assert.AreNotEqual(QuickVariableInputViewModel.SplitTypeNewLine, viewModel.QuickVariableInputViewModel.SplitType);
+            Assert.IsTrue(string.IsNullOrEmpty(viewModel.QuickVariableInputViewModel.VariableListString));
+            Assert.IsTrue(string.IsNullOrEmpty(viewModel.QuickVariableInputViewModel.Prefix));
+        }
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_ShowQuickVariableInputProperty")]
+        public void SqlBulkInsertDesignerViewModel_ShowQuickVariableInputProperty_IsTrue_InitializesQuickVariableInputViewModel()
+        {
+            //------------Setup for test--------------------------
+            var databases = CreateDatabases(2);
+            var viewModel = CreateViewModel(databases);
+
+            var selectedDatabase = databases.Keys.First();
+            var selectedTable = databases[selectedDatabase][0];
+
+            viewModel.SelectedDatabase = selectedDatabase;
+            viewModel.SelectedTable = selectedTable;
+
+            //------------Execute Test---------------------------
+            viewModel.ShowQuickVariableInput = true;
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.QuickVariableInputViewModel.Overwrite);
+            Assert.IsFalse(viewModel.QuickVariableInputViewModel.IsOverwriteEnabled);
+            Assert.AreEqual(QuickVariableInputViewModel.SplitTypeNewLine, viewModel.QuickVariableInputViewModel.SplitType);
+            Assert.IsFalse(string.IsNullOrEmpty(viewModel.QuickVariableInputViewModel.VariableListString));
+            Assert.IsFalse(string.IsNullOrEmpty(viewModel.QuickVariableInputViewModel.Prefix));
+
+            var expectedVariableList = string.Join(Environment.NewLine, selectedTable.Columns.Select(c => c.ColumnName));
+            Assert.AreEqual(expectedVariableList, viewModel.QuickVariableInputViewModel.VariableListString);
+
+            Assert.AreEqual(string.Format("{0}(*).", selectedTable.TableName), viewModel.QuickVariableInputViewModel.Prefix);
+        }
 
         static void VerifyTables(List<DbTable> expectedTables, List<DbTable> actualTables)
         {

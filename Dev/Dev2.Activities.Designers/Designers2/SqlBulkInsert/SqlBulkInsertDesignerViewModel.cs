@@ -16,6 +16,7 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -67,6 +68,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             _eventPublisher = eventPublisher;
 
             AddTitleBarLargeToggle();
+            AddTitleBarQuickVariableInputToggle();
             AddTitleBarHelpToggle();
 
             dynamic mi = ModelItem;
@@ -343,7 +345,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 return;
             }
 
-            var oldColumns = ModelItemCollection.Select(mi => (DataColumnMapping)mi.GetCurrentValue()).ToList();
+            var oldColumns = GetInputMappings().ToList();
             ModelItemCollection.Clear();
 
             // Get Selected values on UI thread BEFORE starting asyncWorker
@@ -546,7 +548,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 yield return error;
             }
 
-            foreach(DataColumnMapping dc in ModelItemCollection.Select(mi => mi.GetCurrentValue()))
+            foreach(DataColumnMapping dc in GetInputMappings())
             {
                 error = ValidateVariable(parser, dc.InputColumn, () => IsInputMappingsFocused = true);
                 if(error != null)
@@ -579,5 +581,51 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             return regions.Count > 0;
         }
 
+        IEnumerable<DataColumnMapping> GetInputMappings()
+        {
+            return ModelItemCollection.Select(mi => (DataColumnMapping)mi.GetCurrentValue());
+        }
+
+        protected override void AddToCollection(IEnumerable<string> source, bool overWrite)
+        {
+            var newMappings = source.ToList();
+            var max = Math.Min(newMappings.Count, ItemCount);
+            for(var i = 0; i < max; i++)
+            {
+                var mi = ModelItemCollection[i];
+                mi.SetProperty("InputColumn", newMappings[i]);
+            }
+        }
+
+        protected override void OnToggleCheckedChanged(string propertyName, bool isChecked)
+        {
+            base.OnToggleCheckedChanged(propertyName, isChecked);
+
+            if(propertyName == ShowQuickVariableInputProperty.Name)
+            {
+                if(!ShowQuickVariableInput)
+                {
+                    return;
+                }
+
+                var mappings = GetInputMappings().ToList();
+                QuickVariableInputViewModel.Overwrite = true;
+                QuickVariableInputViewModel.IsOverwriteEnabled = false;
+                QuickVariableInputViewModel.SplitType = Core.QuickVariableInput.QuickVariableInputViewModel.SplitTypeNewLine;
+                QuickVariableInputViewModel.VariableListString = string.Join(Environment.NewLine, mappings.Select(GetFieldName));
+                QuickVariableInputViewModel.Prefix = GetRecordsetName(mappings) + "(*).";
+            }
+        }
+
+        static string GetFieldName(DataColumnMapping dc)
+        {
+            return string.IsNullOrEmpty(dc.InputColumn) ? dc.OutputColumn.ColumnName : DataListUtil.ExtractFieldNameFromValue(dc.InputColumn);
+        }
+
+        string GetRecordsetName(IEnumerable<DataColumnMapping> mappings)
+        {
+            var rsName = mappings.Select(m => DataListUtil.ExtractRecordsetNameFromValue(m.InputColumn)).FirstOrDefault(rs => !string.IsNullOrEmpty(rs));
+            return string.IsNullOrEmpty(rsName) ? TableName : rsName;
+        }
     }
 }

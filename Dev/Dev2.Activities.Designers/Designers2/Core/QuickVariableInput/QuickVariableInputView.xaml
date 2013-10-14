@@ -158,7 +158,8 @@
                         Grid.Column="1"
                         Margin="3,-1,0,-5"
                         Orientation="Horizontal"
-                        HorizontalAlignment="Left">
+                        HorizontalAlignment="Left"
+                        IsEnabled="{Binding IsOverwriteEnabled}">
                 <RadioButton Content="Append"
                              IsChecked="True"
                              VerticalAlignment="Center"

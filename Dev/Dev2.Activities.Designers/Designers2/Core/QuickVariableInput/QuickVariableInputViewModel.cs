@@ -16,6 +16,12 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 {
     public class QuickVariableInputViewModel : DependencyObject, IClosable, IValidator, IErrorsSource
     {
+        public const string SplitTypeIndex = "Index";
+        public const string SplitTypeChars = "Chars";
+        public const string SplitTypeNewLine = "New Line";
+        public const string SplitTypeSpace = "Space";
+        public const string SplitTypeTab = "Tab";
+
         readonly Action<IEnumerable<string>, bool> _addToCollection;
 
         readonly PreviewViewModel _previewViewModel;
@@ -31,7 +37,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
             IsClosed = true;
             IsValid = true;
             IsSplitTokenEnabled = true;
-            SplitTypeList = new List<string> { "Index", "Chars", "New Line", "Space", "Tab" };
+            SplitTypeList = new List<string> { SplitTypeIndex, SplitTypeChars, SplitTypeNewLine, SplitTypeSpace, SplitTypeTab };
             VariableListString = string.Empty;
             SplitType = "Chars";
             SplitToken = string.Empty;
@@ -191,6 +197,15 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 
         public static readonly DependencyProperty OverwriteProperty =
             DependencyProperty.Register("Overwrite", typeof(bool), typeof(QuickVariableInputViewModel), new PropertyMetadata(false));
+
+        public bool IsOverwriteEnabled
+        {
+            get { return (bool)GetValue(IsOverwriteEnabledProperty); }
+            set { SetValue(IsOverwriteEnabledProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsOverwriteEnabledProperty =
+            DependencyProperty.Register("IsOverwriteEnabled", typeof(bool), typeof(QuickVariableInputViewModel), new PropertyMetadata(true));       
 
         public bool IsSplitTokenEnabled
         {

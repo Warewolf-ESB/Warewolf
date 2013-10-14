@@ -5,7 +5,6 @@ using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Preview;
 using Dev2.Studio.Core.ViewModels.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 {
@@ -65,7 +64,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(qviViewModel);
-            Assert.IsInstanceOfType(qviViewModel,typeof(DependencyObject));
+            Assert.IsInstanceOfType(qviViewModel, typeof(DependencyObject));
             Assert.AreEqual(string.Empty, qviViewModel.SplitToken);
             Assert.AreEqual(string.Empty, qviViewModel.VariableListString);
             Assert.AreEqual(string.Empty, qviViewModel.Prefix);
@@ -75,13 +74,14 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             Assert.AreEqual("Chars", qviViewModel.SplitType);
             Assert.IsFalse(qviViewModel.CanAdd);
             Assert.IsTrue(qviViewModel.IsSplitTokenEnabled);
+            Assert.IsTrue(qviViewModel.IsOverwriteEnabled);
 
             Assert.AreEqual(5, qviViewModel.SplitTypeList.Count);
-            CollectionAssert.Contains(qviViewModel.SplitTypeList, "Index");
-            CollectionAssert.Contains(qviViewModel.SplitTypeList, "Chars");
-            CollectionAssert.Contains(qviViewModel.SplitTypeList, "New Line");
-            CollectionAssert.Contains(qviViewModel.SplitTypeList, "Space");
-            CollectionAssert.Contains(qviViewModel.SplitTypeList, "Tab");
+            CollectionAssert.Contains(qviViewModel.SplitTypeList, QuickVariableInputViewModel.SplitTypeIndex);
+            CollectionAssert.Contains(qviViewModel.SplitTypeList, QuickVariableInputViewModel.SplitTypeChars);
+            CollectionAssert.Contains(qviViewModel.SplitTypeList, QuickVariableInputViewModel.SplitTypeNewLine);
+            CollectionAssert.Contains(qviViewModel.SplitTypeList, QuickVariableInputViewModel.SplitTypeSpace);
+            CollectionAssert.Contains(qviViewModel.SplitTypeList, QuickVariableInputViewModel.SplitTypeTab);
 
             Assert.IsNotNull(qviViewModel.ClearCommand);
             Assert.IsInstanceOfType(qviViewModel.ClearCommand, typeof(RelayCommand));

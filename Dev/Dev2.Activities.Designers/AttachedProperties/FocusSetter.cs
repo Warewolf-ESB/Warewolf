@@ -67,7 +67,8 @@ namespace Dev2.Activities.AttachedProperties
         static void FeIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             var fe = (FrameworkElement)sender;
-            if(fe.IsVisible && (bool)((FrameworkElement)sender).GetValue(IsFocusedProperty))
+            var isFocused = ((FrameworkElement)sender).GetValue(IsFocusedProperty);
+            if(fe.IsVisible && isFocused != null && (bool)isFocused)
             {
                 fe.IsVisibleChanged -= FeIsVisibleChanged;
                 fe.Focus();
