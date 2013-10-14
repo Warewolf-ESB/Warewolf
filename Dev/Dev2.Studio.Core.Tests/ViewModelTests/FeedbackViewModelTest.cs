@@ -252,8 +252,12 @@ OS version : ");
             feedbackViewModel.BrowserPopupController = popupController.Object;
             var isOutlookInstalled = feedbackViewModel.IsOutlookInstalled();
             object mailClient = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Clients\Mail", "", "none") as string;
-            Assert.IsTrue(isOutlookInstalled);
-            Assert.AreEqual("Microsoft Outlook", mailClient);
+           
+            //Assert that the outlook is the default mail client only if its installed on the machine
+            if(isOutlookInstalled)
+            {
+                Assert.AreEqual("Microsoft Outlook", mailClient);
+            }
         }
 
         [TestMethod]
