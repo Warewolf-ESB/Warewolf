@@ -888,7 +888,7 @@ namespace Dev2.CodedUI.Tests
             ExternalUIMap.CloseAllInstancesOfIE();
 
             // And do cleanup
-            DoCleanup(TabManagerUIMap.GetActiveTabName());
+            TabManagerUIMap.CloseAllTabs();
         }
 
         [TestMethod]
@@ -949,10 +949,6 @@ namespace Dev2.CodedUI.Tests
             Playback.Wait(250);
             SendKeys.SendWait("STData");
 
-            // Update the DataList
-            DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.UpdateDataList();
-
             // Open the Debug Menu, and enter some values
             RibbonUIMap.ClickRibbonMenuItem("Debug");
             PopupDialogUIMap.WaitForDialog();
@@ -1008,7 +1004,7 @@ namespace Dev2.CodedUI.Tests
             {
                 Assert.Fail("Assign not on unsaved workflow means workflow reverted");
             }
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
+            TabManagerUIMap.CloseAllTabs();
         }
 
         // Bug 8747
@@ -1032,7 +1028,7 @@ namespace Dev2.CodedUI.Tests
 
             // Due to the complexity of the OutputUIMap, this test has been primarily hard-coded until a further rework
             Assert.IsTrue(OutputUIMap.DoesBug8747Pass());
-            DoCleanup("Bug8372", true);
+            TabManagerUIMap.CloseAllTabs();
         }
 
         #endregion Deprecated Test
