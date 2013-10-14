@@ -21,12 +21,16 @@ namespace Dev2.Studio.Core.AppResources.Converters
             }
 
             var value = (int)values[0];
-            int min = 0;
+            var min = 0;
             if (values[1] is int)
             {
-                min = (int) values[1];
+                min = (int)values[1];
             }
-            var max = (int)values[2];
+            var max = int.MaxValue;
+            if (values[2] is int)
+            {
+                max = (int)values[2];
+            }
 
             if(min == max)
             {
