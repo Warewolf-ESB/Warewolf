@@ -351,6 +351,9 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\EmailTest.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Big Bulk Testing.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

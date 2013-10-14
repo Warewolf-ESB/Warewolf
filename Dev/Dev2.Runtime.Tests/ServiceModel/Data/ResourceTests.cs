@@ -240,6 +240,23 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("988e1146-ddb8-456d-8a01-4377a707605b", resource.Dependencies[0].ResourceID.ToString());
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Resource_LoadDependencies")]
+        public void Resource_LoadDependencies_HasDatabaseSourceFromSqlBulkInsertTool_ShouldHaveDatabaseSourceInDepencyList()
+        {
+            //------------Setup for test--------------------------
+            XElement element = XmlResource.Fetch("Big Bulk Testing");            
+            //------------Execute Test---------------------------
+            var resource = new Resource(element);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(resource);
+            Assert.IsNotNull(resource.Dependencies);
+            Assert.AreEqual(2, resource.Dependencies.Count);
+            Assert.AreEqual("GenDev", resource.Dependencies[1].ResourceName);
+            Assert.AreEqual("62505a00-b304-4ac0-a55c-50ce85111f16", resource.Dependencies[1].ResourceID.ToString());
+        }
+
         string GetValidXMLString()
         {
             return "<Service Name=\"Bug6619\" ID=\"1736ca6e-b870-467f-8d25-262972d8c3e8\" ServerID=\"51a58300-7e9d-4927-a57b-e5d700b11b55\" IsValid=\"true\">" +

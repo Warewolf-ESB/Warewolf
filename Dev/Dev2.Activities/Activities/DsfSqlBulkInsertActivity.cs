@@ -94,7 +94,7 @@ namespace Dev2.Activities
             var allErrors = new ErrorResultTO();
             var executionID = DataListExecutionID.Get(context);
             var debugOutputIndexCounter = 1;
-            
+            DataTable dataTableToInsert = null;
             try
             {
                 if(toUpsert.IsDebug)
@@ -119,7 +119,7 @@ namespace Dev2.Activities
                 }
                 if(sqlBulkCopy != null)
                 {
-                    DataTable dataTableToInsert;
+                    
                     if(!BuiltUsingSingleRecset(sqlBulkCopy,compiler,executionID,dataObject,out dataTableToInsert))
                     {
                         dataTableToInsert = BuildDataTableToInsert();
@@ -140,6 +140,7 @@ namespace Dev2.Activities
                         }
                     }
                     SqlBulkInserter.Insert(sqlBulkCopy, dataTableToInsert);
+                    
                     toUpsert.Add(Result, "Success");
                     compiler.Upsert(executionID, toUpsert, out errors);
                     AddDebugOutputItemFromEntry(Result, compiler, executionID, debugOutputIndexCounter);
@@ -165,7 +166,11 @@ namespace Dev2.Activities
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
+                if(dataTableToInsert != null)
+                {
+                    dataTableToInsert.Dispose();
             }
+        }
         }
 
         bool BuiltUsingSingleRecset(SqlBulkCopy sqlBulkCopy, IDataListCompiler compiler, Guid executionID, IDSFDataObject dataObject, out DataTable dataTableToInsert)
@@ -292,25 +297,25 @@ namespace Dev2.Activities
         void AddOptionsDebugItems()
         {
             
-            var debugItem = new DebugItem();
+                var debugItem = new DebugItem();
             debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = string.Format("Check Constraints: {0}", CheckConstraints?"YES":"NO") });
-            _debugInputs.Add(debugItem);
+                _debugInputs.Add(debugItem);
             
             debugItem = new DebugItem();
             debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = string.Format("Keep Identity: {0}", KeepIdentity ? "YES" : "NO") });
-            _debugInputs.Add(debugItem);
+                _debugInputs.Add(debugItem);
             
             debugItem = new DebugItem();
             debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = string.Format("Keep Table Lock: {0}", KeepTableLock ? "YES" : "NO") });
-            _debugInputs.Add(debugItem);
+                _debugInputs.Add(debugItem);
             
             debugItem = new DebugItem();
             debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = string.Format("Fire Triggers: {0}", FireTriggers ? "YES" : "NO") });
-            _debugInputs.Add(debugItem);
+                _debugInputs.Add(debugItem);
             
             debugItem = new DebugItem();
             debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = string.Format("Use Internal Transaction: {0}", UseInternalTransaction ? "YES" : "NO") });
-            _debugInputs.Add(debugItem);
+                _debugInputs.Add(debugItem);
             
         }
 
