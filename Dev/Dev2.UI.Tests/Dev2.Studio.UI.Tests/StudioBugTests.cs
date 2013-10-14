@@ -568,7 +568,7 @@ namespace Dev2.Studio.UI.Tests
 
             //Get the active tab and compare against the original tab
             UITestControl activeTab = TabManagerUIMap.GetActiveTab();
-            Assert.AreEqual(theTab , activeTab);
+            Assert.AreEqual(theTab, activeTab);
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
