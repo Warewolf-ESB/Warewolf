@@ -357,10 +357,11 @@ namespace Dev2.Studio.UI.Tests
             RibbonUIMap.ClickRibbonMenuItem("Save");
             WizardsUIMap.WaitForWizard(5000);
             SaveDialogUIMap.ClickAndTypeInNameTextbox(firstName);
-            Playback.Wait(1000);
-
+            Playback.Wait(3000);
+          
             // Create second workflow
             RibbonUIMap.CreateNewWorkflow();
+            Playback.Wait(1000);
             theTab = TabManagerUIMap.GetActiveTab();
             theStartNode = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "StartSymbol");
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
@@ -370,20 +371,26 @@ namespace Dev2.Studio.UI.Tests
             RibbonUIMap.ClickRibbonMenuItem("Save");
             WizardsUIMap.WaitForWizard(10000);
             SaveDialogUIMap.ClickAndTypeInNameTextbox(secondName);
-            Playback.Wait(1000);
+            Playback.Wait(3000);
 
             // Switch between tabs ensuring the star is never added to their name
             UITestControl tryGetTab = null;
             tryGetTab = TabManagerUIMap.FindTabByName(secondName);
             Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
+            Mouse.Move(new Point(UIBusinessDesignStudioWindow.Left + 200, UIBusinessDesignStudioWindow.Top + 200));
+            ExplorerUIMap.ClosePane(tryGetTab);
             Mouse.Click(TabManagerUIMap.FindTabByName(secondName));
             tryGetTab = null;
             tryGetTab = TabManagerUIMap.FindTabByName(firstName);
             Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
+            Mouse.Move(new Point(UIBusinessDesignStudioWindow.Left + 200, UIBusinessDesignStudioWindow.Top + 200));
+            ExplorerUIMap.ClosePane(tryGetTab);
             Mouse.Click(TabManagerUIMap.FindTabByName(firstName));
             tryGetTab = null;
             tryGetTab = TabManagerUIMap.FindTabByName(secondName);
             Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
+            Mouse.Move(new Point(UIBusinessDesignStudioWindow.Left + 200, UIBusinessDesignStudioWindow.Top + 200));
+            ExplorerUIMap.ClosePane(tryGetTab);
             Mouse.Click(TabManagerUIMap.FindTabByName(secondName));
 
             // Test Cleanup
@@ -967,6 +974,22 @@ namespace Dev2.Studio.UI.Tests
 
         private OutputUIMap _outputUIMap;
 
+        #endregion
+
+        #region UIBusinessDesignStudioWindow Map
+        public CodedUI.Tests.TabManagerUIMapClasses.UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
+        {
+            get
+            {
+                if ((this.mUIBusinessDesignStudioWindow == null))
+                {
+                    this.mUIBusinessDesignStudioWindow = new CodedUI.Tests.TabManagerUIMapClasses.UIBusinessDesignStudioWindow();
+                }
+                return this.mUIBusinessDesignStudioWindow;
+            }
+        }
+
+        CodedUI.Tests.TabManagerUIMapClasses.UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
         #endregion
 
         #endregion UI Maps
