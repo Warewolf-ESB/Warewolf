@@ -137,7 +137,7 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ExternalService_EditService")]
         public void ExternalService_EditService_EditWithNoSecondSaveDialog_ExpectOneDialog()
@@ -243,7 +243,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         [TestCategory("UITest")]
         [Description("Test that clicking on the help button does indeed open an example workflow")]
         [Owner("Tshepo")]
@@ -280,7 +280,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsNotNull(waitForTabToOpen);
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("HelpButtonAdorner_CollapseHelp")]
         public void WorkflowdesignSurface_CollapseHelp()

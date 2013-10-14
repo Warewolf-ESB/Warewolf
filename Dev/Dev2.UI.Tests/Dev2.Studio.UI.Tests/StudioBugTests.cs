@@ -64,7 +64,7 @@ namespace Dev2.Studio.UI.Tests
 
         #region Test
         // Bug 6501
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         public void DeleteFirstDatagridRow_Expected_RowIsNotDeleted()
         {
 
@@ -122,7 +122,7 @@ namespace Dev2.Studio.UI.Tests
 
 
         //2013.05.29: Ashley Lewis for bug 9455 - Dont allow copy paste workflow xaml to another workflow
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         public void CopyWorkFlowWithContextMenuCopyAndPasteToAnotherWorkflowExpectedNothingCopied()
         {
             Clipboard.SetText(" ");
@@ -141,7 +141,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         //2013.06.06: Ashley Lewis for 9448 - Dsf Activity Title - shows up as "DSFActivity" After a service has been dragged onto a workflow.
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         public void AddSecondServiceToWorkFlowExpectedDisplayTitleNotDsfActivity()
         {
             RibbonUIMap.CreateNewWorkflow();
@@ -165,7 +165,7 @@ namespace Dev2.Studio.UI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         [TestCategory("UITest")]
         [Description("for bug 9717 - copy paste multiple decisions (2013.06.22)")]
         [Owner("Ashley")]
@@ -210,7 +210,7 @@ namespace Dev2.Studio.UI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         [TestCategory("UITest")]
         [Description("Test for 'All Tools' workflow: The workflow is openned. The icons must display. The tab must be able to close again")]
         [Owner("Ashley")]
@@ -267,7 +267,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(true, "Studio was terminated or hung while opening and closing the all tools workflow");
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         [TestCategory("Toolbox_Icons")]
         [Description("Toolbox icons display")]
         [Owner("Ashley Lewis")]
@@ -394,7 +394,7 @@ namespace Dev2.Studio.UI.Tests
         #region Depecated Test
 
         // Bug 6180
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         // Deploy Rework
         public void MakeSureDeployedItemsAreNotFiltered()
         {
@@ -415,7 +415,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         // Bug 6617
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         public void OpeningDependancyWindowTwiceKeepsItOpen()
         {
             // The workflow so we have a second tab
@@ -440,7 +440,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         // Bug 8816
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         public void IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled()
         {
             TabManagerUIMap.CloseAllTabs();
@@ -483,7 +483,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(DeployViewUIMap.DoesDestinationServerHaveItems(deployTab), "After a filter was applied, the destination Server lost all its items!");
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         [TestCategory("UITest")]
         [Description("for bug 9802 - Foreach drill down test (2013.06.28)")]
         [Owner("Ashley")]
@@ -520,7 +520,7 @@ namespace Dev2.Studio.UI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         [TestCategory("UITest")]
         [Owner("Tshepo Ntlhokoa")]
         public void DragAStartNodeOntoATool_HoverOverAToolForAWhile_NoDrillDownShouldHappen()

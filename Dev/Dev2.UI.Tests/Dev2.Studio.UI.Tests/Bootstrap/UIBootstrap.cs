@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests.Bootstrap
@@ -30,6 +31,7 @@ namespace Dev2.Studio.UI.Tests.Bootstrap
                 proc.StartInfo.RedirectStandardOutput = true;
                 proc.StartInfo.UseShellExecute = true;
                 proc.Start();
+                Thread.Sleep(30000);
             }
         }
 

@@ -78,7 +78,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             PluginServiceWizardUIMap.ClickCancel();
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         public void WebServiceWizardCreateServiceAndSourceExpectedServiceCreated()
         {
             //Initialization
@@ -144,7 +144,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// <summary>
         /// News the database service shortcut key expected database service opens.
         /// </summary>
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
@@ -158,7 +158,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         public void ClickNewPluginServiceShortcutKeyExpectedPluginServiceOpens()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");

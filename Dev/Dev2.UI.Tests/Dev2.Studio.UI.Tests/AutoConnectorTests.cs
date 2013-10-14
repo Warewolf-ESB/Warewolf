@@ -133,7 +133,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("AutoConnectorTests")]
         public void AutoConnectorTests_DragActivityOnStartAutoConnectorNode_AConnectorIsCreated()
@@ -150,7 +150,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.AreEqual(1, connectors.Count, "Start auto connector was not created");
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("AutoConnectorTests")]
         public void AutoConnectorTests_DragAToolOnStartAutoConnectorNode_AConnectorIsCreated()
@@ -165,7 +165,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.AreEqual(1, connectors.Count, "Start auto connector was not created");
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("AutoConnectorTests")]
         public void AutoConnectorTests_DragAToolOnALineBetweenConnectors_ASecondConnectorIsCreated()
@@ -193,7 +193,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("AutoConnectorTests")]
         public void AutoConnectorTests_DragAnActivityOnALineBetweenConnectors_ASecondConnectorIsCreated()
@@ -223,7 +223,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("AutoConnectorTests")]
         public void AutoConnectorTests_DragADecisionOnALineBetweenConnectors_ASecondConnectorIsCreated()
@@ -254,7 +254,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("AutoConnectorTests")]
         public void AutoConnectorTests_DragADecisionOnStartAutoConnectorNode_ASecondConnectorIsCreated()

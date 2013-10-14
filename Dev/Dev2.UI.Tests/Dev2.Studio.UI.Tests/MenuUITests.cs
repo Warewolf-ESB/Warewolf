@@ -60,7 +60,7 @@ namespace Dev2.Studio.UI.Tests
             }
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         public void DebugAWorkFlow_EnsureSaveIsEnabledAfterCompletion()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");

@@ -42,13 +42,6 @@ using Point = System.Drawing.Point;
 
 namespace Dev2.CodedUI.Tests
 {
-
-    /// Test Cases TO DO: 5 (v), 7 (vii), 8 (viii), 11 (xi) (xii - Resumption does not work)
-    /// // vi done due to the ability to access items on the Workflow (WorkflowDesignerUIMap.cs)
-    /// // xi limited by the inability to connect to other servers (Sashen + Server down at time of testing)
-    /// <summary>
-    /// Summary description for TestBase
-    /// </summary>
     [CodedUITest]
     public class TestBase
     {
@@ -59,13 +52,12 @@ namespace Dev2.CodedUI.Tests
             return "Warewolf";
         }
 
-
         #region New PBI Tests
 
         
 
         // PBI 8601 (Task 8855)
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         public void QuickVariableInputFromListTest()
         {
            Clipboard.Clear();
@@ -128,7 +120,7 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         public void ClickNewWorkflowExpectedWorkflowOpens()
         {
             var preCount = TabManagerUIMap.GetTabCount();
@@ -182,7 +174,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         ////PBI 9461
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         public void ChangingResourceExpectedPopUpWarningWithShowAffected()
         {
             // Open the workflow
@@ -213,7 +205,7 @@ namespace Dev2.CodedUI.Tests
         #region Auto Expand Of Mapping On Drop
 
         //PBI 9939
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         [TestCategory("DsfActivityTests")]
         [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands.")]
         [Owner("Massimo Guerrera")]
@@ -279,7 +271,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         public void UnsavedStar_UITest_WhenWorkflowIsChanged_ExpectStarIsShowing()
         {
             //------------Setup for test--------------------------
@@ -305,7 +297,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         // Should be unit test
         public void TypeInCalcBoxExpectedTooltipAppears()
         {
@@ -358,7 +350,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         // Regression Test
         public void CheckAddMissingIsWorkingWhenManuallyAddingVariableExpectedToShowVariablesAsUnUsed()
         {
@@ -383,7 +375,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup("CalculateTaxReturns", true);
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         // Regression Test
         public void ValidDatalistSearchTest()
         {
@@ -413,7 +405,7 @@ namespace Dev2.CodedUI.Tests
 
         #endregion
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         public void DragAWorkflowIntoAndOutOfAForEach_Expected_NoErrors()
         {
             // Create the workflow
@@ -510,7 +502,7 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         public void DragASwitchIntoForEachExpectNotAddedToForEach()
         {
             // Create the workflow
@@ -549,7 +541,7 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         public void ClickShowMapping_Expected_InputOutputAdornersAreDisplayed()
         {
             // Create the workflow
@@ -581,7 +573,7 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
+        [TestMethod]
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
         {
             const string resourceToUse = "CalculateTaxReturns";
@@ -975,38 +967,6 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
-        public void UnsavedWorkflowsPersistingOnStudioRestartExpectedWorkflowStillOpen()
-        {
-            Process[] procMan = Process.GetProcessesByName("Dev2.Studio");
-
-            RibbonUIMap.CreateNewWorkflow();
-            UITestControl theTab = TabManagerUIMap.GetActiveTab();
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            var multiAssign = ToolboxUIMap.FindControl("Assign");
-            ToolboxUIMap.DragControlToWorkflowDesigner(multiAssign, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
-            WorkflowDesignerUIMap.SetStartNode(theTab, "Assign");
-
-            if(procMan.Any())
-            {
-                // Exit the Studio
-                DocManagerUIMap.CloseStudio();
-                // Wait For the Studio to exit
-                Playback.Wait(2000);
-                Assert.IsFalse(Process.GetProcessesByName("Dev2.Studio").Any());
-            }
-            var restartProcess = procMan.FirstOrDefault();
-            if (restartProcess != null) restartProcess.Start();
-            Playback.Wait(5000);
-            theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-            var assign = WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "Assign");
-            if(assign == null)
-            {
-                Assert.Fail("Assign not on unsaved workflow means workflow reverted");
-            }
-            TabManagerUIMap.CloseAllTabs();
-        }
-
         // Bug 8747
         [TestMethod]
         public void DebugBuriedErrors_Expected_OnlyErrorStepIsInError()
@@ -1033,6 +993,8 @@ namespace Dev2.CodedUI.Tests
 
         #endregion Deprecated Test
 
+        #region Test Context
+
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -1050,6 +1012,8 @@ namespace Dev2.CodedUI.Tests
             }
         }
         private TestContext _testContextInstance;
+        
+        #endregion
 
         #region UI Maps
 
@@ -1065,6 +1029,7 @@ namespace Dev2.CodedUI.Tests
                 return _docManagerMap;
             }
         }
+        private DocManagerUIMap _docManagerMap;
 
         public ToolboxUIMap ToolboxUIMap
         {
@@ -1078,6 +1043,7 @@ namespace Dev2.CodedUI.Tests
                 return _toolboxUiMap;
             }
         }
+        private ToolboxUIMap _toolboxUiMap;
 
         public SaveDialogUIMap SaveDialogUIMap
         {
@@ -1091,12 +1057,15 @@ namespace Dev2.CodedUI.Tests
                 return _saveDialogUIMap;
             }
         }
+        private SaveDialogUIMap _saveDialogUIMap;
+
+        #region Explorer UI Map
 
         public ExplorerUIMap ExplorerUIMap
         {
             get
             {
-                if ((_explorerUiMap == null))
+                if((_explorerUiMap == null))
                 {
                     _explorerUiMap = new ExplorerUIMap();
                 }
@@ -1104,12 +1073,17 @@ namespace Dev2.CodedUI.Tests
                 return _explorerUiMap;
             }
         }
+        private ExplorerUIMap _explorerUiMap;
+        
+        #endregion
+
+        #region Deploy UI Map
 
         public DeployViewUIMap DeployViewUIMap
         {
             get
             {
-                if ((_deployViewUiMap == null))
+                if((_deployViewUiMap == null))
                 {
                     _deployViewUiMap = new DeployViewUIMap();
                 }
@@ -1117,13 +1091,9 @@ namespace Dev2.CodedUI.Tests
                 return _deployViewUiMap;
             }
         }
-
-        private ExplorerUIMap _explorerUiMap;
-        private ToolboxUIMap _toolboxUiMap;
-        private SaveDialogUIMap _saveDialogUIMap;
-        private DocManagerUIMap _docManagerMap;
         private DeployViewUIMap _deployViewUiMap;
-
+        
+        #endregion
 
         #region Connect Window UI Map
 
@@ -1549,8 +1519,8 @@ namespace Dev2.CodedUI.Tests
             }
         }
 
-        #endregion UI Maps
-
         private UIMap map;
+
+        #endregion UI Maps
     }
 }
