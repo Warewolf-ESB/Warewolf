@@ -189,7 +189,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsFalse(OutputUIMap.IsAnyStepsInError(), "The remote workflow threw errors when executed locally");
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")] 
         public void RemoteServerUITests_DragAndDropWorkflowFromALocalServerOnARemoteServerCreatedWorkflow_WorkFlowIsDropped()
@@ -268,7 +268,7 @@ namespace Dev2.Studio.UI.Tests
             SaveDialogUiMap.ClickSave();
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteWebSource_WebSourceIsEdited()

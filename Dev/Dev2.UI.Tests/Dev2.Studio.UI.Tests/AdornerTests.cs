@@ -137,7 +137,7 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         [Owner("Travis Frisinger")]
         [TestCategory("ExternalService_EditService")]
         public void ExternalService_EditService_EditWithNoSecondSaveDialog_ExpectOneDialog()
