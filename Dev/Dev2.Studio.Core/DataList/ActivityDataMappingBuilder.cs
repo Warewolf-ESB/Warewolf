@@ -109,7 +109,9 @@ namespace Dev2.DataList
         /// <value>
         /// The type of the activity.
         /// </value>
-        public Type ActivityType { get; private set; } 
+        public Type ActivityType { get; private set; }
+
+        public bool IsWorkflow { get; private set; }
 
         /// <summary>
         /// Setups the activity data.
@@ -123,6 +125,8 @@ namespace Dev2.DataList
                 SavedOutputMapping = activity.SavedOutputMapping;
                 ActivityType = activity.UnderlyingWebActivityObjectType;
 
+                IsWorkflow = activity.ResourceModel.ResourceType == ResourceType.WorkflowService;
+
                 if (activity.ResourceModel != null)
                 {
                     // extract the IO data too ;)
@@ -133,7 +137,7 @@ namespace Dev2.DataList
                         string outputs = string.Empty;
 
                         // handle workflows differently ;)
-                        if (activity.ResourceModel.ResourceType == ResourceType.WorkflowService)
+                        if (IsWorkflow)
                         {
                             var datalist = activity.ResourceModel.DataList;
                             var compiler = DataListFactory.CreateDataListCompiler();
@@ -302,15 +306,19 @@ namespace Dev2.DataList
             {
                 var injectValue = def.RawValue;
 
-                if (!string.IsNullOrEmpty(injectValue))
+                if(!string.IsNullOrEmpty(injectValue) || IsWorkflow)
                 {
                     if (autoAddBrackets)
                     {
                         // When output mapping we need to replace the recordset name if present with MasterRecordset
-
                         if (isOutputMapping && def.IsRecordSet)
                         {
                             var field = DataListUtil.ExtractFieldNameFromValue(injectValue);
+
+                            if (IsWorkflow)
+                            {
+                                field = def.Name;
+                            }
 
                             if (fuzzyMatch != null && def.IsRecordSet)
                             {
@@ -328,11 +336,9 @@ namespace Dev2.DataList
                                     }
                                 }
 
-                                injectValue = DataListUtil.ComposeIntoUserVisibleRecordset(masterRecordsetName,
-                                                                                           string.Empty, field);
+                                injectValue = DataListUtil.ComposeIntoUserVisibleRecordset(masterRecordsetName, string.Empty, field);
                                 injectValue = DataListUtil.AddBracketsToValueIfNotExist(injectValue);
                             }
-
                         }
                         else
                         {
@@ -423,24 +429,6 @@ namespace Dev2.DataList
         {
             var tmp = DataListUtil.ComposeIntoUserVisibleRecordset(recset, string.Empty,field);
             return DataListUtil.AddBracketsToValueIfNotExist(tmp);
-        }
-
-        /// <summary>
-        /// Filters for fuzzy match.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="useValueHash">if set to <c>true</c> [use value hash].</param>
-        /// <param name="fuzzyMatch">The fuzzy match.</param>
-        private string FilterForFuzzyMatch(string value, bool useValueHash, FuzzyMatchVO fuzzyMatch)
-        {
-            var result = value;
-            var fuzzyInject = fuzzyMatch.FetchMatch(value);
-            if(!string.IsNullOrEmpty(fuzzyInject))
-            {
-                result = fuzzyInject;
-            }
-
-            return result;
         }
 
         /// <summary>

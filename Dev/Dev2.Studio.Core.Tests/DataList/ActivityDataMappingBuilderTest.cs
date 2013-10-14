@@ -993,6 +993,175 @@ namespace Dev2.Core.Tests.DataList
 
         }
 
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ActivityDataMappingBuilder_Generate")]
+        public void ActivityDataMappingBuilder_Generate_WhenValidWorkflowWithDifferentRecordsetNameAndFirstColumn_ExpectInputMappingWithDataListRecordsetName()
+        {
+            //------------Setup for test--------------------------
+
+            #region ServiceDef
+            var serviceDefStr = @"<Service ID=""3354620a-2af5-424d-9364-b60408c111ab"" Version=""1.0"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"" Name=""bob"" ResourceType=""WorkflowService"" IsValid=""true"">
+  <DisplayName>bob</DisplayName>
+  <Category></Category>
+  <IsNewWorkflow>false</IsNewWorkflow>
+  <AuthorRoles></AuthorRoles>
+  <Comment></Comment>
+  <Tags></Tags>
+  <IconPath>pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png</IconPath>
+  <HelpLink></HelpLink>
+  <UnitTestTargetWorkflowService></UnitTestTargetWorkflowService>
+  <DataList>
+    <rec Description="""" IsEditable=""True"" ColumnIODirection=""Input"">
+      <vale Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
+      <valeSecond Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
+    </rec>
+  </DataList>
+  <Action Name=""InvokeWorkflow"" Type=""Workflow"">
+    <XamlDefinition>&lt;Activity x:Class=""bob"" xmlns=""http://schemas.microsoft.com/netfx/2009/xaml/activities"" xmlns:av=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"" xmlns:dc=""clr-namespace:Dev2.Common;assembly=Dev2.Common"" xmlns:ddc=""clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"" xmlns:ddcb=""clr-namespace:Dev2.DataList.Contract.Binary_Objects;assembly=Dev2.Data"" xmlns:ddd=""clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"" xmlns:dddo=""clr-namespace:Dev2.Data.Decisions.Operations;assembly=Dev2.Data"" xmlns:ddsm=""clr-namespace:Dev2.Data.SystemTemplates.Models;assembly=Dev2.Data"" xmlns:dpe=""clr-namespace:Dev2.Providers.Errors;assembly=Dev2.Infrastructure"" xmlns:mva=""clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"" xmlns:s=""clr-namespace:System;assembly=mscorlib"" xmlns:sap=""http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"" xmlns:scg=""clr-namespace:System.Collections.Generic;assembly=mscorlib"" xmlns:sco=""clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"" xmlns:uaba=""clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"" xmlns:uf=""clr-namespace:Unlimited.Framework;assembly=Dev2.Core"" xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""&gt;&lt;x:Members&gt;&lt;x:Property Name=""AmbientDataList"" Type=""InOutArgument(scg:List(x:String))"" /&gt;&lt;x:Property Name=""ParentWorkflowInstanceId"" Type=""InOutArgument(s:Guid)"" /&gt;&lt;x:Property Name=""ParentServiceName"" Type=""InOutArgument(x:String)"" /&gt;&lt;/x:Members&gt;&lt;sap:VirtualizedContainerService.HintSize&gt;654,676&lt;/sap:VirtualizedContainerService.HintSize&gt;&lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces serialized as XML namespaces&lt;/mva:VisualBasic.Settings&gt;&lt;TextExpression.NamespacesForImplementation&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""7""&gt;&lt;x:String&gt;Dev2.Common&lt;/x:String&gt;&lt;x:String&gt;Dev2.Data.Decisions.Operations&lt;/x:String&gt;&lt;x:String&gt;Dev2.Data.SystemTemplates.Models&lt;/x:String&gt;&lt;x:String&gt;Dev2.DataList.Contract&lt;/x:String&gt;&lt;x:String&gt;Dev2.DataList.Contract.Binary_Objects&lt;/x:String&gt;&lt;x:String&gt;Unlimited.Framework&lt;/x:String&gt;&lt;x:String&gt;Unlimited.Applications.BusinessDesignStudio.Activities&lt;/x:String&gt;&lt;/scg:List&gt;&lt;/TextExpression.NamespacesForImplementation&gt;&lt;TextExpression.ReferencesForImplementation&gt;&lt;sco:Collection x:TypeArguments=""AssemblyReference""&gt;&lt;AssemblyReference&gt;Dev2.Common&lt;/AssemblyReference&gt;&lt;AssemblyReference&gt;Dev2.Data&lt;/AssemblyReference&gt;&lt;AssemblyReference&gt;Dev2.Core&lt;/AssemblyReference&gt;&lt;AssemblyReference&gt;Dev2.Activities&lt;/AssemblyReference&gt;&lt;/sco:Collection&gt;&lt;/TextExpression.ReferencesForImplementation&gt;&lt;Flowchart DisplayName=""bob"" sap:VirtualizedContainerService.HintSize=""614,636""&gt;&lt;Flowchart.Variables&gt;&lt;Variable x:TypeArguments=""scg:List(x:String)"" Name=""InstructionList"" /&gt;&lt;Variable x:TypeArguments=""x:String"" Name=""LastResult"" /&gt;&lt;Variable x:TypeArguments=""x:Boolean"" Name=""HasError"" /&gt;&lt;Variable x:TypeArguments=""x:String"" Name=""ExplicitDataList"" /&gt;&lt;Variable x:TypeArguments=""x:Boolean"" Name=""IsValid"" /&gt;&lt;Variable x:TypeArguments=""uf:UnlimitedObject"" Name=""d"" /&gt;&lt;Variable x:TypeArguments=""uaba:Util"" Name=""t"" /&gt;&lt;Variable x:TypeArguments=""ddd:Dev2DataListDecisionHandler"" Name=""Dev2DecisionHandler"" /&gt;&lt;/Flowchart.Variables&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;False&lt;/x:Boolean&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;270,2.5&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;60,75&lt;/av:Size&gt;&lt;av:PointCollection x:Key=""ConnectorLocation""&gt;300,77.5 300,127.5&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;Flowchart.StartNode&gt;&lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;&lt;/Flowchart.StartNode&gt;&lt;FlowStep x:Name=""__ReferenceID0""&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;185,127.5&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;230,78&lt;/av:Size&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;uaba:DsfMultiAssignActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" ServiceHost=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" CreateBookmark=""False"" DatabindRecursive=""False"" DisplayName=""Assign (1)"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""230,78"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" SimulationMode=""OnDemand"" UniqueID=""6b4f7d09-bc25-4b43-9c21-a213b8bc264b"" UpdateAllOccurrences=""False""&gt;&lt;uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments=""scg:List(x:String)"" /&gt;&lt;/uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;scg:List x:TypeArguments=""uaba:ActivityDTO"" Capacity=""4""&gt;&lt;uaba:ActivityDTO ErrorMessage=""{x:Null}"" FieldName=""[[rec().vale]]"" FieldValue=""12"" IndexNumber=""1"" Inserted=""False"" IsFieldNameFocused=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable1]]""&gt;&lt;uaba:ActivityDTO.Errors&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, scg:List(dpe:IActionableErrorInfo)"" /&gt;&lt;/uaba:ActivityDTO.Errors&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;uaba:ActivityDTO ErrorMessage=""{x:Null}"" FieldName="""" FieldValue="""" IndexNumber=""2"" Inserted=""False"" IsFieldNameFocused=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable2]]""&gt;&lt;uaba:ActivityDTO.Errors&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, scg:List(dpe:IActionableErrorInfo)"" /&gt;&lt;/uaba:ActivityDTO.Errors&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;/scg:List&gt;&lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments=""x:String"" /&gt;&lt;/uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;True&lt;/x:Boolean&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;/uaba:DsfMultiAssignActivity&gt;&lt;/FlowStep&gt;&lt;/Flowchart&gt;&lt;/Activity&gt;</XamlDefinition>
+  </Action>
+  <ErrorMessages />
+  <Source />
+  <Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm=""http://www.w3.org/TR/2001/REC-xml-c14n-20010315"" />
+      <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1"" />
+      <Reference URI="""">
+        <Transforms>
+          <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature"" />
+        </Transforms>
+        <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1"" />
+        <DigestValue>vWmN0jnD5L5etfUXFuDmTvVceeg=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>m8ogAOvBBm4Gue8hZ0vzv5KSgsg/xqCK4hFlxLzTsduLLYTmOmB1VPDelwYZ7OwjnYrQtCf7Rv1rF/r3lhpjtDh4DltZ9j55hWq3zzckItGkAYJHWkNzx3mto+hrrz7cYaDzgLcaNhF11XGSOvU3mbgff4vTFkai9och+0aASu8=</SignatureValue>
+  </Signature>
+</Service>";
+
+            var datalistFragment = @"<DataList><recset1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" ><vale Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><valeSecond Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></recset1></DataList>";
+
+            #endregion
+
+            var activityDataMappingBuilder = new ActivityDataMappingBuilder
+            {
+                DataList = "<DataList><recordSet><vale/></recordSet></DataList>"
+            };
+
+            Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(c => c.DataList).Returns("<DataList/>");
+
+            Mock<IWebActivity> activity = new Mock<IWebActivity>();
+
+            activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
+            activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
+            activity.Setup(c => c.ResourceModel.ServiceDefinition).Returns(serviceDefStr);
+            activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
+            activity.Setup(c => c.ResourceModel.DataList).Returns(datalistFragment);
+
+            activityDataMappingBuilder.SetupActivityData(activity.Object);
+
+            //------------Execute Test---------------------------
+
+            var result = activityDataMappingBuilder.Generate();
+
+            //------------Assert Results-------------------------
+
+            // check counts first
+            Assert.AreEqual(2, result.Inputs.Count);
+
+            // now check data
+            Assert.AreEqual("[[recordSet(*).vale]]", result.Inputs[0].MapsTo);
+            Assert.AreEqual("[[recordSet(*).valeSecond]]", result.Inputs[1].MapsTo);
+
+            // check counts first
+            Assert.AreEqual(0, result.Outputs.Count);
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ActivityDataMappingBuilder_Generate")]
+        public void ActivityDataMappingBuilder_Generate_WhenValidWorkflowWithDifferentRecordsetNameAndFirstColumn_ExpectOutputMappingWithDataListRecordsetName()
+        {
+            //------------Setup for test--------------------------
+
+            #region ServiceDef
+            var serviceDefStr = @"<Service ID=""3354620a-2af5-424d-9364-b60408c111ab"" Version=""1.0"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"" Name=""bob"" ResourceType=""WorkflowService"" IsValid=""true"">
+  <DisplayName>bob</DisplayName>
+  <Category></Category>
+  <IsNewWorkflow>false</IsNewWorkflow>
+  <AuthorRoles></AuthorRoles>
+  <Comment></Comment>
+  <Tags></Tags>
+  <IconPath>pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png</IconPath>
+  <HelpLink></HelpLink>
+  <UnitTestTargetWorkflowService></UnitTestTargetWorkflowService>
+  <DataList>
+    <rec Description="""" IsEditable=""True"" ColumnIODirection=""Output"">
+      <vale Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
+    </rec>
+  </DataList>
+  <Action Name=""InvokeWorkflow"" Type=""Workflow"">
+    <XamlDefinition>&lt;Activity x:Class=""bob"" xmlns=""http://schemas.microsoft.com/netfx/2009/xaml/activities"" xmlns:av=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"" xmlns:dc=""clr-namespace:Dev2.Common;assembly=Dev2.Common"" xmlns:ddc=""clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"" xmlns:ddcb=""clr-namespace:Dev2.DataList.Contract.Binary_Objects;assembly=Dev2.Data"" xmlns:ddd=""clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"" xmlns:dddo=""clr-namespace:Dev2.Data.Decisions.Operations;assembly=Dev2.Data"" xmlns:ddsm=""clr-namespace:Dev2.Data.SystemTemplates.Models;assembly=Dev2.Data"" xmlns:dpe=""clr-namespace:Dev2.Providers.Errors;assembly=Dev2.Infrastructure"" xmlns:mva=""clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"" xmlns:s=""clr-namespace:System;assembly=mscorlib"" xmlns:sap=""http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"" xmlns:scg=""clr-namespace:System.Collections.Generic;assembly=mscorlib"" xmlns:sco=""clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"" xmlns:uaba=""clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"" xmlns:uf=""clr-namespace:Unlimited.Framework;assembly=Dev2.Core"" xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""&gt;&lt;x:Members&gt;&lt;x:Property Name=""AmbientDataList"" Type=""InOutArgument(scg:List(x:String))"" /&gt;&lt;x:Property Name=""ParentWorkflowInstanceId"" Type=""InOutArgument(s:Guid)"" /&gt;&lt;x:Property Name=""ParentServiceName"" Type=""InOutArgument(x:String)"" /&gt;&lt;/x:Members&gt;&lt;sap:VirtualizedContainerService.HintSize&gt;654,676&lt;/sap:VirtualizedContainerService.HintSize&gt;&lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces serialized as XML namespaces&lt;/mva:VisualBasic.Settings&gt;&lt;TextExpression.NamespacesForImplementation&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""7""&gt;&lt;x:String&gt;Dev2.Common&lt;/x:String&gt;&lt;x:String&gt;Dev2.Data.Decisions.Operations&lt;/x:String&gt;&lt;x:String&gt;Dev2.Data.SystemTemplates.Models&lt;/x:String&gt;&lt;x:String&gt;Dev2.DataList.Contract&lt;/x:String&gt;&lt;x:String&gt;Dev2.DataList.Contract.Binary_Objects&lt;/x:String&gt;&lt;x:String&gt;Unlimited.Framework&lt;/x:String&gt;&lt;x:String&gt;Unlimited.Applications.BusinessDesignStudio.Activities&lt;/x:String&gt;&lt;/scg:List&gt;&lt;/TextExpression.NamespacesForImplementation&gt;&lt;TextExpression.ReferencesForImplementation&gt;&lt;sco:Collection x:TypeArguments=""AssemblyReference""&gt;&lt;AssemblyReference&gt;Dev2.Common&lt;/AssemblyReference&gt;&lt;AssemblyReference&gt;Dev2.Data&lt;/AssemblyReference&gt;&lt;AssemblyReference&gt;Dev2.Core&lt;/AssemblyReference&gt;&lt;AssemblyReference&gt;Dev2.Activities&lt;/AssemblyReference&gt;&lt;/sco:Collection&gt;&lt;/TextExpression.ReferencesForImplementation&gt;&lt;Flowchart DisplayName=""bob"" sap:VirtualizedContainerService.HintSize=""614,636""&gt;&lt;Flowchart.Variables&gt;&lt;Variable x:TypeArguments=""scg:List(x:String)"" Name=""InstructionList"" /&gt;&lt;Variable x:TypeArguments=""x:String"" Name=""LastResult"" /&gt;&lt;Variable x:TypeArguments=""x:Boolean"" Name=""HasError"" /&gt;&lt;Variable x:TypeArguments=""x:String"" Name=""ExplicitDataList"" /&gt;&lt;Variable x:TypeArguments=""x:Boolean"" Name=""IsValid"" /&gt;&lt;Variable x:TypeArguments=""uf:UnlimitedObject"" Name=""d"" /&gt;&lt;Variable x:TypeArguments=""uaba:Util"" Name=""t"" /&gt;&lt;Variable x:TypeArguments=""ddd:Dev2DataListDecisionHandler"" Name=""Dev2DecisionHandler"" /&gt;&lt;/Flowchart.Variables&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;False&lt;/x:Boolean&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;270,2.5&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;60,75&lt;/av:Size&gt;&lt;av:PointCollection x:Key=""ConnectorLocation""&gt;300,77.5 300,127.5&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;Flowchart.StartNode&gt;&lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;&lt;/Flowchart.StartNode&gt;&lt;FlowStep x:Name=""__ReferenceID0""&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;185,127.5&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;230,78&lt;/av:Size&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;uaba:DsfMultiAssignActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" ServiceHost=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" CreateBookmark=""False"" DatabindRecursive=""False"" DisplayName=""Assign (1)"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""230,78"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" SimulationMode=""OnDemand"" UniqueID=""6b4f7d09-bc25-4b43-9c21-a213b8bc264b"" UpdateAllOccurrences=""False""&gt;&lt;uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments=""scg:List(x:String)"" /&gt;&lt;/uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;scg:List x:TypeArguments=""uaba:ActivityDTO"" Capacity=""4""&gt;&lt;uaba:ActivityDTO ErrorMessage=""{x:Null}"" FieldName=""[[rec().vale]]"" FieldValue=""12"" IndexNumber=""1"" Inserted=""False"" IsFieldNameFocused=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable1]]""&gt;&lt;uaba:ActivityDTO.Errors&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, scg:List(dpe:IActionableErrorInfo)"" /&gt;&lt;/uaba:ActivityDTO.Errors&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;uaba:ActivityDTO ErrorMessage=""{x:Null}"" FieldName="""" FieldValue="""" IndexNumber=""2"" Inserted=""False"" IsFieldNameFocused=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable2]]""&gt;&lt;uaba:ActivityDTO.Errors&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, scg:List(dpe:IActionableErrorInfo)"" /&gt;&lt;/uaba:ActivityDTO.Errors&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;/scg:List&gt;&lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments=""x:String"" /&gt;&lt;/uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;True&lt;/x:Boolean&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;/uaba:DsfMultiAssignActivity&gt;&lt;/FlowStep&gt;&lt;/Flowchart&gt;&lt;/Activity&gt;</XamlDefinition>
+  </Action>
+  <ErrorMessages />
+  <Source />
+  <Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm=""http://www.w3.org/TR/2001/REC-xml-c14n-20010315"" />
+      <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1"" />
+      <Reference URI="""">
+        <Transforms>
+          <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature"" />
+        </Transforms>
+        <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1"" />
+        <DigestValue>vWmN0jnD5L5etfUXFuDmTvVceeg=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>m8ogAOvBBm4Gue8hZ0vzv5KSgsg/xqCK4hFlxLzTsduLLYTmOmB1VPDelwYZ7OwjnYrQtCf7Rv1rF/r3lhpjtDh4DltZ9j55hWq3zzckItGkAYJHWkNzx3mto+hrrz7cYaDzgLcaNhF11XGSOvU3mbgff4vTFkai9och+0aASu8=</SignatureValue>
+  </Signature>
+</Service>";
+
+            var datalistFragment = @"<DataList><recset1 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" ><vale Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><valeSecond Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /></recset1></DataList>";
+
+            #endregion
+
+            var activityDataMappingBuilder = new ActivityDataMappingBuilder
+            {
+                DataList = "<DataList><recordSet><vale/></recordSet></DataList>"
+            };
+
+            Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(c => c.DataList).Returns("<DataList/>");
+
+            Mock<IWebActivity> activity = new Mock<IWebActivity>();
+
+            activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
+            activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
+            activity.Setup(c => c.ResourceModel.ServiceDefinition).Returns(serviceDefStr);
+            activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
+            activity.Setup(c => c.ResourceModel.DataList).Returns(datalistFragment);
+
+            activityDataMappingBuilder.SetupActivityData(activity.Object);
+
+            //------------Execute Test---------------------------
+
+            var result = activityDataMappingBuilder.Generate();
+
+            //------------Assert Results-------------------------
+
+            // check counts first
+            Assert.AreEqual(2, result.Outputs.Count);
+
+            // now check data
+            Assert.AreEqual("[[recordSet().vale]]", result.Outputs[0].Value);
+            Assert.AreEqual("[[recordSet().valeSecond]]", result.Outputs[1].Value);
+
+            // check counts first
+            Assert.AreEqual(0, result.Inputs.Count);
+
+        }
+
         #endregion
 
     }
