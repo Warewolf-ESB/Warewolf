@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Common.ExtMethods;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
 
@@ -15,6 +15,7 @@ namespace Dev2.DataList
 {
     /// <summary>
     /// Used to perform fuzzy matching of sorts ;)
+    /// NOTE : Commented out code for future extention on this piece
     /// </summary>
     class FuzzyMatchVO
     {
@@ -23,7 +24,7 @@ namespace Dev2.DataList
         internal FuzzyMatchVO(IDictionary<string, string> matches)
         {
             _recordsetColumnsToName = matches;
-        }
+                }
 
         /// <summary>
         /// Fetches the match.
@@ -166,7 +167,7 @@ namespace Dev2.DataList
             var inputParser = DataListFactory.CreateInputParser();
 
             var inputList = GenerateMapping(SavedInputMapping, ActivityInputDefinitions, false, inputParser);
-
+            
             var outputList = GenerateMapping(SavedOutputMapping, ActivityOutputDefinitions, true, outputParser);
 
             result = new MappingViewModelTO(inputList, outputList);
@@ -174,16 +175,55 @@ namespace Dev2.DataList
             // and set the data to save?!
             if(string.IsNullOrEmpty(SavedInputMapping))
             {
-                SavedInputMapping = ActivityInputDefinitions;
+                SavedInputMapping = GetInputString(inputList);
             }
 
             if(string.IsNullOrEmpty(SavedOutputMapping))
             {
-                SavedOutputMapping = ActivityOutputDefinitions;
+                SavedOutputMapping = GetOutputString(outputList);
             }
 
-           
             return result;
+            }
+
+        /// <summary>
+        /// Gets the input string.
+        /// </summary>
+        /// <param name="inputData">The input data.</param>
+        /// <returns></returns>
+        private string GetInputString(IList<IInputOutputViewModel> inputData)
+        {
+            string inputString = string.Empty;
+            IList<IDev2Definition> inputs = new List<IDev2Definition>();
+            if(inputData.Count != 0)
+            {
+                foreach(IInputOutputViewModel itp in inputData)
+                {
+                    inputs.Add(itp.GetGenerationTO());
+                }
+                inputString = DataMappingListFactory.GenerateMapping(inputs, enDev2ArgumentType.Input);
+            }
+            return inputString;
+        }
+           
+        /// <summary>
+        /// Gets the output string.
+        /// </summary>
+        /// <param name="outputData">The output data.</param>
+        /// <returns></returns>
+        private string GetOutputString(IList<IInputOutputViewModel> outputData)
+        {
+            string outputString = string.Empty;
+            IList<IDev2Definition> outputs = new List<IDev2Definition>();
+            if(outputData.Count != 0)
+            {
+                foreach(IInputOutputViewModel otp in outputData)
+                {
+                    outputs.Add(otp.GetGenerationTO());
+                }
+                outputString = DataMappingListFactory.GenerateMapping(outputs, enDev2ArgumentType.Output);
+            }
+            return outputString;
         }
 
         /// <summary>
@@ -255,6 +295,7 @@ namespace Dev2.DataList
             IList<IInputOutputViewModel> result = new List<IInputOutputViewModel>();
             IList<IDev2Definition> concreteDefinitions = parser.ParseAndAllowBlanks(mappingDefinitions);
 
+            
             var masterRecordsetName = string.Empty;
 
             foreach(var def in concreteDefinitions)
@@ -265,28 +306,38 @@ namespace Dev2.DataList
                 {
                     if (autoAddBrackets)
                     {
-                        // When output mapping we need to replace the recordset name if present ?!
+                        // When output mapping we need to replace the recordset name if present with MasterRecordset
 
-                        //if (isOutputMapping && def.IsRecordSet)
-                        //{
-                        //    var field = DataListUtil.ExtractFieldNameFromValue(injectValue);
+                        if (isOutputMapping && def.IsRecordSet)
+                        {
+                            var field = DataListUtil.ExtractFieldNameFromValue(injectValue);
 
-                        //    if (fuzzyMatch != null && def.IsRecordSet)
-                        //    {
-                        //        if (string.IsNullOrEmpty(masterRecordsetName))
-                        //        {
-                        //            string recordsetName = fuzzyMatch.FetchMatch(def.Name);
-                        //            masterRecordsetName = recordsetName;
-                        //        }
+                            if (fuzzyMatch != null && def.IsRecordSet)
+                            {
+                                if (string.IsNullOrEmpty(masterRecordsetName))
+                                {
+                                    string recordsetName = fuzzyMatch.FetchMatch(def.Name);
+                                    if (!string.IsNullOrEmpty(recordsetName))
+                                    {
+                                        masterRecordsetName = recordsetName;
+                                    }
+                                    else
+                                    {
+                                        // we have no match, use the current mapping value ;)
+                                        masterRecordsetName = DataListUtil.ExtractRecordsetNameFromValue(injectValue);
+                                    }   
+                                }
 
-                        //        injectValue = DataListUtil.ComposeIntoUserVisibleRecordset(masterRecordsetName, string.Empty, field); 
-                        //    }
+                                injectValue = DataListUtil.ComposeIntoUserVisibleRecordset(masterRecordsetName, string.Empty, field);
+                        injectValue = DataListUtil.AddBracketsToValueIfNotExist(injectValue);
                         //}
-                        //else
-                        //{
+
+                    }
+                }
+                else
+                {
                             injectValue = DataListUtil.AddBracketsToValueIfNotExist(injectValue);    
-                        //}
-
+                        }
                     }
                 }
                 else
@@ -297,9 +348,35 @@ namespace Dev2.DataList
                     }
                     else
                     {
+                        if (!isOutputMapping)
+                        {
+                            var field = def.Name;
+
+                            if(fuzzyMatch != null && def.IsRecordSet)
+                            {
+                                if(string.IsNullOrEmpty(masterRecordsetName))
+                                {
+                                    string recordsetName = fuzzyMatch.FetchMatch(def.Name);
+                                    if(!string.IsNullOrEmpty(recordsetName))
+                                    {
+                                        masterRecordsetName = recordsetName;
+                                    }
+                                    else
+                                    {
+                                        // we have no match, use the current mapping value ;)
+                                        masterRecordsetName = def.RecordSetName;
+                                    }
+                                }
+
+                                injectValue = DataListUtil.ComposeIntoUserVisibleRecordset(masterRecordsetName, string.Empty, field);
+                                injectValue = DataListUtil.AddBracketsToValueIfNotExist(injectValue);
+                            }
+                        }else{
+
                         var tmp = DataListUtil.ComposeIntoUserVisibleRecordset(def.RecordSetName, string.Empty, def.Name);
                         injectValue = DataListUtil.AddBracketsToValueIfNotExist(tmp);
                     }
+                }
                 }
 
                 var injectMapsTo = def.MapsTo;
@@ -384,11 +461,11 @@ namespace Dev2.DataList
                     {
                         // build map for each column in a recordset ;)
                         foreach (var col in rs.Columns)
-                        {
+                {
                             tmp[col.ColumnName] = rs.Namespace;
                         }
-                    }
                 }
+            }
 
                 result = new FuzzyMatchVO(tmp);
                 
