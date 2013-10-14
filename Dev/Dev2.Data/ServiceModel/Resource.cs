@@ -213,6 +213,8 @@ namespace Dev2.Runtime.ServiceModel.Data
         public bool IsValid { get; set; }
 
         public List<IErrorInfo> Errors { get; set; }
+
+        public bool ReloadActions { get; set; }
         #endregion
 
         #region GetResourceTypeFromString

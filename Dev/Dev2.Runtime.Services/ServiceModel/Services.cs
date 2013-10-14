@@ -105,7 +105,7 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     // TODO : Extract IsForceUpdate flag
                     var source = JsonConvert.DeserializeObject<DbSource>(args);
-                    var serviceMethods = FetchMethods(source, false);
+                    var serviceMethods = FetchMethods(source);
                     result.AddRange(serviceMethods);
                 }
                 catch(Exception ex)
@@ -239,10 +239,10 @@ namespace Dev2.Runtime.ServiceModel
 
         #region FetchMethods
 
-        public virtual ServiceMethodList FetchMethods(DbSource dbSource, bool forceRefresh)
+        public virtual ServiceMethodList FetchMethods(DbSource dbSource)
         {
             var broker = new MsSqlBroker();
-            return broker.GetServiceMethods(dbSource, forceRefresh);
+            return broker.GetServiceMethods(dbSource);
         }
 
         #endregion

@@ -62,7 +62,21 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
     self.hasFilter = ko.computed(function () {
         return self.sourceMethodSearchTerm() !== "";
     });
+    
+    self.canReload = ko.computed(function() {
+        return (self.sourceMethods().length >= 1);
+    });
+
+    self.reloadActions = function() {
+        // force a reload of the current source ;)
+        self.data.source().ReloadActions = true;
+        self.loadMethods(self.data.source());
+        self.data.source().ReloadActions = false;
+        //console.debug("reload " + JSON.stringify(self.data.source()));
+    };
+
     utils.makeClearFilterButton("clearDbServiceFilterButton");
+    utils.makeReloadButton("reloadDbServiceButton");
 
     self.methodNameChanged = ko.observable(false);
     self.hasMethod = ko.computed(function () {
@@ -222,7 +236,8 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
             resourceID: resourceID,
             resourceType: "DbService"
         });
-        
+
+
         $.post("Service/Services/Get" + window.location.search, args, function (result) {
             self.data.resourceID(result.ResourceID);
             self.data.resourceType(result.ResourceType);
@@ -291,7 +306,7 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
         self.isSourceMethodsLoading(true);
         self.hasTestResults(false);
         self.hasTestResultRecords(false);
-
+        
         console.log("Load Methods [ " + "Service/Services/DbMethods" + window.location.search, ko.toJSON(source) + " ]");
 
         $.post("Service/Services/DbMethods" + window.location.search, ko.toJSON(source), function (result) {
@@ -382,13 +397,6 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
 
 
 DbServiceViewModel.create = function (dbServiceContainerID, saveContainerID) {
-    // apply jquery-ui themes
-    //$("#clearFilterButton").button({
-    //    text: false,
-    //    icons: {
-    //        primary: "ui-icon-clear-filter"
-    //    }
-    //});
     $("button").button();
     $("#tabs").tabs();
 

@@ -22,7 +22,8 @@
                         <h4 style="float: left; margin-top: 7px">2. Select an action</h4>
                         <div class="action-filter">
                             <input class="clear-filter" tabindex="1" maxlength="20" type="text" name="sourceMethodSearchTerm" id="sourceMethodSearchTerm" placeholder="Filter" autocomplete="off" style="width: 10em" data-bind="value: sourceMethodSearchTerm, valueUpdate: 'afterkeydown'" />
-                            <button class="clear-filter-db" tabindex="2" type="button" name="clearDbServiceFilterButton" id="clearDbServiceFilterButton" data-bind="click: clearFilter, jEnable: hasFilter">Clear Filter</button>
+                            <button class="clear-filter-db" tabindex="2" type="button" name="clearDbServiceFilterButton" title="Clear Filter" id="clearDbServiceFilterButton" data-bind="click: clearFilter, jEnable: hasFilter">Clear Filter</button>
+                            <button class="reload-db" tabindex="3" type="button" name="reloadDbServiceButton" title="Reload Actions" id="reloadDbServiceButton" data-bind="click: reloadActions, jEnable: canReload">Reload</button>
                         </div>
                     </div>
                     <div id="sourceMethodsScrollBox" class="scrollable-y box-border" style="height: 343px; width: 364px; clear: both; ">

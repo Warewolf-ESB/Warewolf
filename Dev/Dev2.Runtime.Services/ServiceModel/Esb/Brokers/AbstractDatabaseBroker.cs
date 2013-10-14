@@ -28,10 +28,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// Gets the service methods for service.
         /// </summary>
         /// <param name="dbSource">The db source.</param>
-        /// <param name="forceRefresh">if set to <c>true</c> [force refresh].</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">resource</exception>
-        public ServiceMethodList GetServiceMethods(DbSource dbSource, bool forceRefresh)
+        public ServiceMethodList GetServiceMethods(DbSource dbSource)
         {
             if(dbSource == null)
             {
@@ -39,7 +38,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             }
 
             // Check the cache for a value ;)
-            if (!forceRefresh)
+            if (!dbSource.ReloadActions)
             {
                 ServiceMethodList cacheResult;
                 _theCache.TryGetValue(dbSource, out cacheResult);
@@ -48,6 +47,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     return cacheResult;
                 }
             }
+            // else reload actions ;)
 
             var serviceMethods = new ServiceMethodList();
 
