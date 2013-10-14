@@ -394,7 +394,7 @@ namespace Dev2.Studio.UI.Tests
         #region Depecated Test
 
         // Bug 6180
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         // Deploy Rework
         public void MakeSureDeployedItemsAreNotFiltered()
         {
@@ -440,7 +440,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         // Bug 8816
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         public void IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled()
         {
             TabManagerUIMap.CloseAllTabs();

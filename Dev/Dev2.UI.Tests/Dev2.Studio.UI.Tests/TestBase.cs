@@ -182,7 +182,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         ////PBI 9461
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         public void ChangingResourceExpectedPopUpWarningWithShowAffected()
         {
             // Open the workflow

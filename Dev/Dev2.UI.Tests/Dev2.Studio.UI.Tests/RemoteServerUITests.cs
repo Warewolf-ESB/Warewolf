@@ -98,7 +98,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.ClearExplorerSearchText();
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_ConnectToRemoteServerFromExplorer_RemoteServerConnected()
@@ -256,7 +256,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsNotNull(remoteTab);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteDbSource_DbSourceIsEdited()

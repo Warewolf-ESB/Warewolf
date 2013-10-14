@@ -37,7 +37,7 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
-        [TestMethod]
+        [TestMethod][Ignore]//14.10.2013 - Ashley: Passed full test run
         public void SearchAndRefresh_AttemptToSearch_ExpectedSearchFilteredByAllItems()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
