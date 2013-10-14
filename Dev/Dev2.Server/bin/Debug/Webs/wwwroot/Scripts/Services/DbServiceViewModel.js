@@ -70,7 +70,7 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
     self.reloadActions = function() {
         // force a reload of the current source ;)
         self.data.source().ReloadActions = true;
-        self.loadMethods(self.data.source());
+        self.loadMethods(self.data.source(), true);
         self.data.source().ReloadActions = false;
     };
 
@@ -176,7 +176,7 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
         return found;
     };
     
-    self.selectSourceByName = function(theName) {
+    self.selectSourceByName = function (theName) {
         var found = false;
         if (theName) {
             theName = theName.toLowerCase();
@@ -295,21 +295,31 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
         }
     };
     
-    self.loadMethods = function (source) {
-        self.clearSelectedMethod();
+    self.loadMethods = function (source, isReload) {
+        
+        if (isReload) {
+            self.sourceMethods.removeAll();
+            self.sourceMethodSearchTerm("");
+            self.isSourceMethodsLoading(true);
+            self.hasTestResults(false);
+            self.hasTestResultRecords(false);
+        } else {
+            self.clearSelectedMethod();
+            self.updateRecordset();
+            self.sourceMethods.removeAll();
+            self.sourceMethodSearchTerm("");
+            self.isSourceMethodsLoading(true);
+            self.hasTestResults(false);
+            self.hasTestResultRecords(false);
+        }
 
-        self.updateRecordset();
-
-        self.sourceMethods.removeAll();
-        self.sourceMethodSearchTerm("");
-        self.isSourceMethodsLoading(true);
-        self.hasTestResults(false);
-        self.hasTestResultRecords(false);
-
+       
         $.post("Service/Services/DbMethods" + window.location.search, ko.toJSON(source), function (result) {
             self.isSourceMethodsLoading(false);
             self.sourceMethods(result.sort(utils.nameCaseInsensitiveSort));
             var methodName = self.data.method.Name();
+
+
             if (methodName !== "" && result.length > 0) {
                 $.each(self.sourceMethods(), function (index, method) {
                     if (method.Name.toLowerCase() === methodName.toLowerCase()) {
@@ -318,6 +328,8 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
                     }
                     return true;
                 });
+
+
                 utils.selectAndScrollToListItem(methodName, $sourceMethodsScrollBox, $sourceMethodsScrollBoxHeight);
             }
         }).done(function () {
