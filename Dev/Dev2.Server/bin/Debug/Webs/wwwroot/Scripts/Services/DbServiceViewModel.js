@@ -72,7 +72,6 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
         self.data.source().ReloadActions = true;
         self.loadMethods(self.data.source());
         self.data.source().ReloadActions = false;
-        //console.debug("reload " + JSON.stringify(self.data.source()));
     };
 
     utils.makeClearFilterButton("clearDbServiceFilterButton");
@@ -236,7 +235,7 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
             resourceID: resourceID,
             resourceType: "DbService"
         });
-
+        
 
         $.post("Service/Services/Get" + window.location.search, args, function (result) {
             self.data.resourceID(result.ResourceID);
@@ -306,8 +305,6 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
         self.isSourceMethodsLoading(true);
         self.hasTestResults(false);
         self.hasTestResultRecords(false);
-        
-        console.log("Load Methods [ " + "Service/Services/DbMethods" + window.location.search, ko.toJSON(source) + " ]");
 
         $.post("Service/Services/DbMethods" + window.location.search, ko.toJSON(source), function (result) {
             self.isSourceMethodsLoading(false);

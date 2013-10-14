@@ -94,6 +94,7 @@
     <Content Include="wwwroot\Images\error.png" />
     <Content Include="wwwroot\Images\folder-closed.png" />
     <Content Include="wwwroot\Images\folder-open.png" />
+    <Content Include="wwwroot\Images\refresh.png" />
     <Content Include="wwwroot\Images\tick.png" />
     <Content Include="wwwroot\Images\warning.png" />
     <Content Include="wwwroot\Layout.htm" />
