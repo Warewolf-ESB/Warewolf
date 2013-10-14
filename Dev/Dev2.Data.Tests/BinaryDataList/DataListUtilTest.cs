@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Common;
@@ -264,6 +265,74 @@ namespace Dev2.Data.Tests.BinaryDataList
             {
                 var expected = string.Format("[[prefixVar{0}suffix]]", i++);
                 Assert.AreEqual(expected, key);
+            }
+        }
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataListUtil_UpsertTokens")]
+        public void DataListUtil_UpsertTokens_ValidTokenizer_RemoveEmptyEntriesIsFalse_AddsEmptyEntriesToTarget()
+        {
+            //------------Setup for test--------------------------
+            const int TokenCount = 5;
+            var tokenNumber = 0;
+
+            var tokens = new List<string> { "f1", "", "f3", "f4", "" };
+            
+            var tokenizer = new Mock<IDev2Tokenizer>();
+            tokenizer.Setup(t => t.HasMoreOps()).Returns(() => tokenNumber < TokenCount);
+            tokenizer.Setup(t => t.NextToken()).Returns(() => tokens[tokenNumber++]);
+
+            var target = new Collection<ObservablePair<string, string>>();
+
+            //------------Execute Test---------------------------
+            DataListUtil.UpsertTokens(target, tokenizer.Object, tokenPrefix:"rs(*).", tokenSuffix: "a", removeEmptyEntries: false );
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(TokenCount, target.Count);
+
+            for(var i = 0; i < TokenCount; i++)
+            {
+                if(i == 1 || i == 4)
+                {
+                    Assert.AreEqual(string.Empty, target[i].Key);
+                }
+                else
+                {
+                    Assert.AreEqual(string.Format("[[rs(*).{0}a]]", tokens[i]), target[i].Key);
+                }
+            }
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataListUtil_UpsertTokens")]
+        public void DataListUtil_UpsertTokens_ValidTokenizer_RemoveEmptyEntriesIsTrue_RemovesEmptyEntriesFromTarget()
+        {
+            //------------Setup for test--------------------------
+            const int TokenCount = 5;
+            var tokenNumber = 0;
+
+            var tokens = new List<string> { "f1", "", "f2", "f3", "" };
+
+            var tokenizer = new Mock<IDev2Tokenizer>();
+            tokenizer.Setup(t => t.HasMoreOps()).Returns(() => tokenNumber < TokenCount);
+            tokenizer.Setup(t => t.NextToken()).Returns(() => tokens[tokenNumber++]);
+
+            var target = new Collection<ObservablePair<string, string>>();
+
+            //------------Execute Test---------------------------
+            DataListUtil.UpsertTokens(target, tokenizer.Object, tokenPrefix: "rs(*).", tokenSuffix: "a", removeEmptyEntries: true);
+
+            //------------Assert Results-------------------------
+            const int ExpectedCount = TokenCount - 2;
+
+            Assert.AreEqual(ExpectedCount, target.Count);
+
+            for(var i = 0; i < ExpectedCount; i++)
+            {
+                Assert.AreEqual(string.Format("[[rs(*).f{0}a]]", i + 1), target[i].Key);
             }
         }
     }

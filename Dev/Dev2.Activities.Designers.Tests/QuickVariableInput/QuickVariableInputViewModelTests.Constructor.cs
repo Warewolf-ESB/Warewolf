@@ -75,6 +75,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             Assert.IsFalse(qviViewModel.CanAdd);
             Assert.IsTrue(qviViewModel.IsSplitTokenEnabled);
             Assert.IsTrue(qviViewModel.IsOverwriteEnabled);
+            Assert.IsTrue(qviViewModel.RemoveEmptyEntries);
 
             Assert.AreEqual(5, qviViewModel.SplitTypeList.Count);
             CollectionAssert.Contains(qviViewModel.SplitTypeList, QuickVariableInputViewModel.SplitTypeIndex);

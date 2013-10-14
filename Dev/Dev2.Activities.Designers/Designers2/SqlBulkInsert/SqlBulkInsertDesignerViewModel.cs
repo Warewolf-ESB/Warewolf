@@ -601,6 +601,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 var mappings = GetInputMappings().ToList();
                 QuickVariableInputViewModel.Overwrite = true;
                 QuickVariableInputViewModel.IsOverwriteEnabled = false;
+                QuickVariableInputViewModel.RemoveEmptyEntries = false;
                 QuickVariableInputViewModel.SplitType = Core.QuickVariableInput.QuickVariableInputViewModel.SplitTypeNewLine;
                 QuickVariableInputViewModel.VariableListString = string.Join(Environment.NewLine, mappings.Select(GetFieldName));
                 QuickVariableInputViewModel.Prefix = GetRecordsetName(mappings) + "(*).";
@@ -609,7 +610,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         static string GetFieldName(DataColumnMapping dc)
         {
-            return string.IsNullOrEmpty(dc.InputColumn) ? dc.OutputColumn.ColumnName : DataListUtil.ExtractFieldNameFromValue(dc.InputColumn);
+            return string.IsNullOrEmpty(dc.InputColumn) ? string.Empty : DataListUtil.ExtractFieldNameFromValue(dc.InputColumn);
         }
 
         string GetRecordsetName(IEnumerable<DataColumnMapping> mappings)

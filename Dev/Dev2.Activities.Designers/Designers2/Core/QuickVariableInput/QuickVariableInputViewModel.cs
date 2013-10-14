@@ -225,6 +225,14 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
         public static readonly DependencyProperty CanAddProperty =
             DependencyProperty.Register("CanAdd", typeof(bool), typeof(QuickVariableInputViewModel), new PropertyMetadata(false));
 
+        public bool RemoveEmptyEntries
+        {
+            get { return (bool)GetValue(RemoveEmptyEntriesProperty); }
+            set { SetValue(RemoveEmptyEntriesProperty, value); }
+        }
+
+        public static readonly DependencyProperty RemoveEmptyEntriesProperty =
+            DependencyProperty.Register("RemoveEmptyEntries", typeof(bool), typeof(QuickVariableInputViewModel), new PropertyMetadata(true));        
 
         public PreviewViewModel PreviewViewModel
         {
@@ -315,7 +323,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
         void UpdatePreviewViewModelInputs()
         {
             var tokenizer = CreateTokenizer();
-            DataListUtil.UpsertTokens(PreviewViewModel.Inputs, tokenizer, Prefix, Suffix);
+            DataListUtil.UpsertTokens(PreviewViewModel.Inputs, tokenizer, Prefix, Suffix, RemoveEmptyEntries);
         }
 
         #endregion

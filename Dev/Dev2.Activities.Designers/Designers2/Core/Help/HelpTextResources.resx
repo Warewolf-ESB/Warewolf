@@ -293,7 +293,8 @@ To traverse an retrieve the raw response from a webpage, enter it in here.</valu
   <data name="SqlBulkInsertHelpInputColumn" xml:space="preserve">
     <value>To bulk insert data into a table, put the data to insert in here.
 Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.
-NOTE: A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.</value>
+A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.
+To quickly change the input data, press the Quick Variable Input button and ammend the mappings as necessary.</value>
   </data>
   <data name="SqlBulkInsertHelpResult" xml:space="preserve">
     <value>Only variables go in here.

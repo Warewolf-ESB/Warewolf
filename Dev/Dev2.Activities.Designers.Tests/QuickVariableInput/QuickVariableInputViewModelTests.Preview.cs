@@ -150,5 +150,56 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             VerifySplitTypeWithNewLine("\n", doesVariableListContainNewLine: false, doPreview: true);
             VerifySplitTypeWithNewLine("\r", doesVariableListContainNewLine: false, doPreview: true);
         }
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("QuickVariableInputViewModel_PreviewRequested")]
+        public void QuickVariableInputViewModel_PreviewRequested_RemoveEmptyEntriesFalse_CorrectPreviewOutput()
+        {
+            const string Expected = @"1 [[Customer().Fname]]
+2 
+3 [[Customer().TelNo]]";
+
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
+            {
+                Suffix = "",
+                Prefix = "Customer().",
+                VariableListString = "Fname,,TelNo",
+                SplitType = "Chars",
+                SplitToken = ",",
+                Overwrite = false,
+                RemoveEmptyEntries = false
+            };
+
+           
+            qviViewModel.PreviewViewModel.PreviewCommand.Execute(null);
+
+            Assert.AreEqual(Expected, qviViewModel.PreviewViewModel.Output);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("QuickVariableInputViewModel_PreviewRequested")]
+        public void QuickVariableInputViewModel_PreviewRequested_RemoveEmptyEntriesTrue_CorrectPreviewOutput()
+        {
+            const string Expected = @"1 [[Customer().Fname]]
+2 [[Customer().LName]]
+3 [[Customer().TelNo]]";
+
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
+            {
+                Suffix = "",
+                Prefix = "Customer().",
+                VariableListString = "Fname,LName,TelNo",
+                SplitType = "Chars",
+                SplitToken = ",",
+                Overwrite = true,
+                RemoveEmptyEntries = true
+            };
+            qviViewModel.PreviewViewModel.PreviewCommand.Execute(null);
+
+            Assert.AreEqual(Expected, qviViewModel.PreviewViewModel.Output);
+        }
     }
 }

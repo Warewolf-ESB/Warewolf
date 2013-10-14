@@ -677,7 +677,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var viewModel = CreateViewModel(databases);
 
             var selectedDatabase = databases.Keys.First();
-            var selectedTable = databases[selectedDatabase][0];
+            var selectedTable = databases[selectedDatabase][2];
 
             viewModel.SelectedDatabase = selectedDatabase;
             viewModel.SelectedTable = selectedTable;
@@ -689,6 +689,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             }
 
             var expectedInputColumns = selectedTable.Columns.Select(c => string.Format("[[rs(*).{0}]]", c.ColumnName)).ToList();
+            expectedInputColumns[1] = string.Empty; // randomly blank one of the values to simulate user leaving entry blank in QVI
 
             //------------Execute Test---------------------------
             viewModel.TestAddToCollection(expectedInputColumns, overwrite);
@@ -723,6 +724,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Assert Results-------------------------
             Assert.IsFalse(viewModel.QuickVariableInputViewModel.Overwrite);
             Assert.IsTrue(viewModel.QuickVariableInputViewModel.IsOverwriteEnabled);
+            Assert.IsTrue(viewModel.QuickVariableInputViewModel.RemoveEmptyEntries);
             Assert.AreNotEqual(QuickVariableInputViewModel.SplitTypeNewLine, viewModel.QuickVariableInputViewModel.SplitType);
             Assert.IsTrue(string.IsNullOrEmpty(viewModel.QuickVariableInputViewModel.VariableListString));
             Assert.IsTrue(string.IsNullOrEmpty(viewModel.QuickVariableInputViewModel.Prefix));
@@ -739,10 +741,14 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var viewModel = CreateViewModel(databases);
 
             var selectedDatabase = databases.Keys.First();
-            var selectedTable = databases[selectedDatabase][0];
+            var selectedTable = databases[selectedDatabase][3];
+
 
             viewModel.SelectedDatabase = selectedDatabase;
             viewModel.SelectedTable = selectedTable;
+            
+            const int BlankIndex = 2;
+            viewModel.ModelItemCollection[BlankIndex].SetProperty("InputColumn", "");
 
             //------------Execute Test---------------------------
             viewModel.ShowQuickVariableInput = true;
@@ -750,15 +756,18 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.QuickVariableInputViewModel.Overwrite);
             Assert.IsFalse(viewModel.QuickVariableInputViewModel.IsOverwriteEnabled);
+            Assert.IsFalse(viewModel.QuickVariableInputViewModel.RemoveEmptyEntries);
             Assert.AreEqual(QuickVariableInputViewModel.SplitTypeNewLine, viewModel.QuickVariableInputViewModel.SplitType);
             Assert.IsFalse(string.IsNullOrEmpty(viewModel.QuickVariableInputViewModel.VariableListString));
             Assert.IsFalse(string.IsNullOrEmpty(viewModel.QuickVariableInputViewModel.Prefix));
 
-            var expectedVariableList = string.Join(Environment.NewLine, selectedTable.Columns.Select(c => c.ColumnName));
-            Assert.AreEqual(expectedVariableList, viewModel.QuickVariableInputViewModel.VariableListString);
+            var i = 0;
+            var expectedVariableList = string.Join(Environment.NewLine, selectedTable.Columns.Select(c => i++ == BlankIndex ? "": c.ColumnName));
 
+            Assert.AreEqual(expectedVariableList, viewModel.QuickVariableInputViewModel.VariableListString);
             Assert.AreEqual(string.Format("{0}(*).", selectedTable.TableName), viewModel.QuickVariableInputViewModel.Prefix);
         }
+
 
         static void VerifyTables(List<DbTable> expectedTables, List<DbTable> actualTables)
         {

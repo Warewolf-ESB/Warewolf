@@ -283,5 +283,52 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             CollectionAssert.AreEqual(expected, actual);
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("QuickVariableInputViewModel_AddCommand")]
+        public void QuickVariableInputViewModel_AddCommand_RemoveEmptyEntriesTrue_CorrectResultsReturned()
+        {
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
+            {
+                Suffix = "",
+                Prefix = "Customer().",
+                VariableListString = @"FName LName TelNo Email",
+                SplitType = "Space",
+                SplitToken = "",
+                Overwrite = false,
+                RemoveEmptyEntries = true
+            };
+
+            qviViewModel.AddCommand.Execute(null);
+
+            var actual = qviViewModel.PreviewViewModel.Inputs.Select(input => input.Key).ToList();
+            var expected = new List<string> { "[[Customer().FName]]", "[[Customer().LName]]", "[[Customer().TelNo]]", "[[Customer().Email]]" };
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("QuickVariableInputViewModel_AddCommand")]
+        public void QuickVariableInputViewModel_AddCommand_RemoveEmptyEntriesFalse_CorrectResultsReturned()
+        {
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
+            {
+                Suffix = "",
+                Prefix = "Customer().",
+                VariableListString = @"FName  TelNo Email",
+                SplitType = "Space",
+                SplitToken = "",
+                Overwrite = false,
+                RemoveEmptyEntries = false
+            };
+
+            qviViewModel.AddCommand.Execute(null);
+
+            var actual = qviViewModel.PreviewViewModel.Inputs.Select(input => input.Key).ToList();
+            var expected = new List<string> { "[[Customer().FName]]", "", "[[Customer().TelNo]]", "[[Customer().Email]]" };
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }
