@@ -17,7 +17,6 @@ namespace Dev2.Studio.UI.Tests
     {
         #region Fields
 
-        const string LocalHostServerName = "localhost";
         const string ExplorerTab = "Explorer";
         DocManagerUIMap _docManagerMap;
         ExplorerUIMap _explorerUiMap;

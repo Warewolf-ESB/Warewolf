@@ -456,11 +456,14 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                     break;
                 }
             }
-            var tabFarRightCoord = findContentPane.BoundingRectangle.Right;
-            var tabYCoord = findContentPane.Top;
-            //click relative to the right side of the tab (should be well clear of the explorer tab)
-            Mouse.Click(new Point(tabFarRightCoord - 100, tabYCoord + 500));
-            Playback.Wait(2500);
+            if (findContentPane != null)
+            {
+                var tabFarRightCoord = findContentPane.BoundingRectangle.Right;
+                var tabYCoord = findContentPane.Top;
+                //click relative to the right side of the tab (should be well clear of the explorer tab)
+                Mouse.Click(new Point(tabFarRightCoord - 100, tabYCoord + 500));
+                Playback.Wait(2500);
+            }
         }
 
         public void ClickNewServerButton()

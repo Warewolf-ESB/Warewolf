@@ -146,7 +146,7 @@ namespace Dev2.Studio.UI.Tests
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUiMap.ClearExplorerSearchText();
             ExplorerUiMap.EnterExplorerSearchText("Edit Service Workflow");
-            ExplorerUiMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "UI TEST", "Edit Service Workflow");
+            ExplorerUiMap.DoubleClickOpenProject("RemoteConnection", "WORKFLOWS", "UI TEST", "Edit Service Workflow");
 
             //------------Execute Test---------------------------
 
