@@ -215,16 +215,16 @@ namespace Dev2.DataList
                 // TODO : Inject fuzzy matching logic here ;)
                 var fuzzyMatchDefinitions = GenerateMatchFragmentsFromDataList();
 
-                result = CreateMappingList(mappingDefinitions, parser, fuzzyMatchDefinitions);
+                result = CreateMappingList(mappingDefinitions, parser, true, fuzzyMatchDefinitions);
             }
             else
             {
                 
                 // generate the master view ;)
-                var masterView = CreateMappingList(mappingDefinitions, parser);
+                var masterView = CreateMappingList(mappingDefinitions, parser, true);
 
                 // use existing data ;)
-                var existingView = CreateMappingList(savedMappingData, parser);
+                var existingView = CreateMappingList(savedMappingData, parser, false);
 
                 // Now adjust for the difference between the two views ;)
                 result = ReconsileExitingAndMasterView(masterView, existingView);
@@ -258,20 +258,24 @@ namespace Dev2.DataList
         /// </summary>
         /// <param name="mappingDefinitions">The mapping definitions.</param>
         /// <param name="parser">The parser.</param>
+        /// <param name="autoAddBrackets">if set to <c>true</c> [automatic add brackets].</param>
         /// <param name="fuzzyMatch">The fuzzy match.</param>
         /// <returns></returns>
-        private IList<IInputOutputViewModel> CreateMappingList(string mappingDefinitions, IDev2LanguageParser parser, FuzzyMatchVO fuzzyMatch = null)
+        private IList<IInputOutputViewModel> CreateMappingList(string mappingDefinitions, IDev2LanguageParser parser, bool autoAddBrackets, FuzzyMatchVO fuzzyMatch = null)
         {
             IList<IInputOutputViewModel> result = new List<IInputOutputViewModel>();
             IList<IDev2Definition> concreteDefinitions = parser.ParseAndAllowBlanks(mappingDefinitions);
 
             foreach(var def in concreteDefinitions)
             {
-                var injectValue = def.Value;
+                var injectValue = def.RawValue;
 
                 if (!string.IsNullOrEmpty(injectValue))
                 {
-                    injectValue = DataListUtil.AddBracketsToValueIfNotExist(injectValue);
+                    if (autoAddBrackets)
+                    {
+                        injectValue = DataListUtil.AddBracketsToValueIfNotExist(injectValue);
+                    }
                 }
                 else
                 {
@@ -288,7 +292,8 @@ namespace Dev2.DataList
 
                 var injectMapsTo = def.MapsTo;
 
-                if (!string.IsNullOrEmpty(injectMapsTo))
+                // no saved mappings add brackets ;)
+                if(!string.IsNullOrEmpty(injectMapsTo) && string.IsNullOrEmpty(SavedInputMapping))
                 {
                     injectMapsTo = DataListUtil.AddBracketsToValueIfNotExist(injectMapsTo);
                 }

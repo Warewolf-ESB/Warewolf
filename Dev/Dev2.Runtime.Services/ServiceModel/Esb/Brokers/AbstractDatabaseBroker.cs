@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Xml;
+﻿using System.Collections.Concurrent;
+using System.IO;
 using Dev2.Common;
 using Dev2.Runtime.ServiceModel.Data;
 using System;
@@ -16,19 +16,37 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
     /// </summary>
     public abstract class AbstractDatabaseBroker
     {
+        #region ServiceMethodDataRepo
+
+        private static ConcurrentDictionary<DbSource, ServiceMethodList> _theCache = new ConcurrentDictionary<DbSource, ServiceMethodList>();
+
+        #endregion
+
         #region Methods
 
         /// <summary>
         /// Gets the service methods for service.
         /// </summary>
         /// <param name="dbSource">The db source.</param>
+        /// <param name="forceRefresh">if set to <c>true</c> [force refresh].</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">resource</exception>
-        public ServiceMethodList GetServiceMethods(DbSource dbSource)
+        public ServiceMethodList GetServiceMethods(DbSource dbSource, bool forceRefresh)
         {
             if(dbSource == null)
             {
                 throw new ArgumentNullException("dbSource");
+            }
+
+            // Check the cache for a value ;)
+            if (!forceRefresh)
+            {
+                ServiceMethodList cacheResult;
+                _theCache.TryGetValue(dbSource, out cacheResult);
+                if (cacheResult != null)
+                {
+                    return cacheResult;
+                }
             }
 
             var serviceMethods = new ServiceMethodList();
@@ -61,6 +79,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 GetStoredProcedures(conn, procedureFunc, functionFunc);
                 conn.Close();
             }
+
+            // Add to cache ;)
+            _theCache.TryAdd(dbSource, serviceMethods);
 
             return serviceMethods;
         }
@@ -196,7 +217,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                                 ServerLogger.LogError(e);
                             }
                         }
-
                     }
                 }
             }

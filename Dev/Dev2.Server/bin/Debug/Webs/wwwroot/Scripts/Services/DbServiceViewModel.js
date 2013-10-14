@@ -222,6 +222,7 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
             resourceID: resourceID,
             resourceType: "DbService"
         });
+        
         $.post("Service/Services/Get" + window.location.search, args, function (result) {
             self.data.resourceID(result.ResourceID);
             self.data.resourceType(result.ResourceType);
@@ -290,7 +291,9 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
         self.isSourceMethodsLoading(true);
         self.hasTestResults(false);
         self.hasTestResultRecords(false);
-        
+
+        console.log("Load Methods [ " + "Service/Services/DbMethods" + window.location.search, ko.toJSON(source) + " ]");
+
         $.post("Service/Services/DbMethods" + window.location.search, ko.toJSON(source), function (result) {
             self.isSourceMethodsLoading(false);
             self.sourceMethods(result.sort(utils.nameCaseInsensitiveSort));

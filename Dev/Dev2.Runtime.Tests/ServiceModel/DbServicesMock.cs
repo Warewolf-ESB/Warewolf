@@ -16,7 +16,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             return service.Recordset;
         }
 
-        public override ServiceMethodList FetchMethods(DbSource source)
+        public override ServiceMethodList FetchMethods(DbSource source, bool forceRefresh)
         {
             var result = new ServiceMethodList();
             var random = new Random();

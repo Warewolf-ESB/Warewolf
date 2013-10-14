@@ -48,7 +48,7 @@ namespace Dev2.Runtime
         /// <returns>
         /// true if the operation was successful; otherwise, false
         /// </returns>
-        public bool TryInvoke(string className, string methodName, string args, Guid workspaceID, Guid dataListID, out object result)
+        public bool TryInvoke(string className, string methodName, string args, Guid workspaceID, Guid dataListID, bool forceRefresh, out object result)
         {
             result = null;
             try
@@ -73,8 +73,8 @@ namespace Dev2.Runtime
         /// <param name="className">The name of the class to be used.</param>
         /// <param name="methodName">The name of the method to be invoked.</param>
         /// <param name="args">The arguments to the method; this is typically a JSON string.</param>
-        /// <param name="dataListID">The data list ID.</param>
         /// <param name="workspaceID">The workspace ID.</param>
+        /// <param name="dataListID">The data list ID.</param>
         /// <returns>
         /// The result of the operation; this is typically a JSON string.
         /// </returns>
@@ -87,7 +87,7 @@ namespace Dev2.Runtime
                 if(method != null)
                 {
                     var service = method.IsStatic ? null : Activator.CreateInstance(serviceType);
-                    var actionResult = method.Invoke(service, new object[] { args, workspaceID, dataListID });
+                    var actionResult = method.Invoke(service, new object[] { args, workspaceID, dataListID});
                     if(actionResult != null)
                     {
                         return actionResult;

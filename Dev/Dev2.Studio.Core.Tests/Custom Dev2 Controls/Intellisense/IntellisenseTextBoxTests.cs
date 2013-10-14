@@ -15,22 +15,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
     {
         #region Test Initialization
 
-        [TestInitialize]
-        public void Init()
-        {
-//            Monitor.Enter(DataListSingletonTest.DataListSingletonTestGuard);
-//
-//
-//
-//            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-           // Monitor.Exit(DataListSingletonTest.DataListSingletonTestGuard);
-        }
-
         //BUG 9639
         [TestMethod]
         // This test is here for when the designers load. The check is to prevent them from hammering the providers on load ;)

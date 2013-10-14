@@ -183,7 +183,7 @@ namespace Dev2
 
                             foreach (string keyValuePair in keyValuePairs)
                             {
-                                var keyValue = keyValuePair.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);                                
+                                var keyValue = keyValuePair.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
                                 string formFieldValue = string.Empty;
                                 if(keyValue.Length > 1)
                                 {
@@ -204,10 +204,10 @@ namespace Dev2
                                     {
                                         ServerLogger.LogError(ex);
                                     }
-                                    formData.CreateElement(keyValue[0]).SetValue(formFieldValue);
-                                }
+                                formData.CreateElement(keyValue[0]).SetValue(formFieldValue);
                             }
                         }
+                    }
                     }
                     catch(Exception ex)
                     {
@@ -396,7 +396,6 @@ namespace Dev2
             var className = ctx.Request.BoundVariables["name"];
             var dataListID = GetQueryStringValue(ctx, "dlid");
             var workspaceID = GetQueryStringValue(ctx, "wid");
-
             dynamic result;
             try
             {

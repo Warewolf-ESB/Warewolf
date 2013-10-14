@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Dev2.Studio.Core.Helpers
 {
+    /// <summary>
+    /// NO TEST COVERAGE!!!!
+    /// </summary>
     public static class TypeSwitch
     {
         public class CaseInfo

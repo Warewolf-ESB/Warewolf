@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
@@ -10,8 +9,9 @@ using System.Security;
 using System.Security.Permissions;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml;
-using Dev2.PathOperations;
 using Microsoft.Win32.SafeHandles;
 using Dev2.Common;
 
@@ -51,7 +51,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             var procedureTypeColumn = GetDataColumn(proceduresDataTable, "ROUTINE_TYPE");
             var procedureSchemaColumn = GetDataColumn(proceduresDataTable, "SPECIFIC_SCHEMA"); // ROUTINE_CATALOG - ROUTINE_SCHEMA ,SPECIFIC_SCHEMA
 
-            foreach (DataRow row in proceduresDataTable.Rows)
+
+            // Refactor made this incredablely slow!!!!!!
+            foreach(DataRow row in proceduresDataTable.Rows)
             {
                 //
                 // Create the procedure command
@@ -72,17 +74,17 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 //
                 // Determine procedure type, stored procedure or function, and invoke the appropriate processor
                 //
-                if (IsStoredProcedure(row, procedureTypeColumn))
+                if(IsStoredProcedure(row, procedureTypeColumn))
                 {
                     procedureProcessor(procedureCommand, parameters, procedureHelpText);
                 }
-                else if (IsFunction(row, procedureTypeColumn))
+                else if(IsFunction(row, procedureTypeColumn))
                 {
                     functionProcessor(procedureCommand, parameters, procedureHelpText);
                 }
 
             }
-            
+
         }
 
         /// <summary>
