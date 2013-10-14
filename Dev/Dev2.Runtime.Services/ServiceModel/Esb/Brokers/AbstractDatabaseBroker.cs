@@ -18,7 +18,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
     {
         #region ServiceMethodDataRepo
 
-        private static ConcurrentDictionary<DbSource, ServiceMethodList> _theCache = new ConcurrentDictionary<DbSource, ServiceMethodList>();
+        public static ConcurrentDictionary<DbSource, ServiceMethodList> TheCache = new ConcurrentDictionary<DbSource, ServiceMethodList>();
 
         #endregion
 
@@ -41,7 +41,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             if (!dbSource.ReloadActions)
             {
                 ServiceMethodList cacheResult;
-                _theCache.TryGetValue(dbSource, out cacheResult);
+                TheCache.TryGetValue(dbSource, out cacheResult);
                 if (cacheResult != null)
                 {
                     return cacheResult;
@@ -50,6 +50,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             // else reload actions ;)
 
             var serviceMethods = new ServiceMethodList();
+
 
             //
             // Function to handle procedures returned by the data broker
@@ -81,7 +82,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             }
 
             // Add to cache ;)
-            _theCache.TryAdd(dbSource, serviceMethods);
+            TheCache.TryAdd(dbSource, serviceMethods);
 
             return serviceMethods;
         }

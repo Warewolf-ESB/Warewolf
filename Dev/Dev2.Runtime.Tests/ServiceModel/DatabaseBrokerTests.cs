@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using Dev2.Common;
@@ -14,7 +15,81 @@ namespace Dev2.Tests.Runtime.ServiceModel
     [TestClass]
     public class DatabaseBrokerTests
     {
-        
+
+        #region GetMethods
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("AbstractDataBaseBroker_GetMethods")]
+        public void AbstractDataBaseBroker_GetServiceMethods_WhenNotCached_FreshResults()
+        {
+            //------------Setup for test--------------------------
+            TestDatabaseBroker broker = new TestDatabaseBroker();
+            Mock<DbSource> source = new Mock<DbSource>();
+            //------------Execute Test---------------------------
+
+            var result = broker.GetServiceMethods(source.Object);
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("AbstractDataBaseBroker_GetMethods")]
+        public void AbstractDataBaseBroker_GetServiceMethods_WhenCached_CachedResults()
+        {
+            //------------Setup for test--------------------------
+            TestDatabaseBroker broker = new TestDatabaseBroker();
+            
+            DbSource source  = new DbSource();
+
+            TestDatabaseBroker.TheCache = new ConcurrentDictionary<DbSource, ServiceMethodList>();
+            var methodList = new ServiceMethodList();
+            methodList.Add(new ServiceMethod("bob", "bob src", null, null, null));
+
+            TestDatabaseBroker.TheCache.TryAdd(source, methodList);
+            //------------Execute Test---------------------------
+
+            var result = broker.GetServiceMethods(source);
+
+            // set back to empty ;)
+            TestDatabaseBroker.TheCache = new ConcurrentDictionary<DbSource, ServiceMethodList>();
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual("bob", result[0].Name);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("AbstractDataBaseBroker_GetMethods")]
+        public void AbstractDataBaseBroker_GetServiceMethods_WhenCachedNoRefreshRequested_FreshResults()
+        {
+            //------------Setup for test--------------------------
+            TestDatabaseBroker broker = new TestDatabaseBroker();
+
+            DbSource source = new DbSource();
+            source.ReloadActions = true;
+
+            TestDatabaseBroker.TheCache = new ConcurrentDictionary<DbSource, ServiceMethodList>();
+            var methodList = new ServiceMethodList();
+            methodList.Add(new ServiceMethod("bob", "bob src", null, null, null));
+
+            TestDatabaseBroker.TheCache.TryAdd(source, methodList);
+            //------------Execute Test---------------------------
+
+            var result = broker.GetServiceMethods(source);
+
+            // set back to empty ;)
+            TestDatabaseBroker.TheCache = new ConcurrentDictionary<DbSource, ServiceMethodList>();
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual(0, result.Count);
+        }
+
+        #endregion
 
         #region DbTest
 
@@ -67,6 +142,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             };
             return service;
         }
+
+        //serviceMethods.Add(serviceMethod);
 
         class TestDatabaseBroker : AbstractDatabaseBroker
         {
