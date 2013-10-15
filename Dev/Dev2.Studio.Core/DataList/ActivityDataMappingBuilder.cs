@@ -125,10 +125,10 @@ namespace Dev2.DataList
                 SavedOutputMapping = activity.SavedOutputMapping;
                 ActivityType = activity.UnderlyingWebActivityObjectType;
 
-                IsWorkflow = activity.ResourceModel.ResourceType == ResourceType.WorkflowService;
-
                 if (activity.ResourceModel != null)
                 {
+                    IsWorkflow = activity.ResourceModel.ResourceType == ResourceType.WorkflowService;
+
                     // extract the IO data too ;)
                     string serviceDefinition = activity.ResourceModel.ServiceDefinition;
                     if (!string.IsNullOrEmpty(serviceDefinition))
