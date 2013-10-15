@@ -228,6 +228,7 @@ OS version : ");
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FeedbackViewModel_GetDefaultMailClient")]
+        [Ignore]//testing environments need outlook installed
         public void FeedbackViewModel_GetDefaultMailClient_OutlookIsInstalled_MailClientIsOutlook()
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
