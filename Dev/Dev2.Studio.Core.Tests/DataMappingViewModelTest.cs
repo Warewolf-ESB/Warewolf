@@ -18,11 +18,9 @@ namespace Dev2.Core.Tests {
     ///</summary>
     [TestClass()]
     public class DataMappingViewModelTest {
-        //Mock<IDataMappingListFactory> _mockDataMappingListFactory = new Mock<IDataMappingListFactory>();
         Mock<IWebActivity> _mockWebActivity = new Mock<IWebActivity>();
         Mock<IContextualResourceModel> _mockresource = new Mock<IContextualResourceModel>(); 
         Mock<IDataListViewModel> _mockDataListViewModel = new Mock<IDataListViewModel>();
-        //Mock<IDataListFactory> _mockDataListFactory = new Mock<IDataListFactory>();
         IList<IInputOutputViewModel> _outputInOutList = new List<IInputOutputViewModel>();
         IList<IInputOutputViewModel> _inputInOutList = new List<IInputOutputViewModel>();
 
@@ -69,9 +67,6 @@ namespace Dev2.Core.Tests {
             outputDev2defList.Add(_mockDev2DefOut5.Object);
             outputDev2defList.Add(_mockDev2DefOut6.Object);
 
-            //_mockDataMappingListFactory.Setup(dmlf => dmlf.CreateListOutputMapping(It.IsAny<String>())).Returns(outputDev2defList);
-            //_mockDataMappingListFactory.Setup(dmlf => dmlf.CreateListInputMapping(It.IsAny<String>())).Returns(inputDev2defList);
-
             _inputInOutList = new List<IInputOutputViewModel>();
             Mock<IInputOutputViewModel> _mockInOutVm1 = Dev2MockFactory.SetupIInputOutputViewModel("reg", "", "", false, "", true, "reg", "NUD2347");
             Mock<IInputOutputViewModel> _mockInOutVm2 = Dev2MockFactory.SetupIInputOutputViewModel("asdfsad", "registration223", "", false, "registration223", true, "asdfsad", "w3rt24324");
@@ -101,7 +96,6 @@ namespace Dev2.Core.Tests {
 
             _mockDataListViewModel.Setup(dlvm => dlvm.Resource).Returns(_mockresource.Object);
             DataListSingleton.SetDataList(_mockDataListViewModel.Object);
-            //_mockDataListViewModel.Setup(dlvm => dlvm.RootDataListItem).Returns(_mockDataListItemViewModel.Object);
 
             _mockWebActivity.SetupAllProperties();
             _mockWebActivity.Setup(activity => activity.XMLConfiguration).Returns(StringResourcesTest.WebActivity_XmlConfig);
@@ -112,11 +106,8 @@ namespace Dev2.Core.Tests {
             _mockWebActivity.Object.ServiceName = "MyTestActivity";
             _mockWebActivity.Object.ResourceModel = _mockresource.Object;
 
-            //_mockDataListViewModelFactory.Setup(dlvmf => dlvmf.CreateDataListViewModel(_mockresource.Object)).Returns(_mockDataListViewModel.Object);
-
             _mockWebActivity.Setup(activity => activity.UnderlyingWebActivityObjectType).Returns(typeof(DsfWebPageActivity));
             _dataMappingViewModel = new DataMappingViewModel(_mockWebActivity.Object);
-            //_dataMappingViewModel.MainViewModel = _mockMainViewModel.Object;
 
         }
 

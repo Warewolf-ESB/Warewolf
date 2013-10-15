@@ -645,8 +645,8 @@ namespace Dev2.Core.Tests
                 _mainViewModel.ActivateItem(firstCtx);
                 _mainViewModel.DeactivateItem(firstCtx, true);
 
-                Assert.AreEqual(2, _mainViewModel.Items.Count);
-                Assert.IsTrue(_mainViewModel.ActiveItem.Equals(secondCtx));
+                Assert.AreEqual(3, _mainViewModel.Items.Count);
+                Assert.IsFalse(_mainViewModel.ActiveItem.Equals(secondCtx));
         }
 
         [TestMethod]
@@ -1435,62 +1435,63 @@ namespace Dev2.Core.Tests
                 Assert.AreEqual(null, mockMainViewModel.ActiveItem);
         }
 
-        // PBI 9405 - 2013.06.13 - Massimo.Guerrera
         [TestMethod]
-        public void MainViewModelDeactivateItemWithPreviousItemOpenExpectedActiveItemToBePreviousItem()
+        [Owner("Travis Frisinger")]
+        [TestCategory("MainViewModel_UnsavedWorkflowDialog")]
+        public void MainViewModel_UnsavedWorkflowDialog_WhenXPressed_WorkflowRemainsOpen()
         {
-                var wsiRepo = new Mock<IWorkspaceItemRepository>();
-                wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
-                wsiRepo.Setup(r => r.Write()).Verifiable();
+            var wsiRepo = new Mock<IWorkspaceItemRepository>();
+            wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
+            wsiRepo.Setup(r => r.Write()).Verifiable();
 
-                #region Setup ImportService - GRRR!
+            #region Setup ImportService - GRRR!
 
-                SetupImportServiceForPersistenceTests(wsiRepo);
+            SetupImportServiceForPersistenceTests(wsiRepo);
 
-                #endregion
+            #endregion
 
-                var envRepo = new Mock<IEnvironmentRepository>();
-                var resourceRepo = new Mock<IResourceRepository>();
-                resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
+            var envRepo = new Mock<IEnvironmentRepository>();
+            var resourceRepo = new Mock<IResourceRepository>();
+            resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
 
-                var envConn = new Mock<IEnvironmentConnection>();
-                var env = new Mock<IEnvironmentModel>();
-                envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-                env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
-                env.Setup(e => e.Connection).Returns(envConn.Object);
-                envRepo.Setup(r => r.All()).Returns(new[] { env.Object });
-                envRepo.Setup(e => e.Source).Returns(env.Object);
-                envRepo.Setup(r => r.ReadSession()).Returns(new[] { env.Object.ID });
-                Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-                var mockMainViewModel = new MainViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
-                var resourceID = Guid.NewGuid();
-                var serverID = Guid.NewGuid();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var env = new Mock<IEnvironmentModel>();
+            envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
+            env.Setup(e => e.Connection).Returns(envConn.Object);
+            envRepo.Setup(r => r.All()).Returns(new[] { env.Object });
+            envRepo.Setup(e => e.Source).Returns(env.Object);
+            envRepo.Setup(r => r.ReadSession()).Returns(new[] { env.Object.ID });
+            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var mockMainViewModel = new MainViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var resourceID = Guid.NewGuid();
+            var serverID = Guid.NewGuid();
 
-                #region Setup WorkSurfaceContextViewModel1
+            #region Setup WorkSurfaceContextViewModel1
 
-                var resourceModel = new Mock<IContextualResourceModel>();
-                resourceModel.Setup(m => m.Environment).Returns(env.Object);
-                resourceModel.Setup(m => m.ID).Returns(resourceID);
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment).Returns(env.Object);
+            resourceModel.Setup(m => m.ID).Returns(resourceID);
 
-                Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
-                mockPopUp.Setup(m => m.Show()).Verifiable();
-                var securityContext = new Mock<IFrameworkSecurityContext>();
-                var workflowHelper = new Mock<IWorkflowHelper>();
-                var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, securityContext.Object, mockPopUp.Object, false);
-                var contextViewModel1 = new WorkSurfaceContextViewModel(
-                    new WorkSurfaceKey { ResourceID = resourceID, ServerID = serverID, WorkSurfaceContext = designerViewModel.WorkSurfaceContext },
-                    designerViewModel);
+            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+            mockPopUp.Setup(m => m.Show()).Verifiable();
+            var securityContext = new Mock<IFrameworkSecurityContext>();
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, securityContext.Object, mockPopUp.Object, false);
+            var contextViewModel1 = new WorkSurfaceContextViewModel(
+                new WorkSurfaceKey { ResourceID = resourceID, ServerID = serverID, WorkSurfaceContext = designerViewModel.WorkSurfaceContext },
+                designerViewModel);
 
-                #endregion
+            #endregion
 
-                mockMainViewModel.Items.Add(contextViewModel1);
-                mockMainViewModel.PopupProvider = mockPopUp.Object;
+            mockMainViewModel.Items.Add(contextViewModel1);
+            mockMainViewModel.PopupProvider = mockPopUp.Object;
 
-                mockMainViewModel.ActivateItem(mockMainViewModel.Items[0]);
-                mockMainViewModel.ActivateItem(mockMainViewModel.Items[1]);
-                mockMainViewModel.CallDeactivate(mockMainViewModel.Items[1]);
-                Assert.AreEqual(mockMainViewModel.Items[0], mockMainViewModel.ActiveItem);
-                mockPopUp.Verify(m => m.Show(), Times.Once());
+            mockMainViewModel.ActivateItem(mockMainViewModel.Items[0]);
+            mockMainViewModel.ActivateItem(mockMainViewModel.Items[1]);
+            mockMainViewModel.CallDeactivate(mockMainViewModel.Items[1]);
+            Assert.AreEqual(mockMainViewModel.Items[1], mockMainViewModel.ActiveItem);
+            mockPopUp.Verify(m => m.Show(), Times.Once());
         }
 
         // PBI 9405 - 2013.06.13 - Massimo.Guerrera

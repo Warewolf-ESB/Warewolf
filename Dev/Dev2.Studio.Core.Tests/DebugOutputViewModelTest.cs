@@ -261,38 +261,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void DebugOutputViewModel_DisplayedExpectsDisplayedToCorrectViewModel()
-        {
-            ImportService.CurrentContext = _importServiceContext;
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            _mainViewModel = new MainViewModel(_eventAggregator.Object, asyncWorker.Object, _environmentRepo, new Mock<IVersionChecker>().Object, false);
-            AddAdditionalContext();
-
-            var msg1 = new AddWorkSurfaceMessage(_firstResource.Object);
-            _mainViewModel.Handle(msg1);
-
-            var msg = new DebugWriterWriteMessage
-                (DebugStateFactory.Create(_firstResource.Object.ServerID, _firstResource.Object.ID, StateType.Message,
-                                          "Test1"));
-            var msg2 = new DebugWriterWriteMessage
-                (DebugStateFactory.Create(_secondResource.Object.ServerID, _secondResource.Object.ID, StateType.Message,
-                                          "Test2"));
-            //_mainViewModel.Handle(msg);
-            //_mainViewModel.Handle(msg2);
-
-            var firstctx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
-            var secondctx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
-            
-            var firstDebug = firstctx.DebugOutputViewModel;
-            var firstItem = firstDebug.RootItems.First() as DebugStringTreeViewItemViewModel;
-            Assert.IsTrue(firstDebug.RootItems.Count == 1 && firstItem.Content == "Test1");
-
-            var secondDebug = secondctx.DebugOutputViewModel;
-            var secondItem = secondDebug.RootItems.First() as DebugStringTreeViewItemViewModel;
-            Assert.IsTrue(secondDebug.RootItems.Count == 1 && secondItem.Content == "Test2");
-        }
-
-        [TestMethod]
         [TestCategory("DebugOutputViewModel_OpenItem")]
         [Description("DebugOutputViewModel OpenItem must set the DebugState's properties.")]
         [Owner("Trevor Williams-Ros")]

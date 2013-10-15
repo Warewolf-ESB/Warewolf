@@ -646,7 +646,7 @@ namespace Dev2.Studio.ViewModels
                         else
                         {
                             model.Rollback();
-                        }
+                    }
                     }
                     catch(Exception e)
                     {
