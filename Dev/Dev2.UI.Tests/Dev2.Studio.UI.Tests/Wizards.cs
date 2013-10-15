@@ -297,7 +297,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         #endregion
 
         #region Server Wizard
-
+          
         [TestMethod]
         public void ClickNewRemoteWarewolfServerExpectedRemoteWarewolfServerOpens()
         {
@@ -308,9 +308,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 Assert.Fail("Error - Clicking the remote warewolf button does not create the new server window");
             }
-            NewServerUIMap.CloseWindow();
-        }
-
+            Playback.Wait(1000);
+            SendKeys.SendWait("{ESC}");
+        } 
+        
         #endregion
     }
 }
