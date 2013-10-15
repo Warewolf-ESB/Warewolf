@@ -290,46 +290,49 @@ namespace Dev2.DynamicServices
 
             private void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, DateTime? workflowStartTime = null)
             {
-                Guid parentInstanceID;
-                Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
-
-                var debugState = new DebugState
+                if (dataObject != null)
                 {
-                    ID = dataObject.DataListID,
-                    ParentID = parentInstanceID,
-                    WorkspaceID = dataObject.WorkspaceID,
-                    StateType = stateType,
-                    StartTime = workflowStartTime??DateTime.Now,
-                    EndTime = DateTime.Now,
-                    ActivityType = ActivityType.Workflow,
-                    DisplayName = dataObject.ServiceName,
-                    IsSimulation = dataObject.IsOnDemandSimulation,
-                    ServerID = dataObject.ServerID,
-                    OriginatingResourceID = dataObject.ResourceID,
-                    OriginalInstanceID = dataObject.OriginalInstanceID,
-                    Server = string.Empty,
-                    Version = string.Empty,
-                    SessionID = dataObject.DebugSessionID,
-                    EnvironmentID = dataObject.EnvironmentID,
-                    Name = GetType().Name,
-                    HasError = AllErrors.HasErrors(),
-                    ErrorMessage = AllErrors.MakeDisplayReady()
-                };
+                    Guid parentInstanceID;
+                    Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
 
-                if (stateType == StateType.End)
-                {
-                    debugState.NumberOfSteps = dataObject.NumberOfSteps;
-                }
+                    var debugState = new DebugState
+                        {
+                            ID = dataObject.DataListID,
+                            ParentID = parentInstanceID,
+                            WorkspaceID = dataObject.WorkspaceID,
+                            StateType = stateType,
+                            StartTime = workflowStartTime??DateTime.Now,
+                            EndTime = DateTime.Now,
+                            ActivityType = ActivityType.Workflow,
+                            DisplayName = dataObject.ServiceName,
+                            IsSimulation = dataObject.IsOnDemandSimulation,
+                            ServerID = dataObject.ServerID,
+                            OriginatingResourceID = dataObject.ResourceID,
+                            OriginalInstanceID = dataObject.OriginalInstanceID,
+                            Server = string.Empty,
+                            Version = string.Empty,
+                            SessionID = dataObject.DebugSessionID,
+                            EnvironmentID = dataObject.EnvironmentID,
+                            Name = GetType().Name,
+                            HasError = AllErrors.HasErrors(),
+                            ErrorMessage = AllErrors.MakeDisplayReady()
+                        };
 
-                if (stateType == StateType.Start)
-                {
-                    debugState.ExecutionOrigin = dataObject.ExecutionOrigin;
-                    debugState.ExecutionOriginDescription = dataObject.ExecutionOriginDescription;
-                }
+                    if (stateType == StateType.End)
+                    {
+                        debugState.NumberOfSteps = dataObject.NumberOfSteps;
+                    }
 
-                if (dataObject.IsDebugMode())
-                {
-                    DebugDispatcher.Instance.Write(debugState);
+                    if (stateType == StateType.Start)
+                    {
+                        debugState.ExecutionOrigin = dataObject.ExecutionOrigin;
+                        debugState.ExecutionOriginDescription = dataObject.ExecutionOriginDescription;
+                    }
+
+                    if (dataObject.IsDebugMode())
+                    {
+                        DebugDispatcher.Instance.Write(debugState);
+                    }
                 }
             }
 
