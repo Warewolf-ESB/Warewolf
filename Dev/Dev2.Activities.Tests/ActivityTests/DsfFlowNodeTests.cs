@@ -210,18 +210,27 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(2, inRes.Count);
-            Assert.AreEqual(60, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual(3, inRes.Count);
+            Assert.AreEqual(30, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual(30, inRes[1].FetchResultsList().Count);
+
             Assert.AreEqual("Wallis", inRes[0].ResultsList[2].Value);
             Assert.AreEqual("Barney", inRes[0].ResultsList[5].Value);
             Assert.AreEqual("Trevor", inRes[0].ResultsList[8].Value);
             Assert.AreEqual("Travis", inRes[0].ResultsList[11].Value);
-            Assert.AreEqual("If Wallis Is Equal Buchan OR Barney Is Equal Buchan OR Trevor Is Equal Williams-Ros OR Travis Is Equ", inRes[1].ResultsList[2].Value);
+
+            Assert.AreEqual("Buchan", inRes[1].ResultsList[2].Value);
+            Assert.AreEqual("Buchan", inRes[1].ResultsList[5].Value);
+            Assert.AreEqual("Williams-Ros", inRes[1].ResultsList[8].Value);
+            Assert.AreEqual("Frisigner", inRes[1].ResultsList[11].Value);
+
+            Assert.AreEqual("If Wallis Is Equal Buchan OR Barney Is Equal Buchan OR Trevor Is Equal Williams-Ros OR Travis Is Equ", inRes[2].ResultsList[2].Value);
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(1, outRes[0].FetchResultsList().Count);
             Assert.AreEqual("Passed Test", outRes[0].ResultsList[0].Value);
         }
+
         [TestMethod]
         public void DecisionGetDebugInputOutputWithTwoStarredIndexedRecordsetsExpectedValidOutput()
         {
@@ -242,13 +251,21 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(2, inRes.Count);
-            Assert.AreEqual(60, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual(3, inRes.Count);
+            Assert.AreEqual(30, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual(30, inRes[1].FetchResultsList().Count);
+
             Assert.AreEqual("Wallis", inRes[0].ResultsList[2].Value);
             Assert.AreEqual("Barney", inRes[0].ResultsList[5].Value);
             Assert.AreEqual("Trevor", inRes[0].ResultsList[8].Value);
             Assert.AreEqual("Travis", inRes[0].ResultsList[11].Value);
-            Assert.AreEqual("If Wallis Is Equal Buchan OR Barney Is Equal Buchan OR Trevor Is Equal Williams-Ros OR Travis Is Equ", inRes[1].ResultsList[2].Value);
+
+            Assert.AreEqual("Buchan", inRes[1].ResultsList[2].Value);
+            Assert.AreEqual("Buchan", inRes[1].ResultsList[5].Value);
+            Assert.AreEqual("Williams-Ros", inRes[1].ResultsList[8].Value);
+            Assert.AreEqual("Frisigner", inRes[1].ResultsList[11].Value);
+
+            Assert.AreEqual("If Wallis Is Equal Buchan OR Barney Is Equal Buchan OR Trevor Is Equal Williams-Ros OR Travis Is Equ", inRes[2].ResultsList[2].Value);
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(1, outRes[0].FetchResultsList().Count);
@@ -434,7 +451,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             new WorkflowHelper().SetProperties(workflow.Properties);
             new WorkflowHelper().SetVariables(flowchart.Variables);
 
-        #endregion
+            #endregion
 
             var dataObject = NativeActivityTest.CreateDataObject(false, false);
             var compiler = DataListFactory.CreateDataListCompiler();
