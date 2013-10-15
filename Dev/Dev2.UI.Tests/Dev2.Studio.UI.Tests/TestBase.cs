@@ -672,6 +672,12 @@ namespace Dev2.CodedUI.Tests
             // And drag it onto the point
             ToolboxUIMap.DragControlToWorkflowDesigner(workflowControl, p);
 
+            // Wait for dialog
+            PopupDialogUIMap.WaitForDialog();
+
+            // Wait for refresh
+            Playback.Wait(2000);
+
             #region Checking Ok Button enabled property
 
             //Get the Ok button from the window
@@ -684,7 +690,7 @@ namespace Dev2.CodedUI.Tests
             ActivityDropUIMap.DoubleClickFirstWorkflowFolder();
 
             //Single click a resource in the tree
-            ActivityDropUIMap.SingleClickAResource();
+            ActivityDropUIMap.SingleClickFirstResource();
 
             //get the ok button from the window
             buttonControl = ActivityDropUIMap.GetOkButtonOnActivityDropWindow();
@@ -709,7 +715,7 @@ namespace Dev2.CodedUI.Tests
             ActivityDropUIMap.DoubleClickAResource();
 
             // Check if it exists on the designer
-            Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "fileTest"));
+            Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "activity"));
             SendKeys.SendWait("{DELETE}");
 
             #endregion
@@ -725,13 +731,16 @@ namespace Dev2.CodedUI.Tests
             // And drag it onto the point
             ToolboxUIMap.DragControlToWorkflowDesigner(workflowControl, p);
 
-            //Wait for the window to show up
+            // Wait for the window to show up
+            PopupDialogUIMap.WaitForDialog();
+
+            // Wait for refresh
             Playback.Wait(2000);
 
-            //Single click a folder in the tree
-            ActivityDropUIMap.SingleClickAResource();
+            // Single click a folder in the tree
+            ActivityDropUIMap.SingleClickFirstResource();
 
-            //Click the Ok button on the window
+            // Click the Ok button on the window
             ActivityDropUIMap.ClickCancelButton();
 
             // Check if it exists on the designer
@@ -855,7 +864,6 @@ namespace Dev2.CodedUI.Tests
 
         // Bug 8747
         [TestMethod]
-        [Ignore]//Jurie wrote this very badly needs to be revisitted
         public void DebugBuriedErrors_Expected_OnlyErrorStepIsInError()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
@@ -873,8 +881,10 @@ namespace Dev2.CodedUI.Tests
             // Open the Output
             DocManagerUIMap.ClickOpenTabPage("Output");
 
-            // Due to the complexity of the OutputUIMap, this test has been primarily hard-coded until a further rework
-            Assert.IsTrue(OutputUIMap.DoesBug8747Pass());
+            // Get nested steps
+            Assert.IsTrue(OutputUIMap.IsAnyStepsInError(), "Cannot see nested error steps in the debug output.");
+
+            // Everything passes :D
             TabManagerUIMap.CloseAllTabs();
         }
 

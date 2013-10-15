@@ -51,36 +51,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             return null;
         }
 
-        public bool DoesBug8747Pass()
-        {
-            WpfTree theTree = OutputTree();
-
-            // Item 0 is the XML at the top
-            UITestControl theWorkflow = theTree.Nodes[1];
-            UITestControl workflowSearcher = new UITestControl(theWorkflow);
-            workflowSearcher.SearchProperties.Add("AutomationId", "DsfActivity", PropertyExpressionOperator.Contains);
-            workflowSearcher.SearchProperties.Add("ControlType", "TreeItem");
-            UITestControlCollection subWorkflows = workflowSearcher.FindMatchingControls();
-            UITestControl firstWorkflow = subWorkflows[0];
-
-            // This lists the step of the specific bugs error
-            WpfTreeItem theStep = (WpfTreeItem)GetWorkflowSteps(firstWorkflow, "Assign")[0];
-            if (!IsStepInError(theStep))
-            {
-                return false;
-            }
-
-            // Whew - First one passes - How about the second one?
-            WpfTreeItem otherWorkflow = (WpfTreeItem)theTree.Nodes[3]; // It's also a step - Very confusing :p
-            if (IsStepInError(otherWorkflow))
-            {
-                return false;
-            }
-
-            // Everything passes :D
-            return true;
-        }
-
         public UITestControlCollection GetOutputWindow()
         {
             WpfTree debugOutputControlTree = OutputTree();

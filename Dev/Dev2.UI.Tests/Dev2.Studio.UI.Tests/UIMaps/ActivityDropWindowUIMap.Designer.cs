@@ -75,31 +75,24 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses
         /// </summary>
         public void SingleClickAFolder()
         {
-            #region Variable Declarations
-            WpfTreeItem uIDev2StudioViewModelsTreeItem1 = this.UIWorkflowWindow.UITheNavigationViewCustom.UITvExplorerTree.UIDev2StudioViewModelsTreeItem.UIDev2StudioViewModelsTreeItem1.UIDev2StudioViewModelsTreeItem;
-            #endregion
-
-            // Click 'Dev2.Studio.ViewModels.Navigation.EnvironmentTreeV...' -> 'Dev2.Studio.ViewModels.Navigation.ServiceTypeTreeV...' -> 'Dev2.Studio.ViewModels.Navigation.CategoryTreeView...' tree item
-            Mouse.Click(uIDev2StudioViewModelsTreeItem1, new Point(57, 9));
+            var localHostExplorerTree = GetLocalHostExplorerTree();
+            foreach(var treeChild in localHostExplorerTree.GetChildren())
+            {
+                var workflowsAutoID = treeChild.GetProperty("AutomationID").ToString();
+                if(workflowsAutoID.Contains("WORKFLOW"))
+                {
+                    var firstFolder = treeChild.GetChildren()[6];
+                    if(firstFolder.ControlType == "TreeItem")
+                    {
+                        Mouse.Click(firstFolder, new Point(57, 9));
+                        return;
+                    }
+                }
+            }
+            throw new UITestControlNotFoundException("Folder not found");
         }
 
-        /// <summary>
-        /// SingleClickAResource
-        /// </summary>
-        public void SingleClickAResource()
-        {
-            #region Variable Declarations
-            WpfTreeItem uIDev2StudioViewModelsTreeItem1 = this.UIWorkflowWindow.UITheNavigationViewCustom.UITvExplorerTree.UIDev2StudioViewModelsTreeItem.UIDev2StudioViewModelsTreeItem1.UIDev2StudioViewModelsTreeItem.UIDev2StudioViewModelsTreeItem1;
-            #endregion
-
-            // Double-Click 'Dev2.Studio.ViewModels.Navigation.EnvironmentTreeV...' -> 'Dev2.Studio.ViewModels.Navigation.ServiceTypeTreeV...' -> 'Dev2.Studio.ViewModels.Navigation.CategoryTreeView...' -> 'Dev2.Studio.ViewModels.Navigation.ResourceTreeView...' tree item
-            Mouse.Click(uIDev2StudioViewModelsTreeItem1, new Point(73, 9));
-        }
-
-        /// <summary>
-        /// DoubleClickAFolder
-        /// </summary>
-        public void DoubleClickFirstWorkflowFolder()
+        private UITestControl GetLocalHostExplorerTree()
         {
             var studioWindow = new UIBusinessDesignStudioWindow();
             var SelectActivityDialog = studioWindow.GetChildren()[0];
@@ -111,47 +104,95 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses
                     foreach (var navigationViewChid in child.GetChildren())
                     {
                         var navAutoID = navigationViewChid.GetProperty("AutomationID").ToString();
-                        if (navAutoID.Contains("TheNavigationView"))
+                        if (navAutoID.Contains("Navigation"))
                         {
-                            foreach (var navChid in child.GetChildren())
+                            foreach (var navChild in navigationViewChid.GetChildren())
                             {
-                                var autoID = navChid.GetProperty("AutomationID").ToString();
+                                var autoID = navChild.GetProperty("AutomationID").ToString();
                                 if (autoID.Contains("localhost"))
                                 {
-                                    foreach (var treeChild in child.GetChildren())
-                                    {
-                                        var workflowsAutoID = treeChild.GetProperty("AutomationID").ToString();
-                                        if (workflowsAutoID.Contains("WORKFLOW"))
-                                        {
-                                            foreach (var folder in treeChild.GetChildren())
-                                            {
-                                                var folderAutoID = folder.ControlType;
-                                                if (folderAutoID == "TreeItem")
-                                                {
-                                                    Mouse.DoubleClick(folder, new Point(57, 9));
-                                                }
-                                            }
-                                        }
-                                    }
+                                    return navChild;
                                 }
                             }
                         }
                     }
                 }
             }
+            throw new UITestControlNotFoundException("Localhost explorer tree not found, Activity Drop Window may not have openned yet.");
         }
-        
+
+        /// <summary>
+        /// SingleClickAResource
+        /// </summary>
+        public void SingleClickFirstResource()
+        {
+            var localHostExplorerTree = GetLocalHostExplorerTree();
+            foreach(var treeChild in localHostExplorerTree.GetChildren())
+            {
+                var workflowsAutoID = treeChild.GetProperty("AutomationID").ToString();
+                if(workflowsAutoID.Contains("WORKFLOW"))
+                {
+                    var firstFolder = treeChild.GetChildren()[6];
+                    if(firstFolder.ControlType == "TreeItem")
+                    {
+                        var firstResource = firstFolder.GetChildren()[7];
+                        if(firstResource.ControlType == "TreeItem")
+                        {
+                            Mouse.Click(firstResource, new Point(73, 9));
+                            return;
+                        }
+                    }
+                }
+            }
+            throw new UITestControlNotFoundException("No resources found");
+        }
+
+        /// <summary>
+        /// DoubleClickAFolder
+        /// </summary>
+        public void DoubleClickFirstWorkflowFolder()
+        {
+            var localHostExplorerTree = GetLocalHostExplorerTree();
+            foreach(var treeChild in localHostExplorerTree.GetChildren())
+            {
+                var workflowsAutoID = treeChild.GetProperty("AutomationID").ToString();
+                if (workflowsAutoID.Contains("WORKFLOW"))
+                {
+                    var firstFolder = treeChild.GetChildren()[6];
+                    if (firstFolder.ControlType == "TreeItem")
+                    {
+                        Mouse.DoubleClick(firstFolder, new Point(57, 9));
+                        return;
+                    }
+                }
+            }
+            throw new UITestControlNotFoundException("Folder not found");
+        }
+
         /// <summary>
         /// DoubleClickAResource
         /// </summary>
         public void DoubleClickAResource()
         {
-            #region Variable Declarations
-            WpfTreeItem uIDev2StudioViewModelsTreeItem1 = this.UIWorkflowWindow.UITheNavigationViewCustom.UITvExplorerTree.UIDev2StudioViewModelsTreeItem.UIDev2StudioViewModelsTreeItem1.UIDev2StudioViewModelsTreeItem.UIDev2StudioViewModelsTreeItem1;
-            #endregion
-
-            // Double-Click 'Dev2.Studio.ViewModels.Navigation.EnvironmentTreeV...' -> 'Dev2.Studio.ViewModels.Navigation.ServiceTypeTreeV...' -> 'Dev2.Studio.ViewModels.Navigation.CategoryTreeView...' -> 'Dev2.Studio.ViewModels.Navigation.ResourceTreeView...' tree item
-            Mouse.DoubleClick(uIDev2StudioViewModelsTreeItem1, new Point(73, 9));
+            var localHostExplorerTree = GetLocalHostExplorerTree();
+            foreach(var treeChild in localHostExplorerTree.GetChildren())
+            {
+                var workflowsAutoID = treeChild.GetProperty("AutomationID").ToString();
+                if(workflowsAutoID.Contains("WORKFLOW"))
+                {
+                    var firstFolder = treeChild.GetChildren()[6];
+                    if(firstFolder.ControlType == "TreeItem")
+                    {
+                        var firstResource = firstFolder.GetChildren()[7];
+                        if(firstResource.ControlType == "TreeItem")
+                        {
+                            Mouse.DoubleClick(firstResource, new Point(73, 9));
+                            return;
+                        }
+                    }
+                }
+            }
+            throw new UITestControlNotFoundException("No resources found");
         }
         
         #region Properties
