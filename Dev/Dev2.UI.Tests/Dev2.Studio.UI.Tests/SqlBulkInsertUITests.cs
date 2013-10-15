@@ -57,7 +57,7 @@ namespace Dev2.Studio.UI.Tests
             ToolboxUiMap.DragControlToWorkflowDesigner(theControl, point);
 
             var smallDataGrid = GetControlById("SmallDataGrid");
-            Assert.IsTrue(smallDataGrid.GetChildren().Count > 0);
+            Assert.IsTrue(smallDataGrid.GetChildren().Count == 0);
         }
 
         [TestMethod]
