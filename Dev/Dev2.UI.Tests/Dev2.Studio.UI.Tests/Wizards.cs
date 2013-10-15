@@ -66,7 +66,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void ClickNewPluginServiceExpectedPluginServiceOpens()
         {
-            RibbonUIMap.ClickRibbonMenu("Plugin Service");
+            RibbonUIMap.ClickRibbonMenuItem("UI_RibbonHomeTabPluginServiceBtn_AutoID");
             WizardsUIMap.WaitForWizard(5000, false);
             UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if(uiTestControl == null)
@@ -75,7 +75,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             }
             Playback.Wait(5000);
             SendKeys.SendWait("{ESC}");
-            PluginServiceWizardUIMap.ClickCancel();
         }
 
         [TestMethod]
@@ -123,7 +122,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void ClickNewDatabaseServiceExpectedDatabaseServiceOpens()
         {
-            RibbonUIMap.ClickRibbonMenuItem("Database Service");
+            RibbonUIMap.ClickRibbonMenuItem("UI_RibbonHomeTabDBServiceBtn_AutoID");
             UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if(uIItemImage == null)
             {
@@ -298,20 +297,20 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         #endregion
 
         #region Server Wizard
-          
+
         [TestMethod]
         public void ClickNewRemoteWarewolfServerExpectedRemoteWarewolfServerOpens()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClickNewServerButton();
             UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
-            if (uiTestControl == null)
+            if(uiTestControl == null)
             {
                 Assert.Fail("Error - Clicking the remote warewolf button does not create the new server window");
             }
             NewServerUIMap.CloseWindow();
-        } 
-        
+        }
+
         #endregion
     }
 }
