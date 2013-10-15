@@ -1,4 +1,6 @@
-﻿namespace Dev2.DataList.Contract
+﻿using System;
+
+namespace Dev2.DataList.Contract
 {
     public class DataListVerifyPart : IDataListVerifyPart {
 
@@ -38,11 +40,21 @@
             Recordset = recordset;
             RecordsetIndex = index;
 
-
+            if(String.IsNullOrEmpty(recordset) && String.IsNullOrEmpty(field))
+            {
+                throw new ArgumentNullException(string.Format("{0},{1}","recordset","field"),"Please supply a value for recordset or field");
+            }
             if (recordset != null) {
                 if (recordset.Contains("[") && recordset.Contains("]")) {
                     int start = recordset.IndexOf("(", System.StringComparison.Ordinal);
-                    Recordset = recordset.Substring(0, (start));
+                    if(start != -1)
+                    {
+                        Recordset = recordset.Substring(0, (start));
+                    }
+                    else
+                    {
+                        Recordset = recordset.Replace("[", "").Replace("]", "");
+                    }
                 }
             }
 
@@ -79,7 +91,7 @@
                 {
                     if (field.Length > 0)
                     {
-                        if (recordset.Contains("(") && recordset.Contains(")"))
+                        if (recordset != null && (recordset.Contains("(") && recordset.Contains(")")))
                         {
                             string tmp = recordset.Substring(0, recordset.IndexOf("(", System.StringComparison.Ordinal));
 
@@ -92,7 +104,7 @@
                     }
                     else
                     {
-                        if (recordset.Contains("(") && recordset.Contains(")"))
+                        if (recordset != null && (recordset.Contains("(") && recordset.Contains(")")))
                         {
                             string tmp = recordset.Substring(0, recordset.IndexOf("(", System.StringComparison.Ordinal));
                             DisplayValue = "[[" + tmp + "(" + RecordsetIndex + ")]]";

@@ -384,6 +384,38 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddRecordsetNamesIfMissing();
 
             Assert.IsTrue(_dataListViewModel.RecsetCollection.Count == 1 && _dataListViewModel.RecsetCollection[0].Children[0].DisplayName == "Car().Make");
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListViewModel_AddRecordSetNamesIfMissing")]
+        public void AddRecordSetNamesIfMissing_DataListContainingRecordSet_WithBracketedRecsetName_Expected_Positive()
+        {
+
+            //------------Setup for test--------------------------
+            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
+
+            _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+
+            _dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            _dataListViewModel.InitializeDataListViewModel(_mockResourceModel.Object);
+            _dataListViewModel.RecsetCollection.Clear();
+            _dataListViewModel.ScalarCollection.Clear();
+
+            IDataListItemModel carRecordset = DataListItemModelFactory.CreateDataListModel("[[Car]]", "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
+            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Make", "Make of vehicle", carRecordset));
+            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Model", "Model of vehicle", carRecordset));
+
+            _dataListViewModel.RecsetCollection.Add(carRecordset);
+            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel("Country", "name of Country", enDev2ColumnArgumentDirection.Both));
+
+            DataListSingleton.SetDataList(_dataListViewModel);
+            //------------Execute Test---------------------------
+            _dataListViewModel.AddRecordsetNamesIfMissing();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,_dataListViewModel.RecsetCollection.Count);
+            Assert.IsTrue(_dataListViewModel.RecsetCollection[0].DisplayName == "Car()");
+            Assert.IsTrue(_dataListViewModel.RecsetCollection[0].Children[0].DisplayName == "Car().Make");
         }     
 
         #endregion AddRecordsetNamesIfMissing Tests

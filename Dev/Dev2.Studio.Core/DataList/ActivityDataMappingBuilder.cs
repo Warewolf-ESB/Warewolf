@@ -127,7 +127,7 @@ namespace Dev2.DataList
 
                 if (activity.ResourceModel != null)
                 {
-                    IsWorkflow = activity.ResourceModel.ResourceType == ResourceType.WorkflowService;
+                IsWorkflow = activity.ResourceModel.ResourceType == ResourceType.WorkflowService;
 
                     // extract the IO data too ;)
                     string serviceDefinition = activity.ResourceModel.ServiceDefinition;
@@ -259,7 +259,7 @@ namespace Dev2.DataList
                 var existingView = CreateMappingList(savedMappingData, parser, false, isOutputMapping);
 
                 // Now adjust for the difference between the two views ;)
-                result = ReconsileExitingAndMasterView(masterView, existingView);
+                result = ReconcileExistingAndMasterView(masterView, existingView);
             }
 
             return result;
@@ -271,7 +271,7 @@ namespace Dev2.DataList
         /// <param name="masterView">The master view.</param>
         /// <param name="existingView">The existing view.</param>
         /// <returns></returns>
-        private IList<IInputOutputViewModel> ReconsileExitingAndMasterView(IList<IInputOutputViewModel> masterView, IList<IInputOutputViewModel> existingView)
+        private IList<IInputOutputViewModel> ReconcileExistingAndMasterView(IList<IInputOutputViewModel> masterView, IList<IInputOutputViewModel> existingView)
         {
             IList<IInputOutputViewModel> result = null;
 

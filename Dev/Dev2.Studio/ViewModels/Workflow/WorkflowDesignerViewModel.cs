@@ -1141,15 +1141,18 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             _wd.Context.Services.Subscribe<ViewStateService>(instance =>
             { });
-
+            
             _wd.View.PreviewDrop += ViewPreviewDrop;
             _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
-
+            _wd.View.Measure(new Size(2000,2000));
+            _wd.View.Focus();
             _wd.Context.Services.Subscribe<DesignerView>(instance =>
             {
                 // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
                 instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
                 instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;
+                
+                
             });
 
             _wd.Context.Items.Subscribe<Selection>(OnItemSelected);

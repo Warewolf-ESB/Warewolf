@@ -521,6 +521,10 @@ namespace Dev2.Studio.ViewModels.DataList
                     {
                         recset.DisplayName = string.Concat(recset.DisplayName, "()");
                     }
+                    if(recset.DisplayName.StartsWith("[[") && recset.DisplayName.Contains("]]"))
+                    {
+                        recset.DisplayName = recset.DisplayName.Replace("[", "").Replace("]", "");
+                    }
                     int childrenNum = recset.Children.Count;
                     int childrenCount = 0;
 

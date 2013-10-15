@@ -11,11 +11,14 @@ using Dev2.Core.Tests.Utils;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.ActivityViewModels;
+using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
@@ -494,7 +497,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
             var instanceID = Guid.NewGuid();
             var worstError = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.IsRequiredChanged, FixData = xml };
-
+            
             var vm = CreateActivityViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, worstError);
 
             vm.FixErrorsCommand.Execute(null);
@@ -801,7 +804,11 @@ namespace Dev2.Core.Tests.ViewModelTests
 
             var rootModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull, resourceErrors);
             var resourceModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull);
-
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new DataListItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
             var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, resourceModel.Object.Environment.ID, modelProperties);
 
             var envRepository = new Mock<IEnvironmentRepository>();

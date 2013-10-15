@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.DataList.Contract;
@@ -711,6 +712,161 @@ namespace Unlimited.UnitTest.Framework
             Assert.IsTrue(results.Count == 3);
         }
         */
+
+        #endregion
+
+        #region IntellisenseFactory Tests
+        // ReSharper disable InconsistentNaming
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IntellisenseFactory_CreateDataListValidationRecordsetPart")]
+        public void IntellisenseFactory_CreateDataListValidationRecordsetPart_NullRecordSetWithFieldName_ShouldReturnFieldNameWrappedInBrackets()
+        {
+            //------------Setup for test--------------------------
+            
+            
+            //------------Execute Test---------------------------
+            var dataListValidationRecordsetPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(null,"test","test","0");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[test]]",dataListValidationRecordsetPart.DisplayValue);
+        }       
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IntellisenseFactory_CreateDataListValidationRecordsetPart")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void IntellisenseFactory_CreateDataListValidationRecordsetPart_NullRecordSetWithNullFieldName_ShouldThrowException()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            IntellisenseFactory.CreateDataListValidationRecordsetPart(null,null,"test","0");
+            //------------Assert Results-------------------------
+        }    
+    
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IntellisenseFactory_CreateDataListValidationRecordsetPart")]
+        public void IntellisenseFactory_CreateDataListValidationRecordsetPart_RecordSetWithFieldName_ShouldReturnValidDisplayName()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var dataListValidationRecordsetPart = IntellisenseFactory.CreateDataListValidationRecordsetPart("rec","f1","test","0");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[rec(0).f1]]", dataListValidationRecordsetPart.DisplayValue);
+        } 
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IntellisenseFactory_CreateDataListValidationRecordsetPart")]
+        public void IntellisenseFactory_CreateDataListValidationRecordsetPart_RecordSetWithFieldNameWithIndex_ShouldReturnValidDisplayName()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var dataListValidationRecordsetPart = IntellisenseFactory.CreateDataListValidationRecordsetPart("rec","f1","test","3");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[rec(3).f1]]", dataListValidationRecordsetPart.DisplayValue);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IntellisenseFactory_CreateDataListValidationRecordsetPart")] // THIS DOES NOT LOOK CORRECT
+        public void IntellisenseFactory_CreateDataListValidationRecordsetPart_RecordSetWithSquareAndRoundBracketsWithNoFieldName_ShouldReturnValidDisplayName()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var dataListValidationRecordsetPart = IntellisenseFactory.CreateDataListValidationRecordsetPart("[[rec()]]", "", "test", "");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[[[rec()]]", dataListValidationRecordsetPart.DisplayValue);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IntellisenseFactory_CreateDataListValidationRecordsetPart")] // THIS DOES NOT LOOK CORRECT
+        public void IntellisenseFactory_CreateDataListValidationRecordsetPart_RecordSetWithSquareAndRoundBracketsWithFieldName_ShouldReturnValidDisplayName()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var dataListValidationRecordsetPart = IntellisenseFactory.CreateDataListValidationRecordsetPart("[[rec()]]", "f3", "test", "");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[[[rec().f3]]", dataListValidationRecordsetPart.DisplayValue);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IntellisenseFactory_CreateDataListValidationRecordsetPart")] // THIS DOES NOT LOOK CORRECT
+        public void IntellisenseFactory_CreateDataListValidationRecordsetPart_RecordSetWithSquareAndRoundBracketsWithFieldNameWithIndex_ShouldReturnValidDisplayName()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var dataListValidationRecordsetPart = IntellisenseFactory.CreateDataListValidationRecordsetPart("[[rec()]]", "f3", "test", "5");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[[[rec(5).f3]]", dataListValidationRecordsetPart.DisplayValue);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IntellisenseFactory_CreateDataListValidationRecordsetPart")]
+        // IS THIS VALID!!!!
+        public void IntellisenseFactory_CreateDataListValidationRecordsetPart_RecordSetWithRoundBracketsWithNoFieldNameWithIndex_ShouldReturnValidDisplayName()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var dataListValidationRecordsetPart = IntellisenseFactory.CreateDataListValidationRecordsetPart("rec()", "", "test", "5");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[rec(5)]]", dataListValidationRecordsetPart.DisplayValue);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IntellisenseFactory_CreateDataListValidationRecordsetPart")]
+        public void IntellisenseFactory_CreateDataListValidationRecordsetPart_RecordSetWithRoundBracketsWithNoFieldName_ShouldReturnValidDisplayName()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var dataListValidationRecordsetPart = IntellisenseFactory.CreateDataListValidationRecordsetPart("rec()", "", "test", "");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[rec()]]", dataListValidationRecordsetPart.DisplayValue);
+        } 
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IntellisenseFactory_CreateDataListValidationRecordsetPart")]
+        public void IntellisenseFactory_CreateDataListValidationRecordsetPart_NoRecordSetWithRoundBracketsWithFieldNameWithStartRoundBracket_ShouldReturnValidDisplayName()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var dataListValidationRecordsetPart = IntellisenseFactory.CreateDataListValidationRecordsetPart("", "f1(", "test", "");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[f1(", dataListValidationRecordsetPart.DisplayValue);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IntellisenseFactory_CreateDataListValidationRecordsetPart")]
+        public void IntellisenseFactory_CreateDataListValidationRecordsetPart_RecordSetWithRoundNoBracketsWithNoFieldNameWithStartRoundBracket_ShouldReturnValidDisplayName()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var dataListValidationRecordsetPart = IntellisenseFactory.CreateDataListValidationRecordsetPart("rec", "", "test", "");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[rec()]]", dataListValidationRecordsetPart.DisplayValue);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IntellisenseFactory_CreateDataListValidationRecordsetPart")]
+        public void IntellisenseFactory_CreateDataListValidationRecordsetPart_RecordSetWithSquareBracketsNoRound_ShouldReturnValidDisplayName()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var dataListValidationRecordsetPart = IntellisenseFactory.CreateDataListValidationRecordsetPart("[[rec]]", "", "test", "");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("rec()", dataListValidationRecordsetPart.DisplayValue);
+        }
+
 
         #endregion
     }

@@ -93,12 +93,38 @@ namespace Dev2.Studio
                 // Best effort ;)
             }
 
+            ForceShutdown();
+        }
+
+        void ForceShutdown()
+        {
             if(ShouldRestart)
             {
                 Task.Run(() => Process.Start(ResourceAssembly.Location, Guid.NewGuid().ToString()));
             }
             Environment.Exit(0);
         }
+
+        #region Implementation of IApp
+
+        #region Implementation of IApp
+
+        public new void Shutdown()
+        {
+            try
+            {
+                base.Shutdown();
+            }
+            catch
+            {
+                // Best effort ;)
+            }
+            ForceShutdown();
+        }
+
+        #endregion
+
+        #endregion
 
         public bool ShouldRestart { get; set; }
 
