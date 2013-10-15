@@ -261,7 +261,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Ignore]
         public void DebugOutputViewModel_DisplayedExpectsDisplayedToCorrectViewModel()
         {
             ImportService.CurrentContext = _importServiceContext;

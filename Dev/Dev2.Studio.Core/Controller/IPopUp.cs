@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 
 namespace Dev2.Studio.Core.Controller{
+
     public interface IPopupController {
         string Header { get; set; }
         string Description { get; set; }

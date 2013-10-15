@@ -130,13 +130,13 @@ namespace Dev2.Core.Tests
             }
         }
 
-//        [TestMethod]
-//        [Owner("Trevor Williams-Ros")]
-//        [TestCategory("DebugOutputViewModel_Append")]
-//        public void DebugOutputViewModel_Append_ContentIsDebugStateAndIDIsEmpty_ItemAddedAtRootAndIsNotExpanded()
-//        {
-//            DebugOutputViewModel_Append_ContentIsDebugState(contentID: Guid.Empty, contentParentID: Guid.NewGuid(), displayName: "Content");
-//        }
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DebugOutputViewModel_Append")]
+        public void DebugOutputViewModel_Append_ContentIsDebugStateAndIDIsEmpty_ItemAddedAtRootAndIsNotExpanded()
+        {
+            DebugOutputViewModel_Append_ContentIsDebugState(contentID: Guid.Empty, contentParentID: Guid.NewGuid(), displayName: "Content");
+        }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]

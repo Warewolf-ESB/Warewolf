@@ -54,6 +54,9 @@ using UserInterfaceLayoutModel = Dev2.Studio.Core.Models.UserInterfaceLayoutMode
 namespace Dev2.Studio.ViewModels
 {
     // PBI 9397 - 2013.06.09 - TWR: made class non-sealed to facilitate testing i.e. creating mock sub-classes
+    /// <summary>
+    /// 
+    /// </summary>
     [Export(typeof(IMainViewModel))]
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class MainViewModel : BaseConductor<WorkSurfaceContextViewModel>, IMainViewModel,
@@ -618,6 +621,7 @@ namespace Dev2.Studio.ViewModels
             WindowManager.ShowDialog(DialogViewModelFactory.CreateAboutDialog());
         }
 
+        // Write CodedUI Test Because of Silly Chicken affect ;)
         private bool ShowRemovePopup(IWorkflowDesignerViewModel workflowVM)
         {
             var result = PopupProvider.Show(string.Format(StringResources.DialogBody_NotSaved, workflowVM.ResourceModel.ResourceName), StringResources.DialogTitle_NotSaved,
@@ -635,15 +639,14 @@ namespace Dev2.Studio.ViewModels
                     var model = workflowVM.ResourceModel;
                     try
                     {
-                        if(workflowVM.EnvironmentModel.ResourceRepository.DoesResourceExistInRepo(model) &&
-                            workflowVM.ResourceModel.IsNewWorkflow)
+                        if(workflowVM.EnvironmentModel.ResourceRepository.DoesResourceExistInRepo(model) && workflowVM.ResourceModel.IsNewWorkflow)
                         {
                             DeleteResources(new List<IContextualResourceModel> { model }, false);                        
                         }
                         else
                         {
                             model.Rollback();
-                    }
+                        }
                     }
                     catch(Exception e)
                     {
@@ -652,12 +655,9 @@ namespace Dev2.Studio.ViewModels
 
                     NewWorkflowNames.Instance.Remove(workflowVM.ResourceModel.ResourceName);
                     return true;
-                case MessageBoxResult.None:
-                    return true;
-                case MessageBoxResult.Cancel:
+                default:
                     return false;
             }
-            return false;
         }
 
         private void StartStopRecordedFeedback()
@@ -1378,10 +1378,6 @@ namespace Dev2.Studio.ViewModels
                                 {
                                     remove = ShowRemovePopup(workflowVM);
                                 }
-//                                else
-//                                {
-//                                    remove = true;
-//                                }
 
                                 if(remove)
                                 {

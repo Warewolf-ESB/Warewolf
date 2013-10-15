@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
 using Caliburn.Micro;
 using Dev2.Composition;
-using Dev2.Services.Events;
 
 namespace Dev2.Studio.Core.ViewModels.Base
 {
