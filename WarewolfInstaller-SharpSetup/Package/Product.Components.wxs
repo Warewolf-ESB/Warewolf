@@ -343,7 +343,10 @@
                 <File Id="fil51C131FF9F7DC1FD326D279F3D46848B" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Images\tick.png" />
             </Component>
             <Component Id="cmp1241C03043275C1A45D62FBEC10112D5" Directory="dir2FA28F83112DD0E65B223D6D46AC3EF3" Guid="{D318C11D-813C-4126-9BB1-B65B398B3C17}">
-                <File Id="fil1457D7858881F7972D731DD9E17A382C" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Images\warning.png" />
+                <File Id="fil1457D7858881F7972D731DD9E17A382A" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Images\warning.png" />
+            </Component>
+            <Component Id="cmp1241C03043275C1A45D62FBEC10112D9" Directory="dir2FA28F83112DD0E65B223D6D46AC3EF3" Guid="{D318C11D-813C-4126-9BB1-B65B398B3C19}">
+                <File Id="fil1457D7858881F7972D731DD9E17A382C" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Images\refresh.png" />
             </Component>
             <Component Id="cmpDB150868257B1E7E7FB5539DC13225F3" Directory="dir596B6A4A55AAD0BC450A2AD6594790EB" Guid="{FC3841C8-8EC1-4118-AFBD-B5DF6356ED0A}">
                 <File Id="fil1DB650CE1CCB73F9E480875A0F4297FA" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\warewolf-globals.js" />
