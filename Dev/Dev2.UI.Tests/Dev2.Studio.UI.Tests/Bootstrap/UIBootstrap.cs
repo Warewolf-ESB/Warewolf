@@ -29,7 +29,7 @@ namespace Dev2.Studio.UI.Tests.Bootstrap
                 proc.StartInfo.FileName = runBatFileDir;
                 proc.StartInfo.RedirectStandardError = true;
                 proc.StartInfo.RedirectStandardOutput = true;
-                proc.StartInfo.UseShellExecute = true;
+                proc.StartInfo.UseShellExecute = false;
                 proc.Start();
                 Thread.Sleep(30000);
             }
@@ -48,7 +48,7 @@ namespace Dev2.Studio.UI.Tests.Bootstrap
                 proc.StartInfo.FileName = cleanupBatFileDir;
                 proc.StartInfo.RedirectStandardError = true;
                 proc.StartInfo.RedirectStandardOutput = true;
-                proc.StartInfo.UseShellExecute = true;
+                proc.StartInfo.UseShellExecute = false;
                 proc.Start();
             }
         }
