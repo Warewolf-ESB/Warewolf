@@ -40,11 +40,7 @@ namespace Dev2.DataList.Contract
             Recordset = recordset;
             RecordsetIndex = index;
 
-            if(String.IsNullOrEmpty(recordset) && String.IsNullOrEmpty(field))
-            {
-                throw new ArgumentNullException(string.Format("{0},{1}","recordset","field"),"Please supply a value for recordset or field");
-            }
-            if (recordset != null) {
+             if (recordset != null) {
                 if (recordset.Contains("[") && recordset.Contains("]")) {
                     int start = recordset.IndexOf("(", System.StringComparison.Ordinal);
                     if(start != -1)
@@ -91,7 +87,7 @@ namespace Dev2.DataList.Contract
                 {
                     if (field.Length > 0)
                     {
-                        if (recordset != null && (recordset.Contains("(") && recordset.Contains(")")))
+                        if (recordset.Contains("(") && recordset.Contains(")"))
                         {
                             string tmp = recordset.Substring(0, recordset.IndexOf("(", System.StringComparison.Ordinal));
 
@@ -104,7 +100,7 @@ namespace Dev2.DataList.Contract
                     }
                     else
                     {
-                        if (recordset != null && (recordset.Contains("(") && recordset.Contains(")")))
+                        if (recordset.Contains("(") && recordset.Contains(")"))
                         {
                             string tmp = recordset.Substring(0, recordset.IndexOf("(", System.StringComparison.Ordinal));
                             DisplayValue = "[[" + tmp + "(" + RecordsetIndex + ")]]";

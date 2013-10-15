@@ -735,19 +735,6 @@ namespace Unlimited.UnitTest.Framework
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("IntellisenseFactory_CreateDataListValidationRecordsetPart")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void IntellisenseFactory_CreateDataListValidationRecordsetPart_NullRecordSetWithNullFieldName_ShouldThrowException()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            IntellisenseFactory.CreateDataListValidationRecordsetPart(null,null,"test","0");
-            //------------Assert Results-------------------------
-        }    
-    
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("IntellisenseFactory_CreateDataListValidationRecordsetPart")]
         public void IntellisenseFactory_CreateDataListValidationRecordsetPart_RecordSetWithFieldName_ShouldReturnValidDisplayName()
         {
             //------------Setup for test--------------------------
