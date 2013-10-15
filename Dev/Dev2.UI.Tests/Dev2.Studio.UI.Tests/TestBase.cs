@@ -715,7 +715,7 @@ namespace Dev2.CodedUI.Tests
             ActivityDropUIMap.DoubleClickAResource();
 
             // Check if it exists on the designer
-            Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "activity"));
+            Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "DsfActivityDesigner"));
             SendKeys.SendWait("{DELETE}");
 
             #endregion
