@@ -270,10 +270,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             DebugTO = Broker.InitDebugSession(DebugTO);
             XmlData = DebugTO.XmlData;
             RememberInputs = DebugTO.RememberInputs;
-            GetDataListItemForXmlData();
+            DataList = DebugTO.BinaryDataList;
 
             // Flipping Jurie....
-            var myList = CreateListToBindTo(DataList);
+            var myList = CreateListToBindTo(DebugTO.BinaryDataList);
 
             WorkflowInputs.AddRange(myList);
         }
@@ -459,12 +459,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         #endregion Methods
 
         #region Private Methods
-        private void GetDataListItemForXmlData()
-        {
-            string error = "";
-            DataList = Broker.DeSerialize(XmlData, DebugTO.DataList, enTranslationTypes.XML, out error);
-        }
-
         private void CreateDataListObjectFromList()
         {
             string error = "";
@@ -486,13 +480,16 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             var result = new OptomizedObservableCollection<IDataListItem>();
 
-            var listOfEntries = dataList.FetchAllEntries();
-
-            foreach(IBinaryDataListEntry entry in listOfEntries
-                .Where(e => (e.ColumnIODirection == enDev2ColumnArgumentDirection.Input ||
-                e.ColumnIODirection == enDev2ColumnArgumentDirection.Both)))
+            if (dataList != null)
             {
-                result.AddRange(ConvertIBinaryDataListEntryToIDataListItem(entry));
+                var listOfEntries = dataList.FetchAllEntries();
+
+                foreach (IBinaryDataListEntry entry in listOfEntries
+                    .Where(e => (e.ColumnIODirection == enDev2ColumnArgumentDirection.Input ||
+                                 e.ColumnIODirection == enDev2ColumnArgumentDirection.Both)))
+                {
+                    result.AddRange(ConvertIBinaryDataListEntryToIDataListItem(entry));
+                }
             }
 
             return result;

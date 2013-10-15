@@ -73,11 +73,7 @@ namespace Dev2.Session
             if (_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
             {
                 var svrCompiler = DataListFactory.CreateServerDataListCompiler();
-                var errors = new ErrorResultTO();
-
-                // Data is not coming back correctly ;(
-                
-                // avoid issues with the StudioDebugTranslator ;)
+                ErrorResultTO errors;
 
                 var convertData = tmp.XmlData;
                 var mergeGuid = svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Encoding.UTF8.GetBytes(convertData), to.DataList, out errors);
@@ -85,6 +81,8 @@ namespace Dev2.Session
                 to.XmlData = tmp.RememberInputs
                                  ? (tmp.XmlData ?? "<DataList></DataList>")
                                  : (to.XmlData ?? "<DataList></DataList>");
+
+                to.BinaryDataList = svrCompiler.FetchBinaryDataList(null, mergeGuid, out errors);
             }
 
             // if no XML data copy over the DataList
@@ -207,7 +205,7 @@ namespace Dev2.Session
                 ErrorResultTO errors = new ErrorResultTO();
 
 
-                Guid resultID = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), data,
+                Guid resultID = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), data,
                                                     targetShape, out errors);
                 if (errors.HasErrors())
                 {
