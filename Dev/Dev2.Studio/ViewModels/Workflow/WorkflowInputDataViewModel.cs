@@ -271,7 +271,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             XmlData = DebugTO.XmlData;
             RememberInputs = DebugTO.RememberInputs;
             GetDataListItemForXmlData();
-            CreateListToBindTo(DataList).ToList().ForEach(i => WorkflowInputs.Add(i));
+
+            // Flipping Jurie....
+            var myList = CreateListToBindTo(DataList);
+
+            WorkflowInputs.AddRange(myList);
         }
 
         /// <summary>
@@ -282,7 +286,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if(itemToAdd != null && itemToAdd.IsRecordset)
             {
-                string error = "";
+                string error;
                 IList<Dev2Column> recsetCols = new List<Dev2Column>();
                 IBinaryDataListEntry recordset;
                 DataList.TryGetEntry(itemToAdd.Recordset, out recordset, out error);

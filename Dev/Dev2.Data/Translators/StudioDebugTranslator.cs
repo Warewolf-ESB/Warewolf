@@ -6,6 +6,7 @@ using System.Text;
 using System.Xml;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Translators;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
@@ -53,10 +54,8 @@ namespace Dev2.Server.DataList.Translators
                         for (int i = 1; i <= cnt; i++)
                         {
                             IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
-                            if (error != string.Empty)
-                            {
-                                errors.AddError(error);
-                            }
+                            errors.AddError(error);
+
                             result.Append("<");
                             result.Append(entry.Namespace);
                             result.Append(">");
@@ -120,18 +119,16 @@ namespace Dev2.Server.DataList.Translators
             }
             else
             {
+
                 result = BuildTargetShape(targetShape, out error);
-                if (!string.IsNullOrEmpty(error))
-                {
-                    errors.AddError(error);
-                }
+                errors.AddError(error);
 
                 // populate the shape 
                 if (payload != string.Empty)
                 {
                     try
                     {
-                        string toLoad = DataListUtil.StripCrap(payload); // clean up the rubish ;)
+                        string toLoad = payload; // DataListUtil.StripCrap(payload); // clean up the rubish ;)
                         XmlDocument xDoc = new XmlDocument();
                         try
                         {
@@ -143,15 +140,6 @@ namespace Dev2.Server.DataList.Translators
                             toLoad = "<root>" + toLoad + "</root>";
                             xDoc.LoadXml(toLoad);
                         }
-
-                        // we need to wrap and reload because it is a single level xml fragement ;)
-                        if (xDoc.DocumentElement != null && xDoc.DocumentElement.ChildNodes.Count == 1)
-                        {
-
-                            toLoad = "<root>" + toLoad + "</root>";
-                            xDoc.LoadXml(toLoad);
-                        }
-
 
                         if (!string.IsNullOrEmpty(toLoad))
                         {

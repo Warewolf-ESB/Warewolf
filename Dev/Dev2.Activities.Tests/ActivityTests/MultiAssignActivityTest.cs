@@ -105,7 +105,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             _fieldCollection.Add(new ActivityDTO("[[cRec(1).opt]]", "[[[[recset]]().[[field]]]]", _fieldCollection.Count));
             SetupArguments(
-                            @"<root>
+                            @"<DataList>
   <cRec>
     <opt></opt>
     <display />
@@ -116,8 +116,8 @@ namespace Dev2.Tests.Activities.ActivityTests
   </gRec>
   <recset></recset>
   <field></field>
-</root>"
-                          , @"<root>
+</DataList>"
+                          , @"<DataList>
   <cRec>
     <opt></opt>
     <display />
@@ -128,7 +128,7 @@ namespace Dev2.Tests.Activities.ActivityTests
   </gRec>
   <recset>gRec</recset>
   <field>opt</field>
-</root>");
+</DataList>");
 
             IDSFDataObject result = ExecuteProcess();
 

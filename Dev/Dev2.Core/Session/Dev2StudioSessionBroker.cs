@@ -20,7 +20,6 @@ namespace Dev2.Session
         private string _savePath = @"Warewolf\DebugData\PersistSettings.dat";
         private string _debugPersistPath; 
         private static readonly IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
-        private static readonly DataListFormat xmlFormat = DataListFormat.CreateFormat(GlobalConstants._XML);
         private static readonly DataListFormat binaryFormat = DataListFormat.CreateFormat(GlobalConstants._BINARY);
         // the settings lock object
         private readonly static object _settingsLock = new object();
@@ -76,9 +75,13 @@ namespace Dev2.Session
                 var svrCompiler = DataListFactory.CreateServerDataListCompiler();
                 var errors = new ErrorResultTO();
 
-                var mergeGuid = svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Encoding.UTF8.GetBytes(tmp.XmlData), to.DataList, out errors);
-                tmp.XmlData = svrCompiler.ConvertFrom(null, mergeGuid, enTranslationDepth.Data, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), out errors).FetchAsString();
+                // Data is not coming back correctly ;(
+                
+                // avoid issues with the StudioDebugTranslator ;)
 
+                var convertData = tmp.XmlData;
+                var mergeGuid = svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Encoding.UTF8.GetBytes(convertData), to.DataList, out errors);
+                tmp.XmlData = svrCompiler.ConvertFrom(null, mergeGuid, enTranslationDepth.Data, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), out errors).FetchAsString();
                 to.XmlData = tmp.RememberInputs
                                  ? (tmp.XmlData ?? "<DataList></DataList>")
                                  : (to.XmlData ?? "<DataList></DataList>");

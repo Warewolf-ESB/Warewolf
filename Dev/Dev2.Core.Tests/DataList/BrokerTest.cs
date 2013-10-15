@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using Dev2.Session;
 
-namespace Unlimited.UnitTest.Framework.DataList
+namespace Dev2.Tests.DataList
 {
     /// <summary>
     /// Summary description for BrokerTest
@@ -12,42 +12,14 @@ namespace Unlimited.UnitTest.Framework.DataList
     [TestClass]
     public class BrokerTest {
 
-        #region Test Variables
-        //private IDev2StudioSessionBroker broker = Dev2StudioSessionFactory.CreateBroker();
-
-        #endregion Test Variables
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributee
-        // Use ClassCleanup to run code after all tests in a class have run
-        [ClassCleanup()]
-        public static void MyClassCleanup() {
-        }
-
         
-        // Use TestInitialize to run code before running each test 
-        [TestInitialize()]
-        public void MyTestInitialize() {
-
-        }
-
         private void DeleteDir(string rootFolder)
         {
             if (Directory.Exists(rootFolder + @"\Dev2\"))
@@ -55,6 +27,7 @@ namespace Unlimited.UnitTest.Framework.DataList
                 DirectoryHelper.CleanUp(rootFolder + @"\Dev2\");
             }
         }
+
         #endregion
 
         #region InitSession Tests
@@ -71,7 +44,7 @@ namespace Unlimited.UnitTest.Framework.DataList
         public void InitSessionWithNoData()
         {
             DebugTO to = new DebugTO();
-            string rootFolder = System.IO.Path.GetTempPath() + Guid.NewGuid();
+            string rootFolder = Path.GetTempPath() + Guid.NewGuid();
             IDev2StudioSessionBroker broker = Dev2StudioSessionFactory.CreateBroker();
             to.RememberInputs = true;
             to.BaseSaveDirectory = rootFolder;
@@ -118,7 +91,7 @@ namespace Unlimited.UnitTest.Framework.DataList
             //DeleteDir();
             // bootstrap
             DebugTO to = new DebugTO();
-            string rootFolder = System.IO.Path.GetTempPath() + Guid.NewGuid();
+            string rootFolder = Path.GetTempPath() + Guid.NewGuid();
             IDev2StudioSessionBroker broker = Dev2StudioSessionFactory.CreateBroker();
             to.RememberInputs = true;
             to.BaseSaveDirectory = rootFolder;
@@ -128,12 +101,6 @@ namespace Unlimited.UnitTest.Framework.DataList
             to.WorkflowID = "DummyService";
             to = broker.InitDebugSession(to);
             to = broker.PersistDebugSession(to);
-
-        //    // just ensure the operation worked successfully with no errors
-
-        //    to.XmlData = "";
-
-        //    to = broker.InitDebugSession(to);
 
             Assert.AreEqual("<DataList><scalar1>s1</scalar1><rs><f1>f1Value</f1><f2>f2Value</f2></rs></DataList>", to.XmlData);
 
@@ -150,7 +117,7 @@ namespace Unlimited.UnitTest.Framework.DataList
         {
             // bootstrap
             DebugTO to = new DebugTO();
-            string rootFolder = System.IO.Path.GetTempPath() + Guid.NewGuid();
+            string rootFolder = Path.GetTempPath() + Guid.NewGuid();
             IDev2StudioSessionBroker broker = Dev2StudioSessionFactory.CreateBroker();
             to.RememberInputs = true;
             to.BaseSaveDirectory = rootFolder;
@@ -175,7 +142,7 @@ namespace Unlimited.UnitTest.Framework.DataList
         {
             // bootstrap
             DebugTO to = new DebugTO();
-            string rootFolder = System.IO.Path.GetTempPath() + Guid.NewGuid();
+            string rootFolder = Path.GetTempPath() + Guid.NewGuid();
             IDev2StudioSessionBroker broker = Dev2StudioSessionFactory.CreateBroker();
             to.RememberInputs = true;
             to.BaseSaveDirectory = rootFolder;
@@ -197,7 +164,6 @@ namespace Unlimited.UnitTest.Framework.DataList
 
         // BUG : Removing field names from datalist does not retain current datalist values
         [TestMethod]
-        [Ignore]
         public void PersistSessionWithSavedData_SubtlyChangedDataList_Expect_MergedXmlData()
         {
             // bootstrap
@@ -216,9 +182,7 @@ namespace Unlimited.UnitTest.Framework.DataList
             // just ensure the operation worked successfully with no errors
             to.DataList = "<DataList><rs><f2/></rs></DataList>";
             to = broker.InitDebugSession(to);
-            //Assert.Inconclusive("Bug {ID} has not been fixed!");
-            // Bug is currently not fixed
-            // Recomment the line back in when fixing 
+
             Assert.AreEqual("<DataList><rs><f2>f2Value</f2></rs></DataList>", to.XmlData);
 
             DeleteDir(rootFolder);

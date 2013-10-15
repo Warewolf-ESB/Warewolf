@@ -133,7 +133,7 @@ namespace Dev2.Studio.Views.Workflow {
         }
 
         private Activity GetRootRuntimeWorkflowElement() {
-            byte[] data = System.Text.ASCIIEncoding.ASCII.GetBytes(_workflowDef);
+            byte[] data = System.Text.Encoding.ASCII.GetBytes(_workflowDef);
 
             MemoryStream m = new MemoryStream(data);
             Activity root = ActivityXamlServices.Load(m);
@@ -147,7 +147,7 @@ namespace Dev2.Studio.Views.Workflow {
         }
 
         Activity GetRuntimeExecutionRoot() {
-            byte[] data = System.Text.ASCIIEncoding.ASCII.GetBytes(_workflowDef);
+            byte[] data = System.Text.Encoding.ASCII.GetBytes(_workflowDef);
             MemoryStream m = new MemoryStream(data);
             Activity root = ActivityXamlServices.Load(m);
             WorkflowInspectionServices.CacheMetadata(root);
