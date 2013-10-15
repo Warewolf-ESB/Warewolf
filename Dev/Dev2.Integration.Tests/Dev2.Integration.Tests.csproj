@@ -440,10 +440,6 @@
       <Project>{9623c7dd-85ee-41ab-89b1-1a9784a97da7}</Project>
       <Name>Dev2.Runtime</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Server\Dev2.Server.csproj">
-      <Project>{87aefd04-29f3-45b6-a7c6-4161f9190876}</Project>
-      <Name>Dev2.Server</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Sql\Dev2.Sql.csproj">
       <Project>{2b734597-c85d-4295-9782-c722f4645ed9}</Project>
       <Name>Dev2.Sql</Name>
