@@ -864,7 +864,7 @@ namespace Unlimited.UnitTest.Framework
             //------------Execute Test---------------------------
             var dataListValidationRecordsetPart = IntellisenseFactory.CreateDataListValidationRecordsetPart("[[rec]]", "", "test", "");
             //------------Assert Results-------------------------
-            Assert.AreEqual("rec()", dataListValidationRecordsetPart.DisplayValue);
+            Assert.AreEqual("[[rec()]]", dataListValidationRecordsetPart.DisplayValue);
         }
 
 
