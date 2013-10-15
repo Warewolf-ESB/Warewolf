@@ -1,4 +1,8 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
+using System.Windows.Forms;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
@@ -31,12 +35,6 @@ using Dev2.Studio.UI.Tests.UIMaps.VideoTestUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Windows.Forms;
-using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using Point = System.Drawing.Point;
 
@@ -54,41 +52,41 @@ namespace Dev2.CodedUI.Tests
 
         #region New PBI Tests
 
-        
+
 
         // PBI 8601 (Task 8855)
         [TestMethod]
         public void QuickVariableInputFromListTest()
         {
-           Clipboard.Clear();
-           // Create the workflow
-           RibbonUIMap.CreateNewWorkflow();
+            Clipboard.Clear();
+            // Create the workflow
+            RibbonUIMap.CreateNewWorkflow();
 
-           // Get some variables
-           UITestControl theTab = TabManagerUIMap.GetActiveTab();
-           Point startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
-           Point point = new Point(startPoint.X, startPoint.Y + 200);
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+            Point startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            Point point = new Point(startPoint.X, startPoint.Y + 200);
 
-           // Drag the tool onto the workflow
-           DocManagerUIMap.ClickOpenTabPage("Toolbox");
-           UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
-           ToolboxUIMap.DragControlToWorkflowDesigner(theControl, point);
+            // Drag the tool onto the workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
+            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, point);
 
-           //Get Mappings button
-           UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign", "Open Quick Variable Input");
+            //Get Mappings button
+            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign", "Open Quick Variable Input");
 
-           // Click it
-           Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
-           Mouse.Click();
+            // Click it
+            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
+            Mouse.Click();
 
-           // Enter some invalid data
-           WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",", "some(<).", "_suf", "varOne,varTwo,varThree");
+            // Enter some invalid data
+            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",", "some(<).", "_suf", "varOne,varTwo,varThree");
 
-           // Click done
-           WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
+            // Click done
+            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
 
-           var errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Prefix contains invalid characters");
-           Assert.IsNotNull(errorControl, "No error displayed for incorrect QVI input");
+            var errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Prefix contains invalid characters");
+            Assert.IsNotNull(errorControl, "No error displayed for incorrect QVI input");
 
             // Assert clicking an error focusses the correct textbox
             Mouse.Click(errorControl.GetChildren()[0]);
@@ -139,7 +137,7 @@ namespace Dev2.CodedUI.Tests
         {
             // Create the workflow
             RibbonUIMap.CreateNewWorkflow();
-            
+
             // Get some variables
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
@@ -168,7 +166,7 @@ namespace Dev2.CodedUI.Tests
 
             string text = WorkflowDesignerUIMap.AssignControl_GetVariableName(theTab, "Assign", 0);
             StringAssert.Contains(text, "[[theVar0]]");
-          
+
             // All good - Cleanup time!
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
@@ -191,15 +189,15 @@ namespace Dev2.CodedUI.Tests
             RibbonUIMap.ClickRibbonMenuItem("Save");
 
             PopupDialogUIMap.WaitForDialog();
-        
+
             //Click the show affected button
             ResourceChangedPopUpUIMap.ClickViewDependancies();
 
             Playback.Wait(5000);
 
-            Assert.AreEqual(TabManagerUIMap.GetActiveTabName(),"ForEachUpgradeTest");
+            Assert.AreEqual(TabManagerUIMap.GetActiveTabName(), "ForEachUpgradeTest");
 
-            TabManagerUIMap.CloseAllTabs();    
+            TabManagerUIMap.CloseAllTabs();
         }
 
         #region Auto Expand Of Mapping On Drop
@@ -291,7 +289,7 @@ namespace Dev2.CodedUI.Tests
             Mouse.Click(new Point(workflowPoint1.X + 50, workflowPoint1.Y + 50));
 
             //------------Execute Test---------------------------
-            var theUnsavedTab = TabManagerUIMap.FindTabByName(tabName+" *");
+            var theUnsavedTab = TabManagerUIMap.FindTabByName(tabName + " *");
             //------------Assert Results-------------------------
             Assert.IsTrue(theUnsavedTab.Exists);
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
@@ -492,7 +490,7 @@ namespace Dev2.CodedUI.Tests
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", requiredPoint);
 
             // Cancel Decision Wizard
-            if (WizardsUIMap.TryWaitForWizard(5000))
+            if(WizardsUIMap.TryWaitForWizard(5000))
             {
                 var decisionWizardUiMap = new DecisionWizardUIMap();
                 decisionWizardUiMap.ClickCancel();
@@ -610,7 +608,7 @@ namespace Dev2.CodedUI.Tests
             Point newResizerPoint = new Point();
             // Validate the assumption that the last child is the resizer
             var resizeThumb = controlCollection[controlCollection.Count - 1];
-            if (resizeThumb.ControlType.ToString() == "Indicator")
+            if(resizeThumb.ControlType.ToString() == "Indicator")
             {
                 UITestControl theResizer = resizeThumb;
                 initialResizerPoint.X = theResizer.BoundingRectangle.X + 5;
@@ -629,14 +627,14 @@ namespace Dev2.CodedUI.Tests
             Mouse.StopDragging(new Point(initialResizerPoint.X + 50, initialResizerPoint.Y - 50));
 
             // Check position to see it dragged
-            if (resizeThumb.ControlType.ToString() == "Indicator")
+            if(resizeThumb.ControlType.ToString() == "Indicator")
             {
                 UITestControl theResizer = resizeThumb;
                 newResizerPoint.X = theResizer.BoundingRectangle.X + 5;
                 newResizerPoint.Y = theResizer.BoundingRectangle.Y + 5;
             }
 
-            if (!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y < initialResizerPoint.Y))
+            if(!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y < initialResizerPoint.Y))
             {
                 Assert.Fail("The control was not resized properly.");
             }
@@ -778,7 +776,7 @@ namespace Dev2.CodedUI.Tests
                 //    TabManagerUIMap.CloseTab(workflowName);
                 //}
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 // Log it so the UI Test still passes...
                 Trace.WriteLine(e.Message);
@@ -802,7 +800,7 @@ namespace Dev2.CodedUI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
 
             RibbonUIMap.ClickRibbonMenuItem("Debug");
-            if (DebugUIMap.WaitForDebugWindow(5000))
+            if(DebugUIMap.WaitForDebugWindow(5000))
             {
                 SendKeys.SendWait("{F5}");
                 Playback.Wait(1000);
@@ -819,7 +817,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         [TestMethod]
-        [Ignore]//needs outlook installed on the ui testing environment
+        //[Ignore]//needs outlook installed on the ui testing environment
         public void ClickHelpFeedback_Expected_FeedbackWindowOpens()
         {
             RibbonUIMap.ClickRibbonMenuItem("Feedback");
@@ -847,19 +845,23 @@ namespace Dev2.CodedUI.Tests
                 Assert.Fail("The Feedback window did not appear after the recording has been stopped.");
             }
 
-            // Click Open default email
-            FeedbackUIMap.FeedbackWindow_ClickOpenDefaultEmail();
+            Playback.Wait(1000);
+            FeedbackUIMap.FeedbackWindow_ClickCancel();
 
-            Playback.Wait(2500);
-            bool hasOutlookOpened = ExternalUIMap.Outlook_HasOpened();
-            if (!hasOutlookOpened)
-            {
-                Assert.Fail("Outlook did not open when ClickOpenDefaultEmail was clicked!");
-            }
-            else
-            {
-                ExternalUIMap.CloseAllInstancesOfOutlook();
-            }
+            // TODO: FIX THIS ON TEST SERVER!!
+            // Click Open default email
+            //FeedbackUIMap.FeedbackWindow_ClickOpenDefaultEmail();
+
+            //Playback.Wait(2500);
+            //bool hasOutlookOpened = ExternalUIMap.Outlook_HasOpened();
+            //if (!hasOutlookOpened)
+            //{
+            //    Assert.Fail("Outlook did not open when ClickOpenDefaultEmail was clicked!");
+            //}
+            //else
+            //{
+            //    ExternalUIMap.CloseAllInstancesOfOutlook();
+            //}
         }
 
         // Bug 8747
@@ -909,7 +911,7 @@ namespace Dev2.CodedUI.Tests
             }
         }
         private TestContext _testContextInstance;
-        
+
         #endregion
 
         #region UI Maps
@@ -918,7 +920,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if ((_docManagerMap == null))
+                if((_docManagerMap == null))
                 {
                     _docManagerMap = new DocManagerUIMap();
                 }
@@ -932,7 +934,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if ((_toolboxUiMap == null))
+                if((_toolboxUiMap == null))
                 {
                     _toolboxUiMap = new ToolboxUIMap();
                 }
@@ -946,7 +948,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if ((_saveDialogUIMap == null))
+                if((_saveDialogUIMap == null))
                 {
                     _saveDialogUIMap = new SaveDialogUIMap();
                 }
@@ -971,7 +973,7 @@ namespace Dev2.CodedUI.Tests
             }
         }
         private ExplorerUIMap _explorerUiMap;
-        
+
         #endregion
 
         #region Deploy UI Map
@@ -989,7 +991,7 @@ namespace Dev2.CodedUI.Tests
             }
         }
         private DeployViewUIMap _deployViewUiMap;
-        
+
         #endregion
 
         #region Connect Window UI Map
@@ -998,7 +1000,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (_connectViewUIMap == null)
+                if(_connectViewUIMap == null)
                 {
                     _connectViewUIMap = new ServerWizard();
                 }
@@ -1016,7 +1018,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (_debugUIMap == null)
+                if(_debugUIMap == null)
                 {
                     _debugUIMap = new DebugUIMap();
                 }
@@ -1034,7 +1036,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (_activityDropUIMap == null)
+                if(_activityDropUIMap == null)
                 {
                     _activityDropUIMap = new ActivityDropWindowUIMap();
                 }
@@ -1052,7 +1054,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (DependencyGraphUIMap == null)
+                if(DependencyGraphUIMap == null)
                 {
                     DependencyGraphUIMap = new DependencyGraph();
                 }
@@ -1072,7 +1074,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (workflowWizardUIMap == null)
+                if(workflowWizardUIMap == null)
                 {
                     workflowWizardUIMap = new WorkflowWizardUIMap();
                 }
@@ -1091,7 +1093,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (_databaseServiceWizardUIMap == null)
+                if(_databaseServiceWizardUIMap == null)
                 {
                     _databaseServiceWizardUIMap = new DatabaseServiceWizardUIMap();
                 }
@@ -1110,7 +1112,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (_databaseSourceWizardUIMap == null)
+                if(_databaseSourceWizardUIMap == null)
                 {
                     _databaseSourceWizardUIMap = new DatabaseSourceUIMap();
                 }
@@ -1125,7 +1127,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (_pluginSourceWizardUIMap == null)
+                if(_pluginSourceWizardUIMap == null)
                 {
                     _pluginSourceWizardUIMap = new PluginSourceMap();
                 }
@@ -1144,7 +1146,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (_feedbackUIMap == null)
+                if(_feedbackUIMap == null)
                 {
                     _feedbackUIMap = new FeedbackUIMap();
                 }
@@ -1163,7 +1165,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (_newServerUIMap == null)
+                if(_newServerUIMap == null)
                 {
                     _newServerUIMap = new NewServerUIMap();
                 }
@@ -1182,7 +1184,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (pluginServiceWizardUIMap == null)
+                if(pluginServiceWizardUIMap == null)
                 {
                     pluginServiceWizardUIMap = new PluginServiceWizardUIMap();
                 }
@@ -1201,7 +1203,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (_ribbonUIMap == null)
+                if(_ribbonUIMap == null)
                 {
                     _ribbonUIMap = new RibbonUIMap();
                 }
@@ -1220,7 +1222,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (_resourceChangedPopUpUIMap == null)
+                if(_resourceChangedPopUpUIMap == null)
                 {
                     _resourceChangedPopUpUIMap = new ResourceChangedPopUpUIMap();
                 }
@@ -1239,7 +1241,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (_tabManagerUIMap == null)
+                if(_tabManagerUIMap == null)
                 {
                     _tabManagerUIMap = new TabManagerUIMap();
                 }
@@ -1262,7 +1264,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (_variablesUIMap == null)
+                if(_variablesUIMap == null)
                 {
                     _variablesUIMap = new VariablesUIMap();
                 }
@@ -1280,7 +1282,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (_serviceDetailsUIMap == null)
+                if(_serviceDetailsUIMap == null)
                 {
                     _serviceDetailsUIMap = new ServiceDetailsUIMap();
                 }
@@ -1298,7 +1300,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (_externalUIMap == null)
+                if(_externalUIMap == null)
                 {
                     _externalUIMap = new ExternalUIMap();
                 }
@@ -1316,7 +1318,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (webpageServiceWizardUIMap == null)
+                if(webpageServiceWizardUIMap == null)
                 {
                     webpageServiceWizardUIMap = new WebpageServiceWizardUIMap();
                 }
@@ -1335,7 +1337,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (workflowDesignerUIMap == null)
+                if(workflowDesignerUIMap == null)
                 {
                     workflowDesignerUIMap = new WorkflowDesignerUIMap();
                 }
@@ -1354,7 +1356,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (_outputUIMap == null)
+                if(_outputUIMap == null)
                 {
                     _outputUIMap = new OutputUIMap();
                 }
@@ -1373,7 +1375,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if (_videoTestUIMap == null)
+                if(_videoTestUIMap == null)
                 {
                     _videoTestUIMap = new VideoTestUIMap();
                 }
@@ -1407,7 +1409,7 @@ namespace Dev2.CodedUI.Tests
         {
             get
             {
-                if ((this.map == null))
+                if((this.map == null))
                 {
                     this.map = new UIMap();
                 }
