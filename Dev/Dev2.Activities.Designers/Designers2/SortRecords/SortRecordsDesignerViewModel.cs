@@ -7,9 +7,6 @@ namespace Dev2.Activities.Designers2.SortRecords
 {
     public class SortRecordsDesignerViewModel : ActivityDesignerViewModel
     {
-        public static readonly DependencyProperty SelectedSelectedSortProperty =
-            DependencyProperty.Register("SelectedSelectedSort", typeof(string), typeof(SortRecordsDesignerViewModel), new PropertyMetadata(null, OnSelectedSelectedSortChanged));
-
         public SortRecordsDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
@@ -22,8 +19,10 @@ namespace Dev2.Activities.Designers2.SortRecords
 
         public string SelectedSelectedSort { get { return (string)GetValue(SelectedSelectedSortProperty); } set { SetValue(SelectedSelectedSortProperty, value); } }
 
+        public static readonly DependencyProperty SelectedSelectedSortProperty =
+            DependencyProperty.Register("SelectedSelectedSort", typeof(string), typeof(SortRecordsDesignerViewModel), new PropertyMetadata(null, OnSelectedSelectedSortChanged));
+
         // DO NOT bind to these properties - these are here for convenience only!!!
-        //string TimeModifierType { set { SetProperty(value); } }
         string SelectedSort { set { SetProperty(value); } }
 
         static void OnSelectedSelectedSortChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
