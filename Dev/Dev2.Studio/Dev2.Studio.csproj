@@ -249,9 +249,6 @@
     <Compile Include="ActivityDesigners\PathOperationDesigners\DsfFileReadDesigner.xaml.cs">
       <DependentUpon>DsfFileReadDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\DsfSortRecordsActivityDesinger.xaml.cs">
-      <DependentUpon>DsfSortRecordsActivityDesinger.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\DsfActivityDesigner.xaml.cs">
       <DependentUpon>DsfActivityDesigner.xaml</DependentUpon>
     </Compile>
@@ -759,10 +756,6 @@
     <Page Include="ActivityDesigners\PathOperationDesigners\DsfFileReadDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ActivityDesigners\DsfSortRecordsActivityDesinger.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="ActivityDesigners\DsfActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
