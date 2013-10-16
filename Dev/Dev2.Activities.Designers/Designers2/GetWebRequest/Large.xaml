@@ -42,6 +42,7 @@
                            MinHeight="50" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -117,6 +118,11 @@
                              Grid.ColumnSpan="2"
                              Margin="0"
                              DataContext="{Binding PreviewViewModel}" />
+
+        <errors:OnError Grid.Column="0"
+                        Grid.Row="4 "
+                        Grid.ColumnSpan="2"
+                        Margin="0" />
 
     </Grid>
 </core:ActivityDesignerTemplate>

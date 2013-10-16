@@ -360,6 +360,71 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To end the workflow if an error has occurred at this point, make sure the checkbox is selected. 
+        ///If you have also called a web service / Warewolf workflow, that will finish executing first.
+        ///If the workflow is nested, the calling workflow will resume..
+        /// </summary>
+        public static string OnErrorHelpIsEnded {
+            get {
+                return ResourceManager.GetString("OnErrorHelpIsEnded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If an error occurs the error message will be placed into this variable as well the result variable.
+        ///If left empty the result will still be placed in the result variable..
+        /// </summary>
+        public static string OnErrorHelpVariable {
+            get {
+                return ResourceManager.GetString("OnErrorHelpVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If an error occurs you can execute a web service / Warewolf workflow to log the error that occurred.
+        ///E.g. http://ServerName:77/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]].
+        /// </summary>
+        public static string OnErrorHelpWorkflow {
+            get {
+                return ResourceManager.GetString("OnErrorHelpWorkflow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ends the executing workflow at this point.
+        /// </summary>
+        public static string OnErrorToolTipIsEnded {
+            get {
+                return ResourceManager.GetString("OnErrorToolTipIsEnded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string OnErrorToolTipVariable {
+            get {
+                return ResourceManager.GetString("OnErrorToolTipVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string OnErrorToolTipWorkflow {
+            get {
+                return ResourceManager.GetString("OnErrorToolTipWorkflow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Preview (recordset field)
         ///This is a variable from an input field. Use comma-separated values for each index eg [[Trip(*).Distance]] = 45, 32, 12, 5
         /// 

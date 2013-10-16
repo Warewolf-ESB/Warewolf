@@ -89,6 +89,9 @@
     <Compile Include="Designers2\Core\Errors\ErrorsAdorner.xaml.cs">
       <DependentUpon>ErrorsAdorner.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Core\Errors\OnError.xaml.cs">
+      <DependentUpon>OnError.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Core\Help\HelpAdorner.xaml.cs">
       <DependentUpon>HelpAdorner.xaml</DependentUpon>
     </Compile>
@@ -274,6 +277,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\Core\Errors\ErrorsAdorner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Core\Errors\OnError.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

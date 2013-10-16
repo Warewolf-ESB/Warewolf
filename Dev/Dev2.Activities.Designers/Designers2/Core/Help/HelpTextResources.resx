@@ -391,4 +391,33 @@ Note, the timeout is purely for the actual SQL connection and not the preparatio
   <data name="String2" xml:space="preserve">
     <value>NOTE: A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.</value>
   </data>
+  <data name="OnErrorHelpIsEnded" xml:space="preserve">
+    <value>To end the workflow if an error has occurred at this point, make sure the checkbox is selected. 
+If you have also called a web service / Warewolf workflow, that will finish executing first.
+If the workflow is nested, the calling workflow will resume.</value>
+  </data>
+  <data name="OnErrorHelpVariable" xml:space="preserve">
+    <value>If an error occurs the error message will be placed into this variable as well the result variable.
+If left empty the result will still be placed in the result variable.</value>
+  </data>
+  <data name="OnErrorHelpWorkflow" xml:space="preserve">
+    <value>If an error occurs you can execute a web service / Warewolf workflow to log the error that occurred.
+E.g. http://ServerName:77/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]]</value>
+  </data>
+  <data name="OnErrorToolTipIsEnded" xml:space="preserve">
+    <value>Ends the executing workflow at this point</value>
+  </data>
+  <data name="OnErrorToolTipVariable" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="OnErrorToolTipWorkflow" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
 </root>
