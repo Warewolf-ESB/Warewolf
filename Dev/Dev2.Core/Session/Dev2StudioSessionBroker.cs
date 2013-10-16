@@ -19,7 +19,6 @@ namespace Dev2.Session
         private string _rootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         private string _savePath = @"Warewolf\DebugData\PersistSettings.dat";
         private string _debugPersistPath; 
-        private static readonly IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
         private static readonly DataListFormat binaryFormat = DataListFormat.CreateFormat(GlobalConstants._BINARY);
         // the settings lock object
         private readonly static object _settingsLock = new object();
@@ -164,6 +163,8 @@ namespace Dev2.Session
             error = string.Empty;
             ErrorResultTO errors = new ErrorResultTO();
 
+            var compiler = DataListFactory.CreateDataListCompiler();
+
             if (typeOf == enTranslationTypes.XML)
             {
                 BinaryFormatter bf = new BinaryFormatter();
@@ -171,7 +172,7 @@ namespace Dev2.Session
                 {
                     bf.Serialize(ms, datalist);
 
-                    Guid pushID = _compiler.ConvertTo(binaryFormat, ms.ToArray(), string.Empty, out errors);
+                    Guid pushID = compiler.ConvertTo(binaryFormat, ms.ToArray(), string.Empty, out errors);
 
                     if(errors.HasErrors())
                     {
@@ -180,7 +181,7 @@ namespace Dev2.Session
                     else
                     {
                         // now extract into XML
-                        result = _compiler.ConvertFrom(pushID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Data, out errors);
+                        result = compiler.ConvertFrom(pushID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Data, out errors);
                         if(errors.HasErrors())
                         {
                             error = errors.FetchErrors()[0];
@@ -198,12 +199,14 @@ namespace Dev2.Session
             error = string.Empty;
             IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
 
+            var compiler = DataListFactory.CreateDataListCompiler();
+
             if (typeOf == enTranslationTypes.XML)
             {
                 ErrorResultTO errors = new ErrorResultTO();
 
 
-                Guid resultID = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), data,
+                Guid resultID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), data,
                                                     targetShape, out errors);
                 if (errors.HasErrors())
                 {
@@ -211,13 +214,11 @@ namespace Dev2.Session
                 }
                 else
                 {
-                    result = _compiler.FetchBinaryDataList(resultID, out errors);
+                    result = compiler.FetchBinaryDataList(resultID, out errors);
                     if (errors.HasErrors())
                     {
                         error = errors.FetchErrors()[0]; // take the first error ;)
                     }
-                    // Now remove it ;)
-                    _compiler.ForceDeleteDataListByID(resultID);
                 }
             }
 

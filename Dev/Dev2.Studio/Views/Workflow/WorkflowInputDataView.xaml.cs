@@ -76,6 +76,8 @@ namespace Dev2.Studio.Views.Workflow
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
+
             if (e.Source is TabControl)
             {
                 var tabCtrl = e.Source as TabControl;

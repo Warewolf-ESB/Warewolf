@@ -9,6 +9,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
+using Dev2.Studio.Views.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 //ReSharper disable InconsistentNaming
@@ -21,45 +22,15 @@ namespace Dev2.Core.Tests
     [TestClass]
     public class WorkflowInputDataViewModelTest
     {
-
-        //  Mock<IContextualResourceModel> _mockResource = new Mock<IContextualResourceModel>();
         private readonly Guid _resourceID = Guid.Parse("2b975c6d-670e-49bb-ac4d-fb1ce578f66a");
         private readonly Guid _serverID = Guid.Parse("51a58300-7e9d-4927-a57b-e5d700b11b55");
         const string ResourceName = "TestWorkflow";
 
         /// <summary>
-        /// We are exporting the MEF IoC container so that we can inject dependencies into other classes
-        /// </summary>
-
-        private TestContext _testContextInstance;
-
-
-
-        /// <summary>
         ///Gets or sets the result context which provides
         ///information about and functionality for the current result run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return _testContextInstance;
-            }
-            set
-            {
-                _testContextInstance = value;
-            }
-        }
-
-        #region Additional result attributes
-
-        [TestInitialize]
-        public void EnvironmentTestsInitialize()
-        {
-        }
-
-
-        #endregion
+        public TestContext TestContext { get; set; }
 
         #region LoadInputs Tests
 

@@ -6,7 +6,6 @@ using System.Text;
 using System.Xml;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
-using Dev2.Data.Translators;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
@@ -195,26 +194,17 @@ namespace Dev2.Server.DataList.Translators
                                                     foreach (XmlNode subc in nl)
                                                     {
                                                         entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, (idx + "")), idx, out error);
-
-                                                        if (!string.IsNullOrEmpty(error))
-                                                        {
-                                                            errors.AddError(error);
-                                                        }
+                                                        errors.AddError(error);
                                                     }
                                                     // update this recordset index
                                                     indexCache[c.Name] = ++idx;
                                                 }
-
                                             }
                                             else
                                             {
                                                 // process scalar
                                                 entry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(c.InnerXml, c.Name), out error);
-
-                                                if (!string.IsNullOrEmpty(error))
-                                                {
-                                                    errors.AddError(error);
-                                                }
+                                                errors.AddError(error);
                                             }
                                         }
                                         else

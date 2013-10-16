@@ -419,7 +419,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </summary>
         public void SetWorkflowInputData()
         {
-            string error = "";
+            string error;
             DataList = Broker.DeSerialize(XmlData, DebugTO.DataList, enTranslationTypes.XML, out error);
             if(string.IsNullOrEmpty(error))
             {
@@ -455,6 +455,17 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return itemsAdded;
         }
+
+
+        protected override void OnDispose()
+        {
+            if (DataList != null)
+            {
+                var compiler = DataListFactory.CreateDataListCompiler();
+                compiler.ForceDeleteDataListByID(DataList.UID);
+            }
+        }
+
         #endregion Methods
 
         #region Private Methods
