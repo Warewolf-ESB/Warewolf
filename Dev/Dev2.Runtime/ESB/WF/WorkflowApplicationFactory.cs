@@ -469,6 +469,13 @@ namespace Dev2.DynamicServices
                     if(DataTransferObject != null) DataTransferObject.NumberOfSteps = _previousNumberOfSteps;
                 }
 
+
+                // force a throw to kill the engine ;)
+                if (args.TerminationException != null)
+                {
+                     throw args.TerminationException;
+                }
+
                 // Not compatable with run.Dispose() ;)
                 //ExecutionStatusCallbackDispatcher.Instance.Post(_result.ExecutionCallbackID, ExecutionStatusCallbackMessageType.CompletedCallback);
 
