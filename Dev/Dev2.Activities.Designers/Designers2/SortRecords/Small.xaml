@@ -9,8 +9,8 @@
     xmlns:local="clr-namespace:Dev2.Activities.Designers2.SortRecords"
     xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
     xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-    Width="270"
-    MaxWidth="270"
+    Width="220"
+    MaxWidth="220"
     Padding="7"
     mc:Ignorable="d"
     d:DesignWidth="270"
@@ -24,8 +24,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition MinWidth="80" />
-            <ColumnDefinition MinWidth="80" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
