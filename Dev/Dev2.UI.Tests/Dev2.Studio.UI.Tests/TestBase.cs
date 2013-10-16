@@ -895,12 +895,12 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DebugInput_whenRun10Time")]
-        public void DebugInput_whenRun10Time_ExpectInputsPersiste_InputsRemainPersisted()
+        public void DebugInput_WhenRun10Times_ExpectInputsPersistAndXMLRemainsLinked_InputsAndXMLRemainPersisted()
         {
 
             //------------Setup for test--------------------------
             int debugExeWait = 2000;
-            
+
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             //Open the correct workflow
             ExplorerUIMap.ClearExplorerSearchText();
@@ -918,14 +918,15 @@ namespace Dev2.CodedUI.Tests
 
             //------------Assert Results-------------------------
 
-            for (int i = 0; i < 10; i++)
+            // Check for valid input in the input boxes ;)
+            for(int i = 0; i < 10; i++)
             {
                 Clipboard.Clear();
 
                 SendKeys.SendWait(KeyboardCommands.Debug);
                 PopupDialogUIMap.WaitForDialog();
-                
-                // TODO : Check for valid input in the input boxes ;)
+
+
                 SendKeys.SendWait(KeyboardCommands.TabCommand);
                 Playback.Wait(500);
                 SendKeys.SendWait(KeyboardCommands.CopyCommand);
@@ -942,7 +943,37 @@ namespace Dev2.CodedUI.Tests
                 Playback.Wait(debugExeWait);
             }
 
-            // Everything passes :D
+            // Now check the XML tab works ;)
+            Playback.Wait(debugExeWait);
+            SendKeys.SendWait(KeyboardCommands.Debug);
+            DebugUIMap.ClickXMLTab();
+            Playback.Wait(500);
+
+            // flip back and forth to check persistence ;)
+            DebugUIMap.ClickInputDataTab();
+            Playback.Wait(500);
+            DebugUIMap.ClickXMLTab();
+            Playback.Wait(500);
+
+            SendKeys.SendWait(KeyboardCommands.TabCommand);
+            SendKeys.SendWait(KeyboardCommands.SelectAllCommand);
+            SendKeys.SendWait(KeyboardCommands.CopyCommand);
+            var actualXML = Clipboard.GetData(DataFormats.Text);
+
+            // close the window ;)
+            DebugUIMap.CloseDebugWindow_ByCancel();
+
+            var expectedXML = @"<DataList>
+  <var></var>
+  <countries>
+    <CountryID>1</CountryID>
+    <Description>2</Description>
+  </countries>
+</DataList>";
+
+            Assert.AreEqual(expectedXML, actualXML);
+
+            // Everything passes 
             TabManagerUIMap.CloseAllTabs();            
         }
 

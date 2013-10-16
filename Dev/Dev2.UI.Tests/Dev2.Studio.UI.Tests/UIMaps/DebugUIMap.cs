@@ -83,6 +83,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
             Mouse.Click(XMLTabPage, new Point(5, 5));
         }
 
+        public void ClickInputDataTab()
+        {
+            WpfWindow uIDebugWindow = this.UIDebugWindow;
+            WpfTabPage TabPage = (WpfTabPage)uIDebugWindow.GetChildren()[1].GetChildren()[0];
+            Mouse.Click(TabPage, new Point(5, 5));
+        }
+
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
         {
             get
