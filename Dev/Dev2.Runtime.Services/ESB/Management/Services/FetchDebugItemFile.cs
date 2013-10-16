@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.DynamicServices;
+using Dev2.Providers.Logs;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 
@@ -14,18 +15,22 @@ namespace Dev2.Runtime.ESB.Management.Services
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
             string debugItemFilePath;
-            if(values == null)
+
+            if (values == null)
             {
+                Logger.TraceInfo("values are missing");
                 throw new InvalidDataContractException("values are missing");
             }
-            
-            if(!values.TryGetValue("DebugItemFilePath", out debugItemFilePath))
+
+            if (!values.TryGetValue("DebugItemFilePath", out debugItemFilePath))
             {
+                Logger.TraceInfo("DebugItemFilePath is missing");
                 throw new InvalidDataContractException("DebugItemFilePath is missing");
             }
 
-            if(File.Exists(debugItemFilePath))
+            if (File.Exists(debugItemFilePath))
             {
+                Logger.TraceInfo("DebugItemFilePath found");
                 StringBuilder result = new StringBuilder("<JSON>");
                 var logData = File.ReadAllText(debugItemFilePath);
                 result.Append(JsonConvert.SerializeObject(logData));
@@ -33,6 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return result.ToString();
             }
 
+            Logger.TraceInfo("DebugItemFilePath not found, throwing an exception");
             throw new InvalidDataContractException(string.Format("DebugItemFilePath {0} not found", debugItemFilePath));
         }
 

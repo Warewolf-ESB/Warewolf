@@ -57,6 +57,7 @@ namespace Dev2.Tests.DataList
 
             // just ensure the operation worked successfully with no errors
             Assert.AreEqual(string.Empty, to.Error);
+            Assert.IsNotNull(to.BinaryDataList); // assert not null hence we created it ;)
 
             DeleteDir(rootFolder);
         }
@@ -133,6 +134,7 @@ namespace Dev2.Tests.DataList
             to = broker.InitDebugSession(to);
 
             Assert.AreEqual("<DataList><rs><field></field><f2>f2Value</f2></rs></DataList>", to.XmlData);
+            Assert.IsNotNull(to.BinaryDataList); // assert not null binary datalist since it is used to create the input model ;)
 
             DeleteDir(rootFolder);
         }

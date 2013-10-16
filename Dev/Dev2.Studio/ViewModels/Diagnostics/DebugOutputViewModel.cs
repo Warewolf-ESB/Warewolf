@@ -9,6 +9,7 @@ using System.Windows.Threading;
 using Dev2.Common.ExtMethods;
 using Dev2.Diagnostics;
 using Dev2.Providers.Events;
+using Dev2.Providers.Logs;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Studio.Controller;
@@ -483,13 +484,29 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public void OpenMoreLink(IDebugLineItem item)
         {
-            if(item == null)
-                return;
-
-            if(!string.IsNullOrEmpty(item.MoreLink))
+            if (item == null)
             {
-                string debugItemTempFilePath = FileHelper.GetDebugItemTempFilePath(item.MoreLink);
-                ProcessController = new ProcessController(Process.Start(new ProcessStartInfo(debugItemTempFilePath)));
+                Logger.TraceInfo("Debug line item is null, did not proceed");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(item.MoreLink))
+            {
+                Logger.TraceInfo("Link is empty");
+            }
+            else
+            {
+                try
+                {
+                    string debugItemTempFilePath = FileHelper.GetDebugItemTempFilePath(item.MoreLink);
+                    Logger.TraceInfo(string.Format("Debug file path is [{0}]", debugItemTempFilePath));
+                    ProcessController = new ProcessController(Process.Start(new ProcessStartInfo(debugItemTempFilePath)));
+                }
+                catch(Exception ex)
+                {
+                    Logger.Error(ex);
+                    throw ex;
+                }
             }
         }
 

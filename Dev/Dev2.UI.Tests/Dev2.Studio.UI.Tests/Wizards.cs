@@ -271,17 +271,23 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var decision = ToolboxUIMap.FindControl("Decision");
             ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
             _decisionWizardUiMap.SendTabs(4);
+            Playback.Wait(500);
             _decisionWizardUiMap.SelectMenuItem(20);
             //Assert intellisense works
+            Playback.Wait(500);
             _decisionWizardUiMap.SendTabs(10);
+            Playback.Wait(500);
             _decisionWizardUiMap.GetFirstIntellisense("[[V", true);
             var actual = Clipboard.GetData(DataFormats.Text);
             Assert.AreEqual("[[VariableName]]", actual, "Decision intellisense doesn't work");
             _decisionWizardUiMap.SendTabs(2);
+            Playback.Wait(500);
+            Clipboard.Clear();
             _decisionWizardUiMap.GetFirstIntellisense("[[V", true);
             actual = Clipboard.GetData(DataFormats.Text);
             Assert.AreEqual("[[VariableName]]", actual, "Decision intellisense doesn't work");
             _decisionWizardUiMap.SendTabs(6);
+            Playback.Wait(500);
             SendKeys.SendWait("{ENTER}");
 
             //Assert can save blank decision

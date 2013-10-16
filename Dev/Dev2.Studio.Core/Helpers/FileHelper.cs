@@ -4,6 +4,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using Dev2.Common;
+using Dev2.Providers.Logs;
 using Dev2.Studio.Core.Interfaces;
 using Ionic.Zip;
 using Newtonsoft.Json;
@@ -42,12 +43,14 @@ namespace Dev2.Studio.Core.Helpers
         /// <date>2013/01/15</date>
         public static void CreateTextFile(string outputTxt, string outputPath)
         {
+            Logger.TraceInfo();
             EnsurePathIsvalid(outputPath, ".txt");
             var fs = File.Open(outputPath,
                                       FileMode.OpenOrCreate,
                                       FileAccess.Write);
-            using(var writer = new StreamWriter(fs, System.Text.Encoding.UTF8))
+            using (var writer = new StreamWriter(fs, System.Text.Encoding.UTF8))
             {
+                Logger.TraceInfo("Writing a text file");
                 writer.Write(outputTxt);
             }
         }
@@ -171,16 +174,22 @@ namespace Dev2.Studio.Core.Helpers
 
         public static string GetDebugItemTempFilePath(string uri)
         {
-            if(String.IsNullOrEmpty(uri))
+            Logger.TraceInfo();
+
+            if (String.IsNullOrEmpty(uri))
             {
-                throw new ArgumentNullException("uri",@"Cannot pass null or empty uri");
+                Logger.TraceInfo("Uri is empty, an exception is thrown");
+                throw new ArgumentNullException("uri", @"Cannot pass null or empty uri");
             }
-            WebClient client = new WebClient();
-            string serverLogData = client.UploadString(uri, "");
-            string value = JsonConvert.DeserializeObject<string>(serverLogData);
-            string uniqueOutputPath = GetUniqueOutputPath(".txt");
-            CreateTextFile(value, uniqueOutputPath);
-            return uniqueOutputPath;
+
+            using (var client = new WebClient())
+            {
+                string serverLogData = client.UploadString(uri, "");
+                string value = JsonConvert.DeserializeObject<string>(serverLogData);
+                string uniqueOutputPath = GetUniqueOutputPath(".txt");
+                CreateTextFile(value, uniqueOutputPath);
+                return uniqueOutputPath;
+            }
         }
 
         public static void MigrateTempData(string rootPath)

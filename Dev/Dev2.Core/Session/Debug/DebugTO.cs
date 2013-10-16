@@ -2,6 +2,7 @@
 using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.Session {
+
     [Serializable]
     public class DebugTO {
         #region Fields
@@ -52,10 +53,6 @@ namespace Dev2.Session {
         #endregion Properties
 
         #region Ctor
-
-        public DebugTO() {
-
-        }
 
         #endregion Ctor
 

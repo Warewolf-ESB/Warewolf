@@ -20,11 +20,5 @@ namespace Dev2.Session {
         /// <returns></returns>
         DebugTO PersistDebugSession(DebugTO to);
 
-        /// <summary>
-        /// ???
-        /// </summary>
-        /// <param name="to"></param>
-        /// <returns></returns>
-        DebugTO UpdateDebugSession(DebugTO to);
     }
 }

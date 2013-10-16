@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
 
 namespace Dev2.Providers.Logs
 {
@@ -17,6 +18,13 @@ namespace Dev2.Providers.Logs
         {
             WriteEntry(message, "ERROR", obj, methodName);
         }
+
+        public static void Error(Exception exception, [CallerMemberName] string methodName = null)
+        {
+            string exceptionMessage =  JsonConvert.SerializeObject(exception);
+            WriteEntry(exceptionMessage, "EXCEPTION", null,  methodName);
+        }
+
 
         public static void Warning(string message = null, [CallerMemberName] string methodName = null)
         {

@@ -70,11 +70,12 @@ namespace Dev2.Session
                 to.DataListHash = -1; // default value
             }
 
+            var svrCompiler = DataListFactory.CreateServerDataListCompiler();
+            ErrorResultTO errors;
+
             if (_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
             {
-                var svrCompiler = DataListFactory.CreateServerDataListCompiler();
-                ErrorResultTO errors;
-
+                
                 var convertData = tmp.XmlData;
                 var mergeGuid = svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Encoding.UTF8.GetBytes(convertData), to.DataList, out errors);
                 tmp.XmlData = svrCompiler.ConvertFrom(null, mergeGuid, enTranslationDepth.Data, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), out errors).FetchAsString();
@@ -84,22 +85,20 @@ namespace Dev2.Session
 
                 to.BinaryDataList = svrCompiler.FetchBinaryDataList(null, mergeGuid, out errors);
             }
+            else
+            {
+                // if no XML data copy over the DataList
+                to.XmlData = to.XmlData != null && to.XmlData == string.Empty
+                                 ? (to.DataList ?? "<DataList></DataList>")
+                                 : (to.XmlData ?? "<DataList></DataList>");
 
-            // if no XML data copy over the DataList
-            to.XmlData = to.XmlData != null && to.XmlData == string.Empty
-                             ? (to.DataList ?? "<DataList></DataList>")
-                             : (to.XmlData ?? "<DataList></DataList>");
+                var createGuid = svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Encoding.UTF8.GetBytes(to.XmlData), to.DataList, out errors);
 
-            return to;
-        }
+                to.BinaryDataList = to.BinaryDataList = svrCompiler.FetchBinaryDataList(null, createGuid, out errors);
+            }
 
-        /// <summary>
-        /// Update the Debug Session Data
-        /// </summary>
-        /// <param name="to"></param>
-        /// <returns></returns>
-        public DebugTO UpdateDebugSession(DebugTO to)
-        {
+            
+
             return to;
         }
 
@@ -149,12 +148,11 @@ namespace Dev2.Session
                 }
 
                 // push to disk
-                Stream s = File.Open(_debugPersistPath, FileMode.Truncate);
-                XmlSerializer bf = new XmlSerializer(typeof(List<SaveDebugTO>));
-                bf.Serialize(s, settingList);
-
-                s.Close();
-                s.Dispose();
+                using (Stream s = File.Open(_debugPersistPath, FileMode.Truncate))
+                {
+                    XmlSerializer bf = new XmlSerializer(typeof (List<SaveDebugTO>));
+                    bf.Serialize(s, settingList);
+                }
             }
 
             return to;

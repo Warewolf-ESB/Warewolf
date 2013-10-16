@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Windows.Input;
 using System.Xml.Linq;
 using Dev2.Common;
@@ -194,6 +195,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void Save()
         {
             //2012.10.11: massimo.guerrera - Added for PBI 5781
+            
+            // TODO : Re-work so it is sane!
+            
             SetXMLData();
             DebugTO.XmlData = XmlData;
             DebugTO.RememberInputs = RememberInputs;
@@ -461,13 +465,17 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             string error = "";
             DataList = Broker.DeSerialize("<Datalist></Datalist>", DebugTO.DataList ?? "<Datalist></Datalist>", enTranslationTypes.XML, out error);//2013.01.22: Ashley Lewis - Bug 7837
+            
+            // For some damn reason this does not always bind like it should! ;)
+            Thread.Sleep(150);
+
             foreach(IDataListItem item in WorkflowInputs)
             {
                 if(item.IsRecordset && !string.IsNullOrEmpty(item.Value))
                 {
                     DataList.TryCreateRecordsetValue(item.Value, item.Field, item.Recordset, Convert.ToInt32(item.RecordsetIndex), out error);
                 }
-                else
+                else if(!item.IsRecordset)
                 {
                     DataList.TryCreateScalarValue(item.Value, item.Field, out error);
                 }
