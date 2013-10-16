@@ -252,7 +252,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             while (searchID != Guid.Empty)
             {
                 ErrorResultTO invokeErrors;
-                var bdl = compiler.FetchBinaryDataList(dlID, out invokeErrors);
+                var bdl = compiler.FetchBinaryDataList(searchID, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
 
                

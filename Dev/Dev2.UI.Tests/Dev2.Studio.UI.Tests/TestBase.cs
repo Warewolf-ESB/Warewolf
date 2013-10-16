@@ -900,7 +900,7 @@ namespace Dev2.CodedUI.Tests
 
             //------------Setup for test--------------------------
             int debugExeWait = 2000;
-
+            
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             //Open the correct workflow
             ExplorerUIMap.ClearExplorerSearchText();
@@ -925,7 +925,7 @@ namespace Dev2.CodedUI.Tests
 
                 SendKeys.SendWait(KeyboardCommands.Debug);
                 PopupDialogUIMap.WaitForDialog();
-
+                
 
                 SendKeys.SendWait(KeyboardCommands.TabCommand);
                 Playback.Wait(500);
