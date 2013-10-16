@@ -14,6 +14,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Simulation;
+using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Unlimited.Framework;
@@ -49,6 +50,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string UniqueID { get; set; }
 
         // PBI 6602 - On Error properties
+        [FindMissing]
         public string OnErrorVariable { get; set; }
         public string OnErrorWorkflow { get; set; }
         public bool IsEndedOnError { get; set; }

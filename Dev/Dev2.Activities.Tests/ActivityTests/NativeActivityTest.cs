@@ -3,7 +3,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using ActivityUnitTests.ActivityTests;
+using System.Reflection;
 using ActivityUnitTests.XML;
 using Dev2.Activities;
 using Dev2.Common;
@@ -14,6 +14,7 @@ using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.Simulation;
 using Dev2.Tests.Activities.Utils;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
@@ -59,6 +60,38 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void ConstructorWithDebugDispatcher_Expected_NoArgumentNullException()
         {
             var activity = new TestActivity(DebugDispatcher.Instance);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DsfNativeActivity_Constructor")]
+        public void DsfNativeActivity_Constructor_OnError_PropertiesInitialized()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var activity = new TestActivity(new Mock<IDebugDispatcher>().Object);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(string.IsNullOrEmpty(activity.OnErrorVariable));
+            Assert.IsTrue(string.IsNullOrEmpty(activity.OnErrorWorkflow));
+            Assert.IsFalse(activity.IsEndedOnError);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DsfNativeActivity_Constructor")]
+        public void DsfNativeActivity_Constructor_OnErrorVariable_HasFindMissingAttribute()
+        {
+            //------------Setup for test--------------------------
+            var type = typeof(DsfNativeActivity<string>);
+            var property = type.GetProperty("OnErrorVariable");
+
+            //------------Execute Test---------------------------
+            var attribute = property.GetCustomAttribute<FindMissingAttribute>();
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(attribute);
         }
 
         #endregion
@@ -587,22 +620,22 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfNativeActivity_GetForEachItems_NullStringList_EmptyList()
         {
             //------------Setup for test--------------------------
-            var dsfNativeActivity = new TestNativeActivity(false,"Test");
-            
+            var dsfNativeActivity = new TestNativeActivity(false, "Test");
+
             //------------Execute Test---------------------------
             var forEachItemsForTest = dsfNativeActivity.GetForEachItemsForTest(null);
             //------------Assert Results-------------------------
             Assert.IsFalse(forEachItemsForTest.Any());
-        }     
-        
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfNativeActivity_GetForEachItems")]
         public void DsfNativeActivity_GetForEachItems_EmptyStringList_EmptyList()
         {
             //------------Setup for test--------------------------
-            var dsfNativeActivity = new TestNativeActivity(false,"Test");
-            
+            var dsfNativeActivity = new TestNativeActivity(false, "Test");
+
             //------------Execute Test---------------------------
             var forEachItemsForTest = dsfNativeActivity.GetForEachItemsForTest(new string[0]);
             //------------Assert Results-------------------------
@@ -622,7 +655,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var forEachItemsForTest = dsfNativeActivity.GetForEachItemsForTest(stringList);
             //------------Assert Results-------------------------
-            Assert.AreEqual(2,forEachItemsForTest.Count);
+            Assert.AreEqual(2, forEachItemsForTest.Count);
             Assert.IsNotNull(forEachItemsForTest.FirstOrDefault(item => item.Name == item2NameAndValue));
             Assert.IsNotNull(forEachItemsForTest.FirstOrDefault(item => item.Value == item2NameAndValue));
             Assert.IsNotNull(forEachItemsForTest.FirstOrDefault(item => item.Name == item1NameAndValue));
