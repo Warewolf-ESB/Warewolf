@@ -304,16 +304,14 @@ namespace Dev2.Activities.Designers2.Core
         /// <remarks><strong>DO NOT</strong> bind to properties that use this - use <see cref="ModelItem"/>.PropertyName instead!</remarks>
         /// </summary>
         protected T GetProperty<T>([CallerMemberName] string propertyName = null)
-            where T : class
         {
-            return _modelItem.GetProperty(propertyName) as T;
+            return (T)_modelItem.GetProperty(propertyName);
         }
 
         /// <summary>
         /// <remarks><strong>DO NOT</strong> bind to properties that use this - use <see cref="ModelItem"/>.PropertyName instead!</remarks>
         /// </summary>
         protected void SetProperty<T>(T value, [CallerMemberName] string propertyName = null)
-            where T : class
         {
             _modelItem.SetProperty(propertyName, value);
         }

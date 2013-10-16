@@ -43,6 +43,38 @@ namespace Dev2.Studio.Core.Activities.Utils
             return CreateModelItem(new object());
         }
 
+        public static T GetProperty<T>(this ModelItem modelItem, string propertyName)
+        {
+            var modelProperty = modelItem.Properties[propertyName];
+            object value = default(T);
+            if(modelProperty != null)
+            {
+                if(modelProperty.PropertyType == typeof(InArgument<T>))
+                {
+                    var arg = modelProperty.ComputedValue as InArgument<T>;
+                    if(arg != null)
+                    {
+                        value = arg.Expression.ToString();
+                    }
+                }
+                else
+                {
+                    value = modelProperty.ComputedValue;
+                }
+
+                if(value != null)
+                {
+                    if(typeof(T) == typeof(Guid))
+                    {
+                        Guid guid;
+                        Guid.TryParse(value.ToString(), out guid);
+                        value = guid;
+                    }
+                }
+            }
+            return (T)value;
+        }
+
         public static object GetProperty(string propertyName, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties[propertyName];
