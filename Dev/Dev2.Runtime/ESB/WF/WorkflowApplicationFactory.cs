@@ -361,11 +361,13 @@ namespace Dev2.DynamicServices
                     {
                         // just swallow it ;)
                     }
+
+                    ExecutableServiceRepository.Instance.Remove(this);
+                    AssociatedServices.ForEach(s => s.Terminate());
+                    Dispose();
                 }
 
-                ExecutableServiceRepository.Instance.Remove(this);
-                AssociatedServices.ForEach(s => s.Terminate());
-                Dispose();
+
             }  
 
             public void Resume(IDSFDataObject dataObject)
