@@ -61,6 +61,73 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any variable and data goes in here.
+        ///To convert Text, Hex, Binary and Base64, put the data to be converted in here..
+        /// </summary>
+        public static string BaseConversionHelpBaseInput {
+            get {
+                return ResourceManager.GetString("BaseConversionHelpBaseInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the type of data you are converting from.
+        ///e.g. If the data is Binary and you would like Text, then select Binary here..
+        /// </summary>
+        public static string BaseConversionHelpFromType {
+            get {
+                return ResourceManager.GetString("BaseConversionHelpFromType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the converted data into a separate variable.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string BaseConversionHelpResult {
+            get {
+                return ResourceManager.GetString("BaseConversionHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the type of data you are converting to.
+        ///e.g. If the data is Binary and you would like Text, then select Text here..
+        /// </summary>
+        public static string BaseConversionHelpToType {
+            get {
+                return ResourceManager.GetString("BaseConversionHelpToType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string BaseConversionToolTipBaseInput {
+            get {
+                return ResourceManager.GetString("BaseConversionToolTipBaseInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string BaseConversionToolTipResult {
+            get {
+                return ResourceManager.GetString("BaseConversionToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This data must be in the format specified in the &apos;Convert From&apos; category. This data will be converted to the format specified in the &apos;Convert To&apos; column..
         /// </summary>
         public static string BaseConvertInputHelpText {
@@ -97,11 +164,201 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the type of conversion you would like to make..
+        /// </summary>
+        public static string CaseConversionHelpConvertToCaseType {
+            get {
+                return ResourceManager.GetString("CaseConversionHelpConvertToCaseType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the converted data.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string CaseConversionHelpResult {
+            get {
+                return ResourceManager.GetString("CaseConversionHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To convert the case of some text, put the variable containing the text here..
+        /// </summary>
+        public static string CaseConversionHelpTextInput {
+            get {
+                return ResourceManager.GetString("CaseConversionHelpTextInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string CaseConversionToolTipResult {
+            get {
+                return ResourceManager.GetString("CaseConversionToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string CaseConversionToolTipTextInput {
+            get {
+                return ResourceManager.GetString("CaseConversionToolTipTextInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The comment entered here will not effect the workflow. This text will be visible in the debug output if this comment is included as a step in the workflow..
         /// </summary>
         public static string CommentInputText {
             get {
                 return ResourceManager.GetString("CommentInputText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put the full path of the destination you are copying to here.
+        ///You can use File System, URI, FTP or FTPS format..
+        /// </summary>
+        public static string CopyHelpDestination {
+            get {
+                return ResourceManager.GetString("CopyHelpDestination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To copy a file or folder, put the full path and file or folder name here.
+        ///You can use File System, URI, FTP or FTPS format..
+        /// </summary>
+        public static string CopyHelpFileFolder {
+            get {
+                return ResourceManager.GetString("CopyHelpFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string CopyHelpPassword {
+            get {
+                return ResourceManager.GetString("CopyHelpPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Copy action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string CopyHelpResult {
+            get {
+                return ResourceManager.GetString("CopyHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string CopyHelpUsername {
+            get {
+                return ResourceManager.GetString("CopyHelpUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the file or folder already exists, you can force a new one to overwrite the old one..
+        /// </summary>
+        public static string CopyToolHelpForceOverwrite {
+            get {
+                return ResourceManager.GetString("CopyToolHelpForceOverwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string CopyToolTipDestination {
+            get {
+                return ResourceManager.GetString("CopyToolTipDestination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string CopyToolTipFileFolder {
+            get {
+                return ResourceManager.GetString("CopyToolTipFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If it exists already, force an overwrite.
+        /// </summary>
+        public static string CopyToolTipForceOverwrite {
+            get {
+                return ResourceManager.GetString("CopyToolTipForceOverwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string CopyToolTipPassword {
+            get {
+                return ResourceManager.GetString("CopyToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string CopyToolTipResult {
+            get {
+                return ResourceManager.GetString("CopyToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string CopyToolTipUsername {
+            get {
+                return ResourceManager.GetString("CopyToolTipUsername", resourceCulture);
             }
         }
         
@@ -125,11 +382,295 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To create a file or folder, put the full path and file or folder name here.
+        ///You can use File System, URI, FTP or FTPS format..
+        /// </summary>
+        public static string CreateHelpFileFolder {
+            get {
+                return ResourceManager.GetString("CreateHelpFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the file or folder already exists, you can force a new one to overwrite the old one..
+        /// </summary>
+        public static string CreateHelpForceOverWrite {
+            get {
+                return ResourceManager.GetString("CreateHelpForceOverWrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string CreateHelpPassword {
+            get {
+                return ResourceManager.GetString("CreateHelpPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Create action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string CreateHelpResult {
+            get {
+                return ResourceManager.GetString("CreateHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string CreateHelpUsername {
+            get {
+                return ResourceManager.GetString("CreateHelpUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string CreateToolTipFileFolder {
+            get {
+                return ResourceManager.GetString("CreateToolTipFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If it exists already, force an overwrite.
+        /// </summary>
+        public static string CreateToolTipForceOverWrite {
+            get {
+                return ResourceManager.GetString("CreateToolTipForceOverWrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string CreateToolTipPassword {
+            get {
+                return ResourceManager.GetString("CreateToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string CreateToolTipResult {
+            get {
+                return ResourceManager.GetString("CreateToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string CreateToolTipUsername {
+            get {
+                return ResourceManager.GetString("CreateToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For Index you can specify if your data is aligned to the right or left.
+        ///E.g. Text is normally left and numbers normally right..
+        /// </summary>
+        public static string DataMergeHelpAlignType {
+            get {
+                return ResourceManager.GetString("DataMergeHelpAlignType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To join two or more pieces of data together list them in the order you would like them joined. If you use recordset (*) notation, the list will be repeated for every record..
+        /// </summary>
+        public static string DataMergeHelpInput {
+            get {
+                return ResourceManager.GetString("DataMergeHelpInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If Index is being used and there is extra space between the data supplied and the number of index characters, you can specify what makes up the padding e.g. 0 for numbers or blank space for text..
+        /// </summary>
+        public static string DataMergeHelpPadding {
+            get {
+                return ResourceManager.GetString("DataMergeHelpPadding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the merged string.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string DataMergeHelpResult {
+            get {
+                return ResourceManager.GetString("DataMergeHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For Index use the number of characters that this merge will use. It will either trim if too little, or pad if too much.
+        ///For Char put any characters or combination of characters you would like.
+        ///Not applicable to New Line or Tab.
+        /// </summary>
+        public static string DataMergeHelpUsing {
+            get {
+                return ResourceManager.GetString("DataMergeHelpUsing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the type of merge you would like between each piece of merged data, if any..
+        /// </summary>
+        public static string DataMergeHelpWithType {
+            get {
+                return ResourceManager.GetString("DataMergeHelpWithType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string DataMergeToolTipInput {
+            get {
+                return ResourceManager.GetString("DataMergeToolTipInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string DataMergeToolTipPadding {
+            get {
+                return ResourceManager.GetString("DataMergeToolTipPadding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string DataMergeToolTipResult {
+            get {
+                return ResourceManager.GetString("DataMergeToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string DataMergeToolTipUsing {
+            get {
+                return ResourceManager.GetString("DataMergeToolTipUsing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You can reverse the direction that the string is split by selecting Backward. By Default, the processing direction is Forward..
         /// </summary>
         public static string DataSplitDirectionHelpText {
             get {
                 return ResourceManager.GetString("DataSplitDirectionHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If there is an occurrence or an item being split on, that should not be split on, it will be preceded with this character. e.g., a comma separated file might have a comma in a name, so don’t split on it if it is preceded by / or some other characters..
+        /// </summary>
+        public static string DataSplitHelpEscape {
+            get {
+                return ResourceManager.GetString("DataSplitHelpEscape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If you would like the data or item you are splitting on to be included in the result data, select this checkbox..
+        /// </summary>
+        public static string DataSplitHelpInclude {
+            get {
+                return ResourceManager.GetString("DataSplitHelpInclude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the split data in the pattern as described by the results.
+        ///The variable pattern will be repeated until the end of the input data.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string DataSplitHelpResult {
+            get {
+                return ResourceManager.GetString("DataSplitHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To split a value into one or more variables, put the value in here.
+        ///You can process entire file content or just trim the white space from a variable..
+        /// </summary>
+        public static string DataSplitHelpString {
+            get {
+                return ResourceManager.GetString("DataSplitHelpString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For Index use the number of characters that this split will use. 
+        ///For Char put any characters or combination of characters you would like.
+        ///Not applicable to New Line, Tab or End.
+        /// </summary>
+        public static string DataSplitHelpUsing {
+            get {
+                return ResourceManager.GetString("DataSplitHelpUsing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select where you would like to split the data..
+        /// </summary>
+        public static string DataSplitHelpWithType {
+            get {
+                return ResourceManager.GetString("DataSplitHelpWithType", resourceCulture);
             }
         }
         
@@ -173,6 +714,66 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string DataSplitStringToSplitHelpText {
             get {
                 return ResourceManager.GetString("DataSplitStringToSplitHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string DataSplitToolTipEscape {
+            get {
+                return ResourceManager.GetString("DataSplitToolTipEscape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Include the information you are splitting on?.
+        /// </summary>
+        public static string DataSplitToolTipInclude {
+            get {
+                return ResourceManager.GetString("DataSplitToolTipInclude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string DataSplitToolTipResult {
+            get {
+                return ResourceManager.GetString("DataSplitToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string DataSplitToolTipString {
+            get {
+                return ResourceManager.GetString("DataSplitToolTipString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string DataSplitToolTipUsing {
+            get {
+                return ResourceManager.GetString("DataSplitToolTipUsing", resourceCulture);
             }
         }
         
@@ -235,6 +836,92 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string DateTimeResultHelpText {
             get {
                 return ResourceManager.GetString("DateTimeResultHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put  the index of the string you are looking for in here..
+        /// </summary>
+        public static string FindIndexHelpCharacters {
+            get {
+                return ResourceManager.GetString("FindIndexHelpCharacters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the direction to search in..
+        /// </summary>
+        public static string FindIndexHelpDirectiontype {
+            get {
+                return ResourceManager.GetString("FindIndexHelpDirectiontype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select which index(es) you would like found..
+        /// </summary>
+        public static string FindIndexHelpIndexType {
+            get {
+                return ResourceManager.GetString("FindIndexHelpIndexType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To find the character index(es) of a string inside another string, put the string to be searched here..
+        /// </summary>
+        public static string FindIndexHelpInField {
+            get {
+                return ResourceManager.GetString("FindIndexHelpInField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the index(es) of the found string.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record. If you are finding All Occurrences and using a scalar, the results will be comma separated..
+        /// </summary>
+        public static string FindIndexHelpResult {
+            get {
+                return ResourceManager.GetString("FindIndexHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string FindIndexToolTipCharacters {
+            get {
+                return ResourceManager.GetString("FindIndexToolTipCharacters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string FindIndexToolTipInField {
+            get {
+                return ResourceManager.GetString("FindIndexToolTipInField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string FindIndexToolTipResult {
+            get {
+                return ResourceManager.GetString("FindIndexToolTipResult", resourceCulture);
             }
         }
         
@@ -506,6 +1193,97 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string QuickVariableVariableListHelpText {
             get {
                 return ResourceManager.GetString("QuickVariableVariableListHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put the information you are looking for in here..
+        /// </summary>
+        public static string ReplaceHelpFind {
+            get {
+                return ResourceManager.GetString("ReplaceHelpFind", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///To search and replace a string, put the variable containing the string to search in here..
+        /// </summary>
+        public static string ReplaceHelpInField {
+            get {
+                return ResourceManager.GetString("ReplaceHelpInField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put the replacement information in here..
+        /// </summary>
+        public static string ReplaceHelpReplaceWith {
+            get {
+                return ResourceManager.GetString("ReplaceHelpReplaceWith", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the count of the number of replacements.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string ReplaceHelpResult {
+            get {
+                return ResourceManager.GetString("ReplaceHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ReplaceToolTipFind {
+            get {
+                return ResourceManager.GetString("ReplaceToolTipFind", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ReplaceToolTipInField {
+            get {
+                return ResourceManager.GetString("ReplaceToolTipInField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ReplaceToolTipReplaceWith {
+            get {
+                return ResourceManager.GetString("ReplaceToolTipReplaceWith", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ReplaceToolTipResult {
+            get {
+                return ResourceManager.GetString("ReplaceToolTipResult", resourceCulture);
             }
         }
         
