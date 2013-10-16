@@ -471,7 +471,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         #region Private Methods
         private void CreateDataListObjectFromList()
         {
-            string error = "";
+            string error;
             DataList = Broker.DeSerialize("<Datalist></Datalist>", DebugTO.DataList ?? "<Datalist></Datalist>", enTranslationTypes.XML, out error);//2013.01.22: Ashley Lewis - Bug 7837
             
             // For some damn reason this does not always bind like it should! ;)
