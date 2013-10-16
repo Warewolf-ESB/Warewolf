@@ -27,7 +27,7 @@ namespace Dev2.Studio.UI.Tests
             {
                 Mouse.Click(tryFindDialog);
                 SendKeys.SendWait("{ESCAPE}");
-                Assert.Fail("Resource changed dialog hanging after test, might not have rendered properly");
+                Assert.Fail("Dialog hanging after test, might not have rendered properly");
             }
             //close any open tabs
             TabManagerUIMap.CloseAllTabs();
@@ -75,7 +75,7 @@ namespace Dev2.Studio.UI.Tests
             }
             RibbonUIMap.CreateNewWorkflow();
             SendKeys.SendWait("^s");
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
             SaveDialogUIMap.ClickAndTypeInNameTextbox(oldResourceName);
             //wait for save tab switch
             Playback.Wait(2000);

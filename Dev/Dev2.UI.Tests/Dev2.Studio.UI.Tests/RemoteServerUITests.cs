@@ -264,7 +264,7 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "DBSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
             DatabaseSourceUiMap.ClickSaveConnection();
             SaveDialogUiMap.ClickSave();
         }
@@ -276,7 +276,7 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "WebSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
             SaveDialogUiMap.ClickSave();
         }
@@ -288,7 +288,7 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "WebService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
             SaveDialogUiMap.ClickSave();
         }
@@ -300,7 +300,7 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "DBService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
             DatabaseServiceWizardUiMap.DatabaseServiceClickCancel();
         }
 
@@ -311,7 +311,7 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "EmailSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
             EmailSourceWizardUiMap.ClickCancel();
         }
 
@@ -322,7 +322,7 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "PluginSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
             PluginSourceMap.ClickSave();
         }
 
@@ -333,7 +333,7 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "PluginService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
             PluginServiceWizardUiMap.ClickTest();
             PluginServiceWizardUiMap.ClickOK();
         }

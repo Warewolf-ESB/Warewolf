@@ -1085,6 +1085,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         public void RunWorkflowAndWaitUntilOutputStepCountAtLeast(int expectedStepCount, int timeout = 5000)
         {
+            var outputUiMap = new OutputUIMap();
             SendKeys.SendWait("{F5}");
             if(DebugUIMap.WaitForDebugWindow(5000))
             {
@@ -1100,7 +1101,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             while(steps.Count < expectedStepCount && count <= timeout)
             {
                 Playback.Wait(100);
-                steps = new OutputUIMap().GetOutputWindow();
+                steps = outputUiMap.GetOutputWindow();
                 count++;
             }
         }

@@ -53,7 +53,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
             SendKeys.SendWait("{ENTER}");
 
             //Wait for wizard
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
 
             //Web Source Details
             SendKeys.SendWait("{TAB}http://www.webservicex.net/globalweather.asmx{TAB}{TAB}{TAB}{TAB}{ENTER}");
@@ -70,7 +70,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
             SendKeys.SendWait("{ENTER}");
 
             //Wait for wizard
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
 
             //Web Service Details
             SendKeys.SendWait("{TAB}{TAB}{DOWN}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");

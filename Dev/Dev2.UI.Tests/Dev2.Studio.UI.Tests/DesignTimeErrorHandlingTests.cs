@@ -85,7 +85,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", serviceToUse);
             // Get wizard window
             var wizardWindow = DatabaseServiceWizardUiMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
             // Tab to mappings
             DatabaseServiceWizardUiMap.TabToOutputMappings(wizardWindow);
             // Remove column 1+2's mapping
@@ -104,7 +104,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", serviceToUse);
             // Get wizard window
             wizardWindow = DatabaseServiceWizardUiMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
             // Tab to mappings
             DatabaseServiceWizardUiMap.TabToOutputMappings(wizardWindow);
             // Replace column 1's mapping
@@ -152,7 +152,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.EnterExplorerSearchText("Bug_10011_DbService");
             ExplorerUiMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
             // Get wizard window
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
             var wizardWindow = DatabaseServiceWizardUiMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
 
             // Tab to mappings

@@ -4,6 +4,7 @@ using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -71,7 +72,7 @@ namespace Dev2.Studio.UI.Tests
             
             Playback.Wait(3000);
             SendKeys.SendWait("{F5}");
-            Playback.Wait(1000);
+            PopupDialogUIMap.WaitForDialog();
             SendKeys.SendWait("{F5}");
             Playback.Wait(1000);
 

@@ -61,11 +61,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         /// </summary>
         public void ClickMappingTab()
         {
-            #region Variable Declarations
             UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            #endregion
-
-            // Click image
             Mouse.Click(uIItemImage, new Point(280, 25));
         }
         
@@ -95,11 +91,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         /// </summary>
         public void DatabaseServiceClickCancel()
         {
-            #region Variable Declarations
             UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            #endregion
-
-            // Click image
             Mouse.Click(uIItemImage, new Point(874, 533));
         }
 

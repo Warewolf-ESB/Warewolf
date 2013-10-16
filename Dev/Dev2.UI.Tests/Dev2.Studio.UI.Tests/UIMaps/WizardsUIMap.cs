@@ -7,10 +7,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 {
     class WizardsUIMap
     {
+        private const int DefaultTimeOut = 5000;
         /// <summary>
         /// Returns true if found in the timeout period.
         /// </summary>
-        public static void WaitForWizard(int timeOut, bool throwIfNotFound = true)
+        public static void WaitForWizard(int timeOut = DefaultTimeOut, bool throwIfNotFound = true)
         {
             var uiBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
             Type type = uiBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0].GetType();

@@ -20,22 +20,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public partial class OutputUIMap
     {
-
-        private WpfTree OutputTree()
-        {
-            WpfTree OutputTree = UIBusinessDesignStudioWindow.UIDebugOutputCustom.UIItemTree;
-            return OutputTree;
-        }
-
-        private UITestControl StatusBar()
-        {
-            WpfControl Window = UIBusinessDesignStudioWindow.UIDebugOutputCustom;
-            UITestControlCollection children = Window.GetChildren();
-            UITestControlCollection statusBar = children[4].GetChildren();
-            UITestControl statusBarChildren = statusBar[0];
-            return statusBarChildren;
-        }
-
         #region Properties
         public virtual NewUIMapExpectedValues NewUIMapExpectedValues
         {

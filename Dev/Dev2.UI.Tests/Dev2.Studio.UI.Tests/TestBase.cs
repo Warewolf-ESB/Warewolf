@@ -196,7 +196,7 @@ namespace Dev2.CodedUI.Tests
 
             Playback.Wait(5000);
 
-            Assert.AreEqual(TabManagerUIMap.GetActiveTabName(), "ForEachUpgradeTest");
+            Assert.IsTrue(TabManagerUIMap.GetActiveTabName().Contains("ForEachUpgradeTest"), "Affected workflow not shown after show affected workflow button pressed.");
 
             TabManagerUIMap.CloseAllTabs();
         }
@@ -808,14 +808,11 @@ namespace Dev2.CodedUI.Tests
                 Playback.Wait(1000);
             }
             DocManagerUIMap.ClickOpenTabPage("Output");
-            UITestControl control = OutputUIMap.GetStatusBar();
-
-            UITestControlCollection statusBarChildren = control.GetChildren();
-            var progressbar = statusBarChildren.First(c => c.ClassName == "Uia.CircularProgressBar");
-            var label = statusBarChildren.First(c => c.ClassName == "Uia.Text");
-            Assert.IsTrue(label.FriendlyName == "Executing");
-            Assert.IsTrue(progressbar.Height != -1);
-            DoCleanup("LargeFileTesting", true);
+            var status = OutputUIMap.GetStatusBarStatus();
+            var spinning = OutputUIMap.IsSpinnerSpinning();
+            Assert.AreEqual("Executing", status, "Debug output status text does not say executing when executing");
+            Assert.IsTrue(spinning, "Debug output spinner not spinning during execution");
+            TabManagerUIMap.CloseAllTabs();
         }
 
         [TestMethod]

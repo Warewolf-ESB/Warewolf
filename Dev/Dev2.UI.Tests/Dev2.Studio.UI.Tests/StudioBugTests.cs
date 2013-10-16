@@ -180,13 +180,13 @@ namespace Dev2.Studio.UI.Tests
             var decision = ToolboxUIMap.FindControl("Decision");
             //Drag on two decisions
             ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
             Playback.Wait(2000);
             _decisionWizardUiMap.HitDoneWithKeyboard();
             var newPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             newPoint.Y = newPoint.Y + 200;
             ToolboxUIMap.DragControlToWorkflowDesigner(decision, newPoint);
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
             Playback.Wait(2000);
             _decisionWizardUiMap.HitDoneWithKeyboard();
             //Rubberband select them
@@ -305,7 +305,6 @@ namespace Dev2.Studio.UI.Tests
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             var thePoint = new Point(theStartButton.BoundingRectangle.X + 30, theStartButton.BoundingRectangle.Y + 100);
             ToolboxUIMap.DragControlToWorkflowDesigner("MultiAssign", thePoint);
-            WorkflowDesignerUIMap.Adorner_ClickDoneButton(theTab, "MultiAssign");
 
             WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "MultiAssign", 0);
 
@@ -316,8 +315,8 @@ namespace Dev2.Studio.UI.Tests
             WorkflowDesignerUIMap.RunWorkflowAndWaitUntilOutputStepCountAtLeast(2);
 
             //Click step
-            var step = OutputUIMap.GetOutputWindow();
             DocManagerUIMap.ClickOpenTabPage("Output");
+            var step = OutputUIMap.GetOutputWindow();
             Mouse.Click(step[2]);
             Playback.Wait(100);
             Mouse.Click(step[1]);
@@ -355,7 +354,7 @@ namespace Dev2.Studio.UI.Tests
                 new Point(theStartNode.BoundingRectangle.X + 20,
                             theStartNode.BoundingRectangle.Y + 100));
             RibbonUIMap.ClickRibbonMenuItem("Save");
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
             SaveDialogUIMap.ClickAndTypeInNameTextbox(firstName);
             Playback.Wait(3000);
           

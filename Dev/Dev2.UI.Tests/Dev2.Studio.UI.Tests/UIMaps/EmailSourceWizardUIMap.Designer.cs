@@ -51,7 +51,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
             SendKeys.SendWait("{ENTER}");
 
             //wait for email source wizard
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
 
             SendKeys.SendWait("{TAB}smtp.afrihost.co.za{TAB}");
             SendKeys.SendWait("dev2test{TAB}");

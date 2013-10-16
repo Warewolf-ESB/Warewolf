@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Input;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
@@ -83,16 +84,20 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         /// <summary>
         /// Gets the first intellisense result
         /// </summary>
-        public void GetFirstIntellisense(string startWith, bool deleteText = false, Point mousePoint = default(Point))
+        public void GetFirstIntellisense(string startWith, bool deleteText = false, Point relativeToWizard = default(Point))
         {
             var wizard = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            SendKeys.SendWait(startWith);
-            Playback.Wait(250);
 
-            if (mousePoint != default(Point) )
+            //prompt intellisense
+            SendKeys.SendWait(startWith);
+
+            //wait for intellisense to drop down
+            Playback.Wait(1000);
+
+            if (relativeToWizard != default(Point) )
             {
                 // nasty fixed sizing, but no other real choice to test what  I need to ;(
-                Mouse.Click(new Point(UIBusinessDesignStudioWindow.Left + mousePoint.X, UIBusinessDesignStudioWindow.Top + mousePoint.Y));
+                Mouse.Click(new Point(wizard.Left + relativeToWizard.X, wizard.Top + relativeToWizard.Y));
             }
             else
             {

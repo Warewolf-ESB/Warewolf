@@ -10,13 +10,16 @@ namespace Dev2.Studio.UI.Tests.Utils
 {
     class VisualTreeWalker
     {
-        private static UITestControl GetChildByAutomationID(UITestControl parent, int bookmark, params string[] automationIDs)
+        public static UITestControl GetChildByAutomationIDPath(UITestControl parent, int bookmark, params string[] automationIDs)
         {
             var children = parent.GetChildren();
             var firstChildFound = children.FirstOrDefault(child =>
                 {
                     var childAutoID = child.GetProperty("AutomationID").ToString();
-                    return childAutoID == automationIDs[bookmark];
+                    return childAutoID.Contains(automationIDs[bookmark]) || 
+                        child.FriendlyName.Contains(automationIDs[bookmark]) || 
+                        child.ControlType.Name.Contains(automationIDs[bookmark]) ||
+                        child.ClassName.Contains(automationIDs[bookmark]);
                 });
             if (firstChildFound == null)
             {
@@ -26,13 +29,13 @@ namespace Dev2.Studio.UI.Tests.Utils
             {
                 return firstChildFound;
             }
-            return GetChildByAutomationID(firstChildFound, ++bookmark, automationIDs);
+            return GetChildByAutomationIDPath(firstChildFound, ++bookmark, automationIDs);
         }
 
         public static UITestControl GetControl(params string[] automationIDs)
         {
             var studioWindow = new UIBusinessDesignStudioWindow();
-            var control = GetChildByAutomationID(studioWindow, 0, automationIDs);
+            var control = GetChildByAutomationIDPath(studioWindow, 0, automationIDs);
             if (control == null)
             {
                 throw new UITestControlNotFoundException();

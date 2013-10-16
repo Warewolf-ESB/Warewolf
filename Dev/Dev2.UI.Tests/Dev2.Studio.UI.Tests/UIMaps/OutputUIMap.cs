@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,6 +9,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
 {
     public partial class OutputUIMap
     {
+        UITestControl _debugOutput;
+        public OutputUIMap()
+        {
+            _debugOutput = VisualTreeWalker.GetControl("UI_DocManager_AutoID", "OutputPane", "DebugOutput");
+        }
 
         /// <summary>
         /// Finds a control on the Output Pane
@@ -51,17 +57,34 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             return null;
         }
 
-        public UITestControlCollection GetOutputWindow()
+        private WpfTree GetOutputTree()
         {
-            WpfTree debugOutputControlTree = OutputTree();
-            return debugOutputControlTree.Nodes;
-
+            return _debugOutput.GetChildren().FirstOrDefault(child => child.ClassName == "Uia.TreeView") as WpfTree;
         }
 
-        public UITestControl GetStatusBar()
+        public UITestControlCollection GetOutputWindow()
         {
-            UITestControl statusBar = StatusBar();
-            return statusBar;
+            WpfTree debugOutputControlTree = GetOutputTree();
+            return debugOutputControlTree.Nodes;
+        }
+
+        private UITestControl GetStatusBar()
+        {
+            return VisualTreeWalker.GetChildByAutomationIDPath(_debugOutput, 0, "Dev2StatusBarAutomationID", "StatusBar");
+        }
+
+        public string GetStatusBarStatus()
+        {
+            var statusBarChildren = GetStatusBar().GetChildren();
+            var statusBar = statusBarChildren.FirstOrDefault(child => child.ClassName == "Uia.Text") as WpfText;
+            return statusBar.DisplayText;
+        }
+
+        public bool IsSpinnerSpinning()
+        {
+            var spinner =
+                GetStatusBar().GetChildren().FirstOrDefault(child => child.ClassName == "Uia.CircularProgressBar");
+            return spinner.Height != -1;
         }
 
         public UITestControlCollection GetStepInOutputWindow(UITestControl outputWindow, string stepToFind)

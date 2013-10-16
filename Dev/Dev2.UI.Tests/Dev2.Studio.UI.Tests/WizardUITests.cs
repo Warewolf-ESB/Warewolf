@@ -45,13 +45,14 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void TestCleanup()
         {
             var window = new UIBusinessDesignStudioWindow();
+            Playback.Wait(500);
             //close any open wizards
             var tryFindDialog = window.GetChildren()[0].GetChildren()[0];
             if(tryFindDialog.GetType() == typeof(WpfImage))
             {
                 Mouse.Click(tryFindDialog);
                 SendKeys.SendWait("{ESCAPE}");
-                Assert.Fail("Resource changed dialog hanging after test, might not have rendered properly");
+                Assert.Fail("Wizard hanging after test, might not have rendered properly");
             }
             //close any open tabs
             TabManagerUIMap.CloseAllTabs();
@@ -140,7 +141,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var studioWindow = new UIBusinessDesignStudioWindow();
             Mouse.Click(studioWindow);
             SendKeys.SendWait("^+w");
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
             WebServiceWizardUIMap.Cancel();
         }
 
@@ -216,7 +217,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Clipboard.Clear();
             RibbonUIMap.CreateNewWorkflow();
 
-            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+            var theTab = TabManagerUIMap.GetActiveTab();
 
             //------------Execute Test---------------------------
 
@@ -226,30 +227,28 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             var decision = ToolboxUIMap.FindControl("Decision");
             ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
+            WizardsUIMap.WaitForWizard();
             _decisionWizardUiMap.SendTabs(4);
             _decisionWizardUiMap.SelectMenuItem(37); // select between ;)
 
             _decisionWizardUiMap.SendTabs(11);
-            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(610, 420));
+            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(100, 150));
 
             _decisionWizardUiMap.SendTabs(2);
-            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(940, 420));
+            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(400, 150));
             _decisionWizardUiMap.SendTabs(1);
-            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(1110, 420));
+            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(600, 150));
 
             _decisionWizardUiMap.SendTabs(6);
             SendKeys.SendWait("{ENTER}");
 
-
-            SendKeys.SendWait("{TAB}");
-            SendKeys.SendWait("^A");
-            Thread.Sleep(250);
-            SendKeys.SendWait("^C");
-            var displayValue = Clipboard.GetData(DataFormats.Text);
-
             //------------Assert Results-------------------------
 
             var expected = "If [[VariableName]] Is Between [[VariableName]] and [[VariableName]]";
+
+            var getDecision = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FlowDecisionDesigner");
+            var getDecisionText = getDecision.GetChildren()[0] as WpfEdit;
+            var displayValue = getDecisionText.Text;
 
             Assert.AreEqual(expected, displayValue);
 

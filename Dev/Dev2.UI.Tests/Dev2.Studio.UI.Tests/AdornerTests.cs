@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Windows.Forms;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
@@ -166,16 +167,14 @@ namespace Dev2.Studio.UI.Tests
 
             Playback.Wait(500);
             Mouse.Click(button);
-            Playback.Wait(1000);
-
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
 
             DatabaseServiceWizardUiMap.ClickMappingTab();
-            Keyboard.SendKeys("{TAB}");
+            SendKeys.SendWait("{TAB}");
             Playback.Wait(500);
-            Keyboard.SendKeys("zzz");
+            SendKeys.SendWait("zzz");
             // -- wizard closed
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
             
 
             // -- DO Web Services --
@@ -190,15 +189,15 @@ namespace Dev2.Studio.UI.Tests
             Mouse.Click(button);
             Playback.Wait(1000);
 
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
 
             DatabaseServiceWizardUiMap.ClickMappingTab();
             //Mouse.Click(new Point(780, 270)); // click on the second tab ;)
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");
             Playback.Wait(500);
-            Keyboard.SendKeys("zzz");
+            SendKeys.SendWait("zzz");
             // -- wizard closed, account for darn dialog ;(
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}{ENTER}{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{ENTER}{TAB}{ENTER}");
             Playback.Wait(1000);
 
 
@@ -214,14 +213,14 @@ namespace Dev2.Studio.UI.Tests
             Mouse.Click(button);
             Playback.Wait(1000);
 
-            WizardsUIMap.WaitForWizard(5000);
+            WizardsUIMap.WaitForWizard();
 
             DatabaseServiceWizardUiMap.ClickMappingTab(); // click on the second tab ;)
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");
             Playback.Wait(500);
-            Keyboard.SendKeys("zzz");
+            SendKeys.SendWait("zzz");
             // -- wizard closed, account for darn dialog ;(
-            Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}{ENTER}");
 
 
             //------------Assert Results-------------------------
@@ -330,14 +329,12 @@ namespace Dev2.Studio.UI.Tests
             UITestControlCollection controlCollection = controlOnWorkflow.GetChildren();
 
             Point initialResizerPoint = new Point();
-            Point newResizerPoint = new Point();
             // Validate the assumption that the last child is the resizer
             var resizeThumb = controlCollection[controlCollection.Count - 1];
             if(resizeThumb.ControlType.ToString() == "Indicator")
             {
-                UITestControl theResizer = resizeThumb;
-                initialResizerPoint.X = theResizer.BoundingRectangle.X + 5;
-                initialResizerPoint.Y = theResizer.BoundingRectangle.Y + 5;
+                initialResizerPoint.X = resizeThumb.BoundingRectangle.X + 5;
+                initialResizerPoint.Y = resizeThumb.BoundingRectangle.Y + 5;
             }
             else
             {
@@ -345,18 +342,18 @@ namespace Dev2.Studio.UI.Tests
             }
 
             // Drag
-            Mouse.Click(initialResizerPoint);
+            Mouse.Move(new Point(resizeThumb.Left + 5, resizeThumb.Top + 5));
             Mouse.StartDragging();
 
             // Y - 50 since it starts at the lowest point
             Mouse.StopDragging(new Point(initialResizerPoint.X + 50, initialResizerPoint.Y - 50));
 
             // Check position to see it dragged
+            Point newResizerPoint = new Point();
             if(resizeThumb.ControlType.ToString() == "Indicator")
             {
-                UITestControl theResizer = resizeThumb;
-                newResizerPoint.X = theResizer.BoundingRectangle.X + 5;
-                newResizerPoint.Y = theResizer.BoundingRectangle.Y + 5;
+                newResizerPoint.X = resizeThumb.BoundingRectangle.X + 5;
+                newResizerPoint.Y = resizeThumb.BoundingRectangle.Y + 5;
             }
 
             if(!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y < initialResizerPoint.Y))
