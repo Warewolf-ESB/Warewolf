@@ -189,6 +189,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 if(dataObject != null)
                                 {
                                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, _tmpErrors.MakeDataListReady(), out errors);
+                                    if(!String.IsNullOrEmpty(OnErrorVariable))
+                                    {
+                                        var errorNotXML = compiler.FetchErrors(dataObject.DataListID);
+                                        compiler.Upsert(dataObject.DataListID, OnErrorVariable, errorNotXML, out errors);
+                                    }
+                                    //IEsbChannel esbChannel = context.GetExtension<IEsbChannel>();
+                                    //esbChannel.ExecuteRequest();
                                 }
                             }
                         }

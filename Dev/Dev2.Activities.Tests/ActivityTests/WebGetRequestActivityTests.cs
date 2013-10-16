@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using Dev2.Activities;
@@ -141,6 +142,95 @@ namespace ActivityUnitTests.ActivityTest
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url), Times.Once());
             Assert.IsFalse(Compiler.HasErrors(executeProcess.DataListID));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WebGetRequestActivity_Errors")]
+        public void WebGetRequestExecuteWhereErrorExpectErrorAdded()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IWebRequestInvoker>();
+            const string message = "This is a forced exception";
+            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>())).Throws(new InvalidDataException(message));
+            var activity = GetWebGetRequestActivity(mock);
+            activity.Method = "GET";
+            activity.Url = "BodyValue";
+            TestStartNode = new FlowStep
+            {
+                Action = activity
+            };
+            TestData = "<root><testVar /></root>";
+            //------------Execute Test---------------------------
+            var executeProcess = ExecuteProcess();
+            //------------Assert Results-------------------------
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url), Times.Once());
+            Assert.IsTrue(Compiler.HasErrors(executeProcess.DataListID));
+            string errorString = Compiler.FetchErrors(executeProcess.DataListID, false);
+            StringAssert.Contains(errorString, message);
+        }
+
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WebGetRequestActivity_Errors")]
+        public void WebGetRequestExecuteWhereErrorVariableAsScalarSpecifiedExpectErrorInsertedInVariable()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IWebRequestInvoker>();
+            const string message = "This is a forced exception";
+            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>())).Throws(new InvalidDataException(message));
+            var activity = GetWebGetRequestActivity(mock);
+            activity.OnErrorVariable = "[[Err]]";
+            activity.Method = "GET";
+            activity.Url = "BodyValue";
+            TestStartNode = new FlowStep
+            {
+                Action = activity
+            };
+            TestData = "<root><Err/></root>";
+            //------------Execute Test---------------------------
+            var executeProcess = ExecuteProcess();
+            //------------Assert Results-------------------------
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url), Times.Once());
+            Assert.IsTrue(Compiler.HasErrors(executeProcess.DataListID));
+
+            string actual;
+            string error;
+            GetScalarValueFromDataList(executeProcess.DataListID, "Err", out actual, out error);
+            StringAssert.Contains(actual, message);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WebGetRequestActivity_Errors")]
+        public void WebGetRequestExecuteWhereErrorVariableAsRecordSetSpecifiedExpectErrorInsertedInVariable()
+        {
+            //------------Setup for test--------------------------
+            var mock = new Mock<IWebRequestInvoker>();
+            const string message = "This is a forced exception";
+            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>())).Throws(new InvalidDataException(message));
+            var activity = GetWebGetRequestActivity(mock);
+            activity.OnErrorVariable = "[[Errors().Error]]";
+            activity.Method = "GET";
+            activity.Url = "BodyValue";
+            TestStartNode = new FlowStep
+            {
+                Action = activity
+            };
+            TestData = "<root></root>";
+            CurrentDl = "<ADL><Errors><Error></Error></Errors></ADL>";
+            //------------Execute Test---------------------------
+            var executeProcess = ExecuteProcess();
+            //------------Assert Results-------------------------
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url), Times.Once());
+            Assert.IsTrue(Compiler.HasErrors(executeProcess.DataListID));
+
+            IList<IBinaryDataListItem> actual;
+            string error;
+            GetRecordSetFieldValueFromDataList(executeProcess.DataListID, "Errors", "Error", out actual, out error);
+            List<IBinaryDataListItem> resultData = actual.ToList();
+            StringAssert.Contains(resultData[0].TheValue, message);
         }
 
         [TestMethod]
@@ -425,9 +515,9 @@ namespace ActivityUnitTests.ActivityTest
 
         static DsfWebGetRequestActivity GetWebGetRequestActivity(Mock<IWebRequestInvoker> mockWebRequestInvoker)
         {
-            var emailSender = mockWebRequestInvoker.Object;
+            var webRequestInvoker = mockWebRequestInvoker.Object;
             var activity = GetWebGetRequestActivity();
-            activity.WebRequestInvoker = emailSender;
+            activity.WebRequestInvoker = webRequestInvoker;
             return activity;
         }
 
