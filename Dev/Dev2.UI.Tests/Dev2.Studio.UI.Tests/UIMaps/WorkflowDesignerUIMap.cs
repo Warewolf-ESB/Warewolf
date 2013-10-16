@@ -1270,5 +1270,21 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         {
             return GetAllControlsOnDesignSurface(theTab, controlAutomationId)[index];
         }
+
+        public IEnumerable<WpfControl> GetChildrenUnderControl(UITestControl control)
+        {
+            var uiTestControls = control
+                .GetChildren()
+                .Select(i => i as WpfControl)
+                .ToList();
+
+            uiTestControls.AddRange(control
+                .GetChildren()
+                .SelectMany(c => c.GetChildren())
+                .Select(i => i as WpfControl)
+                .ToList());
+
+            return uiTestControls;
+        }
     }
 }

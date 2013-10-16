@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
@@ -23,6 +24,8 @@ namespace Dev2.Studio.UI.Tests
         TabManagerUIMap _tabManagerDesignerUiMap;
         ToolboxUIMap _toolboxUiMap;
         WorkflowDesignerUIMap _workflowDesignerUiMap;
+        const string TestingDB = "GetCities";
+        const int TableIndex = 1;
         #endregion
 
         #region Properties
@@ -46,6 +49,7 @@ namespace Dev2.Studio.UI.Tests
         {
             // Create the workflow
             RibbonUiMap.CreateNewWorkflow();
+            var theTab = TabManagerUiMap.GetActiveTab();
 
             // Get some variables
             var startPoint = WorkflowDesignerUiMap.GetStartNodeBottomAutoConnectorPoint();
@@ -56,7 +60,7 @@ namespace Dev2.Studio.UI.Tests
             var theControl = ToolboxUiMap.FindControl("DsfSqlBulkInsertActivity");
             ToolboxUiMap.DragControlToWorkflowDesigner(theControl, point);
 
-            var smallDataGrid = GetControlById("SmallDataGrid");
+            var smallDataGrid = GetControlById("SmallDataGrid", theTab);
             Assert.IsTrue(smallDataGrid.GetChildren().Count == 0);
         }
 
@@ -67,6 +71,7 @@ namespace Dev2.Studio.UI.Tests
         {
             // Create the workflow
             RibbonUiMap.CreateNewWorkflow();
+            var theTab = TabManagerUiMap.GetActiveTab();
 
             // Get some variables
             var startPoint = WorkflowDesignerUiMap.GetStartNodeBottomAutoConnectorPoint();
@@ -78,55 +83,56 @@ namespace Dev2.Studio.UI.Tests
             ToolboxUiMap.DragControlToWorkflowDesigner(theControl, point);
 
             //Select a database
-            var dbDropDown = GetControlById("UI__Database_AutoID") as WpfComboBox;
+            var dbDropDown = GetControlById("UI__Database_AutoID", theTab) as WpfComboBox;
             Mouse.Click(dbDropDown, new Point(10, 10));
             var listOfDbNames = dbDropDown.Items.Select(i => i as WpfListItem).ToList();
-            var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains("DBSource"));
+            var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDB));
             Mouse.Click(databaseName, new Point(5, 5));
 
             //Select a table
-            var tableDropDown = GetControlById("UI__TableName_AutoID") as WpfComboBox;
+            var tableDropDown = GetControlById("UI__TableName_AutoID", theTab) as WpfComboBox;
             Mouse.Click(tableDropDown, new Point(10, 10));
             var listOfTableNames = tableDropDown.Items.Select(i => i as WpfListItem).ToList();
-            Mouse.Click(listOfTableNames[6], new Point(5, 5));
+            Mouse.Click(listOfTableNames[TableIndex], new Point(5, 5));
             Playback.Wait(5000);
 
             //Open the large view
             var toggleButton = GetControlByFriendlyName("Open Large View");
             Mouse.Click(toggleButton, new Point(5, 5));
-            Playback.Wait(5000);
+            Playback.Wait(2000);
 
             //Enter a few mappings
-            Keyboard.SendKeys("^a^xrecord().id{TAB}");
-            Keyboard.SendKeys("^a^xrecord().name{TAB}");
-            Keyboard.SendKeys("^a^xrecord().mail{TAB}");
+            SendKeys.SendWait("^a^xrecord().id{TAB}");
+            SendKeys.SendWait("^a^xrecord().name{TAB}");
+            SendKeys.SendWait("^a^xrecord().mail{TAB}");
 
-            var batchSize = GetControlById("UI__BatchSize_AutoID");
+            var batchSize = GetControlById("UI__BatchSize_AutoID", theTab);
             Mouse.Click(batchSize, new Point(5, 5));
-            Keyboard.SendKeys("^a^x-2");
+            SendKeys.SendWait("^a^x-2");
 
-            var timeout = GetControlById("UI__Timeout_AutoID");
+            var timeout = GetControlById("UI__Timeout_AutoID", theTab);
             Mouse.Click(timeout, new Point(5, 5));
-            Keyboard.SendKeys("^a^x-2");
+            SendKeys.SendWait("^a^x-2");
 
-            var result = GetControlById("UI__Result_AutoID");
+            var result = GetControlById("UI__Result_AutoID", theTab);
             Mouse.Click(result, new Point(5, 5));
-            Keyboard.SendKeys("res");
+            SendKeys.SendWait("res");
 
-            var done = GetControlById("DoneButton");
+            var done = GetControlById("DoneButton", theTab);
             Mouse.Click(done, new Point(5, 5));
 
             toggleButton = GetControlByFriendlyName("Open Large View");
             Assert.IsNull(toggleButton);
 
-            var activeTab = TabManagerUiMap.GetActiveTab();
-            var batchErrorMessage = WorkflowDesignerUiMap.FindControlByAutomationId(activeTab, "Batch size must be a number");
-            Mouse.Click(batchErrorMessage.GetChildren()[0]);
-            Keyboard.SendKeys("^a^x200");
+            var batchErrorMessage = WorkflowDesignerUiMap.FindControlByAutomationId(theTab, "Batch size must be a number");
+            Mouse.Move(new Point(batchErrorMessage.GetChildren()[0].BoundingRectangle.X + 5, batchErrorMessage.GetChildren()[0].BoundingRectangle.Y + 5));
+            Mouse.Click();
+            SendKeys.SendWait("^a^x200");
 
-            var timeoutErrorMessage = WorkflowDesignerUiMap.FindControlByAutomationId(activeTab, "Timeout must be a number");
-            Mouse.Click(timeoutErrorMessage.GetChildren()[0]);
-            Keyboard.SendKeys("^a^x200");
+            var timeoutErrorMessage = WorkflowDesignerUiMap.FindControlByAutomationId(theTab, "Timeout must be a number");
+            Mouse.Move(new Point(timeoutErrorMessage.GetChildren()[0].BoundingRectangle.X + 5, timeoutErrorMessage.GetChildren()[0].BoundingRectangle.Y + 5));
+            Mouse.Click();
+            SendKeys.SendWait("^a^x200");
 
             Mouse.Click(done, new Point(5, 5));
             toggleButton = GetControlByFriendlyName("Open Large View");
@@ -140,6 +146,7 @@ namespace Dev2.Studio.UI.Tests
         {
             // Create the workflow
             RibbonUiMap.CreateNewWorkflow();
+            var theTab = TabManagerUiMap.GetActiveTab();
 
             // Get some variables
             var startPoint = WorkflowDesignerUiMap.GetStartNodeBottomAutoConnectorPoint();
@@ -163,7 +170,7 @@ namespace Dev2.Studio.UI.Tests
             Mouse.Click(toggleButton, new Point(5, 5));
             Playback.Wait(5000);
 
-            var smallDataGrid = GetControlById("SmallDataGrid");
+            var smallDataGrid = GetControlById("SmallDataGrid", theTab);
             Assert.IsNotNull(smallDataGrid);
         }
 
@@ -174,6 +181,7 @@ namespace Dev2.Studio.UI.Tests
         {
             // Create the workflow
             RibbonUiMap.CreateNewWorkflow();
+            var theTab = TabManagerUiMap.GetActiveTab();
 
             var startPoint = WorkflowDesignerUiMap.GetStartNodeBottomAutoConnectorPoint();
             var point = new Point(startPoint.X, startPoint.Y + 200);
@@ -184,21 +192,21 @@ namespace Dev2.Studio.UI.Tests
             ToolboxUiMap.DragControlToWorkflowDesigner(theControl, point);
 
             //Select a database
-            var dbDropDown = GetControlById("UI__Database_AutoID") as WpfComboBox;
+            var dbDropDown = GetControlById("UI__Database_AutoID", theTab) as WpfComboBox;
             Mouse.Click(dbDropDown, new Point(10, 10));
             var listOfDbNames = dbDropDown.Items.Select(i => i as WpfListItem).ToList();
-            var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains("DBSource"));
+            var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDB));
             Mouse.Click(databaseName, new Point(5, 5));
 
             //Select a table
-            var tableDropDown = GetControlById("UI__TableName_AutoID") as WpfComboBox;
+            var tableDropDown = GetControlById("UI__TableName_AutoID", theTab) as WpfComboBox;
             Mouse.Click(tableDropDown, new Point(10, 10));
             var listOfTableNames = tableDropDown.Items.Select(i => i as WpfListItem).ToList();
-            Mouse.Click(listOfTableNames[1], new Point(5, 5));
+            Mouse.Click(listOfTableNames[TableIndex], new Point(5, 5));
             Playback.Wait(5000);
 
             //Assert that grid is not empty
-            var smallDataGrid = GetControlById("SmallDataGrid");
+            var smallDataGrid = GetControlById("SmallDataGrid", theTab);
             Assert.IsTrue(smallDataGrid.GetChildren().Count > 0);
         }
 
@@ -206,34 +214,18 @@ namespace Dev2.Studio.UI.Tests
 
         #region Helpers
 
-        UITestControl GetControlById(string autoId)
+        UITestControl GetControlById(string autoId, UITestControl theTab)
         {
-            var uiTestControls = GetChildrenUnderControl();
+            var sqlBulkInsert = WorkflowDesignerUiMap.FindControlByAutomationId(theTab, "SqlBulkInsertDesigner");
+            var uiTestControls = WorkflowDesignerUiMap.GetChildrenUnderControl(sqlBulkInsert);
             return uiTestControls.FirstOrDefault(c => c.AutomationId.Equals(autoId));
         }
 
         UITestControl GetControlByFriendlyName(string name)
         {
-            var uiTestControls = GetChildrenUnderControl();
-            return uiTestControls.FirstOrDefault(c => c.FriendlyName.Contains(name));
-        }
-
-        IEnumerable<WpfControl> GetChildrenUnderControl()
-        {
             var sqlBulkInsert = WorkflowDesignerUiMap.FindControlByAutomationId(TabManagerUiMap.GetActiveTab(), "SqlBulkInsertDesigner");
-
-            var uiTestControls = sqlBulkInsert
-                .GetChildren()
-                .Select(i => i as WpfControl)
-                .ToList();
-
-            uiTestControls.AddRange(sqlBulkInsert
-                .GetChildren()
-                .SelectMany(c => c.GetChildren())
-                .Select(i => i as WpfControl)
-                .ToList());
-
-            return uiTestControls;
+            var uiTestControls = WorkflowDesignerUiMap.GetChildrenUnderControl(sqlBulkInsert);
+            return uiTestControls.FirstOrDefault(c => c.FriendlyName.Contains(name));
         }
 
         #endregion
