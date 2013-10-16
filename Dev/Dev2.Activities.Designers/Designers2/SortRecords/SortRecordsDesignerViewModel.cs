@@ -1,0 +1,44 @@
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Windows;
+using Dev2.Activities.Designers2.Core;
+
+namespace Dev2.Activities.Designers2.SortRecords
+{
+    public class SortRecordsDesignerViewModel : ActivityDesignerViewModel
+    {
+        public static readonly DependencyProperty SelectedSelectedSortProperty =
+            DependencyProperty.Register("SelectedSelectedSort", typeof(string), typeof(SortRecordsDesignerViewModel), new PropertyMetadata(null, OnSelectedSelectedSortChanged));
+
+        public SortRecordsDesignerViewModel(ModelItem modelItem)
+            : base(modelItem)
+        {
+            AddTitleBarHelpToggle();
+            SortOrderTypes = new List<string> { "Forward", "Backwards" };
+            SelectedSelectedSort = SortOrderTypes[0];
+        }
+
+        public List<string> SortOrderTypes { get; private set; }
+
+        public string SelectedSelectedSort { get { return (string)GetValue(SelectedSelectedSortProperty); } set { SetValue(SelectedSelectedSortProperty, value); } }
+
+        // DO NOT bind to these properties - these are here for convenience only!!!
+        //string TimeModifierType { set { SetProperty(value); } }
+        string SelectedSort { set { SetProperty(value); } }
+
+        static void OnSelectedSelectedSortChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var viewModel = (SortRecordsDesignerViewModel)d;
+            var value = e.NewValue as string;
+
+            if(!string.IsNullOrWhiteSpace(value))
+            {
+                viewModel.SelectedSort = value;
+            }
+        }
+
+        public override void Validate()
+        {
+        }
+    }
+}

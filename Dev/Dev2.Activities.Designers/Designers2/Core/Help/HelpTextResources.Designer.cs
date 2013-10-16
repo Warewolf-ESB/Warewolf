@@ -510,6 +510,36 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To Sort a recordset enter the field in the recordset you would like to sort on.
+        ///To sort on more than one field, perform the sort action for each field you would like to sort on, ending with the priority sort..
+        /// </summary>
+        public static string SortRecordsHelpSortField {
+            get {
+                return ResourceManager.GetString("SortRecordsHelpSortField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the order of the sorting.
+        ///Forward will go 1-9 then a-Z.
+        ///Backward will go Z-a then 9-1..
+        /// </summary>
+        public static string SortRecordsHelpSortOrderType {
+            get {
+                return ResourceManager.GetString("SortRecordsHelpSortOrderType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Recordset().Field]].
+        /// </summary>
+        public static string SortRecordsToolTipSortField {
+            get {
+                return ResourceManager.GetString("SortRecordsToolTipSortField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The number of rows you would like to insert at a time.
         ///The default is 0 which will do everything in 1 batch.
         ///If you specify 50, then 50 rows will be bulk inserted at a time..

@@ -5,6 +5,7 @@ using Dev2.Activities.Designers2.DateTime;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
 using Dev2.Activities.Designers2.GetWebRequest;
 using Dev2.Activities.Designers2.MultiAssign;
+using Dev2.Activities.Designers2.SortRecords;
 using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Studio.ActivityDesigners.Scripting;
 using Dev2.Studio.ViewModels.Workflow;
@@ -23,6 +24,7 @@ namespace Dev2.Studio.ActivityDesigners
                     {typeof (DsfWebGetRequestActivity), typeof (GetWebRequestDesigner)},
                     {typeof (DsfFindRecordsMultipleCriteriaActivity), typeof (FindRecordsMultipleCriteriaDesigner)},
                     {typeof (DsfSqlBulkInsertActivity), typeof (SqlBulkInsertDesigner)},
+                    {typeof (DsfSortRecordsActivity), typeof (SortRecordsDesigner)},
 
                     {typeof (DsfActivity), typeof (DsfActivityDesigner)},
                     {typeof (DsfDatabaseActivity), typeof (DsfActivityDesigner)},
@@ -33,7 +35,7 @@ namespace Dev2.Studio.ActivityDesigners
                     {typeof (DsfWebPageActivity), typeof (DsfWebPageActivityDesigner)},
                     {typeof (DsfWebSiteActivity), typeof (DsfWebSiteActivityDesigner)},
                     {typeof (DsfCountRecordsetActivity), typeof (DsfCountRecordsetActivityDesigner)},
-                    {typeof (DsfSortRecordsActivity), typeof (DsfSortRecordsActivityDesigner)},
+                    //{typeof (DsfSortRecordsActivity), typeof (DsfSortRecordsActivityDesigner)},
                     {typeof (DsfDataSplitActivity), typeof (DsfDataSplitActivityDesigner)},
                     {typeof (DsfPathCreate), typeof (DsfPathCreateDesigner)},
                     {typeof (DsfFileRead), typeof (DsfFileReadDesigner)},

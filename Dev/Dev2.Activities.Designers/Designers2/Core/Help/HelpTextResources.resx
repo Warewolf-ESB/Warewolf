@@ -420,4 +420,16 @@ E.g. http://ServerName:77/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]]</
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
+  <data name="SortRecordsHelpSortField" xml:space="preserve">
+    <value>To Sort a recordset enter the field in the recordset you would like to sort on.
+To sort on more than one field, perform the sort action for each field you would like to sort on, ending with the priority sort.</value>
+  </data>
+  <data name="SortRecordsHelpSortOrderType" xml:space="preserve">
+    <value>Select the order of the sorting.
+Forward will go 1-9 then a-Z.
+Backward will go Z-a then 9-1.</value>
+  </data>
+  <data name="SortRecordsToolTipSortField" xml:space="preserve">
+    <value>[[Recordset().Field]]</value>
+  </data>
 </root>

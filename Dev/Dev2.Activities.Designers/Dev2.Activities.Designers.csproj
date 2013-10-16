@@ -161,6 +161,15 @@
     <Compile Include="Behaviors\DataGridFocusTextOnLoadBehavior.cs" />
     <Compile Include="AttachedProperties\FocusSetter.cs" />
     <Compile Include="AttachedProperties\WizardEngineAttachedProperties.cs" />
+    <Compile Include="Designers2\SortRecords\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\SortRecords\SortRecordsDesigner.xaml.cs">
+      <DependentUpon>SortRecordsDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\SortRecords\SortRecordsDesignerViewModel.cs" />
     <Compile Include="Designers2\SqlBulkInsert\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -321,6 +330,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\MultiAssign\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SortRecords\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SortRecords\SortRecordsDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
