@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +16,6 @@ namespace Dev2.Runtime.Execution
         void Run();
         void Terminate();
         void Resume(IDSFDataObject dataObject);
+        void Terminate(Exception exception);
     }
 }

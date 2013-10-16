@@ -240,6 +240,13 @@ namespace Dev2.DynamicServices
             return resultID;
         }
 
+        public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceID,string uri, out ErrorResultTO errors)
+        {
+            errors = null;
+            IWorkspace theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
+            var executionContainer = new RemoteWorkflowExecutionContainer(null, dataObject, theWorkspace,this);
+            executionContainer.PerformLogExecution(uri);
+        }
 
         /// <summary>
         /// Executes the sub request.

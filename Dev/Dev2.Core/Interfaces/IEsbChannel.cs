@@ -73,6 +73,8 @@ namespace Dev2
         /// <param name="compiler">The compiler.</param>
         /// <returns></returns>
         Guid CorrectDataList(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors, IDataListCompiler compiler);
+
+        void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceID,string uri, out ErrorResultTO errors);
     }
 
     public interface IEsbWorkspaceChannel : IEsbChannel

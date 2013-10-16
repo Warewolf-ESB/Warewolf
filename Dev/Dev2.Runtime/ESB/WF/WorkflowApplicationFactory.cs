@@ -344,7 +344,8 @@ namespace Dev2.DynamicServices
                     _executionToken.IsUserCanceled = true;
 
                     // This was cancel which left the activities resident in the background and caused chaos!
-                    _instance.Terminate(new Exception("User Termination"));
+                    _instance.Terminate(new Exception("User Termination"),new TimeSpan(0,0,0,0,10));
+                    
                 }
                 catch(Exception e)
                 {
@@ -354,6 +355,40 @@ namespace Dev2.DynamicServices
                 {
                     try
                     {
+                       
+                        // flush memory usage ;)
+                        GC.WaitForFullGCComplete(2000);
+                    }
+                    catch
+                    {
+                        // just swallow it ;)
+                    }
+                }
+
+                ExecutableServiceRepository.Instance.Remove(this);
+                AssociatedServices.ForEach(s => s.Terminate());
+                Dispose();
+            }
+
+            public void Terminate(Exception exception)
+            {
+                try
+                {
+                    // signal user termination ;)
+                    _executionToken.IsUserCanceled = true;
+
+                    // This was cancel which left the activities resident in the background and caused chaos!
+                    _instance.Terminate(exception);
+                }
+                catch(Exception e)
+                {
+                    ServerLogger.LogError(e);
+                }
+                finally
+                {
+                    try
+                    {
+                       
                         // flush memory usage ;)
                         GC.WaitForFullGCComplete(2000);
                     }
@@ -362,10 +397,10 @@ namespace Dev2.DynamicServices
                         // just swallow it ;)
                     }
 
-                    ExecutableServiceRepository.Instance.Remove(this);
-                    AssociatedServices.ForEach(s => s.Terminate());
-                    Dispose();
-                }
+                ExecutableServiceRepository.Instance.Remove(this);
+                AssociatedServices.ForEach(s => s.Terminate());
+                Dispose();
+            }  
 
 
             }  
@@ -475,7 +510,7 @@ namespace Dev2.DynamicServices
                 // force a throw to kill the engine ;)
                 if (args.TerminationException != null)
                 {
-                     throw args.TerminationException;
+                     _instance.Abort();
                 }
 
                 // Not compatable with run.Dispose() ;)

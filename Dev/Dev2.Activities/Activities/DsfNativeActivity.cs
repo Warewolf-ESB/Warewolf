@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Activities;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -13,6 +14,7 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
+using Dev2.Runtime.Execution;
 using Dev2.Simulation;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
@@ -178,6 +180,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var resumable = dataObject != null && dataObject.WorkflowResumeable;
                     OnExecutedCompleted(context, false, resumable);
                     string errorString = compiler.FetchErrors(dataObject.DataListID, true);
+                    string currentError = compiler.FetchErrors(dataObject.DataListID, false);
                     ErrorResultTO _tmpErrorsAfter = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
                     _tmpErrors.MergeErrors(_tmpErrorsAfter);
                     if(_tmpErrors.HasErrors())
@@ -189,19 +192,68 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 if(dataObject != null)
                                 {
                                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, _tmpErrors.MakeDataListReady(), out errors);
-                                    if(!String.IsNullOrEmpty(OnErrorVariable))
+                                    if(!String.IsNullOrEmpty(currentError))
                                     {
-                                        var errorNotXML = compiler.FetchErrors(dataObject.DataListID);
-                                        compiler.Upsert(dataObject.DataListID, OnErrorVariable, errorNotXML, out errors);
+                                        PerformCustomErrorHandling(context, compiler, dataObject, currentError);
                                     }
-                                    //IEsbChannel esbChannel = context.GetExtension<IEsbChannel>();
-                                    //esbChannel.ExecuteRequest();
                                 }
                             }
                         }
                     }
 
                 }
+            }
+        }
+
+        void PerformCustomErrorHandling(NativeActivityContext context, IDataListCompiler compiler, IDSFDataObject dataObject, string currentError)
+        {
+            if(!String.IsNullOrEmpty(OnErrorVariable))
+            {
+                compiler.Upsert(dataObject.DataListID, OnErrorVariable, currentError, out errors);
+            }
+            if(IsEndedOnError)
+            {
+                PerformStopWorkflow(context, dataObject);
+            }
+            if(!String.IsNullOrEmpty(OnErrorWorkflow))
+            {
+                IEsbChannel esbChannel = context.GetExtension<IEsbChannel>();
+                esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out errors);
+            }
+        }
+
+        void PerformStopWorkflow(NativeActivityContext context, IDSFDataObject dataObject)
+        {
+            var service = ExecutableServiceRepository.Instance.Get(dataObject.WorkspaceID, dataObject.ResourceID);
+            if(service != null)
+            {
+                Guid parentInstanceID;
+                Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
+                var debugState = new DebugState
+                {
+                    ID = dataObject.DataListID,
+                    ParentID = parentInstanceID,
+                    WorkspaceID = dataObject.WorkspaceID,
+                    StateType = StateType.End,
+                    StartTime = DateTime.Now,
+                    EndTime = DateTime.Now,
+                    ActivityType = ActivityType.Workflow,
+                    DisplayName = dataObject.ServiceName,
+                    IsSimulation = dataObject.IsOnDemandSimulation,
+                    ServerID = dataObject.ServerID,
+                    OriginatingResourceID = dataObject.ResourceID,
+                    OriginalInstanceID = dataObject.OriginalInstanceID,
+                    Server = string.Empty,
+                    Version = string.Empty,
+                    SessionID = dataObject.DebugSessionID,
+                    EnvironmentID = dataObject.EnvironmentID,
+                    Name = GetType().Name,
+                    ErrorMessage = "Termination due to error in activity",
+                    HasError = true
+                };
+                DebugDispatcher.Instance.Write(debugState);
+                //context.Abort(new WorkflowTerminatedException("Ended due to error"));
+                context.MarkCanceled();
             }
         }
 

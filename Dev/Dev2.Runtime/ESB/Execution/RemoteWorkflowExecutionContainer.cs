@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
+using enActionType = Dev2.DataList.Contract.enActionType;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -41,6 +45,43 @@ namespace Dev2.Runtime.ESB.Execution
                 throw new ArgumentNullException("resourceCatalog");
             }
             _resourceCatalog = resourceCatalog;
+        }
+
+        public void PerformLogExecution(string logUri)
+        {
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            IBinaryDataListEntry expressionsEntry = dataListCompiler.Evaluate(DataObject.DataListID, enActionType.User, logUri, false, out errors);
+            IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
+            while(itr.HasMoreRecords())
+            {
+                 IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
+                foreach(IBinaryDataListItem c in cols)
+                {
+                    var buildGetWebRequest = BuildGetWebRequest(c.TheValue);
+                    buildGetWebRequest.GetResponseAsync();
+                }
+            }
+            
+//            var uriAndParameter = logUri.Split(new []{"?"}, StringSplitOptions.None);
+//            var countOfUriAndParameter = uriAndParameter.Count();
+//            if(countOfUriAndParameter == 1) // we all have a uri to execute
+//            {
+////                var myUri = uriAndParameter[0];
+////                ErrorResultTO errors;
+////                var entry = dataListCompiler.Evaluate(DataObject.DataListID, enActionType.User, myUri, false, out errors);
+////                myUri = entry.FetchScalar().TheValue;
+////                BuildGetWebRequest(myUri);
+//            }
+//            else if(countOfUriAndParameter == 2) // we have a Uri and some parameters
+//            {
+//
+//            }
+//            else
+//            {
+//                throw new UriFormatException(string.Format("Malformed URI: {0}", logUri));
+//            }
+
         }
 
         public override Guid Execute(out ErrorResultTO errors)
@@ -117,16 +158,7 @@ namespace Dev2.Runtime.ESB.Execution
             string result = string.Empty;
 
             var myURI = uri + "Services/" + serviceName + "?" + payload;
-            WebRequest req = HttpWebRequest.Create(myURI);
-            req.Method = "GET";
-
-            // set header for server to know this is a remote invoke ;)
-            if(DataObject.RemoteInvokerID == Guid.Empty.ToString())
-            {
-                throw new Exception("Remote Server ID Empty");
-            }
-            req.Headers.Add(HttpRequestHeader.From, DataObject.RemoteInvokerID); // Set to remote invoke ID ;)
-            req.Headers.Add(HttpRequestHeader.Cookie, GlobalConstants.RemoteServerInvoke);
+            var req = BuildGetWebRequest(myURI);
 
             // TODO : Start background worker to fetch messages ;)
             // FetchRemoteDebugMessagesService
@@ -143,6 +175,21 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             return result;
+        }
+
+        WebRequest BuildGetWebRequest(string myURI)
+        {
+            WebRequest req = HttpWebRequest.Create(myURI);
+            req.Method = "GET";
+
+            // set header for server to know this is a remote invoke ;)
+            if(DataObject.RemoteInvokerID == Guid.Empty.ToString())
+            {
+                throw new Exception("Remote Server ID Empty");
+            }
+            req.Headers.Add(HttpRequestHeader.From, DataObject.RemoteInvokerID); // Set to remote invoke ID ;)
+            req.Headers.Add(HttpRequestHeader.Cookie, GlobalConstants.RemoteServerInvoke);
+            return req;
         }
 
         Connection GetConnection(Guid environmentID)
