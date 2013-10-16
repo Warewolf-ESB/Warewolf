@@ -52,10 +52,6 @@ namespace Dev2.Session {
 
         #endregion Properties
 
-        #region Ctor
-
-        #endregion Ctor
-
         #region Methods
 
         public SaveDebugTO CopyToSaveDebugTO() {

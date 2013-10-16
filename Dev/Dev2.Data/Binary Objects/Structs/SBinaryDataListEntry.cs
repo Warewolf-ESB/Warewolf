@@ -80,9 +80,12 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
                             var myCols = fedKey.ImpactedColumns;
                             // Convert to _internalReturnValue format ;)
-                            if( myCols!= null && !theRow.IsEmpty)
-                            {
 
+                            // Travis.Frisinger 16/10 Removed for Studio Bug
+                            //&& !theRow.IsEmpty
+
+                            if( myCols!= null)
+                            {
                                 foreach (var col in myCols)
                                 {
                                     // TODO : Fetch index value from

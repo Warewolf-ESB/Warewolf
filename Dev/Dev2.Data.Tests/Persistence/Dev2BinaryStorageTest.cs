@@ -341,7 +341,6 @@ namespace Dev2.Data.Tests.Persistence
             Assert.AreEqual("col2", fetchedRow1.FetchValue(1, 5));
             Assert.AreEqual("col4", fetchedRow1.FetchValue(3, 5));
 
-
             Assert.AreEqual("col2", fetchedRow2.FetchValue(1, 5));
             Assert.AreEqual("col4", fetchedRow2.FetchValue(3, 5));
 

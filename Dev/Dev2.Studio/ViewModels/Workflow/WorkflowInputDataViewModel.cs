@@ -195,9 +195,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void Save()
         {
             //2012.10.11: massimo.guerrera - Added for PBI 5781
-            
-            // TODO : Re-work so it is sane!
-            
             SetXMLData();
             DebugTO.XmlData = XmlData;
             DebugTO.RememberInputs = RememberInputs;
@@ -523,6 +520,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                         singleRes.Field = item.FieldName;
                         singleRes.RecordsetIndex = (count + 1).ToString();
                         singleRes.Value = item.TheValue;
+
+                        if (string.IsNullOrEmpty(item.DisplayValue))
+                        {
+                            
+                        }
+
                         singleRes.DisplayValue = item.DisplayValue;
                         var desc = dataListEntry.Columns.FirstOrDefault(c => c.ColumnName == item.FieldName);
                         if(desc == null)

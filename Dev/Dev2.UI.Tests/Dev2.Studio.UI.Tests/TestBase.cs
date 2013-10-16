@@ -15,6 +15,7 @@ using Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WebpageServiceWizardUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
+using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
@@ -574,6 +575,75 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
+        [TestMethod]
+        public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
+        {
+            const string resourceToUse = "CalculateTaxReturns";
+            RibbonUIMap.CreateNewWorkflow();
+
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+
+            // Get a point underneath the start button for the workflow
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 100);
+
+            // Open the Explorer
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+
+            // Get a sample workflow
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
+            UITestControl testFlow = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "MO", resourceToUse);
+
+            // Drag it on
+            ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
+
+            // Click it
+            UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse);
+            Mouse.Click(controlOnWorkflow, new Point(5, 5));
+            WorkflowDesignerUIMap.Adorner_ClickMapping(theTab, resourceToUse);
+            controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse);
+            UITestControlCollection controlCollection = controlOnWorkflow.GetChildren();
+
+            Point initialResizerPoint = new Point();
+            Point newResizerPoint = new Point();
+            // Validate the assumption that the last child is the resizer
+            var resizeThumb = controlCollection[controlCollection.Count - 1];
+            if(resizeThumb.ControlType.ToString() == "Indicator")
+            {
+                UITestControl theResizer = resizeThumb;
+                initialResizerPoint.X = theResizer.BoundingRectangle.X + 5;
+                initialResizerPoint.Y = theResizer.BoundingRectangle.Y + 5;
+            }
+            else
+            {
+                Assert.Fail("Cannot find resize indicator");
+            }
+
+            // Drag
+            Mouse.Click(initialResizerPoint);
+            Mouse.StartDragging();
+
+            // Y - 50 since it starts at the lowest point
+            Mouse.StopDragging(new Point(initialResizerPoint.X + 50, initialResizerPoint.Y - 50));
+
+            // Check position to see it dragged
+            if(resizeThumb.ControlType.ToString() == "Indicator")
+            {
+                UITestControl theResizer = resizeThumb;
+                newResizerPoint.X = theResizer.BoundingRectangle.X + 5;
+                newResizerPoint.Y = theResizer.BoundingRectangle.Y + 5;
+            }
+
+            if(!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y < initialResizerPoint.Y))
+            {
+                Assert.Fail("The control was not resized properly.");
+            }
+
+            // Test complete - Delete itself
+            TabManagerUIMap.CloseAllTabs();
+        }
+
         #region Tests Requiring Designer access
 
         // vi - Can I drop a tool onto the designer?
@@ -820,6 +890,60 @@ namespace Dev2.CodedUI.Tests
 
             // Everything passes :D
             TabManagerUIMap.CloseAllTabs();
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DebugInput_whenRun10Time")]
+        public void DebugInput_whenRun10Time_ExpectInputsPersiste_InputsRemainPersisted()
+        {
+
+            //------------Setup for test--------------------------
+            int debugExeWait = 2000;
+            
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            //Open the correct workflow
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("Bug9394");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "Bugs", "Bug9394");
+            ExplorerUIMap.ClearExplorerSearchText();
+
+            //------------Execute Test---------------------------
+            // Run debug
+            SendKeys.SendWait(KeyboardCommands.Debug);
+            PopupDialogUIMap.WaitForDialog();
+            SendKeys.SendWait("{TAB}1{TAB}2");
+            SendKeys.SendWait(KeyboardCommands.Debug);
+            Playback.Wait(debugExeWait);
+
+            //------------Assert Results-------------------------
+
+            for (int i = 0; i < 10; i++)
+            {
+                Clipboard.Clear();
+
+                SendKeys.SendWait(KeyboardCommands.Debug);
+                PopupDialogUIMap.WaitForDialog();
+                
+                // TODO : Check for valid input in the input boxes ;)
+                SendKeys.SendWait(KeyboardCommands.TabCommand);
+                Playback.Wait(500);
+                SendKeys.SendWait(KeyboardCommands.CopyCommand);
+                var actual = Clipboard.GetData(DataFormats.Text);
+                Assert.AreEqual("1", actual);
+
+                Clipboard.Clear();
+                SendKeys.SendWait(KeyboardCommands.TabCommand);
+                SendKeys.SendWait(KeyboardCommands.CopyCommand);
+                var actual2 = Clipboard.GetData(DataFormats.Text);
+                Assert.AreEqual("2", actual2);
+
+                SendKeys.SendWait(KeyboardCommands.Debug);
+                Playback.Wait(debugExeWait);
+            }
+
+            // Everything passes :D
+            TabManagerUIMap.CloseAllTabs();            
         }
 
         #endregion Deprecated Test

@@ -18,6 +18,7 @@ namespace Dev2.Studio.UI.Tests
         public static string CopyCommand { get { return "^c"; } }
         public static string BackspaceCommand { get { return "{BACKSPACE}"; } }
         public static string EnterCommand { get { return "{ENTER}"; } }
+        public static string Debug { get { return "{F5}";  } }
 
 
         #endregion Properties

@@ -27,8 +27,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             get
             {
-                // Sashen.Naidoo
-                // BUG 9144 : Check is too stringent, was not allowing DisplayValues to be reset on change of instance.
                 if (_internalObj.ItemCollectionIndex >= 0)
                 {
                     _internalObj.DisplayValue = DataListUtil.ComposeIntoUserVisibleRecordset(_internalObj.Namespace, _internalObj.ItemCollectionIndex, _internalObj.FieldName);
@@ -71,10 +69,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
             _internalObj.Namespace = String.IsNullOrEmpty(ns) ? GlobalConstants.NullEntryNamespace : ns;
             _internalObj.FieldName = field;
             _internalObj.ItemCollectionIndex = idx;
-            // Travis.Frisinger
-            // This is a performance killer, removed for bug 8579
-            // And should have been amended above in the property
-            //_internalObj.DisplayValue = DataListUtil.ComposeIntoUserVisibleRecordset(_internalObj.Namespace, _internalObj.ItemCollectionIndex, _internalObj.FieldName);//Bug 7891 - null display value
         }
 
         internal BinaryDataListItem(string val, string fieldName)
