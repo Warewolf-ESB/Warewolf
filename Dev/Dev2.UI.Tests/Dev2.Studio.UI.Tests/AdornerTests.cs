@@ -295,5 +295,74 @@ namespace Dev2.Studio.UI.Tests
             Mouse.Click(WorkflowDesignerUiMap.GetOpenHelpButton(theTab, "Assign"));
             Assert.IsTrue(WorkflowDesignerUiMap.GetHelpPane(theTab, "Only variables go in here").Exists);
         }
+
+        [TestMethod]
+        public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
+        {
+            const string resourceToUse = "CalculateTaxReturns";
+            RibbonUiMap.CreateNewWorkflow();
+
+            UITestControl theTab = TabManagerUiMap.GetActiveTab();
+            UITestControl theStartButton = WorkflowDesignerUiMap.FindControlByAutomationId(theTab, "Start");
+
+            // Get a point underneath the start button for the workflow
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 100);
+
+            // Open the Explorer
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+
+            // Get a sample workflow
+            ExplorerUiMap.ClearExplorerSearchText();
+            ExplorerUiMap.EnterExplorerSearchText(resourceToUse);
+            UITestControl testFlow = ExplorerUiMap.GetService("localhost", "WORKFLOWS", "MO", resourceToUse);
+
+            // Drag it on
+            ExplorerUiMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
+
+            // Click it
+            UITestControl controlOnWorkflow = WorkflowDesignerUiMap.FindControlByAutomationId(theTab, resourceToUse);
+            Mouse.Click(controlOnWorkflow, new Point(5, 5));
+            WorkflowDesignerUiMap.Adorner_ClickMapping(theTab, resourceToUse);
+            controlOnWorkflow = WorkflowDesignerUiMap.FindControlByAutomationId(theTab, resourceToUse);
+            UITestControlCollection controlCollection = controlOnWorkflow.GetChildren();
+
+            Point initialResizerPoint = new Point();
+            Point newResizerPoint = new Point();
+            // Validate the assumption that the last child is the resizer
+            var resizeThumb = controlCollection[controlCollection.Count - 1];
+            if(resizeThumb.ControlType.ToString() == "Indicator")
+            {
+                UITestControl theResizer = resizeThumb;
+                initialResizerPoint.X = theResizer.BoundingRectangle.X + 5;
+                initialResizerPoint.Y = theResizer.BoundingRectangle.Y + 5;
+            }
+            else
+            {
+                Assert.Fail("Cannot find resize indicator");
+            }
+
+            // Drag
+            Mouse.Click(initialResizerPoint);
+            Mouse.StartDragging();
+
+            // Y - 50 since it starts at the lowest point
+            Mouse.StopDragging(new Point(initialResizerPoint.X + 50, initialResizerPoint.Y - 50));
+
+            // Check position to see it dragged
+            if(resizeThumb.ControlType.ToString() == "Indicator")
+            {
+                UITestControl theResizer = resizeThumb;
+                newResizerPoint.X = theResizer.BoundingRectangle.X + 5;
+                newResizerPoint.Y = theResizer.BoundingRectangle.Y + 5;
+            }
+
+            if(!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y < initialResizerPoint.Y))
+            {
+                Assert.Fail("The control was not resized properly.");
+            }
+
+            // Test complete - Delete itself
+            TabManagerUiMap.CloseAllTabs();
+        }
     }
 }
