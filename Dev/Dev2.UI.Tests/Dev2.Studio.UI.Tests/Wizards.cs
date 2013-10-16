@@ -109,6 +109,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var cat = "CODEDUITESTS" + serverSourceCategoryName;
             var name = "codeduitest" + serverSourceName;
 
+            //Set focus
+            Mouse.Click(WorkflowDesignerUIMap.UIBusinessDesignStudioWindow);
+
             DatabaseServiceWizardUIMap.InitializeFullTestServiceAndSource(cat, name);
 
             //Assert

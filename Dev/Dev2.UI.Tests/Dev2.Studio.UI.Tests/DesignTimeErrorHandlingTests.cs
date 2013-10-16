@@ -111,7 +111,7 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait("{TAB}");
             SendKeys.SendWait("Column1");
             // Save
-            DatabaseServiceWizardUiMap.KeyboardOK();
+            DatabaseServiceWizardUiMap.ClickOK();
             SendKeys.SendWait("{TAB}utility");
             DatabaseServiceWizardUiMap.SaveDialogClickFirstFolder();
             SendKeys.SendWait("{TAB}{ENTER}");

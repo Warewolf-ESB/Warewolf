@@ -74,6 +74,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCleanup]
         public void TestCleanup()
         {
+            Playback.Wait(500);
             //close any open wizards
             var tryFindDialog = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             Point point;
@@ -164,7 +165,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_DragAndDropWorkflowFromRemoteServerOnALocalHostCreatedWorkflow_WorkFlowIsDropped()
         {
-            const string TextToSearchWith = "Find Records";
+            const string TextToSearchWith = "Simple Remote Workflow";
             DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
             //Ensure that we're in localhost
             ExplorerUiMap.ClickServerInServerDDL(LocalHostServerName);
@@ -333,8 +334,8 @@ namespace Dev2.Studio.UI.Tests
             const string TextToSearchWith = "PluginService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
             WizardsUIMap.WaitForWizard(5000);
-            PluginServiceWizardUiMap.ClickTestAndOk();
-            PluginServiceWizardUiMap.ClickSave();
+            PluginServiceWizardUiMap.ClickTest();
+            PluginServiceWizardUiMap.ClickOK();
         }
 
         [TestMethod]
@@ -412,5 +413,20 @@ namespace Dev2.Studio.UI.Tests
         }
 
         #endregion
+
+        public UIMap UIMap
+        {
+            get
+            {
+                if((this.map == null))
+                {
+                    this.map = new UIMap();
+                }
+
+                return this.map;
+            }
+        }
+
+        private UIMap map;
     }
 }

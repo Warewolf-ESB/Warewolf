@@ -37,15 +37,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
 
         public void ClickCancel()
         {
-            #region Variable Declarations
-            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            #endregion
-
-            // Click image
+            UITestControl uIItemImage = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             Mouse.Click(uIItemImage, new Point(874, 533));
         }
 
-        public void ClickTestAndOk()
+        public void HitTestAndOkWithKeyboard()
         {
             Playback.Wait(200);
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
@@ -53,6 +49,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
             Playback.Wait(200);
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+        }
+
+        public void ClickTest()
+        {
+            UITestControl uIItemImage = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            Mouse.Click(uIItemImage, new Point(892, 79));
         }
 
         public void ClickOK()

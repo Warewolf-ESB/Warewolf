@@ -52,11 +52,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         /// </summary>
         public void ClickFirstAction()
         {
-            #region Variable Declarations
             UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            #endregion
-
-            // Click image
             Mouse.Click(uIItemImage, new Point(172, 164));
         }
 
@@ -91,7 +87,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         /// </summary>
         public void KeyboardOK()
         {
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
         }
 
         /// <summary>
@@ -110,47 +106,47 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         public void InitializeFullTestServiceAndSource(string serverAndSourceCategoryName, string serverAndSourceName)
         {
             //DbSource
-            Keyboard.SendKeys("{CTRL}{SHIFT}D");
+            SendKeys.SendWait("^+D");
             Playback.Wait(1000);
-            Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}{ENTER}");
             Playback.Wait(10);
-            Keyboard.SendKeys("RSAKLFSVRGENDEV");
+            SendKeys.SendWait("RSAKLFSVRGENDEV");
             Playback.Wait(10);
-            Keyboard.SendKeys("{TAB}{RIGHT}{TAB}");
+            SendKeys.SendWait("{TAB}{RIGHT}{TAB}");
             Playback.Wait(10);
-            Keyboard.SendKeys("testuser");
+            SendKeys.SendWait("testuser");
             Playback.Wait(10);
-            Keyboard.SendKeys("{TAB}");
+            SendKeys.SendWait("{TAB}");
             Playback.Wait(10);
-            Keyboard.SendKeys("test123");
+            SendKeys.SendWait("test123");
             Playback.Wait(10);
-            Keyboard.SendKeys("{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{ENTER}");
             Playback.Wait(1000);
-            Keyboard.SendKeys("{TAB}{DOWN}{TAB}{ENTER}{ENTER}");
+            SendKeys.SendWait("{TAB}{DOWN}{TAB}{ENTER}{ENTER}");
             Playback.Wait(10);
-            Keyboard.SendKeys(serverAndSourceCategoryName);
+            SendKeys.SendWait(serverAndSourceCategoryName);
             Playback.Wait(10);
-            Keyboard.SendKeys("{ENTER}");
+            SendKeys.SendWait("{ENTER}");
             Playback.Wait(1000);
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}");
             Playback.Wait(10);
-            Keyboard.SendKeys(serverAndSourceName);
+            SendKeys.SendWait(serverAndSourceName);
             Playback.Wait(10);
-            Keyboard.SendKeys("{ENTER}");
+            SendKeys.SendWait("{ENTER}");
             Playback.Wait(1000);
             //DbService
             ClickFirstAction();
             ClickTestAction();
             KeyboardOK();
-            Keyboard.SendKeys("{ENTER}");
+            SendKeys.SendWait("{ENTER}");
             Playback.Wait(10);
-            Keyboard.SendKeys(serverAndSourceCategoryName);
+            SendKeys.SendWait(serverAndSourceCategoryName);
             Playback.Wait(10);
-            Keyboard.SendKeys("{ENTER}{TAB}{TAB}{TAB}");
+            SendKeys.SendWait("{ENTER}{TAB}{TAB}{TAB}");
             Playback.Wait(10);
-            Keyboard.SendKeys(serverAndSourceName);
+            SendKeys.SendWait(serverAndSourceName);
             Playback.Wait(10);
-            Keyboard.SendKeys("{ENTER}");
+            SendKeys.SendWait("{ENTER}");
         }
 
         public void TabToMappingsTab(UITestControl control)
