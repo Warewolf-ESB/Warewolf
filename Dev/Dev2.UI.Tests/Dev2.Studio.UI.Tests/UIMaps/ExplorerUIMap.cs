@@ -381,7 +381,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public UITestControl GetLocalServer()
         {
-            return GetExplorerTree().GetChildren()[0].GetChildren()[3];
+            var explorerTree = GetExplorerTree();
+            var firstTreeChild = explorerTree.GetChildren()[0];
+            return firstTreeChild.GetChildren()[3];
         }
 
         /// <summary>

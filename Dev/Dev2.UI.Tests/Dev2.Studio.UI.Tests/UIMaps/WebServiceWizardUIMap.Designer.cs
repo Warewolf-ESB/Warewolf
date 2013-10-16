@@ -10,6 +10,7 @@
 
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 using Dev2.CodedUI.Tests;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
@@ -41,18 +42,22 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
 
             //Open Web Source Wizard
             DocManagerUIMap.ClickOpenTabPage("Explorer");
+            _explorer.ClearExplorerSearchText();
+            _explorer.EnterExplorerSearchText("$");
             var getLocalServer = _explorer.GetLocalServer();
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
             for (var i = 0; i < 9; i++)
             {
                 Keyboard.SendKeys("{DOWN}");
             }
-            Keyboard.SendKeys("{ENTER}");
-            Thread.Sleep(1000);
+            SendKeys.SendWait("{ENTER}");
+
+            //Wait for wizard
+            WizardsUIMap.WaitForWizard(5000);
 
             //Web Source Details
-            Keyboard.SendKeys("{TAB}http://www.webservicex.net/globalweather.asmx{TAB}{TAB}{TAB}{TAB}{ENTER}");
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}" + sourceName + "{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}http://www.webservicex.net/globalweather.asmx{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}" + sourceName + "{TAB}{ENTER}");
 
             //Open Web Service Wizard
             DocManagerUIMap.ClickOpenTabPage("Explorer");
@@ -60,21 +65,21 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
             for (var i = 0; i < 5; i++)
             {
-                Keyboard.SendKeys("{DOWN}");
+                SendKeys.SendWait("{DOWN}");
             }
-            Keyboard.SendKeys("{ENTER}");
-            Thread.Sleep(1000);
+            SendKeys.SendWait("{ENTER}");
+
+            //Wait for wizard
+            WizardsUIMap.WaitForWizard(5000);
 
             //Web Service Details
-            Keyboard.SendKeys("{TAB}{TAB}{DOWN}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
-            Thread.Sleep(3000);//wait for test
-            Keyboard.SendKeys("{TAB}{ENTER}");
-            Thread.Sleep(1000);
-            Keyboard.SendKeys(sourceName+"{ENTER}");
-            Thread.Sleep(1000);
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}" + serviceName + "{TAB}{ENTER}");
-            Thread.Sleep(1000);
-            Keyboard.SendKeys("{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}{DOWN}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
+            Playback.Wait(500);
+            SendKeys.SendWait("{ENTER}");
+            Playback.Wait(12000);//wait for test
+            SendKeys.SendWait("{TAB}{ENTER}");
+            Playback.Wait(2000);
+            SendKeys.SendWait("{TAB}{TAB}{TAB}" + serviceName + "{TAB}{ENTER}");
             
         }
 

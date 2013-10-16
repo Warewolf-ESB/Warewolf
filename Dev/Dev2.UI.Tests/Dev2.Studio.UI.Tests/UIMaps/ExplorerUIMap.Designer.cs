@@ -10,6 +10,7 @@
 
 using System.Linq;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
+using Dev2.Studio.UI.Tests.Utils;
 
 namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 {
@@ -183,7 +184,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public WpfTree GetExplorerTree()
         {
-            return this.UIBusinessDesignStudioWindow.UIExplorerCustom.UINavigationViewUserCoCustom.UITvExplorerTree;
+            return VisualTreeWalker.GetControl("UI_DocManager_AutoID", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "Navigation") as WpfTree;
         }
         /// <summary>
         /// ClickExplorer

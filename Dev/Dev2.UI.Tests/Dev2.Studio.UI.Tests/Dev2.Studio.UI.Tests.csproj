@@ -113,7 +113,8 @@
       <DependentUpon>WebServiceWizardUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="UIMaps\WizardsUIMap.cs" />
-    <Compile Include="Wizards.cs" />
+    <Compile Include="Utils\VisualTreeWalker.cs" />
+    <Compile Include="WizardUITests.cs" />
     <Compile Include="UIMaps\ActivityDropWindowUIMap.cs">
       <DependentUpon>ActivityDropWindowUIMap.uitest</DependentUpon>
     </Compile>
@@ -169,7 +170,9 @@
     <Compile Include="UIMaps\DocManagerUIMap.cs" />
     <Compile Include="UIMaps\DocManagerUIMap.Designer.cs" />
     <Compile Include="UIMaps\ExplorerUIMap.cs" />
-    <Compile Include="UIMaps\ExplorerUIMap.Designer.cs" />
+    <Compile Include="UIMaps\ExplorerUIMap.Designer.cs">
+      <DependentUpon>ExplorerUIMap.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIMaps\ExternalUIMap.cs" />
     <Compile Include="UIMaps\ExternalUIMap.Designer.cs" />
     <Compile Include="UIMaps\FeedbackUIMap.cs">

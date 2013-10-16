@@ -10,6 +10,7 @@
 
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 using Dev2.CodedUI.Tests;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
@@ -36,40 +37,36 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
 
         public static void InitializeFullTestSource(string name)
         {
+            var explorerUiMap = new ExplorerUIMap();
             DocManagerUIMap.ClickOpenTabPage("Explorer");
 
-            var getLocalServer = new ExplorerUIMap().GetLocalServer();
+            explorerUiMap.ClearExplorerSearchText();
+            explorerUiMap.EnterExplorerSearchText("$");
+            var getLocalServer = explorerUiMap.GetLocalServer();
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
             for (var i = 0; i < 10; i++)
             {
                 Keyboard.SendKeys("{DOWN}");
             }
-            Keyboard.SendKeys("{ENTER}");
-            Thread.Sleep(1000);
+            SendKeys.SendWait("{ENTER}");
 
-            StringBuilder buildCommand = new StringBuilder();
-            buildCommand.Append("{TAB}smtp.afrihost.co.za{TAB}");
-            buildCommand.Append("dev2test{TAB}");
-            buildCommand.Append("Password{TAB}{TAB}");
-            buildCommand.Append("{TAB}{TAB}{ENTER}");
-            buildCommand.Append("^AThorLocal@norsegods.com{TAB}");
-            buildCommand.Append("dev2warewolf@gmail.com{TAB}{TAB}");
-            buildCommand.Append("{ENTER}");
-            Keyboard.SendKeys(buildCommand.ToString());
-            buildCommand.Clear();
+            //wait for email source wizard
+            WizardsUIMap.WaitForWizard(5000);
 
-            Thread.Sleep(10000);
-            for (var i = 0; i < 8; i++)
-            {
-                buildCommand.Append("{TAB}");
-            }
-            buildCommand.Append("{ENTER}");
-            Keyboard.SendKeys(buildCommand.ToString());
-            buildCommand.Clear();
+            SendKeys.SendWait("{TAB}smtp.afrihost.co.za{TAB}");
+            SendKeys.SendWait("dev2test{TAB}");
+            SendKeys.SendWait("Password{TAB}{TAB}");
+            SendKeys.SendWait("{TAB}{TAB}");
+            Playback.Wait(500);
+            SendKeys.SendWait("{ENTER}");
+            SendKeys.SendWait("^AThorLocal@norsegods.com{TAB}");
+            SendKeys.SendWait("dev2warewolf@gmail.com{TAB}");
+            Playback.Wait(1000);
+            SendKeys.SendWait("{ENTER}");
+            Playback.Wait(7000);
+            ClickSave();
 
-            buildCommand.Append("{TAB}{TAB}{TAB}" + name + "{TAB}{ENTER}");
-            Keyboard.SendKeys(buildCommand.ToString());
-            buildCommand.Clear();
+            SendKeys.SendWait("{TAB}{TAB}{TAB}" + name + "{TAB}{ENTER}");
         }
 
         public void ClickTestConnection()
@@ -101,6 +98,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
 
             //Click Cancel
             Mouse.Click(uIItemImage, new Point(638, 459));
+        }
+
+        public static void ClickSave()
+        {
+            var studioWindow = new UIBusinessDesignStudioWindow();
+            var uIItemImage = studioWindow.GetChildren()[0].GetChildren()[0];
+            Mouse.Click(uIItemImage, new Point(525, 460));
         }
     }
 

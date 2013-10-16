@@ -15,7 +15,6 @@ namespace Dev2.Studio.UI.Tests
     [CodedUITest]
     public class AdornerTests
     {
-
         [TestCleanup]
         public void TestCleanup()
         {
@@ -40,13 +39,15 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
+        #region UI Maps
+
         #region TabManager UI Map
 
         public TabManagerUIMap TabManagerUiMap
         {
             get
             {
-                if (_tabManagerUiMap == null)
+                if(_tabManagerUiMap == null)
                 {
                     _tabManagerUiMap = new TabManagerUIMap();
                 }
@@ -65,7 +66,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_workflowDesignerUiMap == null)
+                if(_workflowDesignerUiMap == null)
                 {
                     _workflowDesignerUiMap = new WorkflowDesignerUIMap();
                 }
@@ -84,7 +85,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if ((_docManagerMap == null))
+                if((_docManagerMap == null))
                 {
                     _docManagerMap = new DocManagerUIMap();
                 }
@@ -103,7 +104,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if ((_toolboxUiMap == null))
+                if((_toolboxUiMap == null))
                 {
                     _toolboxUiMap = new ToolboxUIMap();
                 }
@@ -135,6 +136,8 @@ namespace Dev2.Studio.UI.Tests
         private DatabaseServiceWizardUIMap _databaseServiceWizardUiMap;
         public DatabaseServiceWizardUIMap DatabaseServiceWizardUiMap { get { return _databaseServiceWizardUiMap ?? (_databaseServiceWizardUiMap = new DatabaseServiceWizardUIMap()); } }
 
+        #endregion
+        
         #endregion
 
         [TestMethod]

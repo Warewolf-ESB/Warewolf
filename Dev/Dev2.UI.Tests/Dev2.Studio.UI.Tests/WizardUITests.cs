@@ -16,7 +16,7 @@ using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 namespace Dev2.Studio.UI.Tests.UIMaps
 {
     [CodedUITest]
-    public class Wizards : UIMapBase
+    public class WizardUITests : UIMapBase
     {
         #region Context Init
 
@@ -90,8 +90,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             //Assert
             DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.DoRefresh();
             ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.DoRefresh();
             ExplorerUIMap.EnterExplorerSearchText(serviceName);
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SERVICES", "Unassigned", serviceName));
             ExplorerUIMap.ClearExplorerSearchText();
@@ -137,8 +137,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void NewWebServiceShortcutKeyExpectedWebServiceOpens()
         {
-            SendKeys.SendWait("{CTRL}{SHIFT}W");
-
+            var studioWindow = new UIBusinessDesignStudioWindow();
+            Mouse.Click(studioWindow);
+            SendKeys.SendWait("^+w");
             WizardsUIMap.WaitForWizard(5000);
             WebServiceWizardUIMap.Cancel();
         }
@@ -192,8 +193,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             //Assert
             DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.DoRefresh();
             ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.DoRefresh();
             ExplorerUIMap.EnterExplorerSearchText(name);
 
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", "Unassigned", name));
@@ -322,5 +323,20 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         } 
         
         #endregion
+
+        public UIMap UIMap
+        {
+            get
+            {
+                if((this.map == null))
+                {
+                    this.map = new UIMap();
+                }
+
+                return this.map;
+            }
+        }
+
+        private UIMap map;
     }
 }
