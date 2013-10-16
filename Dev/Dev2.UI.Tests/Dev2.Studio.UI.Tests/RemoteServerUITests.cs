@@ -378,7 +378,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUiMap.ClearExplorerSearchText();
             ExplorerUiMap.EnterExplorerSearchText(RenameTo);
             ExplorerUiMap.RightClickDeleteProject(serverName, serviceType, folderName, RenameTo);
-            PopupDialogUIMap.WaitForDialog();
+            Playback.Wait(500);
             SendKeys.SendWait("{ENTER}{ENTER}");
         }
         #endregion

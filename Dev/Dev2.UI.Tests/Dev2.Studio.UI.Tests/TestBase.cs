@@ -689,7 +689,7 @@ namespace Dev2.CodedUI.Tests
 
             //Single click a resource in the tree
             ActivityDropUIMap.SingleClickFirstResource();
-
+            Playback.Wait(300);
             //get the ok button from the window
             buttonControl = ActivityDropUIMap.GetOkButtonOnActivityDropWindow();
 
@@ -738,6 +738,7 @@ namespace Dev2.CodedUI.Tests
             // Single click a folder in the tree
             ActivityDropUIMap.SingleClickFirstResource();
 
+            Playback.Wait(2000);
             // Click the Ok button on the window
             ActivityDropUIMap.ClickCancelButton();
 
