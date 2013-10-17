@@ -67,11 +67,16 @@ namespace Dev2.Activities.Designers2.Core
 
         protected virtual void OnLoaded()
         {
-            var viewModel = (TViewModel)Activator.CreateInstance(typeof(TViewModel), ModelItem);
+            var viewModel = CreateViewModel();
             DataContext = viewModel;
 
             ApplyBindings(viewModel);
             ApplyEventHandlers(viewModel);
+        }
+
+        protected virtual TViewModel CreateViewModel()
+        {
+            return (TViewModel)Activator.CreateInstance(typeof(TViewModel), ModelItem);
         }
 
         void ApplyBindings(TViewModel viewModel)

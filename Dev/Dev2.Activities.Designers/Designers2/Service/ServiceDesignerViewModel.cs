@@ -18,7 +18,7 @@ using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Simulation;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -29,55 +29,55 @@ namespace Dev2.Activities.Designers2.Service
 {
     public class ServiceDesignerViewModel : ActivityDesignerViewModel, IDisposable
     {
-        public static readonly IErrorInfo NoError = new ErrorInfo
+        public static readonly ErrorInfo NoError = new ErrorInfo
         {
             ErrorType = ErrorType.None,
             Message = "Service Working Normally"
         };
 
-        readonly IEnvironmentRepository _environmentRepository;
         readonly IEventAggregator _eventPublisher;
+
         IDesignValidationService _validationService;
-        readonly Guid _uniqueID;
-
-
-        bool _isDisposed;
         IErrorInfo _worstDesignError;
+        bool _isDisposed;
 
-        public ServiceDesignerViewModel(ModelItem modelItem)//, IContextualResourceModel rootModel)
-            : this(modelItem, null, EnvironmentRepository.Instance, EventPublishers.Aggregator)
+        public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
+            : this(modelItem, rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator)
         {
         }
 
         public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher)
-            : base(modelItem)//, rootModel)
+            : base(modelItem)
         {
             AddTitleBarEditToggle();
-            AddTitleBarLargeToggle();
+            AddTitleBarMappingToggle();
             AddTitleBarHelpToggle();
 
             // PBI 6690 - 2013.07.04 - TWR : added
             // BUG 9634 - 2013.07.17 - TWR : resourceModel may be null if it is a remote resource whose environment is not connected!
-            //VerifyArgument.IsNotNull("rootModel", rootModel);
+            VerifyArgument.IsNotNull("rootModel", rootModel);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
 
-            _environmentRepository = environmentRepository;
             _eventPublisher = eventPublisher;
-            _uniqueID = ModelItemUtils.GetUniqueID(modelItem);
 
+            RootModel = rootModel;
             DesignValidationErrors = new ObservableCollection<IErrorInfo>();
             FixErrorsCommand = new RelayCommand(o => FixErrors());
 
-            SetProperties();
-            SetImageSource();
+            InitializeProperties();
+            InitializeImageSource();
 
             var environment = environmentRepository.FindSingle(c => c.ID == EnvironmentID);
-            if(environment != null)
+            InitializeValidationService(environment);
+            if(!InitializeResourceModel(environment))
             {
-                SetValidationService(environment);
-                SetResourceModel(environment);
+                return;
             }
+
+            // MUST InitializeMappings() first!
+            InitializeMappings();
+            InitializeLastValidationMemo(environment);
         }
 
         public event EventHandler<DesignValidationMemo> OnDesignValidationReceived;
@@ -182,21 +182,40 @@ namespace Dev2.Activities.Designers2.Service
 
         // ModelItem properties
         //string IconPath { get { return GetProperty<string>(); } }
-        string ServiceUri { get { return GetProperty<string>(); } }
-        //string ServiceName { get { return GetProperty<string>(); } }
         //string HelpLink { get { return GetProperty<string>(); } }
+        string ServiceUri { get { return GetProperty<string>(); } }
+        string ServiceName { get { return GetProperty<string>(); } }
         string ActionName { get { return GetProperty<string>(); } }
         SimulationMode SimulationMode { get { return GetProperty<SimulationMode>(); } }
         string FriendlySourceName { get { return GetProperty<string>(); } }
         string Type { get { return GetProperty<string>(); } }
         Guid EnvironmentID { get { return GetProperty<Guid>(); } }
         Guid ResourceID { get { return GetProperty<Guid>(); } }
-        string OutputMapping { get { return GetProperty<string>(); } set { SetProperty(value); } }
-        string InputMapping { get { return GetProperty<string>(); } set { SetProperty(value); } }
+        Guid UniqueID { get { return GetProperty<Guid>(); } }
+        string OutputMapping { set { SetProperty(value); } }
+        string InputMapping { set { SetProperty(value); } }
 
         public override void Validate()
         {
         }
+
+        #region Overrides of ActivityDesignerViewModel
+
+        protected override void OnToggleCheckedChanged(string propertyName, bool isChecked)
+        {
+            base.OnToggleCheckedChanged(propertyName, isChecked);
+            
+            // AddTitleBarMappingToggle() binds Mapping button to ShowLarge property
+            if(propertyName == ShowLargeProperty.Name)
+            {
+                if(!isChecked)
+                {
+                    CheckForRequiredMapping();
+                }
+            }
+        }
+
+        #endregion
 
         void SetInputs()
         {
@@ -208,36 +227,72 @@ namespace Dev2.Activities.Designers2.Service
             OutputMapping = DataMappingViewModel.GetOutputString(DataMappingViewModel.Outputs);
         }
 
-        void SetResourceModel(IEnvironmentModel environmentModel)
+        void InitializeMappings()
         {
-            var resourceID = ResourceID;
-            if(resourceID != Guid.Empty)
-            {
-                ResourceModel = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceID) as IContextualResourceModel;
-                if(ResourceModel == null)
-                {
-                    if(environmentModel.IsConnected)
-                    {
-                        UpdateLastValidationMemoWithDeleteError();
-                        return;
-                    }
+            var webAct = WebActivityFactory.CreateWebActivity(ModelItem, ResourceModel, ServiceName);
+            DataMappingViewModel = new DataMappingViewModel(webAct);
+        }
 
-                    // BUG 9634 - 2013.07.17 - TWR : added connection check
-                    environmentModel.Connection.Verify(UpdateLastValidationMemoWithOfflineError);
+        void InitializeLastValidationMemo(IEnvironmentModel environmentModel)
+        {
+            var uniqueID = UniqueID;
+            var designValidationMemo = new DesignValidationMemo
+            {
+                InstanceID = uniqueID,
+                ServiceID = ResourceID,
+                IsValid = RootModel.Errors.Count == 0
+            };
+            designValidationMemo.Errors.AddRange(RootModel.GetErrors(uniqueID).Cast<ErrorInfo>());
+
+            if(environmentModel == null)
+            {
+                designValidationMemo.IsValid = false;
+                designValidationMemo.Errors.Add(new ErrorInfo
+                {
+                    ErrorType = ErrorType.Critical,
+                    FixType = FixType.None,
+                    InstanceID = uniqueID,
+                    Message = "Server source not found. This service will not execute."
+                });
+            }
+
+            UpdateLastValidationMemo(designValidationMemo);
+        }
+
+        bool InitializeResourceModel(IEnvironmentModel environmentModel)
+        {
+            if(environmentModel != null)
+            {
+                var resourceID = ResourceID;
+                if(resourceID != Guid.Empty)
+                {
+                    ResourceModel = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceID) as IContextualResourceModel;
+                    if(ResourceModel == null)
+                    {
+                        if(environmentModel.IsConnected)
+                        {
+                            UpdateLastValidationMemoWithDeleteError();
+                            return false;
+                        }
+
+                        // BUG 9634 - 2013.07.17 - TWR : added connection check
+                        environmentModel.Connection.Verify(UpdateLastValidationMemoWithOfflineError);
+                    }
                 }
             }
+            return true;
         }
 
-        void SetValidationService(IEnvironmentModel environmentModel)
+        void InitializeValidationService(IEnvironmentModel environmentModel)
         {
-            if(environmentModel.Connection != null && environmentModel.Connection.ServerEvents != null)
+            if(environmentModel != null && environmentModel.Connection != null && environmentModel.Connection.ServerEvents != null)
             {
                 _validationService = new DesignValidationService(environmentModel.Connection.ServerEvents);
-                _validationService.Subscribe(_uniqueID, UpdateLastValidationMemo);
+                _validationService.Subscribe(UniqueID, UpdateLastValidationMemo);
             }
         }
 
-        void SetProperties()
+        void InitializeProperties()
         {
             Properties = new List<KeyValuePair<string, string>>();
             AddProperty("Source :", FriendlySourceName);
@@ -254,7 +309,7 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        void SetImageSource()
+        void InitializeImageSource()
         {
             DynamicServices.enActionType actionType;
             Enum.TryParse(Type, true, out actionType);
@@ -288,6 +343,7 @@ namespace Dev2.Activities.Designers2.Service
 
         void AddTitleBarEditToggle()
         {
+            // ReSharper disable RedundantArgumentName
             var toggle = ActivityDesignerToggle.Create(
                 collapseImageSourceUri: "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServicePropertyEdit-32.png",
                 collapseToolTip: "Edit",
@@ -297,6 +353,23 @@ namespace Dev2.Activities.Designers2.Service
                 target: this,
                 dp: ShowParentProperty
                 );
+            // ReSharper restore RedundantArgumentName
+            TitleBarToggles.Add(toggle);
+        }
+
+        void AddTitleBarMappingToggle()
+        {
+            // ReSharper disable RedundantArgumentName
+            var toggle = ActivityDesignerToggle.Create(
+                collapseImageSourceUri: "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceCollapseMapping-32.png",
+                collapseToolTip: "Close Mapping",
+                expandImageSourceUri: "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceExpandMapping-32.png",
+                expandToolTip: "Open Mapping",
+                automationID: "LargeViewToggle",
+                target: this,
+                dp: ShowLargeProperty
+                );
+            // ReSharper restore RedundantArgumentName
             TitleBarToggles.Add(toggle);
         }
 
@@ -316,7 +389,7 @@ namespace Dev2.Activities.Designers2.Service
             CheckRequiredMappingChangedErrors(memo);
             CheckIsDeleted(memo);
 
-            UpdateErrors(memo.Errors);
+            UpdateDesignValidationErrors(memo.Errors);
 
             if(OnDesignValidationReceived != null)
             {
@@ -326,14 +399,15 @@ namespace Dev2.Activities.Designers2.Service
 
         void UpdateLastValidationMemoWithDeleteError()
         {
+            var uniqueID = UniqueID;
             var memo = new DesignValidationMemo
             {
-                InstanceID = _uniqueID,
+                InstanceID = uniqueID,
                 IsValid = false,
             };
             memo.Errors.Add(new ErrorInfo
             {
-                InstanceID = _uniqueID,
+                InstanceID = uniqueID,
                 ErrorType = ErrorType.Warning,
                 FixType = FixType.Delete,
                 Message = "Resource was not found. This service will not execute."
@@ -351,14 +425,15 @@ namespace Dev2.Activities.Designers2.Service
 
                 case ConnectResult.ConnectFailed:
                 case ConnectResult.LoginFailed:
+                    var uniqueID = UniqueID;
                     var memo = new DesignValidationMemo
                     {
-                        InstanceID = _uniqueID,
+                        InstanceID = uniqueID,
                         IsValid = false,
                     };
                     memo.Errors.Add(new ErrorInfo
                     {
-                        InstanceID = _uniqueID,
+                        InstanceID = uniqueID,
                         ErrorType = ErrorType.Warning,
                         FixType = FixType.None,
                         Message = result == ConnectResult.ConnectFailed
@@ -372,16 +447,16 @@ namespace Dev2.Activities.Designers2.Service
 
         void CheckRequiredMappingChangedErrors(DesignValidationMemo memo)
         {
-            bool keepError = false;
-            ErrorInfo reqiredMappingChanged = memo.Errors.FirstOrDefault(c => c.FixType == FixType.IsRequiredChanged);
+            var keepError = false;
+            var reqiredMappingChanged = memo.Errors.FirstOrDefault(c => c.FixType == FixType.IsRequiredChanged);
             if(reqiredMappingChanged != null)
             {
-                XElement xElement = XElement.Parse(reqiredMappingChanged.FixData);
-                IEnumerable<IInputOutputViewModel> inputOutputViewModels = DeserializeMappings(true, xElement);
+                var xElement = XElement.Parse(reqiredMappingChanged.FixData);
+                var inputOutputViewModels = DeserializeMappings(true, xElement);
 
                 foreach(var input in inputOutputViewModels)
                 {
-                    IInputOutputViewModel inputOutputViewModel = DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == input.Name);
+                    var inputOutputViewModel = DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == input.Name);
                     if(inputOutputViewModel != null)
                     {
                         inputOutputViewModel.Required = input.Required;
@@ -417,6 +492,52 @@ namespace Dev2.Activities.Designers2.Service
                     }
                 }
             }
+        }
+
+        void CheckForRequiredMapping()
+        {
+            if(DataMappingViewModel != null && DataMappingViewModel.Inputs.Any(c => c.Required && String.IsNullOrEmpty(c.MapsTo)))
+            {
+                if(DesignValidationErrors.All(c => c.FixType != FixType.IsRequiredChanged))
+                {
+                    var listToRemove = DesignValidationErrors.Where(c => c.FixType == FixType.None).ToList();
+
+                    foreach(var errorInfo in listToRemove)
+                    {
+                        DesignValidationErrors.Remove(errorInfo);
+                    }
+
+                    var mappingIsRequiredMessage = CreateMappingIsRequiredMessage();
+                    DesignValidationErrors.Add(mappingIsRequiredMessage);
+                    RootModel.AddError(mappingIsRequiredMessage);
+                }
+                UpdateWorstError();
+                return;
+            }
+
+            if(DesignValidationErrors.Any(c => c.FixType == FixType.IsRequiredChanged))
+            {
+                var listToRemove = DesignValidationErrors.Where(c => c.FixType == FixType.IsRequiredChanged).ToList();
+
+                foreach(var errorInfo in listToRemove)
+                {
+                    DesignValidationErrors.Remove(errorInfo);
+                    RootModel.RemoveError(errorInfo);
+                }
+                UpdateWorstError();
+            }
+        }
+
+        ErrorInfo CreateMappingIsRequiredMessage()
+        {
+            return new ErrorInfo { ErrorType = ErrorType.Critical, FixData = CreateFixedData(), FixType = FixType.IsRequiredChanged, InstanceID = UniqueID };
+        }
+
+        string CreateFixedData()
+        {
+            var serializer = new JsonSerializer();
+            var result = serializer.Serialize(DataMappingListFactory.CreateListInputMapping(DataMappingViewModel.GetInputString(DataMappingViewModel.Inputs)));
+            return string.Concat("<Input>", result, "</Input>");
         }
 
         // PBI 6690 - 2013.07.04 - TWR : added
@@ -520,9 +641,9 @@ namespace Dev2.Activities.Designers2.Service
                 RootModel.IsValid = true;
             }
 
-            IActionableErrorInfo[] worstError = { Errors[0] };
+            IErrorInfo[] worstError = { DesignValidationErrors[0] };
 
-            foreach(var error in Errors.Where(error => error.ErrorType > worstError[0].ErrorType))
+            foreach(var error in DesignValidationErrors.Where(error => error.ErrorType > worstError[0].ErrorType))
             {
                 worstError[0] = error;
                 if(error.ErrorType == ErrorType.Critical)
@@ -535,9 +656,9 @@ namespace Dev2.Activities.Designers2.Service
 
         #endregion
 
-        #region UpdateErrors
+        #region UpdateDesignValidationErrors
 
-        void UpdateErrors(IEnumerable<ErrorInfo> errors)
+        void UpdateDesignValidationErrors(IEnumerable<ErrorInfo> errors)
         {
             DesignValidationErrors.Clear();
             foreach(var error in errors)

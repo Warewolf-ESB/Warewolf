@@ -42,8 +42,6 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner) },
                 { typeof(DsfWebPageActivity), typeof(DsfWebPageActivityDesigner) },
                 { typeof(DsfWebSiteActivity), typeof(DsfWebSiteActivityDesigner) },
-                //{typeof (DsfCountRecordsetActivity), typeof (DsfCountRecordsetActivityDesigner)},
-                //{typeof (DsfSortRecordsActivity), typeof (DsfSortRecordsActivityDesigner)},
                 { typeof(DsfDataSplitActivity), typeof(DsfDataSplitActivityDesigner) },
                 { typeof(DsfPathCreate), typeof(DsfPathCreateDesigner) },
                 { typeof(DsfFileRead), typeof(DsfFileReadDesigner) },
@@ -55,13 +53,11 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfPathRename), typeof(DsfPathRenameDesigner) },
                 { typeof(DsfZip), typeof(DsfZipDesigner) },
                 { typeof(DsfUnZip), typeof(DsfUnzipDesigner) },
-                //{ typeof(DsfCalculateActivity), typeof(DsfCalculateActivityDesigner) },
                 { typeof(DsfDateTimeDifferenceActivity), typeof(DsfDateTimeDifferenceActivityDesigner) },
                 { typeof(DsfCaseConvertActivity), typeof(DsfCaseConvertActivityDesigner) },
                 { typeof(DsfBaseConvertActivity), typeof(DsfBaseConvertActivityDesigner) },
                 { typeof(DsfReplaceActivity), typeof(DsfReplaceActivityDesigner) },
                 { typeof(DsfIndexActivity), typeof(DsfIndexActivityDesigner) },
-                //{typeof (DsfDeleteRecordActivity), typeof (DsfDeleteRecordActivityDesigner)},
                 { typeof(DsfDataMergeActivity), typeof(DsfDataMergeActivityDesigner) },
                 //                    {typeof (DsfRemoveActivity), typeof (DsfRemoveActivityDesigner)},
                 //                    {typeof (DsfTagCountActivity), typeof (DsfTagCountActivityDesigner)},
@@ -77,7 +73,6 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },
                 { typeof(DsfScriptingActivity), typeof(DsfScriptingActivityDesigner) },
                 { typeof(DsfXPathActivity), typeof(DsfXPathActivityDesigner) },
-                //{typeof (DsfUniqueActivity), typeof (DsfUniqueActivityDesigner)},
                 // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
             };
 
