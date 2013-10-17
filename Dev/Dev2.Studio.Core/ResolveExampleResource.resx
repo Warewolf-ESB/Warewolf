@@ -117,11 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DsfCountRecordsetActivity" xml:space="preserve">
+    <value>Recordset - Count Records</value>
+  </data>
   <data name="DsfDateTimeActivity" xml:space="preserve">
     <value>Utility - Date and Time Difference</value>
   </data>
   <data name="DsfMultiAssignActivity" xml:space="preserve">
     <value>Utility - Assign</value>
+  </data>
+  <data name="DsfSortRecordsActivity" xml:space="preserve">
+    <value>Recordset - Sort Records</value>
   </data>
   <data name="DsfWebGetRequestActivity" xml:space="preserve">
     <value>Utility - Web Request</value>

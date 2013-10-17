@@ -79,6 +79,8 @@
     <Compile Include="..\Dev2.Core.Tests\TestUtils.cs">
       <Link>TestUtils.cs</Link>
     </Compile>
+    <Compile Include="CountRecords\CountRecordsDesignerViewModelTests.cs" />
+    <Compile Include="CountRecords\TestCountRecordsDesignerViewModel.cs" />
     <Compile Include="Designers2\Core\Controls\Dev2DataGridTests.cs" />
     <Compile Include="Designers2\Core\Stubs\ActivityDesignerCollectionViewModelDerived.cs" />
     <Compile Include="Designers2\Core\ActivityDesignerViewModelTests.cs" />

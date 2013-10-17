@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Activities;
+using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Activities.Designers2.DateTime;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
 using Dev2.Activities.Designers2.GetWebRequest;
@@ -25,6 +26,7 @@ namespace Dev2.Studio.ActivityDesigners
                     {typeof (DsfFindRecordsMultipleCriteriaActivity), typeof (FindRecordsMultipleCriteriaDesigner)},
                     {typeof (DsfSqlBulkInsertActivity), typeof (SqlBulkInsertDesigner)},
                     {typeof (DsfSortRecordsActivity), typeof (SortRecordsDesigner)},
+                    {typeof (DsfCountRecordsetActivity), typeof (CountRecordsDesigner)},
 
                     {typeof (DsfActivity), typeof (DsfActivityDesigner)},
                     {typeof (DsfDatabaseActivity), typeof (DsfActivityDesigner)},
@@ -34,7 +36,7 @@ namespace Dev2.Studio.ActivityDesigners
                     {typeof (DsfForEachActivity), typeof (DsfForEachActivityDesigner)},
                     {typeof (DsfWebPageActivity), typeof (DsfWebPageActivityDesigner)},
                     {typeof (DsfWebSiteActivity), typeof (DsfWebSiteActivityDesigner)},
-                    {typeof (DsfCountRecordsetActivity), typeof (DsfCountRecordsetActivityDesigner)},
+                    //{typeof (DsfCountRecordsetActivity), typeof (DsfCountRecordsetActivityDesigner)},
                     //{typeof (DsfSortRecordsActivity), typeof (DsfSortRecordsActivityDesigner)},
                     {typeof (DsfDataSplitActivity), typeof (DsfDataSplitActivityDesigner)},
                     {typeof (DsfPathCreate), typeof (DsfPathCreateDesigner)},

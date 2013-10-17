@@ -373,11 +373,52 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To Count the number of records/indexes in a recordset, put the recordset name in here. E.g. [[Customer()]].
+        /// </summary>
+        public static string CountRecordsHelpRecordset {
+            get {
+                return ResourceManager.GetString("CountRecordsHelpRecordset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here. Returns a number specifying how many records/indexes are in the recordset.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string CountRecordsHelpResult {
+            get {
+                return ResourceManager.GetString("CountRecordsHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Only variables in [[Scalar]] or [[Recordset(*).Field]] format. If you use a recordset and do not specify an index/row number, a new record will be added..
         /// </summary>
         public static string CountRecordsResultHelpText {
             get {
                 return ResourceManager.GetString("CountRecordsResultHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Recordset()]].
+        /// </summary>
+        public static string CountRecordsToolTipRecordset {
+            get {
+                return ResourceManager.GetString("CountRecordsToolTipRecordset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string CountRecordsToolTipResult {
+            get {
+                return ResourceManager.GetString("CountRecordsToolTipResult", resourceCulture);
             }
         }
         

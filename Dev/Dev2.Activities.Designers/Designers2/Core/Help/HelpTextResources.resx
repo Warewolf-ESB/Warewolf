@@ -790,4 +790,21 @@ Using recordset () will add a new record and (*) will assign every record.</valu
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
+  <data name="CountRecordsHelpRecordset" xml:space="preserve">
+    <value>To Count the number of records/indexes in a recordset, put the recordset name in here. E.g. [[Customer()]]</value>
+  </data>
+  <data name="CountRecordsHelpResult" xml:space="preserve">
+    <value>Only variables go in here. Returns a number specifying how many records/indexes are in the recordset.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="CountRecordsToolTipRecordset" xml:space="preserve">
+    <value>[[Recordset()]]</value>
+  </data>
+  <data name="CountRecordsToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
 </root>

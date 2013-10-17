@@ -35,12 +35,12 @@
             Grid.Row="0"
             Content="Sort Field" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
-            Grid.ColumnSpan="2"
             Grid.Column="1"
             Grid.Row="0"
             DefaultText="[[Recordset().Field]]"
             FilterType="RecordsetFields"
             WrapInBrackets="True"
+            ToolTip="{x:Static help:HelpTextResources.SortRecordsToolTipSortField}"
             Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
             Text="{Binding Path=ModelItem.SortField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
                                 Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"

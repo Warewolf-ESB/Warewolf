@@ -9,6 +9,8 @@ namespace Dev2.Activities.Designers.Tests.SortRecords
     public class SortRecordsDesignerViewModelTests
     {
         [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("SortRecordsDesignerViewModel_Constructor")]
         public void SortRecordsDesignerViewModel_Constructor_ModelItemIsValid_SelectedSortIsInitialized()
         {
             var modelItem = CreateModelItem();
@@ -18,6 +20,8 @@ namespace Dev2.Activities.Designers.Tests.SortRecords
         }
 
         [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("SortRecordsDesignerViewModel_Constructor")]
         public void SortRecordsDesignerViewModel_Constructor_ModelItemIsValid_SortOrderTypesHasTwoItems()
         {
             var modelItem = CreateModelItem();
@@ -26,6 +30,8 @@ namespace Dev2.Activities.Designers.Tests.SortRecords
         }
 
         [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("SortRecordsDesignerViewModel_SetSelectedSelectedSort")]
         public void SortRecordsDesignerViewModel_SetSelectedSelectedSort_ValidOrderType_SelectedOrderTypeOnModelItemIsAlsoSet()
         {
             var modelItem = CreateModelItem();

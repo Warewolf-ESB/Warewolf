@@ -109,6 +109,15 @@
     <Compile Include="Designers2\Core\Help\IHelpSource.cs" />
     <Compile Include="Designers2\Core\IClosable.cs" />
     <Compile Include="Designers2\Core\ZIndexPosition.cs" />
+    <Compile Include="Designers2\CountRecords\CountRecordsDesigner.xaml.cs">
+      <DependentUpon>CountRecordsDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\CountRecords\CountRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\CountRecords\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Designers2\DateTime\DateTimeDesigner.xaml.cs">
       <DependentUpon>DateTimeDesigner.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -304,6 +313,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Designers2\CountRecords\CountRecordsDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\CountRecords\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Designers2\DateTime\DateTimeDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -459,6 +476,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ServicePropertyEdit-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Designers2\CaseConversion\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
