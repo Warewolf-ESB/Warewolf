@@ -211,14 +211,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 compiler.Upsert(dataObject.DataListID, OnErrorVariable, currentError, out errors);
             }
+            if(!String.IsNullOrEmpty(OnErrorWorkflow))
+            {
+                var esbChannel = context.GetExtension<IEsbChannel>();
+                esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out errors);
+            }
             if(IsEndedOnError)
             {
                 PerformStopWorkflow(context, dataObject);
-            }
-            if(!String.IsNullOrEmpty(OnErrorWorkflow))
-            {
-                IEsbChannel esbChannel = context.GetExtension<IEsbChannel>();
-                esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out errors);
             }
         }
 
