@@ -36,7 +36,7 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ExternalService_EditService")]
         public void ExternalService_EditService_EditWithNoSecondSaveDialog_ExpectOneDialog()
