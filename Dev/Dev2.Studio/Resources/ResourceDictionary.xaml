@@ -12,6 +12,7 @@
         <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Resources/Brushes.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DataTemplatesIntellisense.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/ToggleButtonMetro.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Resources/Icons.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
 

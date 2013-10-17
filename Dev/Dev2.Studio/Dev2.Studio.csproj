@@ -809,6 +809,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Resources\Icons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\SplitterPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1234,6 +1238,14 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\RemoteWarewolf-32_files\image0.png" />
+    <Resource Include="Resources\RemoteWarewolf-32_files\image1.png" />
+    <Resource Include="Resources\ExplorerWarewolfConnection-32_files\image0.png" />
+    <Resource Include="Resources\ExplorerWarewolfConnection-32_files\image1.png" />
+    <Resource Include="Resources\Deploy-32_files\image0.png" />
+    <Resource Include="Resources\Deploy-32_files\image1.png" />
+    <Resource Include="Resources\Deploy-32_files\image2.png" />
+    <Resource Include="Resources\Deploy-32_files\image3.png" />
     <Resource Include="Images\ToolSqlBulkInsert-32.png" />
     <Resource Include="Images\StartNode.png" />
     <Resource Include="Images\ToolGetWebRequest-32.png" />

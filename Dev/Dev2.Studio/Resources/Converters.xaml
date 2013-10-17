@@ -8,12 +8,15 @@
                     xmlns:Dev2Enums="clr-namespace:Dev2.Diagnostics;assembly=Dev2.Diagnostics"
                     xmlns:converters2="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                     xmlns:errors="clr-namespace:Dev2.Providers.Errors;assembly=Dev2.Infrastructure"
-                    xmlns:valueConverters="clr-namespace:WPF.JoshSmith.Data.ValueConverters;assembly=Dev2.CustomControls">
+                    xmlns:valueConverters="clr-namespace:WPF.JoshSmith.Data.ValueConverters;assembly=Dev2.CustomControls"
+    xmlns:converters4="clr-namespace:Dev2.Converters;assembly=Dev2.Core">
 
     <Activities:ImagePathConverter x:Key="ImagePathConverter" />
     <converters2:FilterStringToBoolConverter x:Key="FilterStringToBoolConverter"></converters2:FilterStringToBoolConverter>
 
     <!-- ========== Converter for XamDock ========== -->
+
+    <converters4:TypeToIconConverter x:Key="TypeToIconConverter" />
     <converters2:BoolToVisibilityConverter x:Key="BoolToVisConverter" />
     <converters:PercentageConverter x:Key="PercentageConverter" />
     <converters2:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter"/>
