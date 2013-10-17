@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Activities;
+using Dev2.Activities.Designers2.Calculate;
 using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Activities.Designers2.DateTime;
 using Dev2.Activities.Designers2.DeleteRecords;
@@ -31,6 +32,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfCountRecordsetActivity), typeof(CountRecordsDesigner) },
                 { typeof(DsfDeleteRecordActivity), typeof(DeleteRecordsDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
+                { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
 
                 { typeof(DsfActivity), typeof(DsfActivityDesigner) },
                 { typeof(DsfDatabaseActivity), typeof(DsfActivityDesigner) },
@@ -53,7 +55,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfPathRename), typeof(DsfPathRenameDesigner) },
                 { typeof(DsfZip), typeof(DsfZipDesigner) },
                 { typeof(DsfUnZip), typeof(DsfUnzipDesigner) },
-                { typeof(DsfCalculateActivity), typeof(DsfCalculateActivityDesigner) },
+                //{ typeof(DsfCalculateActivity), typeof(DsfCalculateActivityDesigner) },
                 { typeof(DsfDateTimeDifferenceActivity), typeof(DsfDateTimeDifferenceActivityDesigner) },
                 { typeof(DsfCaseConvertActivity), typeof(DsfCaseConvertActivityDesigner) },
                 { typeof(DsfBaseConvertActivity), typeof(DsfBaseConvertActivityDesigner) },

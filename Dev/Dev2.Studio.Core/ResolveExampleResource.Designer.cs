@@ -61,6 +61,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Utility - Calculate.
+        /// </summary>
+        internal static string DsfCalculateActivity {
+            get {
+                return ResourceManager.GetString("DsfCalculateActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recordset - Count Records.
         /// </summary>
         internal static string DsfCountRecordsetActivity {

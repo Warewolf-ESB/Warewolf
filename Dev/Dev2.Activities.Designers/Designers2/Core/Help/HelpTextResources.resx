@@ -850,4 +850,28 @@ Where multiple rows are the same, the first one will be deemed Unique.</value>
   <data name="UniqueRecordsToolTipReturnField" xml:space="preserve">
     <value>[[Recordset().Field]]</value>
   </data>
+  <data name="CalculateHelpFx" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To perform a calculation, put the calculation in here in BODMAS format.
+There are many supporting functions like average() and sum() that can be used with recordsets e.g. Sum([[staff(*).salaries]]) will sum all the salaries fields of the staff recordset.</value>
+  </data>
+  <data name="CalculateHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the formatted number.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="CalculateToolTipFx" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="CalculateToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
 </root>

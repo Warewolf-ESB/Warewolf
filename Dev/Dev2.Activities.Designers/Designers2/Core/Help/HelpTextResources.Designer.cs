@@ -164,6 +164,54 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To perform a calculation, put the calculation in here in BODMAS format.
+        ///There are many supporting functions like average() and sum() that can be used with recordsets e.g. Sum([[staff(*).salaries]]) will sum all the salaries fields of the staff recordset..
+        /// </summary>
+        public static string CalculateHelpFx {
+            get {
+                return ResourceManager.GetString("CalculateHelpFx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the formatted number.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string CalculateHelpResult {
+            get {
+                return ResourceManager.GetString("CalculateHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string CalculateToolTipFx {
+            get {
+                return ResourceManager.GetString("CalculateToolTipFx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string CalculateToolTipResult {
+            get {
+                return ResourceManager.GetString("CalculateToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the type of conversion you would like to make..
         /// </summary>
         public static string CaseConversionHelpConvertToCaseType {
