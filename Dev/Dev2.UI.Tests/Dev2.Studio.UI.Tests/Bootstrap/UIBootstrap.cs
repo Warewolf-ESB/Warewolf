@@ -20,7 +20,7 @@ namespace Dev2.Studio.UI.Tests.Bootstrap
         public static void Init(TestContext textCtx)
         {
             var mergeDir = _exeRoot + @"\Merge";
-            Directory.Delete(mergeDir);
+            Directory.Delete(mergeDir, true);
             DirectoryCopy(StagingLocation, mergeDir);
             const string runBatFileDir = _exeRoot + "\\" + _runFileName;
             if(File.Exists(runBatFileDir))
