@@ -62,7 +62,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         public void ClickMappingTab()
         {
             UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            uIItemImage.DrawHighlight();
+            Playback.Wait(500);
             Mouse.Click(uIItemImage, new Point(280, 25));
         }
         

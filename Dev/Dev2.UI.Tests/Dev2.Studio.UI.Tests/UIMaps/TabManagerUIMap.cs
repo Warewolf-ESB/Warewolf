@@ -82,6 +82,11 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         {
             foreach (var child in theTab.GetChildren().Where(child => child.GetProperty("AutomationID").ToString() == "closeBtn"))
             {
+                var point = new Point();
+                if (!child.TryGetClickablePoint(out point))
+                {
+                    ExplorerUIMap.ClosePane(theTab);
+                }
                 Mouse.Click(child);
                 return true;
             }
