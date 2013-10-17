@@ -828,4 +828,26 @@ Using recordset () will add a new record and (*) will assign every record.</valu
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
+  <data name="UniqueRecordsHelpInField" xml:space="preserve">
+    <value>To identify unique information in a recordset, put the comma separated fields that need to be unique in here.</value>
+  </data>
+  <data name="UniqueRecordsHelpResult" xml:space="preserve">
+    <value>Returns the unique combinations into the variables specified. If there are multiple fields being returned, there should be multiple Results fields specified. Use a comma to separate the variables.</value>
+  </data>
+  <data name="UniqueRecordsHelpReturnField" xml:space="preserve">
+    <value>Which fields from the recordset would you like returned when a Unique combination is found? Use a comma separated list of the fields.
+Where multiple rows are the same, the first one will be deemed Unique.</value>
+  </data>
+  <data name="UniqueRecordsToolTipInField" xml:space="preserve">
+    <value>[[Recordset().Field]]</value>
+  </data>
+  <data name="UniqueRecordsToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="UniqueRecordsToolTipReturnField" xml:space="preserve">
+    <value>[[Recordset().Field]]</value>
+  </data>
 </root>

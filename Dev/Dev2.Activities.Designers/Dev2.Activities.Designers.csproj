@@ -205,6 +205,13 @@
       <DependentUpon>SqlBulkInsertDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\SqlBulkInsert\SqlBulkInsertDesignerViewModel.cs" />
+    <Compile Include="Designers2\UniqueRecords\UniqueRecordsDesigner.xaml.cs">
+      <DependentUpon>UniqueRecordsDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\UniqueRecords\UniqueRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\UniqueRecords\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Preview\PreviewRequestedEventArgs.cs" />
     <Compile Include="Preview\PreviewView.xaml.cs">
       <DependentUpon>PreviewView.xaml</DependentUpon>
@@ -399,6 +406,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\SqlBulkInsert\SqlBulkInsertDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\UniqueRecords\UniqueRecordsDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\UniqueRecords\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

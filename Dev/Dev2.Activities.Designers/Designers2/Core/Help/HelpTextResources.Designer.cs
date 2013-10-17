@@ -1655,6 +1655,64 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To identify unique information in a recordset, put the comma separated fields that need to be unique in here..
+        /// </summary>
+        public static string UniqueRecordsHelpInField {
+            get {
+                return ResourceManager.GetString("UniqueRecordsHelpInField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the unique combinations into the variables specified. If there are multiple fields being returned, there should be multiple Results fields specified. Use a comma to separate the variables..
+        /// </summary>
+        public static string UniqueRecordsHelpResult {
+            get {
+                return ResourceManager.GetString("UniqueRecordsHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Which fields from the recordset would you like returned when a Unique combination is found? Use a comma separated list of the fields.
+        ///Where multiple rows are the same, the first one will be deemed Unique..
+        /// </summary>
+        public static string UniqueRecordsHelpReturnField {
+            get {
+                return ResourceManager.GetString("UniqueRecordsHelpReturnField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Recordset().Field]].
+        /// </summary>
+        public static string UniqueRecordsToolTipInField {
+            get {
+                return ResourceManager.GetString("UniqueRecordsToolTipInField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string UniqueRecordsToolTipResult {
+            get {
+                return ResourceManager.GetString("UniqueRecordsToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Recordset().Field]].
+        /// </summary>
+        public static string UniqueRecordsToolTipReturnField {
+            get {
+                return ResourceManager.GetString("UniqueRecordsToolTipReturnField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To supply additional header information in your get request, put the header info in here..
         /// </summary>
         public static string WebRequestHeaderHelpText {

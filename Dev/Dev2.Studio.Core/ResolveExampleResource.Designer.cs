@@ -106,6 +106,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recordset - Unique Records.
+        /// </summary>
+        internal static string DsfUniqueActivity {
+            get {
+                return ResourceManager.GetString("DsfUniqueActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Utility - Web Request.
         /// </summary>
         internal static string DsfWebGetRequestActivity {

@@ -219,9 +219,6 @@
     <Compile Include="ActivityDesigners\DsfReplaceActivityDesigner.xaml.cs">
       <DependentUpon>DsfReplaceActivityDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\DsfUniqueActivityDesigner.xaml.cs">
-      <DependentUpon>DsfUniqueActivityDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\DsfXPathActivityDesigner.xaml.cs">
       <DependentUpon>DsfXPathActivityDesigner.xaml</DependentUpon>
     </Compile>
@@ -712,10 +709,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ActivityDesigners\DsfXPathActivityDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ActivityDesigners\DsfUniqueActivityDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
