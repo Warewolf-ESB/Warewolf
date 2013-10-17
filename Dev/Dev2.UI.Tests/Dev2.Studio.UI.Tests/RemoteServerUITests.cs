@@ -1,20 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Forms;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ExternalUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps;
-using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.PluginSourceMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -26,47 +12,14 @@ namespace Dev2.Studio.UI.Tests
     ///     These are UI tests based on using a remote server
     /// </summary>
     [CodedUITest]
-    public class RemoteServerUiTests
+    public class RemoteServerUiTests : UIMapBase
     {
         #region Fields
 
         const string RemoteServerName = "RemoteConnection";
         const string LocalHostServerName = "localhost";
         const string ExplorerTab = "Explorer";
-        DatabaseServiceWizardUIMap _databaseServiceWizardUiMap;
-        DatabaseSourceUIMap _databaseSourceUiMap;
-        DocManagerUIMap _docManagerMap;
-        EmailSourceWizardUIMap _emailSourceWizardUiMap;
-        ExplorerUIMap _explorerUiMap;
-        PluginServiceWizardUIMap _pluginServiceWizardUiMap;
-        PluginSourceMap _pluginSourceMap;
-        RibbonUIMap _ribbonUiMap;
-        SaveDialogUIMap _saveDialogUiMap;
-        TabManagerUIMap _tabManagerDesignerUiMap;
-        ToolboxUIMap _toolboxUiMap;
-        WorkflowDesignerUIMap _workflowDesignerUiMap;
-        ExternalUIMap _externalUiMap;
-        OutputUIMap _outputUiMap;
 
-        #endregion
-
-        #region Properties
-
-        ExplorerUIMap ExplorerUiMap { get { return _explorerUiMap ?? (_explorerUiMap = new ExplorerUIMap()); } }
-        TabManagerUIMap TabManagerUiMap { get { return _tabManagerDesignerUiMap ?? (_tabManagerDesignerUiMap = new TabManagerUIMap()); } }
-        DocManagerUIMap DocManagerUiMap { get { return _docManagerMap ?? (_docManagerMap = new DocManagerUIMap()); } }
-        WorkflowDesignerUIMap WorkflowDesignerUiMap { get { return _workflowDesignerUiMap ?? (_workflowDesignerUiMap = new WorkflowDesignerUIMap()); } }
-        DatabaseSourceUIMap DatabaseSourceUiMap { get { return _databaseSourceUiMap ?? (_databaseSourceUiMap = new DatabaseSourceUIMap()); } }
-        SaveDialogUIMap SaveDialogUiMap { get { return _saveDialogUiMap ?? (_saveDialogUiMap = new SaveDialogUIMap()); } }
-        EmailSourceWizardUIMap EmailSourceWizardUiMap { get { return _emailSourceWizardUiMap ?? (_emailSourceWizardUiMap = new EmailSourceWizardUIMap()); } }
-        PluginSourceMap PluginSourceMap { get { return _pluginSourceMap ?? (_pluginSourceMap = new PluginSourceMap()); } }
-        DatabaseServiceWizardUIMap DatabaseServiceWizardUiMap { get { return _databaseServiceWizardUiMap ?? (_databaseServiceWizardUiMap = new DatabaseServiceWizardUIMap()); } }
-        PluginServiceWizardUIMap PluginServiceWizardUiMap { get { return _pluginServiceWizardUiMap ?? (_pluginServiceWizardUiMap = new PluginServiceWizardUIMap()); } }
-        ToolboxUIMap ToolboxUiMap { get { return _toolboxUiMap ?? (_toolboxUiMap = new ToolboxUIMap()); } }
-        RibbonUIMap RibbonUiMap { get { return _ribbonUiMap ?? (_ribbonUiMap = new RibbonUIMap()); } }
-        ExternalUIMap ExternalWizardUiMap { get { return _externalUiMap ?? (_externalUiMap = new ExternalUIMap()); } }
-        OutputUIMap OutputUIMap { get { return _outputUiMap ?? (_outputUiMap = new OutputUIMap()); } }
-        
         #endregion
 
         #region Test Methods
@@ -76,7 +29,7 @@ namespace Dev2.Studio.UI.Tests
         {
             Playback.Wait(500);
             //close any open wizards
-            var tryFindDialog = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            var tryFindDialog = DockManagerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             Point point;
             if (tryFindDialog.GetType() == typeof (WpfImage))
             {
@@ -92,11 +45,11 @@ namespace Dev2.Studio.UI.Tests
                 }
             }
             //close any open tabs
-            TabManagerUiMap.CloseAllTabs();
-            DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
+            TabManagerUIMap.CloseAllTabs();
+            DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
             //reset active server
-            ExplorerUiMap.ClickServerInServerDDL(LocalHostServerName);
-            ExplorerUiMap.ClearExplorerSearchText();
+            ExplorerUIMap.ClickServerInServerDDL(LocalHostServerName);
+            ExplorerUIMap.ClearExplorerSearchText();
         }
 
         [TestMethod]
@@ -104,9 +57,9 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_ConnectToRemoteServerFromExplorer_RemoteServerConnected()
         {
-            DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
-            ExplorerUiMap.ClickServerInServerDDL(RemoteServerName);
-            var selectedSeverName = ExplorerUiMap.SelectedSeverName();
+            DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
+            ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
+            var selectedSeverName = ExplorerUIMap.SelectedSeverName();
             Assert.AreEqual(RemoteServerName, selectedSeverName);
         }
 
@@ -115,10 +68,10 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_CreateRemoteWorkFlow_WorkflowIsCreated()
         {
-            DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
-            ExplorerUiMap.ClickServerInServerDDL(RemoteServerName);
-            RibbonUiMap.CreateNewWorkflow();
-            var activeTabName = TabManagerUiMap.GetActiveTabName();
+            DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
+            ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
+            RibbonUIMap.CreateNewWorkflow();
+            var activeTabName = TabManagerUIMap.GetActiveTabName();
             Assert.IsTrue(activeTabName.Contains("Unsaved"));
         }
 
@@ -129,10 +82,10 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "Find Records";
             OpenWorkFlow(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
-            var uiControl = WorkflowDesignerUiMap.FindControlByAutomationId(TabManagerUiMap.GetActiveTab(), "Assign");
-            var p = WorkflowDesignerUiMap.GetPointUnderControl(uiControl);
-            ToolboxUiMap.DragControlToWorkflowDesigner("MultiAssign", p);
-            var activeTabName = TabManagerUiMap.GetActiveTabName();
+            var uiControl = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "Assign");
+            var p = WorkflowDesignerUIMap.GetPointUnderControl(uiControl);
+            ToolboxUIMap.DragControlToWorkflowDesigner("MultiAssign", p);
+            var activeTabName = TabManagerUIMap.GetActiveTabName();
             Assert.IsTrue(activeTabName.Contains("Find Records - RemoteConnection"));
         }
 
@@ -146,7 +99,7 @@ namespace Dev2.Studio.UI.Tests
             OpenMenuItem("View in Browser");
             Playback.Wait(5000);
             //assert error dialog not showing
-            var child = DocManagerUiMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            var child = DockManagerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
             if (child != null)
             {
                 Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (Window));
@@ -156,7 +109,7 @@ namespace Dev2.Studio.UI.Tests
                 Assert.Fail("Cannot get studio window after remote workflow show in browser");
             }
             //Try close browser
-            ExternalWizardUiMap.CloseAllInstancesOfIE();
+            ExternalUIMap.CloseAllInstancesOfIE();
         }
 
         
@@ -166,19 +119,19 @@ namespace Dev2.Studio.UI.Tests
         public void RemoteServerUITests_DragAndDropWorkflowFromRemoteServerOnALocalHostCreatedWorkflow_WorkFlowIsDropped()
         {
             const string TextToSearchWith = "Simple Remote Workflow";
-            DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
+            DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
             //Ensure that we're in localhost
-            ExplorerUiMap.ClickServerInServerDDL(LocalHostServerName);
+            ExplorerUIMap.ClickServerInServerDDL(LocalHostServerName);
             //Create a workfliow
-            RibbonUiMap.CreateNewWorkflow();
-            DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
-            ExplorerUiMap.ClickServerInServerDDL(RemoteServerName);
+            RibbonUIMap.CreateNewWorkflow();
+            DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
+            ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
 
-            var point = WorkflowDesignerUiMap.GetStartNodeBottomAutoConnectorPoint();
-            ExplorerUiMap.ClearExplorerSearchText();
+            var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            ExplorerUIMap.ClearExplorerSearchText();
 
-            ExplorerUiMap.EnterExplorerSearchText(TextToSearchWith);
-            ExplorerUiMap.DragControlToWorkflowDesigner(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith, point);
+            ExplorerUIMap.EnterExplorerSearchText(TextToSearchWith);
+            ExplorerUIMap.DragControlToWorkflowDesigner(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith, point);
 
             OpenMenuItem("Debug");
             PopupDialogUIMap.WaitForDialog();
@@ -196,19 +149,19 @@ namespace Dev2.Studio.UI.Tests
         public void RemoteServerUITests_DragAndDropWorkflowFromALocalServerOnARemoteServerCreatedWorkflow_WorkFlowIsDropped()
         {
             const string TextToSearchWith = "Utility - Assign";
-            DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
-            ExplorerUiMap.ClickServerInServerDDL(RemoteServerName);
+            DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
+            ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
             //Create a workfliow
-            RibbonUiMap.CreateNewWorkflow();
-            DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
+            RibbonUIMap.CreateNewWorkflow();
+            DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
             //Connect to local server
-            ExplorerUiMap.ClickServerInServerDDL(LocalHostServerName);
+            ExplorerUIMap.ClickServerInServerDDL(LocalHostServerName);
 
-            var point = WorkflowDesignerUiMap.GetStartNodeBottomAutoConnectorPoint();
-            ExplorerUiMap.ClearExplorerSearchText();
+            var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            ExplorerUIMap.ClearExplorerSearchText();
 
-            ExplorerUiMap.EnterExplorerSearchText(TextToSearchWith);
-            ExplorerUiMap.DragControlToWorkflowDesigner(LocalHostServerName, "WORKFLOWS", "EXAMPLES", TextToSearchWith, point);
+            ExplorerUIMap.EnterExplorerSearchText(TextToSearchWith);
+            ExplorerUIMap.DragControlToWorkflowDesigner(LocalHostServerName, "WORKFLOWS", "EXAMPLES", TextToSearchWith, point);
 
             OpenMenuItem("Debug");
             PopupDialogUIMap.WaitForDialog();
@@ -228,11 +181,11 @@ namespace Dev2.Studio.UI.Tests
             const string TextToSearchWith = "Find Records";
 
             OpenWorkFlow(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
-            var remoteTab = TabManagerUiMap.FindTabByName(TextToSearchWith + " - " + RemoteServerName);
+            var remoteTab = TabManagerUIMap.FindTabByName(TextToSearchWith + " - " + RemoteServerName);
             Assert.IsNotNull(remoteTab);
 
             OpenWorkFlow(LocalHostServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
-            var localHostTab = TabManagerUiMap.FindTabByName(TextToSearchWith);
+            var localHostTab = TabManagerUIMap.FindTabByName(TextToSearchWith);
             Assert.IsNotNull(localHostTab);
         }
 
@@ -244,7 +197,7 @@ namespace Dev2.Studio.UI.Tests
             const string TextToSearchWith = "Find Records";
 
             OpenWorkFlow(LocalHostServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
-            var localHostTab = TabManagerUiMap.FindTabByName(TextToSearchWith);
+            var localHostTab = TabManagerUIMap.FindTabByName(TextToSearchWith);
             Assert.IsNotNull(localHostTab);
 
             OpenWorkFlow(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
@@ -253,7 +206,7 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait("{F5}");
             Playback.Wait(1000);
 
-            var remoteTab = TabManagerUiMap.FindTabByName(TextToSearchWith + " - " + RemoteServerName);
+            var remoteTab = TabManagerUIMap.FindTabByName(TextToSearchWith + " - " + RemoteServerName);
             Assert.IsNotNull(remoteTab);
         }
 
@@ -265,8 +218,8 @@ namespace Dev2.Studio.UI.Tests
             const string TextToSearchWith = "DBSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
             WizardsUIMap.WaitForWizard();
-            DatabaseSourceUiMap.ClickSaveConnection();
-            SaveDialogUiMap.ClickSave();
+            DatabaseSourceUIMap.ClickSaveConnection();
+            SaveDialogUIMap.ClickSave();
         }
 
         [TestMethod]
@@ -278,7 +231,7 @@ namespace Dev2.Studio.UI.Tests
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
             WizardsUIMap.WaitForWizard();
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
-            SaveDialogUiMap.ClickSave();
+            SaveDialogUIMap.ClickSave();
         }
 
         [TestMethod]
@@ -290,7 +243,7 @@ namespace Dev2.Studio.UI.Tests
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
             WizardsUIMap.WaitForWizard();
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
-            SaveDialogUiMap.ClickSave();
+            SaveDialogUIMap.ClickSave();
         }
 
         [TestMethod]
@@ -301,7 +254,7 @@ namespace Dev2.Studio.UI.Tests
             const string TextToSearchWith = "DBService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
             WizardsUIMap.WaitForWizard();
-            DatabaseServiceWizardUiMap.DatabaseServiceClickCancel();
+            DatabaseServiceWizardUIMap.ClickCancel();
         }
 
         [TestMethod]
@@ -312,7 +265,7 @@ namespace Dev2.Studio.UI.Tests
             const string TextToSearchWith = "EmailSource";
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
             WizardsUIMap.WaitForWizard();
-            EmailSourceWizardUiMap.ClickCancel();
+            EmailSourceWizardUIMap.ClickCancel();
         }
 
         [TestMethod]
@@ -334,8 +287,8 @@ namespace Dev2.Studio.UI.Tests
             const string TextToSearchWith = "PluginService";
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
             WizardsUIMap.WaitForWizard();
-            PluginServiceWizardUiMap.ClickTest();
-            PluginServiceWizardUiMap.ClickOK();
+            PluginServiceWizardUIMap.ClickTest();
+            PluginServiceWizardUIMap.ClickOK();
         }
 
         [TestMethod]
@@ -350,11 +303,11 @@ namespace Dev2.Studio.UI.Tests
         void ProcessAWorkflow(string serverName, string serviceType, string folderName)
         {
             //CREATE A WORKFLOW
-            DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
-            ExplorerUiMap.ClickServerInServerDDL(serverName);
-            RibbonUiMap.CreateNewWorkflow();
-            var point = WorkflowDesignerUiMap.GetStartNodeBottomAutoConnectorPoint();
-            ToolboxUiMap.DragControlToWorkflowDesigner("MultiAssign", point);
+            DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
+            ExplorerUIMap.ClickServerInServerDDL(serverName);
+            RibbonUIMap.CreateNewWorkflow();
+            var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            ToolboxUIMap.DragControlToWorkflowDesigner("MultiAssign", point);
 
             //SAVE A WORKFLOW
             OpenMenuItem("Save");
@@ -364,21 +317,21 @@ namespace Dev2.Studio.UI.Tests
             //EXECUTE A WORKFLOW
             OpenMenuItem("Debug");
             SendKeys.SendWait("{F5}");
-            TabManagerUiMap.CloseAllTabs();
+            TabManagerUIMap.CloseAllTabs();
 
             //OPEN AND RENAME A WORKFLOW
-            DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
-            ExplorerUiMap.ClearExplorerSearchText();
-            ExplorerUiMap.EnterExplorerSearchText(InitialName);
-            ExplorerUiMap.RightClickRenameProject(serverName, serviceType, folderName, InitialName);
+            DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText(InitialName);
+            ExplorerUIMap.RightClickRenameProject(serverName, serviceType, folderName, InitialName);
             const string RenameTo = "RenameTo_Name_WF_1";
             SendKeys.SendWait(RenameTo + "{ENTER}");
 
             //DELETE A WORKFLOW
-            DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
-            ExplorerUiMap.ClearExplorerSearchText();
-            ExplorerUiMap.EnterExplorerSearchText(RenameTo);
-            ExplorerUiMap.RightClickDeleteProject(serverName, serviceType, folderName, RenameTo);
+            DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText(RenameTo);
+            ExplorerUIMap.RightClickDeleteProject(serverName, serviceType, folderName, RenameTo);
             Playback.Wait(500);
             SendKeys.SendWait("{ENTER}{ENTER}");
         }
@@ -388,45 +341,30 @@ namespace Dev2.Studio.UI.Tests
 
         void EnternameAndSave(string tempName)
         {
-            SaveDialogUiMap.ClickAndTypeInNameTextbox(tempName);
+            SaveDialogUIMap.ClickAndTypeInNameTextbox(tempName);
             Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
             Playback.Wait(6000);
         }
 
         void OpenMenuItem(string itemType)
         {
-            RibbonUiMap.ClickRibbonMenuItem(itemType);
+            RibbonUIMap.ClickRibbonMenuItem(itemType);
         }
 
         void OpenWorkFlow(string serverName, string serviceType, string foldername, string textToSearchWith)
         {
-            DocManagerUIMap.ClickOpenTabPage(ExplorerTab);
-            ExplorerUiMap.ClickServerInServerDDL(serverName);
-            ExplorerUiMap.ClearExplorerSearchText();
-            ExplorerUiMap.EnterExplorerSearchText(textToSearchWith);
-            ExplorerUiMap.DoubleClickOpenProject(serverName, serviceType, foldername, textToSearchWith);
+            DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
+            ExplorerUIMap.ClickServerInServerDDL(serverName);
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText(textToSearchWith);
+            ExplorerUIMap.DoubleClickOpenProject(serverName, serviceType, foldername, textToSearchWith);
         }
 
         void CreateWorkflow()
         {
-            RibbonUiMap.CreateNewWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
         }
 
         #endregion
-
-        public UIMap UIMap
-        {
-            get
-            {
-                if((this.map == null))
-                {
-                    this.map = new UIMap();
-                }
-
-                return this.map;
-            }
-        }
-
-        private UIMap map;
     }
 }

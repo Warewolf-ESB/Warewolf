@@ -37,12 +37,18 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         /// </summary>
         public void ClickCancel()
         {
-            #region Variable Declarations
             WpfImage uIItemImage = this.UIWarewolfWindow.UIItemImage;
-            #endregion
-
-            // Click image
             Mouse.DoubleClick(uIItemImage, new Point(760, 484));
+        }
+
+        /// <summary>
+        /// ClickOK
+        /// </summary>
+        public void ClickDone()
+        {
+            var window = new UIBusinessDesignStudioWindow();
+            var wizard = window.GetChildren()[0].GetChildren()[0];
+            Mouse.Click(wizard, new Point(650, 484));
         }
 
         /// <summary>

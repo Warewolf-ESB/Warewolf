@@ -38,7 +38,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
         public static void InitializeFullTestSource(string name)
         {
             var explorerUiMap = new ExplorerUIMap();
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            var docmanagerUiMap = new DocManagerUIMap();
+            docmanagerUiMap.ClickOpenTabPage("Explorer");
 
             explorerUiMap.ClearExplorerSearchText();
             explorerUiMap.EnterExplorerSearchText("$");

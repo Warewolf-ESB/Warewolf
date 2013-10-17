@@ -8,6 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 
 namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
@@ -30,6 +31,17 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             UIBusinessDesignStudioWindow2 theWindow = new UIBusinessDesignStudioWindow2();
             UIUI_TabManager_AutoIDTabList1 tabMgr = new UIUI_TabManager_AutoIDTabList1(theWindow);
             return tabMgr;
+        }
+
+        public UITestControl GetManager()
+        {
+            var dockManager = new DocManagerUIMap();
+            var mainPane = dockManager.GetMainPane();
+            if (mainPane != null)
+            {
+                return mainPane.GetChildren()[0].GetChildren()[0];
+            }
+            return null;
         }
 
         public UITestControl FindTabByName(string name)

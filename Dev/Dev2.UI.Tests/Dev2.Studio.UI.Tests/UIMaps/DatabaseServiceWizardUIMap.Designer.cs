@@ -31,7 +31,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
     
     
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
-    public partial class DatabaseServiceWizardUIMap
+    public partial class DatabaseServiceWizardUIMap : UIMapBase
     {
         
         /// <summary>
@@ -89,7 +89,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         /// <summary>
         /// DatabaseServiceClickCancel
         /// </summary>
-        public void DatabaseServiceClickCancel()
+        public void ClickCancel()
         {
             UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             Mouse.Click(uIItemImage, new Point(874, 533));
@@ -98,7 +98,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         public void InitializeFullTestServiceAndSource(string serverAndSourceCategoryName, string serverAndSourceName)
         {
             //DbSource
-            SendKeys.SendWait("^+D");
+            RibbonUIMap.ClickRibbonMenuItem("UI_RibbonHomeTabDBServiceBtn_AutoID");
             Playback.Wait(1000);
             SendKeys.SendWait("{TAB}{TAB}{ENTER}");
             Playback.Wait(10);

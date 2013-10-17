@@ -1,5 +1,4 @@
 ﻿using Dev2.CodedUI.Tests;
-using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -67,7 +66,7 @@ namespace Dev2.Studio.UI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
             UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("NumberFormat");
             ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
 
@@ -90,7 +89,7 @@ namespace Dev2.Studio.UI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
             UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("NumberFormat");
             ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
 
@@ -113,7 +112,7 @@ namespace Dev2.Studio.UI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
             UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("NumberFormat");
             ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
 
@@ -145,24 +144,5 @@ namespace Dev2.Studio.UI.Tests
         //}
 
         #endregion Private Test Methods
-
-        #region UI Mappings
-
-        public UIMap UIMap
-        {
-            get
-            {
-                if((this.map == null))
-                {
-                    this.map = new UIMap();
-                }
-
-                return this.map;
-            }
-        }
-
-        private UIMap map;
-        
-        #endregion
     }
 }

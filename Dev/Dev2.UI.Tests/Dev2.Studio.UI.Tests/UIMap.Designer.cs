@@ -2379,10 +2379,8 @@ namespace Dev2.Studio.UI.Tests
         public UIBusinessDesignStudioWindow()
         {
             #region Search Criteria
-            //this.SearchProperties[WpfWindow.PropertyNames.Name] = "Business Design Studio (DEV2\\Michael.Cullen)";
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
-            //this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
         

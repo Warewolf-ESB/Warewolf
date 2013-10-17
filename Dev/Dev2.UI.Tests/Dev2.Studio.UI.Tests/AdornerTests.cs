@@ -1,144 +1,39 @@
 ﻿using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps;
-using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests
 {
     [CodedUITest]
-    public class AdornerTests
+    public class AdornerTests : UIMapBase
     {
         [TestCleanup]
         public void TestCleanup()
         {
-            TabManagerUiMap.CloseAllTabs();
+            TabManagerUIMap.CloseAllTabs();
         }
 
         #region Properties
 
-        private ExplorerUIMap _explorerUiMap;
-        public ExplorerUIMap ExplorerUiMap
+        private ExplorerUIMap _explorerUIMap;
+        public ExplorerUIMap ExplorerUIMap
         {
             get
             {
-                if((_explorerUiMap == null))
+                if((_explorerUIMap == null))
                 {
-                    _explorerUiMap = new ExplorerUIMap();
+                    _explorerUIMap = new ExplorerUIMap();
                 }
 
-                return _explorerUiMap;
+                return _explorerUIMap;
             }
         }
 
-        #endregion
-
-        #region UI Maps
-
-        #region TabManager UI Map
-
-        public TabManagerUIMap TabManagerUiMap
-        {
-            get
-            {
-                if(_tabManagerUiMap == null)
-                {
-                    _tabManagerUiMap = new TabManagerUIMap();
-                }
-
-                return _tabManagerUiMap;
-            }
-        }
-
-        private TabManagerUIMap _tabManagerUiMap;
-
-        #endregion TabManager UI Map
-
-        #region WorkflowDesigner UI Map
-
-        public WorkflowDesignerUIMap WorkflowDesignerUiMap
-        {
-            get
-            {
-                if(_workflowDesignerUiMap == null)
-                {
-                    _workflowDesignerUiMap = new WorkflowDesignerUIMap();
-                }
-
-                return _workflowDesignerUiMap;
-            }
-        }
-
-        private WorkflowDesignerUIMap _workflowDesignerUiMap;
-
-        #endregion WorkflowDesigner UI Map
-
-        #region DocManager UI Map
-
-        public DocManagerUIMap DocManagerUiMap
-        {
-            get
-            {
-                if((_docManagerMap == null))
-                {
-                    _docManagerMap = new DocManagerUIMap();
-                }
-
-                return _docManagerMap;
-            }
-        }
-
-        private DocManagerUIMap _docManagerMap;
-
-        #endregion
-
-        #region Toolbox UI Map
-
-        public ToolboxUIMap ToolboxUiMap
-        {
-            get
-            {
-                if((_toolboxUiMap == null))
-                {
-                    _toolboxUiMap = new ToolboxUIMap();
-                }
-
-                return _toolboxUiMap;
-            }
-        }
-
-        private ToolboxUIMap _toolboxUiMap;
-
-        #endregion
-
-        #region Ribbon UI Map
-
-        private RibbonUIMap _ribbonUiMap;
-        public RibbonUIMap RibbonUiMap
-        {
-            get
-            {
-                if((_ribbonUiMap == null))
-                {
-                    _ribbonUiMap = new RibbonUIMap();
-                }
-
-                return _ribbonUiMap;
-            }
-        }
-
-        private DatabaseServiceWizardUIMap _databaseServiceWizardUiMap;
-        public DatabaseServiceWizardUIMap DatabaseServiceWizardUiMap { get { return _databaseServiceWizardUiMap ?? (_databaseServiceWizardUiMap = new DatabaseServiceWizardUIMap()); } }
-
-        #endregion
-        
         #endregion
 
         [TestMethod]
@@ -148,28 +43,28 @@ namespace Dev2.Studio.UI.Tests
         {
             //------------Setup for test--------------------------
             // Open the workflow
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUiMap.ClearExplorerSearchText();
-            ExplorerUiMap.EnterExplorerSearchText("Edit Service Workflow");
-            ExplorerUiMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "UI TEST", "Edit Service Workflow");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("Edit Service Workflow");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "UI TEST", "Edit Service Workflow");
 
             //------------Execute Test---------------------------
 
             // Get some design surface
-            UITestControl theTab = TabManagerUiMap.GetActiveTab();
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             //Get Adorner buttons
-            var button = WorkflowDesignerUiMap.Adorner_GetButton(theTab, "TravsTestService", "Edit");
+            var button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TravsTestService", "Edit");
 
             // -- DO DB Services --
 
-            WorkflowDesignerUiMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
+            WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
 
             Playback.Wait(500);
             Mouse.Click(button);
             WizardsUIMap.WaitForWizard();
 
-            DatabaseServiceWizardUiMap.ClickMappingTab();
+            DatabaseServiceWizardUIMap.ClickMappingTab();
             SendKeys.SendWait("{TAB}");
             Playback.Wait(500);
             SendKeys.SendWait("zzz");
@@ -180,10 +75,10 @@ namespace Dev2.Studio.UI.Tests
             // -- DO Web Services --
 
             //Get Adorner buttons
-            button = WorkflowDesignerUiMap.Adorner_GetButton(theTab, "FetchCities", "Edit");
+            button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "FetchCities", "Edit");
 
             // move to show adorner buttons ;)
-            WorkflowDesignerUiMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
+            WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
 
             Playback.Wait(500);
             Mouse.Click(button);
@@ -191,8 +86,8 @@ namespace Dev2.Studio.UI.Tests
 
             WizardsUIMap.WaitForWizard();
 
-            DatabaseServiceWizardUiMap.ClickMappingTab();
-            //Mouse.Click(new Point(780, 270)); // click on the second tab ;)
+            DatabaseServiceWizardUIMap.ClickMappingTab();
+            
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");
             Playback.Wait(500);
             SendKeys.SendWait("zzz");
@@ -200,14 +95,19 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait("{TAB}{TAB}{TAB}{ENTER}{TAB}{ENTER}");
             Playback.Wait(1000);
 
+            if (ResourceChangedPopUpUIMap.WaitForDialog(5000))
+            {
+                var popupMap = new ResourceChangedPopUpUIMap();
+                popupMap.ClickCancel();
+            }
 
             // -- DO Plugin Services --
 
             //Get Adorner buttons
-            button = WorkflowDesignerUiMap.Adorner_GetButton(theTab, "DummyService", "Edit");
+            button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "DummyService", "Edit");
 
             // move to show adorner buttons ;)
-            WorkflowDesignerUiMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
+            WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
 
             Playback.Wait(500);
             Mouse.Click(button);
@@ -215,7 +115,7 @@ namespace Dev2.Studio.UI.Tests
 
             WizardsUIMap.WaitForWizard();
 
-            DatabaseServiceWizardUiMap.ClickMappingTab(); // click on the second tab ;)
+            DatabaseServiceWizardUIMap.ClickMappingTab(); // click on the second tab ;)
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");
             Playback.Wait(500);
             SendKeys.SendWait("zzz");
@@ -227,17 +127,17 @@ namespace Dev2.Studio.UI.Tests
 
             // check services for warning icon to incidate mappings out of date ;)
 
-            if(!WorkflowDesignerUiMap.Adorner_ClickFixErrors(theTab, "TravsTestService(DsfActivityDesigner)"))
+            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "TravsTestService(DsfActivityDesigner)"))
             {
                 Assert.Fail("'Fix Errors' button not visible");
             }
 
-            if(!WorkflowDesignerUiMap.Adorner_ClickFixErrors(theTab, "FetchCities(DsfActivityDesigner)"))
+            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "FetchCities(DsfActivityDesigner)"))
             {
                 Assert.Fail("'Fix Errors' button not visible");
             }
 
-            if(!WorkflowDesignerUiMap.Adorner_ClickFixErrors(theTab, "DummyService(DsfActivityDesigner)"))
+            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "DummyService(DsfActivityDesigner)"))
             {
                 Assert.Fail("'Fix Errors' button not visible");
             }
@@ -252,20 +152,20 @@ namespace Dev2.Studio.UI.Tests
         public void AdornerHelpButtonOpenAnExampleWorlkflowTest()
         {
             // Create the workflow
-            RibbonUiMap.CreateNewWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
             // Get some design surface
-            UITestControl theTab = TabManagerUiMap.GetActiveTab();
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
             //Get a point
-            Point requiredPoint = WorkflowDesignerUiMap.GetPointUnderStartNode(theTab);
+            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             //Open toolbox tab
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
             //Drag a control to the design surface
-            ToolboxUiMap.DragControlToWorkflowDesigner("Assign", requiredPoint);
+            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", requiredPoint);
             //Get Adorner buttons
-            var button = WorkflowDesignerUiMap.Adorner_GetButton(theTab, "Assign", "Open Help");
+            var button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign", "Open Help");
             Mouse.Click(button);
             //Get 'View Sample' link button
-            var findViewSampleLink = WorkflowDesignerUiMap.FindControlByAutomationId(theTab, "View Sample Workflow");
+            var findViewSampleLink = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "View Sample Workflow");
             Mouse.Click(findViewSampleLink.GetChildren()[0]);
 
             //Wait for sample workflow
@@ -273,7 +173,7 @@ namespace Dev2.Studio.UI.Tests
             var count = 10;
             while (waitForTabToOpen == null && count > 0)
             {
-                waitForTabToOpen = TabManagerUiMap.FindTabByName("Utility - Assign");
+                waitForTabToOpen = TabManagerUIMap.FindTabByName("Utility - Assign");
                 Playback.Wait(500);
                 count--;
             }
@@ -288,44 +188,43 @@ namespace Dev2.Studio.UI.Tests
         public void WorkflowdesignSurface_CollapseHelp()
         {
             //New workflow with a multiassign on it
-            RibbonUiMap.CreateNewWorkflow();
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            var theTab = TabManagerUiMap.GetActiveTab();
-            var pointUnderStartNode = WorkflowDesignerUiMap.GetPointUnderStartNode(theTab);
-            ToolboxUiMap.DragControlToWorkflowDesigner("Assign", pointUnderStartNode);
+            RibbonUIMap.CreateNewWorkflow();
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
+            var theTab = TabManagerUIMap.GetActiveTab();
+            var pointUnderStartNode = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", pointUnderStartNode);
             //click expand help
-            Mouse.Click(WorkflowDesignerUiMap.GetOpenHelpButton(theTab, "Assign"));
-            Assert.IsTrue(WorkflowDesignerUiMap.GetHelpPane(theTab, "Only variables go in here").Exists);
+            Mouse.Click(WorkflowDesignerUIMap.GetOpenHelpButton(theTab, "Assign"));
+            Assert.IsTrue(WorkflowDesignerUIMap.GetHelpPane(theTab, "Only variables go in here").Exists);
         }
 
         [TestMethod]
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
         {
             const string resourceToUse = "CalculateTaxReturns";
-            RibbonUiMap.CreateNewWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
 
-            UITestControl theTab = TabManagerUiMap.GetActiveTab();
-            UITestControl theStartButton = WorkflowDesignerUiMap.FindControlByAutomationId(theTab, "Start");
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
 
             // Get a point underneath the start button for the workflow
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 100);
 
             // Open the Explorer
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
 
             // Get a sample workflow
-            ExplorerUiMap.ClearExplorerSearchText();
-            ExplorerUiMap.EnterExplorerSearchText(resourceToUse);
-            UITestControl testFlow = ExplorerUiMap.GetService("localhost", "WORKFLOWS", "MO", resourceToUse);
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
+            UITestControl testFlow = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "MO", resourceToUse);
 
             // Drag it on
-            ExplorerUiMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
+            ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
 
             // Click it
-            UITestControl controlOnWorkflow = WorkflowDesignerUiMap.FindControlByAutomationId(theTab, resourceToUse);
+            UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse);
             Mouse.Click(controlOnWorkflow, new Point(5, 5));
-            WorkflowDesignerUiMap.Adorner_ClickMapping(theTab, resourceToUse);
-            controlOnWorkflow = WorkflowDesignerUiMap.FindControlByAutomationId(theTab, resourceToUse);
+            WorkflowDesignerUIMap.Adorner_ClickMapping(theTab, resourceToUse);
             UITestControlCollection controlCollection = controlOnWorkflow.GetChildren();
 
             Point initialResizerPoint = new Point();
@@ -362,7 +261,57 @@ namespace Dev2.Studio.UI.Tests
             }
 
             // Test complete - Delete itself
-            TabManagerUiMap.CloseAllTabs();
+            TabManagerUIMap.CloseAllTabs();
+        }
+
+        //PBI 9939
+        [TestMethod]
+        [TestCategory("DsfActivityTests")]
+        [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands.")]
+        [Owner("Massimo Guerrera")]
+        // ReSharper disable InconsistentNaming
+        public void DsfActivityDesigner_CodedUI_DroppingActivityOntoDesigner_MappingToBeExpanded()
+        // ReSharper restore InconsistentNaming
+        {
+            //Create a new workflow
+            RibbonUIMap.CreateNewWorkflow();
+
+            // Get the tab
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+
+            // Wait a bit for user noticability            
+            Playback.Wait(500);
+
+            // Get the location of the Start button
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+
+            // Get a point underneath the start button
+            Point p = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Open the Explorer
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
+
+            //Drag workflow onto surface
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("TestForEachOutput");
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "TestForEachOutput", p);
+
+            //Get Mappings button
+            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TestForEachOutput", "OpenMappingsToggle");
+
+            // flakey bit of code, we need to wait ;)
+            Playback.Wait(500);
+
+            //Assert button is not null
+            Assert.IsTrue(button != null, "Couldnt find the mapping button");
+
+            //Get the close mappings image
+            var children = button.GetChildren();
+            var images = children.FirstOrDefault(c => c.FriendlyName == "Close Mappings");
+
+            //Check that the mapping is open
+            Assert.IsTrue(images.Height > -1, "The correct images isnt visible which means the mapping isnt open");
         }
     }
 }

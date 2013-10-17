@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
@@ -17,7 +15,7 @@ namespace Dev2.Studio.UI.Tests
     ///     These are UI Tests for the SQL Bul insert tool
     /// </summary>
     [CodedUITest]
-    public class SqlBulkInsertUiTests
+    public class SqlBulkInsertUiTests : UIMapBase
     {
         #region Fields
         RibbonUIMap _ribbonUiMap;
@@ -56,7 +54,7 @@ namespace Dev2.Studio.UI.Tests
             var point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
             var theControl = ToolboxUiMap.FindControl("DsfSqlBulkInsertActivity");
             ToolboxUiMap.DragControlToWorkflowDesigner(theControl, point);
 
@@ -78,7 +76,7 @@ namespace Dev2.Studio.UI.Tests
             var point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
             var theControl = ToolboxUiMap.FindControl("DsfSqlBulkInsertActivity");
             ToolboxUiMap.DragControlToWorkflowDesigner(theControl, point);
 
@@ -153,7 +151,7 @@ namespace Dev2.Studio.UI.Tests
             var point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
             var theControl = ToolboxUiMap.FindControl("DsfSqlBulkInsertActivity");
             ToolboxUiMap.DragControlToWorkflowDesigner(theControl, point);
 
@@ -187,7 +185,7 @@ namespace Dev2.Studio.UI.Tests
             var point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
             var theControl = ToolboxUiMap.FindControl("DsfSqlBulkInsertActivity");
             ToolboxUiMap.DragControlToWorkflowDesigner(theControl, point);
 
@@ -217,14 +215,14 @@ namespace Dev2.Studio.UI.Tests
         UITestControl GetControlById(string autoId, UITestControl theTab)
         {
             var sqlBulkInsert = WorkflowDesignerUiMap.FindControlByAutomationId(theTab, "SqlBulkInsertDesigner");
-            var uiTestControls = WorkflowDesignerUiMap.GetChildrenUnderControl(sqlBulkInsert);
+            var uiTestControls = WorkflowDesignerUiMap.GetSqlBulkInsertChildren(sqlBulkInsert);
             return uiTestControls.FirstOrDefault(c => c.AutomationId.Equals(autoId));
         }
 
         UITestControl GetControlByFriendlyName(string name)
         {
             var sqlBulkInsert = WorkflowDesignerUiMap.FindControlByAutomationId(TabManagerUiMap.GetActiveTab(), "SqlBulkInsertDesigner");
-            var uiTestControls = WorkflowDesignerUiMap.GetChildrenUnderControl(sqlBulkInsert);
+            var uiTestControls = WorkflowDesignerUiMap.GetSqlBulkInsertChildren(sqlBulkInsert);
             return uiTestControls.FirstOrDefault(c => c.FriendlyName.Contains(name));
         }
 

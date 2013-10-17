@@ -1,19 +1,14 @@
 ﻿using System.Windows.Forms;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 
 namespace Dev2.Studio.UI.Tests
 {
     [CodedUITest, System.Runtime.InteropServices.GuidAttribute("DAA88B10-98C4-488E-ACB2-1256C95CE8F0")]
-    public class ExplorerUITests
+    public class ExplorerUITests : UIMapBase
     {
         #region Cleanup
 
@@ -31,7 +26,7 @@ namespace Dev2.Studio.UI.Tests
             }
             //close any open tabs
             TabManagerUIMap.CloseAllTabs();
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
         }
 
@@ -40,7 +35,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         public void SearchAndRefresh_AttemptToSearch_ExpectedSearchFilteredByAllItems()
         {
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
 
             // Now count
             ExplorerUIMap.ClearExplorerSearchText();
@@ -60,7 +55,7 @@ namespace Dev2.Studio.UI.Tests
             TabManagerUIMap.CloseAllTabs();
             const string newTestResourceWithDashes = "New-Test-Resource-With-Dashes";
             const string oldResourceName = "OldResourceName";
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
             if(ExplorerUIMap.ServiceExists("Localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes))
@@ -80,12 +75,12 @@ namespace Dev2.Studio.UI.Tests
             //wait for save tab switch
             Playback.Wait(2000);
             TabManagerUIMap.CloseAllTabs();
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(oldResourceName);
             ExplorerUIMap.RightClickRenameProject("Localhost", "WORKFLOWS", "Unassigned", oldResourceName);
             SendKeys.SendWait("New-Test-Resource-With-Dashes{ENTER}");
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.DoRefresh();
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
@@ -140,104 +135,6 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         private TestContext testContextInstance;
-        
-        #endregion
-
-        #region UI Maps
-
-        #region Explorer UI Map
-
-        private ExplorerUIMap ExplorerUIMap
-        {
-            get
-            {
-                if(_explorerUIMap == null)
-                {
-                    _explorerUIMap = new ExplorerUIMap();
-                }
-                return _explorerUIMap;
-            }
-        }
-
-        private ExplorerUIMap _explorerUIMap;
-
-        #endregion
-
-        #region Generic UI Map
-
-        public UIMap UIMap
-        {
-            get
-            {
-                if((this.map == null))
-                {
-                    this.map = new UIMap();
-                }
-
-                return this.map;
-            }
-        }
-
-        private UIMap map;
-
-        #endregion
-
-        #region Ribbon UI Map
-
-        public RibbonUIMap RibbonUIMap
-        {
-            get
-            {
-                if(_ribbonMap == null)
-                {
-                    _ribbonMap = new RibbonUIMap();
-                }
-
-                return _ribbonMap;
-            }
-        }
-
-        private RibbonUIMap _ribbonMap;
-
-        #endregion
-
-        #region TabManager UI Map
-
-        public TabManagerUIMap TabManagerUIMap
-        {
-            get
-            {
-                if(_tabManagerUIMap == null)
-                {
-                    _tabManagerUIMap = new TabManagerUIMap();
-                }
-
-                return _tabManagerUIMap;
-            }
-        }
-
-        private TabManagerUIMap _tabManagerUIMap;
-
-        #endregion TabManager UI Map
-
-        #region Save Dialog UI Map
-
-        public SaveDialogUIMap SaveDialogUIMap
-        {
-            get
-            {
-                if((_saveDialogUIMap == null))
-                {
-                    _saveDialogUIMap = new SaveDialogUIMap();
-                }
-
-                return _saveDialogUIMap;
-            }
-        }
-
-        private SaveDialogUIMap _saveDialogUIMap;
-
-        #endregion
         
         #endregion
     }

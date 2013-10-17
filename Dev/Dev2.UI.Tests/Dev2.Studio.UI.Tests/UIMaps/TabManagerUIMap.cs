@@ -63,7 +63,13 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public int GetTabCount()
         {
-            return GetChildrenCount();
+            var tabManager = GetManager();
+            if (tabManager != null)
+            {
+                var tabs = tabManager.GetChildren();
+                return tabs.Count;
+            }
+            return 0;
         }
 
         public bool CloseTab(string tabName)
@@ -114,6 +120,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             var canCloseTab = true;
             while(openTabs != 0 && canCloseTab)
             {
+                var activeTab = GetActiveTab();
                 canCloseTab = CloseTab_Click_No(GetActiveTabName());
                 openTabs = GetTabCount();
             }
@@ -175,9 +182,9 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         public UITestControl GetActiveTab()
         {
             var theTabManager = GetTabManager();
-            UITestControl tab = theTabManager.Tabs[theTabManager.SelectedIndex];
-            UITestControlCollection tabChildren = tab.GetChildren();
-            string selectedTabName = string.Empty;
+            var tab = theTabManager.Tabs[theTabManager.SelectedIndex];
+            var tabChildren = tab.GetChildren();
+            var selectedTabName = string.Empty;
             foreach (var tabChild in tabChildren)
             {
                 if (tabChild.ClassName == "Uia.TextBlock")
@@ -186,10 +193,10 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                     break;
                 }
             }
-            UIBusinessDesignStudioWindow2 theWindow = new UIBusinessDesignStudioWindow2();
-            UIUI_TabManager_AutoIDTabList1 tabMgr = new UIUI_TabManager_AutoIDTabList1(theWindow);
+            var theWindow = new UIBusinessDesignStudioWindow2();
+            var tabMgr = new UIUI_TabManager_AutoIDTabList1(theWindow);
             //string firstName = uIServiceDetailsTabPage.FriendlyName;
-            UITestControl control = tabMgr.GetTab(selectedTabName);
+            var control = tabMgr.GetTab(selectedTabName);
 
             return control;
         }

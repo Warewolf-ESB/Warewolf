@@ -1,9 +1,4 @@
 ﻿using System.Windows.Forms;
-using Dev2.CodedUI.Tests;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,60 +6,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests
 {
-    /// <summary>
-    /// Summary description for CodedUITest1
-    /// </summary>
     [CodedUITest]
-    public class MenuUITests
+    public class MenuUITests : UIMapBase
     {
-        ExplorerUIMap _explorerUIMap;
-
-        ExplorerUIMap ExplorerUIMap
-        {
-            get
-            {
-                if(_explorerUIMap == null)
-                {
-                    _explorerUIMap = new ExplorerUIMap();
-                }
-                return _explorerUIMap;
-            }
-        }
-
-        public RibbonUIMap RibbonUIMap
-        {
-            get
-            {
-                if(_ribbonUIMap == null)
-                {
-                    _ribbonUIMap = new RibbonUIMap();
-                }
-
-                return _ribbonUIMap;
-            }
-        }
-
-        RibbonUIMap _ribbonUIMap;
-
-        TabManagerUIMap _tabManagerUIMap;
-        public TabManagerUIMap TabManagerUIMap
-        {
-            get
-            {
-
-                if(_tabManagerUIMap == null)
-                {
-                    _tabManagerUIMap = new TabManagerUIMap();
-                }
-
-                return _tabManagerUIMap;
-            }
-        }
-
         [TestMethod]
         public void DebugAWorkFlow_EnsureSaveIsEnabledAfterCompletion()
         {
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("ServiceExecutionTest");

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
-using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses;
@@ -56,7 +53,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             }
             //close any open tabs
             TabManagerUIMap.CloseAllTabs();
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
         }
 
@@ -88,9 +85,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var serviceName = "codeduitest" + serviceNameId;
 
             WebServiceWizardUIMap.InitializeFullTestServiceAndSource(serviceName, sourceName);
-
+            
             //Assert
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.DoRefresh();
             ExplorerUIMap.EnterExplorerSearchText(serviceName);
@@ -110,13 +107,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var cat = "CODEDUITESTS" + serverSourceCategoryName;
             var name = "codeduitest" + serverSourceName;
 
-            //Set focus
-            Mouse.Click(WorkflowDesignerUIMap.UIBusinessDesignStudioWindow);
-
             DatabaseServiceWizardUIMap.InitializeFullTestServiceAndSource(cat, name);
 
             //Assert
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(name);
 
@@ -124,58 +118,33 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
 
         [TestMethod]
-        public void ClickNewDatabaseServiceExpectedDatabaseServiceOpens()
+        public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
-            RibbonUIMap.ClickRibbonMenuItem("UI_RibbonHomeTabDBServiceBtn_AutoID");
-            UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            if(uIItemImage == null)
-            {
-                Assert.Fail("Error - Clicking the new database service button does not create the new database service window");
-            }
-            DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
+            var studioWindow = new UIBusinessDesignStudioWindow();
+            studioWindow.SetFocus();
+            SendKeys.SendWait("^+D");
+            WizardsUIMap.WaitForWizard();
+            DatabaseServiceWizardUIMap.ClickCancel();
+        }
+
+        [TestMethod]
+        public void ClickNewPluginServiceShortcutKeyExpectedPluginServiceOpens()
+        {
+            var studioWindow = new UIBusinessDesignStudioWindow();
+            studioWindow.SetFocus();
+            SendKeys.SendWait("^+P");
+            WizardsUIMap.WaitForWizard();
+            PluginServiceWizardUIMap.ClickCancel();
         }
 
         [TestMethod]
         public void NewWebServiceShortcutKeyExpectedWebServiceOpens()
         {
             var studioWindow = new UIBusinessDesignStudioWindow();
-            Mouse.Click(studioWindow);
-            SendKeys.SendWait("^+w");
+            studioWindow.SetFocus();
+            SendKeys.SendWait("^+W");
             WizardsUIMap.WaitForWizard();
             WebServiceWizardUIMap.Cancel();
-        }
-
-        /// <summary>
-        /// News the database service shortcut key expected database service opens.
-        /// </summary>
-        [TestMethod]
-        public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
-        {
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            SendKeys.SendWait("^+d");
-            Playback.Wait(5000);
-            UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            if(uIItemImage == null)
-            {
-                Assert.Fail("Error - Clicking the new database service button does not create the new database service window");
-            }
-            DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
-        }
-
-        [TestMethod]
-        public void ClickNewPluginServiceShortcutKeyExpectedPluginServiceOpens()
-        {
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            SendKeys.SendWait("^+p");
-            Playback.Wait(500);
-            UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            if(uiTestControl == null)
-            {
-                Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
-            }
-            Playback.Wait(5000);
-            PluginServiceWizardUIMap.ClickCancel();
-            SendKeys.SendWait("{ESC}");
         }
 
         #endregion
@@ -193,7 +162,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             EmailSourceWizardUIMap.InitializeFullTestSource(name);
 
             //Assert
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.DoRefresh();
             ExplorerUIMap.EnterExplorerSearchText(name);
@@ -221,10 +190,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             //------------Execute Test---------------------------
 
-            DocManagerUIMap.ClickOpenTabPage("Variables");
+            DockManagerUIMap.ClickOpenTabPage("Variables");
             VariablesUIMap.ClickVariableName(0);
             SendKeys.SendWait("VariableName");
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
             var decision = ToolboxUIMap.FindControl("Decision");
             ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
             WizardsUIMap.WaitForWizard();
@@ -250,10 +219,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var getDecisionText = getDecision.GetChildren()[0] as WpfEdit;
             var displayValue = getDecisionText.Text;
 
-            Assert.AreEqual(expected, displayValue);
-
-            //Cleanup
-            TabManagerUIMap.CloseAllTabs();
+            Assert.AreEqual(expected, displayValue, "Decision intellisense doesnt work when using the mouse to select intellisense results");
         }
 
         //Bug 9339 + Bug 9378
@@ -267,40 +233,140 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             //Set variable
-            DocManagerUIMap.ClickOpenTabPage("Variables");
+            DockManagerUIMap.ClickOpenTabPage("Variables");
             VariablesUIMap.ClickVariableName(0);
             SendKeys.SendWait("VariableName");
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
             var decision = ToolboxUIMap.FindControl("Decision");
             ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
-            _decisionWizardUiMap.SendTabs(4);
-            Playback.Wait(500);
-            _decisionWizardUiMap.SelectMenuItem(20);
-            //Assert intellisense works
-            Playback.Wait(500);
-            _decisionWizardUiMap.SendTabs(10);
-            Playback.Wait(500);
-            _decisionWizardUiMap.GetFirstIntellisense("[[V", true);
-            var actual = Clipboard.GetData(DataFormats.Text);
-            Assert.AreEqual("[[VariableName]]", actual, "Decision intellisense doesn't work");
-            _decisionWizardUiMap.SendTabs(2);
-            Playback.Wait(500);
-            Clipboard.Clear();
-            _decisionWizardUiMap.GetFirstIntellisense("[[V", true);
-            actual = Clipboard.GetData(DataFormats.Text);
-            Assert.AreEqual("[[VariableName]]", actual, "Decision intellisense doesn't work");
-            _decisionWizardUiMap.SendTabs(6);
-            Playback.Wait(500);
-            SendKeys.SendWait("{ENTER}");
+
+            //Save the decision with blank fields
+            WizardsUIMap.WaitForWizard();
+            DecisionWizardUIMap.ClickDone();
 
             //Assert can save blank decision
-            decision = new WorkflowDesignerUIMap().FindControlByAutomationId(theTab, "FlowDecisionDesigner");
+            decision = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FlowDecisionDesigner");
             Point point;
             Assert.IsTrue(decision.TryGetClickablePoint(out point));
             Assert.IsNotNull(point);
+        }
 
-            //Cleanup
-            TabManagerUIMap.CloseAllTabs();
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("Decision_Intellisense")]
+        public void Decision_Intellisense_KeyboardSelect_DecisionTitleUpdatesCorrectly()
+        {
+            RibbonUIMap.CreateNewWorkflow();
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+            DockManagerUIMap.ClickOpenTabPage("Variables");
+            VariablesUIMap.ClickVariableName(0);
+            SendKeys.SendWait("VariableName");
+            var decision = ToolboxUIMap.FindControl("Decision");
+            ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
+            //------------Execute Test---------------------------
+            _decisionWizardUiMap.SendTabs(4);
+            Playback.Wait(100);
+            _decisionWizardUiMap.SelectMenuItem(29);
+            //Assert intellisense works
+            Playback.Wait(100);
+            _decisionWizardUiMap.SendTabs(11);
+            Playback.Wait(100);
+
+            //First field
+            _decisionWizardUiMap.GetFirstIntellisense("[[V");
+            _decisionWizardUiMap.SendTabs(2);
+            Playback.Wait(100);
+
+            //Second field
+            _decisionWizardUiMap.GetFirstIntellisense("[[V");
+            _decisionWizardUiMap.SendTabs(1);
+            Playback.Wait(100);
+
+            //Third field
+            _decisionWizardUiMap.GetFirstIntellisense("[[V");
+            _decisionWizardUiMap.SendTabs(6);
+            Playback.Wait(100);
+            SendKeys.SendWait("{ENTER}");
+
+            // Assert Decision Title Updates Correctly
+            var expected = "If [[VariableName]] Is Between [[VariableName]] and [[VariableName]]";
+
+            var getDecision = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FlowDecisionDesigner");
+            var getDecisionText = getDecision.GetChildren()[0] as WpfEdit;
+            var displayValue = getDecisionText.Text;
+
+            Assert.AreEqual(expected, displayValue, "Decision intellisense doesnt work when using the keyboard to select intellisense results");
+        }
+
+        [TestMethod]
+        public void DragADecisionIntoForEachExpectNotAddedToForEach()
+        {
+            // Create the workflow
+            RibbonUIMap.CreateNewWorkflow();
+
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+
+            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            requiredPoint.Offset(20, 50);
+
+            // Drag a ForEach onto the Workflow
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
+            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
+
+            // Open the toolbox, and drag the control onto the Workflow
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", requiredPoint);
+
+            // Cancel Decision Wizard
+            if(WizardsUIMap.TryWaitForWizard(5000))
+            {
+                var decisionWizardUiMap = new DecisionWizardUIMap();
+                decisionWizardUiMap.ClickCancel();
+            }
+            else
+            {
+                Assert.Fail("Got droped ;(");
+            }
+        }
+
+        [TestMethod]
+        public void DragASwitchIntoForEachExpectNotAddedToForEach()
+        {
+            // Create the workflow
+            RibbonUIMap.CreateNewWorkflow();
+
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            requiredPoint.Offset(20, 40);
+
+            // Drag a ForEach onto the Workflow
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
+            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
+
+            // Open the toolbox, and drag the control onto the Workflow
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner("Switch", requiredPoint);
+            WizardsUIMap.WaitForWizard();
+            // Cancel Decision Wizard
+            try
+            {
+                SwitchWizardUIMap.ClickCancel();
+                Assert.Fail("Got droped ;(");
+            }
+            catch
+            {
+                Assert.IsTrue(true);
+            }
         }
 
         #endregion
@@ -310,32 +376,17 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void ClickNewRemoteWarewolfServerExpectedRemoteWarewolfServerOpens()
         {
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClickNewServerButton();
             UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
             if(uiTestControl == null)
             {
                 Assert.Fail("Error - Clicking the remote warewolf button does not create the new server window");
             }
-            Playback.Wait(1000);
+            WizardsUIMap.WaitForWizard();
             SendKeys.SendWait("{ESC}");
         } 
         
         #endregion
-
-        public UIMap UIMap
-        {
-            get
-            {
-                if((this.map == null))
-                {
-                    this.map = new UIMap();
-                }
-
-                return this.map;
-            }
-        }
-
-        private UIMap map;
     }
 }

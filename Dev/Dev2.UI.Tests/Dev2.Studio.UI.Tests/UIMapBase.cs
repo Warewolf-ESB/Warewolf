@@ -10,14 +10,23 @@ using Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WebpageServiceWizardUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
+using Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.PluginSourceMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServiceDetailsUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.SwitchUIMapClasses;
 
 namespace Dev2.Studio.UI.Tests
 {
@@ -26,6 +35,25 @@ namespace Dev2.Studio.UI.Tests
     public abstract class UIMapBase
     {
         #region All UI Maps
+
+        #region ActivityDropUIMap
+
+        public ActivityDropWindowUIMap ActivityDropUIMap
+        {
+            get
+            {
+                if(_activityDropUIMap == null)
+                {
+                    _activityDropUIMap = new ActivityDropWindowUIMap();
+                }
+                return _activityDropUIMap;
+            }
+
+        }
+
+        private ActivityDropWindowUIMap _activityDropUIMap;
+
+        #endregion ActivityDropUIMap
 
         #region ConnectViewUIMap
 
@@ -64,6 +92,26 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion Database Service Wizard UI Map
 
+        #region Database Source Wizard UI Map
+
+        public DatabaseSourceUIMap DatabaseSourceUIMap
+        {
+            get
+            {
+                if(_databaseSourceWizardUIMap == null)
+                {
+                    _databaseSourceWizardUIMap = new DatabaseSourceUIMap();
+                }
+
+                return _databaseSourceWizardUIMap;
+            }
+        }
+
+
+        private DatabaseSourceUIMap _databaseSourceWizardUIMap;
+
+        #endregion Database Source Wizard UI Map
+
         #region Debug UI Map
 
         public DebugUIMap DebugUIMap
@@ -81,6 +129,24 @@ namespace Dev2.Studio.UI.Tests
         private DebugUIMap _debugUIMap;
 
         #endregion Debug UI Map
+
+        #region DecisionWizard UI Map
+
+        public DecisionWizardUIMap DecisionWizardUIMap
+        {
+            get
+            {
+                if(_decisionWizardUIMap == null)
+                {
+                    _decisionWizardUIMap = new DecisionWizardUIMap();
+                }
+                return _decisionWizardUIMap;
+            }
+        }
+
+        private DecisionWizardUIMap _decisionWizardUIMap;
+
+        #endregion DecisionWizard UI Map
 
         #region Dependancy Graph UI Map
 
@@ -136,6 +202,24 @@ namespace Dev2.Studio.UI.Tests
         private DocManagerUIMap _dockManagerUIMap;
 
         #endregion Dock Manager UI Map
+
+        #region Email Source Wizard UI Map
+
+        public EmailSourceWizardUIMap EmailSourceWizardUIMap
+        {
+            get
+            {
+                if(_emailSourceWizardUIMap == null)
+                {
+                    _emailSourceWizardUIMap = new EmailSourceWizardUIMap();
+                }
+                return _emailSourceWizardUIMap;
+            }
+        }
+
+        private EmailSourceWizardUIMap _emailSourceWizardUIMap;
+
+        #endregion EmailSourceWizard UI Map
 
         #region Explorer UI Map
 
@@ -229,6 +313,22 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion New Server UI Map
 
+        #region Output UI Map
+
+        public OutputUIMap OutputUIMap
+        {
+            get
+            {
+                if(_outputUIMap == null)
+                    _outputUIMap = new OutputUIMap();
+                return _outputUIMap;
+            }
+        }
+
+        private OutputUIMap _outputUIMap;
+
+        #endregion New Server UI Map
+
         #region Plugin Service Wizard UI Map
 
         public PluginServiceWizardUIMap PluginServiceWizardUIMap
@@ -244,6 +344,40 @@ namespace Dev2.Studio.UI.Tests
         private PluginServiceWizardUIMap _pluginServiceWizardUIMap;
 
         #endregion Plugin Service Wizard UI Map
+
+        #region Plugin Source Wizard UI Map
+
+        public PluginSourceMap PluginSourceMap
+        {
+            get
+            {
+                if(_pluginSourceWizardUIMap == null)
+                    _pluginSourceWizardUIMap = new PluginSourceMap();
+                return _pluginSourceWizardUIMap;
+            }
+        }
+
+        private PluginSourceMap _pluginSourceWizardUIMap;
+
+        #endregion Plugin Source Wizard UI Map
+
+        #region ResourceChangedPopUp UI Map
+
+        public ResourceChangedPopUpUIMap ResourceChangedPopUpUIMap
+        {
+            get
+            {
+                if(_resourceChangedPopUpUIMap == null)
+                    _resourceChangedPopUpUIMap = new ResourceChangedPopUpUIMap();
+                return _resourceChangedPopUpUIMap;
+            }
+
+
+        }
+
+        private ResourceChangedPopUpUIMap _resourceChangedPopUpUIMap;
+
+        #endregion ResourceChangedPopUp UI Map
 
         #region Ribbon UI Map
 
@@ -262,6 +396,23 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion Ribbon UI Map
 
+        #region Save Dialog UI Map
+
+        public SaveDialogUIMap SaveDialogUIMap
+        {
+            get
+            {
+                if(_saveDialogWizardUIMap == null)
+                    _saveDialogWizardUIMap = new SaveDialogUIMap();
+                return _saveDialogWizardUIMap;
+            }
+
+        }
+
+        private SaveDialogUIMap _saveDialogWizardUIMap;
+
+        #endregion Service Details UI Map
+
         #region Service Details UI Map
 
         public ServiceDetailsUIMap ServiceDetailsWizardUIMap
@@ -276,6 +427,23 @@ namespace Dev2.Studio.UI.Tests
         }
 
         private ServiceDetailsUIMap _serviceDetailsWizardUIMap;
+
+        #endregion Service Details UI Map
+
+        #region Switch Wizard UI Map
+
+        public SwitchWizardUIMap SwitchWizardUIMap
+        {
+            get
+            {
+                if(_switchWizardWizardUIMap == null)
+                    _switchWizardWizardUIMap = new SwitchWizardUIMap();
+                return _switchWizardWizardUIMap;
+            }
+
+        }
+
+        private SwitchWizardUIMap _switchWizardWizardUIMap;
 
         #endregion Service Details UI Map
 

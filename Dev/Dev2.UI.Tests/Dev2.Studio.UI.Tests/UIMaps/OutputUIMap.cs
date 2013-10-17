@@ -70,7 +70,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
 
         private UITestControl GetStatusBar()
         {
-            return VisualTreeWalker.GetChildByAutomationIDPath(_debugOutput, 0, "Dev2StatusBarAutomationID", "StatusBar");
+            return VisualTreeWalker.GetChildByAutomationIDPath(_debugOutput, "Dev2StatusBarAutomationID", "StatusBar");
         }
 
         public string GetStatusBarStatus()

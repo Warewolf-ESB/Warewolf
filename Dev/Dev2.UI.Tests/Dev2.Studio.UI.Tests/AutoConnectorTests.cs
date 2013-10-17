@@ -19,7 +19,7 @@ namespace Dev2.Studio.UI.Tests
     ///    These are UI tests around the auto connectors
     /// </summary>
     [CodedUITest]
-    public class AutoConnectorTests
+    public class AutoConnectorTests : UIMapBase
     {
         #region Properties
         DecisionWizardUIMap _decisionWizardUIMap;

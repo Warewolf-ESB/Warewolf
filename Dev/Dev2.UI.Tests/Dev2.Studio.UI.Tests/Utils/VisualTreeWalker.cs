@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 
@@ -10,7 +6,7 @@ namespace Dev2.Studio.UI.Tests.Utils
 {
     class VisualTreeWalker
     {
-        public static UITestControl GetChildByAutomationIDPath(UITestControl parent, int bookmark, params string[] automationIDs)
+        private static UITestControl GetChildByAutomationIDPathImpl(UITestControl parent, int bookmark, params string[] automationIDs)
         {
             var children = parent.GetChildren();
             var firstChildFound = children.FirstOrDefault(child =>
@@ -23,19 +19,29 @@ namespace Dev2.Studio.UI.Tests.Utils
                 });
             if (firstChildFound == null)
             {
-                throw new UITestControlNotFoundException("Cannot find " + automationIDs[bookmark] + " control within " + parent.GetProperty("AutomationID"));
-            }
+                throw new UITestControlNotFoundException("Cannot find " + automationIDs[bookmark] +
+                    " control within parent" +
+                    " with automation ID: " + parent.GetProperty("AutomationID") +
+                    " and friendly name: " + parent.FriendlyName +
+                    " and control type: " + parent.ControlType +
+                    " and class name: " + parent.ClassName + ".");
+            } 
             if (bookmark == automationIDs.Count() - 1)
             {
                 return firstChildFound;
             }
-            return GetChildByAutomationIDPath(firstChildFound, ++bookmark, automationIDs);
+            return GetChildByAutomationIDPathImpl(firstChildFound, ++bookmark, automationIDs);
+        }
+
+        public static UITestControl GetChildByAutomationIDPath(UITestControl parent, params string[] automationIDs)
+        {
+            return GetChildByAutomationIDPathImpl(parent, 0, automationIDs);
         }
 
         public static UITestControl GetControl(params string[] automationIDs)
         {
             var studioWindow = new UIBusinessDesignStudioWindow();
-            var control = GetChildByAutomationIDPath(studioWindow, 0, automationIDs);
+            var control = GetChildByAutomationIDPath(studioWindow, automationIDs);
             if (control == null)
             {
                 throw new UITestControlNotFoundException();

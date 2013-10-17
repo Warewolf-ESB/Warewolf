@@ -41,7 +41,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
             var _explorer = new ExplorerUIMap();
 
             //Open Web Source Wizard
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            _docManager.ClickOpenTabPage("Explorer");
             _explorer.ClearExplorerSearchText();
             _explorer.EnterExplorerSearchText("$");
             var getLocalServer = _explorer.GetLocalServer();
@@ -56,11 +56,14 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
             WizardsUIMap.WaitForWizard();
 
             //Web Source Details
-            SendKeys.SendWait("{TAB}http://www.webservicex.net/globalweather.asmx{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}http://www.webservicex.net/globalweather.asmx{TAB}{TAB}{TAB}{TAB}");
+            Playback.Wait(100);
+            SendKeys.SendWait("{ENTER}");
+            Playback.Wait(100);
             SendKeys.SendWait("{TAB}{TAB}{TAB}" + sourceName + "{TAB}{ENTER}");
 
             //Open Web Service Wizard
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            _docManager.ClickOpenTabPage("Explorer");
             getLocalServer = _explorer.GetLocalServer();
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
             for (var i = 0; i < 5; i++)

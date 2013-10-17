@@ -3,36 +3,12 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ExternalUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.WebpageServiceWizardUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
 using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps;
-using Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
-using Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.PluginSourceMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses;
-using Dev2.Studio.UI.Tests.UIMaps.ServiceDetailsUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.SwitchUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.VideoTestUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -42,7 +18,7 @@ using Point = System.Drawing.Point;
 namespace Dev2.CodedUI.Tests
 {
     [CodedUITest]
-    public class TestBase
+    public class TestBase : UIMapBase
     {
         public string ServerExeLocation;
 
@@ -69,7 +45,7 @@ namespace Dev2.CodedUI.Tests
             Point point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
             UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
             ToolboxUIMap.DragControlToWorkflowDesigner(theControl, point);
 
@@ -110,13 +86,12 @@ namespace Dev2.CodedUI.Tests
         public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
         {
             var preCount = TabManagerUIMap.GetTabCount();
-            Mouse.Click(DocManagerUIMap.UIBusinessDesignStudioWindow);
+            Mouse.Click(DockManagerUIMap.UIBusinessDesignStudioWindow);
             SendKeys.SendWait("^w");
             string activeTabName = TabManagerUIMap.GetActiveTabName();
             var postCount = TabManagerUIMap.GetTabCount();
             Assert.IsTrue(postCount == preCount + 1, "Tab quantity has not been increased");
             Assert.IsTrue(activeTabName.Contains("Unsaved"), "Active workflow is not an unsaved workflow");
-            TabManagerUIMap.CloseAllTabs();
         }
 
         [TestMethod]
@@ -145,7 +120,7 @@ namespace Dev2.CodedUI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
             UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
             ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
 
@@ -177,12 +152,12 @@ namespace Dev2.CodedUI.Tests
         public void ChangingResourceExpectedPopUpWarningWithShowAffected()
         {
             // Open the workflow
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("NewForeachUpgrade");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", "NewForeachUpgradeDifferentExecutionTests");
             //Edit the inputs and outputs
-            DocManagerUIMap.ClickOpenTabPage("Variables");
+            DockManagerUIMap.ClickOpenTabPage("Variables");
             VariablesUIMap.CheckScalarInputAndOuput(0);
             VariablesUIMap.CheckScalarInput(0);
 
@@ -197,77 +172,6 @@ namespace Dev2.CodedUI.Tests
             Playback.Wait(5000);
 
             Assert.IsTrue(TabManagerUIMap.GetActiveTabName().Contains("ForEachUpgradeTest"), "Affected workflow not shown after show affected workflow button pressed.");
-
-            TabManagerUIMap.CloseAllTabs();
-        }
-
-        #region Auto Expand Of Mapping On Drop
-
-        //PBI 9939
-        [TestMethod]
-        [TestCategory("DsfActivityTests")]
-        [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands.")]
-        [Owner("Massimo Guerrera")]
-        // ReSharper disable InconsistentNaming
-        public void DsfActivityDesigner_CodedUI_DroppingActivityOntoDesigner_MappingToBeExpanded()
-        // ReSharper restore InconsistentNaming
-        {
-            //Create a new workflow
-            RibbonUIMap.CreateNewWorkflow();
-
-            // Get the tab
-            UITestControl theTab = TabManagerUIMap.GetActiveTab();
-
-            // And click it to make sure it's focused
-            TabManagerUIMap.Click(theTab);
-
-            // Wait a bit for user noticability            
-            Playback.Wait(500);
-
-            // Get the location of the Start button
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-
-            // And click it for UI responsiveness :P
-            WorkflowDesignerUIMap.ClickControl(theStartButton);
-
-            // Get a point underneath the start button
-            Point p = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-            // Open the Explorer
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("MO");
-
-            // flakey bit of code, we need to wait ;)
-            Playback.Wait(500);
-
-            //Drag workflow onto surface
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("TestForEachOutput");
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "TestForEachOutput", p);
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-
-            //Get Mappings button
-            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TestForEachOutput", "OpenMappingsToggle");
-
-            // flakey bit of code, we need to wait ;)
-            Playback.Wait(1500);
-
-            //Assert button is not null
-            Assert.IsTrue(button != null, "Couldnt find the mapping button");
-
-            //Get the close mappings image
-            var children = button.GetChildren();
-            var images = children.FirstOrDefault(c => c.FriendlyName == "Close Mappings");
-
-            //Check that the mapping is open
-            Assert.IsTrue(images.Height > -1, "The correct images isnt visible which means the mapping isnt open");
-
-            //Clean up
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         [TestMethod]
@@ -282,7 +186,7 @@ namespace Dev2.CodedUI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag a Multi Assign on
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
             UITestControl asssignControlInToolbox = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
             ToolboxUIMap.DragControlToWorkflowDesigner(asssignControlInToolbox, workflowPoint1);
 
@@ -309,7 +213,7 @@ namespace Dev2.CodedUI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag a Calculate control on
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
             UITestControl calculateControl = ToolboxUIMap.FindToolboxItemByAutomationId("Calculate");
             ToolboxUIMap.DragControlToWorkflowDesigner(calculateControl, workflowPoint1);
 
@@ -354,7 +258,7 @@ namespace Dev2.CodedUI.Tests
         public void CheckAddMissingIsWorkingWhenManuallyAddingVariableExpectedToShowVariablesAsUnUsed()
         {
             //Open the correct workflow
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
 
@@ -363,7 +267,7 @@ namespace Dev2.CodedUI.Tests
 
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
 
-            DocManagerUIMap.ClickOpenTabPage("Variables");
+            DockManagerUIMap.ClickOpenTabPage("Variables");
             VariablesUIMap.ClickVariableName(0);
             SendKeys.SendWait("codedUITestVar");
             VariablesUIMap.ClickVariableName(1);
@@ -378,12 +282,11 @@ namespace Dev2.CodedUI.Tests
         // Regression Test
         public void ValidDatalistSearchTest()
         {
-
             //// Create the workflow
             RibbonUIMap.CreateNewWorkflow();
 
             // Open the Variables tab, and enter the invalid value
-            DocManagerUIMap.ClickOpenTabPage("Variables");
+            DockManagerUIMap.ClickOpenTabPage("Variables");
             VariablesUIMap.ClickVariableName(0);
             SendKeys.SendWait("test@");
 
@@ -397,12 +300,7 @@ namespace Dev2.CodedUI.Tests
             {
                 Assert.Fail("The DataList accepted the invalid variable name.");
             }
-
-            // Clean Up! \o/
-            TabManagerUIMap.CloseAllTabs();
         }
-
-        #endregion
 
         [TestMethod]
         public void DragAWorkflowIntoAndOutOfAForEach_Expected_NoErrors()
@@ -420,13 +318,13 @@ namespace Dev2.CodedUI.Tests
             requiredPoint.Offset(20, 50);
 
             // Drag a ForEach onto the Workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
             UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
             ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
 
 
             // Get a sample workflow, and drag it onto the "Drop Activity Here" part of the ForEach box
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
             UITestControl testFlow = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
@@ -444,7 +342,7 @@ namespace Dev2.CodedUI.Tests
             // 5792.2
 
             // Get the location of the ForEach box
-            UITestControl forEachControl = workflowDesignerUIMap.FindControlByAutomationId(theTab, "ForEach");
+            UITestControl forEachControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "ForEach");
 
             // Move the mouse to the contained CalculateTaxReturns box
             Mouse.Move(new Point(forEachControl.BoundingRectangle.X + 75, forEachControl.BoundingRectangle.Y + 75));
@@ -457,91 +355,11 @@ namespace Dev2.CodedUI.Tests
             Mouse.StopDragging(new Point(workflowPoint1.X, workflowPoint1.Y + 100));
 
             // Now get its position
-            UITestControl calcTaxReturnsControl = workflowDesignerUIMap.FindControlByAutomationId(theTab, "CalculateTaxReturns");
+            UITestControl calcTaxReturnsControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "CalculateTaxReturns");
 
             // Its not on the design surface, must be in foreach
             Assert.IsNotNull(calcTaxReturnsControl, "Could not drop it ;(");
-
-            TabManagerUIMap.CloseAllTabs();
-
-        }
-
-        [TestMethod]
-        public void DragADecisionIntoForEachExpectNotAddedToForEach()
-        {
-            // Create the workflow
-            RibbonUIMap.CreateNewWorkflow();
-
-            // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-
-            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
-            requiredPoint.Offset(20, 50);
-
-            // Drag a ForEach onto the Workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
-            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
-
-            // Open the toolbox, and drag the control onto the Workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", requiredPoint);
-
-            // Cancel Decision Wizard
-            if(WizardsUIMap.TryWaitForWizard(5000))
-            {
-                var decisionWizardUiMap = new DecisionWizardUIMap();
-                decisionWizardUiMap.ClickCancel();
             }
-            else
-            {
-                Assert.Fail("Got droped ;(");
-            }
-
-            TabManagerUIMap.CloseAllTabs();
-        }
-
-        [TestMethod]
-        public void DragASwitchIntoForEachExpectNotAddedToForEach()
-        {
-            // Create the workflow
-            RibbonUIMap.CreateNewWorkflow();
-
-            // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-
-            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
-            requiredPoint.Offset(20, 50);
-
-            // Drag a ForEach onto the Workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
-            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
-
-            // Open the toolbox, and drag the control onto the Workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            ToolboxUIMap.DragControlToWorkflowDesigner("Switch", requiredPoint);
-            Playback.Wait(500);
-            // Cancel Decision Wizard
-            try
-            {
-                var decisionWizardUiMap = new SwitchWizardUIMap();
-                decisionWizardUiMap.ClickCancel();
-                Assert.Fail("Got droped ;(");
-            }
-            catch
-            {
-                Assert.IsTrue(true);
-            }
-
-            TabManagerUIMap.CloseAllTabs();
-        }
 
         [TestMethod]
         public void ClickShowMapping_Expected_InputOutputAdornersAreDisplayed()
@@ -556,7 +374,7 @@ namespace Dev2.CodedUI.Tests
 
 
             // Open the Toolbox
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
 
             // Get a sample workflow
             ExplorerUIMap.ClearExplorerSearchText();
@@ -567,12 +385,8 @@ namespace Dev2.CodedUI.Tests
             ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
 
             // Click it
-            UITestControl controlOnWorkflow = workflowDesignerUIMap.FindControlByAutomationId(theTab, "TestFlow");
+            UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "TestFlow");
             Mouse.Click(controlOnWorkflow, new Point(265, 5));
-
-            Playback.Wait(2500);
-
-            TabManagerUIMap.CloseAllTabs();
         }
 
         [TestMethod]
@@ -588,7 +402,7 @@ namespace Dev2.CodedUI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 100);
 
             // Open the Explorer
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
 
             // Get a sample workflow
             ExplorerUIMap.ClearExplorerSearchText();
@@ -639,9 +453,6 @@ namespace Dev2.CodedUI.Tests
             {
                 Assert.Fail("The control was not resized properly.");
             }
-
-            // Test complete - Delete itself
-            TabManagerUIMap.CloseAllTabs();
         }
 
         #region Tests Requiring Designer access
@@ -663,7 +474,7 @@ namespace Dev2.CodedUI.Tests
             Point p = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Open the Toolbox
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
 
             // Get the comment box
             UITestControl workflowControl = ToolboxUIMap.FindToolboxItemByAutomationId("Workflow");
@@ -722,7 +533,7 @@ namespace Dev2.CodedUI.Tests
             #region Checking the click of the Cacnel button doesnt Adds the resource to the design surface
 
             // Open the Toolbox
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
 
             // Get the comment box
             workflowControl = ToolboxUIMap.FindToolboxItemByAutomationId("Workflow");
@@ -747,9 +558,6 @@ namespace Dev2.CodedUI.Tests
             Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "fileTest"));
 
             #endregion
-
-            // Delete the workflow
-            TabManagerUIMap.CloseAllTabs();
         }
 
         #endregion Tests Requiring Designer access
@@ -765,26 +573,8 @@ namespace Dev2.CodedUI.Tests
         /// <param name="workflowName">The Workflow Name (Eg: MyCustomWorkflow)</param>
         public void DoCleanup(string workflowName, bool clickNo = false)
         {
-            try
-            {
                 TabManagerUIMap.CloseAllTabs();
-                //// Test complete - Delete itself  
-                //if (clickNo)
-                //{
-                //    TabManagerUIMap.CloseTab_Click_No(workflowName);
-                //}
-                //else
-                //{
-                //    TabManagerUIMap.CloseTab(workflowName);
-                //}
             }
-            catch(Exception e)
-            {
-                // Log it so the UI Test still passes...
-                Trace.WriteLine(e.Message);
-            }
-
-        }
 
         #endregion
 
@@ -793,12 +583,12 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void CheckIfDebugProcessingBarIsShowingDurningExecutionExpectedToShowDuringExecutionOnly()
         {
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             //Open the correct workflow
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("LargeFileTesting");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTS", "LargeFileTesting");
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
 
             RibbonUIMap.ClickRibbonMenuItem("Debug");
@@ -807,21 +597,19 @@ namespace Dev2.CodedUI.Tests
                 SendKeys.SendWait("{F5}");
                 Playback.Wait(1000);
             }
-            DocManagerUIMap.ClickOpenTabPage("Output");
+            DockManagerUIMap.ClickOpenTabPage("Output");
             var status = OutputUIMap.GetStatusBarStatus();
             var spinning = OutputUIMap.IsSpinnerSpinning();
             Assert.AreEqual("Executing", status, "Debug output status text does not say executing when executing");
             Assert.IsTrue(spinning, "Debug output spinner not spinning during execution");
-            TabManagerUIMap.CloseAllTabs();
         }
 
         [TestMethod]
-        //[Ignore]//needs outlook installed on the ui testing environment
         public void ClickHelpFeedback_Expected_FeedbackWindowOpens()
         {
             RibbonUIMap.ClickRibbonMenuItem("Feedback");
             Playback.Wait(500);
-            var dialogPrompt = DocManagerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            var dialogPrompt = DockManagerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
             if(dialogPrompt.GetType() != typeof(WpfWindow))
             {
                 Assert.Fail("Error - Clicking the Feedback button does not create the Feedback Window");
@@ -831,9 +619,9 @@ namespace Dev2.CodedUI.Tests
 
             // Wait for the init, then click around a bit
             Playback.Wait(2500);
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             Playback.Wait(500);
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
             Playback.Wait(500);
 
             // Click stop, then make sure the Feedback window has appeared.
@@ -867,7 +655,7 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void DebugBuriedErrors_Expected_OnlyErrorStepIsInError()
         {
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             //Open the correct workflow
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("Bug8372");
@@ -880,13 +668,10 @@ namespace Dev2.CodedUI.Tests
             SendKeys.SendWait("{F5}");
 
             // Open the Output
-            DocManagerUIMap.ClickOpenTabPage("Output");
+            DockManagerUIMap.ClickOpenTabPage("Output");
 
             // Get nested steps
             Assert.IsTrue(OutputUIMap.IsAnyStepsInError(), "Cannot see nested error steps in the debug output.");
-
-            // Everything passes :D
-            TabManagerUIMap.CloseAllTabs();
         }
 
         [TestMethod]
@@ -894,11 +679,10 @@ namespace Dev2.CodedUI.Tests
         [TestCategory("DebugInput_whenRun10Time")]
         public void DebugInput_WhenRun10Times_ExpectInputsPersistAndXMLRemainsLinked_InputsAndXMLRemainPersisted()
         {
-
             //------------Setup for test--------------------------
             int debugExeWait = 2000;
             
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             //Open the correct workflow
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("Bug9394");
@@ -961,17 +745,14 @@ namespace Dev2.CodedUI.Tests
             DebugUIMap.CloseDebugWindow_ByCancel();
 
             var expectedXML = @"<DataList>
-  <var></var>
+  <var>1</var>
   <countries>
-    <CountryID>1</CountryID>
-    <Description>2</Description>
+    <CountryID>2</CountryID>
+    <Description></Description>
   </countries>
 </DataList>";
 
             Assert.AreEqual(expectedXML, actualXML);
-
-            // Everything passes 
-            TabManagerUIMap.CloseAllTabs();            
         }
 
         #endregion Deprecated Test
@@ -997,513 +778,5 @@ namespace Dev2.CodedUI.Tests
         private TestContext _testContextInstance;
 
         #endregion
-
-        #region UI Maps
-
-        public DocManagerUIMap DocManagerUIMap
-        {
-            get
-            {
-                if((_docManagerMap == null))
-                {
-                    _docManagerMap = new DocManagerUIMap();
-                }
-
-                return _docManagerMap;
-            }
-        }
-        private DocManagerUIMap _docManagerMap;
-
-        public ToolboxUIMap ToolboxUIMap
-        {
-            get
-            {
-                if((_toolboxUiMap == null))
-                {
-                    _toolboxUiMap = new ToolboxUIMap();
-                }
-
-                return _toolboxUiMap;
-            }
-        }
-        private ToolboxUIMap _toolboxUiMap;
-
-        public SaveDialogUIMap SaveDialogUIMap
-        {
-            get
-            {
-                if((_saveDialogUIMap == null))
-                {
-                    _saveDialogUIMap = new SaveDialogUIMap();
-                }
-
-                return _saveDialogUIMap;
-            }
-        }
-        private SaveDialogUIMap _saveDialogUIMap;
-
-        #region Explorer UI Map
-
-        public ExplorerUIMap ExplorerUIMap
-        {
-            get
-            {
-                if((_explorerUiMap == null))
-                {
-                    _explorerUiMap = new ExplorerUIMap();
-                }
-
-                return _explorerUiMap;
-            }
-        }
-        private ExplorerUIMap _explorerUiMap;
-
-        #endregion
-
-        #region Deploy UI Map
-
-        public DeployViewUIMap DeployViewUIMap
-        {
-            get
-            {
-                if((_deployViewUiMap == null))
-                {
-                    _deployViewUiMap = new DeployViewUIMap();
-                }
-
-                return _deployViewUiMap;
-            }
-        }
-        private DeployViewUIMap _deployViewUiMap;
-
-        #endregion
-
-        #region Connect Window UI Map
-
-        public ServerWizard ConnectViewUIMap
-        {
-            get
-            {
-                if(_connectViewUIMap == null)
-                {
-                    _connectViewUIMap = new ServerWizard();
-                }
-                return _connectViewUIMap;
-            }
-        }
-
-        private ServerWizard _connectViewUIMap;
-
-        #endregion Connect Window UI Map
-
-        #region Debug UI Map
-
-        public DebugUIMap DebugUIMap
-        {
-            get
-            {
-                if(_debugUIMap == null)
-                {
-                    _debugUIMap = new DebugUIMap();
-                }
-                return _debugUIMap;
-            }
-        }
-
-        private DebugUIMap _debugUIMap;
-
-        #endregion
-
-        #region ActivityDrop Window UI Map
-
-        public ActivityDropWindowUIMap ActivityDropUIMap
-        {
-            get
-            {
-                if(_activityDropUIMap == null)
-                {
-                    _activityDropUIMap = new ActivityDropWindowUIMap();
-                }
-                return _activityDropUIMap;
-            }
-        }
-
-        private ActivityDropWindowUIMap _activityDropUIMap;
-
-        #endregion
-
-        #region DependencyGraph UI Map
-
-        public DependencyGraph DependencyGraphUIMap
-        {
-            get
-            {
-                if(DependencyGraphUIMap == null)
-                {
-                    DependencyGraphUIMap = new DependencyGraph();
-                }
-
-                return DependencyGraphUIMap;
-            }
-            set { throw new NotImplementedException(); }
-        }
-
-        private DependencyGraph DependencyGraph;
-
-        #endregion WorkflowDesigner UI Map
-
-        #region WorkflowWizard UI Map
-
-        public WorkflowWizardUIMap WorkflowWizardUIMap
-        {
-            get
-            {
-                if(workflowWizardUIMap == null)
-                {
-                    workflowWizardUIMap = new WorkflowWizardUIMap();
-                }
-
-                return workflowWizardUIMap;
-            }
-        }
-
-        private WorkflowWizardUIMap workflowWizardUIMap;
-
-        #endregion WorkflowWizard UI Map
-
-        #region Database Wizard UI Map
-
-        public DatabaseServiceWizardUIMap DatabaseServiceWizardUIMap
-        {
-            get
-            {
-                if(_databaseServiceWizardUIMap == null)
-                {
-                    _databaseServiceWizardUIMap = new DatabaseServiceWizardUIMap();
-                }
-
-                return _databaseServiceWizardUIMap;
-            }
-        }
-
-        private DatabaseServiceWizardUIMap _databaseServiceWizardUIMap;
-
-        #endregion Database Wizard UI Map
-
-        #region Database Source Wizard UI Map
-
-        public DatabaseSourceUIMap DatabaseSourceWizardUIMap
-        {
-            get
-            {
-                if(_databaseSourceWizardUIMap == null)
-                {
-                    _databaseSourceWizardUIMap = new DatabaseSourceUIMap();
-                }
-
-                return _databaseSourceWizardUIMap;
-            }
-        }
-
-        private DatabaseSourceUIMap _databaseSourceWizardUIMap;
-
-        public PluginSourceMap PluginSourceMap
-        {
-            get
-            {
-                if(_pluginSourceWizardUIMap == null)
-                {
-                    _pluginSourceWizardUIMap = new PluginSourceMap();
-                }
-
-                return _pluginSourceWizardUIMap;
-            }
-        }
-
-        private PluginSourceMap _pluginSourceWizardUIMap;
-
-        #endregion Database Wizard UI Map
-
-        #region Feedback UI Map
-
-        public FeedbackUIMap FeedbackUIMap
-        {
-            get
-            {
-                if(_feedbackUIMap == null)
-                {
-                    _feedbackUIMap = new FeedbackUIMap();
-                }
-
-                return _feedbackUIMap;
-            }
-        }
-
-        private FeedbackUIMap _feedbackUIMap;
-
-        #endregion Feedback UI Map
-
-        #region New Server UI Map
-
-        public NewServerUIMap NewServerUIMap
-        {
-            get
-            {
-                if(_newServerUIMap == null)
-                {
-                    _newServerUIMap = new NewServerUIMap();
-                }
-
-                return _newServerUIMap;
-            }
-        }
-
-        private NewServerUIMap _newServerUIMap;
-
-        #endregion Database Wizard UI Map
-
-        #region Plugin Wizard UI Map
-
-        public PluginServiceWizardUIMap PluginServiceWizardUIMap
-        {
-            get
-            {
-                if(pluginServiceWizardUIMap == null)
-                {
-                    pluginServiceWizardUIMap = new PluginServiceWizardUIMap();
-                }
-
-                return pluginServiceWizardUIMap;
-            }
-        }
-
-        private PluginServiceWizardUIMap pluginServiceWizardUIMap;
-
-        #endregion Database Wizard UI Map
-
-        #region Ribbon UI Map
-
-        public RibbonUIMap RibbonUIMap
-        {
-            get
-            {
-                if(_ribbonUIMap == null)
-                {
-                    _ribbonUIMap = new RibbonUIMap();
-                }
-
-                return _ribbonUIMap;
-            }
-        }
-
-        private RibbonUIMap _ribbonUIMap;
-
-        #endregion Ribbon UI Map
-
-        #region Resource Changed PopUp UI Map
-
-        public ResourceChangedPopUpUIMap ResourceChangedPopUpUIMap
-        {
-            get
-            {
-                if(_resourceChangedPopUpUIMap == null)
-                {
-                    _resourceChangedPopUpUIMap = new ResourceChangedPopUpUIMap();
-                }
-                return _resourceChangedPopUpUIMap;
-            }
-        }
-
-        private ResourceChangedPopUpUIMap _resourceChangedPopUpUIMap;
-
-        #endregion
-
-        #region TabManager UI Map
-
-
-        public TabManagerUIMap TabManagerUIMap
-        {
-            get
-            {
-                if(_tabManagerUIMap == null)
-                {
-                    _tabManagerUIMap = new TabManagerUIMap();
-                }
-
-                return _tabManagerUIMap;
-            }
-        }
-
-
-
-
-
-        private TabManagerUIMap _tabManagerUIMap;
-
-        #endregion TabManager UI Map
-
-        #region Variables UI Map
-
-        public VariablesUIMap VariablesUIMap
-        {
-            get
-            {
-                if(_variablesUIMap == null)
-                {
-                    _variablesUIMap = new VariablesUIMap();
-                }
-                return _variablesUIMap;
-            }
-        }
-
-        private VariablesUIMap _variablesUIMap;
-
-        #endregion Connect Window UI Map
-
-        #region Service Details UI Map
-
-        public ServiceDetailsUIMap ServiceDetailsUIMap
-        {
-            get
-            {
-                if(_serviceDetailsUIMap == null)
-                {
-                    _serviceDetailsUIMap = new ServiceDetailsUIMap();
-                }
-                return _serviceDetailsUIMap;
-            }
-        }
-
-        private ServiceDetailsUIMap _serviceDetailsUIMap;
-
-        #endregion
-
-        #region External UI Map
-
-        public ExternalUIMap ExternalUIMap
-        {
-            get
-            {
-                if(_externalUIMap == null)
-                {
-                    _externalUIMap = new ExternalUIMap();
-                }
-                return _externalUIMap;
-            }
-        }
-
-        private ExternalUIMap _externalUIMap;
-
-        #endregion External UI Map
-
-        #region Webpage Wizard UI Map
-
-        public WebpageServiceWizardUIMap WebpageServiceWizardUIMap
-        {
-            get
-            {
-                if(webpageServiceWizardUIMap == null)
-                {
-                    webpageServiceWizardUIMap = new WebpageServiceWizardUIMap();
-                }
-
-                return webpageServiceWizardUIMap;
-            }
-        }
-
-        private WebpageServiceWizardUIMap webpageServiceWizardUIMap;
-
-        #endregion Database Wizard UI Map
-
-        #region WorkflowDesigner UI Map
-
-        public WorkflowDesignerUIMap WorkflowDesignerUIMap
-        {
-            get
-            {
-                if(workflowDesignerUIMap == null)
-                {
-                    workflowDesignerUIMap = new WorkflowDesignerUIMap();
-                }
-
-                return workflowDesignerUIMap;
-            }
-        }
-
-        private WorkflowDesignerUIMap workflowDesignerUIMap;
-
-        #endregion WorkflowDesigner UI Map
-
-        #region Output UI Map
-
-        public OutputUIMap OutputUIMap
-        {
-            get
-            {
-                if(_outputUIMap == null)
-                {
-                    _outputUIMap = new OutputUIMap();
-                }
-
-                return _outputUIMap;
-            }
-        }
-
-        private OutputUIMap _outputUIMap;
-
-        #endregion Output UI Map
-
-        #region VideoTest UI Map
-
-        public VideoTestUIMap VideoTestUIMap
-        {
-            get
-            {
-                if(_videoTestUIMap == null)
-                {
-                    _videoTestUIMap = new VideoTestUIMap();
-                }
-
-                return _videoTestUIMap;
-            }
-        }
-
-        private VideoTestUIMap _videoTestUIMap;
-
-        #endregion VideoTest UI Map
-
-        #region UIErrorWindow
-
-        public class UIErrorWindow : WpfWindow
-        {
-
-            public UIErrorWindow()
-            {
-                #region Search Criteria
-                SearchProperties[UITestControl.PropertyNames.Name] = "Error";
-                SearchProperties.Add(new PropertyExpression(UITestControl.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-                WindowTitles.Add("Error");
-                #endregion
-            }
-        }
-
-        #endregion
-
-        public UIMap UIMap
-        {
-            get
-            {
-                if((this.map == null))
-                {
-                    this.map = new UIMap();
-                }
-
-                return this.map;
-            }
-        }
-
-        private UIMap map;
-
-        #endregion UI Maps
     }
 }

@@ -9,7 +9,7 @@
 // ------------------------------------------------------------------------------
 
 using System.Linq;
-using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
+using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.Utils;
 
 namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
@@ -25,10 +25,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
 
     [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
-    public partial class ExplorerUIMap
+    public partial class ExplorerUIMap : UIMapBase
     {
         /// <summary>
-        /// Clicks the Refresh button on the Explorer Tab, and waits for it to complete. You will probably need to use DocManagerUIMap.ClickOpenTabPage("Explorer"); before doing this.
+        /// Clicks the Refresh button on the Explorer Tab, and waits for it to complete. You will probably need to use DockManagerUIMap.ClickOpenTabPage("Explorer"); before doing this.
         /// </summary>
         public void DoRefresh()
         {
@@ -184,7 +184,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public WpfTree GetExplorerTree()
         {
-            return VisualTreeWalker.GetControl("UI_DocManager_AutoID", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "Navigation") as WpfTree;
+            return VisualTreeWalker.GetControl("UI_DocManager_AutoID", "UI_ExplorerPane_AutoID", "Uia.ExplorerView", "TheNavigationView", "Navigation") as WpfTree;
         }
         /// <summary>
         /// ClickExplorer
@@ -471,7 +471,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             var studioWindow = new UIWarewolfWindow();
             WpfEdit searchTextbox = studioWindow.UITheNavigationViewCustom.UIFilterTextBoxEdit.UIUI_DataListSearchtxtEdit;
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
             Mouse.Click(searchTextbox, new Point(5, 5));
             SendKeys.SendWait("{HOME}");
             SendKeys.SendWait("+{END}");
