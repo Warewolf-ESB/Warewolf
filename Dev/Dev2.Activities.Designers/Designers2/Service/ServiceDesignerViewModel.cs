@@ -64,6 +64,8 @@ namespace Dev2.Activities.Designers2.Service
             RootModel = rootModel;
             DesignValidationErrors = new ObservableCollection<IErrorInfo>();
             FixErrorsCommand = new RelayCommand(o => FixErrors());
+            SetInputsCommand = new RelayCommand(o => SetInputs(o as IInputOutputViewModel));
+            SetOutputsCommand = new RelayCommand(o => SetOuputs());
 
             InitializeProperties();
             InitializeImageSource();
@@ -82,11 +84,11 @@ namespace Dev2.Activities.Designers2.Service
 
         public event EventHandler<DesignValidationMemo> OnDesignValidationReceived;
 
-        public ICommand FixErrorsCommand
-        {
-            get;
-            private set;
-        }
+        public ICommand FixErrorsCommand { get; private set; }
+
+        public ICommand SetInputsCommand { get; private set; }
+
+        public ICommand SetOutputsCommand { get; private set; }
 
         public IDataMappingViewModel DataMappingViewModel { get; private set; }
 
@@ -204,7 +206,7 @@ namespace Dev2.Activities.Designers2.Service
         protected override void OnToggleCheckedChanged(string propertyName, bool isChecked)
         {
             base.OnToggleCheckedChanged(propertyName, isChecked);
-            
+
             // AddTitleBarMappingToggle() binds Mapping button to ShowLarge property
             if(propertyName == ShowLargeProperty.Name)
             {
@@ -216,6 +218,22 @@ namespace Dev2.Activities.Designers2.Service
         }
 
         #endregion
+
+        void SetInputs(IInputOutputViewModel viewModel)
+        {
+            SetInputs();
+            if(viewModel != null && viewModel.Required)
+            {
+                if(!string.IsNullOrEmpty(viewModel.MapsTo) && viewModel.RequiredMissing)
+                {
+                    viewModel.RequiredMissing = false;
+                }
+                else if(string.IsNullOrEmpty(viewModel.MapsTo) && !viewModel.RequiredMissing)
+                {
+                    viewModel.RequiredMissing = true;
+                }
+            }
+        }
 
         void SetInputs()
         {

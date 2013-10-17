@@ -1422,6 +1422,54 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insert the input data for this service. It will be mapped to the input field listed in the To Service column. If the input is a Recordset field then you can use (*) to pass all the recordset fields into the workflow service. e.g. [[my(*).recs]] -&gt; input().records
+        ///You can also put multiple fields into one field with other text much like the assign tool.
+        ///By default similar matches from the variable list are used where possible..
+        /// </summary>
+        public static string ServiceHelpInput {
+            get {
+                return ResourceManager.GetString("ServiceHelpInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Insert the variable that you want the output of the workflow to be mapped into. By default similar matches from the variable list are used where possible.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string ServiceHelpOutput {
+            get {
+                return ResourceManager.GetString("ServiceHelpOutput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ServiceToolTipInput {
+            get {
+                return ResourceManager.GetString("ServiceToolTipInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ServiceToolTipOutput {
+            get {
+                return ResourceManager.GetString("ServiceToolTipOutput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To Sort a recordset enter the field in the recordset you would like to sort on.
         ///To sort on more than one field, perform the sort action for each field you would like to sort on, ending with the priority sort..
         /// </summary>

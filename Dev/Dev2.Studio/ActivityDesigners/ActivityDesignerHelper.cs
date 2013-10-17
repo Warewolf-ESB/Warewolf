@@ -8,6 +8,7 @@ using Dev2.Activities.Designers2.DeleteRecords;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
 using Dev2.Activities.Designers2.GetWebRequest;
 using Dev2.Activities.Designers2.MultiAssign;
+using Dev2.Activities.Designers2.Service;
 using Dev2.Activities.Designers2.SortRecords;
 using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Activities.Designers2.UniqueRecords;
@@ -36,6 +37,8 @@ namespace Dev2.Studio.ActivityDesigners
 
                 { typeof(DsfActivity), typeof(DsfActivityDesigner) },
                 { typeof(DsfDatabaseActivity), typeof(DsfActivityDesigner) },
+                //{ typeof(DsfActivity), typeof(ServiceDesigner) },
+                //{ typeof(DsfDatabaseActivity), typeof(ServiceDesigner) },
                 { typeof(DsfCommentActivity), typeof(DsfCommentActivityDesigner) },
                 { typeof(DsfAssignActivity), typeof(DsfAssignActivityDesigner) },
                 //{typeof (TransformActivity), typeof (DsfTransformActivityDesigner)},

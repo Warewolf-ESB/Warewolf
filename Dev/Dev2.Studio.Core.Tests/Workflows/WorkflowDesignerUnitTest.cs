@@ -11,7 +11,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
 using Caliburn.Micro;
-using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.ViewModelTests;
@@ -19,7 +18,6 @@ using Dev2.Core.Tests.Workflows;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
@@ -2552,7 +2550,14 @@ namespace Dev2.Core.Tests
         {
             var wf = CreateWorkflowDesignerViewModel(eventPublisher, resourceModel, new WorkflowHelper(), false);
 
-            var designerAttributes = new Dictionary<Type, Type> { { typeof(DsfActivity), typeof(DsfActivityDesigner) }, { typeof(DsfMultiAssignActivity), typeof(Dev2.Activities.Designers2.MultiAssign.MultiAssignDesigner) }, { typeof(DsfAssignActivity), typeof(DsfAssignActivityDesigner) }, { typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner) }, { typeof(DsfCountRecordsetActivity), typeof(CountRecordsDesigner) } };
+            var designerAttributes = new Dictionary<Type, Type>
+            {
+                { typeof(DsfActivity), typeof(Dev2.Activities.Designers2.Service.ServiceDesigner) },
+                { typeof(DsfMultiAssignActivity), typeof(Dev2.Activities.Designers2.MultiAssign.MultiAssignDesigner) }, 
+                { typeof(DsfAssignActivity), typeof(DsfAssignActivityDesigner) }, 
+                { typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner) }, 
+                { typeof(DsfCountRecordsetActivity), typeof(Dev2.Activities.Designers2.CountRecords.CountRecordsDesigner) }
+            };
 
             wf.InitializeDesigner(designerAttributes);
 

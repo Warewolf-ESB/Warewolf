@@ -44,6 +44,10 @@
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Newtonsoft.Json.dll</HintPath>
@@ -193,6 +197,9 @@
     <Compile Include="Behaviors\DataGridFocusTextOnLoadBehavior.cs" />
     <Compile Include="AttachedProperties\FocusSetter.cs" />
     <Compile Include="AttachedProperties\WizardEngineAttachedProperties.cs" />
+    <Compile Include="Designers2\Service\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Service\ServiceDesigner.xaml.cs">
       <DependentUpon>ServiceDesigner.xaml</DependentUpon>
     </Compile>
@@ -410,6 +417,10 @@
     <Page Include="Designers2\MultiAssign\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Service\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Service\ServiceDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -874,4 +874,28 @@ Using recordset () will add a new record and (*) will assign every record.</valu
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
+  <data name="ServiceHelpInput" xml:space="preserve">
+    <value>Insert the input data for this service. It will be mapped to the input field listed in the To Service column. If the input is a Recordset field then you can use (*) to pass all the recordset fields into the workflow service. e.g. [[my(*).recs]] -&gt; input().records
+You can also put multiple fields into one field with other text much like the assign tool.
+By default similar matches from the variable list are used where possible.</value>
+  </data>
+  <data name="ServiceHelpOutput" xml:space="preserve">
+    <value>Only variables go in here.
+Insert the variable that you want the output of the workflow to be mapped into. By default similar matches from the variable list are used where possible.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="ServiceToolTipInput" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ServiceToolTipOutput" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
 </root>
