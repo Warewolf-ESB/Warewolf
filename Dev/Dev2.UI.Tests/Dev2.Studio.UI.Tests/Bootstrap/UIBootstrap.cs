@@ -19,7 +19,9 @@ namespace Dev2.Studio.UI.Tests.Bootstrap
         [AssemblyInitialize()]
         public static void Init(TestContext textCtx)
         {
-            DirectoryCopy(StagingLocation, @"C:\CodedUI\Merge");
+            var mergeDir = _exeRoot + @"\Merge";
+            Directory.Delete(mergeDir);
+            DirectoryCopy(StagingLocation, mergeDir);
             const string runBatFileDir = _exeRoot + "\\" + _runFileName;
             if(File.Exists(runBatFileDir))
             {
