@@ -32,7 +32,7 @@ namespace Dev2.CodedUI.Tests
 
 
         // PBI 8601 (Task 8855)
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         public void QuickVariableInputFromListTest()
         {
             Clipboard.Clear();
@@ -79,7 +79,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         //PBI_8853
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
         {
             var preCount = TabManagerUIMap.GetTabCount();
@@ -104,7 +104,7 @@ namespace Dev2.CodedUI.Tests
 
         #endregion New PBI Tests
 
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
         {
             // Create the workflow
@@ -381,7 +381,7 @@ namespace Dev2.CodedUI.Tests
         #region Tests Requiring Designer access
 
         // vi - Can I drop a tool onto the designer?
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         public void DropAWorkflowOrServiceOnFromTheToolBoxAndTestTheWindowThatPopsUp()
         {
             // Create the Workflow
@@ -497,7 +497,7 @@ namespace Dev2.CodedUI.Tests
 
         #region Groomed Test
 
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         public void CheckIfDebugProcessingBarIsShowingDurningExecutionExpectedToShowDuringExecutionOnly()
         {
             DockManagerUIMap.ClickOpenTabPage("Explorer");
@@ -591,7 +591,7 @@ namespace Dev2.CodedUI.Tests
             Assert.IsTrue(OutputUIMap.IsAnyStepsInError(), "Cannot see nested error steps in the debug output.");
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         [Owner("Travis Frisinger")]
         [TestCategory("DebugInput_whenRun10Time")]
         public void DebugInput_WhenRun10Times_ExpectInputsPersistAndXMLRemainsLinked_InputsAndXMLRemainPersisted()

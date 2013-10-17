@@ -62,7 +62,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(smallDataGrid.GetChildren().Count == 0);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("SqlBulkInsertUITests")]
         public void SqlBulkInsertTest_OpenLargeViewAndEnterAnInvalidBatchAndTimeoutSizeAndClickDone_CorrectingErrorsAndClickDoneWillReturnToSmallView()
