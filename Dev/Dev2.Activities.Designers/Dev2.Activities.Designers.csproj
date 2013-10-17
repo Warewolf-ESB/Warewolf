@@ -74,6 +74,13 @@
     <Compile Include="Adorners\AdornerToggleButton.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Designers2\BaseConvert\BaseConvertDesignerViewModel.cs" />
+    <Compile Include="Designers2\BaseConvert\BaseConvertDesigner.xaml.cs">
+      <DependentUpon>BaseConvertDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\BaseConvert\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Calculate\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
@@ -317,6 +324,14 @@
   <ItemGroup>
     <Page Include="..\Dev2.Studio\Themes\ActivityStyles.xaml">
       <Link>Themes\ActivityStyles.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\BaseConvert\BaseConvertDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\BaseConvert\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

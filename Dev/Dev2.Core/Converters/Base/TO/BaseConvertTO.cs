@@ -1,11 +1,14 @@
 ﻿using Dev2.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Dev2.Providers.Errors;
+using Dev2.Providers.Validation;
+using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
 
 namespace Dev2
 {
-    public class BaseConvertTO : IDev2TOFn
+    public class BaseConvertTO : IDev2TOFn, IPerformsValidation
     {
         #region Fields
 
@@ -147,6 +150,48 @@ namespace Dev2
             {
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        #endregion
+
+        #region Implementation of IDataErrorInfo
+
+        /// <summary>
+        /// Gets the error message for the property with the given name.
+        /// </summary>
+        /// <returns>
+        /// The error message for the property. The default is an empty string ("").
+        /// </returns>
+        /// <param name="columnName">The name of the property whose error message to get. </param>
+        public string this[string columnName]
+        {
+            get
+            {
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Gets an error message indicating what is wrong with this object.
+        /// </summary>
+        /// <returns>
+        /// An error message indicating what is wrong with this object. The default is an empty string ("").
+        /// </returns>
+        public string Error { get; private set; }
+
+        #endregion
+
+        #region Implementation of IPerformsValidation
+
+        public Dictionary<string, List<IActionableErrorInfo>> Errors { get; set; }
+        public bool Validate(string propertyName, RuleSet ruleSet)
+        {
+            return false;
+        }
+
+        public bool Validate(string propertyName)
+        {
+            return false;
         }
 
         #endregion
