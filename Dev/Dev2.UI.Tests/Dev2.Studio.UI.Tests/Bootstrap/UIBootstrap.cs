@@ -22,11 +22,22 @@ namespace Dev2.Studio.UI.Tests.Bootstrap
             var mergeDir = _exeRoot + @"\Merge";
             Directory.Delete(mergeDir, true);
             DirectoryCopy(StagingLocation, mergeDir);
-            const string runBatFileDir = _exeRoot + "\\" + _runFileName;
-            if(File.Exists(runBatFileDir))
+            string serverExeDir = mergeDir + @"\Warewolf Server.exe";
+            if(File.Exists(serverExeDir))
             {
                 var proc = new Process();
-                proc.StartInfo.FileName = runBatFileDir;
+                proc.StartInfo.FileName = serverExeDir;
+                proc.StartInfo.RedirectStandardError = true;
+                proc.StartInfo.RedirectStandardOutput = true;
+                proc.StartInfo.UseShellExecute = false;
+                proc.Start();
+                Thread.Sleep(30000);
+            }
+            string studioExeDir = mergeDir + @"\Warewolf Studio.exe";
+            if(File.Exists(studioExeDir))
+            {
+                var proc = new Process();
+                proc.StartInfo.FileName = studioExeDir;
                 proc.StartInfo.RedirectStandardError = true;
                 proc.StartInfo.RedirectStandardOutput = true;
                 proc.StartInfo.UseShellExecute = false;
