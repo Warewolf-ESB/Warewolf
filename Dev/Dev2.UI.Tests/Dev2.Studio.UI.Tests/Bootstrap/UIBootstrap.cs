@@ -19,11 +19,22 @@ namespace Dev2.Studio.UI.Tests.Bootstrap
         [AssemblyInitialize()]
         public static void Init(TestContext textCtx)
         {
+            if (!File.Exists(_exeRoot + "\\" + _runFileName)) return;
+            var serverProcess = Process.GetProcessesByName("Warewolf Server");
+            var studioProcess = Process.GetProcessesByName("Warewolf Studio");
+            if (serverProcess.Length > 0)
+            {
+                serverProcess[0].Kill();
+            }
+            if (studioProcess.Length > 0)
+            {
+                studioProcess[0].Kill();
+            }
             var mergeDir = _exeRoot + @"\Merge";
             Directory.Delete(mergeDir, true);
             DirectoryCopy(StagingLocation, mergeDir);
             string serverExeDir = mergeDir + @"\Warewolf Server.exe";
-            if(File.Exists(serverExeDir))
+            if (File.Exists(serverExeDir))
             {
                 var proc = new Process();
                 proc.StartInfo.FileName = serverExeDir;
@@ -34,7 +45,7 @@ namespace Dev2.Studio.UI.Tests.Bootstrap
                 Thread.Sleep(30000);
             }
             string studioExeDir = mergeDir + @"\Warewolf Studio.exe";
-            if(File.Exists(studioExeDir))
+            if (File.Exists(studioExeDir))
             {
                 var proc = new Process();
                 proc.StartInfo.FileName = studioExeDir;
