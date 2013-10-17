@@ -124,8 +124,6 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsFalse(inputControl.Enabled);
             Assert.AreEqual(inputControl.GetProperty("Text").ToString(), string.Empty);
 
-            new TestBase().DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
-
         }
 
         #endregion Format Number Inputs Tests

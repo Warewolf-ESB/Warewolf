@@ -28,7 +28,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses
     
     
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
-    public partial class ActivityDropWindowUIMap
+    public partial class ActivityDropWindowUIMap : UIMapBase
     {
 
         /// <summary>
@@ -94,8 +94,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses
 
         private UITestControl GetLocalHostExplorerTree()
         {
-            var studioWindow = new UIBusinessDesignStudioWindow();
-            var SelectActivityDialog = studioWindow.GetChildren()[0];
+            var SelectActivityDialog = StudioWindow.GetChildren()[0];
             foreach (var child in SelectActivityDialog.GetChildren())
             {
                 var navViewAutoID = child.GetProperty("AutomationID").ToString();

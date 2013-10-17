@@ -430,6 +430,23 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion Service Details UI Map
 
+        #region Studio Window UI Map
+
+        public UIBusinessDesignStudioWindow StudioWindow
+        {
+            get
+            {
+                if(_studioWindowWizardUIMap == null)
+                    _studioWindowWizardUIMap = new UIBusinessDesignStudioWindow();
+                return _studioWindowWizardUIMap;
+            }
+
+        }
+
+        private UIBusinessDesignStudioWindow _studioWindowWizardUIMap;
+
+        #endregion Service Details UI Map
+
         #region Switch Wizard UI Map
 
         public SwitchWizardUIMap SwitchWizardUIMap

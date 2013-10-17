@@ -25,14 +25,6 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
     [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public partial class TabManagerUIMap
     {
-
-        public UIUI_TabManager_AutoIDTabList1 GetTabManager()
-        {
-            UIBusinessDesignStudioWindow2 theWindow = new UIBusinessDesignStudioWindow2();
-            UIUI_TabManager_AutoIDTabList1 tabMgr = new UIUI_TabManager_AutoIDTabList1(theWindow);
-            return tabMgr;
-        }
-
         public UITestControl GetManager()
         {
             var dockManager = new DocManagerUIMap();
@@ -46,42 +38,28 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public UITestControl FindTabByName(string name)
         {
-            ExplorerUIMap.ClosePane(GetActiveTab());
-            #region Variable Declarations
-            UIBusinessDesignStudioWindow2 theWindow = new UIBusinessDesignStudioWindow2();
-            UIUI_TabManager_AutoIDTabList1 tabMgr = new UIUI_TabManager_AutoIDTabList1(theWindow);
-            #endregion
-            //string firstName = uIServiceDetailsTabPage.FriendlyName;
-            UITestControl control = tabMgr.GetTab(name);
-
+            UITestControl control = _tabManager.GetTab(name);
             return control;
         }
 
         private int GetChildrenCount()
         {
-            #region Variable Declarations
-            UIUI_TabManager_AutoIDTabList1 tabMgr = GetTabManager();
-            #endregion
             int childCount = 0;
-            UITestControl ctrl;
-            if (tabMgr != null)
+            if(_tabManager != null)
             {
-                foreach (var child in tabMgr.GetChildren())
+                foreach(var child in _tabManager.GetChildren())
                 {
                     if (child.ControlType.Name == "TabPage")
                     {
-                        childCount = tabMgr.GetChildren().Count;
+                        childCount = _tabManager.GetChildren().Count;
                     }
                     else
                     {
                         continue;
                     }
                 }
-
-
             }
             return childCount;
-
         }
 
         private UIBusinessDesignStudioWindow2 uIBusinessDesignStudio;
@@ -176,7 +154,6 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             public UITestControl GetTab(string childAutomationID)
             {
                 WpfTabList theList = (WpfTabList)this;
-                UITestControl childOfInterest = new UITestControl();
                 UITestControlCollection tabList = theList.Tabs; // This lags for some reason
                 foreach (WpfTabPage currentTapPage in tabList)
                 {
@@ -185,12 +162,11 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                     {
                         if (tabChild.FriendlyName == childAutomationID)
                         {
-                            childOfInterest = currentTapPage;
-                            return childOfInterest;
+                            return currentTapPage;
                         }
                     }
                 }
-                return childOfInterest;
+                return null;
             }
         }
 

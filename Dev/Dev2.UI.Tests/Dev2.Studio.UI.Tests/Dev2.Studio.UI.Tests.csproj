@@ -58,9 +58,11 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
+    <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +76,8 @@
     <Compile Include="Bootstrap\StringResourcesTest1.Designer.cs" />
     <Compile Include="Bootstrap\UIBootstrap.cs" />
     <Compile Include="AutoConnectorTests.cs" />
+    <Compile Include="DebugUITests.cs" />
+    <Compile Include="DeployUITests.cs" />
     <Compile Include="SqlBulkInsertUITests.cs" />
     <Compile Include="DesignTimeErrorHandlingTests.cs" />
     <Compile Include="RemoteServerUITests.cs" />
@@ -88,7 +92,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestResourceStringsTest.resx</DependentUpon>
     </Compile>
-    <Compile Include="StudioBugTests.cs" />
+    <Compile Include="WorkflowDesignerUITests.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="UIMap.cs" />
     <Compile Include="UIMap.Designer.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using System.Drawing;
@@ -8,13 +9,19 @@ using MouseButtons = System.Windows.Forms.MouseButtons;
 
 namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 {
-
     public partial class TabManagerUIMap
     {
+        UIUI_TabManager_AutoIDTabList1 _tabManager;
+
+        public TabManagerUIMap()
+        {
+            var theWindow = new UIBusinessDesignStudioWindow2();
+            _tabManager = new UIUI_TabManager_AutoIDTabList1(theWindow);
+        }
+
         public string GetActiveTabName()
         {
-            var theTabManager = GetTabManager();
-            UITestControl tab = theTabManager.Tabs[theTabManager.SelectedIndex];
+            UITestControl tab = _tabManager.Tabs[_tabManager.SelectedIndex];
             UITestControlCollection tabChildren = tab.GetChildren();
             string selectedTabName = string.Empty;
             foreach (var tabChild in tabChildren)
@@ -56,8 +63,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public string GetTabNameAtPosition(int position)
         {
-            UIUI_TabManager_AutoIDTabList1 tabManager = GetTabManager();
-            string tabName = tabManager.Tabs[position].FriendlyName;
+            string tabName = _tabManager.Tabs[position].FriendlyName;
             return tabName;
         }
 
@@ -70,6 +76,16 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                 return tabs.Count;
             }
             return 0;
+        }
+
+        public bool CloseTab(UITestControl theTab)
+        {
+            foreach (var child in theTab.GetChildren().Where(child => child.GetProperty("AutomationID").ToString() == "closeBtn"))
+            {
+                Mouse.Click(child);
+                return true;
+            }
+            return false;
         }
 
         public bool CloseTab(string tabName)
@@ -121,7 +137,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             while(openTabs != 0 && canCloseTab)
             {
                 var activeTab = GetActiveTab();
-                canCloseTab = CloseTab_Click_No(GetActiveTabName());
+                canCloseTab = CloseTab_Click_No(activeTab);
                 openTabs = GetTabCount();
             }
         }
@@ -139,14 +155,14 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             Mouse.Click();
         }
 
-        public bool CloseTab_Click_No(string tabName)
+        public bool CloseTab_Click_No(UITestControl theTab)
         {
-            if (CloseTab(tabName))
+            if (CloseTab(theTab))
             {
                 try
                 {
                     UITestControlCollection saveDialogButtons = GetWorkflowNotSavedButtons();
-                    if (saveDialogButtons.Count > 0)
+                    if(saveDialogButtons.Count > 0)
                     {
                         UITestControl cancelButton = saveDialogButtons[1];
                         Point p = new Point(cancelButton.Left + 25, cancelButton.Top + 15);
@@ -157,7 +173,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                         return true;
                     }
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     return true;
                     //This is empty because if the pop cant be found then the tab must just close;)
@@ -181,8 +197,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public UITestControl GetActiveTab()
         {
-            var theTabManager = GetTabManager();
-            var tab = theTabManager.Tabs[theTabManager.SelectedIndex];
+            var tab = _tabManager.Tabs[_tabManager.SelectedIndex];
             var tabChildren = tab.GetChildren();
             var selectedTabName = string.Empty;
             foreach (var tabChild in tabChildren)
@@ -193,10 +208,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                     break;
                 }
             }
-            var theWindow = new UIBusinessDesignStudioWindow2();
-            var tabMgr = new UIUI_TabManager_AutoIDTabList1(theWindow);
-            //string firstName = uIServiceDetailsTabPage.FriendlyName;
-            var control = tabMgr.GetTab(selectedTabName);
+            var control = _tabManager.GetTab(selectedTabName);
 
             return control;
         }

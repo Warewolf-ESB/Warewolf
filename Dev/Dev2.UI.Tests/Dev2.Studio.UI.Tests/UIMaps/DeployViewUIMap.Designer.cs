@@ -8,6 +8,8 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+using Dev2.Studio.UI.Tests.Utils;
+
 namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
 {
     using Dev2.Studio.UI.Tests;
@@ -173,11 +175,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
 
         private UITestControlCollection GetDeployUserControlChildren(UITestControl theTab)
         {
-            UITestControlCollection theCollection = theTab.GetChildren();
-            UITestControl splurtControl = theCollection[6];
-            var uiTestControl = splurtControl.GetChildren()[0];
-            UITestControlCollection DeployUserControlChildren = uiTestControl.GetChildren();
-            return DeployUserControlChildren;
+            return
+                VisualTreeWalker.GetChildByAutomationIDPath(theTab, "WorkSurfaceContextViewModel", "DeployUserControl")
+                                .GetChildren();
+
+        }
+
+        private UITestControl GetDeployUserControl(UITestControl theTab)
+        {
+            return
+                VisualTreeWalker.GetChildByAutomationIDPath(theTab, "WorkSurfaceContextViewModel", "DeployUserControl");
 
         }
 

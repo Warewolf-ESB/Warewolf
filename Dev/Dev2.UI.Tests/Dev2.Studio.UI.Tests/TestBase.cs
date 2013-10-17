@@ -76,9 +76,6 @@ namespace Dev2.CodedUI.Tests
             // Check the data
             string varName = WorkflowDesignerUIMap.AssignControl_GetVariableName(theTab, "Assign", 0);
             StringAssert.Contains(varName, "[[pre_varOne_suf]]");
-
-            // All good - Clean up!
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         //PBI_8853
@@ -103,7 +100,6 @@ namespace Dev2.CodedUI.Tests
             var postCount = TabManagerUIMap.GetTabCount();
             Assert.IsTrue(postCount == preCount + 1, "Tab quantity has not been increased");
             Assert.IsTrue(activeTabName.Contains("Unsaved"), "Active workflow is not an unsaved workflow");
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         #endregion New PBI Tests
@@ -142,9 +138,6 @@ namespace Dev2.CodedUI.Tests
 
             string text = WorkflowDesignerUIMap.AssignControl_GetVariableName(theTab, "Assign", 0);
             StringAssert.Contains(text, "[[theVar0]]");
-
-            // All good - Cleanup time!
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         ////PBI 9461
@@ -197,7 +190,6 @@ namespace Dev2.CodedUI.Tests
             var theUnsavedTab = TabManagerUIMap.FindTabByName(tabName + " *");
             //------------Assert Results-------------------------
             Assert.IsTrue(theUnsavedTab.Exists);
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         [TestMethod]
@@ -249,8 +241,6 @@ namespace Dev2.CodedUI.Tests
             {
                 Assert.Fail("The tooltip for the Sum box does not appear.");
             }
-
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         [TestMethod]
@@ -275,14 +265,13 @@ namespace Dev2.CodedUI.Tests
             Assert.IsFalse(VariablesUIMap.CheckIfVariableIsUsed(0));
             Assert.IsTrue(VariablesUIMap.CheckIfVariableIsUsed(1));
             Playback.Wait(150);
-            DoCleanup("CalculateTaxReturns", true);
         }
 
         [TestMethod]
         // Regression Test
         public void ValidDatalistSearchTest()
         {
-            //// Create the workflow
+            // Create the workflow
             RibbonUIMap.CreateNewWorkflow();
 
             // Open the Variables tab, and enter the invalid value
@@ -564,17 +553,11 @@ namespace Dev2.CodedUI.Tests
 
         #region Additional test methods
 
-        /// <summary>
-        /// Deletes a service (Workflow) - Generally used at the end of a Coded UI Test
-        /// </summary>
-        /// <param name="server">The servername (EG: localhost)</param>
-        /// <param name="serviceType">The Service Type (Eg: WORKFLOWS)</param>
-        /// <param name="category">The Category(EG: CODEDUITESTCATEGORY)</param>
-        /// <param name="workflowName">The Workflow Name (Eg: MyCustomWorkflow)</param>
+        [TestCleanup]
         public void DoCleanup(string workflowName, bool clickNo = false)
         {
-                TabManagerUIMap.CloseAllTabs();
-            }
+            TabManagerUIMap.CloseAllTabs();
+        }
 
         #endregion
 

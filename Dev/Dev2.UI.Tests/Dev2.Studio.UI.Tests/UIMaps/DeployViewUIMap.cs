@@ -1,4 +1,7 @@
 ﻿using System.Windows.Forms;
+using Dev2.Studio.UI.Tests;
+using Dev2.Studio.UI.Tests.Utils;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 
 namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
 {
@@ -8,7 +11,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 
-    public partial class DeployViewUIMap
+    public partial class DeployViewUIMap : UIMapBase
     {
         public void SelectServers(UITestControl theTab, string sourceServer, string destinationServer)
         {
@@ -63,52 +66,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             {
                 return false;
             }
-
-            //UITestControl theSourceServerTree = GetSourceServerTree(theTab);
-
-
-            /*
-            List<WpfTreeItem> selectedNodes = new List<WpfTreeItem>();
-            WpfTreeItem sourceTree =(WpfTreeItem)theSourceServerTree;
-            foreach (WpfTreeItem subNodes in sourceTree.Nodes) // Workflow Services, Workder Services, Sources
-            {
-                WpfCheckBox theCheckBox = (WpfCheckBox)subNodes.GetChildren()[1];
-                if (theCheckBox.Checked)
-                {
-                    selectedNodes.Add(subNodes);
-                }
-                foreach (WpfTreeItem category in subNodes.Nodes) // Categories
-                {
-                    theCheckBox = (WpfCheckBox)category.GetChildren()[1];
-                    if (theCheckBox.Checked)
-                    {
-                        selectedNodes.Add(category);
-                    }
-                    foreach (WpfTreeItem item in category.Nodes) // Items
-                    {
-                        string itemName = item.FriendlyName;
-                        theCheckBox = (WpfCheckBox)item.GetChildren()[1];
-                        if (theCheckBox.Checked)
-                        {
-                            selectedNodes.Add(item);
-                        }
-                    }
-                }
-            }
-            int selectedNodeCount = selectedNodes.Count;
-            int j = 1;
-             
-            sourceTree.SearchProperties["Selected"] = "True";
-            //foreach (var item in sourceTree.)
-            {
-
-            }
-             **/
-            //sourceTree.
-            //foreach (
-            // Get a list of all the selected
-            //foreach (IExpandCollapseProvider 
-            //foreach (
         }
 
         public bool DoesSourceServerHaveDeployItems(UITestControl theTab)
@@ -170,6 +127,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             UITestControlCollection blocks = GetWebsiteGridBlocks(theTab);
             UITestControl theBlock = blocks[0]; // Weird Layout - Block 0 is 1,0 and not 0,0 as you'd think
             return theBlock;
+        }
+
+        public WpfTree GetSourceNavigationTree()
+        {
+            var activeTab = TabManagerUIMap.GetActiveTab();
+            var deployUserControl = GetDeployUserControl(activeTab);
+            return VisualTreeWalker.GetChildByAutomationIDPath(deployUserControl, "SourceNavigationView", "Navigation") as WpfTree;
         }
     }
 }

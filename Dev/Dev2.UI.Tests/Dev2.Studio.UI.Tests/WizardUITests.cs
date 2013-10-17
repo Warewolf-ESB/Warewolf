@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Windows.Input;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses;
@@ -367,6 +368,51 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 Assert.IsTrue(true);
             }
+        }
+
+        [TestMethod]
+        [TestCategory("UITest")]
+        [Description("for bug 9717 - copy paste multiple decisions (2013.06.22)")]
+        [Owner("Ashley")]
+        public void CopyDecisionsWithContextMenuAndPasteExpectedNoWizardsDisplayed()
+        {
+            //Initialize
+            Clipboard.SetText(" ");
+            RibbonUIMap.CreateNewWorkflow();
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
+            var decision = ToolboxUIMap.FindControl("Decision");
+            //Drag on two decisions
+            ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
+            WizardsUIMap.WaitForWizard();
+            Playback.Wait(2000);
+            _decisionWizardUiMap.HitDoneWithKeyboard();
+            var newPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            newPoint.Y = newPoint.Y + 200;
+            ToolboxUIMap.DragControlToWorkflowDesigner(decision, newPoint);
+            WizardsUIMap.WaitForWizard();
+            Playback.Wait(2000);
+            _decisionWizardUiMap.HitDoneWithKeyboard();
+            //Rubberband select them
+            var startDragPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            startDragPoint.X = startDragPoint.X - 100;
+            startDragPoint.Y = startDragPoint.Y - 100;
+            Mouse.Move(startDragPoint);
+            newPoint.X = newPoint.X + 100;
+            newPoint.Y = newPoint.Y + 100;
+            Mouse.StartDragging();
+            Mouse.StopDragging(newPoint);
+            startDragPoint.X = startDragPoint.X + 150;
+            startDragPoint.Y = startDragPoint.Y + 150;
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, startDragPoint);
+            var designSurface = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
+            SendKeys.SendWait("{DOWN}{DOWN}{ENTER}");
+            Mouse.Click(designSurface);
+            SendKeys.SendWait("^v");
+            UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            Assert.AreEqual("System Menu Bar", uIItemImage.FriendlyName);
+            TabManagerUIMap.CloseAllTabs();
         }
 
         #endregion
