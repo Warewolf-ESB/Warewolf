@@ -180,9 +180,6 @@
     <Compile Include="ActivityDesigners\DsfCommentActivityDesigner.xaml.cs">
       <DependentUpon>DsfCommentActivityDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\DsfCountRecordsetActivityDesinger.xaml.cs">
-      <DependentUpon>DsfCountRecordsetActivityDesinger.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\DsfDataSplitActivityDesigner.xaml.cs">
       <DependentUpon>DsfDataSplitActivityDesigner.xaml</DependentUpon>
     </Compile>
@@ -200,9 +197,6 @@
     </Compile>
     <Compile Include="ActivityDesigners\DsfDateTimeDifferenceActivityDesigner.xaml.cs">
       <DependentUpon>DsfDateTimeDifferenceActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfDeleteRecordActivityDesigner.xaml.cs">
-      <DependentUpon>DsfDeleteRecordActivityDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="ActivityDesigners\DsfFindRecordsActivityDesigner.xaml.cs">
       <DependentUpon>DsfFindRecordsActivityDesigner.xaml</DependentUpon>
@@ -665,10 +659,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ActivityDesigners\DsfCountRecordsetActivityDesinger.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ActivityDesigners\DsfDataSplitActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -692,10 +682,6 @@
     <Page Include="ActivityDesigners\DsfCheckpointActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfDeleteRecordActivityDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ActivityDesigners\DsfFindRecordsActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>

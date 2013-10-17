@@ -79,6 +79,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recordset - Delete Records.
+        /// </summary>
+        internal static string DsfDeleteRecordActivity {
+            get {
+                return ResourceManager.GetString("DsfDeleteRecordActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Utility - Assign.
         /// </summary>
         internal static string DsfMultiAssignActivity {

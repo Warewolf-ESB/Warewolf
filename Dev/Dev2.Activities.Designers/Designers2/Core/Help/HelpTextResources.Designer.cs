@@ -881,6 +881,51 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To Delete a record in a recordset, put the recordset name in here with the index you would like to remove. e.g. [[Customers(7)]] will remove the record at index 7. [[Customers(*)]] will delete all the data in the recordset. This is recommended when working with large amounts of data that is no longer needed..
+        /// </summary>
+        public static string DeleteRecordsHelpRecords {
+            get {
+                return ResourceManager.GetString("DeleteRecordsHelpRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the Success or Failure of the delete action. e.g. Deleting index 8 where it does not exist will result in Failure.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string DeleteRecordsHelpResult {
+            get {
+                return ResourceManager.GetString("DeleteRecordsHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string DeleteRecordsToolTipRecords {
+            get {
+                return ResourceManager.GetString("DeleteRecordsToolTipRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string DeleteRecordsToolTipResult {
+            get {
+                return ResourceManager.GetString("DeleteRecordsToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///Put  the index of the string you are looking for in here..
         /// </summary>

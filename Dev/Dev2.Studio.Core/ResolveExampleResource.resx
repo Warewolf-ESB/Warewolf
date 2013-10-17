@@ -123,6 +123,9 @@
   <data name="DsfDateTimeActivity" xml:space="preserve">
     <value>Utility - Date and Time Difference</value>
   </data>
+  <data name="DsfDeleteRecordActivity" xml:space="preserve">
+    <value>Recordset - Delete Records</value>
+  </data>
   <data name="DsfMultiAssignActivity" xml:space="preserve">
     <value>Utility - Assign</value>
   </data>

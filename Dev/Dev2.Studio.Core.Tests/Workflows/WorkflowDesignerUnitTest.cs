@@ -11,6 +11,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
 using Caliburn.Micro;
+using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.ViewModelTests;
@@ -2551,7 +2552,7 @@ namespace Dev2.Core.Tests
         {
             var wf = CreateWorkflowDesignerViewModel(eventPublisher, resourceModel, new WorkflowHelper(), false);
 
-            var designerAttributes = new Dictionary<Type, Type> { { typeof(DsfActivity), typeof(DsfActivityDesigner) }, { typeof(DsfMultiAssignActivity), typeof(Dev2.Activities.Designers2.MultiAssign.MultiAssignDesigner) }, { typeof(DsfAssignActivity), typeof(DsfAssignActivityDesigner) },{ typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner) }, { typeof(DsfCountRecordsetActivity), typeof(DsfCountRecordsetActivityDesigner) } };
+            var designerAttributes = new Dictionary<Type, Type> { { typeof(DsfActivity), typeof(DsfActivityDesigner) }, { typeof(DsfMultiAssignActivity), typeof(Dev2.Activities.Designers2.MultiAssign.MultiAssignDesigner) }, { typeof(DsfAssignActivity), typeof(DsfAssignActivityDesigner) }, { typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner) }, { typeof(DsfCountRecordsetActivity), typeof(CountRecordsDesigner) } };
 
             wf.InitializeDesigner(designerAttributes);
 

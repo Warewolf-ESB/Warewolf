@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Activities.Designers2.DateTime;
+using Dev2.Activities.Designers2.DeleteRecords;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
 using Dev2.Activities.Designers2.GetWebRequest;
 using Dev2.Activities.Designers2.MultiAssign;
@@ -27,6 +28,7 @@ namespace Dev2.Studio.ActivityDesigners
                     {typeof (DsfSqlBulkInsertActivity), typeof (SqlBulkInsertDesigner)},
                     {typeof (DsfSortRecordsActivity), typeof (SortRecordsDesigner)},
                     {typeof (DsfCountRecordsetActivity), typeof (CountRecordsDesigner)},
+                    {typeof (DsfDeleteRecordActivity), typeof (DeleteRecordsDesigner)},
 
                     {typeof (DsfActivity), typeof (DsfActivityDesigner)},
                     {typeof (DsfDatabaseActivity), typeof (DsfActivityDesigner)},
@@ -55,7 +57,7 @@ namespace Dev2.Studio.ActivityDesigners
                     {typeof (DsfBaseConvertActivity), typeof (DsfBaseConvertActivityDesigner)},
                     {typeof (DsfReplaceActivity), typeof (DsfReplaceActivityDesigner)},
                     {typeof (DsfIndexActivity), typeof (DsfIndexActivityDesigner)},
-                    {typeof (DsfDeleteRecordActivity), typeof (DsfDeleteRecordActivityDesigner)},
+                    //{typeof (DsfDeleteRecordActivity), typeof (DsfDeleteRecordActivityDesigner)},
                     {typeof (DsfDataMergeActivity), typeof (DsfDataMergeActivityDesigner)},
 //                    {typeof (DsfRemoveActivity), typeof (DsfRemoveActivityDesigner)},
 //                    {typeof (DsfTagCountActivity), typeof (DsfTagCountActivityDesigner)},
