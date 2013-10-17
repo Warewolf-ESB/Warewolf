@@ -203,7 +203,7 @@ namespace Dev2.Session
 
             if (typeOf == enTranslationTypes.XML)
             {
-                ErrorResultTO errors = new ErrorResultTO();
+                ErrorResultTO errors;
 
 
                 Guid resultID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), data,

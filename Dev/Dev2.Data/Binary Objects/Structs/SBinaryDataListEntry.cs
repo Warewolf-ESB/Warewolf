@@ -232,7 +232,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
         #region Public Methods
 
-
         public void AddAlias(Guid dlID, string parentColumn, string parentNamespace, string childColumn, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
