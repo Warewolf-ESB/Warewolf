@@ -79,15 +79,69 @@ namespace Dev2.Tests.Runtime.ESB
 
             Assert.AreEqual("Server source not found.", errors.MakeDisplayReady(), "Execute did not return an error for a non-existent resource catalog connection.");
         }
+
+        // ReSharper disable InconsistentNaming
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("RemoteWorkflowExecutionContainer_PerformLogExecution")]
+        public void RemoteWorkflowExecutionContainer_PerformLogExecution_WhenNoDataListFragments_HasProvidedUriToExecute()
+        {
+            //------------Setup for test--------------------------
+            const string LogUri = "http://localhost:1234/Services?Error=Error";
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns("");
+            var container = CreateExecutionContainer(resourceCatalog.Object);
+            //------------Execute Test---------------------------
+            container.PerformLogExecution(LogUri);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(LogUri,container.LogExecutionUrl);
+
+        }        
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("RemoteWorkflowExecutionContainer_PerformLogExecution")]
+        public void RemoteWorkflowExecutionContainer_PerformLogExecution_WhenScalarDataListFragments_HasEvaluatedUriToExecute()
+        {
+            //------------Setup for test--------------------------
+            const string LogUri = "http://localhost:1234/Services?Error=[[Err]]";
+            const string ExpectedLogUri = "http://localhost:1234/Services?Error=Error Message";
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns("");
+            var container = CreateExecutionContainer(resourceCatalog.Object,"<DataList><Err/></DataList>","<ADL><Err>Error Message</Err></ADL>");
+            //------------Execute Test---------------------------
+            container.PerformLogExecution(LogUri);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExpectedLogUri, container.LogExecutionUrl);
+
+        }     
+ 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("RemoteWorkflowExecutionContainer_PerformLogExecution")]
+        public void RemoteWorkflowExecutionContainer_PerformLogExecution_WhenRecordsetDataListFragments_HasEvaluatedUriToExecute()
+        {
+            //------------Setup for test--------------------------
+            const string LogUri = "http://localhost:1234/Services?Error=[[Errors().Err]]";
+            const string ExpectedLogUri = "http://localhost:1234/Services?Error=Error Message";
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns("");
+            var container = CreateExecutionContainer(resourceCatalog.Object,"<DataList><Errors><Err></Err></Errors></DataList>","<ADL><Errors><Err>Error Message</Err></Errors></ADL>");
+            //------------Execute Test---------------------------
+            container.PerformLogExecution(LogUri);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExpectedLogUri, container.LogExecutionUrl);
+
+        }
         #endregion
 
         #region CreateExecutionContainer
 
-        static RemoteWorkflowExecutionContainerMock CreateExecutionContainer(IResourceCatalog resourceCatalog)
+        static RemoteWorkflowExecutionContainerMock CreateExecutionContainer(IResourceCatalog resourceCatalog, string dataListShape = "<DataList></DataList>", string dataListData = "")
         {
             ErrorResultTO errors;
             var compiler = DataListFactory.CreateDataListCompiler();
-            var dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "", "<DataList></DataList>", out errors);
+            var dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), dataListData, dataListShape, out errors);
 
             var dataObj = new Mock<IDSFDataObject>();
             dataObj.Setup(d => d.DataListID).Returns(dataListID);

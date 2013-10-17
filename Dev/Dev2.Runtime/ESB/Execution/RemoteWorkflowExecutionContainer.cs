@@ -51,37 +51,22 @@ namespace Dev2.Runtime.ESB.Execution
         {
             var dataListCompiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            IBinaryDataListEntry expressionsEntry = dataListCompiler.Evaluate(DataObject.DataListID, enActionType.User, logUri, false, out errors);
-            IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
+            var expressionsEntry = dataListCompiler.Evaluate(DataObject.DataListID, enActionType.User, logUri, false, out errors);
+            var itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
             while(itr.HasMoreRecords())
             {
-                 IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
-                foreach(IBinaryDataListItem c in cols)
+                var cols = itr.FetchNextRowData();
+                foreach(var c in cols)
                 {
                     var buildGetWebRequest = BuildGetWebRequest(c.TheValue);
-                    buildGetWebRequest.GetResponseAsync();
+                    ExecuteWebRequestAsync(buildGetWebRequest);
                 }
             }
-            
-//            var uriAndParameter = logUri.Split(new []{"?"}, StringSplitOptions.None);
-//            var countOfUriAndParameter = uriAndParameter.Count();
-//            if(countOfUriAndParameter == 1) // we all have a uri to execute
-//            {
-////                var myUri = uriAndParameter[0];
-////                ErrorResultTO errors;
-////                var entry = dataListCompiler.Evaluate(DataObject.DataListID, enActionType.User, myUri, false, out errors);
-////                myUri = entry.FetchScalar().TheValue;
-////                BuildGetWebRequest(myUri);
-//            }
-//            else if(countOfUriAndParameter == 2) // we have a Uri and some parameters
-//            {
-//
-//            }
-//            else
-//            {
-//                throw new UriFormatException(string.Format("Malformed URI: {0}", logUri));
-//            }
+        }
 
+        protected virtual void ExecuteWebRequestAsync(WebRequest buildGetWebRequest)
+        {
+            buildGetWebRequest.GetResponseAsync();
         }
 
         public override Guid Execute(out ErrorResultTO errors)
