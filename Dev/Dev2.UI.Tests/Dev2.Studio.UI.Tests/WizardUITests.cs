@@ -62,7 +62,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         #region Service Wizards
 
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         public void ClickNewPluginServiceExpectedPluginServiceOpens()
         {
             RibbonUIMap.ClickRibbonMenuItem("UI_RibbonHomeTabPluginServiceBtn_AutoID");
@@ -118,7 +118,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", cat, name));
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
             var studioWindow = new UIBusinessDesignStudioWindow();
@@ -128,7 +128,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             DatabaseServiceWizardUIMap.ClickCancel();
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         public void ClickNewPluginServiceShortcutKeyExpectedPluginServiceOpens()
         {
             var studioWindow = new UIBusinessDesignStudioWindow();
@@ -138,7 +138,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             PluginServiceWizardUIMap.ClickCancel();
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         public void NewWebServiceShortcutKeyExpectedWebServiceOpens()
         {
             var studioWindow = new UIBusinessDesignStudioWindow();
@@ -153,7 +153,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         #region Source Wizards
 
         //2013.06.22: Ashley Lewis for bug 9478
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         public void EmailSourceWizardCreateNewSourceExpectedSourceCreated()
         {
             //Initialization
@@ -252,7 +252,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Assert.IsNotNull(point);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         [Owner("Ashley Lewis")]
         [TestCategory("Decision_Intellisense")]
         public void Decision_Intellisense_KeyboardSelect_DecisionTitleUpdatesCorrectly()
@@ -299,7 +299,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Assert.AreEqual(expected, displayValue, "Decision intellisense doesnt work when using the keyboard to select intellisense results");
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         public void DragADecisionIntoForEachExpectNotAddedToForEach()
         {
             // Create the workflow
@@ -335,7 +335,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             }
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         public void DragASwitchIntoForEachExpectNotAddedToForEach()
         {
             // Create the workflow
@@ -370,7 +370,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             }
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         [TestCategory("UITest")]
         [Description("for bug 9717 - copy paste multiple decisions (2013.06.22)")]
         [Owner("Ashley")]

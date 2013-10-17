@@ -145,7 +145,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
 
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         [TestCategory("UITest")]
         [Description("Test that clicking on the help button does indeed open an example workflow")]
         [Owner("Tshepo")]
@@ -182,7 +182,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsNotNull(waitForTabToOpen);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         [Owner("Ashley Lewis")]
         [TestCategory("HelpButtonAdorner_CollapseHelp")]
         public void WorkflowdesignSurface_CollapseHelp()
