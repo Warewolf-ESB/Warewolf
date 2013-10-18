@@ -20,6 +20,8 @@ namespace Dev2.Studio.ViewModels.DataList
         bool _isNew;
         bool _requiredMissing;
         string _typeName;
+        bool _isMapsToFocused;
+        bool _isValueFocused;
 
         #region Properties
 
@@ -136,9 +138,16 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             set
             {
-                _mapsTo = value;
+                if(!value.Equals(_mapsTo))
+                {
+                    _mapsTo = value;
+                    base.OnPropertyChanged("MapsTo");
 
-                base.OnPropertyChanged("MapsTo");
+                    if(Required)
+                    {
+                        RequiredMissing = string.IsNullOrEmpty(_mapsTo);
+                    }
+                }
             }
         }
 
@@ -171,7 +180,11 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             set
             {
-                _required = value;
+                if(!value.Equals(_required))
+                {
+                    _required = value;
+                    base.OnPropertyChanged("Required");
+                }
             }
         }
 
@@ -187,6 +200,34 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
         public bool EmptyToNull { get; private set; }
+
+        public bool IsMapsToFocused
+        {
+            get { return _isMapsToFocused; }
+            set
+            {
+                if(value.Equals(_isMapsToFocused))
+                {
+                    return;
+                }
+                _isMapsToFocused = value;
+                NotifyOfPropertyChange(() => IsMapsToFocused);
+            }
+        }
+
+        public bool IsValueFocused
+        {
+            get { return _isValueFocused; }
+            set
+            {
+                if(value.Equals(_isValueFocused))
+                {
+                    return;
+                }
+                _isValueFocused = value;
+                NotifyOfPropertyChange(() => IsValueFocused);
+            }
+        }
 
         #endregion
 
@@ -228,7 +269,7 @@ namespace Dev2.Studio.ViewModels.DataList
         public object Clone()
         {
 
-            IObjectCloner<IDataListItemModel> cloner = new ObjectCloner<IDataListItemModel>();           
+            IObjectCloner<IDataListItemModel> cloner = new ObjectCloner<IDataListItemModel>();
             IInputOutputViewModel result = new InputOutputViewModel(this.Name, this.Value, this.MapsTo, this.DefaultValue, this.Required, this.RecordSetName, this.EmptyToNull);
 
             return result;

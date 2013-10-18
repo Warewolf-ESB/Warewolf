@@ -83,6 +83,7 @@
     <Compile Include="Behavior\DataGridWatermarkModifier.cs" />
     <Compile Include="Behavior\ThumbResizeBehavior.cs" />
     <Compile Include="Behavior\VisibilityChangedToFocusBehavior.cs" />
+    <Compile Include="Controls\SimpleGridSplitter.cs" />
     <Compile Include="Converters\EmptyStringToBoolConverter.cs" />
     <Compile Include="Converters\EmptyStringToVisibilityConverter.cs" />
     <Compile Include="Converters\MathFunction.cs" />

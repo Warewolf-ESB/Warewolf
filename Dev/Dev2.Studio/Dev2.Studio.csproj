@@ -465,7 +465,6 @@
     <Compile Include="Webs\WebSites.cs" />
     <Compile Include="Webs\Callbacks\Dev2DecisionCallbackHandler.cs" />
     <Compile Include="AppResources\Comparers\DeployStatsTOComparer.cs" />
-    <Compile Include="AppResources\Converters\IntToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\NavigationViewModelToImageConverter.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -490,7 +489,6 @@
     <Compile Include="AppResources\TextEditorCompletion\TextEditorCompletionData.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Webs\Callbacks\ConnectCallbackHandler.cs" />
-    <Compile Include="CustomControls\SimpleGridSplitter.cs" />
     <Compile Include="CustomControls\Connections\ConnectControl.xaml.cs">
       <DependentUpon>ConnectControl.xaml</DependentUpon>
     </Compile>

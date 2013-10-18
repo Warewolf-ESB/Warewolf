@@ -13,14 +13,13 @@
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Service"
                                xmlns:interfaces="clr-namespace:Dev2.Data.Interfaces;assembly=Dev2.Data"
+                               xmlns:system="clr-namespace:System;assembly=mscorlib"
                                MinWidth="350"
                                Width="350"
-                               MaxWidth="600"
-                               MaxHeight="500"
-                               MinHeight="250"
+                               MinHeight="175"
                                mc:Ignorable="d"
                                d:DesignHeight="300"
-                               d:DesignWidth="300"
+                               d:DesignWidth="350"
                                d:DataContext="{d:DesignInstance local:ServiceDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
@@ -43,14 +42,31 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <TextBlock Grid.Row="0"
+                   Text="There are no input mappings."
+                   Foreground="{StaticResource BrushDisabledForeground}"
+                   HorizontalAlignment="Center"
+                   Margin="0,5,0,0">
+            <TextBlock.Visibility>
+                <Binding Path="DataMappingViewModel.Inputs.Count"
+                         Converter="{StaticResource IntToVisibilityConverter}">
+                    <Binding.ConverterParameter>
+                        <system:Boolean>True</system:Boolean>
+                    </Binding.ConverterParameter>
+                </Binding>
+            </TextBlock.Visibility>
+        </TextBlock>
         <controls:Dev2DataGrid x:Name="InputsDataGrid"
                                Grid.Row="0"
-                               ItemsSource="{Binding DataMappingViewModel.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                               
-                               Style="{StaticResource ActivityMapppingDataGridStyle}"
+                               ItemsSource="{Binding DataMappingViewModel.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                CanUserResizeRows="False"
-                               VerticalScrollBarVisibility="Hidden">
+                               Style="{StaticResource ActivityMapppingDataGridStyle}"
+                               Margin="0"
+                               BorderThickness="0"
+                               Visibility="{Binding DataMappingViewModel.Inputs.Count, Converter={StaticResource IntToVisibilityConverter}}">
 
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
 
@@ -89,24 +105,24 @@
                                                                  PropertyName="IsNew"
                                                                  Value="False"/>
                                     </i:EventTrigger>
-                                     <i:EventTrigger EventName="KeyUp">   
-                                         <i:InvokeCommandAction Command="{Binding Path=DataContext.SetInputsCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                                                CommandParameter="{Binding}"/>
-                                    </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <ui:IntellisenseTextBox.Style>
                                     <Style TargetType="ui:IntellisenseTextBox"
-                                           BasedOn="{StaticResource DatagridIntellisenseTextBoxStyle}">
+                                           BasedOn="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Path=IsNew}"
                                                          Value="True">
+                                                <Setter Property="Control.BorderThickness"
+                                                        Value="1" />
                                                 <Setter Property="Control.Background"
-                                                        Value="{StaticResource WarningBrush}"></Setter>
+                                                        Value="{StaticResource WarningBrush}"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Path=RequiredMissing}"
+                                            <DataTrigger Binding="{Binding Path=RequiredMissing, Mode=OneWay}"
                                                          Value="True">
+                                                <Setter Property="Control.BorderThickness"
+                                                        Value="1" />
                                                 <Setter Property="Control.BorderBrush"
-                                                        Value="{StaticResource ErrorBrush}"></Setter>
+                                                        Value="{StaticResource ErrorBrush}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -125,36 +141,53 @@
                         <DataTemplate>
                             <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"
-                                                      MinWidth="3" />
+                                    <ColumnDefinition Width="4"/>
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Content="*"
-                                       VerticalAlignment="Center"
-                                       Visibility="{Binding RequiredMissing, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                <TextBlock Grid.Column="0"
+                                       Text="*"
+                                       ToolTip="Required"
+                                       VerticalAlignment="Top"
+                                       Margin="0"
+                                       Visibility="{Binding Required, Converter={StaticResource BoolToVisibilityConverter}}" />
                                 <TextBlock Grid.Column="1"
                                            Text="{Binding Path=DisplayName}"
                                            TextTrimming="CharacterEllipsis"
                                            VerticalAlignment="Center"
-                                           Padding="3,0">
+                                           Padding="0,0,3,0">
                                     <TextBlock.ToolTip>
                                         <ToolTip Content="{Binding Path=DisplayName}" />
-                                    </TextBlock.ToolTip>
+                                    </TextBlock.ToolTip>                                   
                                 </TextBlock>
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
-        </controls:Dev2DataGrid>
-
-        <!--<SimpleGridSplitter Grid.Row="1" Background="LightGray" Margin="0,2,0,0" Height="7" VerticalAlignment="Center" HorizontalAlignment="Stretch" />-->
-      
-        <controls:Dev2DataGrid Grid.Row="2"
+        </controls:Dev2DataGrid>        
+        
+        <TextBlock Grid.Row="2"
+                   Text="There are no output mappings."
+                   Foreground="{StaticResource BrushDisabledForeground}"
+                   HorizontalAlignment="Center"
+                   Margin="0,5,0,0">
+            <TextBlock.Visibility>
+                <Binding Path="DataMappingViewModel.Outputs.Count"
+                         Converter="{StaticResource IntToVisibilityConverter}">
+                    <Binding.ConverterParameter>
+                        <system:Boolean>True</system:Boolean>
+                    </Binding.ConverterParameter>
+                </Binding>
+            </TextBlock.Visibility>
+        </TextBlock>
+        
+        <controls:Dev2DataGrid x:Name="OutputsDataGrid" Grid.Row="2"
                                ItemsSource="{Binding DataMappingViewModel.Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                               
                                Style="{StaticResource ActivityMapppingDataGridStyle}"
                                CanUserResizeRows="False"
-                               VerticalScrollBarVisibility="Hidden">
+                               Margin="0"
+                               BorderThickness="0"
+                               Visibility="{Binding DataMappingViewModel.Inputs.Count, Converter={StaticResource IntToVisibilityConverter}}">
 
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
 
@@ -168,22 +201,13 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto"
-                                                      MinWidth="3" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="1"
-                                           Text="{Binding Path=DisplayName}"
+                                <TextBlock Text="{Binding Path=DisplayName}"
                                            TextTrimming="CharacterEllipsis"
                                            VerticalAlignment="Center"
                                            Padding="3,0">
                                     <TextBlock.ToolTip>
                                         <ToolTip Content="{Binding Path=DisplayName}" />
                                     </TextBlock.ToolTip>
-                                <Label Grid.Column="0" Content="*"
-                                       VerticalAlignment="Center"
-                                       Visibility="{Binding RequiredMissing, Converter={StaticResource BoolToVisibilityConverter}}" />
                                 </TextBlock>
                             </Grid>
                         </DataTemplate>
@@ -203,7 +227,7 @@
                                                     WrapInBrackets="True"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsValueFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                     Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
-                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
+                                                    Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.ServiceHelpOutput}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -219,18 +243,14 @@
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
-                                <i:Interaction.Triggers>                                 
-                                     <i:EventTrigger EventName="KeyUp">   
-                                         <i:InvokeCommandAction Command="{Binding Path=DataContext.SetOutputsCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                                                CommandParameter="{Binding}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>                               
                             </ui:IntellisenseTextBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </controls:Dev2DataGrid>
-  
+
+        <errors:OnError Grid.Row="3"
+                        Margin="10,0,10,10" />
     </Grid>
 </core:ActivityDesignerTemplate>

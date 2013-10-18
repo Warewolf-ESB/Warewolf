@@ -3,9 +3,8 @@
                     xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                     xmlns:customControlsConverters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                     xmlns:studioConverters="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
-                    xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"                    
-                    xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
-                    xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+                    xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"                                        
+                    xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"                   
                     x:Class="ArbitraryNameToEliminateBogusGenericsErrorDsfActivityResources">
 
     <ResourceDictionary.MergedDictionaries>
@@ -22,6 +21,7 @@
     <studioConverters:FindRecordsTypeToBoolConverter x:Key="FindRecordsTypeToBoolConverter" />
     <studioConverters:SplitTypeToEnabledConverter x:Key="SplitTypeToEnabledConverter" />
     <studioConverters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    <studioConverters:IntToVisibilityConverter x:Key="IntToVisibilityConverter"/>
     
     <interfaceImplementors:CalculateIntellisenseTextConverter x:Key="ModelTextConverter" />
 
@@ -66,7 +66,7 @@
         </Style.Triggers>
     </Style>
     
-     <Style x:Key="SpacedActivityDataGridStyle" BasedOn="{StaticResource ActivityDataGridStyle}" TargetType="{x:Type controls:Dev2DataGrid}">
+     <Style x:Key="SpacedActivityDataGridStyle" BasedOn="{StaticResource ActivityDataGridStyle}" TargetType="{x:Type DataGrid}">
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
@@ -75,7 +75,7 @@
     </Style>   
     
      
-    <Style x:Key="ActivityMapppingDataGridStyle" BasedOn="{StaticResource SpacedActivityDataGridStyle}" TargetType="{x:Type controls:Dev2DataGrid}">
+    <Style x:Key="ActivityMapppingDataGridStyle" BasedOn="{StaticResource SpacedActivityDataGridStyle}" TargetType="{x:Type DataGrid}">
         <Setter Property="Margin" Value="0,4"/>
         <Setter Property="GridLinesVisibility" Value="All"/>
         <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource DataGridBorderBrush}"/>

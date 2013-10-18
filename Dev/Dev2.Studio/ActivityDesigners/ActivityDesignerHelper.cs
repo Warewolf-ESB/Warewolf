@@ -7,7 +7,6 @@ using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Activities.Designers2.DateTime;
 using Dev2.Activities.Designers2.DeleteRecords;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
-
 using Dev2.Activities.Designers2.GetWebRequest;
 using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Activities.Designers2.Service;
@@ -36,12 +35,13 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDeleteRecordActivity), typeof(DeleteRecordsDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
+                { typeof(DsfBaseConvertActivity), typeof(BaseConvertDesigner) },
                // { typeof(DsfNumberFormatActivity), typeof(FormatNumberDesigner) },
 
-                { typeof(DsfActivity), typeof(DsfActivityDesigner) },
-                { typeof(DsfDatabaseActivity), typeof(DsfActivityDesigner) },
-                //{ typeof(DsfActivity), typeof(ServiceDesigner) },
-                //{ typeof(DsfDatabaseActivity), typeof(ServiceDesigner) },
+                //{ typeof(DsfActivity), typeof(DsfActivityDesigner) },
+                //{ typeof(DsfDatabaseActivity), typeof(DsfActivityDesigner) },
+                { typeof(DsfActivity), typeof(ServiceDesigner) },
+                { typeof(DsfDatabaseActivity), typeof(ServiceDesigner) },
                 { typeof(DsfCommentActivity), typeof(DsfCommentActivityDesigner) },
                 { typeof(DsfAssignActivity), typeof(DsfAssignActivityDesigner) },
                 //{typeof (TransformActivity), typeof (DsfTransformActivityDesigner)},
@@ -61,8 +61,6 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfUnZip), typeof(DsfUnzipDesigner) },
                 { typeof(DsfDateTimeDifferenceActivity), typeof(DsfDateTimeDifferenceActivityDesigner) },
                 { typeof(DsfCaseConvertActivity), typeof(DsfCaseConvertActivityDesigner) },
-               // { typeof(DsfBaseConvertActivity), typeof(DsfBaseConvertActivityDesigner) },
-                { typeof(DsfBaseConvertActivity), typeof(BaseConvertDesigner) },
                 { typeof(DsfReplaceActivity), typeof(DsfReplaceActivityDesigner) },
                 { typeof(DsfIndexActivity), typeof(DsfIndexActivityDesigner) },
                 { typeof(DsfDataMergeActivity), typeof(DsfDataMergeActivityDesigner) },

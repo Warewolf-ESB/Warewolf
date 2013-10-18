@@ -39,7 +39,7 @@
     <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
     <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter" />
     <converters:BoolToDisabledFontColorConverter x:Key="BoolToDisabledFontColorConverter" />
-    <converters3:IntToVisibilityConverter x:Key="IntToVisibilityConverter" />
+    <converters:IntToVisibilityConverter x:Key="IntToVisibilityConverter" />
     <converters3:NullToDebugImageConverter x:Key="NullToDebugImageConverter" />
     <converters3:NullToDebugRibbonButtonTextConverter x:Key="NullToDebugRibbonButtonTextConverter" />
     <converters:StringToAutomationIdConverter x:Key="StringToAutomationIdConverter" />

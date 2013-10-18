@@ -12,6 +12,7 @@
                       xmlns:adorners="clr-namespace:Dev2.Activities.Adorners;assembly=Dev2.Activities.Designers"
                       xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                       xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
+                      xmlns:customControls1="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
                       Name="ADesigner"                      
                       MinWidth="250"
                       PreviewMouseDoubleClick="DsfActivityDesigner_OnPreviewMouseDoubleClick"
@@ -182,7 +183,7 @@
                                             </DataGrid.Columns>
                                         </DataGrid>
                                     </Grid>
-                                    <customControls:SimpleGridSplitter Background="LightGray" Margin="0,2,0,0" Height="7" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
+                                    <customControls1:SimpleGridSplitter Background="LightGray" Margin="0,2,0,0" Height="7" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
                                     <Grid Grid.Column="1" Grid.Row="2">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>

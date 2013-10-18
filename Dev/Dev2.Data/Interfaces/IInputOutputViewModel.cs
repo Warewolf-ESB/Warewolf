@@ -16,6 +16,8 @@ namespace Dev2.Data.Interfaces
         bool IsNew { get; set; }
         bool RequiredMissing { get; set; }
         string TypeName { get; set; }
+        bool IsMapsToFocused { get; set; }
+        bool IsValueFocused { get; set; }
 
         IDev2Definition GetGenerationTO();
     }

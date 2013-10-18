@@ -115,7 +115,8 @@ namespace Dev2.Core.Tests {
         ///A result for InputOutputViewModel Constructor
         ///</summary>
         [TestMethod]
-        public void InputOutputViewModelConstructor() {
+        public void InputOutputMappingViewModel_Constructor()
+        {
 
             //Assert.AreEqual(inputOutputViewModel.Value, inputOutputViewModel.SelectedDataListItem.Name);
         }        
@@ -123,7 +124,7 @@ namespace Dev2.Core.Tests {
 
         // Travis  : PBI 5779
         [TestMethod()]
-        public void DefaultWithEmptyToNull_Expect_EmptyToNullString()
+        public void InputOutputMappingViewModel_DefaultWithEmptyToNull_Expect_EmptyToNullString()
         {
             string name = "vehicleColor";
             string xmlDataList = StringResources.xmlDataList;
@@ -140,7 +141,7 @@ namespace Dev2.Core.Tests {
 
         // Travis  : PBI 5779
         [TestMethod()]
-        public void DefaultWithEmptyToNull_Expect_EmptyString()
+        public void InputOutputMappingViewModel_DefaultWithEmptyToNull_Expect_EmptyString()
         {
             string name = "vehicleColor";
             string xmlDataList = StringResources.xmlDataList;
@@ -156,7 +157,7 @@ namespace Dev2.Core.Tests {
 
         // Travis  : PBI 5779
         [TestMethod()]
-        public void DefaultWithEmptyToNullDefaultValueSet_Expect_DefaultValue()
+        public void InputOutputMappingViewModel_DefaultWithEmptyToNullDefaultValueSet_Expect_DefaultValue()
         {
             string name = "vehicleColor";
             string xmlDataList = StringResources.xmlDataList;
@@ -175,7 +176,8 @@ namespace Dev2.Core.Tests {
         ///A result for DisplayName
         ///</summary>
         [TestMethod]
-        public void DisplayName() {
+        public void InputOutputMappingViewModel_DisplayName()
+        {
 
             string actual = _inputOutputViewModel.DisplayName;
             Assert.AreEqual("testRecSetName(*).vehicleColor", actual);
@@ -192,7 +194,8 @@ namespace Dev2.Core.Tests {
         //}
 
         [TestMethod]
-        public void DisplayNameScalarEmptyStringRecordSet_Expected_ScalarNotationSetAsDisplayName() {
+        public void InputOutputMappingViewModel_DisplayNameScalarEmptyStringRecordSet_Expected_ScalarNotationSetAsDisplayName()
+        {
             InputOutputViewModelTestObject testObject = new InputOutputViewModelTestObject();
             testObject.RecordSetName = string.Empty;
             SetInputOutputMappingViewModelFromTestMappingObject(testObject);
@@ -204,7 +207,8 @@ namespace Dev2.Core.Tests {
         #region Tests Currently Containing unknown expecteds
 
         [TestMethod]
-        public void DisplayNameRecordSet_Expected_DisplayNameIsRecordSetNotation() {
+        public void InputOutputMappingViewModel_DisplayNameRecordSet_Expected_DisplayNameIsRecordSetNotation()
+        {
             InputOutputViewModelTestObject testObject = new InputOutputViewModelTestObject();
             testObject.Name = string.Empty;
             testObject.RecordSetName = "TestRC";
@@ -235,14 +239,16 @@ namespace Dev2.Core.Tests {
         ///A result for MapsTo
         ///</summary>
         [TestMethod()]
-        public void MapsTo_ValueSupplied_Expected_MapsToFieldcorrectlySet() {
+        public void InputOutputMappingViewModel_MapsTo_ValueSupplied_Expected_MapsToFieldcorrectlySet()
+        {
             string expected = "testMapsTo";
             string actual = _inputOutputViewModel.MapsTo;
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod()]
-        public void MapsTo_EmptyValueSupplied_Expected_MapsToFieldcorrectlySet() {
+        public void InputOutputMappingViewModel_MapsTo_EmptyValueSupplied_Expected_MapsToFieldcorrectlySet()
+        {
             InputOutputViewModelTestObject testObject = new InputOutputViewModelTestObject();
             testObject.MapsTo = string.Empty;
             SetInputOutputMappingViewModelFromTestMappingObject(testObject);
@@ -259,7 +265,8 @@ namespace Dev2.Core.Tests {
         ///A result for Name
         ///</summary>
         [TestMethod()]
-        public void Name_ValueSuppliedForName_Expected_NamePropertySetToValueSupplied() {
+        public void InputOutputMappingViewModel_Name_ValueSuppliedForName_Expected_NamePropertySetToValueSupplied()
+        {
             string expected = "vehicleColor";
             string actual = _inputOutputViewModel.Name;
             Assert.AreEqual(expected, actual);
@@ -285,7 +292,8 @@ namespace Dev2.Core.Tests {
         ///A result for SelectedDataListItem
         ///</summary>
         [TestMethod]
-        public void SelectedDataListItem() {            
+        public void InputOutputMappingViewModel_InputOutputMappingViewModel_SelectedDataListItem()
+        {            
             string actual = _inputOutputViewModel.Value;
             Assert.AreEqual(_inputOutputViewModel.Value, actual);
         }
@@ -294,7 +302,8 @@ namespace Dev2.Core.Tests {
         ///A result for Value
         ///</summary>
         [TestMethod]
-        public void Value() {
+        public void InputOutputMappingViewModel_InputOutputMappingViewModel_Value()
+        {
             string expected = "vehicleColor";
             string actual = _inputOutputViewModel.Value;
             Assert.AreEqual(expected, actual);
@@ -305,13 +314,15 @@ namespace Dev2.Core.Tests {
         #region GetGenerationTO Tests
 
         [TestMethod]
-        public void GetGenerationTO_ValidViewModel_Expected_Dev2DefinitionCreatedFromInputOutputViewModel() {
+        public void InputOutputMappingViewModel_GetGenerationTO_ValidViewModel_Expected_Dev2DefinitionCreatedFromInputOutputViewModel()
+        {
             IDev2Definition dev2Definition = _inputOutputViewModel.GetGenerationTO();
             Assert.IsTrue(dev2Definition != null);
         }
 
         [TestMethod]
-        public void GetGenerationTO_InvalidViewModel_Expected_NullDev2DefinitionCreated() {
+        public void InputOutputMappingViewModel_GetGenerationTO_InvalidViewModel_Expected_NullDev2DefinitionCreated()
+        {
             InputOutputViewModelTestObject testObject = new InputOutputViewModelTestObject();
             testObject.Name = null;
             SetInputOutputMappingViewModelFromTestMappingObject(testObject);
@@ -321,6 +332,82 @@ namespace Dev2.Core.Tests {
         }
 
         #endregion GetGenerationTO Tests
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("InputOutputMappingViewModel_MapsTo")]
+        public void InputOutputMappingViewModel_MapsTo_ChangedToNonEmptyAndRequiredIsFalse_RequireMissingFalse()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = InputOutputViewModelFactory.CreateInputOutputViewModel(name: "testName", value: "testValue", mapsTo: "", defaultValue: "", required: false, recordSetName: "");
+
+            Assert.IsFalse(viewModel.Required);
+            Assert.IsFalse(viewModel.RequiredMissing);
+            
+            //------------Execute Test---------------------------
+            viewModel.MapsTo = "newValue";
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(viewModel.Required);
+            Assert.IsFalse(viewModel.RequiredMissing);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("InputOutputMappingViewModel_MapsTo")]
+        public void InputOutputMappingViewModel_MapsTo_ChangedToNonEmptyAndRequiredIsTrue_RequireMissingFalse()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = InputOutputViewModelFactory.CreateInputOutputViewModel(name: "testName", value: "testValue", mapsTo: "", defaultValue: "", required: true, recordSetName: "");
+
+            Assert.IsTrue(viewModel.Required);
+            Assert.IsFalse(viewModel.RequiredMissing);
+
+            //------------Execute Test---------------------------
+            viewModel.MapsTo = "newValue";
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.Required);
+            Assert.IsFalse(viewModel.RequiredMissing);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("InputOutputMappingViewModel_MapsTo")]
+        public void InputOutputMappingViewModel_MapsTo_ChangedToEmptyAndRequiredIsFalse_RequireMissingFalse()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = InputOutputViewModelFactory.CreateInputOutputViewModel(name: "testName", value: "testValue", mapsTo: "newValue", defaultValue: "", required: false, recordSetName: "");
+
+            Assert.IsFalse(viewModel.Required);
+            Assert.IsFalse(viewModel.RequiredMissing);
+
+            //------------Execute Test---------------------------
+            viewModel.MapsTo = "";
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(viewModel.Required);
+            Assert.IsFalse(viewModel.RequiredMissing);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("InputOutputMappingViewModel_MapsTo")]
+        public void InputOutputMappingViewModel_MapsTo_ChangedToEmptyAndRequiredIsTrue_RequireMissingTrue()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = InputOutputViewModelFactory.CreateInputOutputViewModel(name: "testName", value: "testValue", mapsTo: "newValue", defaultValue: "", required: true, recordSetName: "");
+
+            Assert.IsTrue(viewModel.Required);
+            Assert.IsFalse(viewModel.RequiredMissing);
+
+            //------------Execute Test---------------------------
+            viewModel.MapsTo = "";
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.Required);
+            Assert.IsTrue(viewModel.RequiredMissing);
+        }
 
         #region Test Methods
 

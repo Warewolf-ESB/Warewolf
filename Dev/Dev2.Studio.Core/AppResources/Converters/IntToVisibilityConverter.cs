@@ -7,19 +7,33 @@ using System.Windows.Data;
 
 #endregion
 
-namespace Dev2.Studio.AppResources.Converters
+namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class IntToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is int)
+            var isVisible = false;
+            if(value is int)
             {
                 var count = (int)value;
-                if (count > 0)
-                    return Visibility.Visible;
+                if(count > 0)
+                {
+                    isVisible = true;
+                }
             }
-            return Visibility.Collapsed;
+
+            var negate = false;
+            if(parameter is bool)
+            {
+                negate = (bool)parameter;
+            }
+
+            if(negate)
+            {
+                isVisible = !isVisible;
+            }
+            return isVisible ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

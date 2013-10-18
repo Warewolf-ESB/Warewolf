@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -32,6 +33,11 @@ namespace Dev2.Activities.Designers2.Core.Controls
             _getVisualChild = getVisualChild;
 
             InitializeComponent();
+        }
+
+        public DataGridColumnHeadersPresenter GetColumnHeadersPresenter()
+        {
+            return GetVisualChild<DataGridColumnHeadersPresenter>(this);
         }
 
         public void RemoveFirstDuplicateBlankRow()
@@ -195,7 +201,7 @@ namespace Dev2.Activities.Designers2.Core.Controls
             return row != null ? _getVisualChild(row) : null;
         }
 
-        DataGridRow GetRow(int rowIndex)
+        public DataGridRow GetRow(int rowIndex)
         {
             return (DataGridRow)ItemContainerGenerator.ContainerFromItem(Items[rowIndex]);
         }

@@ -6,7 +6,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Dev2.Studio.AppResources.ExtensionMethods;
 
-namespace Dev2.Studio.CustomControls
+namespace Dev2.CustomControls
 {
     [TemplatePart(Name = PART_Thumb, Type = typeof(Thumb))]
     public class SimpleGridSplitter : Control

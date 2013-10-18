@@ -62,4 +62,26 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    
+    <Style TargetType="local:SimpleGridSplitter">
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="Height" Value="7"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Thumb x:Name="Thumb"
+                           Height="{TemplateBinding Height}"
+                           Width="{TemplateBinding Width}"
+                           Background="{TemplateBinding Background}"
+                           HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                           VerticalAlignment="{TemplateBinding VerticalAlignment}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
 </ResourceDictionary>
