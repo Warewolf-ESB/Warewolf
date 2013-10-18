@@ -194,7 +194,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, _tmpErrors.MakeDataListReady(), out errors);
                                     if(!String.IsNullOrEmpty(currentError))
                                     {
-                                        PerformCustomErrorHandling(context, compiler, dataObject, currentError);
+                                        PerformCustomErrorHandling(context, compiler, dataObject, currentError, _tmpErrors);
                                     }
                                 }
                             }
@@ -205,20 +205,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void PerformCustomErrorHandling(NativeActivityContext context, IDataListCompiler compiler, IDSFDataObject dataObject, string currentError)
+        void PerformCustomErrorHandling(NativeActivityContext context, IDataListCompiler compiler, IDSFDataObject dataObject, string currentError, ErrorResultTO tmpErrors)
         {
-            if(!String.IsNullOrEmpty(OnErrorVariable))
+            try
             {
-                compiler.Upsert(dataObject.DataListID, OnErrorVariable, currentError, out errors);
+                if(!String.IsNullOrEmpty(OnErrorWorkflow))
+                {
+                    var esbChannel = context.GetExtension<IEsbChannel>();
+                    esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out tmpErrors);
+                }
             }
-            if(!String.IsNullOrEmpty(OnErrorWorkflow))
+            catch(Exception e)
             {
-                var esbChannel = context.GetExtension<IEsbChannel>();
-                esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out errors);
+                if(tmpErrors == null)
+                {
+                    tmpErrors = new ErrorResultTO();
+                }
+                tmpErrors.AddError(e.Message);
+                compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, tmpErrors.MakeDataListReady(), out errors);
             }
-            if(IsEndedOnError)
+            finally
             {
-                PerformStopWorkflow(context, dataObject);
+                if(!String.IsNullOrEmpty(OnErrorVariable))
+                {
+                    compiler.Upsert(dataObject.DataListID, OnErrorVariable, currentError, out tmpErrors);
+                }
+                if(IsEndedOnError)
+                {
+                    PerformStopWorkflow(context, dataObject);
+                }
             }
         }
 

@@ -59,6 +59,10 @@ namespace Dev2.Runtime.ESB.Execution
                 foreach(var c in cols)
                 {
                     var buildGetWebRequest = BuildGetWebRequest(c.TheValue);
+                    if(buildGetWebRequest == null)
+                    {
+                        throw new Exception("Invalid Url to execute for logging");
+                    }
                     ExecuteWebRequestAsync(buildGetWebRequest);
                 }
             }

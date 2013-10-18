@@ -175,6 +175,8 @@ namespace Dev2.Studio.Core.DataList
             //If DisplayName is empty do not validate
             if (String.IsNullOrWhiteSpace(parent.DisplayName)) return;
 
+           
+
             //If no children - show error (This situation should not occur, there is always at least one empty one
             if (parent.Children.Count == 0 || parent.Children == null)
             {
@@ -194,7 +196,7 @@ namespace Dev2.Studio.Core.DataList
             }
             if(parent.Children.Count > 0)
             {
-                parent.Children.ForEach(ValidateDataListName);
+                parent.Children.ForEach(ValidateDataListName);                
             }
         }
 
@@ -226,18 +228,6 @@ namespace Dev2.Studio.Core.DataList
                 {
                     candidateEntry.SetError(StringResources.ErrorMessageInvalidChar);
                 }
-                //            try
-                //            {
-                //                if(!string.IsNullOrEmpty(candidateEntry.Name))
-                //                {
-                //                XmlConvert.VerifyName(candidateEntry.Name);
-                //            }
-                //                
-                //            }
-                //            catch (XmlException xex)
-                //            {
-                //                candidateEntry.SetError(StringResources.ErrorMessageInvalidChar);
-                //            }
             }
         }
 
