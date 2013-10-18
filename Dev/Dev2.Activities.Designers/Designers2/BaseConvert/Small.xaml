@@ -9,14 +9,13 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.BaseConvert"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                                xmlns:system="clr-namespace:System;assembly=mscorlib"
                                xmlns:dev2="clr-namespace:Dev2;assembly=Dev2.Core"
                                xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
-                               Width="250"
-                               MaxWidth="250"
+                               Width="280"
+                               MaxWidth="280"
                                Padding="7"
                                mc:Ignorable="d"
                                d:DesignWidth="230"
@@ -28,27 +27,7 @@
     </core:ActivityDesignerTemplate.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Row="0"
-              Grid.ColumnSpan="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-        </Grid>
-
-        <controls:Dev2DataGrid x:Name="SmallDataGrid"
-                               Grid.Row="1"
-                               Grid.Column="0"
-                               Grid.ColumnSpan="2"
+      <controls:Dev2DataGrid x:Name="SmallDataGrid"
                                ItemsSource="{Binding ModelItem.ConvertCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource SpacedActivityDataGridStyle}"
                                MinHeight="56">
@@ -84,8 +63,10 @@
                             <ui:IntellisenseTextBox AllowUserInsertLine="False"
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="False"
+                                                    Padding="3"
                                                     Text="{Binding FromExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    MaxHeight="39">
+                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+                                                    MaxHeight="52">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.BaseConversionHelpBaseInput}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -109,7 +90,8 @@
                                         d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox Style="{StaticResource ActivityComboBoxStyle}"
+                            <ComboBox
+                                      Style="{StaticResource ActivityComboBoxStyle}"
                                       Margin="0,0,2,0"
                                       ItemsSource="{Binding DataContext.ConvertTypes, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       SelectedValue="{Binding FromType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}">
@@ -137,7 +119,8 @@
                                         d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox Width="Auto"
+                            <ComboBox
+                                      Margin="0,0,2,0"
                                       ItemsSource="{Binding DataContext.ConvertTypes, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       Style="{StaticResource ActivityComboBoxStyle}"
                                       SelectedValue="{Binding Path=ToType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">

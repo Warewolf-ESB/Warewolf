@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Activities;
+using Dev2.Activities.Designers2.BaseConvert;
 using Dev2.Activities.Designers2.Calculate;
 using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Activities.Designers2.DateTime;
@@ -60,7 +61,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfUnZip), typeof(DsfUnzipDesigner) },
                 { typeof(DsfDateTimeDifferenceActivity), typeof(DsfDateTimeDifferenceActivityDesigner) },
                 { typeof(DsfCaseConvertActivity), typeof(DsfCaseConvertActivityDesigner) },
-                { typeof(DsfBaseConvertActivity), typeof(DsfBaseConvertActivityDesigner) },
+               // { typeof(DsfBaseConvertActivity), typeof(DsfBaseConvertActivityDesigner) },
+                { typeof(DsfBaseConvertActivity), typeof(BaseConvertDesigner) },
                 { typeof(DsfReplaceActivity), typeof(DsfReplaceActivityDesigner) },
                 { typeof(DsfIndexActivity), typeof(DsfIndexActivityDesigner) },
                 { typeof(DsfDataMergeActivity), typeof(DsfDataMergeActivityDesigner) },

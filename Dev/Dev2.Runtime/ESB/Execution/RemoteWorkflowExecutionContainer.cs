@@ -66,6 +66,10 @@ namespace Dev2.Runtime.ESB.Execution
 
         protected virtual void ExecuteWebRequestAsync(WebRequest buildGetWebRequest)
         {
+            if(buildGetWebRequest == null)
+            {
+                return;
+            }
             buildGetWebRequest.GetResponseAsync();
         }
 
@@ -164,17 +168,24 @@ namespace Dev2.Runtime.ESB.Execution
 
         WebRequest BuildGetWebRequest(string myURI)
         {
-            WebRequest req = HttpWebRequest.Create(myURI);
-            req.Method = "GET";
-
-            // set header for server to know this is a remote invoke ;)
-            if(DataObject.RemoteInvokerID == Guid.Empty.ToString())
+            try
             {
-                throw new Exception("Remote Server ID Empty");
+                WebRequest req = HttpWebRequest.Create(myURI);
+                req.Method = "GET";
+
+                // set header for server to know this is a remote invoke ;)
+                if(DataObject.RemoteInvokerID == Guid.Empty.ToString())
+                {
+                    throw new Exception("Remote Server ID Empty");
+                }
+                req.Headers.Add(HttpRequestHeader.From, DataObject.RemoteInvokerID); // Set to remote invoke ID ;)
+                req.Headers.Add(HttpRequestHeader.Cookie, GlobalConstants.RemoteServerInvoke);
+                return req;
             }
-            req.Headers.Add(HttpRequestHeader.From, DataObject.RemoteInvokerID); // Set to remote invoke ID ;)
-            req.Headers.Add(HttpRequestHeader.Cookie, GlobalConstants.RemoteServerInvoke);
-            return req;
+            catch(Exception e)
+            {
+                return null;
+            }
         }
 
         Connection GetConnection(Guid environmentID)

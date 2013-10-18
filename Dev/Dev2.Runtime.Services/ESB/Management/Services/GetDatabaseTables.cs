@@ -54,13 +54,21 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 throw new InvalidDataContractException(string.Format("Invalid database sent {0}.", database));
             }
-            DataTable columnInfo;
+            DataTable columnInfo = null;
+            var tables = new List<DbTable>();
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
-                connection.Open();
-                columnInfo = connection.GetSchema("Tables");
+                try
+                {
+                    connection.Open();
+                    columnInfo = connection.GetSchema("Tables");
+                }
+                catch(Exception e)
+                {
+                    var dbTable = new DbTable { TableName = e.Message, Columns = new List<DbColumn>() };
+                    tables.Add(dbTable);
+                }
             }
-            var tables = new List<DbTable>();
             if(columnInfo != null)
             {
                 foreach(DataRow row in columnInfo.Rows)

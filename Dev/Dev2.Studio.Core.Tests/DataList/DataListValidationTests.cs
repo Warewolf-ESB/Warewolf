@@ -86,6 +86,123 @@ namespace Dev2.Core.Tests.DataList
         #region Add Tests
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListValidator_Add")]
+        public void DataListValidator_AddScalar_WithInvalidName_ShouldHaveError()
+        {
+            //------------Setup for test--------------------------
+            var dataListItemModel = DataListItemModelFactory.CreateDataListModel("TestScalar!");
+            //------------Execute Test---------------------------
+            Validator.Add(dataListItemModel);       
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dataListItemModel.HasError);
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListValidator_Add")]
+        public void DataListValidator_AddScalar_WithInvalidNameWithDot_ShouldHaveError()
+        {
+            //------------Setup for test--------------------------
+            var dataListItemModel = DataListItemModelFactory.CreateDataListModel("TestScalar.");
+            //------------Execute Test---------------------------
+            Validator.Add(dataListItemModel);       
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dataListItemModel.HasError);
+        } 
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListValidator_Add")]
+        public void DataListValidator_AddScalar_WithInvalidNameContainsDot_ShouldHaveError()
+        {
+            //------------Setup for test--------------------------
+            var dataListItemModel = DataListItemModelFactory.CreateDataListModel("TestScalar.ad");
+            //------------Execute Test---------------------------
+            Validator.Add(dataListItemModel);       
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dataListItemModel.HasError);
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListValidator_Add")]
+        public void DataListValidator_AddScalar_WithInvalidNameWithBrackets_ShouldHaveError()
+        {
+            //------------Setup for test--------------------------
+            var dataListItemModel = DataListItemModelFactory.CreateDataListModel("TestScalar()");
+            //------------Execute Test---------------------------
+            Validator.Add(dataListItemModel);       
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dataListItemModel.HasError);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListValidator_Add")]
+        public void DataListValidator_AddScalar_WithUnderScoreName_ShouldNotHaveError()
+        {
+            //------------Setup for test--------------------------
+            var dataListItemModel = DataListItemModelFactory.CreateDataListModel("TestScalar_1");
+            //------------Execute Test---------------------------
+            Validator.Add(dataListItemModel);       
+            //------------Assert Results-------------------------
+            Assert.IsFalse(dataListItemModel.HasError);
+        } 
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListValidator_Add")]
+        public void DataListValidator_AddScalar_WithNumber_ShouldNotHaveError()
+        {
+            //------------Setup for test--------------------------
+            var dataListItemModel = DataListItemModelFactory.CreateDataListModel("TestScalar1");
+            //------------Execute Test---------------------------
+            Validator.Add(dataListItemModel);       
+            //------------Assert Results-------------------------
+            Assert.IsFalse(dataListItemModel.HasError);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListValidator_Add")]
+        public void DataListValidator_AddRecordSet_WithValidNameWithBrackets_ShouldNotHaveError()
+        {
+            //------------Setup for test--------------------------
+            var dataListItemModel = DataListItemModelFactory.CreateDataListModel("TestScalar()", children: new OptomizedObservableCollection<IDataListItemModel> { DataListItemModelFactory.CreateDataListModel("Child")});
+            //------------Execute Test---------------------------
+            Validator.Add(dataListItemModel);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(dataListItemModel.HasError);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListValidator_Add")]
+        public void DataListValidator_AddRecordSet_WithValidNameWithInvalidCharacter_ShouldNotHaveError()
+        {
+            //------------Setup for test--------------------------
+            var dataListItemModel = DataListItemModelFactory.CreateDataListModel("TestScalar().", children: new OptomizedObservableCollection<IDataListItemModel> { DataListItemModelFactory.CreateDataListModel("Child")});
+            //------------Execute Test---------------------------
+            Validator.Add(dataListItemModel);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dataListItemModel.HasError);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListValidator_Add")]
+        public void DataListValidator_AddRecordSetField_WithValidNameWithInvalidCharacter_ShouldNotHaveError()
+        {
+            //------------Setup for test--------------------------
+            var dataListItemModel = DataListItemModelFactory.CreateDataListModel("TestScalar()", children: new OptomizedObservableCollection<IDataListItemModel> { DataListItemModelFactory.CreateDataListModel("Child@")});
+            //------------Execute Test---------------------------
+            Validator.Add(dataListItemModel);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dataListItemModel.Children[0].HasError);
+        }
+
+        [TestMethod]
         public void AddTest_With_Duplicate_Name_Expected_Item_HasError_True()
         {
             Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar1"));            

@@ -19,6 +19,7 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
+using ServiceStack.Common.Extensions;
 
 #endregion
 
@@ -484,6 +485,7 @@ namespace Dev2.Studio.ViewModels.DataList
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             string result = string.Empty;
             string errorString;
+            ScalarCollection.ForEach(FixNamingForScalar);
             AddRecordsetNamesIfMissing();
             IBinaryDataList postDl = ConvertIDataListItemModelsToIBinaryDataList(out errorString);
 
@@ -517,14 +519,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
                 if (!string.IsNullOrWhiteSpace(recset.DisplayName))
                 {
-                    if (!recset.DisplayName.EndsWith("()"))
-                    {
-                        recset.DisplayName = string.Concat(recset.DisplayName, "()");
-                    }
-                    if(recset.DisplayName.StartsWith("[[") && recset.DisplayName.Contains("]]"))
-                    {
-                        recset.DisplayName = recset.DisplayName.Replace("[", "").Replace("]", "");
-                    }
+                    FixNamingForRecset(recset);
                     int childrenNum = recset.Children.Count;
                     int childrenCount = 0;
 
@@ -549,6 +544,32 @@ namespace Dev2.Studio.ViewModels.DataList
                     }
                 }
                 recsetCount++;
+            }
+        }
+
+        static void FixNamingForRecset(IDataListItemModel recset)
+        {
+            if(!recset.DisplayName.EndsWith("()"))
+            {
+                recset.DisplayName = string.Concat(recset.DisplayName, "()");
+            }
+            FixCommonNamingProblems(recset);
+        }
+        
+        static void FixNamingForScalar(IDataListItemModel scalar)
+        {
+            if(scalar.DisplayName.Contains("()"))
+            {
+                scalar.DisplayName = scalar.DisplayName.Replace("()", "");
+            }
+            FixCommonNamingProblems(scalar);
+        }
+
+        static void FixCommonNamingProblems(IDataListItemModel recset)
+        {
+            if(recset.DisplayName.Contains("[") || recset.DisplayName.Contains("]"))
+            {
+                recset.DisplayName = recset.DisplayName.Replace("[", "").Replace("]", "");
             }
         }
 
@@ -785,7 +806,8 @@ namespace Dev2.Studio.ViewModels.DataList
             DataListHeaderItemModel varNode = DataListItemModelFactory.CreateDataListHeaderItem("Variable");
             if (ScalarCollection.Count == 0)
             {
-                ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel(string.Empty));
+                var dataListItemModel = DataListItemModelFactory.CreateDataListModel(string.Empty);
+                ScalarCollection.Add(dataListItemModel);
             }
             varNode.Children = ScalarCollection;
             BaseCollection.Add(varNode);

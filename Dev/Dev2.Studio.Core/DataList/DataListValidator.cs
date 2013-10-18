@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Dev2.Studio.Core.Interfaces.DataList;
 using System.Xml;
 using System.IO;
+using ServiceStack.Common.Extensions;
 
 namespace Dev2.Studio.Core.DataList
 {
@@ -105,6 +107,7 @@ namespace Dev2.Studio.Core.DataList
                     }
                 }
             }
+            ValidateDataListName(itemToAdd);
         }
 
         public void Remove(IDataListItemModel itemToRemove)
@@ -178,7 +181,7 @@ namespace Dev2.Studio.Core.DataList
                 parent.SetError(StringResources.ErrorMessageEmptyRecordSet);
             }
                 //Check that there is at least one child
-            else if (parent.Children.Count == 1 && String.IsNullOrWhiteSpace(parent.Children.First().DisplayName))
+            else if(parent.Children.Count == 1 && String.IsNullOrWhiteSpace(parent.Children.First().DisplayName))
             {
                 parent.SetError(StringResources.ErrorMessageEmptyRecordSet);
             }
@@ -186,9 +189,13 @@ namespace Dev2.Studio.Core.DataList
             {
                 if(parent.ErrorMessage != null && parent.ErrorMessage.Equals(StringResources.ErrorMessageEmptyRecordSet))
                 {
-                parent.RemoveError();
+                    parent.RemoveError();
+                }
             }
-        }
+            if(parent.Children.Count > 0)
+            {
+                parent.Children.ForEach(ValidateDataListName);
+            }
         }
 
         // Sashen.Naidoo
@@ -207,22 +214,33 @@ namespace Dev2.Studio.Core.DataList
             {
                 candidateEntry.RemoveError();
             }
-            if (!string.IsNullOrEmpty(candidateEntry.Name))
+            ValidateDataListName(candidateEntry);
+        }
+
+        static void ValidateDataListName(IDataListItemModel candidateEntry)
+        {
+            if(!string.IsNullOrEmpty(candidateEntry.Name))
             {
-            try
-            {
-                if(!string.IsNullOrEmpty(candidateEntry.Name))
+                var matched = Regex.IsMatch(candidateEntry.Name, @"[^A-Za-z0-9_]", RegexOptions.IgnoreCase);
+                if(matched)
                 {
-                XmlConvert.VerifyName(candidateEntry.Name);
-            }
-                
-            }
-            catch (XmlException xex)
-            {
-                candidateEntry.SetError(StringResources.ErrorMessageInvalidChar);
+                    candidateEntry.SetError(StringResources.ErrorMessageInvalidChar);
+                }
+                //            try
+                //            {
+                //                if(!string.IsNullOrEmpty(candidateEntry.Name))
+                //                {
+                //                XmlConvert.VerifyName(candidateEntry.Name);
+                //            }
+                //                
+                //            }
+                //            catch (XmlException xex)
+                //            {
+                //                candidateEntry.SetError(StringResources.ErrorMessageInvalidChar);
+                //            }
             }
         }
-        }
+
         #endregion Private Methods
     }
 }

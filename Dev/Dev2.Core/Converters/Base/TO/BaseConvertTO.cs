@@ -88,6 +88,7 @@ namespace Dev2
             {
                 _fromExpression = value;
                 OnPropertyChanged("FromExpression");
+                RaiseCanAddRemoveChanged();
             }
         }
 
@@ -181,6 +182,11 @@ namespace Dev2
 
         #endregion
 
+        void RaiseCanAddRemoveChanged()
+        {
+            OnPropertyChanged("CanRemove");
+            OnPropertyChanged("CanAdd");
+        }
         #region Implementation of IPerformsValidation
 
         public Dictionary<string, List<IActionableErrorInfo>> Errors { get; set; }
