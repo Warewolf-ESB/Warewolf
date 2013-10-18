@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Providers.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
@@ -292,6 +293,49 @@ namespace Dev2.Core.Tests
             var expectedPayload = payload.ToString(SaveOptions.None);
             var actualPayload = workflowInputDataViewModel.SendExecuteRequestPayload.ToString(SaveOptions.None);
             Assert.AreEqual(expectedPayload, actualPayload);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("WorkflowInputDataViewModel_Save")]
+        public void WorkflowInputDataViewModel_Save_WithScalarVariable_ExpectNewDataListInputViewModelItems()
+        {
+            //------------Setup for test--------------------------
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.WorkflowXaml).Returns(StringResourcesTest.DebugInputWindow_WorkflowXaml);
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns("<DataList><scalar Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /><rs Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" ><val Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></rs></DataList>");
+            rm.Setup(r => r.Environment.DsfChannel).Returns(new Mock<IStudioClientContext>().Object);
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = "<DataList><rs><val>1</val></rs></DataList>"
+            };
+
+            var debugOutputViewModel = CreateDebugOutputViewModel();
+            var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel);
+            workflowInputDataViewModel.LoadWorkflowInputs();
+            
+
+            //------------Execute Test---------------------------
+            workflowInputDataViewModel.WorkflowInputs.Add(new DataListItem() { DisplayValue = "rs(2).val", Field = "val", Recordset = "rs", IsRecordset = true, Value = "2", RecordsetIndex =  "2"});
+            workflowInputDataViewModel.Save();
+
+            //------------Assert Results-------------------------
+            const string expectedPayload = @"<DataList>
+  <rs>
+    <val>1</val>
+  </rs>
+  <rs>
+    <val>2</val>
+  </rs>
+</DataList>";
+            Assert.AreEqual(expectedPayload, workflowInputDataViewModel.DebugTO.XmlData);
         }
 
         #region Private Methods

@@ -96,7 +96,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Result.Set(context, result);
             _theResult = result;
 
-            if(dataObject != null && (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID)) || dataObject.RemoteInvoke)
+            if(dataObject != null && dataObject.IsDebugMode())
             {
                 DispatchDebugState(context, StateType.After);
             }
