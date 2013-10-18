@@ -296,7 +296,105 @@ namespace Dev2.Core.Tests.DataList
 
         }
 
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ActivityDataMappingBuilder_Generate")]
+        public void ActivityDataMappingBuilder_Generate_WhenValidServiceDefintionAndActivityHasSaveMappingData_ExpectNewDefaultAndIsRequiredTransfered()
+        {
+            //------------Setup for test--------------------------
 
+            #region Setup Data
+
+            var inputDefStr = @"<Inputs>
+        <Input Name=""Rows"" Source=""[[RowCnt]]""/>
+      </Inputs>";
+
+            var serviceDefStr = @"<Service ID=""df9e59ed-11f0-4359-bd21-7ad35898b383"" Version=""1.0"" Name=""Get Rows"" ResourceType=""DbService"" IsValid=""false"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
+  <Actions>
+    <Action Name=""Row"" Type=""InvokeStoredProc"" SourceID=""62505a00-b304-4ac0-a55c-50ce85111f16"" SourceName=""GenDev"" SourceMethod=""dbo.proc_get_Rows"">
+      <Inputs>
+        <Input Name=""Rows"" Source=""Rows"" DefaultValue=""5"" EmptyToNull=""true"">
+            <Validator Type=""Required"" />
+        </Input>
+      </Inputs>
+      <Outputs>
+        <Output Name=""BigID"" MapsTo=""BigID"" Value=""[[Row().BigID]]"" Recordset=""Row"" />
+        <Output Name=""Column1"" MapsTo=""Column1"" Value=""[[Row().Column1]]"" Recordset=""Row"" />
+        <Output Name=""Column2"" MapsTo=""Column2"" Value=""[[Row().Column2]]"" Recordset=""Row"" />
+        <Output Name=""Column3"" MapsTo=""Column3"" Value=""[[Row().Column3]]"" Recordset=""Row"" />
+        <Output Name=""Column4"" MapsTo=""Column4"" Value=""[[Row().Column4]]"" Recordset=""Row"" />
+        <Output Name=""Column5"" MapsTo=""Column5"" Value=""[[Row().Column5]]"" Recordset=""Row"" />
+        <Output Name=""Column6"" MapsTo=""Column6"" Value=""[[Row().Column6]]"" Recordset=""Row"" />
+        <Output Name=""Column7"" MapsTo=""Column7"" Value=""[[Row().Column7]]"" Recordset=""Row"" />
+        <Output Name=""Column8"" MapsTo=""Column8"" Value=""[[Row().Column8]]"" Recordset=""Row"" />
+        <Output Name=""Column9"" MapsTo=""Column9"" Value=""[[Row().Column9]]"" Recordset=""Row"" />
+        <Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" />
+      </Outputs>
+      
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>InvokeStoredProc</TypeOf>
+  <DisplayName>Get Rows</DisplayName>
+  <Category></Category>
+  <AuthorRoles></AuthorRoles>
+  <ErrorMessages />
+  <Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm=""http://www.w3.org/TR/2001/REC-xml-c14n-20010315"" />
+      <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1"" />
+      <Reference URI="""">
+        <Transforms>
+          <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature"" />
+        </Transforms>
+        <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1"" />
+        <DigestValue>wnGdgUqy2wpUORyoPj+hiHeya6E=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>qRUe2AqKMusy9JrUY3vNdXCI//Z8UCMSQKBSHIDPMMVdVkKCbWKnUZl1XYa9/LZHAtzX21idcKjWwCQmpgBmrQHWj2Mcp7/XNKp4Q7sJZNGhfOz1163pHR/pN2Lb2gPK8hzzqFRGvk1zzav0RHqJjqVaEw63A88P/UqVTsY94t4=</SignatureValue>
+  </Signature>
+</Service>";
+            #endregion
+
+            var activityDataMappingBuilder = new ActivityDataMappingBuilder();
+
+            Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(c => c.DataList).Returns("<DataList/>");
+
+            Mock<IWebActivity> activity = new Mock<IWebActivity>();
+
+            activity.Setup(c => c.SavedInputMapping).Returns(inputDefStr);
+            activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
+            activity.Setup(c => c.ResourceModel.ServiceDefinition).Returns(serviceDefStr);
+            activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfDatabaseActivity));
+            activity.Setup(c => c.ResourceModel.ResourceType).Returns(ResourceType.Service);
+
+            activityDataMappingBuilder.SetupActivityData(activity.Object);
+
+            //------------Execute Test---------------------------
+
+            var result = activityDataMappingBuilder.Generate();
+
+            //------------Assert Results-------------------------
+
+            // check counts first
+            Assert.AreEqual(1, result.Inputs.Count);
+            Assert.AreEqual(11, result.Outputs.Count);
+
+            // now check data
+            Assert.AreEqual("[[RowCnt]]", result.Inputs[0].Value);
+            Assert.AreEqual("5", result.Inputs[0].DefaultValue);
+            Assert.AreEqual(true, result.Inputs[0].Required);
+
+        }
 
 
         [TestMethod]
@@ -421,7 +519,6 @@ namespace Dev2.Core.Tests.DataList
 
         }
 
-        // NEW
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ActivityDataMappingBuilder_Generate")]

@@ -279,6 +279,19 @@ namespace Dev2.DataList
 
             var intersectionResult = existingView.Intersect(masterView, equalityCompareImpl);
 
+            foreach (var intersectionRowItem in intersectionResult)
+            {
+                //  Find a match in master list and tranfer properties ;)
+                var match = masterView.FirstOrDefault(c => c.DisplayName == intersectionRowItem.DisplayName);
+
+                if (match != null)
+                {
+                    intersectionRowItem.Required = match.Required;
+                    intersectionRowItem.DefaultValue = match.DefaultValue;
+                }
+            }
+
+
             // ordering maters ;)
             result = intersectionResult.Union(masterView, equalityCompareImpl).ToList();
 
