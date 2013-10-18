@@ -9,10 +9,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
 {
     public partial class OutputUIMap
     {
-        UITestControl _debugOutput;
+        UITestControl _outputPane;
         public OutputUIMap()
         {
-            _debugOutput = VisualTreeWalker.GetControl("UI_DocManager_AutoID", "OutputPane", "DebugOutput");
+            _outputPane = VisualTreeWalker.GetControl("UI_DocManager_AutoID", "OutputPane");
         }
 
         /// <summary>
@@ -59,7 +59,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
 
         private WpfTree GetOutputTree()
         {
-            return _debugOutput.GetChildren().FirstOrDefault(child => child.ClassName == "Uia.TreeView") as WpfTree;
+            var debugOutputTree = VisualTreeWalker.GetChildByAutomationIDPath(_outputPane, "DebugOutput", "Uia.TreeView");
+            return debugOutputTree as WpfTree;
         }
 
         public UITestControlCollection GetOutputWindow()
@@ -70,7 +71,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
 
         private UITestControl GetStatusBar()
         {
-            return VisualTreeWalker.GetChildByAutomationIDPath(_debugOutput, "Dev2StatusBarAutomationID", "StatusBar");
+            return VisualTreeWalker.GetChildByAutomationIDPath(_outputPane, "DebugOutput", "Dev2StatusBarAutomationID", "StatusBar");
         }
 
         public string GetStatusBarStatus()

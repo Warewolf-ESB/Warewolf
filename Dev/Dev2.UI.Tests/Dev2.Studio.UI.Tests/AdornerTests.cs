@@ -17,7 +17,7 @@ namespace Dev2.Studio.UI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashleys weekend \:D/
         [Owner("Travis Frisinger")]
         [TestCategory("ExternalService_EditService")]
         public void ExternalService_EditService_EditWithNoSecondSaveDialog_ExpectOneDialog()
@@ -128,7 +128,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashleys weekend \:D/
         [TestCategory("UITest")]
         [Description("Test that clicking on the help button does indeed open an example workflow")]
         [Owner("Tshepo")]
@@ -165,7 +165,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsNotNull(waitForTabToOpen);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashleys weekend \:D/
         [Owner("Ashley Lewis")]
         [TestCategory("HelpButtonAdorner_CollapseHelp")]
         public void WorkflowdesignSurface_CollapseHelp()
@@ -181,7 +181,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(WorkflowDesignerUIMap.GetHelpPane(theTab, "Only variables go in here").Exists);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashleys weekend \:D/
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
         {
             const string resourceToUse = "CalculateTaxReturns";
@@ -252,7 +252,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         //PBI 9939
-        [TestMethod]
+        [TestMethod][Ignore]//Ashleys weekend \:D/
         [TestCategory("DsfActivityTests")]
         [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands.")]
         [Owner("Massimo Guerrera")]
@@ -292,7 +292,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         // PBI 8601 (Task 8855)
-        [TestMethod]
+        [TestMethod][Ignore]//Ashleys weekend \:D/
         public void QuickVariableInputFromListTest()
         {
             Clipboard.Clear();

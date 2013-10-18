@@ -424,15 +424,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                     WpfTable foundTable = (WpfTable) findTable;
                     return foundTable;
                 }
-                else
-                {
-                    throw new UITestControlNotFoundException("Cannot find multiassign table");
-                }
             }
-            else
-            {
-                throw new UITestControlNotFoundException("Cannot find multiassign small view content");
-            }
+            throw new UITestControlNotFoundException("Cannot find multiassign small view content");
         }
 
         public void AssignControl_ClickLeftTextboxInRow(UITestControl theTab, string controlAutomationId, int row)

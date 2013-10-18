@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Threading;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
+using Dev2.Studio.UI.Tests;
+using Dev2.Studio.UI.Tests.UIMaps;
 
 namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 {
@@ -15,7 +17,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
     using MouseButtons = System.Windows.Forms.MouseButtons;
 
 
-    public partial class ExplorerUIMap
+    public partial class ExplorerUIMap : UIMapBase
     {
         public UITestControl GetConnectControl(string controlType)
         {
@@ -173,8 +175,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             SendKeys.SendWait("{DOWN}");
             Playback.Wait(100);
             SendKeys.SendWait("{ENTER}");
-            Playback.Wait(100);
-            var confirmationDialog = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            PopupDialogUIMap.WaitForDialog();
+            var confirmationDialog = UIBusinessDesignStudioWindow.GetChildren()[0];
             var yesButton = confirmationDialog.GetChildren().FirstOrDefault(c => c.FriendlyName == "Yes");
             Mouse.Click(yesButton, new Point(10, 10));
         }

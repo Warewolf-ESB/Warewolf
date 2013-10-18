@@ -8,6 +8,8 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+using Dev2.Studio.UI.Tests.Utils;
+
 namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
 {
     using System;
@@ -26,7 +28,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
     
     
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
-    public partial class DebugUIMap
+    public partial class DebugUIMap : UIMapBase
     {
         
         /// <summary>
@@ -36,16 +38,14 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
 
         public WpfRow GetRow(int row)
         {
-            WpfWindow debugWindow = GetDebugWindow();
-            UITestControlCollection rowList = debugWindow.GetChildren()[1].GetChildren()[0].GetChildren()[1].GetChildren();
-            WpfRow theRow = (WpfRow)rowList[row];
-            return theRow;
+            var debugWindow = GetDebugWindow();
+            var inputGrid = VisualTreeWalker.GetChildByAutomationIDPath(debugWindow, "TabItems", "UI_InputDataTab_AutoID", "DataListInputs");
+            return inputGrid.GetChildren()[row] as WpfRow;
         }
+
         public WpfWindow GetDebugWindow()
         {
-            WpfWindow uIDebugWindow = this.UIDebugWindow;
-            uIDebugWindow.Find();
-            return uIDebugWindow;
+            return StudioWindow.GetChildren()[0] as WpfWindow;
         }
         
         #region Properties

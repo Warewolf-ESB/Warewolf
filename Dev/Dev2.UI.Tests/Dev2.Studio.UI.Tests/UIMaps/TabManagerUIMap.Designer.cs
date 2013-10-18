@@ -160,7 +160,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                     UITestControlCollection tabChildren = currentTapPage.GetChildren();
                     foreach (var tabChild in tabChildren)
                     {
-                        if (tabChild.FriendlyName == childAutomationID)
+                        if (tabChild.FriendlyName.Contains(childAutomationID))
                         {
                             return currentTapPage;
                         }

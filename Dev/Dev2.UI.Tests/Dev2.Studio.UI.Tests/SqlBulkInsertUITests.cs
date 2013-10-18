@@ -33,7 +33,7 @@ namespace Dev2.Studio.UI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashleys weekend \:D/
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("SqlBulkInsertUITests")]
         public void SqlBulkInsertTest_NoDatabaseIsSelected_GridHasNothing()
@@ -55,7 +55,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(smallDataGrid.GetChildren().Count == 0);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashleys weekend \:D/
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("SqlBulkInsertUITests")]
         public void SqlBulkInsertTest_OpenLargeViewAndEnterAnInvalidBatchAndTimeoutSizeAndClickDone_CorrectingErrorsAndClickDoneWillReturnToSmallView()
@@ -133,7 +133,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsNotNull(toggleButton);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashleys weekend \:D/
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("SqlBulkInsertUITests")]
         public void SqlBulkInsertTest_OpenQuickVariableInputAndCloseItImmediately_ReturnsToSmallView()
@@ -168,7 +168,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsNotNull(smallDataGrid);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashleys weekend \:D/
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("SqlBulkInsertUITests")]
         public void SqlBulkInsertTest_SelectDatabaseAndTableName_GridHasColumnnames()
@@ -188,6 +188,7 @@ namespace Dev2.Studio.UI.Tests
             //Select a database
             var dbDropDown = GetControlById("UI__Database_AutoID", theTab) as WpfComboBox;
             Mouse.Click(dbDropDown, new Point(10, 10));
+            Playback.Wait(500);
             var listOfDbNames = dbDropDown.Items.Select(i => i as WpfListItem).ToList();
             var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDB));
             Mouse.Click(databaseName, new Point(5, 5));
@@ -195,6 +196,7 @@ namespace Dev2.Studio.UI.Tests
             //Select a table
             var tableDropDown = GetControlById("UI__TableName_AutoID", theTab) as WpfComboBox;
             Mouse.Click(tableDropDown, new Point(10, 10));
+            Playback.Wait(500);
             var listOfTableNames = tableDropDown.Items.Select(i => i as WpfListItem).ToList();
             Mouse.Click(listOfTableNames[TableIndex], new Point(5, 5));
             Playback.Wait(5000);

@@ -18,7 +18,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
 
         // Bug 8816
-        [TestMethod]
+        [TestMethod][Ignore]//Ashleys weekend \:D/
         public void IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled()
         {
             TabManagerUIMap.CloseAllTabs();
@@ -39,7 +39,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         // Bug 8819
-        [TestMethod]
+        [TestMethod][Ignore]//Ashleys weekend \:D/
         public void EnterFilterOnDestinationServer_Expected_DeployedItemsStillVisible()
         {
             // Choose to deploy one of our own items
@@ -62,7 +62,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(DeployUIMap.DoesDestinationServerHaveItems(deployTab), "After a filter was applied, the destination Server lost all its items!");
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashleys weekend \:D/
         [Owner("Ashley Lewis")]
         [TestCategory("Deploy_ResourceTree")]
         public void Deploy_ResourceTree_DeployFromExplorer_AllServiceTypesVisibleAndDeployedItemNotFiltered()
