@@ -32,7 +32,7 @@ namespace Dev2.CodedUI.Tests
 
 
         // PBI 8601 (Task 8855)
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void QuickVariableInputFromListTest()
         {
             Clipboard.Clear();
@@ -79,7 +79,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         //PBI_8853
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
         {
             var preCount = TabManagerUIMap.GetTabCount();
@@ -104,7 +104,7 @@ namespace Dev2.CodedUI.Tests
 
         #endregion New PBI Tests
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
         {
             // Create the workflow
