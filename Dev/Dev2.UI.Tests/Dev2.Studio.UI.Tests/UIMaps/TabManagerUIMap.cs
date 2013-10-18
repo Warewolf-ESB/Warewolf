@@ -87,6 +87,11 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                 {
                     ExplorerUIMap.ClosePane(theTab);
                 }
+                if(!child.TryGetClickablePoint(out point))
+                {
+                    Mouse.Move(new Point(theTab.BoundingRectangle.Left + 100, theTab.BoundingRectangle.Top + 500));
+                }
+                Playback.Wait(500);
                 Mouse.Click(child);
                 return true;
             }
