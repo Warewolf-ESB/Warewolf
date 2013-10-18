@@ -62,7 +62,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         #region Service Wizards
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void ClickNewPluginServiceExpectedPluginServiceOpens()
         {
             RibbonUIMap.ClickRibbonMenuItem("UI_RibbonHomeTabPluginServiceBtn_AutoID");
@@ -76,7 +76,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             SendKeys.SendWait("{ESC}");
         }
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void WebServiceWizardCreateServiceAndSourceExpectedServiceCreated()
         {
             //Initialization
@@ -99,7 +99,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
 
         //2013.03.14: Ashley Lewis - Bug 9217
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void DatabaseServiceWizardCreateNewServiceExpectedServiceCreated()
         {
             //Initialization
@@ -118,7 +118,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", cat, name));
         }
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
             var studioWindow = new UIBusinessDesignStudioWindow();
@@ -128,7 +128,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             DatabaseServiceWizardUIMap.ClickCancel();
         }
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void ClickNewPluginServiceShortcutKeyExpectedPluginServiceOpens()
         {
             var studioWindow = new UIBusinessDesignStudioWindow();
@@ -138,7 +138,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             PluginServiceWizardUIMap.ClickCancel();
         }
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void NewWebServiceShortcutKeyExpectedWebServiceOpens()
         {
             var studioWindow = new UIBusinessDesignStudioWindow();
@@ -153,7 +153,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         #region Source Wizards
 
         //2013.06.22: Ashley Lewis for bug 9478
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void EmailSourceWizardCreateNewSourceExpectedSourceCreated()
         {
             //Initialization
@@ -178,7 +178,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DecisionWizard_Save")]
         public void DecisionWizard_Save_WhenMouseUsedToSelect2ndAnd3rdInputFields_FieldDataSavedCorrectly()
@@ -224,7 +224,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
 
         //Bug 9339 + Bug 9378
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void SaveDecisionWithBlankFieldsExpectedDecisionSaved()
         {
             Clipboard.Clear();
@@ -252,7 +252,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Assert.IsNotNull(point);
         }
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("Decision_Intellisense")]
         public void Decision_Intellisense_KeyboardSelect_DecisionTitleUpdatesCorrectly()
@@ -299,7 +299,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Assert.AreEqual(expected, displayValue, "Decision intellisense doesnt work when using the keyboard to select intellisense results");
         }
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void DragADecisionIntoForEachExpectNotAddedToForEach()
         {
             // Create the workflow
@@ -335,7 +335,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             }
         }
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void DragASwitchIntoForEachExpectNotAddedToForEach()
         {
             // Create the workflow
@@ -370,7 +370,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             }
         }
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         [TestCategory("UITest")]
         [Description("for bug 9717 - copy paste multiple decisions (2013.06.22)")]
         [Owner("Ashley")]
@@ -419,7 +419,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         #region Server Wizard
           
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void ClickNewRemoteWarewolfServerExpectedRemoteWarewolfServerOpens()
         {
             DockManagerUIMap.ClickOpenTabPage("Explorer");

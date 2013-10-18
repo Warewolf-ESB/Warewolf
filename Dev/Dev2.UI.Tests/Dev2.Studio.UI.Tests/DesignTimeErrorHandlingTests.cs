@@ -42,7 +42,7 @@ namespace Dev2.Studio.UI.Tests
         
         #endregion
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         [TestCategory("UITest")]
         [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, the mappings on the service are changed and hitting the fix errors adorner should change the activity instance's mappings")]
         [Owner("Ashley")]
@@ -113,7 +113,7 @@ namespace Dev2.Studio.UI.Tests
             }
         }
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         [TestCategory("UITest")]
         [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, mappings on the service are set to required and hitting the fix errors adorner should prompt the user to add required mappings to the activity instance's mappings")]
         [Owner("Ashley")]

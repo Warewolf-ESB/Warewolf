@@ -34,7 +34,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
 
         // Bug 6501
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void DeleteFirstDatagridRow_Expected_RowIsNotDeleted()
         {
             // Create the workflow
@@ -86,7 +86,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         //2013.05.29: Ashley Lewis for bug 9455 - Dont allow copy paste workflow xaml to another workflow
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void CopyWorkFlowWithContextMenuCopyAndPasteToAnotherWorkflowExpectedNothingCopied()
         {
             Clipboard.SetText(" ");
@@ -105,7 +105,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         //2013.06.06: Ashley Lewis for 9448 - Dsf Activity Title - shows up as "DSFActivity" After a service has been dragged onto a workflow.
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void AddSecondServiceToWorkFlowExpectedDisplayTitleNotDsfActivity()
         {
             RibbonUIMap.CreateNewWorkflow();
@@ -128,7 +128,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "DsfActivity(DsfActivityDesigner)"), "Dropped services display title was 'DsfActivity' rather than the name of the service");
         }
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         [TestCategory("UITest")]
         [Description("Test for 'All Tools' workflow: The workflow is openned. The icons must display. The tab must be able to close again")]
         [Owner("Ashley")]
@@ -183,7 +183,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(true, "Studio was terminated or hung while opening and closing the all tools workflow");
         }
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         [TestCategory("Toolbox_Icons")]
         [Description("Toolbox icons display")]
         [Owner("Ashley Lewis")]
@@ -204,7 +204,7 @@ namespace Dev2.Studio.UI.Tests
         /// </summary>
         /// <author>Jurie.smit</author>
         /// <date>2013/08/13</date>
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         [TestCategory("UITest")]
         [Description("Clicking a debug output step should highlight that activity on the design surface")]
         [Owner("Ashley")]
@@ -249,7 +249,7 @@ namespace Dev2.Studio.UI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         [TestCategory("UnsavedWorkflows_UITest")]
         [Description("For bug 10086 - Switching tabs does not flicker unsaved status")]
         [Owner("Ashley Lewis")]
@@ -312,7 +312,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         // Bug 6617
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void OpeningDependancyWindowTwiceKeepsItOpen()
         {
             // The workflow so we have a second tab
@@ -336,7 +336,7 @@ namespace Dev2.Studio.UI.Tests
             }
         }
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         [TestCategory("UITest")]
         [Description("for bug 9802 - Foreach drill down test (2013.06.28)")]
         [Owner("Ashley")]
@@ -371,7 +371,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(theStartButton.Exists, "Dropping a multiassign onto a foreach drilled down");
         }
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         [TestCategory("UITest")]
         [Owner("Tshepo Ntlhokoa")]
         public void DragAStartNodeOntoATool_HoverOverAToolForAWhile_NoDrillDownShouldHappen()
