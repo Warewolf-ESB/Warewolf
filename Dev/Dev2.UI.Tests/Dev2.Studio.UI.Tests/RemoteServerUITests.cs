@@ -59,7 +59,6 @@ namespace Dev2.Studio.UI.Tests
         {
             DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
             ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
-            ExplorerUIMap.DoRefresh();
             var selectedSeverName = ExplorerUIMap.SelectedSeverName();
             Assert.AreEqual(RemoteServerName, selectedSeverName);
         }
@@ -71,7 +70,6 @@ namespace Dev2.Studio.UI.Tests
         {
             DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
             ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
-            ExplorerUIMap.DoRefresh();
             RibbonUIMap.CreateNewWorkflow();
             var activeTabName = TabManagerUIMap.GetActiveTabName();
             Assert.IsTrue(activeTabName.Contains("Unsaved"));
@@ -128,7 +126,6 @@ namespace Dev2.Studio.UI.Tests
             RibbonUIMap.CreateNewWorkflow();
             DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
             ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
-            ExplorerUIMap.DoRefresh();
 
             var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
             ExplorerUIMap.ClearExplorerSearchText();
@@ -154,7 +151,6 @@ namespace Dev2.Studio.UI.Tests
             const string TextToSearchWith = "Utility - Assign";
             DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
             ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
-            ExplorerUIMap.DoRefresh();
             //Create a workfliow
             RibbonUIMap.CreateNewWorkflow();
             DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
@@ -362,11 +358,6 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(textToSearchWith);
             ExplorerUIMap.DoubleClickOpenProject(serverName, serviceType, foldername, textToSearchWith);
-        }
-
-        void CreateWorkflow()
-        {
-            RibbonUIMap.CreateNewWorkflow();
         }
 
         #endregion
