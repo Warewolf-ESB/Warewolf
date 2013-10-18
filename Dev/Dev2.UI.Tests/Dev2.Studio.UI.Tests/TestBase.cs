@@ -29,57 +29,8 @@ namespace Dev2.CodedUI.Tests
 
         #region New PBI Tests
 
-
-
-        // PBI 8601 (Task 8855)
-        [TestMethod]
-        public void QuickVariableInputFromListTest()
-        {
-            Clipboard.Clear();
-            // Create the workflow
-            RibbonUIMap.CreateNewWorkflow();
-
-            // Get some variables
-            UITestControl theTab = TabManagerUIMap.GetActiveTab();
-            Point startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
-            Point point = new Point(startPoint.X, startPoint.Y + 200);
-
-            // Drag the tool onto the workflow
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, point);
-
-            //Get Mappings button
-            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign", "Open Quick Variable Input");
-
-            // Click it
-            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
-            Mouse.Click();
-
-            // Enter some invalid data
-            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",", "some(<).", "_suf", "varOne,varTwo,varThree");
-
-            // Click done
-            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
-
-            var errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Prefix contains invalid characters");
-            Assert.IsNotNull(errorControl, "No error displayed for incorrect QVI input");
-
-            // Assert clicking an error focusses the correct textbox
-            Mouse.Click(errorControl.GetChildren()[0]);
-
-            // enter some correct data
-            SendKeys.SendWait("^a^xpre_");
-
-            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
-
-            // Check the data
-            string varName = WorkflowDesignerUIMap.AssignControl_GetVariableName(theTab, "Assign", 0);
-            StringAssert.Contains(varName, "[[pre_varOne_suf]]");
-        }
-
         //PBI_8853
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
         {
             var preCount = TabManagerUIMap.GetTabCount();
@@ -104,7 +55,7 @@ namespace Dev2.CodedUI.Tests
 
         #endregion New PBI Tests
 
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
         {
             // Create the workflow
