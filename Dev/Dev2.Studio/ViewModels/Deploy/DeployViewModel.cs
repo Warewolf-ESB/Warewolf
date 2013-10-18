@@ -17,7 +17,6 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Deploy;
 using Dev2.Studio.TO;
-using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
 
@@ -512,6 +511,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void Deploy()
         {
+
             //
             //Get the resources to deploy
             //
@@ -520,12 +520,19 @@ namespace Dev2.Studio.ViewModels.Deploy
                                           .Where(n => n is ResourceTreeViewModel).Cast<ResourceTreeViewModel>()
                                           .Select(n => n.DataContext as IResourceModel).ToList();
 
-            if(resourcesToDeploy.Count <= 0 || TargetEnvironment == null) return;
+            // Fetch from resource repository to deploy ;)
+            IList<IResourceModel> deployableResources = 
+                resourcesToDeploy.Select(resource => resource.ID)
+                .Select(fetchID => SourceEnvironment.ResourceRepository
+                .FindSingle(c => c.ID == fetchID)).ToList();
+
+
+            if(deployableResources.Count <= 0 || TargetEnvironment == null) return;
 
             //
             // Deploy the resources
             //
-            var deployDTO = new DeployDTO { ResourceModels = resourcesToDeploy };
+            var deployDTO = new DeployDTO { ResourceModels = deployableResources };
 
             try
             {

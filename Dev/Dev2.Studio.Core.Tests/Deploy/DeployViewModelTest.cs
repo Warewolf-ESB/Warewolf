@@ -308,6 +308,74 @@ namespace Dev2.Core.Tests
 
         #endregion
 
+        #region Deployed Items Come From Resource Repository
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DeployViewModel_Deploy")]
+        public void DeployViewModel_Deploy_WhenViewHasOldModelInDataContext_VersionFromResourceRepositoryIsDeployed()
+        {
+            //MEFF
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+            ImportService.Initialize(new List<ComposablePartCatalog>());
+            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
+
+            //New Mocks
+            var mockedServerRepo = new Mock<IEnvironmentRepository>();
+            var server = new Mock<IEnvironmentModel>();
+            var secondServer = new Mock<IEnvironmentModel>();
+            var provider = new Mock<IServerProvider>();
+            var resourceNode = new Mock<IContextualResourceModel>();
+
+            //Setup Servers
+            server.Setup(svr => svr.IsConnected).Returns(true);
+            server.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
+            secondServer.Setup(svr => svr.IsConnected).Returns(true);
+            secondServer.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
+            mockedServerRepo.Setup(svr => svr.Fetch(It.IsAny<IServer>())).Returns(server.Object);
+            provider.Setup(prov => prov.Load()).Returns(new List<IServer>() { new ServerDTO(server.Object), new ServerDTO(secondServer.Object) });
+
+            const string expectedResourceName = "Test Resource";
+            var initialResource = new Mock<IContextualResourceModel>();
+            initialResource.Setup(res => res.Environment).Returns(server.Object);
+            initialResource.Setup(res => res.ResourceName).Returns(expectedResourceName);
+
+            //Setup Navigation Tree
+            var eventAggregator = new Mock<IEventAggregator>().Object;
+            var mockedSource = new NavigationViewModel(eventAggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, It.IsAny<Guid>(), mockedServerRepo.Object, false, enDsfActivityType.All);
+            var treeParent = new CategoryTreeViewModel(eventAggregator, null, "Test Category", ResourceType.WorkflowService)
+            {
+                IsExpanded = false
+            };
+
+            resourceNode.Setup(res => res.ResourceName).Returns(expectedResourceName);
+            resourceNode.Setup(res => res.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+            var resourceTreeNode = new ResourceTreeViewModel(eventAggregator, treeParent, resourceNode.Object);
+            resourceTreeNode.IsSelected = true;
+
+            //Setup Server Resources
+            server.Setup(svr => svr.LoadResources()).Callback(() => mockedSource.Root.Add(treeParent));
+
+            var deployViewModel = new DeployViewModel(provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object)
+            {
+                Source = mockedSource
+            };
+
+            //------------Execute Test--------------------------- 
+            //deployViewModel.Handle(new SelectItemInDeployMessage(initialResource.Object.ResourceName, initialResource.Object.Environment));
+
+            deployViewModel.DeployCommand.Execute(null);
+
+            // Assert item visible and selected
+            //Assert.IsTrue(resourceTreeNode.IsChecked.GetValueOrDefault(), "Deployed item not selected in deploy");
+            //Assert.IsTrue(treeParent.IsExpanded, "Item not visible in deploy view");
+            Assert.Fail("I have no idea how to test this ;)");
+        }
+
+        #endregion
+
         #region SelectItemInDeployMessage
 
         [TestMethod]
