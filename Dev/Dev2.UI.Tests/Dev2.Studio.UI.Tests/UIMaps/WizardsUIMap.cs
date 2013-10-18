@@ -14,7 +14,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public static void WaitForWizard(int timeOut = DefaultTimeOut, bool throwIfNotFound = true)
         {
             var uiBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
-            Type type = uiBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0].GetType();
+            var type = uiBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0].GetType();
             const int interval = 100;
             var timeNow = 0;
             while(type != typeof(WpfImage))

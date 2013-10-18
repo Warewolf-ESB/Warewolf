@@ -1,9 +1,5 @@
 ﻿using System.Windows.Forms;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps;
-using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -25,9 +21,8 @@ namespace Dev2.Studio.UI.Tests
         [TestCleanup]
         public void TestCleanup()
         {
-            var window = new UIBusinessDesignStudioWindow();
             //close any open dialogs
-            var tryFindDialog = window.GetChildren()[0];
+            var tryFindDialog = StudioWindow.GetChildren()[0];
             if(tryFindDialog.GetType() == typeof(WpfWindow))
             {
                 Mouse.Click(tryFindDialog);

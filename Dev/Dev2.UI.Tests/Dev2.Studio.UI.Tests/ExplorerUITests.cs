@@ -15,9 +15,8 @@ namespace Dev2.Studio.UI.Tests
         [TestCleanup]
         public void TestCleanup()
         {
-            var window = new UIBusinessDesignStudioWindow();
             //close any open wizards
-            var tryFindDialog = window.GetChildren()[0];
+            var tryFindDialog = StudioWindow.GetChildren()[0];
             if(tryFindDialog.GetType() == typeof(WpfWindow))
             {
                 Mouse.Click(tryFindDialog);

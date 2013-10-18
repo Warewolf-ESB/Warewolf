@@ -1,7 +1,5 @@
 ﻿using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
-using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -18,24 +16,6 @@ namespace Dev2.Studio.UI.Tests
         {
             TabManagerUIMap.CloseAllTabs();
         }
-
-        #region Properties
-
-        private ExplorerUIMap _explorerUIMap;
-        public ExplorerUIMap ExplorerUIMap
-        {
-            get
-            {
-                if((_explorerUIMap == null))
-                {
-                    _explorerUIMap = new ExplorerUIMap();
-                }
-
-                return _explorerUIMap;
-            }
-        }
-
-        #endregion
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -98,8 +78,7 @@ namespace Dev2.Studio.UI.Tests
 
             if (ResourceChangedPopUpUIMap.WaitForDialog(5000))
             {
-                var popupMap = new ResourceChangedPopUpUIMap();
-                popupMap.ClickCancel();
+                ResourceChangedPopUpUIMap.ClickCancel();
             }
 
             // -- DO Plugin Services --

@@ -42,10 +42,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestCleanup]
         public void TestCleanup()
         {
-            var window = new UIBusinessDesignStudioWindow();
             Playback.Wait(500);
             //close any open wizards
-            var tryFindDialog = window.GetChildren()[0].GetChildren()[0];
+            var tryFindDialog = StudioWindow.GetChildren()[0].GetChildren()[0];
             if(tryFindDialog.GetType() == typeof(WpfImage))
             {
                 Mouse.Click(tryFindDialog);
@@ -122,8 +121,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
-            var studioWindow = new UIBusinessDesignStudioWindow();
-            studioWindow.SetFocus();
+            StudioWindow.SetFocus();
             SendKeys.SendWait("^+D");
             WizardsUIMap.WaitForWizard();
             DatabaseServiceWizardUIMap.ClickCancel();
@@ -132,8 +130,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void NewPluginServiceShortcutKeyExpectedPluginServiceOpens()
         {
-            var studioWindow = new UIBusinessDesignStudioWindow();
-            studioWindow.SetFocus();
+            StudioWindow.SetFocus();
             SendKeys.SendWait("^+P");
             WizardsUIMap.WaitForWizard();
             PluginServiceWizardUIMap.ClickCancel();
@@ -142,8 +139,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void NewWebServiceShortcutKeyExpectedWebServiceOpens()
         {
-            var studioWindow = new UIBusinessDesignStudioWindow();
-            studioWindow.SetFocus();
+            StudioWindow.SetFocus();
             SendKeys.SendWait("^+W");
             WizardsUIMap.WaitForWizard();
             WebServiceWizardUIMap.Cancel();
