@@ -255,7 +255,6 @@
     <Compile Include="Dev2.Application.Server.Tests\Runtime.Services.Tests.cs" />
     <Compile Include="Dev2.Application.Server.Tests\WebSeverTests\BasicWebServerTests.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Workspace\XML\XmlResource.cs" />
-    <Compile Include="Dev2.Studio.Core.Tests\Feedback\FeedbackRecorderTests.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\FileSystemQueryTest.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\FrameworkSecurityProviderTest.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\Models\EnviromentModelTests.cs" />
