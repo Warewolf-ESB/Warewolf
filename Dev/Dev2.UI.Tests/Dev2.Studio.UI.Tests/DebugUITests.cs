@@ -50,6 +50,8 @@ namespace Dev2.Studio.UI.Tests
             {
                 Clipboard.Clear();
 
+                Playback.Wait(500);
+
                 RibbonUIMap.ClickRibbonMenuItem("Debug");
                 PopupDialogUIMap.WaitForDialog();
 
