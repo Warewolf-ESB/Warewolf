@@ -539,6 +539,7 @@ namespace Dev2.Studio.ViewModels.DataList
                             {
                                 child.DisplayName = string.Concat(child.Parent.DisplayName, ".", child.DisplayName);
                             }
+                            FixCommonNamingProblems(child);
                         }
                         childrenCount++;
                     }
