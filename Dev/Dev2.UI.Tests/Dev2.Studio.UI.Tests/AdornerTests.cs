@@ -226,8 +226,6 @@ namespace Dev2.Studio.UI.Tests
 
             // Click it
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse);
-            Mouse.Click(controlOnWorkflow, new Point(5, 5));
-            WorkflowDesignerUIMap.Adorner_ClickMapping(theTab, resourceToUse);
             UITestControlCollection controlCollection = controlOnWorkflow.GetChildren();
 
             Point initialResizerPoint = new Point();
