@@ -4,12 +4,8 @@ using System.IO;
 using System.Net;
 using System.Security.Principal;
 using System.Threading;
-using Caliburn.Micro;
-using Dev2.Composition;
 using Dev2.DataList.Contract;
-using Dev2.Integration.Tests.MEF;
 using Dev2.Network.Execution;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Network;
@@ -24,6 +20,10 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Channel_Tests
     {
 
         [TestMethod]
+        [Ignore]
+        // 18.10.2012 - This no longer happens as per a memory cleanup on the server.
+        // Attempting to invoke this callback results in the DataObject always being null given its async nature
+        // And we do not use this feature at the moment.
         public void WorkflowExecuted_Where_ExecutionStatusCallBackRegistered_Expected_OnCompletedCallbackRecieved()
         {
             //
