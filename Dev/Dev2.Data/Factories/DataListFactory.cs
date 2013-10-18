@@ -187,16 +187,6 @@ namespace Dev2.DataList.Contract
             return b.Generate();
         }
 
-        //public static string GenerateMappingFromDataList(string dataList, enDev2ArgumentType outputType, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
-        //{
-        //    IDataListCompiler compiler = CreateDataListCompiler();
-        //    DefinitionBuilder db = new DefinitionBuilder();
-        //    db.ArgumentType = outputType;
-        //    db.Definitions = compiler.GenerateDefsFromDataList(dataList, dev2ColumnArgumentDirection);
-
-        //    return db.Generate();
-        //}
-
         public static IList<IDev2DataLanguageIntellisensePart> GenerateIntellisensePartsFromDataList(string dataList)
         {
             IList<IDev2DataLanguageIntellisensePart> result = new List<IDev2DataLanguageIntellisensePart>();

@@ -157,7 +157,6 @@ namespace Dev2.Activities
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            //_dataObject = dataObject;
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             Guid dlID = dataObject.DataListID;
             var allErrors = new ErrorResultTO();

@@ -252,7 +252,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     HasError = true
                 };
                 DebugDispatcher.Instance.Write(debugState);
-                //context.Abort(new WorkflowTerminatedException("Ended due to error"));
                 context.MarkCanceled();
             }
         }

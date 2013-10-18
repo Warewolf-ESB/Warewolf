@@ -21,15 +21,6 @@ namespace Dev2.TO
             {
                 Errors[propertyName] = new List<IActionableErrorInfo>();
             }
-            else
-            {
-                //var errorsTos = ruleSet.ValidateRules();
-                //var actionableErrorInfos = errorsTos.ConvertAll<IActionableErrorInfo>(input => new ActionableErrorInfo(input, () =>
-                //{
-                //    IsFieldNameFocused = true;
-                //}));
-                //Errors[propertyName] = actionableErrorInfos;
-            }
 
             OnPropertyChanged("Errors");
 

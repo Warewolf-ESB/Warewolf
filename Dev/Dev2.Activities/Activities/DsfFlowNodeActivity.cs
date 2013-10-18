@@ -135,7 +135,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 Dev2DecisionStack dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(val);
-                //DebugItem itemToAdd = new DebugItem();
                 string userModel = dds.GenerateUserFriendlyModel(dataList.UID, dds.Mode);
 
                 foreach(Dev2Decision dev2Decision in dds.TheStack)
@@ -144,7 +143,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddInputDebugItemResults(result, ref userModel, dataList, dds.Mode, dev2Decision.Col2, dev2Decision.EvaluationFn);
                     AddInputDebugItemResults(result, ref userModel, dataList, dds.Mode, dev2Decision.Col3, dev2Decision.EvaluationFn);
                 }
-                //result.Add(itemToAdd);
 
                 var itemToAdd = new DebugItem();
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Statement" });

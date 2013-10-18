@@ -412,7 +412,6 @@ namespace Dev2.Activities
             var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, expression, false, out errorsResultTO);
             var itemToAdd = new DebugItem();
 
-            //itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = debugOutputIndexCounter.ToString(CultureInfo.InvariantCulture)});
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = parameterName });
 
             itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, expressionsEntry, executionID, enDev2ArgumentType.Input));
