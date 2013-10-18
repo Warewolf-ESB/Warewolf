@@ -36,7 +36,7 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
-        [TestMethod]
+        [TestMethod][Ignore]//ashley: testing 17.10.2013
         [Owner("Travis Frisinger")]
         [TestCategory("ExternalService_EditService")]
         public void ExternalService_EditService_EditWithNoSecondSaveDialog_ExpectOneDialog()
@@ -201,7 +201,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(WorkflowDesignerUIMap.GetHelpPane(theTab, "Only variables go in here").Exists);
         }
 
-        [TestMethod][Ignore]//ashley: testing 17.10.2013
+        [TestMethod]
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
         {
             const string resourceToUse = "CalculateTaxReturns";
