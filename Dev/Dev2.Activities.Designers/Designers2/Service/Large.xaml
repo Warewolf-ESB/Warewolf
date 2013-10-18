@@ -64,6 +64,7 @@
                                ItemsSource="{Binding DataMappingViewModel.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                CanUserResizeRows="False"
                                Style="{StaticResource ActivityMapppingDataGridStyle}"
+                               MinHeight="0"
                                Margin="0"
                                BorderThickness="0"
                                Visibility="{Binding DataMappingViewModel.Inputs.Count, Converter={StaticResource IntToVisibilityConverter}}">
@@ -185,9 +186,10 @@
                                ItemsSource="{Binding DataMappingViewModel.Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                               
                                Style="{StaticResource ActivityMapppingDataGridStyle}"
                                CanUserResizeRows="False"
+                               MinHeight="0"
                                Margin="0"
                                BorderThickness="0"
-                               Visibility="{Binding DataMappingViewModel.Inputs.Count, Converter={StaticResource IntToVisibilityConverter}}">
+                               Visibility="{Binding DataMappingViewModel.Outputs.Count, Converter={StaticResource IntToVisibilityConverter}}">
 
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
 

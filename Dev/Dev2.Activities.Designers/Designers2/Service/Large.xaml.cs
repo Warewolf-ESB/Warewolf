@@ -8,8 +8,6 @@ namespace Dev2.Activities.Designers2.Service
 {
     public partial class Large
     {
-         bool _heightInitialized;
-
         public Large()
         {
             InitializeComponent();
@@ -24,23 +22,28 @@ namespace Dev2.Activities.Designers2.Service
 
         void InitializeHeight()
         {
-            if(_heightInitialized)
+            //var viewModel = (ServiceDesignerViewModel)DataContext;
+
+            //var inputsHeight = GetHeightInfo(viewModel.DataMappingViewModel.Inputs, InputsDataGrid);
+            //var outputsHeight = GetHeightInfo(viewModel.DataMappingViewModel.Outputs, OutputsDataGrid);
+
+            //if(inputsHeight.Count + outputsHeight.Count > 12)
+            //{
+            //    var diff = ContentGrid.ActualHeight - InputsDataGrid.ActualHeight - OutputsDataGrid.ActualHeight;
+            //    ContentGrid.Height = diff + (outputsHeight.Row * 5) + (inputsHeight.Row * 5) + outputsHeight.Header + inputsHeight.Header;
+            //}
+
+            const double Offset = 20;
+            const double MaxHeightValue = 500;
+
+            var actualHeight = ActualHeight;
+            if(actualHeight > MaxHeightValue)
             {
-                return;
+                actualHeight = MaxHeightValue;
             }
 
-            var viewModel = (ServiceDesignerViewModel)DataContext;
-
-            var inputsHeight = GetHeightInfo(viewModel.DataMappingViewModel.Inputs, InputsDataGrid);
-            var outputsHeight = GetHeightInfo(viewModel.DataMappingViewModel.Outputs, OutputsDataGrid);
-
-            if(inputsHeight.Count + outputsHeight.Count > 12)
-            {
-                var diff = ContentGrid.ActualHeight - InputsDataGrid.ActualHeight - OutputsDataGrid.ActualHeight;
-                ContentGrid.Height = diff + (outputsHeight.Row * 5) + (inputsHeight.Row * 5) + outputsHeight.Header + inputsHeight.Header;
-            }
-
-            _heightInitialized = true;
+            MinHeight = actualHeight + Offset;
+            MaxHeight = actualHeight + Offset;
         }
 
         HeightInfo GetHeightInfo(IReadOnlyCollection<IInputOutputViewModel> mappings, Dev2DataGrid dataGrid)
