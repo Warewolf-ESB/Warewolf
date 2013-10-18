@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition.Primitives;
+using System.Linq.Expressions;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
@@ -327,13 +328,22 @@ namespace Dev2.Core.Tests
             var secondServer = new Mock<IEnvironmentModel>();
             var provider = new Mock<IServerProvider>();
             var resourceNode = new Mock<IContextualResourceModel>();
+            var resRepo = new Mock<IResourceRepository>();
+            var id = Guid.NewGuid();
 
             //Setup Servers
+            Mock<IResourceModel> newModel = new Mock<IResourceModel>();
+            resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Verifiable();
+            //resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(newModel.Object);
+
             server.Setup(svr => svr.IsConnected).Returns(true);
             server.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
+            server.Setup(svr => svr.ResourceRepository).Returns(resRepo.Object);
+
             secondServer.Setup(svr => svr.IsConnected).Returns(true);
             secondServer.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
             mockedServerRepo.Setup(svr => svr.Fetch(It.IsAny<IServer>())).Returns(server.Object);
+    
             provider.Setup(prov => prov.Load()).Returns(new List<IServer>() { new ServerDTO(server.Object), new ServerDTO(secondServer.Object) });
 
             const string expectedResourceName = "Test Resource";
@@ -349,14 +359,17 @@ namespace Dev2.Core.Tests
                 IsExpanded = false
             };
 
+            
+
             resourceNode.Setup(res => res.ResourceName).Returns(expectedResourceName);
             resourceNode.Setup(res => res.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            resourceNode.Setup(res => res.ID).Returns(id);
 
             var resourceTreeNode = new ResourceTreeViewModel(eventAggregator, treeParent, resourceNode.Object);
-            resourceTreeNode.IsSelected = true;
 
             //Setup Server Resources
-            server.Setup(svr => svr.LoadResources()).Callback(() => mockedSource.Root.Add(treeParent));
+            resourceTreeNode.IsChecked = true;
+            server.Setup(svr => svr.LoadResources()).Callback(() => mockedSource.Root.Add(resourceTreeNode));
 
             var deployViewModel = new DeployViewModel(provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object)
             {
@@ -364,14 +377,9 @@ namespace Dev2.Core.Tests
             };
 
             //------------Execute Test--------------------------- 
-            //deployViewModel.Handle(new SelectItemInDeployMessage(initialResource.Object.ResourceName, initialResource.Object.Environment));
-
             deployViewModel.DeployCommand.Execute(null);
 
-            // Assert item visible and selected
-            //Assert.IsTrue(resourceTreeNode.IsChecked.GetValueOrDefault(), "Deployed item not selected in deploy");
-            //Assert.IsTrue(treeParent.IsExpanded, "Item not visible in deploy view");
-            Assert.Fail("I have no idea how to test this ;)");
+            resRepo.Verify(sender => sender.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>()), Times.Once());
         }
 
         #endregion

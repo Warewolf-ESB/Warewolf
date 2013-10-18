@@ -520,14 +520,14 @@ namespace Dev2.Studio.ViewModels.Deploy
                                           .Where(n => n is ResourceTreeViewModel).Cast<ResourceTreeViewModel>()
                                           .Select(n => n.DataContext as IResourceModel).ToList();
 
-            // Fetch from resource repository to deploy ;)
+            //Fetch from resource repository to deploy ;)
             IList<IResourceModel> deployableResources = 
-                resourcesToDeploy.Select(resource => resource.ID)
-                .Select(fetchID => SourceEnvironment.ResourceRepository
-                .FindSingle(c => c.ID == fetchID)).ToList();
+            resourcesToDeploy.Select(resource => resource.ID)
+            .Select(fetchID => SourceEnvironment.ResourceRepository
+            .FindSingle(c => c.ID == fetchID)).ToList();
 
 
-            if(deployableResources.Count <= 0 || TargetEnvironment == null) return;
+            if(resourcesToDeploy.Count <= 0 || TargetEnvironment == null) return;
 
             //
             // Deploy the resources
