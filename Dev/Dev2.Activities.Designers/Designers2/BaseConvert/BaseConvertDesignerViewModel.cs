@@ -12,7 +12,6 @@ namespace Dev2.Activities.Designers2.BaseConvert
         public BaseConvertDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
-           // AddTitleBarLargeToggle();
             AddTitleBarQuickVariableInputToggle();
             AddTitleBarHelpToggle();
 

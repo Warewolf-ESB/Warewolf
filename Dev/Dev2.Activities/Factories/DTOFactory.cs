@@ -17,7 +17,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             TypeSwitch.Case<DataSplitDTO>(x => toReturn = new DataSplitDTO("", "Index", "", index, false, inserted)),
             TypeSwitch.Case<DataMergeDTO>(x => toReturn = new DataMergeDTO("", "None", "", index, "", "Left", inserted)),
             TypeSwitch.Case<CaseConvertTO>(x => toReturn = CaseConverterFactory.CreateCaseConverterTO("", "UPPER", "", index)),
-            TypeSwitch.Case<BaseConvertTO>(x => toReturn = new BaseConvertTO("", "Text", "Base 64", "", index, inserted)),
+            TypeSwitch.Case<BaseConvertTO>(x => toReturn = new BaseConvertTO(initializeWith, "Text", "Base 64", "", index, inserted)),
             TypeSwitch.Case<GatherSystemInformationTO>(x => toReturn = 
                 new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime,
                     string.Empty, index, inserted)),
