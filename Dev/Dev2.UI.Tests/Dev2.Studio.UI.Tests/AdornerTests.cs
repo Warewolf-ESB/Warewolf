@@ -5,6 +5,7 @@ using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests
@@ -224,10 +225,16 @@ namespace Dev2.Studio.UI.Tests
             // Drag it on
             ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
 
-            // Click it
+            // Prepare it
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse);
-            UITestControlCollection controlCollection = controlOnWorkflow.GetChildren();
+            Mouse.Click(controlOnWorkflow, new Point(5, 5));
+            var mappingsBtn = WorkflowDesignerUIMap.Adorner_GetButton(theTab, resourceToUse, "OpenMappingsToggle") as WpfToggleButton;
+            if (!mappingsBtn.Pressed)
+            {
+                Mouse.Click(mappingsBtn);
+            }
 
+            UITestControlCollection controlCollection = controlOnWorkflow.GetChildren();
             Point initialResizerPoint = new Point();
             // Validate the assumption that the last child is the resizer
             var resizeThumb = controlCollection[controlCollection.Count - 1];
