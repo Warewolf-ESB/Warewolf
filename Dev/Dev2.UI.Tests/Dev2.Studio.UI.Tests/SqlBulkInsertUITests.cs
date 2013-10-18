@@ -33,7 +33,7 @@ namespace Dev2.Studio.UI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("SqlBulkInsertUITests")]
         public void SqlBulkInsertTest_NoDatabaseIsSelected_GridHasNothing()
@@ -55,7 +55,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(smallDataGrid.GetChildren().Count == 0);
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("SqlBulkInsertUITests")]
         public void SqlBulkInsertTest_OpenLargeViewAndEnterAnInvalidBatchAndTimeoutSizeAndClickDone_CorrectingErrorsAndClickDoneWillReturnToSmallView()
@@ -133,7 +133,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsNotNull(toggleButton);
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("SqlBulkInsertUITests")]
         public void SqlBulkInsertTest_OpenQuickVariableInputAndCloseItImmediately_ReturnsToSmallView()
@@ -168,7 +168,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsNotNull(smallDataGrid);
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("SqlBulkInsertUITests")]
         public void SqlBulkInsertTest_SelectDatabaseAndTableName_GridHasColumnnames()

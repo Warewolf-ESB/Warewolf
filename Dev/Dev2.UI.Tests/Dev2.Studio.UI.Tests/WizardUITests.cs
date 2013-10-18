@@ -61,7 +61,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         #region Service Wizards
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void ClickNewPluginServiceExpectedPluginServiceOpens()
         {
             RibbonUIMap.ClickRibbonMenuItem("UI_RibbonHomeTabPluginServiceBtn_AutoID");
@@ -99,7 +99,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
 
         //2013.03.14: Ashley Lewis - Bug 9217
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void DatabaseServiceWizardCreateNewServiceExpectedServiceCreated()
         {
             //Initialization
@@ -118,7 +118,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", cat, name));
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
             StudioWindow.SetFocus();
@@ -127,7 +127,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             DatabaseServiceWizardUIMap.ClickCancel();
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void NewPluginServiceShortcutKeyExpectedPluginServiceOpens()
         {
             StudioWindow.SetFocus();
@@ -136,7 +136,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             PluginServiceWizardUIMap.ClickCancel();
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void NewWebServiceShortcutKeyExpectedWebServiceOpens()
         {
             StudioWindow.SetFocus();
@@ -176,7 +176,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DecisionWizard_Save")]
         public void DecisionWizard_Save_WhenMouseUsedToSelect2ndAnd3rdInputFields_FieldDataSavedCorrectly()
@@ -222,7 +222,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
 
         //Bug 9339 + Bug 9378
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void SaveDecisionWithBlankFieldsExpectedDecisionSaved()
         {
             Clipboard.Clear();
@@ -250,7 +250,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Assert.IsNotNull(point);
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("Decision_Intellisense")]
         public void Decision_Intellisense_KeyboardSelect_DecisionTitleUpdatesCorrectly()
@@ -297,7 +297,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Assert.AreEqual(expected, displayValue, "Decision intellisense doesnt work when using the keyboard to select intellisense results");
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void DragADecisionIntoForEachExpectNotAddedToForEach()
         {
             // Create the workflow
@@ -333,7 +333,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             }
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void DragASwitchIntoForEachExpectNotAddedToForEach()
         {
             // Create the workflow
@@ -368,7 +368,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             }
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [TestCategory("UITest")]
         [Description("for bug 9717 - copy paste multiple decisions (2013.06.22)")]
         [Owner("Ashley")]
@@ -417,7 +417,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         #region Server Wizard
           
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void ClickNewRemoteWarewolfServerExpectedRemoteWarewolfServerOpens()
         {
             DockManagerUIMap.ClickOpenTabPage("Explorer");

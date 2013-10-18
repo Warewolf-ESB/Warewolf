@@ -24,7 +24,7 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DebugInput_whenRun10Time")]
         public void DebugInput_WhenRun10Times_ExpectInputsPersistAndXMLRemainsLinked_InputsAndXMLRemainPersisted()

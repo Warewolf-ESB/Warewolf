@@ -31,7 +31,7 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void SearchAndRefresh_AttemptToSearch_ExpectedSearchFilteredByAllItems()
         {
             DockManagerUIMap.ClickOpenTabPage("Explorer");
@@ -46,7 +46,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(allResources>allResourcesAfterSearch, "Cannot filter explorer tree");
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("RenameResource_WithDashes")]
         public void RenameResource_WithDashes_ResourceRenamed()

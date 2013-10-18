@@ -9,7 +9,7 @@ namespace Dev2.Studio.UI.Tests
     [CodedUITest]
     public class MenuUITests : UIMapBase
     {
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void DebugAWorkFlow_EnsureSaveIsEnabledAfterCompletion()
         {
             DockManagerUIMap.ClickOpenTabPage("Explorer");

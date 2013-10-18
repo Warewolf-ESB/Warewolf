@@ -52,7 +52,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_ConnectToRemoteServerFromExplorer_RemoteServerConnected()
@@ -63,7 +63,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.AreEqual(RemoteServerName, selectedSeverName);
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_CreateRemoteWorkFlow_WorkflowIsCreated()
@@ -75,7 +75,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(activeTabName.Contains("Unsaved"));
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteWorkFlow_WorkflowIsEdited()
@@ -89,7 +89,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(activeTabName.Contains("Find Records - RemoteConnection"));
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_ViewRemoteWorkFlowInBrowser_WorkflowIsExecuted()
@@ -113,7 +113,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_DragAndDropWorkflowFromRemoteServerOnALocalHostCreatedWorkflow_WorkFlowIsDropped()
@@ -143,7 +143,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsFalse(OutputUIMap.IsAnyStepsInError(), "The remote workflow threw errors when executed locally");
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")] 
         public void RemoteServerUITests_DragAndDropWorkflowFromALocalServerOnARemoteServerCreatedWorkflow_WorkFlowIsDropped()
@@ -173,7 +173,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsFalse(OutputUIMap.IsAnyStepsInError(), "The local workflow threw errors when executed remotely");
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_OpenWorkflowOnRemoteServerAndOpenWorkflowWithSameNameOnLocalHost_WorkflowIsOpened()
@@ -189,7 +189,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsNotNull(localHostTab);
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_DebugARemoteWorkflowWhenLocalWorkflowWithSameNameIsOpen_WorkflowIsExecuted()
@@ -210,7 +210,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsNotNull(remoteTab);
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteDbSource_DbSourceIsEdited()
@@ -222,7 +222,7 @@ namespace Dev2.Studio.UI.Tests
             SaveDialogUIMap.ClickSave();
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteWebSource_WebSourceIsEdited()
@@ -234,7 +234,7 @@ namespace Dev2.Studio.UI.Tests
             SaveDialogUIMap.ClickSave();
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteWebService_WebServiceIsEdited()
@@ -246,7 +246,7 @@ namespace Dev2.Studio.UI.Tests
             SaveDialogUIMap.ClickSave();
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteDbService_DbServiceIsEdited()
@@ -257,7 +257,7 @@ namespace Dev2.Studio.UI.Tests
             DatabaseServiceWizardUIMap.ClickCancel();
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteEmailSource_EmailSourceIsEdited()
@@ -268,7 +268,7 @@ namespace Dev2.Studio.UI.Tests
             EmailSourceWizardUIMap.ClickCancel();
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemotePluginSource_PluginSourceIsEdited()
@@ -279,7 +279,7 @@ namespace Dev2.Studio.UI.Tests
             PluginSourceMap.ClickSave();
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemotePluginService_PluginServiceIsEdited()
@@ -291,7 +291,7 @@ namespace Dev2.Studio.UI.Tests
             PluginServiceWizardUIMap.ClickOK();
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_AddExecuteRenameAndDeleteALocalWorlFlow_ProcessCompletesSuccessfully()

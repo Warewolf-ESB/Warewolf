@@ -30,7 +30,7 @@ namespace Dev2.CodedUI.Tests
         #region New PBI Tests
 
         //PBI_8853
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
         {
             StudioWindow.SetFocus();
@@ -42,7 +42,7 @@ namespace Dev2.CodedUI.Tests
             Assert.IsTrue(activeTabName.Contains("Unsaved"), "Active workflow is not an unsaved workflow");
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void ClickNewWorkflowExpectedWorkflowOpens()
         {
             var preCount = TabManagerUIMap.GetTabCount();
@@ -94,7 +94,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         ////PBI 9461
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void ChangingResourceExpectedPopUpWarningWithShowAffected()
         {
             // Open the workflow
@@ -120,7 +120,7 @@ namespace Dev2.CodedUI.Tests
             Assert.IsTrue(TabManagerUIMap.GetActiveTabName().Contains("ForEachUpgradeTest"), "Affected workflow not shown after show affected workflow button pressed.");
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void UnsavedStar_UITest_WhenWorkflowIsChanged_ExpectStarIsShowing()
         {
             //------------Setup for test--------------------------
@@ -145,7 +145,7 @@ namespace Dev2.CodedUI.Tests
             Assert.IsTrue(theUnsavedTab.Exists);
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         // Should be unit test
         public void TypeInCalcBoxExpectedTooltipAppears()
         {
@@ -196,7 +196,7 @@ namespace Dev2.CodedUI.Tests
             }
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         // Regression Test
         public void CheckAddMissingIsWorkingWhenManuallyAddingVariableExpectedToShowVariablesAsUnUsed()
         {
@@ -220,7 +220,7 @@ namespace Dev2.CodedUI.Tests
             Playback.Wait(150);
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         // Regression Test
         public void ValidDatalistSearchTest()
         {
@@ -244,7 +244,7 @@ namespace Dev2.CodedUI.Tests
             }
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void DragAWorkflowIntoAndOutOfAForEach_Expected_NoErrors()
         {
             // Create the workflow
@@ -303,7 +303,7 @@ namespace Dev2.CodedUI.Tests
             Assert.IsNotNull(calcTaxReturnsControl, "Could not drop it ;(");
             }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void ClickShowMapping_Expected_InputOutputAdornersAreDisplayed()
         {
             // Create the workflow
@@ -334,7 +334,7 @@ namespace Dev2.CodedUI.Tests
         #region Tests Requiring Designer access
 
         // vi - Can I drop a tool onto the designer?
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void DropAWorkflowOrServiceOnFromTheToolBoxAndTestTheWindowThatPopsUp()
         {
             // Create the Workflow
@@ -453,7 +453,7 @@ namespace Dev2.CodedUI.Tests
 
         #region Groomed Test
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void CheckIfDebugProcessingBarIsShowingDurningExecutionExpectedToShowDuringExecutionOnly()
         {
             DockManagerUIMap.ClickOpenTabPage("Explorer");
@@ -475,7 +475,7 @@ namespace Dev2.CodedUI.Tests
             Assert.IsTrue(spinning, "Debug output spinner not spinning during execution");
         }
 
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void ClickHelpFeedback_Expected_FeedbackWindowOpens()
         {
             RibbonUIMap.ClickRibbonMenuItem("Feedback");
@@ -523,7 +523,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         // Bug 8747
-        [TestMethod][Ignore]//Ashleys weekend \:D/
+        [TestMethod]
         public void DebugBuriedErrors_Expected_OnlyErrorStepIsInError()
         {
             DockManagerUIMap.ClickOpenTabPage("Explorer");
