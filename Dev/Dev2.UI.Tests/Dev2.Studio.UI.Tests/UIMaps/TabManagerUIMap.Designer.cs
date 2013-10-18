@@ -10,6 +10,7 @@
 
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
+using Dev2.Studio.UI.Tests;
 
 namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 {
@@ -23,12 +24,11 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
 
     [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
-    public partial class TabManagerUIMap
+    public partial class TabManagerUIMap : UIMapBase
     {
         public UITestControl GetManager()
         {
-            var dockManager = new DocManagerUIMap();
-            var mainPane = dockManager.GetMainPane();
+            var mainPane = DockManagerUIMap.GetMainPane();
             if (mainPane != null)
             {
                 return mainPane.GetChildren()[0].GetChildren()[0];
