@@ -1,8 +1,9 @@
-﻿using Dev2.DataList.Contract;
+﻿using System.ComponentModel;
+using Dev2.DataList.Contract;
 
 namespace Dev2.Data.Interfaces
 {
-    public interface IInputOutputViewModel
+    public interface IInputOutputViewModel : INotifyPropertyChanged
     {
         string Name { get; set; }
         bool IsSelected { get; set; }

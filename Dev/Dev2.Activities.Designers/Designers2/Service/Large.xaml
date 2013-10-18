@@ -46,7 +46,7 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
-                   Text="There are no input mappings."
+                   Text="This service does not have input mappings."
                    Foreground="{StaticResource BrushDisabledForeground}"
                    HorizontalAlignment="Center"
                    Margin="0,5,0,0">
@@ -83,7 +83,7 @@
                                                     VerticalAlignment="Center"
                                                     WrapInBrackets="False"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsMapsToFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                                    Text="{Binding MapsTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}">
+                                                    Text="{Binding MapsTo, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.ServiceHelpInput}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -167,7 +167,7 @@
         </controls:Dev2DataGrid>        
         
         <TextBlock Grid.Row="2"
-                   Text="There are no output mappings."
+                   Text="This service does not have output mappings."
                    Foreground="{StaticResource BrushDisabledForeground}"
                    HorizontalAlignment="Center"
                    Margin="0,5,0,0">

@@ -1,4 +1,6 @@
-﻿using Dev2.Data.Interfaces;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -7,19 +9,19 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Collections.Generic;
-using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace Dev2.Core.Tests {
+namespace Dev2.Core.Tests
+{
     /// <summary>
     ///This is a result class for DataMappingViewModelTest and is intended
     ///to contain all DataMappingViewModelTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class DataMappingViewModelTest {
+    public class DataMappingViewModelTest
+    {
         Mock<IWebActivity> _mockWebActivity = new Mock<IWebActivity>();
-        Mock<IContextualResourceModel> _mockresource = new Mock<IContextualResourceModel>(); 
+        Mock<IContextualResourceModel> _mockresource = new Mock<IContextualResourceModel>();
         Mock<IDataListViewModel> _mockDataListViewModel = new Mock<IDataListViewModel>();
         IList<IInputOutputViewModel> _outputInOutList = new List<IInputOutputViewModel>();
         IList<IInputOutputViewModel> _inputInOutList = new List<IInputOutputViewModel>();
@@ -36,10 +38,10 @@ namespace Dev2.Core.Tests {
 
         //Use TestInitialize to run code before running each result
         [TestInitialize()]
-        public void MyTestInitialize() 
+        public void MyTestInitialize()
         {
 
-           // ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
+            // ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             IList<IDev2Definition> inputDev2defList = new List<IDev2Definition>();
 
@@ -53,12 +55,12 @@ namespace Dev2.Core.Tests {
 
             IList<IDev2Definition> outputDev2defList = new List<IDev2Definition>();
 
-            Mock<IDev2Definition> _mockDev2DefOut1 = Dev2MockFactory.SetupIDev2Definition("vehicleVin", "", "","", "VIN", false, false, true, "");
+            Mock<IDev2Definition> _mockDev2DefOut1 = Dev2MockFactory.SetupIDev2Definition("vehicleVin", "", "", "", "VIN", false, false, true, "");
             Mock<IDev2Definition> _mockDev2DefOut2 = Dev2MockFactory.SetupIDev2Definition("vehicleColor", "", "", "", "vehicleColor", false, false, true, "");
             Mock<IDev2Definition> _mockDev2DefOut3 = Dev2MockFactory.SetupIDev2Definition("Fines", "", "", "", "", false, false, true, "");
             Mock<IDev2Definition> _mockDev2DefOut4 = Dev2MockFactory.SetupIDev2Definition("speed", "", "Fines", "", "speed", false, false, true, "");
             Mock<IDev2Definition> _mockDev2DefOut5 = Dev2MockFactory.SetupIDev2Definition("date", "Fines.Date", "", "", "date", false, false, true, "");
-            Mock<IDev2Definition> _mockDev2DefOut6 = Dev2MockFactory.SetupIDev2Definition("location", "", "Fines", "", "location", false, false, true, "");                      
+            Mock<IDev2Definition> _mockDev2DefOut6 = Dev2MockFactory.SetupIDev2Definition("location", "", "Fines", "", "location", false, false, true, "");
 
             outputDev2defList.Add(_mockDev2DefOut1.Object);
             outputDev2defList.Add(_mockDev2DefOut2.Object);
@@ -116,8 +118,9 @@ namespace Dev2.Core.Tests {
         /// <summary>
         ///test the CreateXmlOutput method
         ///</summary>
-        [TestMethod()]   
-        public void CreateXmlOutput() {                        
+        [TestMethod()]
+        public void CreateXmlOutput()
+        {
             _dataMappingViewModel.CreateXmlOutput(_dataMappingViewModel.Outputs, _dataMappingViewModel.Inputs);
             string result1 = _dataMappingViewModel.Activity.LiveInputMapping;
             string result2 = _dataMappingViewModel.Activity.LiveOutputMapping;
@@ -136,7 +139,7 @@ namespace Dev2.Core.Tests {
             Assert.AreEqual(3, _dataMappingViewModel.Inputs.Count);
             Assert.AreEqual(5, _dataMappingViewModel.Outputs.Count);
         }
-  
+
         [TestMethod()]
         public void Given_OnlyInputsInDataList_Expected_ValuesOfModifiedInputsPersist()
         {
@@ -169,7 +172,7 @@ namespace Dev2.Core.Tests {
             DataMappingViewModel dataMappingViewModel = new DataMappingViewModel(mockAct.Object);
             dataMappingViewModel.Outputs[0].Value = value;
             dataMappingViewModel.CreateXmlOutput(dataMappingViewModel.Outputs.ToList(), dataMappingViewModel.Inputs.ToList());
-            
+
             DataMappingViewModel newDataMappingViewModel = new DataMappingViewModel(mockAct.Object);
 
             Assert.IsTrue(newDataMappingViewModel.Outputs.Count(o => o.Value == value) > 0);
@@ -195,6 +198,23 @@ namespace Dev2.Core.Tests {
 
             Assert.IsTrue(newDataMappingViewModel.Inputs.Count(o => o.MapsTo == inputValue) > 0);
             Assert.IsTrue(newDataMappingViewModel.Outputs.Count(o => o.Value == outputValue) > 0);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataMappingViewModel_Constructor")]
+        public void DataMappingViewModel_Constructor_MappingCollectionChangedEventHandlerNotNull_Attached()
+        {
+            //------------Setup for test--------------------------
+            int callCount = 0;
+
+            //------------Execute Test---------------------------
+            var dataMappingViewModel = new DataMappingViewModel(new Mock<IWebActivity>().Object, delegate { callCount++; });
+            dataMappingViewModel.Inputs.Add(new Mock<IInputOutputViewModel>().Object);
+            dataMappingViewModel.Outputs.Add(new Mock<IInputOutputViewModel>().Object);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, callCount);
         }
     }
 }

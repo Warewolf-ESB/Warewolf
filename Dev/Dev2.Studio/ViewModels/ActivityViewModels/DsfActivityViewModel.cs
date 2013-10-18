@@ -596,8 +596,20 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                 case FixType.ReloadMapping:
                     ShowMapping = true;
                     var xml = XElement.Parse(_worstError.FixData);
-                    DataMappingViewModel.Inputs = GetMapping(xml, true, DataMappingViewModel.Inputs);
-                    DataMappingViewModel.Outputs = GetMapping(xml, false, DataMappingViewModel.Outputs);
+                    var inputs = GetMapping(xml, true, DataMappingViewModel.Inputs);
+                    var outputs = GetMapping(xml, false, DataMappingViewModel.Outputs);
+
+                    DataMappingViewModel.Inputs.Clear();
+                    foreach(var input in inputs)
+                    {
+                        DataMappingViewModel.Inputs.Add(input);
+                    }
+
+                    DataMappingViewModel.Outputs.Clear();
+                    foreach(var output in outputs)
+                    {
+                        DataMappingViewModel.Outputs.Add(output);
+                    }
                     SetInputs();
                     SetOuputs();
                     RemoveWorstError(_worstError);

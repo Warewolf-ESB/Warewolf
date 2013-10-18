@@ -8,11 +8,13 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Collections;
 using Dev2.Communication;
+using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
 using Dev2.Simulation;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -29,6 +31,27 @@ namespace Dev2.Activities.Designers.Tests.Service
     public class ServiceDesignerViewModelTests
     {
         #region CTOR
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ServiceDesignerViewModel_Constructor")]
+        public void ServiceDesignerViewModel_Constructor_PropertiesInitialized()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var viewModel = CreateServiceDesignerViewModel(Guid.NewGuid());
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.ModelItem);
+            Assert.IsNotNull(viewModel.DataMappingViewModel);
+            Assert.IsNotNull(viewModel.FixErrorsCommand);
+            Assert.IsNotNull(viewModel.DesignValidationErrors);
+            Assert.IsNotNull(viewModel.RootModel);
+            Assert.IsNotNull(viewModel.ResourceModel);
+
+            Assert.AreEqual(3, viewModel.TitleBarToggles.Count);
+        }
 
         [TestMethod]
         [TestCategory("ServiceDesignerViewModel_Constructor")]
@@ -562,6 +585,57 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         #endregion
 
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ServiceDesignerViewModel_UpdateMappings")]
+        public void ServiceDesignerViewModel_UpdateMappings_SetsInputsAndOutputs()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var resourceModel = CreateResourceModel(resourceID, false);
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new DataListItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(resourceID);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+
+            var activity = new DsfActivity();
+            activity.ResourceID = new InArgument<Guid>(resourceID);
+            activity.EnvironmentID = new InArgument<Guid>(Guid.Empty);
+            activity.UniqueID = Guid.NewGuid().ToString();
+            activity.SimulationMode = SimulationMode.OnDemand;
+
+            var modelItem = CreateModelItem(activity);
+
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
+
+            var inputMapping = viewModel.ModelItem.GetProperty<string>("InputMapping");
+            var outputMapping = viewModel.ModelItem.GetProperty<string>("OutputMapping");
+
+            Assert.AreEqual("<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>", inputMapping);
+            Assert.AreEqual("<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>", outputMapping);
+
+
+            //------------Execute Test---------------------------
+            viewModel.DataMappingViewModel.Inputs[0].MapsTo = "[[a1]]";
+            viewModel.DataMappingViewModel.Outputs[0].Value = "[[b1]]";
+            viewModel.UpdateMappings();
+
+            //------------Assert Results-------------------------
+            inputMapping = viewModel.ModelItem.GetProperty<string>("InputMapping");
+            outputMapping = viewModel.ModelItem.GetProperty<string>("OutputMapping");
+
+            Assert.AreEqual("<Inputs><Input Name=\"n1\" Source=\"[[a1]]\" /></Inputs>", inputMapping);
+            Assert.AreEqual("<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[b1]]\" /></Outputs>", outputMapping);
+        }
+
         ///////////////////////////////////////////////
         // Static Helpers
         ///////////////////////////////////////////////
@@ -570,15 +644,16 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         public static Mock<ModelItem> CreateModelItem(Guid uniqueID, Guid serviceID, Guid environmentID, params ModelProperty[] modelProperties)
         {
+            const int OffSet = 3;
             var startIndex = 0;
             if(modelProperties == null)
             {
-                modelProperties = new ModelProperty[3];
+                modelProperties = new ModelProperty[OffSet];
             }
             else
             {
                 startIndex = modelProperties.Length;
-                Array.Resize(ref modelProperties, startIndex + 3);
+                Array.Resize(ref modelProperties, startIndex + OffSet);
             }
 
             modelProperties[startIndex++] = CreateModelProperty("UniqueID", uniqueID.ToString()).Object;
@@ -699,5 +774,12 @@ namespace Dev2.Activities.Designers.Tests.Service
         }
 
         #endregion
+
+
+        static ModelItem CreateModelItem(DsfActivity activity)
+        {
+            return ModelItemUtils.CreateModelItem(activity);
+        }
+
     }
 }

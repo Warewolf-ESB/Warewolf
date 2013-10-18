@@ -9,8 +9,8 @@ namespace Dev2.Studio.Core.Interfaces
     {
         IWebActivity Activity { get; set; }
         bool IsInitialLoad { get; set; }
-        ObservableCollection<IInputOutputViewModel> Outputs { get; set; }
-        ObservableCollection<IInputOutputViewModel> Inputs { get; set; }
+        ObservableCollection<IInputOutputViewModel> Outputs { get; }
+        ObservableCollection<IInputOutputViewModel> Inputs { get; }
         string XmlOutput { get; set; }
         ICommand UndoCommand { get; }
         ICommand RedoCommand { get; }

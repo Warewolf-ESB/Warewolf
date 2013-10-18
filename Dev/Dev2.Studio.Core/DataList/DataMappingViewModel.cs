@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Windows.Input;
 using Dev2.Data.Interfaces;
 using Dev2.DataList;
@@ -18,8 +19,6 @@ namespace Dev2.Studio.ViewModels.DataList
         #region Locals
 
         private IWebActivity _activity;
-        private ObservableCollection<IInputOutputViewModel> _outputs;
-        private ObservableCollection<IInputOutputViewModel> _inputs;
         public bool _isInitialLoad = false;
         RelayCommand _autoMappingInput;
         RelayCommand _undo;
@@ -40,14 +39,19 @@ namespace Dev2.Studio.ViewModels.DataList
         #endregion Imports
 
         #region Ctor
-        public DataMappingViewModel(IWebActivity activity)
+        public DataMappingViewModel(IWebActivity activity, NotifyCollectionChangedEventHandler mappingCollectionChangedEventHandler = null)
         {
 
             _activity = activity;
             _actionManager = new ActionManager();
-            _inputs = new ObservableCollection<IInputOutputViewModel>();
-            _outputs = new ObservableCollection<IInputOutputViewModel>();
+            Inputs = new ObservableCollection<IInputOutputViewModel>();
+            Outputs = new ObservableCollection<IInputOutputViewModel>();
 
+            if(mappingCollectionChangedEventHandler != null)
+            {
+                Inputs.CollectionChanged += mappingCollectionChangedEventHandler;
+                Outputs.CollectionChanged += mappingCollectionChangedEventHandler;
+            }
             Initialize(_activity);
         }
         #endregion Ctor
@@ -77,8 +81,16 @@ namespace Dev2.Studio.ViewModels.DataList
             var mappingData = ioBuilder.Generate();
 
             // save model data
-            Outputs = mappingData.Outputs.ToObservableCollection();
-            Inputs = mappingData.Inputs.ToObservableCollection();      
+            //Outputs = mappingData.Outputs.ToObservableCollection();
+            foreach(var ioViewModel in mappingData.Outputs)
+            {
+                Outputs.Add(ioViewModel);
+            }
+            //Inputs = mappingData.Inputs.ToObservableCollection();
+            foreach(var ioViewModel in mappingData.Inputs)
+            {
+                Inputs.Add(ioViewModel);
+            }
 
             // update special fields on the model?!
             var toSaveOutputMapping = ioBuilder.SavedOutputMapping;
@@ -148,37 +160,15 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        public ObservableCollection<IInputOutputViewModel> Outputs
-        {
-            get
-            {
-                return _outputs.ToObservableCollection();
-            }
-            set
-            {
-                _outputs = value;
-                OnPropertyChanged("Outputs");
-            }
-        }
+        public ObservableCollection<IInputOutputViewModel> Outputs { get; private set; }
 
-        public ObservableCollection<IInputOutputViewModel> Inputs
-        {
-            get
-            {
-                return _inputs.ToObservableCollection();
-            }
-            set
-            {
-                _inputs = value;
-                OnPropertyChanged("Inputs");
-            }
-        }
+        public ObservableCollection<IInputOutputViewModel> Inputs { get; private set; }
 
         public ICommand UndoCommand
         {
             get
             {
-                if (_undo == null)
+                if(_undo == null)
                 {
                     _undo = new RelayCommand(c => Undo());
                 }
@@ -190,7 +180,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             get
             {
-                if (_redo == null)
+                if(_redo == null)
                 {
                     _redo = new RelayCommand(c => Redo());
                 }
@@ -249,9 +239,9 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             string inputString = string.Empty;
             IList<IDev2Definition> inputs = new List<IDev2Definition>();
-            if (inputData.Count != 0)
+            if(inputData.Count != 0)
             {
-                foreach (IInputOutputViewModel itp in inputData)
+                foreach(IInputOutputViewModel itp in inputData)
                 {
                     inputs.Add(itp.GetGenerationTO());
                 }
@@ -264,9 +254,9 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             string outputString = string.Empty;
             IList<IDev2Definition> outputs = new List<IDev2Definition>();
-            if (outputData.Count != 0)
+            if(outputData.Count != 0)
             {
-                foreach (IInputOutputViewModel otp in outputData)
+                foreach(IInputOutputViewModel otp in outputData)
                 {
                     outputs.Add(otp.GetGenerationTO());
                 }

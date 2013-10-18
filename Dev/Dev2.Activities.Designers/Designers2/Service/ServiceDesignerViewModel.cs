@@ -2,6 +2,8 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -40,6 +42,7 @@ namespace Dev2.Activities.Designers2.Service
         IDesignValidationService _validationService;
         IErrorInfo _worstDesignError;
         bool _isDisposed;
+        bool _initializingMappings;
 
         public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
             : this(modelItem, rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator)
@@ -234,7 +237,39 @@ namespace Dev2.Activities.Designers2.Service
         void InitializeMappings()
         {
             var webAct = WebActivityFactory.CreateWebActivity(ModelItem, ResourceModel, ServiceName);
-            DataMappingViewModel = new DataMappingViewModel(webAct);
+            DataMappingViewModel = new DataMappingViewModel(webAct, OnMappingCollectionChanged);
+        }
+
+        void OnMappingCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if(e.NewItems != null)
+            {
+                foreach(IInputOutputViewModel mapping in e.NewItems)
+                {
+                    mapping.PropertyChanged += OnMappingPropertyChanged;
+                }
+            }
+            if(e.OldItems != null)
+            {
+                foreach(IInputOutputViewModel mapping in e.OldItems)
+                {
+                    mapping.PropertyChanged -= OnMappingPropertyChanged;
+                }
+            }
+        }
+
+        void OnMappingPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch(e.PropertyName)
+            {
+                case "MapsTo":
+                    SetInputs();
+                    break;
+
+                case "Value":
+                    SetOuputs();
+                    break;
+            }
         }
 
         void InitializeLastValidationMemo(IEnvironmentModel environmentModel)
@@ -557,8 +592,20 @@ namespace Dev2.Activities.Designers2.Service
                 case FixType.ReloadMapping:
                     ShowLarge = true;
                     var xml = XElement.Parse(WorstDesignError.FixData);
-                    DataMappingViewModel.Inputs = GetMapping(xml, true, DataMappingViewModel.Inputs);
-                    DataMappingViewModel.Outputs = GetMapping(xml, false, DataMappingViewModel.Outputs);
+                    var inputs = GetMapping(xml, true, DataMappingViewModel.Inputs);
+                    var outputs = GetMapping(xml, false, DataMappingViewModel.Outputs);
+
+                    DataMappingViewModel.Inputs.Clear();
+                    foreach(var input in inputs)
+                    {
+                        DataMappingViewModel.Inputs.Add(input);
+                    }
+
+                    DataMappingViewModel.Outputs.Clear();
+                    foreach(var output in outputs)
+                    {
+                        DataMappingViewModel.Outputs.Add(output);
+                    }
                     SetInputs();
                     SetOuputs();
                     RemoveWorstError(WorstDesignError);
