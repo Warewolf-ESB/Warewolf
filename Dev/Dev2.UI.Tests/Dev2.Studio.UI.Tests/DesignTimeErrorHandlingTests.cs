@@ -93,10 +93,8 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait("Column1");
             // Save
             DatabaseServiceWizardUIMap.ClickOK();
-            SendKeys.SendWait("{TAB}utility");
-            DatabaseServiceWizardUIMap.SaveDialogClickFirstFolder();
-            SendKeys.SendWait("{TAB}{ENTER}");
-            if (ResourceChangedPopUpUIMap.WaitForDialog(5000))
+
+            if(ResourceChangedPopUpUIMap.WaitForDialog(5000))
             {
                 ResourceChangedPopUpUIMap.ClickCancel();
             }

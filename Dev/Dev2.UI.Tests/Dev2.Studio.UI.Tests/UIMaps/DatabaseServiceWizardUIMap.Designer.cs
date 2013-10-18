@@ -144,13 +144,14 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 
         public void TabToMappingsTab(UITestControl control)
         {
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
             SendKeys.SendWait("{RIGHT}");
         }
 
         public void TabToOutputMappings(UITestControl control)
         {
             TabToMappingsTab(control);
+            Playback.Wait(500);
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");
         }
 
@@ -186,7 +187,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             Mouse.Click(uIItemImage, new Point(774, 520));
 
             // Click image
-            Mouse.Click(uIItemImage, new Point(608, 471));
+            //Mouse.Click(uIItemImage, new Point(608, 471));
         }
         
         #region Properties
