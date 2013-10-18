@@ -310,6 +310,26 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             StringAssert.Contains(actual, expected, "Not all XML special characters are escaped i.e \"'><&");
             
+        } 
+        
+        [TestMethod]
+        public void DeserializeToXMLFromBinaryDataListWhereDataListContainsInvalidXMLCharactersExpectedInvalidCharactersAreEscaped_UsingXMLWithoutSystemTagsTranslator()
+        {
+            IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormatWithoutSystemTags);
+            IBinaryDataList dl1 = Dev2BinaryDataListFactory.CreateDataList(GlobalConstants.NullDataListID);
+
+            string error;
+            dl1.TryCreateScalarTemplate(string.Empty, "cake", "", false, true, enDev2ColumnArgumentDirection.Both, out error);
+            dl1.TryCreateScalarValue("Travis Is \"Cool\"&>'nstuff'<", "cake", out error);
+
+            ErrorResultTO errors;
+            var payload = xmlConverter.ConvertFrom(dl1, out errors);
+
+            string actual = payload.FetchAsString();
+            string expected = "Travis Is &quot;Cool&quot;&amp;&gt;&apos;nstuff&apos;&lt;";
+
+            StringAssert.Contains(actual, expected, "Not all XML special characters are escaped i.e \"'><&");
+            
         }
         #endregion
 

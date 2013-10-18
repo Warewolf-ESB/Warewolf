@@ -18,7 +18,7 @@ namespace Dev2.Data.Translators
         private static readonly string _rootTag = "DataList";
         private DataListFormat _format;
         private Encoding _encoding;
-
+        TranslatorUtils _tu;
 
         public DataListFormat Format { get { return _format; } }
         public Encoding TextEncoding { get { return _encoding; } }
@@ -27,6 +27,7 @@ namespace Dev2.Data.Translators
         {
             _format = DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags, EmitionTypes.XML, "text/xml");
             _encoding = Encoding.UTF8;
+            _tu = new TranslatorUtils();
         }
 
         public DataListTranslatedPayloadTO ConvertFrom(IBinaryDataList payload, out ErrorResultTO errors)
@@ -66,14 +67,8 @@ namespace Dev2.Data.Translators
                             foreach (IBinaryDataListItem col in rowData)
                             {
                                 string fName = col.FieldName;
-
-                                result.Append("<");
-                                result.Append(fName);
-                                result.Append(">");
-                                result.Append(col.TheValue);
-                                result.Append("</");
-                                result.Append(fName);
-                                result.Append(">");
+                                
+                                PopulateXmlValue(result,fName,col);
                             }
 
                             result.Append("</");
@@ -88,13 +83,14 @@ namespace Dev2.Data.Translators
                         IBinaryDataListItem val = entry.FetchScalar();
                         if(val != null)
                         {
-                            result.Append("<");
-                            result.Append(fName);
-                            result.Append(">");
-                            result.Append(val.TheValue);
-                            result.Append("</");
-                            result.Append(fName);
-                            result.Append(">");
+                            PopulateXmlValue(result, fName, val);
+//                            result.Append("<");
+//                            result.Append(fName);
+//                            result.Append(">");
+//                            result.Append(val.TheValue);
+//                            result.Append("</");
+//                            result.Append(fName);
+//                            result.Append(">");
                         }
                     }
                 }
@@ -108,6 +104,17 @@ namespace Dev2.Data.Translators
             return tmp;
         }
 
+        void PopulateXmlValue(StringBuilder result, string fName, IBinaryDataListItem col)
+        {
+            result.Append("<");
+            result.Append(fName);
+            result.Append(">");
+            result.Append(_tu.FullCleanForEmit(col.TheValue));
+            result.Append("</");
+            result.Append(fName);
+            result.Append(">");
+        }
+
         public IBinaryDataList ConvertTo(byte[] input, string targetShape, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
@@ -117,7 +124,7 @@ namespace Dev2.Data.Translators
             IBinaryDataList result = null; 
 
             ErrorResultTO invokeErrors;
-            TranslatorUtils tu = new TranslatorUtils();
+            
 
             // build shape
             if(targetShape == null)
@@ -126,7 +133,7 @@ namespace Dev2.Data.Translators
             }
             else
             {
-                result = tu.TranslateShapeToObject(targetShape, false, out invokeErrors);
+                result = _tu.TranslateShapeToObject(targetShape, false, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
 
                 // populate the shape 
@@ -311,9 +318,9 @@ namespace Dev2.Data.Translators
             errors = new ErrorResultTO();
 
             ErrorResultTO invokeErrors;
-            TranslatorUtils tu = new TranslatorUtils();
+            
 
-            IBinaryDataList targetDL = tu.TranslateShapeToObject(filterShape, false, out invokeErrors);
+            IBinaryDataList targetDL = _tu.TranslateShapeToObject(filterShape, false, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
             IList<string> itemKeys = targetDL.FetchAllKeys();
@@ -351,13 +358,15 @@ namespace Dev2.Data.Translators
                                 {
                                     string fName = col.FieldName;
 
-                                    result.Append("<");
-                                    result.Append(fName);
-                                    result.Append(">");
-                                    result.Append(col.TheValue);
-                                    result.Append("</");
-                                    result.Append(fName);
-                                    result.Append(">");
+                                    PopulateXmlValue(result,fName,col);
+//
+//                                    result.Append("<");
+//                                    result.Append(fName);
+//                                    result.Append(">");
+//                                    result.Append(col.TheValue);
+//                                    result.Append("</");
+//                                    result.Append(fName);
+//                                    result.Append(">");
                                 }
                             }
 
@@ -373,13 +382,14 @@ namespace Dev2.Data.Translators
 
                         if(val != null)
                         {
-                            result.Append("<");
-                            result.Append(fName);
-                            result.Append(">");
-                            result.Append(val.TheValue);
-                            result.Append("</");
-                            result.Append(fName);
-                            result.Append(">");
+                            PopulateXmlValue(result, fName, val);
+//                            result.Append("<");
+//                            result.Append(fName);
+//                            result.Append(">");
+//                            result.Append(val.TheValue);
+//                            result.Append("</");
+//                            result.Append(fName);
+//                            result.Append(">");
                         }
                     }
                 }

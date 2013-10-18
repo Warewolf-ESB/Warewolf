@@ -113,7 +113,10 @@ namespace Dev2.Runtime.ServiceModel.Data
             foreach(var field in Recordset.Fields)
             {
                 var path = field.Path;
-
+                if(String.IsNullOrEmpty(field.Name))
+                {
+                    continue;
+                }
                 if(path != null)
                 {
                     string expressionFormat;
@@ -147,20 +150,23 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             #region Add method parameters to inputs
 
-            foreach(var parameter in Method.Parameters)
+            if(Method != null)
             {
-                var input = new XElement("Input",
-                    new XAttribute("Name", parameter.Name ?? string.Empty),
-                    new XAttribute("Source", parameter.Name ?? string.Empty),
-                    new XAttribute("EmptyToNull", parameter.EmptyToNull),
-                    new XAttribute("DefaultValue", parameter.DefaultValue ?? string.Empty)
-                    );
-
-                if(parameter.IsRequired)
+                foreach(var parameter in Method.Parameters)
                 {
-                    input.Add(new XElement("Validator", new XAttribute("Type", "Required")));
+                    var input = new XElement("Input",
+                        new XAttribute("Name", parameter.Name ?? string.Empty),
+                        new XAttribute("Source", parameter.Name ?? string.Empty),
+                        new XAttribute("EmptyToNull", parameter.EmptyToNull),
+                        new XAttribute("DefaultValue", parameter.DefaultValue ?? string.Empty)
+                        );
+
+                    if(parameter.IsRequired)
+                    {
+                        input.Add(new XElement("Validator", new XAttribute("Type", "Required")));
+                    }
+                    inputs.Add(input);
                 }
-                inputs.Add(input);
             }
 
             #endregion
@@ -174,14 +180,17 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 if(isRecordset)
                 {
-                    var output = new XElement("Output",
-                        new XAttribute("Name", field.Name ?? string.Empty),
-                        new XAttribute("MapsTo", field.Alias ?? string.Empty),
-                        //2013.05.16: Ashley Lewis for bug 9453 - dont save blank output mappings
-                        new XAttribute("Value", !string.IsNullOrWhiteSpace(field.Alias)?"[[" + Recordset.Name + "()." + field.Alias + "]]":""),
-                        new XAttribute("Recordset", Recordset.Name)
-                        );
-                    outputs.Add(output);
+                    if(!String.IsNullOrEmpty(field.Name))
+                    {
+                        var output = new XElement("Output",
+                            new XAttribute("Name", field.Name ?? string.Empty),
+                            new XAttribute("MapsTo", field.Alias ?? string.Empty),
+                            //2013.05.16: Ashley Lewis for bug 9453 - dont save blank output mappings
+                            new XAttribute("Value", !string.IsNullOrWhiteSpace(field.Alias) ? "[[" + Recordset.Name + "()." + field.Alias + "]]" : ""),
+                            new XAttribute("Recordset", Recordset.Name)
+                            );
+                        outputs.Add(output);
+                    }
                 }
                 else
                 {
@@ -189,7 +198,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                         new XAttribute("Name", field.Name ?? string.Empty),
                         new XAttribute("MapsTo", field.Alias ?? string.Empty),
                         //2013.05.16: Ashley Lewis for bug 9453 - dont save blank output mappings
-                        new XAttribute("Value", !string.IsNullOrWhiteSpace(field.Alias)?"[[" + field.Alias + "]]":"")
+                        new XAttribute("Value", !string.IsNullOrWhiteSpace(field.Alias) ? "[[" + field.Alias + "]]" : "")
                         );
                     outputs.Add(output);
                 }
@@ -225,6 +234,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             return result;
         }
+
 
         #endregion
 

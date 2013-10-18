@@ -159,6 +159,35 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(xmlDataString, actual);
         }
 
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DbService_ToXml")]
+        public void DbService_ToXml_WhenRecordSetHasBlankFields_ExpectNotPartOfOutputDescription()
+        {
+            //------------Setup for test--------------------------
+            var dbService = new DbService();
+            var dbSource = new DbSource();
+            dbSource.ResourceName = "Source";
+            var resourceID = Guid.NewGuid();
+            dbSource.ResourceID = resourceID;
+            dbService.Source = dbSource;
+            var serviceMethod = new ServiceMethod();
+            serviceMethod.Name = "Method";
+            dbService.Method = serviceMethod;
+            var recordset = new Recordset();
+            recordset.Name = "SomeRecSet";
+            var recordsetField = new RecordsetField();
+            recordsetField.Alias = "SomeAlias";
+            recordsetField.Name = "";
+            recordset.Fields.Add(recordsetField);
+            dbService.Recordset = recordset;
+            //------------Execute Test---------------------------
+            var xElement = dbService.ToXml();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(string.Format("<Service ID=\"00000000-0000-0000-0000-000000000000\" Version=\"1.0\" Name=\"\" ResourceType=\"DbService\" IsValid=\"false\">\r\n  <Actions>\r\n    <Action Name=\"SomeRecSet\" Type=\"InvokeStoredProc\" SourceID=\"{0}\" SourceName=\"Source\" SourceMethod=\"Method\">\r\n      <Inputs />\r\n      <Outputs />\r\n      <OutputDescription><![CDATA[<z:anyType xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:d1p1=\"http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput\" i:type=\"d1p1:OutputDescription\" xmlns:z=\"http://schemas.microsoft.com/2003/10/Serialization/\"><d1p1:DataSourceShapes xmlns:d2p1=\"http://schemas.microsoft.com/2003/10/Serialization/Arrays\"><d2p1:anyType i:type=\"d1p1:DataSourceShape\"><d1p1:Paths /></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>\r\n    </Action>\r\n  </Actions>\r\n  <AuthorRoles />\r\n  <Comment />\r\n  <Tags />\r\n  <HelpLink />\r\n  <UnitTestTargetWorkflowService />\r\n  <BizRule />\r\n  <WorkflowActivityDef />\r\n  <XamlDefinition />\r\n  <DataList />\r\n  <TypeOf>InvokeStoredProc</TypeOf>\r\n  <DisplayName></DisplayName>\r\n  <Category></Category>\r\n  <AuthorRoles></AuthorRoles>\r\n  <ErrorMessages />\r\n</Service>", resourceID), xElement.ToString());
+        }
+
         [TestMethod]
         public void ToXmlWithBlankAliasInServiceExpectedDoesntBreakXml()
         {
