@@ -185,7 +185,7 @@ namespace Dev2.Studio.Core.Helpers
             using (var client = new WebClient())
             {
                 string serverLogData = client.UploadString(uri, "");
-                string value = JsonConvert.DeserializeObject<string>(serverLogData);
+                string value = serverLogData.Replace("<DataList><Dev2System.ManagmentServicePayload>", "").Replace("</Dev2System.ManagmentServicePayload></DataList>", "");
                 string uniqueOutputPath = GetUniqueOutputPath(".txt");
                 CreateTextFile(value, uniqueOutputPath);
                 return uniqueOutputPath;

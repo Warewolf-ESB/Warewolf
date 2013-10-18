@@ -31,10 +31,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             if (File.Exists(debugItemFilePath))
             {
                 ServerLogger.LogTrace("DebugItemFilePath found");
-                StringBuilder result = new StringBuilder("<JSON>");
+                StringBuilder result = new StringBuilder();
                 var logData = File.ReadAllText(debugItemFilePath);
-                result.Append(JsonConvert.SerializeObject(logData));
-                result.Append("</JSON>");
+                result.Append(logData);
                 return result.ToString();
             }
 
