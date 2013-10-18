@@ -488,7 +488,7 @@ namespace Dev2.CodedUI.Tests
         #region Additional test methods
 
         [TestCleanup]
-        public void DoCleanup(string workflowName, bool clickNo = false)
+        public void DoCleanup()
         {
             TabManagerUIMap.CloseAllTabs();
         }
