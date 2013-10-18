@@ -306,20 +306,10 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "TestForEachOutput", p);
 
             //Get Mappings button
-            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TestForEachOutput", "OpenMappingsToggle");
+            var button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TestForEachOutput", "OpenMappingsToggle") as WpfToggleButton;
 
-            // flakey bit of code, we need to wait ;)
-            Playback.Wait(500);
-
-            //Assert button is not null
-            Assert.IsTrue(button != null, "Couldnt find the mapping button");
-
-            //Get the close mappings image
-            var children = button.GetChildren();
-            var images = children.FirstOrDefault(c => c.FriendlyName == "Close Mappings");
-
-            //Check that the mapping is open
-            Assert.IsTrue(images.Height > -1, "The correct images isnt visible which means the mapping isnt open");
+            //Do Assert
+            Assert.IsTrue(button.Pressed, "Mappings do not expand on activity drop");
         }
 
         // PBI 8601 (Task 8855)

@@ -178,9 +178,8 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                     {
                         UITestControl cancelButton = saveDialogButtons[1];
                         Point p = new Point(cancelButton.Left + 25, cancelButton.Top + 15);
-                        Mouse.MouseMoveSpeed = 1000;
+                        Mouse.MouseMoveSpeed = 9000;
                         Mouse.Move(p);
-                        Mouse.MouseMoveSpeed = 450;
                         Mouse.Click();
                         return true;
                     }

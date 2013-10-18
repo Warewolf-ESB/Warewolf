@@ -77,6 +77,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
 
         [TestMethod]
+        [Ignore]//Get internet working on test environment
         public void WebServiceWizardCreateServiceAndSourceExpectedServiceCreated()
         {
             //Initialization
@@ -129,7 +130,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
 
         [TestMethod]
-        public void ClickNewPluginServiceShortcutKeyExpectedPluginServiceOpens()
+        public void NewPluginServiceShortcutKeyExpectedPluginServiceOpens()
         {
             var studioWindow = new UIBusinessDesignStudioWindow();
             studioWindow.SetFocus();
@@ -154,6 +155,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         //2013.06.22: Ashley Lewis for bug 9478
         [TestMethod]
+        [Ignore]//Get internet working on test environment
         public void EmailSourceWizardCreateNewSourceExpectedSourceCreated()
         {
             //Initialization

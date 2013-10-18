@@ -360,7 +360,7 @@ namespace Dev2.CodedUI.Tests
             PopupDialogUIMap.WaitForDialog();
 
             // Wait for refresh
-            Playback.Wait(2000);
+            Playback.Wait(5000);
 
             #region Checking Ok Button enabled property
 
@@ -419,14 +419,17 @@ namespace Dev2.CodedUI.Tests
             PopupDialogUIMap.WaitForDialog();
 
             // Wait for refresh
-            Playback.Wait(2000);
+            Playback.Wait(5000);
+
+            //Open the folder in the tree
+            ActivityDropUIMap.DoubleClickFirstWorkflowFolder();
 
             // Single click a folder in the tree
             ActivityDropUIMap.SingleClickFirstResource();
 
             Playback.Wait(2000);
             // Click the Ok button on the window
-            ActivityDropUIMap.ClickCancelButton();
+            ActivityDropUIMap.ClickOkButton();
 
             // Check if it exists on the designer
             Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "fileTest"));
@@ -456,8 +459,6 @@ namespace Dev2.CodedUI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("LargeFileTesting");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTS", "LargeFileTesting");
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
 
             RibbonUIMap.ClickRibbonMenuItem("Debug");
             if(DebugUIMap.WaitForDebugWindow(5000))
@@ -540,87 +541,6 @@ namespace Dev2.CodedUI.Tests
 
             // Get nested steps
             Assert.IsTrue(OutputUIMap.IsAnyStepsInError(), "Cannot see nested error steps in the debug output.");
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DebugInput_whenRun10Time")]
-        public void DebugInput_WhenRun10Times_ExpectInputsPersistAndXMLRemainsLinked_InputsAndXMLRemainPersisted()
-        {
-            //------------Setup for test--------------------------
-            int debugExeWait = 2000;
-            
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            //Open the correct workflow
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("Bug9394");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "Bugs", "Bug9394");
-            ExplorerUIMap.ClearExplorerSearchText();
-
-            //------------Execute Test---------------------------
-            // Run debug
-            SendKeys.SendWait(KeyboardCommands.Debug);
-            PopupDialogUIMap.WaitForDialog();
-            SendKeys.SendWait("{TAB}1{TAB}2");
-            SendKeys.SendWait(KeyboardCommands.Debug);
-            Playback.Wait(debugExeWait);
-
-            //------------Assert Results-------------------------
-
-            // Check for valid input in the input boxes ;)
-            for(int i = 0; i < 10; i++)
-            {
-                Clipboard.Clear();
-
-                SendKeys.SendWait(KeyboardCommands.Debug);
-                PopupDialogUIMap.WaitForDialog();
-                
-
-                SendKeys.SendWait(KeyboardCommands.TabCommand);
-                Playback.Wait(500);
-                SendKeys.SendWait(KeyboardCommands.CopyCommand);
-                var actual = Clipboard.GetData(DataFormats.Text);
-                Assert.AreEqual("1", actual);
-
-                Clipboard.Clear();
-                SendKeys.SendWait(KeyboardCommands.TabCommand);
-                SendKeys.SendWait(KeyboardCommands.CopyCommand);
-                var actual2 = Clipboard.GetData(DataFormats.Text);
-                Assert.AreEqual("2", actual2);
-
-                SendKeys.SendWait(KeyboardCommands.Debug);
-                Playback.Wait(debugExeWait);
-            }
-
-            // Now check the XML tab works ;)
-            Playback.Wait(debugExeWait);
-            SendKeys.SendWait(KeyboardCommands.Debug);
-            DebugUIMap.ClickXMLTab();
-            Playback.Wait(500);
-
-            // flip back and forth to check persistence ;)
-            DebugUIMap.ClickInputDataTab();
-            Playback.Wait(500);
-            DebugUIMap.ClickXMLTab();
-            Playback.Wait(500);
-
-            SendKeys.SendWait(KeyboardCommands.TabCommand);
-            SendKeys.SendWait(KeyboardCommands.SelectAllCommand);
-            SendKeys.SendWait(KeyboardCommands.CopyCommand);
-            var actualXML = Clipboard.GetData(DataFormats.Text);
-
-            // close the window ;)
-            DebugUIMap.CloseDebugWindow_ByCancel();
-
-            var expectedXML = @"<DataList>
-  <var>1</var>
-  <countries>
-    <CountryID>2</CountryID>
-    <Description></Description>
-  </countries>
-</DataList>";
-
-            Assert.AreEqual(expectedXML, actualXML);
         }
 
         #endregion Deprecated Test

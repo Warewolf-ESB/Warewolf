@@ -244,5 +244,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
                 throw new Exception("Debug output never reached the expected step count in the given time out");
             }
         }
+
+        public void WaitForExecution()
+        {
+            while (IsSpinnerSpinning())
+            {
+                Playback.Wait(500);
+            }
+        }
     }
 }

@@ -64,7 +64,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
             SendKeys.SendWait("dev2warewolf@gmail.com{TAB}");
             Playback.Wait(1000);
             SendKeys.SendWait("{ENTER}");
-            Playback.Wait(7000);
+            Playback.Wait(30000);//wait for test
             ClickSave();
 
             SendKeys.SendWait("{TAB}{TAB}{TAB}" + name + "{TAB}{ENTER}");
