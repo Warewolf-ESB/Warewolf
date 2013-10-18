@@ -119,8 +119,11 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");
             Playback.Wait(500);
             SendKeys.SendWait("zzz");
+            Playback.Wait(500);
             // -- wizard closed, account for darn dialog ;(
-            SendKeys.SendWait("{TAB}{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}");
+            Playback.Wait(500);
+            SendKeys.SendWait("{ENTER}");
 
 
             //------------Assert Results-------------------------
