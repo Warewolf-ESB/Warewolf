@@ -306,7 +306,7 @@ namespace Dev2.Core.Tests
             rm.Setup(r => r.ResourceName).Returns(ResourceName);
             rm.Setup(r => r.WorkflowXaml).Returns(StringResourcesTest.DebugInputWindow_WorkflowXaml);
             rm.Setup(r => r.ID).Returns(_resourceID);
-            rm.Setup(r => r.DataList).Returns("<DataList><scalar Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /><rs Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" ><val Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></rs></DataList>");
+            rm.Setup(r => r.DataList).Returns("<DataList><rs Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" ><val Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></rs></DataList>");
             rm.Setup(r => r.Environment.DsfChannel).Returns(new Mock<IStudioClientContext>().Object);
 
             var serviceDebugInfoModel = new ServiceDebugInfoModel
