@@ -89,7 +89,9 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                 }
                 if(!child.TryGetClickablePoint(out point))
                 {
+                    Mouse.MouseMoveSpeed = 9000;
                     Mouse.Move(new Point(theTab.BoundingRectangle.Left + 100, theTab.BoundingRectangle.Top + 500));
+                    ExplorerUIMap.ClosePane(theTab);
                 }
                 Playback.Wait(500);
                 Mouse.Click(child);
