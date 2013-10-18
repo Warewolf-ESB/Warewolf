@@ -1158,6 +1158,110 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to How many decimals should be returned as a factor of 10? e.g. 3 will show 0.000 and negative 3 (-3) will show 15000 as 15..
+        /// </summary>
+        public static string FormatNumberHelpDecimalToShow {
+            get {
+                return ResourceManager.GetString("FormatNumberHelpDecimalToShow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To format a number, put the number in here..
+        /// </summary>
+        public static string FormatNumberHelpNumber {
+            get {
+                return ResourceManager.GetString("FormatNumberHelpNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the formatted number.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string FormatNumberHelpResult {
+            get {
+                return ResourceManager.GetString("FormatNumberHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How would you like to round the number?
+        ///None: No rounding is done
+        ///Normal: 5,6,7,8,9 round up &amp; 1,2,3,4 round down
+        ///Up: 1-9 all round up
+        ///Down: 1-9 all round down.
+        /// </summary>
+        public static string FormatNumberHelpRoundType {
+            get {
+                return ResourceManager.GetString("FormatNumberHelpRoundType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At what point in the number should the rounding be done as a factor of 10? e.g. 3 will round to 3 decimal places and negative 3 (-3) will round to the nearest thousand..
+        /// </summary>
+        public static string FormatNumberHelpRoundValue {
+            get {
+                return ResourceManager.GetString("FormatNumberHelpRoundValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string FormatNumberToolTipDecimalToShow {
+            get {
+                return ResourceManager.GetString("FormatNumberToolTipDecimalToShow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string FormatNumberToolTipNumber {
+            get {
+                return ResourceManager.GetString("FormatNumberToolTipNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string FormatNumberToolTipResult {
+            get {
+                return ResourceManager.GetString("FormatNumberToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string FormatNumberToolTipRoundvalue {
+            get {
+                return ResourceManager.GetString("FormatNumberToolTipRoundvalue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To assign a value to a variable, put the value in here.
         ///If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]].

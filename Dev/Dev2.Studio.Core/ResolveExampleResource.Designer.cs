@@ -106,6 +106,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Utility - Format Number.
+        /// </summary>
+        internal static string DsfNumberFormatActivity {
+            get {
+                return ResourceManager.GetString("DsfNumberFormatActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recordset - Sort Records.
         /// </summary>
         internal static string DsfSortRecordsActivity {

@@ -874,26 +874,52 @@ Using recordset () will add a new record and (*) will assign every record.</valu
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-  <data name="ServiceHelpInput" xml:space="preserve">
-    <value>Insert the input data for this service. It will be mapped to the input field listed in the To Service column. If the input is a Recordset field then you can use (*) to pass all the recordset fields into the workflow service. e.g. [[my(*).recs]] -&gt; input().records
-You can also put multiple fields into one field with other text much like the assign tool.
-By default similar matches from the variable list are used where possible.</value>
+  <data name="FormatNumberHelpDecimalToShow" xml:space="preserve">
+    <value>How many decimals should be returned as a factor of 10? e.g. 3 will show 0.000 and negative 3 (-3) will show 15000 as 15.</value>
   </data>
-  <data name="ServiceHelpOutput" xml:space="preserve">
+  <data name="FormatNumberHelpNumber" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To format a number, put the number in here.</value>
+  </data>
+  <data name="FormatNumberHelpResult" xml:space="preserve">
     <value>Only variables go in here.
-Insert the variable that you want the output of the workflow to be mapped into. By default similar matches from the variable list are used where possible.
+Returns the formatted number.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
-  <data name="ServiceToolTipInput" xml:space="preserve">
+  <data name="FormatNumberHelpRoundType" xml:space="preserve">
+    <value>How would you like to round the number?
+None: No rounding is done
+Normal: 5,6,7,8,9 round up &amp; 1,2,3,4 round down
+Up: 1-9 all round up
+Down: 1-9 all round down</value>
+  </data>
+  <data name="FormatNumberHelpRoundValue" xml:space="preserve">
+    <value>At what point in the number should the rounding be done as a factor of 10? e.g. 3 will round to 3 decimal places and negative 3 (-3) will round to the nearest thousand.</value>
+  </data>
+  <data name="FormatNumberToolTipDecimalToShow" xml:space="preserve">
     <value>Data   
 [[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-  <data name="ServiceToolTipOutput" xml:space="preserve">
+  <data name="FormatNumberToolTipNumber" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="FormatNumberToolTipResult" xml:space="preserve">
     <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="FormatNumberToolTipRoundvalue" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>

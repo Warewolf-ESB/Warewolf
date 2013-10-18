@@ -6,6 +6,7 @@ using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Activities.Designers2.DateTime;
 using Dev2.Activities.Designers2.DeleteRecords;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
+
 using Dev2.Activities.Designers2.GetWebRequest;
 using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Activities.Designers2.Service;
@@ -34,6 +35,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDeleteRecordActivity), typeof(DeleteRecordsDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
+               // { typeof(DsfNumberFormatActivity), typeof(FormatNumberDesigner) },
 
                 { typeof(DsfActivity), typeof(DsfActivityDesigner) },
                 { typeof(DsfDatabaseActivity), typeof(DsfActivityDesigner) },
