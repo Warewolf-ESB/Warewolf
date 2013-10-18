@@ -51,7 +51,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         /// <returns></returns>
         public UITestControlCollection GetAllControlsOnDesignSurface(UITestControl theTab, string controlAutomationId)
         {
-            return GetFlowchartDesigner(theTab).GetChildren();
+            var flowchartDesigner = GetFlowchartDesigner(theTab);
+            return flowchartDesigner.GetChildren();
         }
 
         /// <summary>
@@ -1000,9 +1001,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             return activity.GetChildren().FirstOrDefault(ui => ui.FriendlyName == "Close Help");
         }
 
-        public UITestControl GetOpenHelpButton(UITestControl theTab, string activityAutomationID, int index = 0)
+        public UITestControl GetOpenHelpButton(UITestControl theTab, string activityAutomationID)
         {
-            var activity = GetAllControlsOnDesignSurface(theTab, activityAutomationID)[index];
+            var activity = FindControlByAutomationId(theTab, activityAutomationID);
             return activity.GetChildren().FirstOrDefault(ui => ui.FriendlyName == "Open Help");
         }
 
