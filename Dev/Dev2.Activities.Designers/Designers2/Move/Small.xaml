@@ -10,6 +10,7 @@
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
     xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+    xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
     Width="230"
                                MaxWidth="230"
                                Padding="7"
@@ -49,6 +50,7 @@
             <ui:IntellisenseTextBox.IntellisenseProvider>
                     <interfaceImplementors:CompositeIntellisenseProvider>
                         <interfaceImplementors:DefaultIntellisenseProvider />
+                         <provider:FileSystemIntellisenseProvider />
                     </interfaceImplementors:CompositeIntellisenseProvider>
                 </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
@@ -76,6 +78,7 @@
                  <ui:IntellisenseTextBox.IntellisenseProvider>
                     <interfaceImplementors:CompositeIntellisenseProvider>
                         <interfaceImplementors:DefaultIntellisenseProvider />
+                         <provider:FileSystemIntellisenseProvider />
                     </interfaceImplementors:CompositeIntellisenseProvider>
                 </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>

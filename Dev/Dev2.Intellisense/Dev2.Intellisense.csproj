@@ -59,7 +59,9 @@
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -76,6 +78,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helper\FileNameProviderImpl.cs" />
+    <Compile Include="Helper\FileSystemQuery.cs" />
+    <Compile Include="Helper\IFileSystemQuery.cs" />
+    <Compile Include="Helper\NetworkShareInformation.cs" />
     <Compile Include="IntellisenseTextBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -94,6 +100,7 @@
     <Compile Include="Provider\CompositeIntellisenseProvider.cs" />
     <Compile Include="Provider\DateTimeIntellisenseProvider.cs" />
     <Compile Include="Provider\DefaultIntellisenseProvider.cs" />
+    <Compile Include="Provider\FileSystemIntellisenseProvider.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -10,6 +10,8 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FileSystemIntellisenseProvider = Dev2.Intellisense.Provider.FileSystemIntellisenseProvider;
+using IFileSystemQuery = Dev2.Intellisense.Helper.IFileSystemQuery;
 using Moq;
 
 namespace Dev2.Core.Tests
