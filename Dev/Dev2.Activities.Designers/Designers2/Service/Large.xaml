@@ -17,11 +17,12 @@
                                MinWidth="350"
                                Width="350"
                                MinHeight="175"
+                               Padding="7"
                                mc:Ignorable="d"
                                d:DesignHeight="300"
                                d:DesignWidth="350"
                                d:DataContext="{d:DesignInstance local:ServiceDesignerViewModel}">
-<!--MinHeight="175"-->
+
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary x:Name="Resources"
                             Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
@@ -30,7 +31,7 @@
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
-                                     Margin="0,0,12,12"
+                                     Margin="0,0,7,12"
                                      IsValidatedBefore="True"
                                      IsClosedAfter="True"
                                      Style="{StaticResource ActivityDesignerButtonStyle}">
@@ -54,7 +55,7 @@
                        Text="This service does not have input mappings."
                        Foreground="{StaticResource BrushDisabledForeground}"
                        HorizontalAlignment="Center"
-                       Margin="0,5,0,0">
+                       Margin="0">
                 <TextBlock.Visibility>
                     <Binding Path="DataMappingViewModel.Inputs.Count"
                              Converter="{StaticResource IntToVisibilityConverter}">
@@ -73,7 +74,7 @@
                                    MinHeight="53"
                                    Height="Auto"
                                    Margin="0"                                   
-                                   BorderThickness="0,0,0,1"
+                                   BorderThickness="1"
                                    Visibility="{Binding DataMappingViewModel.Inputs.Count, Converter={StaticResource IntToVisibilityConverter}}">
 
                 <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
@@ -197,7 +198,7 @@
                                    MinHeight="53"
                                    Height="Auto"
                                    Margin="0"
-                                   BorderThickness="0,0,0,1"
+                                   BorderThickness="1,0,1,1"
                                    Visibility="{Binding DataMappingViewModel.Outputs.Count, Converter={StaticResource IntToVisibilityConverter}}">
 
                 <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
@@ -265,6 +266,6 @@
         <errors:OnError Grid.Row="1"
                         x:Name="OnErrorControl"
                         Height="128"
-                        Margin="10,0,10,10" />
+                        Margin="0" />
     </Grid>
 </core:ActivityDesignerTemplate>

@@ -3,12 +3,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace Dev2.Activities.Designers2.Core
 {
     public class ActivityDesignerToggle : DependencyObject
     {
-        public static ActivityDesignerToggle Create(string collapseImageSourceUri, string collapseToolTip, string expandImageSourceUri, string expandToolTip, string automationID, DependencyObject target, DependencyProperty dp)
+        public static ActivityDesignerToggle Create(string collapseImageSourceUri, string collapseToolTip, string expandImageSourceUri, string expandToolTip, string automationID, DependencyObject target, DependencyProperty dp, bool autoReset = false)
         {
             var toggle = new ActivityDesignerToggle
             {
@@ -18,7 +19,8 @@ namespace Dev2.Activities.Designers2.Core
                 ExpandToolTip = expandToolTip,
                 Image = CreateImage(expandImageSourceUri),
                 ToolTip = expandToolTip,
-                AutomationID = automationID
+                AutomationID = automationID,
+                AutoReset = autoReset
             };
 
             if(target != null && dp != null)
@@ -44,6 +46,7 @@ namespace Dev2.Activities.Designers2.Core
         public string ExpandImageSourceUri { get; private set; }
         public string ExpandToolTip { get; private set; }
 
+        bool AutoReset { get; set; }
 
         public string AutomationID
         {
@@ -90,6 +93,13 @@ namespace Dev2.Activities.Designers2.Core
             {
                 toggle.Image = CreateImage(toggle.CollapseImageSourceUri);
                 toggle.ToolTip = toggle.CollapseToolTip;
+                if(toggle.AutoReset)
+                {
+                    toggle.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() =>
+                    {
+                        toggle.IsChecked = false;
+                    }));
+                }
             }
             else
             {

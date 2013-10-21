@@ -15,6 +15,7 @@
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                Width="230"
                                MaxWidth="230"
+                               Padding="7"
                                mc:Ignorable="d"
                                d:DesignHeight="230"
                                d:DesignWidth="230"
@@ -27,7 +28,7 @@
 
     <controls:Dev2DataGrid x:Name="SmallDataGrid"
                            ItemsSource="{Binding ModelItem.FieldsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                           
-                           Style="{StaticResource SpacedActivityDataGridStyle}"
+                           Style="{StaticResource SpacedActivityDataGridStyle}"                           
                            MinHeight="56">
         
         <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->

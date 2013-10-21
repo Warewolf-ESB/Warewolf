@@ -50,11 +50,18 @@ namespace Dev2.Activities.Designers2.Service
                 var heightInfo = GetHeightInfo(dataGrid);
                 var minItemCount = Math.Min(itemCount, 5);
                 var height = heightInfo.Header + (minItemCount * heightInfo.Row) + DataGridBorderThickness;
-                rowDef.Height = new GridLength((itemCount / totalCount) * 100, GridUnitType.Star);
+                rowDef.Height = new GridLength(CalcPercentage(itemCount, totalCount), GridUnitType.Star);
                 rowDef.MinHeight = height;
                 return rowDef;
             }
             return null;
+        }
+
+        static double CalcPercentage(int itemCount, double totalCount)
+        {
+            const double Weight = 100; // Otherwize vertical scrollbar disappears behind errors control
+            var p = (int) ((itemCount / totalCount) * 100);
+            return p + Weight;
         }
 
         HeightInfo GetHeightInfo(Dev2DataGrid dataGrid)

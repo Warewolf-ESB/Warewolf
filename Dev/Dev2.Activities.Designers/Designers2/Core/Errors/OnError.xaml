@@ -15,8 +15,7 @@
                             Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
     </UserControl.Resources>
 
-    <GroupBox x:Name="OnErrorGroupBox"
-              Margin="2"
+    <GroupBox x:Name="OnErrorGroupBox"             
               Style="{StaticResource ActivityGroupBoxStyle}"
               VerticalContentAlignment="Stretch"
               Width="Auto">

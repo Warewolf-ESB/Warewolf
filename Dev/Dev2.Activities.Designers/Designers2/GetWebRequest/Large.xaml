@@ -122,7 +122,7 @@
         <errors:OnError Grid.Column="0"
                         Grid.Row="4 "
                         Grid.ColumnSpan="2"
-                        Margin="0" />
+                        Margin="2" />
 
     </Grid>
 </core:ActivityDesignerTemplate>

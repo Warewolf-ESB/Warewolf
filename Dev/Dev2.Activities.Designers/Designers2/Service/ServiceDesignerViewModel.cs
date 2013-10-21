@@ -160,7 +160,6 @@ namespace Dev2.Activities.Designers2.Service
             var showParent = (bool)e.NewValue;
             if(showParent)
             {
-                viewModel.ShowParent = false; // reset
                 viewModel.DoShowParent();
             }
         }
@@ -180,8 +179,6 @@ namespace Dev2.Activities.Designers2.Service
         }
 
         // ModelItem properties
-        //string IconPath { get { return GetProperty<string>(); } }
-        //string HelpLink { get { return GetProperty<string>(); } }
         string ServiceUri { get { return GetProperty<string>(); } }
         string ServiceName { get { return GetProperty<string>(); } }
         string ActionName { get { return GetProperty<string>(); } }
@@ -402,6 +399,7 @@ namespace Dev2.Activities.Designers2.Service
                 expandImageSourceUri: "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServicePropertyEdit-32.png",
                 expandToolTip: "Edit",
                 automationID: "ShowParentToggle",
+                autoReset: true,
                 target: this,
                 dp: ShowParentProperty
                 );

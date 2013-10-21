@@ -18,6 +18,7 @@
                                MaxWidth="600"
                                MaxHeight="500"
                                MinHeight="250"
+                               Padding="7"
                                mc:Ignorable="d"
                                d:DesignHeight="300"
                                d:DesignWidth="300"
@@ -31,7 +32,7 @@
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
-                                     Margin="0,0,12,12"
+                                     Margin="0,0,7,12"
                                      IsValidatedBefore="True"
                                      IsClosedAfter="True"
                                      Style="{StaticResource ActivityDesignerButtonStyle}">
