@@ -50,6 +50,7 @@ namespace Dev2.Studio.UI.Tests
             Clipboard.Clear();
             // Open the Workflow
             DockManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClickServerInServerDDL("localhost");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(workflowToUse);
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", workflowToUse);

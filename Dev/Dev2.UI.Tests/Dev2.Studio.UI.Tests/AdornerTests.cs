@@ -207,8 +207,8 @@ namespace Dev2.Studio.UI.Tests
             // Prepare it
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse);
             Mouse.Click(controlOnWorkflow, new Point(5, 5));
-            var mappingsBtn = WorkflowDesignerUIMap.Adorner_GetButton(theTab, resourceToUse, "OpenMappingsToggle") as WpfToggleButton;
-            if (!mappingsBtn.Pressed)
+            var mappingsBtn = WorkflowDesignerUIMap.Adorner_GetButton(theTab, resourceToUse, "Open Mapping") as WpfToggleButton;
+            if (mappingsBtn != null && !mappingsBtn.Pressed)
             {
                 Mouse.Click(mappingsBtn);
             }
@@ -285,10 +285,10 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "TestForEachOutput", p);
 
             //Get Mappings button
-            var button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TestForEachOutput", "OpenMappingsToggle") as WpfToggleButton;
+            var button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TestForEachOutput", "Close Mapping") as WpfToggleButton;
 
             //Do Assert
-            Assert.IsTrue(button.Pressed, "Mappings do not expand on activity drop");
+            Assert.IsNotNull(button, "Mappings do not expand on activity drop");
         }
 
         // PBI 8601 (Task 8855)

@@ -448,7 +448,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             SendKeys.SendWait("{ENTER}");
         }
 
-        public static void ClosePane(UITestControl theTab)
+        public void ClosePane(UITestControl theTab)
         {
             //step into tab to find the far right coordinate
             UITestControl findContentPane = null;

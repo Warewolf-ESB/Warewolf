@@ -77,7 +77,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
                         var childAutoID = child.GetProperty("AutomationId").ToString();
                         if (childAutoID == "FilterTextBox")
                         {
-                            return (WpfEdit)theControl.GetChildren()[0];
+                            var sourceServerFilterBox = (WpfEdit) theControl.GetChildren()[0];
+                            return sourceServerFilterBox;
                         }
                     }
                 }

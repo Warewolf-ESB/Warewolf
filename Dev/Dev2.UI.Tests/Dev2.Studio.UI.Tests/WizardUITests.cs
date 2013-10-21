@@ -76,7 +76,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
 
         [TestMethod]
-        [Ignore]//Get internet working on test environment
         public void WebServiceWizardCreateServiceAndSourceExpectedServiceCreated()
         {
             //Initialization
@@ -151,7 +150,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         //2013.06.22: Ashley Lewis for bug 9478
         [TestMethod]
-        [Ignore]//Get internet working on test environment
         public void EmailSourceWizardCreateNewSourceExpectedSourceCreated()
         {
             //Initialization
@@ -356,16 +354,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             // Open the toolbox, and drag the control onto the Workflow
             DockManagerUIMap.ClickOpenTabPage("Toolbox");
             ToolboxUIMap.DragControlToWorkflowDesigner("Switch", requiredPoint);
-            WizardsUIMap.WaitForWizard();
             // Cancel Decision Wizard
-            try
+            if(WizardsUIMap.TryWaitForWizard(5000))
             {
-                SwitchWizardUIMap.ClickCancel();
                 Assert.Fail("Got droped ;(");
-            }
-            catch
-            {
-                Assert.IsTrue(true);
             }
         }
 

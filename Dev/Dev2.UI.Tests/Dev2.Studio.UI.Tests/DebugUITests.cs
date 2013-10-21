@@ -81,6 +81,7 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(500);
             SendKeys.SendWait(KeyboardCommands.SelectAllCommand);
             Playback.Wait(500);
+            Clipboard.Clear();
             SendKeys.SendWait(KeyboardCommands.CopyCommand);
             var actualXML = Clipboard.GetData(DataFormats.Text);
 
