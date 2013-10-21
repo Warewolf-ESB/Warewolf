@@ -51,7 +51,7 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait("zzz");
             // -- wizard closed
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
-            
+
 
             // -- DO Web Services --
 
@@ -68,7 +68,7 @@ namespace Dev2.Studio.UI.Tests
             WizardsUIMap.WaitForWizard();
 
             DatabaseServiceWizardUIMap.ClickMappingTab();
-            
+
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");
             Playback.Wait(500);
             SendKeys.SendWait("zzz");
@@ -76,7 +76,7 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait("{TAB}{TAB}{TAB}{ENTER}{TAB}{ENTER}");
             Playback.Wait(1000);
 
-            if (ResourceChangedPopUpUIMap.WaitForDialog(5000))
+            if(ResourceChangedPopUpUIMap.WaitForDialog(5000))
             {
                 ResourceChangedPopUpUIMap.ClickCancel();
             }
@@ -110,17 +110,17 @@ namespace Dev2.Studio.UI.Tests
 
             // check services for warning icon to incidate mappings out of date ;)
 
-            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "TravsTestService(DsfActivityDesigner)"))
+            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "TravsTestService(ServiceDesigner)"))
             {
                 Assert.Fail("'Fix Errors' button not visible");
             }
 
-            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "FetchCities(DsfActivityDesigner)"))
+            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "FetchCities(ServiceDesigner)"))
             {
                 Assert.Fail("'Fix Errors' button not visible");
             }
 
-            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "DummyService(DsfActivityDesigner)"))
+            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "DummyService(ServiceDesigner)"))
             {
                 Assert.Fail("'Fix Errors' button not visible");
             }
@@ -257,7 +257,7 @@ namespace Dev2.Studio.UI.Tests
         [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands.")]
         [Owner("Massimo Guerrera")]
         // ReSharper disable InconsistentNaming
-        public void DsfActivityDesigner_CodedUI_DroppingActivityOntoDesigner_MappingToBeExpanded()
+        public void ServiceDesigner_CodedUI_DroppingActivityOntoDesigner_MappingToBeExpanded()
         // ReSharper restore InconsistentNaming
         {
             //Create a new workflow

@@ -443,8 +443,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             var activeTab = TabManagerUIMap.GetActiveTab();
             WpfTable middleBox = AssignControl_GetSmallViewTable(activeTab, controlAutomationId,  row);
             // Get the textbox
-            UITestControl leftTextboxInRow = middleBox.Rows[row].GetChildren()[2].GetChildren()[0];
-            return leftTextboxInRow;
+            var getRow = middleBox.Rows[row];
+            var getCell = getRow.GetChildren()[2];
+            var getTextbox = getCell.GetChildren()[0];
+            return getTextbox;
         }
 
         public void AssignControl_ClickScrollUp(UITestControl theTab, string controlAutomationId, int timesToClick)

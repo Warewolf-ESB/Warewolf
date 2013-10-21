@@ -125,7 +125,7 @@ namespace Dev2.Studio.UI.Tests
             DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
 
-            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "DsfActivity(DsfActivityDesigner)"), "Dropped services display title was 'DsfActivity' rather than the name of the service");
+            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "DsfActivity(ServiceDesigner)"), "Dropped services display title was 'DsfActivity' rather than the name of the service");
         }
 
         [TestMethod]

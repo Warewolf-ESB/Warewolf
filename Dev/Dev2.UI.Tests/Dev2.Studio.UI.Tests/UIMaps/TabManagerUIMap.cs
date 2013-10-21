@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
+using Dev2.Studio.UI.Tests;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using System.Drawing;
 using System.Windows.Forms;
@@ -9,14 +10,13 @@ using MouseButtons = System.Windows.Forms.MouseButtons;
 
 namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 {
-    public partial class TabManagerUIMap
+    public partial class TabManagerUIMap : UIMapBase
     {
-        UIUI_TabManager_AutoIDTabList1 _tabManager;
+        readonly UIUI_TabManager_AutoIDTabList1 _tabManager;
 
         public TabManagerUIMap()
         {
-            var theWindow = new UIBusinessDesignStudioWindow2();
-            _tabManager = new UIUI_TabManager_AutoIDTabList1(theWindow);
+            _tabManager = new UIUI_TabManager_AutoIDTabList1(StudioWindow);
         }
 
         public string GetActiveTabName()
@@ -104,12 +104,18 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         {
             const int totalTimeOut = 10;
             UITestControl control = FindTabByName(tabName);
-            UITestControl close = new UITestControl(control);
-            close.SearchProperties["AutomationId"] = "closeBtn";
-            Playback.Wait(150);
+            UITestControl close = null;
+            foreach (var child in control.GetChildren())
+            {
+                if (child.GetProperty("AutomationID").ToString() == "closeBtn")
+                {
+                    close = child;
+                    break;
+                }
+            }
             var point = new Point();
             var timeout = 0;
-            while(!close.TryGetClickablePoint(out point) && timeout < totalTimeOut)
+            while(close != null && (!close.TryGetClickablePoint(out point) && timeout < totalTimeOut))
             {
                 //try close explorer pane
                 ExplorerUIMap.ClosePane(control);
@@ -122,10 +128,10 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                 if(timeout>3)
                 {
                     //try moving mouse over the pane (only necessary when an unsaved workflow has just been saved)
-                    Mouse.Move(new Point(UIBusinessDesignStudioWindow.Left + 200, UIBusinessDesignStudioWindow.Top + 200));
+                    Mouse.Move(new Point(StudioWindow.Left + 200, StudioWindow.Top + 200));
                 }
             }
-            if (timeout < totalTimeOut)
+            if(close != null && timeout < totalTimeOut)
             {
                 Mouse.Click(close);
                 return true;

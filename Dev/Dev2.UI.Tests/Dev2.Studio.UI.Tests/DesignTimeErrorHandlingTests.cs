@@ -95,10 +95,10 @@ namespace Dev2.Studio.UI.Tests
             }
 
             // Fix Errors
-            if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, serviceToUse + "(DsfActivityDesigner)"))
+            if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, serviceToUse + "(ServiceDesigner)"))
             {
                 // Assert mapping does not exist
-                Assert.IsFalse(WorkflowDesignerUIMap.DoesActivityDataMappingContainText(WorkflowDesignerUIMap.FindControlByAutomationId(theTab, serviceToUse + "(DsfActivityDesigner)"), "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
+                Assert.IsFalse(WorkflowDesignerUIMap.DoesActivityDataMappingContainText(WorkflowDesignerUIMap.FindControlByAutomationId(theTab, serviceToUse + "(ServiceDesigner)"), "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
             }
             else
             {
@@ -143,10 +143,10 @@ namespace Dev2.Studio.UI.Tests
             }
 
             // Fix Errors
-            if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService(DsfActivityDesigner)"))
+            if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService(ServiceDesigner)"))
             {
                 //Assert mappings are prompting the user to add required mapping
-                var getOpenMappingToggle = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Bug_10011_DbService(DsfActivityDesigner)", "OpenMappingsToggle");
+                var getOpenMappingToggle = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Bug_10011_DbService(ServiceDesigner)", "OpenMappingsToggle");
                 var getCloseMappingButton = getOpenMappingToggle.GetChildren()[1];
                 Assert.IsTrue(getCloseMappingButton.Height != -1, "Fix Error does not prompt the user to input required mappings");
             }

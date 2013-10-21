@@ -272,13 +272,6 @@ namespace Dev2.CodedUI.Tests
             UITestControl testFlow = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
             ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25));
 
-            // Wait for the ForEach thing to do its init-y thing
-            Playback.Wait(1500);
-
-            // And click below the tab to get us back to the normal screen
-            Mouse.Move(new Point(theTab.BoundingRectangle.X + 50, theTab.BoundingRectangle.Y + 50));
-            Mouse.Click();
-
             // Now - Onto Part 2!
 
             // 5792.2
@@ -287,7 +280,7 @@ namespace Dev2.CodedUI.Tests
             UITestControl forEachControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "ForEach");
 
             // Move the mouse to the contained CalculateTaxReturns box
-            Mouse.Move(new Point(forEachControl.BoundingRectangle.X + 75, forEachControl.BoundingRectangle.Y + 75));
+            Mouse.Move(new Point(forEachControl.BoundingRectangle.X + 175, forEachControl.BoundingRectangle.Y + 75));
 
             // Click it
             Mouse.Click();
@@ -401,7 +394,7 @@ namespace Dev2.CodedUI.Tests
             ActivityDropUIMap.DoubleClickAResource();
 
             // Check if it exists on the designer
-            Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "DsfActivityDesigner"));
+            Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "ServiceDesigner"));
             SendKeys.SendWait("{DELETE}");
 
             #endregion
@@ -531,12 +524,12 @@ namespace Dev2.CodedUI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("Bug8372");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "Bugs", "Bug8372");
-            ExplorerUIMap.ClearExplorerSearchText();
 
             // Run debug
             SendKeys.SendWait("{F5}");
             PopupDialogUIMap.WaitForDialog();
             SendKeys.SendWait("{F5}");
+            OutputUIMap.WaitForExecution();
 
             // Open the Output
             DockManagerUIMap.ClickOpenTabPage("Output");
