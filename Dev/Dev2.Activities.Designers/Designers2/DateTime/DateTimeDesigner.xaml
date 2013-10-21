@@ -12,9 +12,9 @@
                        Style="{DynamicResource ContentViewStyle}">
 
     <sap:ActivityDesigner.Icon>
-        <DrawingBrush>
+        <DrawingBrush Stretch="Uniform">
             <DrawingBrush.Drawing>
-                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="pack://application:,,,/Dev2.Activities.Designers;component/Images/ToolDateTime-32.png" />
+                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="{StaticResource ToolDateTime-32}"/>
             </DrawingBrush.Drawing>
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>

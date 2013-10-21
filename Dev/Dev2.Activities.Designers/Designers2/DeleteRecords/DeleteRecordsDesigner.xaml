@@ -12,10 +12,9 @@
                        Style="{DynamicResource ContentViewStyle}">
 
     <sap:ActivityDesigner.Icon>
-        <DrawingBrush>
+        <DrawingBrush Stretch="Uniform">
             <DrawingBrush.Drawing>
-                <ImageDrawing Rect="0, 0, 16, 16"
-                              ImageSource="pack://application:,,,/Warewolf Studio;component/Images/ToolDeleteRecord-32.png" />
+                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="{StaticResource ToolDeleteRecord-32}"/>
             </DrawingBrush.Drawing>
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>

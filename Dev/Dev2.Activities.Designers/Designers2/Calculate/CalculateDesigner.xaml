@@ -12,10 +12,10 @@
                        Style="{DynamicResource ContentViewStyle}">
 
     <sap:ActivityDesigner.Icon>
-        <DrawingBrush>
+        <DrawingBrush Stretch="Uniform">
             <DrawingBrush.Drawing>
                 <ImageDrawing Rect="0, 0, 16, 16"
-                              ImageSource="pack://application:,,,/Warewolf Studio;component/Images/ToolCalculate-32.png" />
+                              ImageSource="{StaticResource ToolCalculate-32}" />
             </DrawingBrush.Drawing>
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>

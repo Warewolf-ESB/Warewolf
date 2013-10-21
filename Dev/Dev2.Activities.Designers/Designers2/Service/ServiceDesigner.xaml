@@ -10,9 +10,7 @@
                        xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
                        mc:Ignorable="d"
                        d:DataContext="{d:DesignInstance local:ServiceDesignerViewModel}"
-                       Style="{DynamicResource ContentViewStyle}">
-   
-    <sap:ActivityDesigner.Resources>
+                       Style="{DynamicResource ContentViewStyle}"><sap:ActivityDesigner.Resources>
         <converters:StringToResourceConverter x:Key="StringToResourceConverter" />
         <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
         <local:Large x:Key="Large" AutomationProperties.AutomationId="LargeViewContent" />
