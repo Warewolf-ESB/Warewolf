@@ -135,6 +135,9 @@
   <data name="DsfFileWrite" xml:space="preserve">
     <value>File and Folder - Write File</value>
   </data>
+  <data name="DsfFolderRead" xml:space="preserve">
+    <value>File and Folder - Read Folder</value>
+  </data>
   <data name="DsfMultiAssignActivity" xml:space="preserve">
     <value>Utility - Assign</value>
   </data>
@@ -153,13 +156,22 @@
   <data name="DsfPathMove" xml:space="preserve">
     <value>File and Folder - Move</value>
   </data>
+  <data name="DsfPathRename" xml:space="preserve">
+    <value>File and Folder - Rename</value>
+  </data>
   <data name="DsfSortRecordsActivity" xml:space="preserve">
     <value>Recordset - Sort Records</value>
   </data>
   <data name="DsfUniqueActivity" xml:space="preserve">
     <value>Recordset - Unique Records</value>
   </data>
+  <data name="DsfUnZip" xml:space="preserve">
+    <value>File and Folder - Unzip</value>
+  </data>
   <data name="DsfWebGetRequestActivity" xml:space="preserve">
     <value>Utility - Web Request</value>
+  </data>
+  <data name="DsfZip" xml:space="preserve">
+    <value>File and Folder - Zip</value>
   </data>
 </root>

@@ -1753,6 +1753,252 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To read the content of a folder, put the full path in here.
+        ///You can use File System, URI, FTP or FTPS format..
+        /// </summary>
+        public static string ReadFolderHelpFolder {
+            get {
+                return ResourceManager.GetString("ReadFolderHelpFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string ReadFolderHelpPassword {
+            get {
+                return ResourceManager.GetString("ReadFolderHelpPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Files will only return files.
+        ///Folders will only return folders.
+        ///Files and Folders will return everything..
+        /// </summary>
+        public static string ReadFolderHelpRead {
+            get {
+                return ResourceManager.GetString("ReadFolderHelpRead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the content of the folder specified. Each item found will be returned as a separate result so this tool is best used with a recordset.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string ReadFolderHelpResult {
+            get {
+                return ResourceManager.GetString("ReadFolderHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string ReadFolderHelpUsername {
+            get {
+                return ResourceManager.GetString("ReadFolderHelpUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ReadFolderToolTipFolder {
+            get {
+                return ResourceManager.GetString("ReadFolderToolTipFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ReadFolderToolTipPassword {
+            get {
+                return ResourceManager.GetString("ReadFolderToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to What do you want to read?.
+        /// </summary>
+        public static string ReadFolderToolTipRead {
+            get {
+                return ResourceManager.GetString("ReadFolderToolTipRead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ReadFolderToolTipResult {
+            get {
+                return ResourceManager.GetString("ReadFolderToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ReadFolderToolTipUsername {
+            get {
+                return ResourceManager.GetString("ReadFolderToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To rename a file or folder, put the full path and file or folder name in here.
+        ///You can use File System, URI, FTP or FTPS format..
+        /// </summary>
+        public static string RenameHelpFileFolder {
+            get {
+                return ResourceManager.GetString("RenameHelpFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the file or folder already exists, you can force a new one to overwrite the old one..
+        /// </summary>
+        public static string RenameHelpForceoverwrite {
+            get {
+                return ResourceManager.GetString("RenameHelpForceoverwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put the full path and new name of the resource here.
+        ///You can use File System, URI, FTP or FTPS format..
+        /// </summary>
+        public static string RenameHelpNewName {
+            get {
+                return ResourceManager.GetString("RenameHelpNewName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string RenameHelpPassword {
+            get {
+                return ResourceManager.GetString("RenameHelpPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Rename action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string RenameHelpResult {
+            get {
+                return ResourceManager.GetString("RenameHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string RenameHelpUsername {
+            get {
+                return ResourceManager.GetString("RenameHelpUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string RenameToolTipFileFolder {
+            get {
+                return ResourceManager.GetString("RenameToolTipFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If it exists already, force an overwrite.
+        /// </summary>
+        public static string RenameToolTipForceoverwrite {
+            get {
+                return ResourceManager.GetString("RenameToolTipForceoverwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string RenameToolTipNewName {
+            get {
+                return ResourceManager.GetString("RenameToolTipNewName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string RenameToolTipPassword {
+            get {
+                return ResourceManager.GetString("RenameToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string RenameToolTipResult {
+            get {
+                return ResourceManager.GetString("RenameToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string RenameToolTipUsername {
+            get {
+                return ResourceManager.GetString("RenameToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Put the information you are looking for in here..
         /// </summary>
         public static string ReplaceHelpFind {
@@ -2231,6 +2477,138 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put the full path of the destination you are unzipping to here.
+        ///You can use File System, URI, FTP or FTPS format..
+        /// </summary>
+        public static string UnzipHelpDestination {
+            get {
+                return ResourceManager.GetString("UnzipHelpDestination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If a file or folder already exists, you can force a new one to overwrite the old one..
+        /// </summary>
+        public static string UnzipHelpForceoverwrite {
+            get {
+                return ResourceManager.GetString("UnzipHelpForceoverwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string UnzipHelpPassword {
+            get {
+                return ResourceManager.GetString("UnzipHelpPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Unzip action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string UnzipHelpResult {
+            get {
+                return ResourceManager.GetString("UnzipHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string UnzipHelpUsername {
+            get {
+                return ResourceManager.GetString("UnzipHelpUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To unzip a file, put the full path and zip file name in here.
+        ///You can use File System, URI, FTP or FTPS forma.
+        /// </summary>
+        public static string UnzipHelpZipname {
+            get {
+                return ResourceManager.GetString("UnzipHelpZipname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string UnzipToolTipDestination {
+            get {
+                return ResourceManager.GetString("UnzipToolTipDestination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If it exists already, force an overwrite.
+        /// </summary>
+        public static string UnzipToolTipForceoverwrite {
+            get {
+                return ResourceManager.GetString("UnzipToolTipForceoverwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string UnzipToolTipPassword {
+            get {
+                return ResourceManager.GetString("UnzipToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string UnzipToolTipResult {
+            get {
+                return ResourceManager.GetString("UnzipToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string UnzipToolTipUsername {
+            get {
+                return ResourceManager.GetString("UnzipToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To unzip a file, put the full path and zip file name in here.
+        ///You can use File System, URI, FTP or FTPS format..
+        /// </summary>
+        public static string UnzipToolTipZipname {
+            get {
+                return ResourceManager.GetString("UnzipToolTipZipname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To supply additional header information in your get request, put the header info in here..
         /// </summary>
         public static string WebRequestHeaderHelpText {
@@ -2391,6 +2769,135 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string WriteFileToolTipUsername {
             get {
                 return ResourceManager.GetString("WriteFileToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The system will try and match your zipping requirements as far as possible.
+        ///None creates the new file with the content and adds no compression - fastest.
+        ///Partial attempts some compression.
+        ///Normal will apply standard compression.
+        ///Max will compress the zipped file as much as possible - slowest..
+        /// </summary>
+        public static string ZipHelpCompressionType {
+            get {
+                return ResourceManager.GetString("ZipHelpCompressionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put the full path and name of the newly created zipped file here.
+        ///You can use File System, URI, FTP or FTPS format..
+        /// </summary>
+        public static string ZipHelpDestination {
+            get {
+                return ResourceManager.GetString("ZipHelpDestination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To zip a file or folder, put the full path of what you want zipped in here.
+        ///You can use File System, URI, FTP or FTPS format..
+        /// </summary>
+        public static string ZipHelpFileFolder {
+            get {
+                return ResourceManager.GetString("ZipHelpFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string ZipHelpPassword {
+            get {
+                return ResourceManager.GetString("ZipHelpPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Zip action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string ZipHelpResult {
+            get {
+                return ResourceManager.GetString("ZipHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string ZipHelpUsername {
+            get {
+                return ResourceManager.GetString("ZipHelpUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ZipToolTipDestination {
+            get {
+                return ResourceManager.GetString("ZipToolTipDestination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ZipToolTipFileFolder {
+            get {
+                return ResourceManager.GetString("ZipToolTipFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ZipToolTipPassword {
+            get {
+                return ResourceManager.GetString("ZipToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ZipToolTipResult {
+            get {
+                return ResourceManager.GetString("ZipToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ZipToolTipUsername {
+            get {
+                return ResourceManager.GetString("ZipToolTipUsername", resourceCulture);
             }
         }
     }

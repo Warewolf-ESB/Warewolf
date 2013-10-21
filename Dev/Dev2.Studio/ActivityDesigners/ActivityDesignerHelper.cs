@@ -14,11 +14,15 @@ using Dev2.Activities.Designers2.GetWebRequest;
 using Dev2.Activities.Designers2.Move;
 using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Activities.Designers2.ReadFile;
+using Dev2.Activities.Designers2.ReadFolder;
+using Dev2.Activities.Designers2.Rename;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Activities.Designers2.SortRecords;
 using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Activities.Designers2.UniqueRecords;
+using Dev2.Activities.Designers2.Unzip;
 using Dev2.Activities.Designers2.WriteFile;
+using Dev2.Activities.Designers2.Zip;
 using Dev2.Studio.ActivityDesigners.Scripting;
 using Dev2.Studio.ViewModels.Workflow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -49,6 +53,11 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfPathDelete), typeof(DeleteDesigner) },
                 { typeof(DsfFileRead), typeof(ReadFileDesigner) },
                 { typeof(DsfFileWrite), typeof(WriteFileDesigner) },
+                { typeof(DsfFolderRead), typeof(ReadFolderDesigner) },
+                { typeof(DsfPathRename), typeof(RenameDesigner) },
+                { typeof(DsfUnZip), typeof(UnzipDesigner) },
+                { typeof(DsfZip), typeof(ZipDesigner) },
+
 
                 //{ typeof(DsfActivity), typeof(DsfActivityDesigner) },
                 //{ typeof(DsfDatabaseActivity), typeof(DsfActivityDesigner) },
@@ -64,13 +73,13 @@ namespace Dev2.Studio.ActivityDesigners
                 //{ typeof(DsfPathCreate), typeof(DsfPathCreateDesigner) },
                 //{ typeof(DsfFileRead), typeof(DsfFileReadDesigner) },
                 //{ typeof(DsfFileWrite), typeof(DsfFileWriteDesigner) },
-                { typeof(DsfFolderRead), typeof(DsfFolderReadDesigner) },
+                // { typeof(DsfFolderRead), typeof(DsfFolderReadDesigner) },
                 //{ typeof(DsfPathCopy), typeof(DsfPathCopyDesigner) },
                 //{ typeof(DsfPathDelete), typeof(DsfPathDeleteDesigner) },
                 //{ typeof(DsfPathMove), typeof(DsfPathMoveDesigner) },
-                { typeof(DsfPathRename), typeof(DsfPathRenameDesigner) },
-                { typeof(DsfZip), typeof(DsfZipDesigner) },
-                { typeof(DsfUnZip), typeof(DsfUnzipDesigner) },
+                //{ typeof(DsfPathRename), typeof(DsfPathRenameDesigner) },
+                //{ typeof(DsfZip), typeof(DsfZipDesigner) },
+                //{ typeof(DsfUnZip), typeof(DsfUnzipDesigner) },
                 { typeof(DsfDateTimeDifferenceActivity), typeof(DsfDateTimeDifferenceActivityDesigner) },
                 { typeof(DsfCaseConvertActivity), typeof(DsfCaseConvertActivityDesigner) },
                 { typeof(DsfReplaceActivity), typeof(DsfReplaceActivityDesigner) },

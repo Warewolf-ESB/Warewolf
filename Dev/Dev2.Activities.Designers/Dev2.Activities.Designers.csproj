@@ -232,6 +232,20 @@
     <Compile Include="Designers2\ReadFile\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\ReadFolder\ReadFolderDesigner.xaml.cs">
+      <DependentUpon>ReadFolderDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ReadFolder\ReadFolderDesignerViewModel.cs" />
+    <Compile Include="Designers2\ReadFolder\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Rename\RenameDesigner.xaml.cs">
+      <DependentUpon>RenameDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Rename\RenameDesignerViewModel.cs" />
+    <Compile Include="Designers2\Rename\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Service\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -268,11 +282,25 @@
     <Compile Include="Designers2\UniqueRecords\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Unzip\UnzipDesigner.xaml.cs">
+      <DependentUpon>UnzipDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Unzip\UnzipDesignerViewModel.cs" />
+    <Compile Include="Designers2\Unzip\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\WriteFile\WriteFileDesigner.xaml.cs">
       <DependentUpon>WriteFileDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\WriteFile\WriteFileDesignerViewModel.cs" />
     <Compile Include="Designers2\WriteFile\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Zip\ZipDesigner.xaml.cs">
+      <DependentUpon>ZipDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Zip\ZipDesignerViewModel.cs" />
+    <Compile Include="Designers2\Zip\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Preview\PreviewRequestedEventArgs.cs" />
@@ -500,6 +528,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\ReadFolder\ReadFolderDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ReadFolder\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Rename\RenameDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Rename\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\Service\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -540,11 +584,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\Unzip\UnzipDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Unzip\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\WriteFile\WriteFileDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\WriteFile\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Zip\ZipDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Zip\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

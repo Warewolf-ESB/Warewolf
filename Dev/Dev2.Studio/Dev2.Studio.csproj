@@ -228,9 +228,6 @@
     <Compile Include="ActivityDesigners\DsfSendEmailActivityDesigner.xaml.cs">
       <DependentUpon>DsfSendEmailActivityDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\PathOperationDesigners\DsfUnzipDesigner.xaml.cs">
-      <DependentUpon>DsfUnzipDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\DsfActivityDesigner.xaml.cs">
       <DependentUpon>DsfActivityDesigner.xaml</DependentUpon>
     </Compile>
@@ -260,15 +257,6 @@
     </Compile>
     <Compile Include="ActivityDesigners\DsfWebSiteActivityDesigner.xaml.cs">
       <DependentUpon>DsfWebSiteActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\PathOperationDesigners\DsfFolderReadDesigner.xaml.cs">
-      <DependentUpon>DsfFolderReadDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\PathOperationDesigners\DsfPathRenameDesigner.xaml.cs">
-      <DependentUpon>DsfPathRenameDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\PathOperationDesigners\DsfZipDesigner.xaml.cs">
-      <DependentUpon>DsfZipDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="ActivityDesigners\Singeltons\IsItemDragged.cs" />
     <Compile Include="AppResources\AttachedProperties\AvalonEditTextProperty.cs" />
@@ -697,10 +685,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDesigners\PathOperationDesigners\DsfUnzipDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ActivityDesigners\DsfActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -738,18 +722,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ActivityDesigners\DsfWebSiteActivityDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ActivityDesigners\PathOperationDesigners\DsfFolderReadDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ActivityDesigners\PathOperationDesigners\DsfPathRenameDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ActivityDesigners\PathOperationDesigners\DsfZipDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1446,6 +1418,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ActivityDesigners\PathOperationDesigners\" />
     <Folder Include="AppResources\Messages\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

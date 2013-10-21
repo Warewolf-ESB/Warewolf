@@ -97,24 +97,6 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File and Folder - Read File.
-        /// </summary>
-        internal static string DsfFileRead {
-            get {
-                return ResourceManager.GetString("DsfFileRead", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to File and Folder - Write File.
-        /// </summary>
-        internal static string DsfFileWrite {
-            get {
-                return ResourceManager.GetString("DsfFileWrite", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Utility - Assign.
         /// </summary>
         internal static string DsfMultiAssignActivity {
@@ -169,6 +151,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File and Folder - Rename.
+        /// </summary>
+        internal static string DsfPathRename {
+            get {
+                return ResourceManager.GetString("DsfPathRename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recordset - Sort Records.
         /// </summary>
         internal static string DsfSortRecordsActivity {
@@ -187,11 +178,29 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File and Folder - Unzip.
+        /// </summary>
+        internal static string DsfUnZip {
+            get {
+                return ResourceManager.GetString("DsfUnZip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Utility - Web Request.
         /// </summary>
         internal static string DsfWebGetRequestActivity {
             get {
                 return ResourceManager.GetString("DsfWebGetRequestActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File and Folder - Zip.
+        /// </summary>
+        internal static string DsfZip {
+            get {
+                return ResourceManager.GetString("DsfZip", resourceCulture);
             }
         }
     }

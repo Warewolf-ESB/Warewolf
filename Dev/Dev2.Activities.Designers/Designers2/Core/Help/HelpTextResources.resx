@@ -1161,4 +1161,241 @@ Using recordset () will add a new record and (*) will assign every record.</valu
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
+  <data name="ReadFolderHelpFolder" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To read the content of a folder, put the full path in here.
+You can use File System, URI, FTP or FTPS format.</value>
+  </data>
+  <data name="ReadFolderHelpPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="ReadFolderHelpRead" xml:space="preserve">
+    <value>Files will only return files.
+Folders will only return folders.
+Files and Folders will return everything.</value>
+  </data>
+  <data name="ReadFolderHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the content of the folder specified. Each item found will be returned as a separate result so this tool is best used with a recordset.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="ReadFolderHelpUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="ReadFolderToolTipFolder" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ReadFolderToolTipPassword" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ReadFolderToolTipRead" xml:space="preserve">
+    <value>What do you want to read?</value>
+  </data>
+  <data name="ReadFolderToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ReadFolderToolTipUsername" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="RenameHelpFileFolder" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To rename a file or folder, put the full path and file or folder name in here.
+You can use File System, URI, FTP or FTPS format.</value>
+  </data>
+  <data name="RenameHelpForceoverwrite" xml:space="preserve">
+    <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
+  </data>
+  <data name="RenameHelpNewName" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+Put the full path and new name of the resource here.
+You can use File System, URI, FTP or FTPS format.</value>
+  </data>
+  <data name="RenameHelpPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="RenameHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Rename action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="RenameHelpUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="RenameToolTipFileFolder" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="RenameToolTipForceoverwrite" xml:space="preserve">
+    <value>If it exists already, force an overwrite</value>
+  </data>
+  <data name="RenameToolTipNewName" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="RenameToolTipPassword" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="RenameToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="RenameToolTipUsername" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="UnzipHelpDestination" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+Put the full path of the destination you are unzipping to here.
+You can use File System, URI, FTP or FTPS format.</value>
+  </data>
+  <data name="UnzipHelpForceoverwrite" xml:space="preserve">
+    <value>If a file or folder already exists, you can force a new one to overwrite the old one.</value>
+  </data>
+  <data name="UnzipHelpPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="UnzipHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Unzip action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="UnzipHelpUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="UnzipHelpZipname" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To unzip a file, put the full path and zip file name in here.
+You can use File System, URI, FTP or FTPS forma</value>
+  </data>
+  <data name="UnzipToolTipDestination" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="UnzipToolTipForceoverwrite" xml:space="preserve">
+    <value>If it exists already, force an overwrite</value>
+  </data>
+  <data name="UnzipToolTipPassword" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="UnzipToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="UnzipToolTipUsername" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="UnzipToolTipZipname" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To unzip a file, put the full path and zip file name in here.
+You can use File System, URI, FTP or FTPS format.</value>
+  </data>
+  <data name="ZipHelpCompressionType" xml:space="preserve">
+    <value>The system will try and match your zipping requirements as far as possible.
+None creates the new file with the content and adds no compression - fastest.
+Partial attempts some compression.
+Normal will apply standard compression.
+Max will compress the zipped file as much as possible - slowest.</value>
+  </data>
+  <data name="ZipHelpDestination" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+Put the full path and name of the newly created zipped file here.
+You can use File System, URI, FTP or FTPS format.</value>
+  </data>
+  <data name="ZipHelpFileFolder" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To zip a file or folder, put the full path of what you want zipped in here.
+You can use File System, URI, FTP or FTPS format.</value>
+  </data>
+  <data name="ZipHelpPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="ZipHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Zip action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="ZipHelpUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="ZipToolTipDestination" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ZipToolTipFileFolder" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ZipToolTipPassword" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ZipToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ZipToolTipUsername" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
 </root>
