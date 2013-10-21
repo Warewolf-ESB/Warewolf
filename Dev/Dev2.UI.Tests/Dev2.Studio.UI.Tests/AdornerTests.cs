@@ -28,6 +28,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("Edit Service Workflow");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "UI TEST", "Edit Service Workflow");
+            Playback.Wait(5000);
 
             //------------Execute Test---------------------------
 
