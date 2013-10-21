@@ -135,6 +135,15 @@
   <data name="DsfNumberFormatActivity" xml:space="preserve">
     <value>Utility - Format Number</value>
   </data>
+  <data name="DsfPathCopy" xml:space="preserve">
+    <value>File and Folder - Copy</value>
+  </data>
+  <data name="DsfPathCreate" xml:space="preserve">
+    <value>File and Folder - Create</value>
+  </data>
+  <data name="DsfPathMove" xml:space="preserve">
+    <value>File and Folder - Move</value>
+  </data>
   <data name="DsfSortRecordsActivity" xml:space="preserve">
     <value>Recordset - Sort Records</value>
   </data>

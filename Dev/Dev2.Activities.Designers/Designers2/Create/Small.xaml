@@ -1,4 +1,4 @@
-﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.Calculate.Small"
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.Create.Small"
                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,15 +6,16 @@
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                               xmlns:local="clr-namespace:Dev2.Activities.Designers2.Calculate"
+                               xmlns:local="clr-namespace:Dev2.Activities.Designers2.Create"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               Width="230"
+    xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+    Width="230"
                                MaxWidth="230"
                                Padding="7"
                                mc:Ignorable="d"
                                d:DesignWidth="200"
-                               d:DataContext="{d:DesignInstance local:CalculateDesignerViewModel}">
+                               d:DataContext="{d:DesignInstance local:CreateDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary x:Name="Resources"
@@ -27,37 +28,34 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="45" />
+           <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Label Grid.Column="0"
                Grid.Row="0"
-               Content="fx =" 
-               FontStyle="Italic" />
+               Content="File or Folder" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
-                                Grid.Column="1"
-                                Grid.Row="0"
-                                Height="39"
-                                MaxHeight="39"
-                                MinHeight="39"
-                                AllowUserCalculateMode="False"
-                                IsInCalculateMode="True"
-                                AllowUserInsertLine="True"
-                                VerticalContentAlignment="Top"
-                                DefaultText="Excel like function."
-                                FilterType="All"
-                                ToolTip="{x:Static help:HelpTextResources.CalculateToolTipFx}"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Text="{Binding Path=ModelItem.Expression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}">
+                               Grid.Column="1"
+                               Grid.Row="0"
+                               DefaultText="[[PathToCreate]]"
+                               FilterType="All"
+                               WrapInBrackets="False"
+                               Text="{Binding Path=ModelItem.OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               ToolTip="{x:Static help:HelpTextResources.CreateToolTipFileFolder}"
+                               Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                               AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
+            <ui:IntellisenseTextBox.IntellisenseProvider>
+                    <interfaceImplementors:CompositeIntellisenseProvider>
+                        <interfaceImplementors:DefaultIntellisenseProvider />
+                    </interfaceImplementors:CompositeIntellisenseProvider>
+                </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.CalculateHelpFx}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.CreateHelpFileFolder}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.Expression"
-                                     SourcePropertyValue="{Binding  ModelItem.Expression, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.OutputPath"
+                                     SourcePropertyValue="{Binding  ModelItem.OutputPath, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
@@ -68,16 +66,16 @@
 
         <ui:IntellisenseTextBox Grid.Row="1"
                                 Grid.Column="1"
-                                Margin="0,2,1,2"
-                                DefaultText="[[fxResult]]"
-                                FilterType="All"
-                                ToolTip="{x:Static help:HelpTextResources.CalculateToolTipResult}"
+                                DefaultText="[[Success]]" 
+                                FilterType="All" 
                                 WrapInBrackets="True"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Margin="0,2,1,2"
+                                ToolTip="{x:Static help:HelpTextResources.CreateToolTipResult}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.CalculateHelpResult}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.CreateHelpResult}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Result"

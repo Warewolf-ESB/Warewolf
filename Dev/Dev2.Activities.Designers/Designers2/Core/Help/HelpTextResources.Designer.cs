@@ -1263,6 +1263,140 @@ namespace Dev2.Activities.Designers2.Core.Help {
         
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put the full path of the destination you are moving to here.
+        ///You can use File System, URI, FTP or FTPS format..
+        /// </summary>
+        public static string MoveHelpDestination {
+            get {
+                return ResourceManager.GetString("MoveHelpDestination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To Move a file or folder, put the full path and file or folder name to move in here.
+        ///You can use File System, URI, FTP or FTPS format..
+        /// </summary>
+        public static string MoveHelpFileFolder {
+            get {
+                return ResourceManager.GetString("MoveHelpFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the file or folder already exists, you can force a new one to overwrite the old one..
+        /// </summary>
+        public static string MoveHelpForceoverwrite {
+            get {
+                return ResourceManager.GetString("MoveHelpForceoverwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string MoveHelpPassword {
+            get {
+                return ResourceManager.GetString("MoveHelpPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Move action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string MoveHelpResult {
+            get {
+                return ResourceManager.GetString("MoveHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string MoveHelpUsername {
+            get {
+                return ResourceManager.GetString("MoveHelpUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string MoveToolTipDestination {
+            get {
+                return ResourceManager.GetString("MoveToolTipDestination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string MoveToolTipFileFolder {
+            get {
+                return ResourceManager.GetString("MoveToolTipFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If it exists already, force an overwrite.
+        /// </summary>
+        public static string MoveToolTipForceoverwrite {
+            get {
+                return ResourceManager.GetString("MoveToolTipForceoverwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string MoveToolTipPassword {
+            get {
+                return ResourceManager.GetString("MoveToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string MoveToolTipResult {
+            get {
+                return ResourceManager.GetString("MoveToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string MoveToolTipUsername {
+            get {
+                return ResourceManager.GetString("MoveToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To assign a value to a variable, put the value in here.
         ///If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]].
         /// </summary>

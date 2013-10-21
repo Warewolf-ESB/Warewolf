@@ -929,21 +929,83 @@ Down: 1-9 all round down</value>
 You can also put multiple fields into one field with other text much like the assign tool.
 By default similar matches from the variable list are used where possible.</value>
   </data>
-    <data name="ServiceHelpOutput" xml:space="preserve">
+  <data name="ServiceHelpOutput" xml:space="preserve">
     <value>Only variables go in here.
 Insert the variable that you want the output of the workflow to be mapped into. By default similar matches from the variable list are used where possible.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
-    <data name="ServiceToolTipInput" xml:space="preserve">
+  <data name="ServiceToolTipInput" xml:space="preserve">
     <value>Data   
 [[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-    <data name="ServiceToolTipOutput" xml:space="preserve">
+  <data name="ServiceToolTipOutput" xml:space="preserve">
     <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="MoveHelpDestination" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+Put the full path of the destination you are moving to here.
+You can use File System, URI, FTP or FTPS format.</value>
+  </data>
+  <data name="MoveHelpFileFolder" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To Move a file or folder, put the full path and file or folder name to move in here.
+You can use File System, URI, FTP or FTPS format.</value>
+  </data>
+  <data name="MoveHelpForceoverwrite" xml:space="preserve">
+    <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
+  </data>
+  <data name="MoveHelpPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="MoveHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Move action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="MoveHelpUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="MoveToolTipDestination" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="MoveToolTipFileFolder" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="MoveToolTipForceoverwrite" xml:space="preserve">
+    <value>If it exists already, force an overwrite</value>
+  </data>
+  <data name="MoveToolTipPassword" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="MoveToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="MoveToolTipUsername" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>

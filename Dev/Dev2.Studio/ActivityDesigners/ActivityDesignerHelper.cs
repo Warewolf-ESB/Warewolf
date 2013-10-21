@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.BaseConvert;
 using Dev2.Activities.Designers2.Calculate;
+using Dev2.Activities.Designers2.Copy;
 using Dev2.Activities.Designers2.CountRecords;
+using Dev2.Activities.Designers2.Create;
 using Dev2.Activities.Designers2.DateTime;
 using Dev2.Activities.Designers2.DeleteRecords;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
 using Dev2.Activities.Designers2.GetWebRequest;
+using Dev2.Activities.Designers2.Move;
 using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Activities.Designers2.SortRecords;
@@ -36,7 +39,10 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
                 { typeof(DsfBaseConvertActivity), typeof(BaseConvertDesigner) },
-               // { typeof(DsfNumberFormatActivity), typeof(FormatNumberDesigner) },
+                // { typeof(DsfNumberFormatActivity), typeof(FormatNumberDesigner) },
+                { typeof(DsfPathCopy), typeof(CopyDesigner) },
+                { typeof(DsfPathCreate), typeof(CreateDesigner) },
+                { typeof(DsfPathMove), typeof(MoveDesigner) },
 
                 //{ typeof(DsfActivity), typeof(DsfActivityDesigner) },
                 //{ typeof(DsfDatabaseActivity), typeof(DsfActivityDesigner) },
@@ -49,13 +55,13 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfWebPageActivity), typeof(DsfWebPageActivityDesigner) },
                 { typeof(DsfWebSiteActivity), typeof(DsfWebSiteActivityDesigner) },
                 { typeof(DsfDataSplitActivity), typeof(DsfDataSplitActivityDesigner) },
-                { typeof(DsfPathCreate), typeof(DsfPathCreateDesigner) },
+                //{ typeof(DsfPathCreate), typeof(DsfPathCreateDesigner) },
                 { typeof(DsfFileRead), typeof(DsfFileReadDesigner) },
                 { typeof(DsfFileWrite), typeof(DsfFileWriteDesigner) },
                 { typeof(DsfFolderRead), typeof(DsfFolderReadDesigner) },
-                { typeof(DsfPathCopy), typeof(DsfPathCopyDesigner) },
+                //{ typeof(DsfPathCopy), typeof(DsfPathCopyDesigner) },
                 { typeof(DsfPathDelete), typeof(DsfPathDeleteDesigner) },
-                { typeof(DsfPathMove), typeof(DsfPathMoveDesigner) },
+                //{ typeof(DsfPathMove), typeof(DsfPathMoveDesigner) },
                 { typeof(DsfPathRename), typeof(DsfPathRenameDesigner) },
                 { typeof(DsfZip), typeof(DsfZipDesigner) },
                 { typeof(DsfUnZip), typeof(DsfUnzipDesigner) },
@@ -70,7 +76,7 @@ namespace Dev2.Studio.ActivityDesigners
                 //                    {typeof (DsfFileForEachActivity), typeof (DsfFileForEachActivityDesigner)},
                 //                    {typeof (DsfCheckpointActivity), typeof (DsfCheckpointActivityDesigner)},
                 { typeof(DsfFindRecordsActivity), typeof(DsfFindRecordsActivityDesigner) },
-                { typeof(DsfNumberFormatActivity), typeof(DsfNumberFormatActivityDesigner) },
+                //{ typeof(DsfNumberFormatActivity), typeof(DsfNumberFormatActivityDesigner) },
                 { typeof(DsfExecuteCommandLineActivity), typeof(DsfExecuteCommandLineActivityDesigner) },
                 { typeof(DsfGatherSystemInformationActivity), typeof(DsfGatherSystemInformationActivityDesigner) },
                 { typeof(DsfRandomActivity), typeof(DsfRandomActivityDesigner) },

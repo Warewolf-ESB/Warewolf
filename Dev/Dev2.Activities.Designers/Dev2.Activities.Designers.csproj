@@ -92,6 +92,13 @@
       <DependentUpon>CalculateDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Calculate\CalculateDesignerViewModel.cs" />
+    <Compile Include="Designers2\Copy\CopyDesigner.xaml.cs">
+      <DependentUpon>CopyDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Copy\CopyDesignerViewModel.cs" />
+    <Compile Include="Designers2\Copy\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Core\ActivityCollectionDesigner.cs" />
     <Compile Include="Designers2\Core\ActivityCollectionDesignerViewModel_TDev2TO.cs" />
     <Compile Include="Designers2\Core\ActivityCollectionDesignerViewModel.cs" />
@@ -135,6 +142,13 @@
     <Compile Include="Designers2\CountRecords\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Create\CreateDesigner.xaml.cs">
+      <DependentUpon>CreateDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Create\CreateDesignerViewModel.cs" />
+    <Compile Include="Designers2\Create\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\DateTime\DateTimeDesigner.xaml.cs">
       <DependentUpon>DateTimeDesigner.xaml</DependentUpon>
@@ -181,6 +195,13 @@
     <Compile Include="Designers2\GetWebRequest\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Move\MoveDesigner.xaml.cs">
+      <DependentUpon>MoveDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Move\MoveDesignerViewModel.cs" />
+    <Compile Include="Designers2\Move\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\MultiAssign\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
@@ -350,6 +371,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\Copy\CopyDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Copy\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\Core\Controls\Dev2DataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -373,6 +402,14 @@
     <Page Include="Designers2\CountRecords\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Create\CreateDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Create\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\DateTime\DateTimeDesigner.xaml">
       <SubType>Designer</SubType>
@@ -409,6 +446,14 @@
     <Page Include="Designers2\GetWebRequest\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Move\MoveDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Move\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\MultiAssign\Large.xaml">
       <SubType>Designer</SubType>

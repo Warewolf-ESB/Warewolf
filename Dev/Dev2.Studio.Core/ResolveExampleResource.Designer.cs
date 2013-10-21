@@ -115,6 +115,33 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File and Folder - Copy.
+        /// </summary>
+        internal static string DsfPathCopy {
+            get {
+                return ResourceManager.GetString("DsfPathCopy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File and Folder - Create.
+        /// </summary>
+        internal static string DsfPathCreate {
+            get {
+                return ResourceManager.GetString("DsfPathCreate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File and Folder - Move.
+        /// </summary>
+        internal static string DsfPathMove {
+            get {
+                return ResourceManager.GetString("DsfPathMove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recordset - Sort Records.
         /// </summary>
         internal static string DsfSortRecordsActivity {

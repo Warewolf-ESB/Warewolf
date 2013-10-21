@@ -10,8 +10,6 @@ namespace Dev2.Activities.Designers2.FormatNumber
 {
     public class FormatNumberDesignerViewModel : ActivityDesignerViewModel
     {
-        public static readonly DependencyProperty SelectedRoundingTypeProperty =
-            DependencyProperty.Register("SelectedRoundingType", typeof(string), typeof(FormatNumberDesignerViewModel), new PropertyMetadata(null, OnSelectedRoundingTypeChanged));
         public static readonly DependencyProperty IsRoundingEnabledProperty =
             DependencyProperty.Register("IsRoundingEnabled", typeof(bool), typeof(FormatNumberDesignerViewModel), new PropertyMetadata(false));
 
@@ -24,6 +22,8 @@ namespace Dev2.Activities.Designers2.FormatNumber
         public List<string> RoundingTypes { get { return new List<string>(Dev2EnumConverter.ConvertEnumsTypeToStringList<enRoundingType>()); } }
 
         public string SelectedRoundingType { get { return (string)GetValue(SelectedRoundingTypeProperty); } set { SetValue(SelectedRoundingTypeProperty, value); } }
+        public static readonly DependencyProperty SelectedRoundingTypeProperty =
+        DependencyProperty.Register("SelectedRoundingType", typeof(string), typeof(FormatNumberDesignerViewModel), new PropertyMetadata(null, OnSelectedRoundingTypeChanged));
 
         // DO NOT bind to these properties - these are here for convenience only!!!
         string RoundingType { set { SetProperty(value); } }
@@ -41,14 +41,15 @@ namespace Dev2.Activities.Designers2.FormatNumber
             {
                 if(roundingType == enRoundingType.None)
                 {
-                    //RoundingDecimalPlaces = string.Empty;
-                    //IsRoundingEnabled = false;
+                    viewModel.RoundingDecimalPlaces = string.Empty;
+                    viewModel.IsRoundingEnabled = false;
                 }
                 else
                 {
-                    // IsRoundingEnabled = true;
+                    viewModel.IsRoundingEnabled = true;
                 }
             }
+            viewModel.RoundingType = value;
         }
 
         public override void Validate()
