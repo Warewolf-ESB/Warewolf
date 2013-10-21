@@ -142,7 +142,7 @@ namespace Dev2.CodedUI.Tests
             //------------Execute Test---------------------------
             var theUnsavedTab = TabManagerUIMap.FindTabByName(tabName + " *");
             //------------Assert Results-------------------------
-            Assert.IsTrue(theUnsavedTab.Exists);
+            Assert.IsNotNull(theUnsavedTab, "Editted workflow does not have the unsaved * after its name on the tab");
         }
 
         [TestMethod]

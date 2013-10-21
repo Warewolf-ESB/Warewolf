@@ -1,24 +1,14 @@
-﻿using System.Windows;
-
-namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
+﻿namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
 {
     using System;
-    using System.Collections.Generic;
     using System.Drawing;
-    using System.Windows.Input;
-    using System.CodeDom.Compiler;
-    using System.Text.RegularExpressions;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
     using System.Windows.Forms;
     
     
-    public partial class DebugUIMap
+    public partial class DebugUIMap : UIMapBase
     {
         public void ClickItem(int row)
         {
@@ -107,16 +97,15 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
         /// <summary>
         /// Returns true if found in the timeout period.
         /// </summary>
-        public static bool WaitForDebugWindow(int timeOut)
+        public bool WaitForDebugWindow(int timeOut)
         {
-            var uiBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
             Type type = null;
             var timeNow = 0;
             while(type != typeof(WpfWindow))
             {
                 timeNow = timeNow + 100;
                 Playback.Wait(100);
-                var tryGetDialog = uiBusinessDesignStudioWindow.GetChildren()[0];
+                var tryGetDialog = StudioWindow.GetChildren()[0];
                 type = tryGetDialog.GetType();
                 if(timeNow > timeOut)
                 {

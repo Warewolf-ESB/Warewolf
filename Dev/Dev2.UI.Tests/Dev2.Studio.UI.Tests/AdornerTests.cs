@@ -166,22 +166,6 @@ namespace Dev2.Studio.UI.Tests
         }
 
         [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("HelpButtonAdorner_CollapseHelp")]
-        public void WorkflowdesignSurface_CollapseHelp()
-        {
-            //New workflow with a multiassign on it
-            RibbonUIMap.CreateNewWorkflow();
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            var theTab = TabManagerUIMap.GetActiveTab();
-            var pointUnderStartNode = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", pointUnderStartNode);
-            //click expand help
-            Mouse.Click(WorkflowDesignerUIMap.GetOpenHelpButton(theTab, "Assign"));
-            Assert.IsTrue(WorkflowDesignerUIMap.GetHelpPane(theTab, "Only variables go in here").Exists);
-        }
-
-        [TestMethod]
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
         {
             const string resourceToUse = "CalculateTaxReturns";
@@ -205,6 +189,8 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
 
             // Prepare it
+            Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
+            Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse);
             Mouse.Click(controlOnWorkflow, new Point(5, 5));
             var mappingsBtn = WorkflowDesignerUIMap.Adorner_GetButton(theTab, resourceToUse, "Open Mapping") as WpfToggleButton;

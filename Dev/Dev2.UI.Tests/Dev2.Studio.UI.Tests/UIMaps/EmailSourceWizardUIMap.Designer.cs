@@ -32,18 +32,16 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
     using MouseButtons = System.Windows.Forms.MouseButtons;
 
-    public partial class EmailSourceWizardUIMap
+    public partial class EmailSourceWizardUIMap : UIMapBase
     {
 
-        public static void InitializeFullTestSource(string name)
+        public void InitializeFullTestSource(string name)
         {
-            var explorerUiMap = new ExplorerUIMap();
-            var docmanagerUiMap = new DocManagerUIMap();
-            docmanagerUiMap.ClickOpenTabPage("Explorer");
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
 
-            explorerUiMap.ClearExplorerSearchText();
-            explorerUiMap.EnterExplorerSearchText("$");
-            var getLocalServer = explorerUiMap.GetLocalServer();
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("$");
+            var getLocalServer = ExplorerUIMap.GetLocalServer();
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
             for (var i = 0; i < 10; i++)
             {

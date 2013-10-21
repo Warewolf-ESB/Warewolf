@@ -1,13 +1,10 @@
-﻿using System;
-using System.CodeDom.Compiler;
+﻿using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
+using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -19,7 +16,7 @@ using MouseButtons = System.Windows.Forms.MouseButtons;
 
 namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 {
-    public partial class WorkflowDesignerUIMap
+    public partial class WorkflowDesignerUIMap : UIMapBase
     {
         /// <summary>
         /// Finds a control on the Workflow Designer
@@ -836,25 +833,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         #endregion Sort Control
 
-        #region TabManager UI Map
-
-        public TabManagerUIMap TabManagerUIMap
-        {
-            get
-            {
-                if(_tabManagerUIMap == null)
-                {
-                    _tabManagerUIMap = new TabManagerUIMap();
-                }
-
-                return _tabManagerUIMap;
-            }
-        }
-
-        #endregion
-
-        TabManagerUIMap _tabManagerUIMap;
-
         // Intellisense Box
         public UITestControl GetIntellisenseItem(int id)
         {
@@ -950,7 +928,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         public void RunWorkflowAndWaitUntilOutputStepCountAtLeast(int expectedStepCount, int timeout = 5000)
         {
-            var outputUiMap = new OutputUIMap();
             SendKeys.SendWait("{F5}");
             if(DebugUIMap.WaitForDebugWindow(5000))
             {
@@ -966,7 +943,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             while(steps.Count < expectedStepCount && count <= timeout)
             {
                 Playback.Wait(100);
-                steps = outputUiMap.GetOutputWindow();
+                steps = OutputUIMap.GetOutputWindow();
                 count++;
             }
         }
