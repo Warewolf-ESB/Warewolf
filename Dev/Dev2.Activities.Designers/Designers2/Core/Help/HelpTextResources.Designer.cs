@@ -929,6 +929,47 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To Delete a file or folder, put the full path and file or folder name to delete in here.
+        ///You can use File System, URI, FTP or FTPS format..
+        /// </summary>
+        public static string DeleteHelpFileFolder {
+            get {
+                return ResourceManager.GetString("DeleteHelpFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string DeleteHelpPassword {
+            get {
+                return ResourceManager.GetString("DeleteHelpPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or Failure depending on the success of the Delete action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string DeleteHelpResult {
+            get {
+                return ResourceManager.GetString("DeleteHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string DeleteHelpUsername {
+            get {
+                return ResourceManager.GetString("DeleteHelpUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To Delete a record in a recordset, put the recordset name in here with the index you would like to remove. e.g. [[Customers(7)]] will remove the record at index 7. [[Customers(*)]] will delete all the data in the recordset. This is recommended when working with large amounts of data that is no longer needed..
         /// </summary>
         public static string DeleteRecordsHelpRecords {
@@ -970,6 +1011,57 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string DeleteRecordsToolTipResult {
             get {
                 return ResourceManager.GetString("DeleteRecordsToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string DeleteToolTipFileFolder {
+            get {
+                return ResourceManager.GetString("DeleteToolTipFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string DeleteToolTipPassword {
+            get {
+                return ResourceManager.GetString("DeleteToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string DeleteToolTipResult {
+            get {
+                return ResourceManager.GetString("DeleteToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string DeleteToolTipUsername {
+            get {
+                return ResourceManager.GetString("DeleteToolTipUsername", resourceCulture);
             }
         }
         
@@ -1569,6 +1661,98 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To read the content of a file, put the full path and file name in here.
+        ///You can use File System, URI, FTP or FTPS format..
+        /// </summary>
+        public static string ReadFileHelpFilename {
+            get {
+                return ResourceManager.GetString("ReadFileHelpFilename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string ReadFileHelpPassword {
+            get {
+                return ResourceManager.GetString("ReadFileHelpPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the content of the file.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string ReadFileHelpResult {
+            get {
+                return ResourceManager.GetString("ReadFileHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string ReadFileHelpUsername {
+            get {
+                return ResourceManager.GetString("ReadFileHelpUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ReadFileToolTipFilename {
+            get {
+                return ResourceManager.GetString("ReadFileToolTipFilename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ReadFileToolTipPassword {
+            get {
+                return ResourceManager.GetString("ReadFileToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ReadFileToolTipResult {
+            get {
+                return ResourceManager.GetString("ReadFileToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ReadFileToolTipUsername {
+            get {
+                return ResourceManager.GetString("ReadFileToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Put the information you are looking for in here..
         /// </summary>
         public static string ReplaceHelpFind {
@@ -2072,6 +2256,141 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string WebRequestURIHelpText {
             get {
                 return ResourceManager.GetString("WebRequestURIHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///Put the contents you want written to the file in here..
+        /// </summary>
+        public static string WriteFileHelpContent {
+            get {
+                return ResourceManager.GetString("WriteFileHelpContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To write content to a file, put the full path and file name in here.
+        ///You can use File System, URI, FTP or FTPS format..
+        /// </summary>
+        public static string WriteFileHelpFilename {
+            get {
+                return ResourceManager.GetString("WriteFileHelpFilename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overwrite will replace the file contents with the new content.
+        ///Append Top puts the new content at the beginning of the file.
+        ///Append Bottom will add the new content to the end of the file..
+        /// </summary>
+        public static string WriteFileHelpMethod {
+            get {
+                return ResourceManager.GetString("WriteFileHelpMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string WriteFileHelpPassword {
+            get {
+                return ResourceManager.GetString("WriteFileHelpPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or will be blank depending on the success of the Write action.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string WriteFileHelpResult {
+            get {
+                return ResourceManager.GetString("WriteFileHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string WriteFileHelpUsername {
+            get {
+                return ResourceManager.GetString("WriteFileHelpUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string WriteFileToolTipContent {
+            get {
+                return ResourceManager.GetString("WriteFileToolTipContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string WriteFileToolTipFilename {
+            get {
+                return ResourceManager.GetString("WriteFileToolTipFilename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How should the contents be written to the file?.
+        /// </summary>
+        public static string WriteFileToolTipMethod {
+            get {
+                return ResourceManager.GetString("WriteFileToolTipMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string WriteFileToolTipPassword {
+            get {
+                return ResourceManager.GetString("WriteFileToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string WriteFileToolTipResult {
+            get {
+                return ResourceManager.GetString("WriteFileToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string WriteFileToolTipUsername {
+            get {
+                return ResourceManager.GetString("WriteFileToolTipUsername", resourceCulture);
             }
         }
     }

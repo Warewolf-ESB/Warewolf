@@ -170,6 +170,13 @@
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Designers2\Delete\DeleteDesigner.xaml.cs">
+      <DependentUpon>DeleteDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Delete\DeleteDesignerViewModel.cs" />
+    <Compile Include="Designers2\Delete\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaDesigner.xaml.cs">
       <DependentUpon>FindRecordsMultipleCriteriaDesigner.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -218,6 +225,13 @@
     <Compile Include="Behaviors\DataGridFocusTextOnLoadBehavior.cs" />
     <Compile Include="AttachedProperties\FocusSetter.cs" />
     <Compile Include="AttachedProperties\WizardEngineAttachedProperties.cs" />
+    <Compile Include="Designers2\ReadFile\ReadFileDesigner.xaml.cs">
+      <DependentUpon>ReadFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ReadFile\ReadFileDesignerViewModel.cs" />
+    <Compile Include="Designers2\ReadFile\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Service\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -252,6 +266,13 @@
     </Compile>
     <Compile Include="Designers2\UniqueRecords\UniqueRecordsDesignerViewModel.cs" />
     <Compile Include="Designers2\UniqueRecords\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WriteFile\WriteFileDesigner.xaml.cs">
+      <DependentUpon>WriteFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WriteFile\WriteFileDesignerViewModel.cs" />
+    <Compile Include="Designers2\WriteFile\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Preview\PreviewRequestedEventArgs.cs" />
@@ -427,6 +448,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Designers2\Delete\DeleteDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Delete\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -462,6 +491,14 @@
     <Page Include="Designers2\MultiAssign\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\ReadFile\ReadFileDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ReadFile\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Service\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -500,6 +537,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\UniqueRecords\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\WriteFile\WriteFileDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\WriteFile\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

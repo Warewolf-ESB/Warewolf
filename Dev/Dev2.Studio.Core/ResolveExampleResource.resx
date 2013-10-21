@@ -129,6 +129,12 @@
   <data name="DsfDeleteRecordActivity" xml:space="preserve">
     <value>Recordset - Delete Records</value>
   </data>
+  <data name="DsfFileRead" xml:space="preserve">
+    <value>File and Folder - Read File</value>
+  </data>
+  <data name="DsfFileWrite" xml:space="preserve">
+    <value>File and Folder - Write File</value>
+  </data>
   <data name="DsfMultiAssignActivity" xml:space="preserve">
     <value>Utility - Assign</value>
   </data>
@@ -140,6 +146,9 @@
   </data>
   <data name="DsfPathCreate" xml:space="preserve">
     <value>File and Folder - Create</value>
+  </data>
+  <data name="DsfPathDelete" xml:space="preserve">
+    <value>File and Folder - Delete</value>
   </data>
   <data name="DsfPathMove" xml:space="preserve">
     <value>File and Folder - Move</value>

@@ -97,6 +97,24 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File and Folder - Read File.
+        /// </summary>
+        internal static string DsfFileRead {
+            get {
+                return ResourceManager.GetString("DsfFileRead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File and Folder - Write File.
+        /// </summary>
+        internal static string DsfFileWrite {
+            get {
+                return ResourceManager.GetString("DsfFileWrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Utility - Assign.
         /// </summary>
         internal static string DsfMultiAssignActivity {
@@ -129,6 +147,15 @@ namespace Dev2 {
         internal static string DsfPathCreate {
             get {
                 return ResourceManager.GetString("DsfPathCreate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File and Folder - Delete.
+        /// </summary>
+        internal static string DsfPathDelete {
+            get {
+                return ResourceManager.GetString("DsfPathDelete", resourceCulture);
             }
         }
         

@@ -1010,4 +1010,155 @@ Using recordset () will add a new record and (*) will assign every record.</valu
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
+  <data name="DeleteHelpFileFolder" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To Delete a file or folder, put the full path and file or folder name to delete in here.
+You can use File System, URI, FTP or FTPS format.</value>
+  </data>
+  <data name="DeleteHelpPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="DeleteHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or Failure depending on the success of the Delete action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="DeleteHelpUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="DeleteToolTipFileFolder" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DeleteToolTipPassword" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DeleteToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DeleteToolTipUsername" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ReadFileHelpFilename" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To read the content of a file, put the full path and file name in here.
+You can use File System, URI, FTP or FTPS format.</value>
+  </data>
+  <data name="ReadFileHelpPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="ReadFileHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the content of the file.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="ReadFileHelpUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="ReadFileToolTipFilename" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ReadFileToolTipPassword" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ReadFileToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ReadFileToolTipUsername" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="WriteFileHelpContent" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+Put the contents you want written to the file in here.</value>
+  </data>
+  <data name="WriteFileHelpFilename" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To write content to a file, put the full path and file name in here.
+You can use File System, URI, FTP or FTPS format.</value>
+  </data>
+  <data name="WriteFileHelpMethod" xml:space="preserve">
+    <value>Overwrite will replace the file contents with the new content.
+Append Top puts the new content at the beginning of the file.
+Append Bottom will add the new content to the end of the file.</value>
+  </data>
+  <data name="WriteFileHelpPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="WriteFileHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Write action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="WriteFileHelpUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="WriteFileToolTipContent" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="WriteFileToolTipFilename" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="WriteFileToolTipMethod" xml:space="preserve">
+    <value>How should the contents be written to the file?</value>
+  </data>
+  <data name="WriteFileToolTipPassword" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="WriteFileToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="WriteFileToolTipUsername" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
 </root>

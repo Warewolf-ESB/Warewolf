@@ -231,12 +231,6 @@
     <Compile Include="ActivityDesigners\PathOperationDesigners\DsfUnzipDesigner.xaml.cs">
       <DependentUpon>DsfUnzipDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\PathOperationDesigners\DsfPathCreateDesigner.xaml.cs">
-      <DependentUpon>DsfPathCreateDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\PathOperationDesigners\DsfFileReadDesigner.xaml.cs">
-      <DependentUpon>DsfFileReadDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\DsfActivityDesigner.xaml.cs">
       <DependentUpon>DsfActivityDesigner.xaml</DependentUpon>
     </Compile>
@@ -267,20 +261,8 @@
     <Compile Include="ActivityDesigners\DsfWebSiteActivityDesigner.xaml.cs">
       <DependentUpon>DsfWebSiteActivityDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\PathOperationDesigners\DsfFileWriteDesigner.xaml.cs">
-      <DependentUpon>DsfFileWriteDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\PathOperationDesigners\DsfFolderReadDesigner.xaml.cs">
       <DependentUpon>DsfFolderReadDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\PathOperationDesigners\DsfPathCopyDesigner.xaml.cs">
-      <DependentUpon>DsfPathCopyDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\PathOperationDesigners\DsfPathDeleteDesigner.xaml.cs">
-      <DependentUpon>DsfPathDeleteDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\PathOperationDesigners\DsfPathMoveDesigner.xaml.cs">
-      <DependentUpon>DsfPathMoveDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="ActivityDesigners\PathOperationDesigners\DsfPathRenameDesigner.xaml.cs">
       <DependentUpon>DsfPathRenameDesigner.xaml</DependentUpon>
@@ -719,14 +701,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDesigners\PathOperationDesigners\DsfPathCreateDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ActivityDesigners\PathOperationDesigners\DsfFileReadDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ActivityDesigners\DsfActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -767,23 +741,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDesigners\PathOperationDesigners\DsfFileWriteDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ActivityDesigners\PathOperationDesigners\DsfFolderReadDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ActivityDesigners\PathOperationDesigners\DsfPathCopyDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ActivityDesigners\PathOperationDesigners\DsfPathDeleteDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ActivityDesigners\PathOperationDesigners\DsfPathMoveDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
