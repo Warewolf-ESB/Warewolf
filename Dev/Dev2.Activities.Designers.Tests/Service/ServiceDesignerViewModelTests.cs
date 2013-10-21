@@ -8,7 +8,6 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Collections;
 using Dev2.Communication;
-using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
@@ -35,6 +34,130 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServiceDesignerViewModel_Constructor")]
+        public void ServiceDesignerViewModel_Constructor_ImageSource_InitializedCorrectlyForType()
+        {
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "InvokeStoredProc", expectedImageSource: "DatabaseService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "InvokeWebService", expectedImageSource: "WebService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Plugin", expectedImageSource: "PluginService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Workflow", expectedImageSource: "Workflow-32", serviceUri:"");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Workflow", expectedImageSource: "RemoteWarewolf-32", serviceUri:"x");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "RemoteService", expectedImageSource: "RemoteWarewolf-32");
+
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "BizRule", expectedImageSource: "ToolService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "InvokeDynamicService", expectedImageSource: "ToolService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "InvokeManagementDynamicService", expectedImageSource: "ToolService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "InvokeServiceMethod", expectedImageSource: "ToolService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Switch", expectedImageSource: "ToolService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Unknown", expectedImageSource: "ToolService-32");
+
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "xxx", expectedImageSource: "ToolService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "", expectedImageSource: "ToolService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: null, expectedImageSource: "ToolService-32");
+        }
+
+        void Verify_Constructor_ImageSource_InitializedCorrectlyForType(string type, string expectedImageSource, string serviceUri = null)
+        {
+            //------------Setup for test--------------------------
+            var rootModel = new Mock<IContextualResourceModel>();
+            rootModel.Setup(m => m.Errors.Count).Returns(0);
+            rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo>());
+
+            var resourceID = Guid.NewGuid();
+            var activity = new DsfActivity();
+            activity.ResourceID = new InArgument<Guid>(resourceID);
+            activity.EnvironmentID = new InArgument<Guid>(Guid.Empty);
+            activity.UniqueID = Guid.NewGuid().ToString();
+            activity.SimulationMode = SimulationMode.OnDemand;
+            activity.ServiceName = "TestService";
+            activity.Type = type;
+            activity.ServiceUri = serviceUri;
+
+            var modelItem = CreateModelItem(activity);
+
+
+            //------------Execute Test---------------------------
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expectedImageSource, viewModel.ImageSource);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ServiceDesignerViewModel_Constructor")]
+        public void ServiceDesignerViewModel_Constructor_DisplayNameContainsDsf_DisplayNameIsServiceName()
+        {
+            //------------Setup for test--------------------------
+            const string ExpectedName = "TestServiceName";
+
+            var resourceID = Guid.NewGuid();
+
+            var rootModel = new Mock<IContextualResourceModel>();
+            rootModel.Setup(m => m.Errors.Count).Returns(0);
+            rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo>());
+
+            var activity = new DsfActivity();
+            activity.ResourceID = new InArgument<Guid>(resourceID);
+            activity.EnvironmentID = new InArgument<Guid>(Guid.Empty);
+            activity.UniqueID = Guid.NewGuid().ToString();
+            activity.SimulationMode = SimulationMode.OnDemand;
+            activity.ServiceName = ExpectedName;
+
+            var modelItem = CreateModelItem(activity);
+
+            var displayName = modelItem.GetProperty<string>("DisplayName");
+            Assert.IsTrue(displayName.Contains("Dsf"));
+
+
+            //------------Execute Test---------------------------
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
+
+            //------------Assert Results-------------------------
+            var actual = modelItem.GetProperty<string>("DisplayName");
+
+            Assert.AreEqual(ExpectedName, actual);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ServiceDesignerViewModel_Constructor")]
+        public void ServiceDesignerViewModel_Constructor_DisplayNameDoesNotContainDsf_DisplayNameIsNotChanged()
+        {
+            //------------Setup for test--------------------------
+            const string ExpectedName = "TestDisplayName";
+
+            var resourceID = Guid.NewGuid();
+
+            var rootModel = new Mock<IContextualResourceModel>();
+            rootModel.Setup(m => m.Errors.Count).Returns(0);
+            rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo>());
+
+            var activity = new DsfActivity();
+            activity.ResourceID = new InArgument<Guid>(resourceID);
+            activity.EnvironmentID = new InArgument<Guid>(Guid.Empty);
+            activity.UniqueID = Guid.NewGuid().ToString();
+            activity.SimulationMode = SimulationMode.OnDemand;
+            activity.ServiceName = "TestServiceName";
+            activity.DisplayName = ExpectedName;
+
+            var modelItem = CreateModelItem(activity);
+
+            var displayName = modelItem.GetProperty<string>("DisplayName");
+            Assert.IsFalse(displayName.Contains("Dsf"));
+
+
+            //------------Execute Test---------------------------
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
+
+            //------------Assert Results-------------------------
+            var actual = modelItem.GetProperty<string>("DisplayName");
+
+            Assert.AreEqual(ExpectedName, actual);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ServiceDesignerViewModel_Constructor")]
         public void ServiceDesignerViewModel_Constructor_PropertiesInitialized()
         {
             //------------Setup for test--------------------------
@@ -49,6 +172,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsNotNull(viewModel.DesignValidationErrors);
             Assert.IsNotNull(viewModel.RootModel);
             Assert.IsNotNull(viewModel.ResourceModel);
+            Assert.IsNotNull(viewModel.ImageSource);
 
             Assert.AreEqual(3, viewModel.TitleBarToggles.Count);
         }
@@ -58,7 +182,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [Description("ServiceDesignerViewModel constructor throws null argument exception when model item is null.")]
         [Owner("Trevor Williams-Ros")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ServiceDesignerViewModel_UnitTest_ConstructorWithNullModelItem_ThrowsArgumentNullException()
+        public void ServiceDesignerViewModel_Constructor_NullModelItem_ThrowsArgumentNullException()
         {
             var model = new ServiceDesignerViewModel(null, null, null, null);
         }
@@ -68,7 +192,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [Description("ServiceDesignerViewModel constructor throws null argument exception when root model is null.")]
         [Owner("Trevor Williams-Ros")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ServiceDesignerViewModel_UnitTest_ConstructorWithNullRootModel_ThrowsArgumentNullException()
+        public void ServiceDesignerViewModel_Constructor_NullRootModel_ThrowsArgumentNullException()
         {
             var model = new ServiceDesignerViewModel(new Mock<ModelItem>().Object, null, null, null);
         }
@@ -78,7 +202,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [Description("ServiceDesignerViewModel constructor throws null argument exception when environment repository is null.")]
         [Owner("Trevor Williams-Ros")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ServiceDesignerViewModel_UnitTest_ConstructorWithNullEnvironmentRepository_ThrowsArgumentNullException()
+        public void ServiceDesignerViewModel_Constructor_NullEnvironmentRepository_ThrowsArgumentNullException()
         {
             var model = new ServiceDesignerViewModel(new Mock<ModelItem>().Object, new Mock<IContextualResourceModel>().Object, null, null);
         }
@@ -87,7 +211,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_Constructor")]
         [Owner("Trevor Williams-Ros")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ServiceDesignerViewModel_UnitTest_ConstructorWithNullEventPublisher_ThrowsArgumentNullException()
+        public void ServiceDesignerViewModel_Constructor_NullEventPublisher_ThrowsArgumentNullException()
         {
             var model = new ServiceDesignerViewModel(new Mock<ModelItem>().Object, new Mock<IContextualResourceModel>().Object, new Mock<IEnvironmentRepository>().Object, null);
         }
@@ -96,7 +220,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_Constructor")]
         [Description("ServiceDesignerViewModel constructor with any args and no errors in resource model must add default NoError instance.")]
         [Owner("Trevor Williams-Ros")]
-        public void ServiceDesignerViewModel_UnitTest_ConstructorWithAnyArgs_AddsNoError()
+        public void ServiceDesignerViewModel_Constructor_AnyArgs_AddsNoError()
         {
             var model = CreateServiceDesignerViewModel(Guid.NewGuid());
 
@@ -108,7 +232,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_Constructor")]
         [Description("ServiceDesignerViewModel constructor must set the LastValidationMemo.")]
         [Owner("Trevor Williams-Ros")]
-        public void ServiceDesignerViewModel_UnitTest_ConstructorWithAnyArgs_SetsLastValidationMemo()
+        public void ServiceDesignerViewModel_Constructor_AnyArgs_SetsLastValidationMemo()
         {
             var instanceID = Guid.NewGuid();
             var error = new ErrorInfo { InstanceID = instanceID, Message = "Error occurred", ErrorType = ErrorType.Critical, FixType = FixType.None };
@@ -126,7 +250,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_Constructor")]
         [Description("ServiceDesignerViewModel constructor with any args must create subscription to connection server events.")]
         [Owner("Trevor Williams-Ros")]
-        public void ServiceDesignerViewModel_UnitTest_ConstructorWithAnyArgs_CreatesServerEventsSubscription()
+        public void ServiceDesignerViewModel_Constructor_AnyArgs_CreatesServerEventsSubscription()
         {
             var model = CreateServiceDesignerViewModel(Guid.NewGuid());
             model.OnDesignValidationReceived += (sender, memo) => Assert.IsTrue(true);
@@ -139,7 +263,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [Description("ServiceDesignerViewModel constructor sets IsDeleted to true and removes other errors when the resource model has an error where the FixType is Delete.")]
         [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void ServiceDesignerViewModel_UnitTest_ConstructorWithResourceContainingDeletedError_InitializesPropertiesCorrectly()
+        public void ServiceDesignerViewModel_Constructor_ResourceContainingDeletedError_InitializesPropertiesCorrectly()
         // ReSharper restore InconsistentNaming
         {
             var instanceID = Guid.NewGuid();
@@ -160,7 +284,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [Description("ServiceDesignerViewModel constructor sets IsDeleted to true and removes other errors when the resource model has an error where the FixType is Delete.")]
         [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void ServiceDesignerViewModel_UnitTest_ConstructorWithResourceNotFoundInRepository_InitializesPropertiesCorrectly()
+        public void ServiceDesignerViewModel_Constructor_ResourceNotFoundInRepository_InitializesPropertiesCorrectly()
         // ReSharper restore InconsistentNaming
         {
             var instanceID = Guid.NewGuid();
@@ -177,7 +301,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestMethod]
         [TestCategory("ServiceDesignerViewModel_Constructor")]
         [Owner("Huggs")]
-        public void ServiceDesignerViewModel_UnitTest_ConstructorWithEnvironmentIDEmpty_ShouldLoadResourceFromRootModelEnvironment()
+        public void ServiceDesignerViewModel_Constructor_EnvironmentIDEmpty_ShouldLoadResourceFromRootModelEnvironment()
         {
             //-------------------------------------------Setup --------------------------------------------------------------------------
             var instanceID = Guid.NewGuid();
@@ -202,7 +326,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestMethod]
         [TestCategory("ServiceDesignerViewModel_Constructor")]
         [Owner("Huggs")]
-        public void ServiceDesignerViewModel_UnitTest_ConstructorWithEnvironmentID_ShouldLoadResourceFromResourceModelEnvironment()
+        public void ServiceDesignerViewModel_Constructor_EnvironmentID_ShouldLoadResourceFromResourceModelEnvironment()
         {
             //-------------------------------------------Setup --------------------------------------------------------------------------
             var instanceID = Guid.NewGuid();
@@ -224,7 +348,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         }
 
         [TestMethod]
-        public void ServiceDesignerViewModel_UnitTest_ConstructorWithModelItemHasProperties_PropertiesPopulated()
+        public void ServiceDesignerViewModel_Constructor_ModelItemHasProperties_PropertiesPopulated()
         {
             var friendlySourceName = CreateModelProperty("FriendlySourceName", "Hello");
             var type = CreateModelProperty("Type", "Workflow");
@@ -274,7 +398,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_DesignValidationService")]
         [Description("Published design validation memo with errors must be added to the errors list.")]
         [Owner("Trevor Williams-Ros")]
-        public void ServiceDesignerViewModel_UnitTest_DesignValidationServicePublishingErrors_UpdatesErrors()
+        public void ServiceDesignerViewModel_DesignValidation_ServicePublishingErrors_UpdatesErrors()
         {
             var instanceID = Guid.NewGuid();
             var model = CreateServiceDesignerViewModel(instanceID);
@@ -303,7 +427,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_DesignValidationService")]
         [Description("Published design validation memo without errors must not be added to the errors list.")]
         [Owner("Trevor Williams-Ros")]
-        public void ServiceDesignerViewModel_UnitTest_DesignValidationServicePublishingNoErrors_UpdatesErrorsWithNoError()
+        public void ServiceDesignerViewModel_DesignValidation_ServicePublishingNoErrors_UpdatesErrorsWithNoError()
         {
             var instanceID = Guid.NewGuid();
             var model = CreateServiceDesignerViewModel(instanceID);
@@ -328,7 +452,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [Description("ServiceDesignerViewModel OpenParent must not do anything if IsDeleted is true.")]
         [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void ServiceDesignerViewModel_UnitTest_OpenParentWhenDeleted_DoesNothing()
+        public void ServiceDesignerViewModel_OpenParent_WhenDeleted_DoesNothing()
         // ReSharper restore InconsistentNaming
         {
             var eventAggregator = new Mock<IEventAggregator>();
@@ -357,7 +481,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [Description("FixErrors when WorstError is None must do nothing.")]
         [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void ServiceDesignerViewModel_UnitTest_FixNoError_DoesNothing()
+        public void ServiceDesignerViewModel_FixErrors_FixNoError_DoesNothing()
         // ReSharper restore InconsistentNaming
         {
             var model = CreateServiceDesignerViewModel(Guid.NewGuid());
@@ -373,7 +497,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [Description("FixErrors when FixType is ReloadMapping must reload mapping.")]
         [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void ServiceDesignerViewModel_UnitTest_FixReloadMapping_Done()
+        public void ServiceDesignerViewModel_FixErrors_FixReloadMapping_Done()
         // ReSharper restore InconsistentNaming
         {
             var xml = @"<Args>
@@ -442,7 +566,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [Description("FixErrors when FixType is MappingRequired must get a value for mapping to be fixed.")]
         [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void ServiceDesignerViewModel_UnitTest_FixMappingRequired_Done()
+        public void ServiceDesignerViewModel_FixErrors_Required_Done()
         // ReSharper restore InconsistentNaming
         {
             var xml = @"<Args>
@@ -492,7 +616,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [Description("FixErrors when FixType is MappingRequired must get a value for mapping to be fixed.")]
         [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void ServiceDesignerViewModel_UnitTest_FixMappingRequiredWhenMappingValid_ShouldRemoveError()
+        public void ServiceDesignerViewModel_FixErrors_RequiredWhenMappingValid_ShouldRemoveError()
         // ReSharper restore InconsistentNaming
         {
             var xml = @"<Args>
@@ -536,7 +660,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [Owner("Trevor Williams-Ros")]
         //[Ignore] // Not valid for now - ServiceDesignerViewModel is never alive to receive events!
         // ReSharper disable InconsistentNaming
-        public void ServiceDesignerViewModel_UnitTest_DesignValidationForThisActivity_Received()
+        public void ServiceDesignerViewModel_DesignValidation_ForThisActivity_Received()
         // ReSharper restore InconsistentNaming
         {
             var instanceID = Guid.NewGuid();
@@ -560,7 +684,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [Description("Activity must not receive memo's for other activities i.e. a different instance ID (unique ID).")]
         [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void ServiceDesignerViewModel_UnitTest_DesignValidationForOtherActivity_NotReceived()
+        public void ServiceDesignerViewModel_DesignValidation_ForOtherActivity_NotReceived()
         // ReSharper restore InconsistentNaming
         {
             var instanceID = Guid.NewGuid();

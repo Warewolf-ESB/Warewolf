@@ -7,19 +7,13 @@
                        xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
                        xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                        xmlns:local="clr-namespace:Dev2.Activities.Designers2.Service"
+                       xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
                        mc:Ignorable="d"
                        d:DataContext="{d:DesignInstance local:ServiceDesignerViewModel}"
                        Style="{DynamicResource ContentViewStyle}">
-
-    <sap:ActivityDesigner.Icon>
-        <DrawingBrush>
-            <DrawingBrush.Drawing>
-                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="{Binding ImageSource}" />
-            </DrawingBrush.Drawing>
-        </DrawingBrush>
-    </sap:ActivityDesigner.Icon>
    
     <sap:ActivityDesigner.Resources>
+        <converters:StringToResourceConverter x:Key="StringToResourceConverter" />
         <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
         <local:Large x:Key="Large" AutomationProperties.AutomationId="LargeViewContent" />
         
@@ -38,4 +32,11 @@
         </Style>
     </sap:ActivityDesigner.Resources>
 
+    <sap:ActivityDesigner.Icon>
+        <DrawingBrush Stretch="Uniform">
+            <DrawingBrush.Drawing>
+                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="{Binding ImageSource, Converter={StaticResource StringToResourceConverter}}" />
+            </DrawingBrush.Drawing>
+        </DrawingBrush>    
+    </sap:ActivityDesigner.Icon>
 </core:ActivityDesigner>

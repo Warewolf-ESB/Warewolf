@@ -42,7 +42,6 @@ namespace Dev2.Activities.Designers2.Service
         IDesignValidationService _validationService;
         IErrorInfo _worstDesignError;
         bool _isDisposed;
-        bool _initializingMappings;
 
         public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
             : this(modelItem, rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator)
@@ -68,6 +67,7 @@ namespace Dev2.Activities.Designers2.Service
             DesignValidationErrors = new ObservableCollection<IErrorInfo>();
             FixErrorsCommand = new RelayCommand(o => FixErrors());
 
+            InitializeDisplayName();
             InitializeProperties();
             InitializeImageSource();
 
@@ -272,6 +272,19 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
+        void InitializeDisplayName()
+        {
+            var serviceName = ServiceName;
+            if(!string.IsNullOrEmpty(serviceName))
+            {
+                var displayName = DisplayName;
+                if(!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
+                {
+                    DisplayName = serviceName;
+                }
+            }
+        }
+
         void InitializeLastValidationMemo(IEnvironmentModel environmentModel)
         {
             var uniqueID = UniqueID;
@@ -360,24 +373,24 @@ namespace Dev2.Activities.Designers2.Service
             switch(actionType)
             {
                 case DynamicServices.enActionType.InvokeStoredProc:
-                    return "pack://application:,,,/Warewolf Studio;component/images/DatabaseService-32.png";
+                    return "DatabaseService-32";
 
                 case DynamicServices.enActionType.InvokeWebService:
-                    return "pack://application:,,,/Warewolf Studio;component/images/WebService-32.png";
+                    return "WebService-32";
 
                 case DynamicServices.enActionType.Plugin:
-                    return "pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png";
+                    return "PluginService-32";
 
                 case DynamicServices.enActionType.Workflow:
                     return string.IsNullOrEmpty(ServiceUri)
-                        ? "pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png"
-                        : "pack://application:,,,/Warewolf Studio;component/images/RemoteWarewolf-32.png";
+                        ? "Workflow-32"
+                        : "RemoteWarewolf-32";
 
                 case DynamicServices.enActionType.RemoteService:
-                    return "pack://application:,,,/Warewolf Studio;component/images/RemoteWarewolf-32.png";
+                    return "RemoteWarewolf-32";
 
             }
-            return "pack://application:,,,/Warewolf Studio;component/images/ToolService-32.png";
+            return "ToolService-32";
         }
 
         void AddTitleBarEditToggle()
@@ -632,7 +645,7 @@ namespace Dev2.Activities.Designers2.Service
 
         #region GetMapping
 
-        static ObservableCollection<IInputOutputViewModel> GetMapping(XElement xml, bool isInput, ObservableCollection<IInputOutputViewModel> oldMappings)
+        static IEnumerable<IInputOutputViewModel> GetMapping(XContainer xml, bool isInput, ObservableCollection<IInputOutputViewModel> oldMappings)
         {
             var result = new ObservableCollection<IInputOutputViewModel>();
 
