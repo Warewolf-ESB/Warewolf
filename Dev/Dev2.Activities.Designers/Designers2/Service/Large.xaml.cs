@@ -1,8 +1,7 @@
-﻿
-using System.Collections.Generic;
+﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using Dev2.Activities.Designers2.Core.Controls;
-using Dev2.Data.Interfaces;
 
 namespace Dev2.Activities.Designers2.Service
 {
@@ -22,34 +21,46 @@ namespace Dev2.Activities.Designers2.Service
 
         void InitializeHeight()
         {
-            //var viewModel = (ServiceDesignerViewModel)DataContext;
+            var viewModel = (ServiceDesignerViewModel)DataContext;
 
-            //var inputsHeight = GetHeightInfo(viewModel.DataMappingViewModel.Inputs, InputsDataGrid);
-            //var outputsHeight = GetHeightInfo(viewModel.DataMappingViewModel.Outputs, OutputsDataGrid);
+            var inputsCount = viewModel.DataMappingViewModel.Inputs.Count;
+            var outputsCount = viewModel.DataMappingViewModel.Outputs.Count;
 
-            //if(inputsHeight.Count + outputsHeight.Count > 12)
-            //{
-            //    var diff = ContentGrid.ActualHeight - InputsDataGrid.ActualHeight - OutputsDataGrid.ActualHeight;
-            //    ContentGrid.Height = diff + (outputsHeight.Row * 5) + (inputsHeight.Row * 5) + outputsHeight.Header + inputsHeight.Header;
-            //}
-
-            const double Offset = 20;
-            const double MaxHeightValue = 500;
-
-            var actualHeight = ActualHeight;
-            if(actualHeight > MaxHeightValue)
+            if(inputsCount == 0 && outputsCount == 0)
             {
-                actualHeight = MaxHeightValue;
+                viewModel.ThumbVisibility = Visibility.Collapsed;
+                return;
             }
 
-            MinHeight = actualHeight + Offset;
-            MaxHeight = actualHeight + Offset;
+            var totalCount = (double)(inputsCount + outputsCount);
+
+            var inputsRowDef = InitializeHeight(InputsDataGrid, 0, inputsCount, totalCount);
+            var outputsRowDef = InitializeHeight(OutputsDataGrid, 1, outputsCount, totalCount);
+
+            MinHeight = inputsRowDef.MinHeight + outputsRowDef.MinHeight + OnErrorControl.ActualHeight + 12;
         }
 
-        HeightInfo GetHeightInfo(IReadOnlyCollection<IInputOutputViewModel> mappings, Dev2DataGrid dataGrid)
+        RowDefinition InitializeHeight(Dev2DataGrid dataGrid, int contentGridRow, int itemCount, double totalCount)
         {
-            var info = new HeightInfo { Count = mappings.Count };
-            if(mappings.Count > 0)
+            const double DataGridBorderThickness = 2;
+            if(itemCount > 0)
+            {
+                var rowDef = ContentGrid.RowDefinitions[contentGridRow];
+
+                var heightInfo = GetHeightInfo(dataGrid);
+                var minItemCount = Math.Min(itemCount, 5);
+                var height = heightInfo.Header + (minItemCount * heightInfo.Row) + DataGridBorderThickness;
+                rowDef.Height = new GridLength((itemCount / totalCount) * 100, GridUnitType.Star);
+                rowDef.MinHeight = height;
+                return rowDef;
+            }
+            return null;
+        }
+
+        HeightInfo GetHeightInfo(Dev2DataGrid dataGrid)
+        {
+            var info = new HeightInfo();
+            if(dataGrid.Items.Count > 0)
             {
                 var dataGridRow = dataGrid.GetRow(0);
                 if(dataGridRow != null)
@@ -70,7 +81,6 @@ namespace Dev2.Activities.Designers2.Service
         {
             public double Header { get; set; }
             public double Row { get; set; }
-            public int Count { get; set; }
         }
     }
 }
