@@ -97,6 +97,42 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File and Folder - Read File.
+        /// </summary>
+        internal static string DsfFileRead {
+            get {
+                return ResourceManager.GetString("DsfFileRead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File and Folder - Write File.
+        /// </summary>
+        internal static string DsfFileWrite {
+            get {
+                return ResourceManager.GetString("DsfFileWrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recordset - Find Records.
+        /// </summary>
+        internal static string DsfFindRecordsMultipleCriteriaActivity {
+            get {
+                return ResourceManager.GetString("DsfFindRecordsMultipleCriteriaActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File and Folder - Read Folder.
+        /// </summary>
+        internal static string DsfFolderRead {
+            get {
+                return ResourceManager.GetString("DsfFolderRead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Utility - Assign.
         /// </summary>
         internal static string DsfMultiAssignActivity {

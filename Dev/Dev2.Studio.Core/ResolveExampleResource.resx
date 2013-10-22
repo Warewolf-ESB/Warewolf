@@ -174,4 +174,7 @@
   <data name="DsfZip" xml:space="preserve">
     <value>File and Folder - Zip</value>
   </data>
+  <data name="DsfFindRecordsMultipleCriteriaActivity" xml:space="preserve">
+    <value>Recordset - Find Records</value>
+  </data>
 </root>
