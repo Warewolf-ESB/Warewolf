@@ -12,7 +12,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         protected override IInputElement GetInitialFocusElement()
         {
-            return DataGrid.GetFocusElement(0);
+            return InitialFocusElement;
         }
     }
 }

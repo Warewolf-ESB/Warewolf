@@ -58,6 +58,7 @@
                Style="{StaticResource ActivityMapppingLabelStyle}"/>
         <ComboBox Grid.Column="1"
                   Grid.Row="0" 
+                  x:Name="InitialFocusElement"
                   Style="{StaticResource ActivityMapppingComboBoxStyle}"   
                   ItemsSource="{Binding Databases}" 
                   DisplayMemberPath="ResourceName"
