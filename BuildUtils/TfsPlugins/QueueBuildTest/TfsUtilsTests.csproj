@@ -59,6 +59,7 @@
     <Compile Include="DirectoryTest.cs" />
     <Compile Include="QueueBuildTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DomainEmailResolutionTests.cs" />
     <Compile Include="WaitForBuildsTest.cs" />
   </ItemGroup>
   <ItemGroup>
