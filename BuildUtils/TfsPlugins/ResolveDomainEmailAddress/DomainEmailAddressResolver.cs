@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.DirectoryServices;
+﻿using System.DirectoryServices.AccountManagement;
 
 namespace ResolveDomainEmailAddress
 {
@@ -11,7 +6,14 @@ namespace ResolveDomainEmailAddress
     {
         public string GetEmailAddress(string userName)
         {
-            return string.Empty;
+            var domainContext = new PrincipalContext(ContextType.Domain, "RSAKLFSVRSBSPDC.dev2.local");
+            var user = UserPrincipal.FindByIdentity(domainContext, userName);
+
+            if (user != null)
+            {
+                return user.EmailAddress.Replace("local","co.za");
+            }
+            return null;
         }
     }
 }
