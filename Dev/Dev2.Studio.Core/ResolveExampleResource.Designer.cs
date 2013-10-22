@@ -79,6 +79,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Utility - Comment.
+        /// </summary>
+        internal static string DsfCommentActivity {
+            get {
+                return ResourceManager.GetString("DsfCommentActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recordset - Count Records.
         /// </summary>
         internal static string DsfCountRecordsetActivity {

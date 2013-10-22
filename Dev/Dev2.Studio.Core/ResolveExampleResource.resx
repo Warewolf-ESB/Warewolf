@@ -183,4 +183,7 @@
   <data name="DsfExecuteCommandLineActivity" xml:space="preserve">
     <value>Scripting - CMD Line</value>
   </data>
+  <data name="DsfCommentActivity" xml:space="preserve">
+    <value>Utility - Comment</value>
+  </data>
 </root>

@@ -8,6 +8,7 @@ namespace Dev2.Activities.Designers2.Comment
         public CommentDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
+            AddTitleBarHelpToggle();
         }
 
         public override void Validate()
