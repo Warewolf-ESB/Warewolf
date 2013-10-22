@@ -201,9 +201,6 @@
     <Compile Include="ActivityDesigners\DsfIndexActivityDesigner.xaml.cs">
       <DependentUpon>DsfIndexActivityDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\DsfNumberFormatActivityDesigner.xaml.cs">
-      <DependentUpon>DsfNumberFormatActivityDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\DsfRandomActivityDesigner.xaml.cs">
       <DependentUpon>DsfRandomActivityDesigner.xaml</DependentUpon>
     </Compile>
@@ -640,10 +637,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ActivityDesigners\DsfIndexActivityDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ActivityDesigners\DsfNumberFormatActivityDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

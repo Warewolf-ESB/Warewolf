@@ -37,21 +37,17 @@
             <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                 <behaviors:DataGridWatermarkModifier.WatermarkText>
                     <system:String>[[Variable1]]</system:String>
-                    <system:String>[[Variable2]]</system:String>
                 </behaviors:DataGridWatermarkModifier.WatermarkText>
                 <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
                     <system:Int32>0</system:Int32>
-                    <system:Int32>1</system:Int32>
                 </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
             </behaviors:DataGridWatermarkModifier>
             <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextValue">
                 <behaviors:DataGridWatermarkModifier.WatermarkText>
                     <system:String>Value</system:String>
-                    <system:String>Value</system:String>
                 </behaviors:DataGridWatermarkModifier.WatermarkText>
                 <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
                     <system:Int32>0</system:Int32>
-                    <system:Int32>1</system:Int32>
                 </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
             </behaviors:DataGridWatermarkModifier>
         </i:Interaction.Behaviors>       
