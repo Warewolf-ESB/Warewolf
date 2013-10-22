@@ -8,15 +8,20 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Xml;
 using System.Xml.Linq;
+using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Composition;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
+using Dev2.Providers.Events;
 using Dev2.Providers.Logs;
+using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.Wizards.Interfaces;
@@ -36,6 +41,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         private IFrameworkSecurityContext _securityContext;
         private IWizardEngine _wizardEngine;
         private bool _isLoaded;
+
+        private IDeployService _deployService = new DeployService();
 
         private bool _isDisposed;
         Guid _updateWorkflowServerMessageID;
@@ -67,6 +74,61 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
         #region Methods
+
+        /// <summary>
+        /// Deploys the resources.
+        /// </summary>
+        /// <param name="targetEnviroment">The target enviroment.</param>
+        /// <param name="sourceEnviroment">The source enviroment.</param>
+        /// <param name="dto">The dto.</param>
+        /// <param name="eventPublisher">The event publisher.</param>
+        public void DeployResources(IEnvironmentModel sourceEnviroment, IEnvironmentModel targetEnviroment, IDeployDTO dto, IEventAggregator eventPublisher)
+        {
+
+            //Fetch from resource repository to deploy ;)
+            IList<IResourceModel> deployableResources =
+            dto.ResourceModels.Select(resource => resource.ID)
+            .Select(fetchID => sourceEnviroment.ResourceRepository
+            .FindSingle(c => c.ID == fetchID)).ToList();
+
+            // Create the real deployment payload ;)
+            IDeployDTO trueDto = new DeployDTO {ResourceModels = deployableResources};
+
+
+            // Deploy - Seems a bit silly to go out to another service only to comeback in?
+            _deployService.Deploy(trueDto, targetEnviroment);
+
+            var targetResourceRepo = targetEnviroment.ResourceRepository;
+
+            // Inform the repo to reload the deployed resources against the targetEnviroment ;)
+            foreach (var resourceToReload in deployableResources)
+            {
+                var effectedResources = targetResourceRepo.ReloadResource(resourceToReload.ID, resourceToReload.ResourceType, ResourceModelEqualityComparer.Current);
+                if (effectedResources != null)
+                {
+                    foreach (IResourceModel resource in effectedResources)
+                    {
+                        var theID = resource.ID;
+                        var resourceToUpdate = deployableResources.FirstOrDefault(res => res.ID == theID);
+                        
+                        if (resourceToUpdate != null)
+                        {
+                            resourceToUpdate.Update(resource);
+                            Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
+                            // For some daft reason we have two model versions?!
+                            var resourceWithContext = new ResourceModel(targetEnviroment);
+                            resourceWithContext.Update(resource);
+                            eventPublisher.Publish(new UpdateResourceMessage(resourceWithContext));
+                        }
+                        
+                    }
+                }
+            }
+
+            Logger.TraceInfo("Publish message of type - " + typeof(RefreshExplorerMessage));
+            eventPublisher.Publish(new RefreshExplorerMessage());
+        }
+
 
         public void Load()
         {

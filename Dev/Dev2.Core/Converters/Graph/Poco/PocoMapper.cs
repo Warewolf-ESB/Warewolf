@@ -177,7 +177,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
         private string GetSampleData(object root, IPath path)
         {
             PocoNavigator navigator = new PocoNavigator(root);
-            return string.Join(",", navigator.SelectEnumerable(path).Select(o => o.ToString()).Take(10));
+            return string.Join(GlobalConstants.AnythingToXmlPathSeperator, navigator.SelectEnumerable(path).Select(o => o.ToString().Replace(GlobalConstants.AnythingToXmlPathSeperator, GlobalConstants.AnytingToXmlCommaToken)).Take(10));
         }
 
         #endregion Private Methods

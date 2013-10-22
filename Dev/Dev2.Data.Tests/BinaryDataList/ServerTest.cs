@@ -310,11 +310,14 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             StringAssert.Contains(actual, expected, "Not all XML special characters are escaped i.e \"'><&");
             
-        } 
-        
+        }
+
         [TestMethod]
-        public void DeserializeToXMLFromBinaryDataListWhereDataListContainsInvalidXMLCharactersExpectedInvalidCharactersAreEscaped_UsingXMLWithoutSystemTagsTranslator()
+        [Owner("Travis Frisinger")]
+        [TestCategory("XmlTranslator_ConvertFrom")]
+        public void XmlTranslator_ConvertFrom_WhenXMLSpecialCharsPresent_ExpectEscapedChars()
         {
+            //------------Setup for test--------------------------
             IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormatWithoutSystemTags);
             IBinaryDataList dl1 = Dev2BinaryDataListFactory.CreateDataList(GlobalConstants.NullDataListID);
 
@@ -322,15 +325,40 @@ namespace Dev2.Data.Tests.BinaryDataList
             dl1.TryCreateScalarTemplate(string.Empty, "cake", "", false, true, enDev2ColumnArgumentDirection.Both, out error);
             dl1.TryCreateScalarValue("Travis Is \"Cool\"&>'nstuff'<", "cake", out error);
 
+            //------------Execute Test---------------------------
             ErrorResultTO errors;
             var payload = xmlConverter.ConvertFrom(dl1, out errors);
 
+            //------------Assert Results-------------------------
             string actual = payload.FetchAsString();
             string expected = "Travis Is &quot;Cool&quot;&amp;&gt;&apos;nstuff&apos;&lt;";
 
             StringAssert.Contains(actual, expected, "Not all XML special characters are escaped i.e \"'><&");
-            
         }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("XmlTranslator_ConvertFrom")]
+        public void XmlTranslator_ConvertAndFilter_WhenXMLSpecialCharsPresent_ExpectEscapedChars()
+        {
+            //------------Setup for test--------------------------
+            IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormatWithoutSystemTags);
+            IBinaryDataList dl1 = Dev2BinaryDataListFactory.CreateDataList(GlobalConstants.NullDataListID);
+
+            string error;
+            dl1.TryCreateScalarTemplate(string.Empty, "cake", "", false, true, enDev2ColumnArgumentDirection.Both, out error);
+            dl1.TryCreateScalarValue("Travis Is \"Cool\"&>'nstuff'<", "cake", out error);
+
+            //------------Execute Test---------------------------
+            ErrorResultTO errors;
+            var actual = xmlConverter.ConvertAndFilter(dl1,"<root><cake/></root>" ,out errors);
+
+            //------------Assert Results-------------------------
+            const string expected = "Travis Is &quot;Cool&quot;&amp;&gt;&apos;nstuff&apos;&lt;";
+
+            StringAssert.Contains(actual, expected, "Not all XML special characters are escaped i.e \"'><&");
+        }
+
         #endregion
 
         #endregion

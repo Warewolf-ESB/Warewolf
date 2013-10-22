@@ -200,12 +200,11 @@ namespace Dev2.Server.Datalist {
         /// <param name="ctx">The CTX.</param>
         /// <param name="typeOf">The type of.</param>
         /// <param name="input">The input.</param>
+        /// <param name="outputDefs">The output defs.</param>
         /// <param name="targetDLID">The target dlid.</param>
         /// <param name="errors">The errors.</param>
-        /// <param name="masterShape">The master shape.</param>
-        /// <param name="isTransactionallyScoped">if set to <c>true</c> [is transactionally scoped].</param>
         /// <returns></returns>
-        Guid PopulateDataList(NetworkContext ctx, DataListFormat typeOf, object input, Guid targetDLID, out ErrorResultTO errors);
+        Guid PopulateDataList(NetworkContext ctx, DataListFormat typeOf, object input, string outputDefs, Guid targetDLID, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts from selected Type to binary

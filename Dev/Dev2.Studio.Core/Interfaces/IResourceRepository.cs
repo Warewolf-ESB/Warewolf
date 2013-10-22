@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
+using Caliburn.Micro;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Workspaces;
@@ -30,5 +30,7 @@ namespace Dev2.Studio.Core.Interfaces
         void RemoveFromCache(Guid resourceID);
         void RenameCategory(string oldCategory, string newCategory, ResourceType resourceType);
         string SaveToServer(IResourceModel instanceObj);
+
+        void DeployResources(IEnvironmentModel targetEnviroment, IEnvironmentModel sourceEnviroment, IDeployDTO dto, IEventAggregator eventPublisher);
     }
 }

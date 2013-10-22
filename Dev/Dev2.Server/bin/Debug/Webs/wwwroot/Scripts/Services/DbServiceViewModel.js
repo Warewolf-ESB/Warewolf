@@ -355,7 +355,18 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
     
     self.testAction = function () {
         self.isTestResultsLoading(true);
+        var regex = new RegExp("__COMMA__", "g");
         $.post("Service/Services/DbTest" + window.location.search, self.getJsonData(), function (result) {
+
+            try {
+                // clean things up a bit ;)
+                for (var i = 0; i < result.Records.length; i++) {
+                    for (var q = 0; q < result.Records[i].Cells.length; q++) {
+                        result.Records[i].Cells[q].Value = result.Records[i].Cells[q].Value.replace(regex, ",");
+                    }
+                }
+            } catch(e) {}
+
             self.isTestResultsLoading(false);
             self.hasTestResultRecords(result.Records.length > 0);
             self.hasTestResults(!result.HasErrors);

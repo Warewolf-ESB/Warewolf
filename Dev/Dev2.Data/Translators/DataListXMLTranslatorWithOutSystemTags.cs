@@ -37,6 +37,8 @@ namespace Dev2.Data.Translators
                 throw new ArgumentNullException("payload");
             }
 
+            TranslatorUtils tu = new TranslatorUtils();
+
             StringBuilder result = new StringBuilder("<" + _rootTag + ">");
             errors = new ErrorResultTO();
             string error = string.Empty;
@@ -67,8 +69,14 @@ namespace Dev2.Data.Translators
                             foreach (IBinaryDataListItem col in rowData)
                             {
                                 string fName = col.FieldName;
-                                
-                                PopulateXmlValue(result,fName,col);
+
+                                result.Append("<");
+                                result.Append(fName);
+                                result.Append(">");
+                                result.Append(tu.FullCleanForEmit(col.TheValue));
+                                result.Append("</");
+                                result.Append(fName);
+                                result.Append(">");
                             }
 
                             result.Append("</");
@@ -83,14 +91,13 @@ namespace Dev2.Data.Translators
                         IBinaryDataListItem val = entry.FetchScalar();
                         if(val != null)
                         {
-                            PopulateXmlValue(result, fName, val);
-//                            result.Append("<");
-//                            result.Append(fName);
-//                            result.Append(">");
-//                            result.Append(val.TheValue);
-//                            result.Append("</");
-//                            result.Append(fName);
-//                            result.Append(">");
+                            result.Append("<");
+                            result.Append(fName);
+                            result.Append(">");
+                            result.Append(tu.FullCleanForEmit(val.TheValue));
+                            result.Append("</");
+                            result.Append(fName);
+                            result.Append(">");
                         }
                     }
                 }
@@ -278,7 +285,7 @@ namespace Dev2.Data.Translators
         }
 
         // NOTE : This will be tested by the related WebServices and Plugin Integration Test
-        public Guid Populate(object input, Guid targetDL, out ErrorResultTO errors)
+        public Guid Populate(object input, Guid targetDL, string outputDefs, out ErrorResultTO errors)
         {
             // input is a string of output mappings ;)
             var compiler = DataListFactory.CreateDataListCompiler();
@@ -318,7 +325,7 @@ namespace Dev2.Data.Translators
             errors = new ErrorResultTO();
 
             ErrorResultTO invokeErrors;
-            
+            TranslatorUtils tu = new TranslatorUtils();
 
             IBinaryDataList targetDL = _tu.TranslateShapeToObject(filterShape, false, out invokeErrors);
             errors.MergeErrors(invokeErrors);
@@ -358,15 +365,13 @@ namespace Dev2.Data.Translators
                                 {
                                     string fName = col.FieldName;
 
-                                    PopulateXmlValue(result,fName,col);
-//
-//                                    result.Append("<");
-//                                    result.Append(fName);
-//                                    result.Append(">");
-//                                    result.Append(col.TheValue);
-//                                    result.Append("</");
-//                                    result.Append(fName);
-//                                    result.Append(">");
+                                    result.Append("<");
+                                    result.Append(fName);
+                                    result.Append(">");
+                                    result.Append(tu.FullCleanForEmit(col.TheValue));
+                                    result.Append("</");
+                                    result.Append(fName);
+                                    result.Append(">");
                                 }
                             }
 
@@ -382,14 +387,13 @@ namespace Dev2.Data.Translators
 
                         if(val != null)
                         {
-                            PopulateXmlValue(result, fName, val);
-//                            result.Append("<");
-//                            result.Append(fName);
-//                            result.Append(">");
-//                            result.Append(val.TheValue);
-//                            result.Append("</");
-//                            result.Append(fName);
-//                            result.Append(">");
+                            result.Append("<");
+                            result.Append(fName);
+                            result.Append(">");
+                            result.Append(tu.FullCleanForEmit(val.TheValue));
+                            result.Append("</");
+                            result.Append(fName);
+                            result.Append(">");
                         }
                     }
                 }

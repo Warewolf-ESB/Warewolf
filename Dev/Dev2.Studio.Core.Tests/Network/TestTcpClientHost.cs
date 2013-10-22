@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
+using Dev2.Network.Messaging;
 using Dev2.Providers.Events;
 using Dev2.Studio.Core.Network;
 
@@ -20,6 +22,17 @@ namespace Dev2.Core.Tests.Network
         protected override void StartReconnectTimer()
         {
             StartReconnectTimerHitCount++;
+            
+        }
+
+        /// <summary>
+        /// Tests the complete send receive.
+        /// </summary>
+        /// <typeparam name="TMessage">The type of the message.</typeparam>
+        /// <param name="msg">The MSG.</param>
+        public void TestCompleteSendReceive<TMessage>(Func<TMessage> msg) where TMessage : INetworkMessage
+        {
+            CompleteSendReceive(msg);
         }
     }
 }

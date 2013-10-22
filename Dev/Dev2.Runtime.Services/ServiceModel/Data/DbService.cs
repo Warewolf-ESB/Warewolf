@@ -113,10 +113,12 @@ namespace Dev2.Runtime.ServiceModel.Data
             foreach(var field in Recordset.Fields)
             {
                 var path = field.Path;
+
                 if(String.IsNullOrEmpty(field.Name))
                 {
                     continue;
                 }
+
                 if(path != null)
                 {
                     string expressionFormat;
@@ -150,23 +152,23 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             #region Add method parameters to inputs
 
-            if(Method != null)
+            if (Method != null)
             {
-                foreach(var parameter in Method.Parameters)
+                foreach (var parameter in Method.Parameters)
                 {
-                    var input = new XElement("Input",
-                        new XAttribute("Name", parameter.Name ?? string.Empty),
-                        new XAttribute("Source", parameter.Name ?? string.Empty),
-                        new XAttribute("EmptyToNull", parameter.EmptyToNull),
-                        new XAttribute("DefaultValue", parameter.DefaultValue ?? string.Empty)
-                        );
+                var input = new XElement("Input",
+                    new XAttribute("Name", parameter.Name ?? string.Empty),
+                    new XAttribute("Source", parameter.Name ?? string.Empty),
+                    new XAttribute("EmptyToNull", parameter.EmptyToNull),
+                    new XAttribute("DefaultValue", parameter.DefaultValue ?? string.Empty)
+                    );
 
-                    if(parameter.IsRequired)
-                    {
-                        input.Add(new XElement("Validator", new XAttribute("Type", "Required")));
-                    }
-                    inputs.Add(input);
+                    if (parameter.IsRequired)
+                {
+                    input.Add(new XElement("Validator", new XAttribute("Type", "Required")));
                 }
+                inputs.Add(input);
+            }
             }
 
             #endregion
@@ -182,15 +184,14 @@ namespace Dev2.Runtime.ServiceModel.Data
                 {
                     if(!String.IsNullOrEmpty(field.Name))
                     {
-                        var output = new XElement("Output",
-                            new XAttribute("Name", field.Name ?? string.Empty),
-                            new XAttribute("MapsTo", field.Alias ?? string.Empty),
-                            //2013.05.16: Ashley Lewis for bug 9453 - dont save blank output mappings
+                    var output = new XElement("Output",
+                        new XAttribute("Name", field.Name ?? string.Empty),
+                        new XAttribute("MapsTo", field.Alias ?? string.Empty),
                             new XAttribute("Value", !string.IsNullOrWhiteSpace(field.Alias) ? "[[" + Recordset.Name + "()." + field.Alias + "]]" : ""),
-                            new XAttribute("Recordset", Recordset.Name)
-                            );
-                        outputs.Add(output);
-                    }
+                        new XAttribute("Recordset", Recordset.Name)
+                        );
+                    outputs.Add(output);
+                }
                 }
                 else
                 {

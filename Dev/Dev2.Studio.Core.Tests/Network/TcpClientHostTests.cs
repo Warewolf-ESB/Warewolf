@@ -520,6 +520,8 @@ namespace Dev2.Core.Tests.Network
 
         #endregion
 
+        #region Heartbeat
+
         [TestMethod]
         [TestCategory("TcpClientHost_StartReconnectHeartbeat")]
         [Description("StartReconnectHeartbeat with valid address must start heartbeat timer.")]
@@ -548,6 +550,70 @@ namespace Dev2.Core.Tests.Network
 
             Assert.AreEqual(0, host.StartReconnectTimerHitCount, "StartReconnectHeartbeat started timer.");
         }
+
+        #endregion
+
+        #region CompleteSendReceive
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("TcpClientHostBase_CompleteSendReceive")]
+        public void TcpClientHostBase_CompleteSendReceive_WhenMessageTypeNotPresent_ExpectNoException()
+        {
+            //------------Setup for test--------------------------
+            var host = new TestTcpClientHost();
+            
+            //------------Execute Test---------------------------
+            try
+            {
+                host.TestCompleteSendReceive(delegate
+                {
+                    var message = new NonExistentTestMsg { Handle = -1 };
+                    message.Handle = -1;
+                    message.HasError = false;
+                    message.ErrorMessage = string.Empty;
+                    throw new Exception("Cause crap");
+                    return message;
+                });
+            }
+            catch
+            {
+                //------------Assert Results-------------------------
+                Assert.Fail("Exception Thrown");
+            }
+
+        }
+
+        /// <summary>
+        /// Used to test the CompleteSendReceive method of TcpClientHostBase
+        /// </summary>
+        private class NonExistentTestMsg : INetworkMessage
+        {
+            public long Handle { get; set; }
+            public bool HasError { get; set; }
+            public string ErrorMessage { get; set; }
+
+            public NonExistentTestMsg()
+            {
+                throw new Exception("Constructor to move past second catch ;)");
+            }
+
+
+            public void Read(IByteReaderBase reader)
+            {
+                // Do nothing ;)
+            }
+
+            public void Write(IByteWriterBase writer)
+            {
+                // Do nothing ;)
+            }
+        }
+
+        #endregion
+
+
+        
 
     }
 }

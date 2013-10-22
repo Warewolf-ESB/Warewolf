@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Common.Utils;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
+using Dev2.Runtime.ServiceModel.Utils;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -155,6 +152,7 @@ namespace Dev2.Runtime.ServiceModel
 
         public virtual Recordset FetchRecordset(DbService dbService, bool addFields)
         {
+
             if(dbService == null)
             {
                 throw new ArgumentNullException("dbService");
@@ -174,41 +172,13 @@ namespace Dev2.Runtime.ServiceModel
             // Create a copy of the Recordset.Fields list before clearing it
             // so that we don't lose the user-defined aliases.
             //
-            var rsFields = new List<RecordsetField>(dbService.Recordset.Fields);
-            dbService.Recordset.Fields.Clear();
+
             dbService.Recordset.Name = dbService.Recordset.Name.Replace(".", "_");
+            dbService.Recordset.Fields.Clear();
 
-            for(var i = 0; i < outputDescription.DataSourceShapes[0].Paths.Count; i++)
-            {
-                var path = outputDescription.DataSourceShapes[0].Paths[i];
-                // Remove bogus names and dots
-                var name = path.DisplayPath.Replace("NewDataSet", "").Replace(".Table.", "").Replace(".", "").Replace("DocumentElement", "");
+            ServiceMappingHelper smh = new ServiceMappingHelper();
 
-                #region Remove recordset name if present
-
-                var idx = name.IndexOf("()", StringComparison.InvariantCultureIgnoreCase);
-                if(idx >= 0)
-                {
-                    name = name.Remove(0, idx + 2);
-                }
-
-                #endregion
-
-                var field = new RecordsetField { Name = name, Alias = string.IsNullOrEmpty(path.OutputExpression) ? name : path.OutputExpression, Path = path };
-
-                RecordsetField rsField;
-                if(!addFields && (rsField = rsFields.FirstOrDefault(f => f.Path != null ? f.Path.ActualPath == path.ActualPath : f.Name == field.Name)) != null)
-                {
-                    field.Alias = rsField.Alias;
-                }
-                dbService.Recordset.Fields.Add(field);
-
-                var data = path.SampleData.Split(',');
-                for(var recordIndex = 0; recordIndex < data.Length; recordIndex++)
-                {
-                    dbService.Recordset.SetValue(recordIndex, i, data[recordIndex]);
-                }
-            }
+            smh.MapDbOutputs(outputDescription, ref dbService, addFields);
 
             return dbService.Recordset;
         }

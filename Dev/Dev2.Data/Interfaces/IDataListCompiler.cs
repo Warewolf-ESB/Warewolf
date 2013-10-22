@@ -321,10 +321,11 @@ namespace Dev2.DataList.Contract
         /// </summary>
         /// <param name="typeOf">The type of.</param>
         /// <param name="input">The input.</param>
+        /// <param name="outputDefs">The output defs.</param>
         /// <param name="targetDLID">The target dlid.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid PopulateDataList(DataListFormat typeOf, object input, Guid targetDLID, out ErrorResultTO errors);
+        Guid PopulateDataList(DataListFormat typeOf, object input, string outputDefs, Guid targetDLID, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts to selected Type from binary

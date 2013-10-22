@@ -90,6 +90,7 @@
     <Compile Include="ESB\PluginServiceContainerMock.cs" />
     <Compile Include="ESB\RemoteObjectHandlerTests.cs" />
     <Compile Include="ESB\RemoteWorkflowExecutionContainerTests.cs" />
+    <Compile Include="Hosting\ServiceInvokerTest.cs" />
     <Compile Include="MockConnection.cs" />
     <Compile Include="MockNetworkHost.cs" />
     <Compile Include="MockStudioNetworkServer.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="ESB\Brokers\PluginBrokerTests.cs" />
     <Compile Include="ESB\PluginServiceContainerTests.cs" />
     <Compile Include="ServiceModel\DatabaseBrokerTests.cs" />
+    <Compile Include="ServiceModel\Utils\ServiceMappingHelperTest.cs" />
     <Compile Include="Services\FetchCurrentServerLogTests.cs" />
     <Compile Include="ESB\WebServiceContainerMock.cs" />
     <Compile Include="ESB\WebServiceContainerTests.cs" />
@@ -160,7 +162,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UpdateWorkflowMessageFromServerMessageTests.cs" />
     <Compile Include="Util\ScrubberTestsJson.cs" />
     <Compile Include="Util\ScrubberTestsXml.cs" />
     <Compile Include="WorkspaceItemTests.cs" />

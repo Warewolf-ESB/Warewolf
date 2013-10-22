@@ -64,11 +64,12 @@ namespace Dev2.DataList.Contract
         /// </summary>
         /// <param name="input">The binary representation in the specifeid <see cref="Format" /></param>
         /// <param name="targetDL">The target dialog.</param>
+        /// <param name="outputDefs">The output defs.</param>
         /// <param name="errors">The errors.</param>
         /// <returns>
         /// An array of bytes that represent the datalist in the standard format.
         /// </returns>
-        Guid Populate(object input, Guid targetDL, out ErrorResultTO errors);
+        Guid Populate(object input, Guid targetDL, string outputDefs, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts the and filter.

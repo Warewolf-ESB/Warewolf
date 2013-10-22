@@ -184,7 +184,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
         private string GetSampleData(JToken root, IPath path)
         {
             JsonNavigator navigator = new JsonNavigator(root.ToString());
-            return string.Join(",", navigator.SelectEnumerable(path).Select(o => o.ToString()).Take(10));
+            return string.Join(GlobalConstants.AnythingToXmlPathSeperator, navigator.SelectEnumerable(path).Select(o => o.ToString().Replace(GlobalConstants.AnythingToXmlPathSeperator, GlobalConstants.AnytingToXmlCommaToken)).Take(10));
         }
 
         #endregion Private Methods

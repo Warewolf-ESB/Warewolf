@@ -520,31 +520,28 @@ namespace Dev2.Studio.ViewModels.Deploy
                                           .Where(n => n is ResourceTreeViewModel).Cast<ResourceTreeViewModel>()
                                           .Select(n => n.DataContext as IResourceModel).ToList();
 
-            //Fetch from resource repository to deploy ;)
-            IList<IResourceModel> deployableResources = 
-            resourcesToDeploy.Select(resource => resource.ID)
-            .Select(fetchID => SourceEnvironment.ResourceRepository
-            .FindSingle(c => c.ID == fetchID)).ToList();
+            var deployResourceRepo = SourceEnvironment.ResourceRepository;
 
-
-            if(resourcesToDeploy.Count <= 0 || TargetEnvironment == null) return;
+            if (resourcesToDeploy.Count <= 0 || deployResourceRepo == null)
+            {
+                return;
+            }
 
             //
             // Deploy the resources
             //
-            var deployDTO = new DeployDTO { ResourceModels = deployableResources };
+            var deployDto = new DeployDTO { ResourceModels = resourcesToDeploy };
 
             try
             {
                 IsDeploying = true;
-                _deployService.Deploy(deployDTO, TargetEnvironment);
+
+                deployResourceRepo.DeployResources(SourceEnvironment, TargetEnvironment, deployDto, EventPublisher);
 
                 //
                 // Reload the environments resources & update explorer
                 //
                 LoadDestinationEnvironment(SelectedDestinationServer);
-                Logger.TraceInfo("Publish message of type - " + typeof(RefreshExplorerMessage));
-                EventPublisher.Publish(new RefreshExplorerMessage());
 
                 DeploySuccessfull = true;
             }

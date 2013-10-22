@@ -210,7 +210,7 @@ namespace Dev2.Runtime.ESB.Execution
             // We need to account for alias ops too ;)
             compiler.SetParentID(shapeDataListID, DataObject.DataListID);
 
-            compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), ServiceAction.OutputSpecification, shapeDataListID, out invokeErrors);
+            compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), ServiceAction.OutputSpecification, ServiceAction.OutputSpecification,shapeDataListID, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
             compiler.ForceDeleteDataListByID(shapeDataListID); // clean up 

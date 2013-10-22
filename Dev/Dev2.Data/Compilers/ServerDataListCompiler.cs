@@ -454,6 +454,9 @@ namespace Dev2.Server.Datalist
 
             // *** Process flow through mappings ;)
 
+            // TODO : In here we need to create a mapping for the second recordset!
+
+
             // Foreach iDef break RawValue into RS and field
             // Then find a matching RS in oDefs
             int iPos = 0;
@@ -536,7 +539,10 @@ namespace Dev2.Server.Datalist
 
                     IBinaryDataListEntry entry;
                     string error;
-                    childDL.TryGetEntry(def.RecordSetName, out entry, out error);
+
+                    // NOTE : This is a problem when the RecordsetName differs from the rsName?!
+                    // def.RecordSetName rsName
+                    childDL.TryGetEntry(rsName, out entry, out error);
                     errors.AddError(error);
 
                     if (entry != null && !string.IsNullOrEmpty(rsName) && !string.IsNullOrEmpty(rsCol))
@@ -789,10 +795,11 @@ namespace Dev2.Server.Datalist
         /// <param name="ctx">The CTX.</param>
         /// <param name="typeOf">The type of.</param>
         /// <param name="input">The input.</param>
+        /// <param name="outputDefs">The output defs.</param>
         /// <param name="targetDLID">The target dlid.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid PopulateDataList(NetworkContext ctx, DataListFormat typeOf, object input, Guid targetDLID, out ErrorResultTO errors)
+        public Guid PopulateDataList(NetworkContext ctx, DataListFormat typeOf, object input, string outputDefs, Guid targetDLID, out ErrorResultTO errors)
         {
             
             Guid returnVal = Guid.Empty;
@@ -803,7 +810,7 @@ namespace Dev2.Server.Datalist
                 IDataListTranslator t = _dlServer.GetTranslator(typeOf);
                 if(t != null)
                 {
-                    returnVal = t.Populate(input, targetDLID, out errors);
+                    returnVal = t.Populate(input, targetDLID, outputDefs, out errors);
                     allErrors.MergeErrors(errors);  
                 }
                 else

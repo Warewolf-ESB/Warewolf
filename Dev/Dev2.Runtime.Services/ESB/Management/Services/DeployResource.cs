@@ -30,12 +30,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             resourceDefinition = resourceDefinition.Unescape();
             var result = ResourceCatalog.Instance.SaveResource(WorkspaceRepository.ServerWorkspaceID, resourceDefinition, roles);
             WorkspaceRepository.Instance.RefreshWorkspaces();
-            Guid resourceID;
-            var xml = XElement.Parse(resourceDefinition);
-            if(Guid.TryParse(xml.AttributeSafe("ID"), out resourceID))
-            {
-                ResourceCatalog.Instance.FireUpdateMessage(resourceID);
-            }
+            
             return result.ToString();
         }
 

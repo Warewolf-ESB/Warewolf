@@ -2157,28 +2157,6 @@ namespace Dev2.Tests.Runtime.Hosting
         }
         #endregion
 
-        #region FireUpdateMessage
-
-        [TestMethod]
-        public void FireUpdateMessageExpectExpectedRe()
-        {
-            //------------Setup for test--------------------------
-            var messageBroker = new Mock<INetworkMessageBroker>();
-            messageBroker.Setup(broker => broker.Send(It.IsAny<INetworkMessage>(), It.IsAny<IStudioNetworkSession>()));
-            var contextManager = new Mock<IContextManager<IStudioNetworkSession>>();
-            var context = new Mock<IStudioNetworkSession>();
-            var listOfContext = new List<IStudioNetworkSession> { context.Object };
-            contextManager.Setup(manager => manager.CurrentContexts).Returns(listOfContext);
-            StudioMessaging.Start(new Mock<IServerNetworkMessageAggregator<StudioNetworkSession>>().Object, messageBroker.Object);
-            //------------Execute Test---------------------------
-            var resourceCatalog = ResourceCatalog.Start(contextManager.Object);
-            //------------Assert Results-------------------------
-            resourceCatalog.FireUpdateMessage(new Guid());
-            messageBroker.Verify(broker => broker.Send(It.IsAny<UpdateWorkflowFromServerMessage>(), It.IsAny<IStudioNetworkSession>()), Times.Once());
-        }
-
-        #endregion
-
         #region Rename Resource
 
         [TestMethod]

@@ -59,6 +59,42 @@ namespace Dev2.Core.Tests
         #region Update Tests
 
         [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ResourceModel_Update")]
+        public void ResourceModel_Update_WhenWorkflowXamlChanged_ExpectUpdatedResourceModelWithNewXaml()
+        {
+            //------------Setup for test--------------------------
+            Setup();
+            var environmentModel = CreateMockEnvironment(new EventPublisher());
+            environmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
+            var resourceModel = new ResourceModel(environmentModel.Object);
+            var authorRoles = "TestAuthorRoles";
+            var category = "TestCat";
+            var comment = "TestComment";
+            var displayName = "DisplayName";
+            var resourceName = "TestResourceName";
+            var id = Guid.NewGuid();
+            var tags = "TestTags";
+            resourceModel.AuthorRoles = authorRoles;
+            resourceModel.Category = category;
+            resourceModel.Comment = comment;
+            resourceModel.DisplayName = displayName;
+            resourceModel.ID = id;
+            resourceModel.ResourceName = resourceName;
+            resourceModel.Tags = tags;
+            resourceModel.ServiceDefinition = "new def";
+            resourceModel.WorkflowXaml = "new xaml";
+            //------------Execute Test---------------------------
+            var updateResourceModel = new ResourceModel(environmentModel.Object);
+            updateResourceModel.ServiceDefinition = "old def";
+            updateResourceModel.WorkflowXaml = "old xaml";
+            updateResourceModel.Update(resourceModel);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("new def", updateResourceModel.ServiceDefinition);
+            Assert.AreEqual("new xaml", updateResourceModel.WorkflowXaml);
+        }
+
+        [TestMethod]
         public void UpdateResourceModelExpectPropertiesUpdated()
         {
             //------------Setup for test--------------------------

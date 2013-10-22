@@ -75,7 +75,7 @@ namespace Dev2.Data.Translators
             return dbData;
         }
 
-        public Guid Populate(object input, Guid targetDLID, out ErrorResultTO errors)
+        public Guid Populate(object input, Guid targetDLID, string outputDefs, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             var compiler = DataListFactory.CreateDataListCompiler();
@@ -85,103 +85,87 @@ namespace Dev2.Data.Translators
 
             DataTable dbData = (input as DataTable);
 
-            var tmp = targetDL.FetchAllEntries();
-
-            string rsName = string.Empty;
-
-            // pick the first recordset to deal with ;)
-            int rsCnt = 0;
-            foreach (var tt in tmp)
-            {
-                
-                if (tt.IsRecordset)
-                {
-                    if (rsCnt == 0)
-                    {
-                        rsName = tt.Namespace;
-                    }
-
-                    rsCnt++;
-                }
-            }
-
-            // ensure we only have a single recordset to map too ;)
-            if(string.IsNullOrEmpty(rsName) || rsCnt > 1)
-            {
-                throw new Exception("DataTable translator can only map to a single recordset!");
-            }
-
-            if(dbData != null)
+            if(dbData != null && outputDefs != null)
             {
                 IBinaryDataListEntry entry;
 
-                // build up the columns ;)
-                string error;
-                if(targetDL.TryGetEntry(rsName, out entry, out error))
+                var defs = DataListFactory.CreateOutputParser().Parse(outputDefs);
+                var recordsetData = DataListFactory.CreateRecordSetCollection(defs, true);
+
+                foreach (var recordset in recordsetData.RecordSets)
                 {
+                    var rsName = recordset.SetName;
 
-                    if(entry.IsRecordset)
+                    // build up the columns ;)
+                    string error;
+                    if (targetDL.TryGetEntry(rsName, out entry, out error))
                     {
-                        var cols = entry.Columns;
-                        IDictionary<int, string> colMapping = BuildColumnNameToIndexMap(entry.Columns, dbData.Columns);
 
-                        // now convert to binary datalist ;)
-                        int rowIdx = entry.FetchAppendRecordsetIndex();
-
-                        foreach(DataRow row in dbData.Rows)
+                        if (entry.IsRecordset)
                         {
-                            IList<IBinaryDataListItem> items = new List<IBinaryDataListItem>(cols.Count);
-                            // build up the row
-                            int idx = 0;
+                            var cols = entry.Columns;
+                            IDictionary<int, string> colMapping = BuildColumnNameToIndexMap(entry.Columns,
+                                                                                            dbData.Columns);
 
-                            foreach(var item in row.ItemArray)
+                            // now convert to binary datalist ;)
+                            int rowIdx = entry.FetchAppendRecordsetIndex();
+
+                            foreach (DataRow row in dbData.Rows)
                             {
-                                string colName;
+                                IList<IBinaryDataListItem> items = new List<IBinaryDataListItem>(cols.Count);
+                                // build up the row
+                                int idx = 0;
 
-                                if(colMapping.TryGetValue(idx, out colName))
+                                foreach (var item in row.ItemArray)
                                 {
-                                    items.Add(new BinaryDataListItem(item.ToString(), rsName, colName, rowIdx));
+                                    string colName;
+
+                                    if (colMapping.TryGetValue(idx, out colName))
+                                    {
+                                        items.Add(new BinaryDataListItem(item.ToString(), rsName, colName, rowIdx));
+                                    }
+
+                                    idx++;
                                 }
 
-                                idx++;
+                                // add the row ;)
+                                entry.TryPutRecordRowAt(items, rowIdx, out error);
+
+                                errors.AddError(error);
+                                rowIdx++;
                             }
+                        }
+                        else
+                        {
+                            // handle a scalar coming out ;)
+                            if (dbData.Rows != null && dbData.Rows.Count == 1)
+                            {
+                                var row = dbData.Rows[0].ItemArray;
+                                // Look up the correct index from the columns ;)
 
-                            // add the row ;)
-                            entry.TryPutRecordRowAt(items, rowIdx, out error);
+                                int pos = 0;
+                                var cols = dbData.Columns;
+                                int idx = 0;
 
-                            errors.AddError(error);
-                            rowIdx++;
+                                while (pos < cols.Count && idx == -1)
+                                {
+                                    if (cols[pos].ColumnName == entry.Namespace)
+                                    {
+                                        idx = pos;
+                                    }
+                                    pos++;
+                                }
+
+                                entry.TryPutScalar(new BinaryDataListItem(row[idx].ToString(), entry.Namespace),
+                                                   out error);
+                                errors.AddError(error);
+                            }
                         }
                     }
                     else
                     {
-                        // handle a scalar coming out ;)
-                        if(dbData.Rows != null && dbData.Rows.Count == 1)
-                        {
-                            var row = dbData.Rows[0].ItemArray;
-                            // Look up the correct index from the columns ;)
-
-                            int pos = 0;
-                            var cols = dbData.Columns;
-                            int idx = 0;
-
-                            while(pos < cols.Count && idx == -1)
-                            {
-                                if(cols[pos].ColumnName == entry.Namespace)
-                                {
-                                    idx = pos;
-                                }
-                                pos++;
-                            }
-
-                            entry.TryPutScalar(new BinaryDataListItem(row[idx].ToString(), entry.Namespace), out error);
-                            errors.AddError(error);
-                        }
+                        errors.AddError(error);
                     }
-                }
-                else
-                {
-                    errors.AddError(error);
                 }
             }
 

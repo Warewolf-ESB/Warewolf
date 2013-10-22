@@ -1199,16 +1199,6 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        public void FireUpdateMessage(Guid id)
-        {
-            var updateWorkflowFromServerMessage = new UpdateWorkflowFromServerMessage();
-            updateWorkflowFromServerMessage.ResourceID = id;
-            foreach(var attachedContext in _contextManager.CurrentContexts)
-            {
-                StudioMessaging.MessageBroker.Send(updateWorkflowFromServerMessage, attachedContext);
-            }
-        }
-
         #endregion
 
         #region ToPayload

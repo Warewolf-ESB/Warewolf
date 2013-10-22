@@ -24,6 +24,12 @@ namespace Dev2.Activities
             IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> remainingMappings = esbChannel.ShapeForSubRequest(dataObject, inputs, outputs, out errors);
             errors.MergeErrors(execErrors);
 
+            var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
+            if (databaseServiceExecution != null)
+            {
+                databaseServiceExecution.InstanceOutputDefintions = outputs; // set the output mapping for the instance ;)
+            }
+
             var result = ServiceExecution.Execute(out execErrors);
             errors.MergeErrors(execErrors);
 

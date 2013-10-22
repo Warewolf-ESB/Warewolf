@@ -48,7 +48,7 @@ namespace Dev2.Runtime
         /// <returns>
         /// true if the operation was successful; otherwise, false
         /// </returns>
-        public bool TryInvoke(string className, string methodName, string args, Guid workspaceID, Guid dataListID, bool forceRefresh, out object result)
+        public bool TryInvoke(string className, string methodName, string args, Guid workspaceID, Guid dataListID, out object result)
         {
             result = null;
             try

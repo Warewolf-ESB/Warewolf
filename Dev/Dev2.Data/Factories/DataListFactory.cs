@@ -55,13 +55,13 @@ namespace Dev2.DataList.Contract
             return new Dev2Definition(name, mapsTo, value, recordSet, isEval, defaultValue, isRequired, rawValue, emptyToNull);
         }
 
-        public static IRecordSetCollection CreateRecordSetCollection(IList<IDev2Definition> parsedOutput)
+        public static IRecordSetCollection CreateRecordSetCollection(IList<IDev2Definition> parsedOutput, bool isOutput)
         {
             IRecordSetCollection result;
             RecordSetCollectionBuilder b = new RecordSetCollectionBuilder();
 
             b.setParsedOutput(parsedOutput);
-
+            b.IsOutput = isOutput;
             result = b.Generate();
 
             return result;

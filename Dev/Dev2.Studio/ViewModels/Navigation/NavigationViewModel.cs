@@ -405,7 +405,14 @@ namespace Dev2.Studio.ViewModels.Navigation
                 }
             }
 
-            var categoryDisplayName = resourceModel.Category == string.Empty ? StringResources.Navigation_Category_Unassigned.ToUpper() : resourceModel.Category.ToUpper();
+            // I am sick of this null point lazyness!
+            var resourceModelCategory = resourceModel.Category;
+            if (!string.IsNullOrEmpty(resourceModelCategory))
+            {
+                resourceModelCategory = resourceModelCategory.ToUpper();
+            }
+
+            var categoryDisplayName = resourceModel.Category == string.Empty ? StringResources.Navigation_Category_Unassigned.ToUpper() : resourceModelCategory;
 
             var newCategoryNode = serviceTypeNode.Children.FirstOrDefault(cat => cat.DisplayName.ToUpper() == categoryDisplayName)
                                   ?? new CategoryTreeViewModel(_eventPublisher, serviceTypeNode, categoryDisplayName, resourceModel.ResourceType);

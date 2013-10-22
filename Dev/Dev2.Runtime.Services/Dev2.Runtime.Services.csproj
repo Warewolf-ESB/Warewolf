@@ -159,6 +159,7 @@
     <Compile Include="ServiceModel\Data\WebService.cs" />
     <Compile Include="ServiceModel\PluginServices.cs" />
     <Compile Include="ServiceModel\Data\RecordsetNode.cs" />
+    <Compile Include="ServiceModel\Utils\ServiceMappingHelper.cs" />
     <Compile Include="ServiceModel\WebServices.cs" />
     <Compile Include="ServiceModel\EmailSources.cs" />
     <Compile Include="Hosting\IResourceIterator.cs" />

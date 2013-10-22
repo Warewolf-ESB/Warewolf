@@ -1,14 +1,25 @@
 ﻿using System;
 using System.Activities;
+using System.Activities.Statements;
+using System.Activities.XamlIntegration;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Xaml;
+using System.Xml;
+using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
+using Dev2.Runtime.ESB.Control;
+using Dev2.Runtime.ESB.WF;
 using Dev2.Runtime.Security;
 using Dev2.Utilities;
 using Dev2.Workspaces;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -92,10 +103,13 @@ namespace Dev2.Runtime.ESB.Execution
 
             try
             {
+                var theActivity = activity.Value as DynamicActivity;
+
                 // BUG 9304 - 2013.05.08 - TWR - Added CompileExpressions
-                _workflowHelper.CompileExpressions(activity.Value as DynamicActivity);
+                _workflowHelper.CompileExpressions(theActivity);
+
                 IDSFDataObject exeResult = wfFactor.InvokeWorkflow(activity.Value, DataObject,
-                                                                   new List<object> {EsbChannel,}, instanceId,
+                                                                   new List<object> { EsbChannel, }, instanceId,
                                                                    TheWorkspace, bookmark, out errors);
 
                 result = exeResult.DataListID;

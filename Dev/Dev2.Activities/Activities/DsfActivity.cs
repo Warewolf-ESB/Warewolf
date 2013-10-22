@@ -279,8 +279,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 dataObject.RemoteInvokeResultShape = shape;
                             }
 
-                            // 2) Then I need to manip input mapping to replace (*) with ([[idx]]) and invoke ;)
-
                             BeforeExecutionStart(dataObject, tmpErrors);
                             allErrors.MergeErrors(tmpErrors);
 

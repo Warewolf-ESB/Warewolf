@@ -780,31 +780,41 @@ namespace Dev2.Studio.Core.Network
 
         #region CompleteSendReceive
 
-        void CompleteSendReceive<TMessage>(Func<TMessage> read)
+        protected void CompleteSendReceive<TMessage>(Func<TMessage> read)
             where TMessage : INetworkMessage
         {
             this.TraceInfo(string.Format("TMessage={0}", typeof(TMessage)));
-            TMessage message;
+
             try
             {
-                message = read();
-            }
-            catch(Exception ex)
-            {
-                message = Activator.CreateInstance<TMessage>();
-                message.HasError = true;
-                message.ErrorMessage = "An error occured while trying to interpret network message from the server. " + ex.Message;
-                this.TraceInfo(message.ErrorMessage);
-            }
 
-            TaskCompletionSource<INetworkMessage> tcs;
-            if(_messages.TryGetValue(message.Handle, out tcs))
-            {
-                tcs.TrySetResult(message);
+                TMessage message;
+                try
+                {
+                    message = read();
+                }
+                catch (Exception ex)
+                {
+                    message = Activator.CreateInstance<TMessage>();
+                    message.HasError = true;
+                    message.ErrorMessage =
+                        "An error occured while trying to interpret network message from the server. " + ex.Message;
+                    this.TraceInfo(message.ErrorMessage);
+                }
+
+                TaskCompletionSource<INetworkMessage> tcs;
+                if (_messages.TryGetValue(message.Handle, out tcs))
+                {
+                    tcs.TrySetResult(message);
+                }
+                else
+                {
+                    this.TraceInfo("Message handle not found : " + message.Handle);
+                }
             }
-            else
+            catch (Exception e)
             {
-                this.TraceInfo("Message handle not found : " + message.Handle);
+                this.TraceInfo("Message type not found  : " + e.Message);
             }
         }
 

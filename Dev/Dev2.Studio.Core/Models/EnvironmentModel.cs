@@ -122,19 +122,6 @@ namespace Dev2.Studio.Core.Models
 
             Logger.TraceInfo("Attempting to connect to [ " + Connection.AppServerUri + " ] ");
             Connection.Connect();
-            if(Connection.MessageAggregator != null)
-            {
-                _updateWorkFlowFromServerSubToken = Connection.MessageAggregator.Subscribe<UpdateWorkflowFromServerMessage>(UpdateCachedServicesBasedOnChangeFromServer);
-            }
-        }
-
-        void UpdateCachedServicesBasedOnChangeFromServer(UpdateWorkflowFromServerMessage updateWorkflowFromServerMessage, IStudioNetworkChannelContext studioNetworkChannelContext)
-        {
-            var resourceID = updateWorkflowFromServerMessage.ResourceID;
-            if(resourceID != Guid.Empty)
-            {
-                ResourceRepository.RemoveFromCache(resourceID);
-            }
         }
 
         public void Connect(IEnvironmentModel other)

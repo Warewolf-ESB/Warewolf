@@ -45,17 +45,17 @@ namespace Dev2.Tests.Runtime.ServiceModel
             
             DbSource source  = new DbSource();
 
-            TestDatabaseBroker.TheCache = new ConcurrentDictionary<DbSource, ServiceMethodList>();
+            TestDatabaseBroker.TheCache = new ConcurrentDictionary<string, ServiceMethodList>();
             var methodList = new ServiceMethodList();
             methodList.Add(new ServiceMethod("bob", "bob src", null, null, null));
 
-            TestDatabaseBroker.TheCache.TryAdd(source, methodList);
+            TestDatabaseBroker.TheCache.TryAdd(source.ConnectionString, methodList);
             //------------Execute Test---------------------------
 
             var result = broker.GetServiceMethods(source);
 
             // set back to empty ;)
-            TestDatabaseBroker.TheCache = new ConcurrentDictionary<DbSource, ServiceMethodList>();
+            TestDatabaseBroker.TheCache = new ConcurrentDictionary<string, ServiceMethodList>();
             //------------Assert Results-------------------------
 
             Assert.AreEqual(1, result.Count);
@@ -73,17 +73,17 @@ namespace Dev2.Tests.Runtime.ServiceModel
             DbSource source = new DbSource();
             source.ReloadActions = true;
 
-            TestDatabaseBroker.TheCache = new ConcurrentDictionary<DbSource, ServiceMethodList>();
+            TestDatabaseBroker.TheCache = new ConcurrentDictionary<string, ServiceMethodList>();
             var methodList = new ServiceMethodList();
             methodList.Add(new ServiceMethod("bob", "bob src", null, null, null));
 
-            TestDatabaseBroker.TheCache.TryAdd(source, methodList);
+            TestDatabaseBroker.TheCache.TryAdd(source.ConnectionString, methodList);
             //------------Execute Test---------------------------
 
             var result = broker.GetServiceMethods(source);
 
             // set back to empty ;)
-            TestDatabaseBroker.TheCache = new ConcurrentDictionary<DbSource, ServiceMethodList>();
+            TestDatabaseBroker.TheCache = new ConcurrentDictionary<string, ServiceMethodList>();
             //------------Assert Results-------------------------
 
             Assert.AreEqual(0, result.Count);

@@ -272,6 +272,13 @@ namespace Dev2.DynamicServices
             bool isLocal = string.IsNullOrEmpty(dataObject.RemoteInvokerID);
 
             EsbExecutionContainer executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
+
+            // set the output defs for execution of select service ;)
+            if (executionContainer != null)
+            {
+                executionContainer.InstanceOutputDefinition = outputDefs;
+            }
+
             Guid result = dataObject.DataListID;
 
             if(executionContainer != null)
@@ -306,10 +313,12 @@ namespace Dev2.DynamicServices
             var oldID = dataObject.DataListID;
             var compiler = DataListFactory.CreateDataListCompiler();
 
+            ErrorResultTO invokeErrors;
             errors = new ErrorResultTO();
 
-            var theShape = FindServiceShape(dataObject.WorkspaceID, dataObject.ServiceName);
-            ErrorResultTO invokeErrors;
+            var theShape = ShapeMappingsToTargetDataList(inputDefs, outputDefs, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+
             var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, theShape, out invokeErrors);
             errors.MergeErrors(invokeErrors);
             dataObject.RawPayload = string.Empty;
@@ -370,48 +379,9 @@ namespace Dev2.DynamicServices
                         var inputMappings = ServiceUtils.ExtractInputMapping(serviceDef);
                     var iDL = DataListUtil.ShapeDefinitionsToDataList(inputMappings, enDev2ArgumentType.Input, out errors);
 
-                    var outputFragment = string.Empty;
-                    var inputFragment = string.Empty;
-
-                    if (!string.IsNullOrEmpty(oDL))
-                    {
-                    try
-        {
-                        // finally glue the two together ;)
-                        XmlDocument oDLXDoc = new XmlDocument();
-                        oDLXDoc.LoadXml(oDL);
-
-                            outputFragment = oDLXDoc.DocumentElement.InnerXml;
-
-                        }
-                        catch (Exception e)
-                        {
-                            ServerLogger.LogError(e);
-                            errors.AddError(e.Message);
+                    result = GlueInputAndOutputMappingSegments(oDL, iDL, out errors);
                         }
                     }
-
-                    if (!string.IsNullOrEmpty(iDL))
-                    {
-
-                        try
-                        {
-                            // finally glue the two together ;)
-                        XmlDocument iDLXDoc = new XmlDocument();
-                        iDLXDoc.LoadXml(iDL);
-
-                            inputFragment = iDLXDoc.DocumentElement.InnerXml;
-                    }
-                    catch (Exception e)
-            {
-                        ServerLogger.LogError(e);
-                        errors.AddError(e.Message);
-            }
-                    }
-
-                    result = "<DataList>" + outputFragment + inputFragment + "</DataList>";
-            }
-            }
 
             if (string.IsNullOrEmpty(result))
             {
@@ -536,6 +506,76 @@ namespace Dev2.DynamicServices
             enumerable.Where(element => !element.HasElements).Remove();
             return xDoc.ToString();
         }
+        }
+
+        /// <summary>
+        /// Shapes the mappings automatic target data list.
+        /// </summary>
+        /// <param name="inputs">The inputs.</param>
+        /// <param name="outputs">The outputs.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        private string ShapeMappingsToTargetDataList(string inputs, string outputs, out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO(); 
+            ErrorResultTO invokeErrors;
+            var oDL = DataListUtil.ShapeDefinitionsToDataList(outputs, enDev2ArgumentType.Output, out invokeErrors, true);
+            errors.MergeErrors(invokeErrors);
+            var iDL = DataListUtil.ShapeDefinitionsToDataList(inputs, enDev2ArgumentType.Input, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+
+            var result = GlueInputAndOutputMappingSegments(iDL, oDL, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+            return result;
+        }
+
+        /// <summary>
+        /// Glues the input and output mapping segments.
+        /// </summary>
+        /// <param name="inputFragment">The input fragment.</param>
+        /// <param name="outputFragment">The output fragment.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        private string GlueInputAndOutputMappingSegments(string inputFragment, string outputFragment, out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO();
+            if(!string.IsNullOrEmpty(outputFragment))
+            {
+                try
+                {
+                    // finally glue the two together ;)
+                    XmlDocument oDLXDoc = new XmlDocument();
+                    oDLXDoc.LoadXml(outputFragment);
+
+                    outputFragment = oDLXDoc.DocumentElement.InnerXml;
+
+                }
+                catch(Exception e)
+                {
+                    ServerLogger.LogError(e);
+                    errors.AddError(e.Message);
+                }
+        }
+
+            if(!string.IsNullOrEmpty(inputFragment))
+            {
+
+                try
+                {
+                    // finally glue the two together ;)
+                    XmlDocument iDLXDoc = new XmlDocument();
+                    iDLXDoc.LoadXml(inputFragment);
+
+                    inputFragment = iDLXDoc.DocumentElement.InnerXml;
+                }
+                catch(Exception e)
+                {
+                    ServerLogger.LogError(e);
+                    errors.AddError(e.Message);
+                }
+            }
+
+            return "<DataList>" + outputFragment + inputFragment + "</DataList>";
         }
 
     }

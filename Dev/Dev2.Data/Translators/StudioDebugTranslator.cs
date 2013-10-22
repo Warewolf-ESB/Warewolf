@@ -194,8 +194,8 @@ namespace Dev2.Server.DataList.Translators
                                                     foreach (XmlNode subc in nl)
                                                     {
                                                         entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, (idx + "")), idx, out error);
-                                                        errors.AddError(error);
-                                                    }
+                                                            errors.AddError(error);
+                                                        }
                                                     // update this recordset index
                                                     indexCache[c.Name] = ++idx;
                                                 }
@@ -204,9 +204,9 @@ namespace Dev2.Server.DataList.Translators
                                             {
                                                 // process scalar
                                                 entry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(c.InnerXml, c.Name), out error);
-                                                errors.AddError(error);
+                                                    errors.AddError(error);
+                                                }
                                             }
-                                        }
                                         else
                                         {
                                             errors.AddError(error);
@@ -239,7 +239,7 @@ namespace Dev2.Server.DataList.Translators
             throw new NotImplementedException();
         }
 
-        public Guid Populate(object input, Guid targetDL, out ErrorResultTO errors)
+        public Guid Populate(object input, Guid targetDL, string outputDefs, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }

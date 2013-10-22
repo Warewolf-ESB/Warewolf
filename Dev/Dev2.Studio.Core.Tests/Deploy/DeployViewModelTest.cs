@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq.Expressions;
+using System.Threading;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
@@ -305,81 +306,6 @@ namespace Dev2.Core.Tests
 
 
             return repo;
-        }
-
-        #endregion
-
-        #region Deployed Items Come From Resource Repository
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("DeployViewModel_Deploy")]
-        public void DeployViewModel_Deploy_WhenViewHasOldModelInDataContext_VersionFromResourceRepositoryIsDeployed()
-        {
-            //MEFF
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-            ImportService.Initialize(new List<ComposablePartCatalog>());
-            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
-
-            //New Mocks
-            var mockedServerRepo = new Mock<IEnvironmentRepository>();
-            var server = new Mock<IEnvironmentModel>();
-            var secondServer = new Mock<IEnvironmentModel>();
-            var provider = new Mock<IServerProvider>();
-            var resourceNode = new Mock<IContextualResourceModel>();
-            var resRepo = new Mock<IResourceRepository>();
-            var id = Guid.NewGuid();
-
-            //Setup Servers
-            Mock<IResourceModel> newModel = new Mock<IResourceModel>();
-            resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Verifiable();
-            //resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(newModel.Object);
-
-            server.Setup(svr => svr.IsConnected).Returns(true);
-            server.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
-            server.Setup(svr => svr.ResourceRepository).Returns(resRepo.Object);
-
-            secondServer.Setup(svr => svr.IsConnected).Returns(true);
-            secondServer.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
-            mockedServerRepo.Setup(svr => svr.Fetch(It.IsAny<IServer>())).Returns(server.Object);
-    
-            provider.Setup(prov => prov.Load()).Returns(new List<IServer>() { new ServerDTO(server.Object), new ServerDTO(secondServer.Object) });
-
-            const string expectedResourceName = "Test Resource";
-            var initialResource = new Mock<IContextualResourceModel>();
-            initialResource.Setup(res => res.Environment).Returns(server.Object);
-            initialResource.Setup(res => res.ResourceName).Returns(expectedResourceName);
-
-            //Setup Navigation Tree
-            var eventAggregator = new Mock<IEventAggregator>().Object;
-            var mockedSource = new NavigationViewModel(eventAggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, It.IsAny<Guid>(), mockedServerRepo.Object, false, enDsfActivityType.All);
-            var treeParent = new CategoryTreeViewModel(eventAggregator, null, "Test Category", ResourceType.WorkflowService)
-            {
-                IsExpanded = false
-            };
-
-            
-
-            resourceNode.Setup(res => res.ResourceName).Returns(expectedResourceName);
-            resourceNode.Setup(res => res.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            resourceNode.Setup(res => res.ID).Returns(id);
-
-            var resourceTreeNode = new ResourceTreeViewModel(eventAggregator, treeParent, resourceNode.Object);
-
-            //Setup Server Resources
-            resourceTreeNode.IsChecked = true;
-            server.Setup(svr => svr.LoadResources()).Callback(() => mockedSource.Root.Add(resourceTreeNode));
-
-            var deployViewModel = new DeployViewModel(provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object)
-            {
-                Source = mockedSource
-            };
-
-            //------------Execute Test--------------------------- 
-            deployViewModel.DeployCommand.Execute(null);
-
-            resRepo.Verify(sender => sender.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>()), Times.Once());
         }
 
         #endregion

@@ -21,14 +21,14 @@ namespace Dev2.Studio.Core.Factories
         public static IRecordSetCollection CreateListOutputRecordSetMapping(string xmlServiceDefintion)
         {
             IList<IDev2Definition> outputDef = DataListFactory.CreateOutputParser().Parse(xmlServiceDefintion);
-            IRecordSetCollection outputRecSet = DataListFactory.CreateRecordSetCollection(outputDef);
+            IRecordSetCollection outputRecSet = DataListFactory.CreateRecordSetCollection(outputDef,true);
             return outputRecSet;
         }
 
         public static IRecordSetCollection CreateListInputRecordSetMapping(string xmlServiceDefintion)
         {
             IList<IDev2Definition> inputDef = DataListFactory.CreateInputParser().ParseAndAllowBlanks(xmlServiceDefintion);
-            IRecordSetCollection inputRecSet = DataListFactory.CreateRecordSetCollection(inputDef);
+            IRecordSetCollection inputRecSet = DataListFactory.CreateRecordSetCollection(inputDef, false);
             return inputRecSet;
         }
 

@@ -95,7 +95,7 @@ namespace Dev2.Server.DataList.Translators
             throw new NotImplementedException();
         }
 
-        public Guid Populate(object input, Guid targetDL, out ErrorResultTO errors)
+        public Guid Populate(object input, Guid targetDL, string outputDefs, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }

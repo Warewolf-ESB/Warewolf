@@ -4,7 +4,6 @@ using System.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Value_Objects;
-using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Framework.Converters.Graph;
@@ -49,7 +48,8 @@ namespace Dev2.Services.Execution
             //This execution will throw errors from the constructor
             errors = new ErrorResultTO();
             errors.MergeErrors(_errorResult);
-            ExecuteImpl(DataListFactory.CreateDataListCompiler(), out errors);
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ExecuteImpl(compiler, out errors);
             return DataObj.DataListID;
         }
         public abstract void AfterExecution(ErrorResultTO errors);
@@ -61,7 +61,7 @@ namespace Dev2.Services.Execution
 
         void GetSource(ResourceCatalog catalog)
         {
-                Source = catalog.GetResource<TSource>(DataObj.WorkspaceID, Service.Source.ResourceID);
+            Source = catalog.GetResource<TSource>(DataObj.WorkspaceID, Service.Source.ResourceID);
             if(Source == null)
             {
                 Source = catalog.GetResource<TSource>(DataObj.WorkspaceID, Service.Source.ResourceName);
@@ -74,7 +74,7 @@ namespace Dev2.Services.Execution
 
         protected virtual bool GetService(ResourceCatalog catalog)
         {
-                Service = catalog.GetResource<TService>(DataObj.WorkspaceID, DataObj.ResourceID);
+            Service = catalog.GetResource<TService>(DataObj.WorkspaceID, DataObj.ResourceID);
             if(Service == null)
             {
                 Service = catalog.GetResource<TService>(DataObj.WorkspaceID, DataObj.ServiceName);
@@ -256,7 +256,7 @@ namespace Dev2.Services.Execution
                 // We need to account for alias ops too ;)
                 compiler.SetParentID(shapeDataListID, DataObj.DataListID);
 
-                compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), Service.OutputSpecification, shapeDataListID, out invokeErrors);
+                compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), Service.OutputSpecification, null, shapeDataListID, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
 
                 compiler.ForceDeleteDataListByID(shapeDataListID); // clean up 

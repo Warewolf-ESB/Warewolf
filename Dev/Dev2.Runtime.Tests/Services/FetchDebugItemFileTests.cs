@@ -78,9 +78,7 @@ namespace Dev2.Tests.Runtime.Services
 
             var esb = new FetchDebugItemFile();
             var actual = esb.Execute(new Dictionary<string, string> { { "DebugItemFilePath", serverLogPath } }, null);
-            StringAssert.StartsWith(actual, "<JSON>");
             StringAssert.Contains(actual,Expected );
-            StringAssert.EndsWith(actual,"</JSON>");
         }
 
         #endregion

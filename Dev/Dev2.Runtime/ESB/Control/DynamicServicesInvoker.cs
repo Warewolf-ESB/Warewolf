@@ -201,7 +201,7 @@ namespace Dev2.Runtime.ESB
             {
                 // we need a remote container ;)
                 // TODO : Set Output description for shaping ;)
-                return GenerateContainer(new ServiceAction() { ActionType = enActionType.RemoteService }, dataObject, null);
+                return GenerateContainer(new ServiceAction { ActionType = enActionType.RemoteService }, dataObject, null);
             }
         }
 
@@ -235,7 +235,7 @@ namespace Dev2.Runtime.ESB
             {
                 // we need a remote container ;)
                 // TODO : Set Output description for shaping ;)
-                return GenerateContainer(new ServiceAction() { ActionType = enActionType.RemoteService }, dataObject, null);
+                return GenerateContainer(new ServiceAction { ActionType = enActionType.RemoteService }, dataObject, null);
             }
         }
 

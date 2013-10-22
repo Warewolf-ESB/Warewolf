@@ -17,6 +17,8 @@ namespace Dev2.Runtime.ESB.Execution
         protected IWorkspace TheWorkspace { get; private set; }
         protected IEsbChannel EsbChannel { get; private set; }
 
+        public String InstanceOutputDefinition { get; set; }
+
         public EsbExecutionContainer(ServiceAction sa, IDSFDataObject dataObject, IWorkspace theWorkspace, IEsbChannel esbChannel)
         {
             ServiceAction = sa;

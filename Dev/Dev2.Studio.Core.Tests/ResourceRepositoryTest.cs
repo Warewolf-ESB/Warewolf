@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using Caliburn.Micro;
 using Dev2;
 using Dev2.Composition;
 using Dev2.Core.Tests;
@@ -10,8 +13,10 @@ using Dev2.DynamicServices;
 using Dev2.Network;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
+using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
+using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
@@ -1459,6 +1464,109 @@ namespace BusinessDesignStudio.Unit.Tests
             //--------------------------------------------Assert Results----------------------------------------------------
             isInCache = _repo.IsInCache(newGuid);
             Assert.IsFalse(isInCache);
+        }
+
+        #endregion
+
+        #region DeployResources
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ResourceRepository_DeployResources")]
+        public void ResourceRepository_DeployResources_WhenNormalDeploy_ExpectRefreshOnTargetResourceRepo()
+        {
+            //------------Setup for test--------------------------
+            Setup();
+            var theID = Guid.NewGuid();
+            
+            Mock<IResourceRepository> srcRepo = new Mock<IResourceRepository>();
+            Mock<IResourceRepository> targetRepo = new Mock<IResourceRepository>();
+
+            Mock<IEnvironmentModel> srcModel = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentModel> targetModel = new Mock<IEnvironmentModel>();
+
+            // config the repos
+            srcModel.Setup(sm => sm.ResourceRepository).Returns(srcRepo.Object);
+            srcRepo.Setup(sr => sr.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>()))
+                   .Returns(_resourceModel.Object);
+
+            targetModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
+            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(),It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current)).Verifiable();
+            
+            IList<IResourceModel> deployModels = new List<IResourceModel>();
+
+            var theModel = new ResourceModel(srcModel.Object);
+            theModel.ID = theID;
+            deployModels.Add(theModel);
+
+            Mock<IEventAggregator> mockEventAg = new Mock<IEventAggregator>();
+            mockEventAg.Setup(m => m.Publish(It.IsAny<object>()));
+
+            IDeployDTO dto = new DeployDTO {ResourceModels = deployModels};
+
+            //------------Execute Test---------------------------
+            _repo.DeployResources(srcModel.Object, targetModel.Object, dto, mockEventAg.Object);
+
+            //------------Assert Results-------------------------
+            targetRepo.Verify(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current));
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ResourceRepository_DeployResources")]
+        public void ResourceRepository_DeployResources_WhenNormalDeploy_ExpectUpdatedResource()
+        {
+            //------------Setup for test--------------------------
+            Setup();
+            var theID = Guid.NewGuid();
+
+            Mock<IResourceRepository> srcRepo = new Mock<IResourceRepository>();
+            Mock<IResourceRepository> targetRepo = new Mock<IResourceRepository>();
+
+            Mock<IEnvironmentModel> srcEnvModel = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentModel> targetEnvModel = new Mock<IEnvironmentModel>();
+
+            // config the repos
+            IResourceModel findModel = new ResourceModel(targetEnvModel.Object);
+            findModel.ID = theID;
+
+            srcEnvModel.Setup(sm => sm.ResourceRepository).Returns(srcRepo.Object);
+            srcRepo.Setup(sr => sr.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>()))
+                   .Returns(findModel);
+
+            targetEnvModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
+            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current)).Verifiable();
+
+            Mock<IResourceModel> reloadedResource = new Mock<IResourceModel>();
+            reloadedResource.Setup(res => res.ResourceName).Returns("Resource");
+            reloadedResource.Setup(res => res.DisplayName).Returns("My New Resource");
+            reloadedResource.Setup(res => res.ServiceDefinition).Returns("New Service Definition");
+            reloadedResource.Setup(res => res.ID).Returns(theID);
+            reloadedResource.Setup(res => res.WorkflowXaml).Returns("NewXaml");
+
+            List<IResourceModel> reloadResources = new List<IResourceModel> {reloadedResource.Object};
+            
+
+            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current)).Returns(reloadResources);
+
+            IList<IResourceModel> deployModels = new List<IResourceModel>();
+
+            var theModel = new ResourceModel(srcEnvModel.Object);
+            theModel.ID = theID;
+            deployModels.Add(theModel);
+
+            Mock<IEventAggregator> mockEventAg = new Mock<IEventAggregator>();
+            mockEventAg.Setup(m => m.Publish(It.IsAny<object>()));
+
+            IDeployDTO dto = new DeployDTO { ResourceModels = deployModels };
+
+            //------------Execute Test---------------------------
+            _repo.DeployResources(srcEnvModel.Object, targetEnvModel.Object, dto, mockEventAg.Object);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("NewXaml", findModel.WorkflowXaml);
+            Assert.AreEqual("New Service Definition", findModel.ServiceDefinition);
+            
         }
 
         #endregion

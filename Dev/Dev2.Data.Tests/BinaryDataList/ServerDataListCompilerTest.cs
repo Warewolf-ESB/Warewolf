@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -477,6 +478,58 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual("scalar3", res);
             Assert.AreEqual("f1.1", tmpRS.TryFetchRecordsetColumnAtIndex("f1", 1, out error).TheValue);
             
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_Shape")]
+        public void ServerDataListCompiler_Shape_WhenOutputsContainTwoRecordsets_ExpectTwoAliasMaps()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><rs1><f1/><f2/></rs1><rs1a><f2a/></rs1a></DataList>", out errors);
+            string error;
+
+            Guid childID = _sdlc.ConvertTo(null, xmlFormat, TestHelper.ConvertStringToByteArray(string.Empty), "<DataList><rs1><f1/></rs1><rs1a><f2a/></rs1a><rs2><f1a/></rs2></DataList>", out errors);
+
+            string inputs = string.Empty;
+            const string outputs = @"<Outputs><Output Name=""f1a"" MapsTo=""f1a"" Value=""[[rs1(*).f1]]"" Recordset=""rs2"" /><Output Name=""f2a"" MapsTo=""f2a"" Value=""[[rs1a(*).f2]]"" Recordset=""rs2"" /></Outputs>";
+
+            //------------Execute Test---------------------------
+            _sdlc.ShapeForSubExecution(null, dlID, childID, inputs, outputs, out errors);
+
+            IBinaryDataList bdl = _sdlc.FetchBinaryDataList(null, childID, out errors);
+
+            IBinaryDataListEntry tmpRS1;
+            IBinaryDataListEntry tmpRS2;
+            bdl.TryGetEntry("rs1", out tmpRS1, out error);
+            bdl.TryGetEntry("rs1a", out tmpRS2, out error);
+
+            //------------Assert Results-------------------------
+
+            var rs1Aliases = tmpRS1.FetchAlias();
+            var rs2Aliases = tmpRS2.FetchAlias();
+
+            // Check counts first ;)
+            Assert.AreEqual(1, rs1Aliases.Count);
+            Assert.AreEqual(1, rs2Aliases.Count);
+
+            // Check mapping keys next ;)
+            Assert.AreEqual("f1a", rs1Aliases.Keys.FirstOrDefault());
+            Assert.AreEqual("f2a", rs2Aliases.Keys.FirstOrDefault());
+
+            var aliasValue1 = rs1Aliases.Values.FirstOrDefault();
+            var aliasValue2 = rs2Aliases.Values.FirstOrDefault();
+
+            // Check the MasterNamespace
+            Assert.AreEqual("rs1", aliasValue1.MasterNamespace);
+            Assert.AreEqual("rs1a", aliasValue2.MasterNamespace);
+
+            // Finally check the MasterKeyID
+            Assert.AreEqual(dlID, aliasValue1.MasterKeyID);
+            Assert.AreEqual(dlID, aliasValue2.MasterKeyID);
+
         }
 
         #endregion

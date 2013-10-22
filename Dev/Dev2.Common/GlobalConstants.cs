@@ -187,5 +187,8 @@ namespace Dev2.Common
         public static readonly int NetworkComputerNameQueryFreq = 900000;
 
         public static TimeSpan TransactionTimeout = new TimeSpan(1, 0, 0, 0);
+
+        public static string AnythingToXmlPathSeperator = ",";
+        public static string AnytingToXmlCommaToken = "__COMMA__";
     }
 }

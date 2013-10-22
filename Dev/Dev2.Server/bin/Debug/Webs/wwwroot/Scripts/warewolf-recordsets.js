@@ -88,7 +88,6 @@ RecordsetField.prototype.toJSON = function () {
 
 function Recordset(rs) {
     var self = this;
-
     self.IsScalar = rs.Name ? false : true;
     self.Name = rs.Name;
     self.Alias = ko.observable(self.IsScalar || rs.Fields.length == 0 ? "" : rs.Fields[0].RecordsetAlias + "()");

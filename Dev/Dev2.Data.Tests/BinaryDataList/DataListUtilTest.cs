@@ -12,6 +12,59 @@ namespace Dev2.Data.Tests.BinaryDataList
     [TestClass]
     public class DataListUtilTest
     {
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataListUtil_ShapeDefsToDataList")]
+        public void DataListUtil_ShapeDefinitionsToDataList_WhenOutputContainsDifferentRecordset_ExpectTwoRecordsets()
+        {
+            //------------Setup for test--------------------------
+            var defs = @"<Outputs><Output Name=""MapLocationID"" MapsTo=""[[MapLocationID]]"" Value=""[[dbo_proc_GetAllMapLocations(*).MapLocationID]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""StreetAddress"" MapsTo=""[[StreetAddress]]"" Value=""[[dbo_proc_GetAllMapLocations2(*).StreetAddress]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Latitude"" MapsTo=""[[Latitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Latitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Longitude"" MapsTo=""[[Longitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Longitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /></Outputs>";
+
+            //------------Execute Test---------------------------
+            ErrorResultTO invokeErrors;
+            var result = DataListUtil.ShapeDefinitionsToDataList(defs, enDev2ArgumentType.Output, out invokeErrors);
+            
+            //------------Assert Results-------------------------
+            var expected = @"<ADL>
+<dbo_proc_GetAllMapLocations>
+	<MapLocationID></MapLocationID>
+	<Latitude></Latitude>
+	<Longitude></Longitude>
+</dbo_proc_GetAllMapLocations>
+<dbo_proc_GetAllMapLocations2>
+	<StreetAddress></StreetAddress>
+</dbo_proc_GetAllMapLocations2>
+
+</ADL>";
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataListUtil_ShapeDefsToDataList")]
+        public void DataListUtil_ShapeDefinitionsToDataList_WhenOutputContainsOneRecordset_ExpectOneRecordset()
+        {
+            //------------Setup for test--------------------------
+            var defs = @"<Outputs><Output Name=""MapLocationID"" MapsTo=""[[MapLocationID]]"" Value=""[[dbo_proc_GetAllMapLocations(*).MapLocationID]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""StreetAddress"" MapsTo=""[[StreetAddress]]"" Value=""[[dbo_proc_GetAllMapLocations(*).StreetAddress]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Latitude"" MapsTo=""[[Latitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Latitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Longitude"" MapsTo=""[[Longitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Longitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /></Outputs>";
+
+            //------------Execute Test---------------------------
+            ErrorResultTO invokeErrors;
+            var result = DataListUtil.ShapeDefinitionsToDataList(defs, enDev2ArgumentType.Output, out invokeErrors);
+
+            //------------Assert Results-------------------------
+            var expected = @"<ADL>
+<dbo_proc_GetAllMapLocations>
+	<MapLocationID></MapLocationID>
+	<StreetAddress></StreetAddress>
+	<Latitude></Latitude>
+	<Longitude></Longitude>
+</dbo_proc_GetAllMapLocations>
+
+</ADL>";
+            Assert.AreEqual(expected, result);
+        }
+
         [TestMethod]
         [Owner("Travis")]
         [Description("Ensure star is replaced with an index")]

@@ -125,7 +125,7 @@ namespace Dev2.Tests.Runtime.Util
         {
             var expectedPaths = new List<IPath>(new[]
             {
-                new XmlPath("string.CurrentWeather.Location", "string.CurrentWeather.Location", "", "Nice, France"),
+                new XmlPath("string.CurrentWeather.Location", "string.CurrentWeather.Location", "", "Nice__COMMA__ France"),
                 new XmlPath("string.CurrentWeather.Temperature", "string.CurrentWeather.Temperature", "", "16 C"),
                 new XmlPath("string.CurrentWeather.RelativeHumidity", "string.CurrentWeather.RelativeHumidity", "", " 55%"),
                 new XmlPath("string.CurrentWeather.Status", "string.CurrentWeather.Status", "", "Success"),

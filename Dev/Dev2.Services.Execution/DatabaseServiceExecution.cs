@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.DB;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
@@ -14,6 +13,8 @@ namespace Dev2.Services.Execution
     public class DatabaseServiceExecution:ServiceExecutionAbstract<DbService,DbSource>
     {
         SqlServer _sqlServer;
+
+        public string InstanceOutputDefintions { get; set; }
 
         #region Constuctors
 
@@ -120,7 +121,7 @@ namespace Dev2.Services.Execution
 
                         IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-                        executeService = compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dataSet, DataObj.DataListID, out errors);
+                        executeService = compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dataSet, InstanceOutputDefintions, DataObj.DataListID, out errors);
                         return true;
                     }
                 }

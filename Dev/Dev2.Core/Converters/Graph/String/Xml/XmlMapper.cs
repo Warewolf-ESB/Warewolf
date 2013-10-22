@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Dev2.Common;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
 // ReSharper disable CheckNamespace
@@ -171,7 +172,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
         private string GetSampleData(XElement root, IPath path)
         {
             XmlNavigator navigator = new XmlNavigator(root.ToString());
-            return string.Join(",", navigator.SelectEnumerable(path).Select(o => o.ToString()).Take(10));
+            return string.Join(GlobalConstants.AnythingToXmlPathSeperator, navigator.SelectEnumerable(path).Select(o => o.ToString().Replace(GlobalConstants.AnythingToXmlPathSeperator, GlobalConstants.AnytingToXmlCommaToken)).Take(10));
         }
 
         #endregion Private Methods

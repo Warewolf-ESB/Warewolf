@@ -512,13 +512,14 @@ namespace Dev2.DataList.Contract
         /// </summary>
         /// <param name="typeOf">The type of.</param>
         /// <param name="input">The input.</param>
+        /// <param name="outputDefs">The output defs.</param>
         /// <param name="targetDLID">The target dlid.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid PopulateDataList(DataListFormat typeOf, object input, Guid targetDLID, out ErrorResultTO errors)
+        public Guid PopulateDataList(DataListFormat typeOf, object input, string outputDefs, Guid targetDLID, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            return _svrCompiler.PopulateDataList(null, typeOf, input, targetDLID, out errors);
+            return _svrCompiler.PopulateDataList(null, typeOf, input, outputDefs, targetDLID, out errors);
         }
 
         /// <summary>

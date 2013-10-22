@@ -826,7 +826,7 @@ namespace Dev2.DataList.Contract
             else
             {
 
-                IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollection(defs);
+                IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollection(defs, !(isInput));
                 IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs);
 
                 // open datashape
@@ -870,14 +870,14 @@ namespace Dev2.DataList.Contract
                 isInput = true;
             }
 
-            if(defs == null || defs.Count == 0)
+            if(defs == null)
             {
                 errors.AddError(string.Concat("could not locate any data of type [ ", typeOf, " ]"));
             }
             else
             {
 
-                IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollection(defs);
+                IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollection(defs,!(isInput));
                 IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs);
 
                 // open datashape

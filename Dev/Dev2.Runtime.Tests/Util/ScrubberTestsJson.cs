@@ -89,7 +89,7 @@ namespace Dev2.Tests.Runtime.Util
         {
             //------------Setup for test--------------------------
             const string JsonData = "{\"id\": \"0001\",\"type\": \"donut\",\"name\": \"Cake\",\"ppu\": 0.55,\"batters\":{\"batter\":[{ \"id\": \"1001\", \"type\": \"Regular\" },{ \"id\": \"1002\", \"type\": \"Chocolate\" },{ \"id\": \"1003\", \"type\": \"Blueberry\" }," +
-                "{ \"id\": \"1004\", \"type\": \"Devil's Food\" }]},\"topping\":[{ \"id\": \"5001\", \"type\": \"None\" },{ \"id\": \"5002\", \"type\": \"Glazed\" },{ \"id\": \"5005\", \"type\": \"Sugar\" },{ \"id\": \"5007\", \"type\": \"Powdered Sugar\" }," +
+                "{ \"id\": \"1004\", \"type\": \"Devil's Food\" }]},\"topping\":[{ \"id\": \"5001\", \"type\": \"None\" },{ \"id\": \"5002\", \"type\": \"Glazed, With Sprinkles\" },{ \"id\": \"5005\", \"type\": \"Sugar\" },{ \"id\": \"5007\", \"type\": \"Powdered Sugar\" }," +
                 "{ \"id\": \"5006\", \"type\": \"Chocolate with Sprinkles\" },{ \"id\": \"5003\", \"type\": \"Chocolate\" },{ \"id\": \"5004\", \"type\": \"Maple\" }]}";
 
             var paths = new List<IPath>
@@ -101,7 +101,7 @@ namespace Dev2.Tests.Runtime.Util
                 new JsonPath("batters.batter().id","batters.batter().id","","1001,1002,1003,1004"),
                 new JsonPath("batters.batter().type","batters.batter().type","","Regular,Chocolate,Blueberry,Devil's Food"),
                 new JsonPath("topping().id","topping().id","","5001,5002,5005,5007,5006,5003,5004"),
-                new JsonPath("topping().type","topping().type","","None,Glazed,Sugar,Powdered Sugar,Chocolate with Sprinkles,Chocolate,Maple")
+                new JsonPath("topping().type","topping().type","","None,Glazed__COMMA__ With Sprinkles,Sugar,Powdered Sugar,Chocolate with Sprinkles,Chocolate,Maple")
             };
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
