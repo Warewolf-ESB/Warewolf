@@ -177,4 +177,7 @@
   <data name="DsfFindRecordsMultipleCriteriaActivity" xml:space="preserve">
     <value>Recordset - Find Records</value>
   </data>
+  <data name="DsfBaseConvertActivity" xml:space="preserve">
+    <value>Utility - Base Conversion</value>
+  </data>
 </root>

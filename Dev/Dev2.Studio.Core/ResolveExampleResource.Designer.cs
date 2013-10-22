@@ -61,6 +61,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Utility - Base Conversion.
+        /// </summary>
+        internal static string DsfBaseConvertActivity {
+            get {
+                return ResourceManager.GetString("DsfBaseConvertActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Utility - Calculate.
         /// </summary>
         internal static string DsfCalculateActivity {
