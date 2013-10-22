@@ -82,7 +82,7 @@
                     </interfaceImplementors:CompositeIntellisenseProvider>
                 </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.MoveHelpResult}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.MoveHelpDestination}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Path=ModelItem.OutputPath"
