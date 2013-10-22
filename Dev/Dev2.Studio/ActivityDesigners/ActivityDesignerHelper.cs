@@ -12,6 +12,7 @@ using Dev2.Activities.Designers2.DateTime;
 using Dev2.Activities.Designers2.Delete;
 using Dev2.Activities.Designers2.DeleteRecords;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
+using Dev2.Activities.Designers2.FormatNumber;
 using Dev2.Activities.Designers2.GetWebRequest;
 using Dev2.Activities.Designers2.Move;
 using Dev2.Activities.Designers2.MultiAssign;
@@ -48,7 +49,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
                 { typeof(DsfBaseConvertActivity), typeof(BaseConvertDesigner) },
-                // { typeof(DsfNumberFormatActivity), typeof(FormatNumberDesigner) },
+                { typeof(DsfNumberFormatActivity), typeof(FormatNumberDesigner) },
                 { typeof(DsfPathCopy), typeof(CopyDesigner) },
                 { typeof(DsfPathCreate), typeof(CreateDesigner) },
                 { typeof(DsfPathMove), typeof(MoveDesigner) },

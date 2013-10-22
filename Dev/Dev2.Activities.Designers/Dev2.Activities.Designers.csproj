@@ -202,6 +202,13 @@
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Designers2\FormatNumber\FormatNumberDesigner.xaml.cs">
+      <DependentUpon>FormatNumberDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\FormatNumber\FormatNumberDesignerViewModel.cs" />
+    <Compile Include="Designers2\FormatNumber\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\GetWebRequest\GetWebRequestDesigner.xaml.cs">
       <DependentUpon>GetWebRequestDesigner.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -521,6 +528,14 @@
     <Page Include="Designers2\FindRecordsMultipleCriteria\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\FormatNumber\FormatNumberDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\FormatNumber\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\GetWebRequest\GetWebRequestDesigner.xaml">
       <SubType>Designer</SubType>

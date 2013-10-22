@@ -96,6 +96,8 @@
     <Compile Include="Designers2\Core\ActivityDesignerButtonTests.cs" />
     <Compile Include="BaseConvert\BaseConvertTests.cs" />
     <Compile Include="FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaTests.cs" />
+    <Compile Include="FormatNumber\FormatNumberDesignerViewModelTests.cs" />
+    <Compile Include="FormatNumber\TestFormatNumberDesignerViewModel.cs" />
     <Compile Include="GetWebRequestTests\GetWebRequestViewModelTests.cs" />
     <Compile Include="MultiAssignTests\MultiAssignViewModelTests.cs" />
     <Compile Include="Preview\PreviewViewModelTests.cs" />
