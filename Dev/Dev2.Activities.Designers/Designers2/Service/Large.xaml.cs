@@ -54,7 +54,7 @@ namespace Dev2.Activities.Designers2.Service
                 rowDef.MinHeight = height;
                 return rowDef;
             }
-            return null;
+            return new RowDefinition();
         }
 
         static double CalcPercentage(int itemCount, double totalCount)
