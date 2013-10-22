@@ -1398,4 +1398,33 @@ Using recordset () will add a new record and (*) will assign every record.</valu
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
+  <data name="CommandLineHelpCMD" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To execute a command line action or actions, enter them in here. Acts like a batch file. Any user driven task will simply be ignored.</value>
+  </data>
+  <data name="CommandLineHelpPriorityType" xml:space="preserve">
+    <value>The process priority for execution. Very helpful for long running processes that need/don’t need to be resource intensive.</value>
+  </data>
+  <data name="CommandLineHelpResult" xml:space="preserve">
+    <value>Returns the output of the execution if any. Varies depending on what was executed.</value>
+  </data>
+  <data name="CommandLineToolTipCMD" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="CommandLineToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="CommentHelpComment" xml:space="preserve">
+    <value>NA (there is no help button for comments.)</value>
+  </data>
+  <data name="CommentToolTipComment" xml:space="preserve">
+    <value>Notes and comments will not be executed at run time but will show up in the debug output.</value>
+  </data>
 </root>

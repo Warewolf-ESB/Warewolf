@@ -174,14 +174,8 @@
     <Compile Include="ActivityDesigners\DsfBaseConvertActivityDesigner.xaml.cs">
       <DependentUpon>DsfBaseConvertActivityDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\DsfCommentActivityDesigner.xaml.cs">
-      <DependentUpon>DsfCommentActivityDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\DsfDataSplitActivityDesigner.xaml.cs">
       <DependentUpon>DsfDataSplitActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfExecuteCommandLineActivityDesigner.xaml.cs">
-      <DependentUpon>DsfExecuteCommandLineActivityDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="ActivityDesigners\DsfCaseConvertActivityDesigner.xaml.cs">
       <DependentUpon>DsfCaseConvertActivityDesigner.xaml</DependentUpon>
@@ -613,15 +607,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ActivityDesigners\DsfCommentActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ActivityDesigners\DsfDataSplitActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfExecuteCommandLineActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

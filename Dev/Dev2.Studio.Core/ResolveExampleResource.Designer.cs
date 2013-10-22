@@ -106,6 +106,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scripting - CMD Line.
+        /// </summary>
+        internal static string DsfExecuteCommandLineActivity {
+            get {
+                return ResourceManager.GetString("DsfExecuteCommandLineActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File and Folder - Read File.
         /// </summary>
         internal static string DsfFileRead {

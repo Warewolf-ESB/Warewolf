@@ -92,6 +92,20 @@
       <DependentUpon>CalculateDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Calculate\CalculateDesignerViewModel.cs" />
+    <Compile Include="Designers2\CommandLine\CommandLineDesigner.xaml.cs">
+      <DependentUpon>CommandLineDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CommandLine\CommandLineDesignerViewModel.cs" />
+    <Compile Include="Designers2\CommandLine\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Comment\CommentDesigner.xaml.cs">
+      <DependentUpon>CommentDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Comment\CommentDesignerViewModel.cs" />
+    <Compile Include="Designers2\Comment\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Copy\CopyDesigner.xaml.cs">
       <DependentUpon>CopyDesigner.xaml</DependentUpon>
     </Compile>
@@ -417,6 +431,22 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Calculate\CalculateDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CommandLine\CommandLineDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CommandLine\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Comment\CommentDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Comment\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

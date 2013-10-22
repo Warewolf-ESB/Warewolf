@@ -268,11 +268,82 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To execute a command line action or actions, enter them in here. Acts like a batch file. Any user driven task will simply be ignored..
+        /// </summary>
+        public static string CommandLineHelpCMD {
+            get {
+                return ResourceManager.GetString("CommandLineHelpCMD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The process priority for execution. Very helpful for long running processes that need/don’t need to be resource intensive..
+        /// </summary>
+        public static string CommandLineHelpPriorityType {
+            get {
+                return ResourceManager.GetString("CommandLineHelpPriorityType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the output of the execution if any. Varies depending on what was executed..
+        /// </summary>
+        public static string CommandLineHelpResult {
+            get {
+                return ResourceManager.GetString("CommandLineHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string CommandLineToolTipCMD {
+            get {
+                return ResourceManager.GetString("CommandLineToolTipCMD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string CommandLineToolTipResult {
+            get {
+                return ResourceManager.GetString("CommandLineToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NA (there is no help button for comments.).
+        /// </summary>
+        public static string CommentHelpComment {
+            get {
+                return ResourceManager.GetString("CommentHelpComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The comment entered here will not effect the workflow. This text will be visible in the debug output if this comment is included as a step in the workflow..
         /// </summary>
         public static string CommentInputText {
             get {
                 return ResourceManager.GetString("CommentInputText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notes and comments will not be executed at run time but will show up in the debug output..
+        /// </summary>
+        public static string CommentToolTipComment {
+            get {
+                return ResourceManager.GetString("CommentToolTipComment", resourceCulture);
             }
         }
         

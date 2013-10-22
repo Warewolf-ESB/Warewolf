@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.BaseConvert;
 using Dev2.Activities.Designers2.Calculate;
+using Dev2.Activities.Designers2.CommandLine;
+using Dev2.Activities.Designers2.Comment;
 using Dev2.Activities.Designers2.Copy;
 using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Activities.Designers2.Create;
@@ -57,13 +59,15 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfPathRename), typeof(RenameDesigner) },
                 { typeof(DsfUnZip), typeof(UnzipDesigner) },
                 { typeof(DsfZip), typeof(ZipDesigner) },
+                { typeof(DsfExecuteCommandLineActivity), typeof(CommandLineDesigner) },
+                { typeof(DsfCommentActivity), typeof(CommentDesigner) },
 
 
                 //{ typeof(DsfActivity), typeof(DsfActivityDesigner) },
                 //{ typeof(DsfDatabaseActivity), typeof(DsfActivityDesigner) },
                 { typeof(DsfActivity), typeof(ServiceDesigner) },
                 { typeof(DsfDatabaseActivity), typeof(ServiceDesigner) },
-                { typeof(DsfCommentActivity), typeof(DsfCommentActivityDesigner) },
+                //{ typeof(DsfCommentActivity), typeof(DsfCommentActivityDesigner) },
                 { typeof(DsfAssignActivity), typeof(DsfAssignActivityDesigner) },
                 //{typeof (TransformActivity), typeof (DsfTransformActivityDesigner)},
                 { typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner) },
@@ -92,7 +96,7 @@ namespace Dev2.Studio.ActivityDesigners
                 //                    {typeof (DsfCheckpointActivity), typeof (DsfCheckpointActivityDesigner)},
                 { typeof(DsfFindRecordsActivity), typeof(DsfFindRecordsActivityDesigner) },
                 //{ typeof(DsfNumberFormatActivity), typeof(DsfNumberFormatActivityDesigner) },
-                { typeof(DsfExecuteCommandLineActivity), typeof(DsfExecuteCommandLineActivityDesigner) },
+                //{ typeof(DsfExecuteCommandLineActivity), typeof(DsfExecuteCommandLineActivityDesigner) },
                 { typeof(DsfGatherSystemInformationActivity), typeof(DsfGatherSystemInformationActivityDesigner) },
                 { typeof(DsfRandomActivity), typeof(DsfRandomActivityDesigner) },
                 { typeof(DsfSendEmailActivity), typeof(DsfSendEmailActivityDesigner) },
