@@ -71,6 +71,10 @@
       <Project>{7d4f3b7a-cf2b-41d5-a144-862ebccda9a3}</Project>
       <Name>QueueBuild</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ResolveDomainEmailAddress\ResolveDomainEmailAddress.csproj">
+      <Project>{cf4e03b0-90cc-4c9e-ace2-52afbc6f6c76}</Project>
+      <Name>ResolveDomainEmailAddress</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WaitForBuild\WaitForBuild.csproj">
       <Project>{bc744d87-5733-4b4e-98a8-8c220fc311ec}</Project>
       <Name>WaitForBuild</Name>
