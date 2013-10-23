@@ -118,7 +118,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_DragAndDropWorkflowFromRemoteServerOnALocalHostCreatedWorkflow_WorkFlowIsDropped()
         {
-            const string TextToSearchWith = "Simple Remote Workflow";
+            const string TextToSearchWith = "Recursive File Copy";
             DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
             //Ensure that we're in localhost
             ExplorerUIMap.ClickServerInServerDDL(LocalHostServerName);
@@ -131,15 +131,13 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
 
             ExplorerUIMap.EnterExplorerSearchText(TextToSearchWith);
-            ExplorerUIMap.DragControlToWorkflowDesigner(RemoteServerName, "WORKFLOWS", "TEST", TextToSearchWith, point);
+            ExplorerUIMap.DragControlToWorkflowDesigner(RemoteServerName, "WORKFLOWS", "UTILITY", TextToSearchWith, point);
 
             OpenMenuItem("Debug");
             PopupDialogUIMap.WaitForDialog();
-            SendKeys.SendWait("{F5}");
-            Playback.Wait(1000);
+            DebugUIMap.ClickExecute();
+            OutputUIMap.WaitForExecution();
 
-            OutputUIMap.WaitForStepCount(34, 5000);
-            Playback.Wait(10000);
             Assert.IsFalse(OutputUIMap.IsAnyStepsInError(), "The remote workflow threw errors when executed locally");
         }
 
