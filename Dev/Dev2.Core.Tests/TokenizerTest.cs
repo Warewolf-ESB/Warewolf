@@ -3,7 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Tests.Properties;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Dev2;
 using System.Diagnostics;
 using Dev2.Common;
@@ -12,7 +12,7 @@ namespace Unlimited.UnitTest.Framework {
     /// <summary>
     /// Summary description for TokenizerTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class TokenizerTest {
         public TokenizerTest() {
             //

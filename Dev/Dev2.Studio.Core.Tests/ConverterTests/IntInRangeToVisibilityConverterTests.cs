@@ -2,11 +2,11 @@
 using System.Globalization;
 using System.Windows;
 using Dev2.Studio.Core.AppResources.Converters;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests.ConverterTests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class IntInRangeToVisibilityConverterTests
     {
         [TestMethod]

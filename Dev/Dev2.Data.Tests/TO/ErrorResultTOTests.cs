@@ -2,14 +2,14 @@
 using System.Text;
 using System.Collections.Generic;
 using Dev2.DataList.Contract;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Data.Tests.TO
 {
     /// <summary>
     /// Summary description for ErrorResultTOTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ErrorResultTOTests
     {
         public ErrorResultTOTests()

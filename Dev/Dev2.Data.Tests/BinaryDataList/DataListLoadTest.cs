@@ -2,7 +2,7 @@
 using Dev2.Data.Audit;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,7 +12,7 @@ namespace Unlimited.UnitTest.Framework
     /// <summary>
     /// Summary description for Dev2RecordsetIndexScopeTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DataListLoadTest
     {
         public DataListLoadTest()

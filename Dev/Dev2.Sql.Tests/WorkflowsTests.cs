@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Microsoft.SqlServer.Server;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Warewolf.Sql;
 
@@ -14,7 +14,7 @@ namespace Dev2.Sql.Tests
 
     /// <author>Trevor.Williams-Ros</author>
     /// <date>2013/02/21</date>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class WorkflowsTests
     {
         const string TestServerUri = "http://localhost:1234/services/Test";

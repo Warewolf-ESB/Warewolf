@@ -10,12 +10,12 @@ using Dev2.Network.Messaging.Messages;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network.Channels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ExecutionClientChannelTests
     {
         #region MyTestInitialize

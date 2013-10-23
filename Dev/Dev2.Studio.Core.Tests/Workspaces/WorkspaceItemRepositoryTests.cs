@@ -7,14 +7,14 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Unlimited.Framework;
 
 namespace Dev2.Core.Tests.Workspaces
 {
     // BUG 9492 - 2013.06.08 - TWR : added
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class WorkspaceItemRepositoryTests
     {
         #region Static Class Init

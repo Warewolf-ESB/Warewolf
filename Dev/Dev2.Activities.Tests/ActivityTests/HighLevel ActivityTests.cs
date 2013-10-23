@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using ActivityUnitTests;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -11,7 +11,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Tests that the Properties have not changed on the activities 
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class HighLevel_ActivityTests : BaseActivityUnitTest
     {
         #region Fields

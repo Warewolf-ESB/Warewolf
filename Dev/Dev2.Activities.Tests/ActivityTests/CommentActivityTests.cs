@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using ActivityUnitTests;
 using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests
@@ -10,7 +10,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DataSplitActivityTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class CommentActivityTests : BaseActivityUnitTest
     {
         /// <summary>

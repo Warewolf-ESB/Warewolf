@@ -3,7 +3,7 @@ using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Runtime.Compiler;
 using Dev2.Runtime.Compiler.CompileRules;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Dev2.DynamicServices;
 
 namespace Dev2.Tests.Runtime.CompileMessages
@@ -11,7 +11,7 @@ namespace Dev2.Tests.Runtime.CompileMessages
     /// <summary>
     /// Summary description for ServiceModelCompilerTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ServiceModelCompilerTest
     {
         private TestContext _testContextInstance;

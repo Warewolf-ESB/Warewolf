@@ -2,7 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Dev2.Converters.DateAndTime.Interfaces;
 using Dev2.Converters.DateAndTime;
 
@@ -11,7 +11,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
     /// <summary>
     /// Summary description for DateTimeComparerTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DateTimeComparerTests
     {
         #region Fields

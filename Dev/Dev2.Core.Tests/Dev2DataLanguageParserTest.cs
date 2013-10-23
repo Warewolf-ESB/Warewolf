@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Dev2.DataList.Contract;
 
 namespace Unlimited.UnitTest.Framework
@@ -9,7 +9,7 @@ namespace Unlimited.UnitTest.Framework
     //<summary>
     //Summary description for Dev2DataLanguageParser
     //</summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class Dev2DataLanguageParserTest
     {
         // <summary>

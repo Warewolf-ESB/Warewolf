@@ -5,14 +5,14 @@ using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Tests.Runtime.ServiceModel
 // ReSharper restore CheckNamespace
 {
     // BUG 9500 - 2013.05.31 - TWR : added proper testing
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class PluginSourceTests
     {
         #region Save

@@ -2,7 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.DataList.Contract;
 using Dev2.Core.Tests.Utils;
@@ -15,7 +15,7 @@ namespace Dev2.Core.Tests.WizardTests.WizardCallbackHandlerTests
     /// <summary>
     /// Summary description for DsfDataSplitActivityWizCallbackHandlerTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DsfDataSplitActivityWizCallbackHandlerTests
     {
 

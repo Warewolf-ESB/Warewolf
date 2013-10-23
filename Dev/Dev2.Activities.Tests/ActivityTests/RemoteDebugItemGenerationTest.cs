@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ActivityUnitTests;
 using Dev2.Diagnostics;
 using Dev2.Runtime.ESB.Management.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Runtime.ESB.Execution;
@@ -13,7 +13,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for RemoteDebugItemGenerationTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class RemoteDebugItemGenerationTest : BaseActivityUnitTest
     {
         /// <summary>

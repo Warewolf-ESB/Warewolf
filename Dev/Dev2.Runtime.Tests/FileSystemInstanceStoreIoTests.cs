@@ -2,7 +2,7 @@
 using Dev2.Common.Common;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Test.XML;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System;
 using System.Activities.DurableInstancing;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Xml.Linq;
 
 namespace Dev2.Tests.Runtime
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class FileSystemInstanceStoreIoTests
     {
         const string TestFileName = "TestInstanceStore";

@@ -6,14 +6,14 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Execution;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Moq.Protected;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class AbstractServiceExecutionTests
     {
         #region Create Service

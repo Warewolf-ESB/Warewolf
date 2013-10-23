@@ -7,13 +7,13 @@ using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.Activities.Services
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DesignerManagementServiceTests
     {
 

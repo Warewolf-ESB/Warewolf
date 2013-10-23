@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using Dev2.Studio.Core.Utils;
 using Dev2.Util.ExtensionMethods;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Framework;
 
 namespace Dev2.Core.Tests.UtilsTests
@@ -10,7 +10,7 @@ namespace Dev2.Core.Tests.UtilsTests
     /// <summary>
     /// Summary description for NewWorkflowNamesTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class FrameWorkElementExtensionsTests
     {
         public FrameWorkElementExtensionsTests()

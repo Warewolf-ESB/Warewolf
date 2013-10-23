@@ -4,12 +4,12 @@ using Dev2.Providers.Logs;
 using Dev2.Studio;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests.Diagnostics
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class FileHelperTests
     {
         private static string NewPath;

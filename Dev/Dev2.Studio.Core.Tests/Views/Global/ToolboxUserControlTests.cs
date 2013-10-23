@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Activities.Statements;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Views;
 
 namespace Dev2.Core.Tests.Views.Global
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ToolboxUserControlTests
     {
         [TestMethod]

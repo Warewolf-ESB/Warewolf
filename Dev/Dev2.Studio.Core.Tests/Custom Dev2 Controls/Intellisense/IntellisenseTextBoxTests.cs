@@ -3,14 +3,14 @@ using Dev2.Core.Tests.Utils;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.UI;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using System;
 using System.Windows;
 
 namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class IntellisenseTextBoxTests
     {
         #region Test Initialization

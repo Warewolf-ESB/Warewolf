@@ -1,12 +1,12 @@
 ﻿using Dev2.Data.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Data.Tests
 {
     /// <summary>
     /// Summary description for XmlHelperTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class XmlHelperTest
     {
         /// <summary>

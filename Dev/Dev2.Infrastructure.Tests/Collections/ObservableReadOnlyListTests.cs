@@ -6,11 +6,11 @@ using System.Threading;
 using System.Windows.Data;
 using System.Windows.Threading;
 using Dev2.Collections;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Infrastructure.Tests.Collections
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ObservableReadOnlyListTests
     {
         [TestMethod]

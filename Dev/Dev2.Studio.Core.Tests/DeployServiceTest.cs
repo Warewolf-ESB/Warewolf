@@ -6,7 +6,7 @@ using Dev2.Providers.Events;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests
@@ -14,7 +14,7 @@ namespace Dev2.Core.Tests
     /// <summary>
     /// Summary description for DeployServiceTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DeployServiceTest
     {
 

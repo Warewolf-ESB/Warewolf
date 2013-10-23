@@ -5,13 +5,13 @@ using Dev2.Studio;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Moq.Protected;
 
 namespace Dev2.Core.Tests.Diagnostics
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class AppExceptionHandlerTests
     {
         static readonly object TestGuard = new object();

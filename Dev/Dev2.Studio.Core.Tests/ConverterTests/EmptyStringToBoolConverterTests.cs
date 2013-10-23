@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Dev2.CustomControls.Converters;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests.ConverterTests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class EmptyStringToBoolConverterTests
     {
         [TestMethod]

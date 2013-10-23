@@ -1,11 +1,11 @@
 ﻿using System.Activities.Presentation.Model;
 using Dev2.Studio.Core.Activities.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.SortRecords
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class SortRecordsDesignerViewModelTests
     {
         [TestMethod]

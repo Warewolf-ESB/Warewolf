@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using Dev2.Data.Compilers;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Data.Tests.BinaryDataList
 {
     /// <summary>
     /// Summary description for RecordsetGroupTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class RecordsetGroupTest
     {
         /// <summary>

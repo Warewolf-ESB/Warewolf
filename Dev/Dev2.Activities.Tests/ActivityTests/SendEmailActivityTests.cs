@@ -10,7 +10,7 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -19,7 +19,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for CountRecordsTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     //[Ignore] //Does not work on server
     public class SendEmailActivityTests : BaseActivityUnitTest
     {

@@ -13,7 +13,7 @@ using Dev2.Common;
 using Dev2.Utilities;
 using Microsoft.CSharp.Activities;
 using Microsoft.VisualBasic.Activities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -21,7 +21,7 @@ namespace Dev2.Tests.Activities
 {
     // BUG 9304 - 2013.05.08 - TWR - .NET 4.5 upgrade
 
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class WorkflowHelperTests
     {
         #region Expected Namespaces/Assemblies

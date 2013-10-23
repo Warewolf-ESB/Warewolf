@@ -5,12 +5,12 @@ using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     // PBI 953 - 2013.05.16 - TWR - Created
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class EmailSourceTests
     {
         #region Save

@@ -5,13 +5,13 @@ using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Utilities;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Unlimited.Framework;
 
 namespace Dev2.Tests.Runtime.ESB
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class WfExecutionContainerTests
     {
         #region Execute

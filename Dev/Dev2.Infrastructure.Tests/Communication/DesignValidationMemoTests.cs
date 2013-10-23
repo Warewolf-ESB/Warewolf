@@ -1,9 +1,9 @@
 ﻿using Dev2.Communication;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Infrastructure.Tests.Communication
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DesignValidationMemoTests
     {
         [TestMethod]

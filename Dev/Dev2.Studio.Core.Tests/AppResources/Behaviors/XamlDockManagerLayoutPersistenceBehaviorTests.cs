@@ -1,8 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests.AppResources.Behaviors
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class XamlDockManagerLayoutPersistenceBehaviorTests
     {
         [TestMethod]

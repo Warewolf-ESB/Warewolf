@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using Dev2.Runtime.Configuration.ComponentModel;
 using Dev2.Runtime.Configuration.Settings;
 using Dev2.Runtime.Configuration.Tests.XML;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Runtime.Configuration.Tests.Settings
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class LoggingSettingsTests
     {
         [TestMethod]

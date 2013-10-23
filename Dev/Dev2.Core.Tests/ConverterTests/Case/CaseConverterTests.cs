@@ -1,13 +1,13 @@
 ﻿using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.ConverterTests.Case
 {
     /// <summary>
     /// Summary description for CaseConverterTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class CaseConverterTests
     {
         ICaseConverter converter = CaseConverterFactory.CreateCaseConverter();

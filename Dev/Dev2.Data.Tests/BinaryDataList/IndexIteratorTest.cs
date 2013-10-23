@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.Binary_Objects;
 
 namespace Dev2.Data.Tests.BinaryDataList
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class IndexIteratorTest
     {
         [TestMethod]

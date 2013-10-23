@@ -1,11 +1,11 @@
 ﻿using System;
 using Dev2.Studio;
 using Dev2.Studio.Views.Navigation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests.Custom_Dev2_Controls
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class NavigationViewTests
     {
 

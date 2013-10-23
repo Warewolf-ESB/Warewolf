@@ -1,6 +1,6 @@
 ﻿using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.Security;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using System;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace Dev2.Tests.Runtime.Services
     /// <summary>
     /// Summary description for HostSecurityProviderTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class HostSecurityProviderTest
     {
         static XElement TestXml;

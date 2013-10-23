@@ -8,14 +8,14 @@ using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class FlowControllerTests
     {
         [TestMethod]

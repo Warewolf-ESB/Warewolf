@@ -1,7 +1,7 @@
 ﻿using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls;
 using Dev2.Studio.CustomControls;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,7 +10,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
     /// <summary>
     /// Summary description for Dev2FilterBoxTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     [Ignore]
     public class Dev2FilterBoxTests
     {

@@ -2,7 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System.Parsing;
 
 namespace Unlimited.UnitTest.Framework.Parsing
@@ -10,7 +10,7 @@ namespace Unlimited.UnitTest.Framework.Parsing
     /// <summary>
     /// Summary description for BitVectorTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class BitVectorTest
     {
         public BitVectorTest()

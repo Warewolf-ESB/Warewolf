@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Providers.Errors;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Activities.Designers.Tests.QuickVariableInput

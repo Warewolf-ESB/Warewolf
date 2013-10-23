@@ -7,12 +7,12 @@ using Dev2.Runtime.Configuration.Services;
 using Dev2.Runtime.Configuration.Settings;
 using Dev2.Runtime.Configuration.Tests.XML;
 using Dev2.Runtime.Configuration.ViewModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Runtime.Configuration.Tests.ViewModels
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class LoggingViewModelTests
     {
         [TestMethod]

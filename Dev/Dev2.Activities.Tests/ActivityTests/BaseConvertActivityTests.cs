@@ -5,7 +5,7 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,7 @@ namespace ActivityUnitTests.ActivityTests
     /// <summary>
     /// Summary description for BaseConvertActivityTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class BaseConvertActivityTests : BaseActivityUnitTest
     {
         /// <summary>

@@ -3,11 +3,11 @@ using Dev2.Common.ExtMethods;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Providers.Errors;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Data.Tests.TO
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class CompileMessageTOTests
     {
         [TestMethod]

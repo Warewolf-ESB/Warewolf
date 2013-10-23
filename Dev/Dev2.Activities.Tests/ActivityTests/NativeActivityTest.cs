@@ -15,14 +15,14 @@ using Dev2.DynamicServices;
 using Dev2.Simulation;
 using Dev2.Tests.Activities.Utils;
 using Dev2.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class NativeActivityTest
     {
         static string _simulationShape;

@@ -7,14 +7,14 @@ using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
     /// Summary description for CountRecordsTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ExecuteCommandLineTest : BaseActivityUnitTest
     {
         /// <summary>

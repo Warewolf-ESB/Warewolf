@@ -2,12 +2,12 @@
 using Dev2.Communication;
 using Dev2.Providers.Events;
 using Dev2.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Infrastructure.Tests.Services
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class MemoSubscriptionServiceTests
     {
         [TestMethod]

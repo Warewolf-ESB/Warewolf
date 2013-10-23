@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Dev2.Data.Interfaces;
 using Dev2.DataList;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests.DataList
@@ -9,7 +9,7 @@ namespace Dev2.Core.Tests.DataList
     /// <summary>
     /// Summary description for InputOutputViewModelEqualityComparerTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class InputOutputViewModelEqualityComparerTest
     {
         /// <summary>

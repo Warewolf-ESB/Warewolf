@@ -1,12 +1,12 @@
 ﻿using Dev2.Data.Operations;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System;
 
 namespace Dev2.Data.Tests.Operations
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class Dev2NumberFormatterTests
     {
         #region Class Members

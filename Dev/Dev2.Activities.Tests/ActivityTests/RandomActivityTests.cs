@@ -8,14 +8,14 @@ using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
     ///     Summary description for RandomActivityTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class RandomActivityTests : BaseActivityUnitTest
     {
         /// <summary>

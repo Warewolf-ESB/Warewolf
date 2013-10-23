@@ -5,12 +5,12 @@ using Dev2.Data.Operations;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System;
 
 namespace Dev2.Data.Tests.Operations
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class Dev2ReplaceOperationTests
     {
         public Dev2ReplaceOperationTests()

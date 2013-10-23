@@ -4,7 +4,7 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Factory;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.ViewModels.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using System;
 using System.IO;
@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace Dev2.Core.Tests.ViewModelTests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ExceptionViewModelTest
     {
         #region Class Members

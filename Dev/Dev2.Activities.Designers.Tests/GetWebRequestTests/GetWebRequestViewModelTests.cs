@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using Dev2.Activities.Designers2.GetWebRequest;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Moq.Protected;
 
 namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class GetWebRequestViewModelTests
     {
         [TestMethod]

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
 using Dev2.Studio.Core.Helpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests.Helpers
 {
     // PBI 9512 - 2013.06.07 - TWR: added
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class LatestWebGetterTests
     {
         static string _testDir;

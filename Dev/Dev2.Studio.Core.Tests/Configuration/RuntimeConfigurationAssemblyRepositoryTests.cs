@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 using Dev2.Common;
 using Dev2.Studio.Core.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace Dev2.Core.Tests.Configuration
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class RuntimeConfigurationAssemblyRepositoryTests
     {
         #region Fields

@@ -25,12 +25,12 @@ using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.Webs;
 using Dev2.Threading;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public partial class DebugOutputViewModelTest
     {
         static Mock<IResourceRepository> _resourceRepo = new Mock<IResourceRepository>();

@@ -5,11 +5,11 @@ using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
 using Dev2.PathOperations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Data.Tests.Operations
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class Dev2IOBrokerTests
     {
         private IDev2IndexFinder _indexFinder;

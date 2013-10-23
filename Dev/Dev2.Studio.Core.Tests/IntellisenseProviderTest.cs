@@ -8,7 +8,7 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.ViewModels.DataList;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ using System.Threading;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class IntellisenseProviderTest
     {
         private IResourceModel _resourceModel;

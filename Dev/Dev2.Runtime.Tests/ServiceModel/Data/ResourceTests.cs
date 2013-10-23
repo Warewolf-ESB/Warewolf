@@ -7,12 +7,12 @@ using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices.Test.XML;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     // ReSharper disable InconsistentNaming
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ResourceTests
     {
         #region Equals

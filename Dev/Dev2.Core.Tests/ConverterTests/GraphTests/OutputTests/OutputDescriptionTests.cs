@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
 {
-    //[TestClass]
+    //[TestClass][ExcludeFromCodeCoverage]
     public class OutputDescriptionTests
     {
         //Here for future extension

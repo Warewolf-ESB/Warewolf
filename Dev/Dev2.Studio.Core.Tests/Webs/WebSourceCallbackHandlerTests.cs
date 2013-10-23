@@ -5,12 +5,12 @@ using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Webs.Callbacks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests.Webs
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class WebSourceCallbackHandlerTests
     {
         static ImportServiceContext _importContext;

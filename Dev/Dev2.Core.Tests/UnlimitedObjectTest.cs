@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Framework;
 using Match = System.Text.RegularExpressions.Match;
 
@@ -18,7 +18,7 @@ namespace Dev2.Tests
     ///     This is a test class for UnlimitedObjectTest and is intended
     ///     to contain all UnlimitedObjectTest Unit Tests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class UnlimitedObjectTest
     {
         /// <summary>

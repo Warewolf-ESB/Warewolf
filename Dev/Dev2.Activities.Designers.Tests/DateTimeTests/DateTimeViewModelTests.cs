@@ -1,13 +1,13 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using Dev2.Activities.Designers2.DateTime;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Moq.Protected;
 
 namespace Dev2.Activities.Designers.Tests.DateTimeTests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DateTimeViewModelTests
     {
         [TestMethod]

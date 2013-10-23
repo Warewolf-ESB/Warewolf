@@ -5,14 +5,14 @@ using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Studio.Core.Activities.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.MultiAssignTests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class MultiAssignViewModelTests
     {
         [TestMethod]

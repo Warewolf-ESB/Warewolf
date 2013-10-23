@@ -7,12 +7,12 @@ using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DebugStateTreeViewItemViewModelTests
     {
         static ImportServiceContext _importContext;

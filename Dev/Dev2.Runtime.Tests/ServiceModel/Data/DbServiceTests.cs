@@ -2,7 +2,7 @@
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
@@ -10,7 +10,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     /// <summary>
     /// Summary description for DbServiceTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DbServiceTests
     {
         public DbServiceTests()

@@ -12,12 +12,12 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.UI;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.ViewModelTests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ConnectControlViewModelViewModelTests
     {
 

@@ -6,12 +6,12 @@ using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     // PBI 5656 - 2013.05.20 - TWR - Created
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class WebSourceTests
     {
         #region Save

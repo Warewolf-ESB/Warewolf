@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Dev2.Network.Execution;
 
 namespace Unlimited.UnitTest.Framework
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ExecutionStatusCallbackDispatcherTests
     {
         [TestMethod]

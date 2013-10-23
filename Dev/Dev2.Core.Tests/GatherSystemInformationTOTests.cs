@@ -1,10 +1,10 @@
 ﻿using Dev2.Data.Enums;
 using Dev2.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class GatherSystemInformationTOTests
     {
         [TestMethod]

@@ -9,7 +9,7 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Wizards;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using System;
 using System.Activities.Presentation.Model;
@@ -19,7 +19,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     [Ignore]
     public class WizardEngineTests
     {

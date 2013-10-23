@@ -1,10 +1,10 @@
 ﻿using CefSharp.Wpf;
 using Dev2.Studio.Core.AppResources.Browsers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests.AppResources.Browsers
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class BrowserTests
     {
         [TestMethod]

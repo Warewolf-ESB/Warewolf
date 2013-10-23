@@ -8,7 +8,7 @@ using Dev2.Factories;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.FindMissingStrategyTest
@@ -16,7 +16,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     /// <summary>
     /// Summary description for MixedActivityFindMissingStrategyTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class MixedActivityFindMissingStrategyTests
     {
         public MixedActivityFindMissingStrategyTests()

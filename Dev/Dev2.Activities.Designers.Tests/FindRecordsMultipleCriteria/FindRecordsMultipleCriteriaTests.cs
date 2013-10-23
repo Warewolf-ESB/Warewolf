@@ -4,13 +4,13 @@ using System.Linq;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
 using Dev2.DataList;
 using Dev2.Studio.Core.Activities.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
 {
     // OnSearchTypeChanged moved from FindRecordsTO tests
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class FindRecordsMultipleCriteriaTests
     {
         [TestMethod]

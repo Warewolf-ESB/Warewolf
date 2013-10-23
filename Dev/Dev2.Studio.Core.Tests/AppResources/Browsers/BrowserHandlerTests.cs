@@ -2,7 +2,7 @@
 using System.Net;
 using CefSharp;
 using Dev2.Studio.Core.AppResources.Browsers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests.AppResources.Browsers
@@ -10,7 +10,7 @@ namespace Dev2.Core.Tests.AppResources.Browsers
     // PBI 9644 - 2013.06.21 - TWR: added    
     // PBI 9512 - 2013.06.07 - TWR: merged
     // BUG 9798 - 2013.06.25 - TWR : refactored for external
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class BrowserHandlerTests
     {
         #region CTOR

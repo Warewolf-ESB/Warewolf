@@ -7,11 +7,11 @@ using Dev2.Common;
 using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.DynamicServices.Test
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     [Ignore]
     public class DynamicServicesHostTests
     {

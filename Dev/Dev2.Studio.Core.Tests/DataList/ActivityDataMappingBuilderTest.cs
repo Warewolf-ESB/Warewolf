@@ -2,7 +2,7 @@
 using Dev2.DataList;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -11,7 +11,7 @@ namespace Dev2.Core.Tests.DataList
     /// <summary>
     /// Summary description for ActivityDataMappingBuilderTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ActivityDataMappingBuilderTest
     {
         /// <summary>

@@ -11,7 +11,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests.Utils
@@ -19,7 +19,7 @@ namespace Dev2.Core.Tests.Utils
     /// <summary>
     /// Summary description for WorkflowDesignerUtilsTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class WorkflowDesignerUtilsTest
     {
         public WorkflowDesignerUtilsTest()

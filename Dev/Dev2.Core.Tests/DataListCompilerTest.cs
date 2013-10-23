@@ -5,7 +5,7 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.TO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 
@@ -14,7 +14,7 @@ namespace Dev2.Tests
     /// <summary>
     /// Summary description for DataListCompilerTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DataListCompilerTest
     {
 

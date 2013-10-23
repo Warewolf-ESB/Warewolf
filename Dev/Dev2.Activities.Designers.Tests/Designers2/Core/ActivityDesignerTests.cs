@@ -1,9 +1,9 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Activities.Designers.Tests.Designers2.Core
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ActivityDesignerTests
     {
         [TestMethod]

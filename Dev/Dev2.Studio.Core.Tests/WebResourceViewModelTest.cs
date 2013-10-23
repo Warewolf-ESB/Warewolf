@@ -3,7 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Composition;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Moq;
@@ -12,7 +12,7 @@ namespace Dev2.Core.Tests.ViewModelTest {
     /// <summary>
     /// Summary description for WebResourceViewModelTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class WebResourceViewModelTest {
 
         private TestContext testContextInstance; 

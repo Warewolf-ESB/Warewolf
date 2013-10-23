@@ -11,7 +11,7 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.Views.Workflow;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 //ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests
@@ -20,7 +20,7 @@ namespace Dev2.Core.Tests
     ///This is a result class for WorkflowInputDataViewModelTest and is intended
     ///to contain all WorkflowInputDataViewModelTest Unit Tests
     ///</summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class WorkflowInputDataViewModelTest
     {
         private readonly Guid _resourceID = Guid.Parse("2b975c6d-670e-49bb-ac4d-fb1ce578f66a");

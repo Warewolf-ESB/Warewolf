@@ -1,5 +1,5 @@
 ﻿using Dev2.MathOperations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 
@@ -7,7 +7,7 @@ namespace Unlimited.UnitTest.Framework.MathOperationTest {
     /// <summary>
     /// Summary description for FunctionEvaluatorTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class FunctionEvaluatorTest {
         public FunctionEvaluatorTest() {
             //

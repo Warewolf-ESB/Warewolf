@@ -10,7 +10,7 @@ using Dev2.Data.Enums;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -18,7 +18,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for CountRecordsTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     //[Ignore] //Does not work on server
     public class GatherSystemInformationTests : BaseActivityUnitTest
     {

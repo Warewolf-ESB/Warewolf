@@ -5,12 +5,12 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.Factory;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests.Diagnostics
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ExceptionFactoryTests
     {
         Mock<IEnvironmentModel> _contextModel;

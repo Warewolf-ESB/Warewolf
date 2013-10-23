@@ -6,12 +6,12 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Dev2.Data.Parsers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Wmhelp.XPath2;
 
 namespace Dev2.Data.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class XPathParserTests
     {
         TestContext _testContextInstance;

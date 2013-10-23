@@ -3,7 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Studio.Wizards;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Studio.Core.Wizards.CallBackHandlers;
 using System.Activities.Presentation.Model;
@@ -17,7 +17,7 @@ namespace Dev2.Core.Tests.WizardTests.WizardCallbackHandlerTests
     /// <summary>
     /// Summary description for UnitTest1
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DsfActivityWizCallbackTests
     {
         private TestContext testContextInstance;

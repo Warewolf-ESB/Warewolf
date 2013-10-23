@@ -1,12 +1,12 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 
 namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests.XmlTests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class XmlPathTests {
 
         #region GetSegments Tests

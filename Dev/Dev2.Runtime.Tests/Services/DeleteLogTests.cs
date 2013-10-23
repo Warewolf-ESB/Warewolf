@@ -5,12 +5,12 @@ using System.Threading;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DeleteLogTests
     {
         readonly static object MonitorLock = new object();

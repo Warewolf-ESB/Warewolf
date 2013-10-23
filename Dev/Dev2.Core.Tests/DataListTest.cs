@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using Dev2.DataList.Contract;
 using Dev2.Tests.Properties;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace DataListTset
 {
     /// <summary>
     /// Summary description for check-in
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DataListTest
     {
         private TestContext testContextInstance;

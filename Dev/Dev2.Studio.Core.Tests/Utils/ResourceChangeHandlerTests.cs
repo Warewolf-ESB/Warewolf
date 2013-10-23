@@ -7,13 +7,13 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Utils
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ResourceChangeHandlerTests
     {
         [TestMethod]

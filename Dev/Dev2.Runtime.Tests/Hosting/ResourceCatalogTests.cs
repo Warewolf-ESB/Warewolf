@@ -23,13 +23,13 @@ using Dev2.Runtime.Network;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Unlimited.Framework;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ResourceCatalogTests
     {
         // Change this if you change the number of resouces saved by SaveResources()

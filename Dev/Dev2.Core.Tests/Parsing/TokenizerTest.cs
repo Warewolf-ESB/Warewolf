@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Parsing.Tokenization;
 using System.Parsing.Intellisense;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Unlimited.UnitTest.Framework.Parsing
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class TokenizerTest
     {
         #region RequiredDefinitions Tests

@@ -23,13 +23,13 @@ using Dev2.Studio.Enums;
 using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Deploy;
 using Dev2.Studio.ViewModels.Navigation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 // ReSharper disable InconsistentNaming
 
 namespace Dev2.Core.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DeployViewModelTest
     {
         #region Class Members

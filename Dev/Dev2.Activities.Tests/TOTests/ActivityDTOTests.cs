@@ -6,13 +6,13 @@ using Dev2.Common;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
 using Dev2.Providers.Validation.Rules;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable InconsistentNaming
 // ReSharper disable ImplicitlyCapturedClosure
 namespace Dev2.Tests.Activities.TOTests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ActivityDtoTests
     {
         [TestMethod]

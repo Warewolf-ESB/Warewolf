@@ -1,5 +1,5 @@
 ﻿using Dev2.Data.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.ExtMethods;
 
 namespace Dev2.Data.Tests.EnumTests
@@ -7,7 +7,7 @@ namespace Dev2.Data.Tests.EnumTests
     /// <summary>
     /// Summary description for enTypeOfSystemInformationTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class enTypeOfSystemInformationTests
     {
         public enTypeOfSystemInformationTests()

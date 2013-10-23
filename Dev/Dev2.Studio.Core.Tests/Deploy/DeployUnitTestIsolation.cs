@@ -14,7 +14,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Deploy;
 using Dev2.Studio.ViewModels.Navigation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests.Deploy
@@ -24,7 +24,7 @@ namespace Dev2.Core.Tests.Deploy
     /// THIS test is in here because is always fails when included in the DeployViewModelTest
     /// even after using Trevor's work around of ImportService.CurrentContext = _okayContext;
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DeployUnitTestIsolation
     {
         /// <summary>

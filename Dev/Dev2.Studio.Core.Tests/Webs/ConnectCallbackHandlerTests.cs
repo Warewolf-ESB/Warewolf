@@ -10,7 +10,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Webs.Callbacks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Newtonsoft.Json;
 
@@ -22,7 +22,7 @@ namespace Dev2.Core.Tests
     // Saving with Invalid connection
     // Dev2 Set with invalid environment connection
 
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ConnectCallbackHandlerTests
     {
         const string ConnectionID = "1478649D-CF54-4D0D-8E26-CA9B81454B66";

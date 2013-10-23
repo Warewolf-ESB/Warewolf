@@ -3,12 +3,12 @@ using System.Net;
 using System.Windows;
 using Dev2.CustomControls.Progress;
 using Dev2.Studio.Core.Helpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests.Helpers
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class VersionCheckerTests
     {
         [TestMethod]

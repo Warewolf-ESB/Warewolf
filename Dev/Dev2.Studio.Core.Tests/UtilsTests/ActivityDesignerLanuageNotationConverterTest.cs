@@ -1,9 +1,9 @@
 ﻿using Dev2.Activities.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests.UtilsTests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ActivityDesignerLanuageNotationConverterTest
     {
         [TestMethod]

@@ -5,7 +5,7 @@ using System.Linq;
 using Dev2.Enums;
 using Dev2.Factories;
 using Dev2.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.FindMissingStrategyTest
@@ -13,7 +13,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     /// <summary>
     /// Summary description for DsfActivityFindMissingStrategyTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DsfActivityFindMissingStrategyTests
     {
         /// <summary>

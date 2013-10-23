@@ -6,12 +6,12 @@ using Dev2.DataList.Contract.Network;
 using Dev2.DynamicServices.Network.DataList;
 using Dev2.Network;
 using Dev2.Network.Messaging;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.DynamicServices.Test
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DataListServerChannelTests
     {
         #region MyTestInitialize

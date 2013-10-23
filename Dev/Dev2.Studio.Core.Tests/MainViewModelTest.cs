@@ -40,7 +40,7 @@ using Dev2.Studio.Webs;
 using Dev2.Threading;
 using Dev2.Utilities;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Unlimited.Framework;
 
@@ -55,7 +55,7 @@ namespace Dev2.Core.Tests
     ///     This is a result class for MainViewModelTest and is intended
     ///     to contain all MainViewModelTest Unit Tests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class MainViewModelTest
     {
         #region Variables

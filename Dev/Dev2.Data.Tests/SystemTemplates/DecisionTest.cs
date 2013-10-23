@@ -6,11 +6,11 @@ using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Data.Tests.SystemTemplates
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DecisionTest
     {
 

@@ -7,14 +7,14 @@ using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.Activities.ActivityTests.Scripting
 {
     /// <summary>
     /// Summary description for CalculateActivityTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DsfScriptingActivityTests : BaseActivityUnitTest
     {
         /// <summary>

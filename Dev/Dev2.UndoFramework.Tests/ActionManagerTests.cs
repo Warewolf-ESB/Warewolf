@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 using Moq;
 
@@ -7,7 +7,7 @@ namespace UndoFramework.Tests
     /// <summary>
     /// Summary description for ActionManagerTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ActionManagerTests
     {
         Mock<AbstractAction> mockAction = new Mock<AbstractAction>();

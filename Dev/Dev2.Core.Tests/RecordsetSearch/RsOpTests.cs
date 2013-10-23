@@ -3,7 +3,7 @@
 using Dev2.Common;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 #endregion
 
@@ -14,7 +14,7 @@ namespace Dev2.Tests.RecordsetSearch
     /// <summary>
     ///     Summary description for RsOpTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class RsOpTests
     {
         const string DlShape = "<Xml><Recset><Field1/></Recset><Result><res/></Result></Xml>";

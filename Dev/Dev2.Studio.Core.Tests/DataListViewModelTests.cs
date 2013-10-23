@@ -12,14 +12,14 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DataList;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 // ReSharper disable InconsistentNaming        
 
 namespace Dev2.Core.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DataListViewModelTests
     {
         #region Locals

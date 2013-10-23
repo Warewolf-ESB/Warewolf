@@ -1,6 +1,6 @@
 ﻿using Dev2.Studio.AppResources.Exceptions;
 using Dev2.Studio.Feedback;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace Dev2.Core.Tests.Feedback
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class FeedbackRecorderTests
     {
         #region Class Members

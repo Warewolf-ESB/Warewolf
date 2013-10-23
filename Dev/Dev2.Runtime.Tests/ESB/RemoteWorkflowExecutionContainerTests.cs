@@ -7,12 +7,12 @@ using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Tests.Runtime.ESB
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class RemoteWorkflowExecutionContainerTests
     {
         static XElement _connectionXml;

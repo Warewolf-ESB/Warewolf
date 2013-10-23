@@ -1,5 +1,5 @@
 ﻿using Dev2.Runtime.Security;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System;
 using System.Collections.Specialized;
 
@@ -8,7 +8,7 @@ namespace Dev2.Tests.Runtime.Services
     /// <summary>
     /// Summary description for HostSecureConfigTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class HostSecureConfigTests
     {
         public static Guid DefaultServerID = Guid.Parse("{D53BBCC5-4794-4DFA-B096-3AA815692E66}");

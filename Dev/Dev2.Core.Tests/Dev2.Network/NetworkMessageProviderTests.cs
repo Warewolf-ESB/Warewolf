@@ -4,14 +4,14 @@ using Dev2.Network;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Tests.Dev2.Network;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.UnitTest.Framework.Dev2.Network
 // ReSharper restore CheckNamespace
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class NetworkMessageProviderTests
     {
         #region Start

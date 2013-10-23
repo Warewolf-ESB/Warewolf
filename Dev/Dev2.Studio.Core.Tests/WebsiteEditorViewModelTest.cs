@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using Unlimited.Framework;
@@ -26,7 +26,7 @@ namespace Dev2.Core.Tests
     /// <summary>
     /// Summary description for WebsiteEditorViewModelTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class WebsiteEditorViewModelTest
     {
 

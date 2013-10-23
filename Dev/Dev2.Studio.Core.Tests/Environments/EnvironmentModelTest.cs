@@ -12,14 +12,14 @@ using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests.Environments
 {
     // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
 
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class EnvironmentModelTest
     {
         bool _wasCalled;

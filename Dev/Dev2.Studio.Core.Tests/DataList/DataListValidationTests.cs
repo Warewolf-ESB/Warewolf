@@ -3,7 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Studio.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Factories;
@@ -13,7 +13,7 @@ namespace Dev2.Core.Tests.DataList
     /// <summary>
     /// Summary description for UnitTest1
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DataListValidationTests
     {
 

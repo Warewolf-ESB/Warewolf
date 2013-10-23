@@ -21,7 +21,7 @@ using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 
@@ -32,7 +32,7 @@ namespace Dev2.Core.Tests
     /// <summary>
     ///     Summary description for NavigationViewModelTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class NavigationViewModelTest
     {
         #region Test Variables

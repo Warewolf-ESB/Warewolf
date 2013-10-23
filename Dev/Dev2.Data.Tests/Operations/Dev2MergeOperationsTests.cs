@@ -1,10 +1,10 @@
 ﻿using Dev2.Data.Operations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System;
 
 namespace Dev2.Data.Tests.Operations
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class Dev2MergeOperationsTests
     {
         private IDev2MergeOperations _mergeOperations;

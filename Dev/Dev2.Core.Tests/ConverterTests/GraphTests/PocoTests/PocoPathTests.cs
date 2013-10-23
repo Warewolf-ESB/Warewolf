@@ -1,12 +1,12 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 using Unlimited.Framework.Converters.Graph.Poco;
 
 namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.PocoTests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class PocoPathTests {
 
         #region GetSegements Tests

@@ -4,12 +4,12 @@ using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.ServiceModel.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     // PBI 1220 - 2013.05.27 - TWR - Created
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class WebServicesTest
     {
 

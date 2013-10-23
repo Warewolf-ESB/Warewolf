@@ -6,11 +6,11 @@ using System.Windows.Documents;
 using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.Data.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class Dev2RandomTests
     {
         Dev2Random _dev2Random = new Dev2Random();

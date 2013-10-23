@@ -11,7 +11,7 @@ using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.Hosting;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.DynamicServices.Test
@@ -19,7 +19,7 @@ namespace Dev2.DynamicServices.Test
     /// <summary>
     /// Summary description for WorkspaceTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
 
     public class WorkspaceTest
     {

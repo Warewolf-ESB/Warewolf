@@ -3,7 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Studio.ViewModels.Administration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Dev2.Studio.Core.Interfaces;
 using System.IO;
 using System.Drawing;
@@ -14,7 +14,7 @@ namespace Dev2.Core.Tests
     /// <summary>
     /// Summary description for Dev2DialogueTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class Dev2DialogueTest
     {
 

@@ -1,9 +1,9 @@
 ﻿using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Runtime.Configuration.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ExtensionMethodsTests
     {
         const string AttributeName = "say";

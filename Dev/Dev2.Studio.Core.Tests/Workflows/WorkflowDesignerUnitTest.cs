@@ -33,7 +33,7 @@ using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -41,7 +41,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable once CheckNamespace
 namespace Dev2.Core.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class WorkflowDesignerUnitTest
     {
 

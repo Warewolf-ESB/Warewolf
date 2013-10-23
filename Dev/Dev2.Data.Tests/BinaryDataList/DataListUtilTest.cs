@@ -4,12 +4,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Data.Tests.BinaryDataList
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DataListUtilTest
     {
 

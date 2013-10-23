@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using Dev2.DataList.Contract;
 using Dev2.Tests.Properties;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Unlimited.UnitTest.Framework.Parsing {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class LanguageParserTest {
 
         #region Additional Test Attributes

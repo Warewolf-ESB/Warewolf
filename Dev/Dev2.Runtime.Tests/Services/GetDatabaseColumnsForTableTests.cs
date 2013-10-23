@@ -2,11 +2,11 @@
 using System.Runtime.Serialization;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class GetDatabaseColumnsForTableTests
     {
         #region Static Class Init

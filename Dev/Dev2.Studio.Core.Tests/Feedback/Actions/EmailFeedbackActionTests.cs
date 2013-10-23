@@ -12,12 +12,12 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.Feedback.Actions;
 using Dev2.Studio.ViewModels.Help;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests.Feedback.Actions
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class EmailFeedbackActionTests
     {
         private SystemInfoTO GetMockSysInfo()

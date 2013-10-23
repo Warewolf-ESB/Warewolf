@@ -1,10 +1,10 @@
 ﻿using System;
 using Dev2.Providers.Errors;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Infrastructure.Tests.Providers.Errors
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ActionableErrorInfoTests
     {
         [TestMethod]

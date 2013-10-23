@@ -9,7 +9,7 @@ using Dev2.Common;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -18,7 +18,7 @@ namespace ActivityUnitTests.ActivityTest
     /// <summary>
     /// Summary description for CountRecordsTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     //[Ignore] //Does not work on server
     public class WebGetRequestActivityTests : BaseActivityUnitTest
     {

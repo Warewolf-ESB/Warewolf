@@ -5,14 +5,14 @@ using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Runtime.Hosting;
 using Dev2.Tests.Runtime;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.DynamicServices.Test
 {
     /// <summary>
     /// Summary description for NetworkTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class NetworkTest
     {
 

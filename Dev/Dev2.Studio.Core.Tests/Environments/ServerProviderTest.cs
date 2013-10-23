@@ -4,14 +4,14 @@ using Dev2.Core.Tests.Environments;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests
 {
     // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
 
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ServerProviderTest
     {
 

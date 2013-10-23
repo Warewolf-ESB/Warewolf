@@ -4,12 +4,12 @@ using System.Linq;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Dev2.Tests.Runtime.Poco;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.Runtime.ESB.Brokers
 {
     // BUG 9500 - 2013.05.31 - TWR : refactored to this class
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class PluginBrokerTests
     {
         #region ApplyMappings

@@ -1,5 +1,5 @@
 ﻿using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
@@ -9,7 +9,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
     /// <author>trevor.williams-ros</author>
     /// <date>2013/02/13</date>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class RecordsetTests
     {
         #region CTOR

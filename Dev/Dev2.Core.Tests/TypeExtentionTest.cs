@@ -1,13 +1,13 @@
 ﻿using System;
 using Dev2.Common.ExtMethods;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests
 {
     /// <summary>
     /// Summary description for TypeExtentionTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class TypeExtentionTest
     {
         /// <summary>

@@ -11,12 +11,12 @@ using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Deploy;
 using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Navigation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DeployStatsCalculatorTests
     {
         Mock<IEnvironmentModel> _mockEnvironmentModel;

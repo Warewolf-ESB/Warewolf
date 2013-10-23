@@ -20,7 +20,7 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Navigation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -31,7 +31,7 @@ namespace Dev2.Core.Tests
     /// <summary>
     ///     Summary description for Base
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class TreeViewModelsTest
     {
         TcpConnection _testConnection;

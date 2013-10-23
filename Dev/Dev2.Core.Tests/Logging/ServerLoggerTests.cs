@@ -5,7 +5,7 @@ using System.Threading;
 using Dev2.Common;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Configuration.Settings;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 
@@ -17,7 +17,7 @@ namespace Dev2.Tests.Logging
     ///// <summary>
     ///// Summary description for UnitTest1
     ///// </summary>
-    //[TestClass]
+    //[TestClass][ExcludeFromCodeCoverage]
     //public class ServerLoggerTests
     //{
     //    public static object SyncLock = new object();

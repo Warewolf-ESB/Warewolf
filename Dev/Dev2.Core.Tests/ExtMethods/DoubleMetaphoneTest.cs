@@ -1,12 +1,12 @@
 ﻿using Dev2.Common.ExtMethods;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.ExtMethods
 {
     /// <summary>
     /// Summary description for DoubleMetaphoneTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DoubleMetaphoneTest
     {
         /// <summary>

@@ -2,12 +2,12 @@
 using System.Network;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Unlimited.UnitTest.Framework.Dev2.Network
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class NetworkMessageBrokerTests
     {
         [TestMethod]

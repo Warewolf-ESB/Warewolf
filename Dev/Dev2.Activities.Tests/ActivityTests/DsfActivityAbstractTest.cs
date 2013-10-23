@@ -1,10 +1,10 @@
 ﻿using Dev2.DataList.Contract.Binary_Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DsfActivityAbstractTest //: NativeActivityTest
     {
 

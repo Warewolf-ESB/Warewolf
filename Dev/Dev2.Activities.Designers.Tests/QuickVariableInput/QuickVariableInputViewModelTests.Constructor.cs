@@ -4,11 +4,11 @@ using System.Windows;
 using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Preview;
 using Dev2.Studio.Core.ViewModels.Base;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public partial class QuickVariableInputViewModelTests
     {
         [TestMethod]

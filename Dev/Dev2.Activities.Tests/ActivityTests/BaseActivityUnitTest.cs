@@ -7,7 +7,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Microsoft.VisualBasic.Activities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using System;
 using System.Activities;
@@ -22,7 +22,7 @@ using Dev2.Runtime.ESB.Execution;
 namespace ActivityUnitTests
 // ReSharper restore CheckNamespace
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class BaseActivityUnitTest
     {
 

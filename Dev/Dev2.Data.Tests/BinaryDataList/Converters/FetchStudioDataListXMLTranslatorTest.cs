@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.Tests.Runtime.BinaryDataList.Converters
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class FetchStudioDataListXMLTranslatorTest
     {
         static IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();

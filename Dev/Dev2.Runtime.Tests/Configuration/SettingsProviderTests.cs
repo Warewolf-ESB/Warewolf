@@ -5,11 +5,11 @@ using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Runtime.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.Runtime.Configuration
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class SettingsProviderTests
     {
         static readonly object WriterLock = new object();

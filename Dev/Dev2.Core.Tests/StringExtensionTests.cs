@@ -1,9 +1,9 @@
 ﻿using Dev2.Common.ExtMethods;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Common.Test
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class StringExtensionTests
     {
         [TestMethod]

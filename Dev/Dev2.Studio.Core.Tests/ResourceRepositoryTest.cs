@@ -22,7 +22,7 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Unlimited.Framework;
 
@@ -31,7 +31,7 @@ namespace BusinessDesignStudio.Unit.Tests
     /// <summary>
     /// Summary description for ResourceRepositoryTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ResourceRepositoryTest
     {
 

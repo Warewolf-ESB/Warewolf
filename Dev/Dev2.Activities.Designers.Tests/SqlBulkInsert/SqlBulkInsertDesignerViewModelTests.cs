@@ -14,13 +14,13 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Dev2.TO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Newtonsoft.Json;
 
 namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class SqlBulkInsertDesignerViewModelTests
     {
         [TestMethod]

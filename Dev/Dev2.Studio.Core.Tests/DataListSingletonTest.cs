@@ -1,6 +1,6 @@
 ﻿using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces.DataList;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using System.Threading;
 
@@ -8,7 +8,7 @@ namespace Dev2.Core.Tests {
     /// <summary>
     /// A set of test cases to test the functionality of the DataListSingleton
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DataListSingletonTest {
 
         public static readonly object DataListSingletonTestGuard = new object();

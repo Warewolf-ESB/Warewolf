@@ -4,11 +4,11 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.Web;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DataObjectTest
     {
 

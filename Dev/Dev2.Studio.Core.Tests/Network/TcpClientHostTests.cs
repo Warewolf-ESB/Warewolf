@@ -9,12 +9,12 @@ using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Providers.Events;
 using Dev2.Studio.Core.Network;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests.Network
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class TcpClientHostTests
     {
         #region ConnectAsync

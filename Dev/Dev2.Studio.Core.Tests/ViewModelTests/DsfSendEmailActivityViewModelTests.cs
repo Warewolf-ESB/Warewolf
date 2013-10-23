@@ -17,7 +17,7 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.ActivityViewModels;
 using Dev2.Studio.ViewModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -26,7 +26,7 @@ namespace Dev2.Core.Tests.ViewModelTests
     /// <summary>
     /// Summary description for DsfActivityViewModelTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DsfSendEmailActivityViewModelTests
     {
 

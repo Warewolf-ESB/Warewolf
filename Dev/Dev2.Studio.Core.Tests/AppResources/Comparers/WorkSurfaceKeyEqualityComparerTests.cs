@@ -8,7 +8,7 @@ using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Factory;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests.AppResources.Comparers
@@ -16,7 +16,7 @@ namespace Dev2.Core.Tests.AppResources.Comparers
     /// <summary>
     /// Summary description for WorkSurfaceKeyEqualityComparerTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class WorkSurfaceKeyEqualityComparerTests
     {
         public WorkSurfaceKeyEqualityComparerTests()

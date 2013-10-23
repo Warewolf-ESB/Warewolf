@@ -1,5 +1,5 @@
 ﻿using Dev2.Data.Binary_Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.Data.Tests.BinaryDataList
@@ -7,7 +7,7 @@ namespace Dev2.Data.Tests.BinaryDataList
     /// <summary>
     /// Summary description for LoopedIndexIteratorTEst
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class LoopedIndexIteratorTest
     {
         /// <summary>

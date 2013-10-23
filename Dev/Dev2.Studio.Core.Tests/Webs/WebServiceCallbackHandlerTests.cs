@@ -8,13 +8,13 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Newtonsoft.Json.Linq;
 
 namespace Dev2.Core.Tests.Webs
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class WebServiceCallbackHandlerTests
     {
         static ImportServiceContext _importContext;

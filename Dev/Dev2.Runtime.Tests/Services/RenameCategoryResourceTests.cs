@@ -4,12 +4,12 @@ using System.IO;
 using System.Runtime.Serialization;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.Runtime.Services
 {
     // ReSharper disable InconsistentNaming
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class RenameCategoryResourceTests
     {
         #region Static Class Init

@@ -4,12 +4,12 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.Wizards;
 using Dev2.TO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests.WizardTests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class WizardEndpointGenerationStrategyProviderTests
     {
         #region RegisterEndpointGenerationStrategies

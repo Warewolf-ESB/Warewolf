@@ -15,7 +15,7 @@ using Dev2.Diagnostics;
 using Dev2.Utilities;
 using Microsoft.CSharp.Activities;
 using Microsoft.VisualBasic.Activities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -23,7 +23,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DsfFlowNodeTests : BaseActivityUnitTest
     {
         #region Decision Tests

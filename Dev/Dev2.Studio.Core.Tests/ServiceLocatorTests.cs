@@ -1,10 +1,10 @@
 ﻿using System;
 using Dev2.Studio.Core.Network;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ServiceLocatorTests
     {
 

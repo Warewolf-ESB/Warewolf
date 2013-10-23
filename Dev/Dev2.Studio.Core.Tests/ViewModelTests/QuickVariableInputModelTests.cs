@@ -2,7 +2,7 @@
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Models.QuickVariableInput;
 using Dev2.ViewModels.QuickVariableInput;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -12,7 +12,7 @@ namespace Dev2.Core.Tests.ModelTests
     /// <summary>
     /// Summary description for QuickVariableInputModelTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class QuickVariableInputModelTests
     {
         public QuickVariableInputModelTests()

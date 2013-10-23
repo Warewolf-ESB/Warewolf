@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Data.Factories;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Interfaces;
@@ -15,7 +15,7 @@ namespace Dev2.Tests.DataList
     /// <summary>
     /// Summary description for Dev2DataListBuilderTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class Dev2DataListBuilderTest
     {
 

@@ -2,10 +2,10 @@
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests.ModelTests {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DataListItemModelTest {
 
         #region Test Fields

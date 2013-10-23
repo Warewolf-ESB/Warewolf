@@ -1,13 +1,13 @@
 ﻿using System;
 using Dev2.Runtime;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
     /// <summary>
     /// Summary description for ServiceInvokerTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ServiceInvokerTest
     {
         /// <summary>

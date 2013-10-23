@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 using Unlimited.Framework.Converters.Graph.Ouput;
 using Unlimited.Framework.Converters.Graph.Output;
@@ -14,7 +14,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Utils
     /// <summary>
     /// Summary description for ServiceMappingHelperTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ServiceMappingHelperTest
     {
         /// <summary>

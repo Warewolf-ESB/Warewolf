@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.DataList.Contract.Binary_Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.DataList
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class BinaryDataListItemTest
     {
         [TestMethod]

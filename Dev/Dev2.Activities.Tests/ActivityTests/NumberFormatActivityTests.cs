@@ -4,14 +4,14 @@ using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class NumberFormatActivityTests : BaseActivityUnitTest
     {
         #region Class Members

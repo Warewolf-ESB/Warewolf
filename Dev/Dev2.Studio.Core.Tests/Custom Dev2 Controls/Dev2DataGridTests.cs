@@ -8,7 +8,7 @@ using System.Windows;
 using Dev2.Activities.Designers2.Core.Controls;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.UI;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.Custom_Dev2_Controls
@@ -16,7 +16,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
     /// <summary>
     /// Summary description for Dev2DataGridTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class Dev2DataGridTests
     {
         public Dev2DataGridTests()

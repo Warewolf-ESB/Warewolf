@@ -12,12 +12,12 @@ using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.ViewModelTests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class WorkSurfaceContextViewModelTests
     {
         [TestMethod]

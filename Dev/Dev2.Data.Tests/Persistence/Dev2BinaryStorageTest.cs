@@ -3,14 +3,14 @@ using System.Text;
 using System.Collections.Generic;
 using Dev2.Data.Storage;
 using Dev2.Data.Storage.ProtocolBuffers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Data.Tests.Persistence
 {
     /// <summary>
     /// Summary description for Dev2BinaryStorageTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class Dev2BinaryStorageTest
     {
         /// <summary>

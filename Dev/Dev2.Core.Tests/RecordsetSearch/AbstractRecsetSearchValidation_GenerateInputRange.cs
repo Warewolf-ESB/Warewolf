@@ -2,14 +2,14 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Dev2.DataList.Contract;
 
 namespace Unlimited.UnitTest.Framework.RecordsetSearch {
     /// <summary>
     /// Summary description for AbstractRecsetSearchValidation_GenerateInputRange
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class AbstractRecsetSearchValidation_GenerateInputRange {
         public AbstractRecsetSearchValidation_GenerateInputRange() {
             //

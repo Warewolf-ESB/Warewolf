@@ -1,9 +1,9 @@
 ﻿using Dev2.Common.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.Utils
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class JSONUtilsTests
     {
         [TestMethod]

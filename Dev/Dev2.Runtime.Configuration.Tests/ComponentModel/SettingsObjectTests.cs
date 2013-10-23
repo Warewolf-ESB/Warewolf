@@ -1,10 +1,10 @@
 ﻿using Dev2.Runtime.Configuration.ComponentModel;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
 
 namespace Dev2.Runtime.Configuration.Tests.ComponentModel
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class SettingsObjectTests
     {
         [TestMethod]

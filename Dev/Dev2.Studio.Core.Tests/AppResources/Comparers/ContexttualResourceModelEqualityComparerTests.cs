@@ -3,12 +3,12 @@ using Dev2.Core.Tests.Diagnostics;
 using Dev2.Core.Tests.Network;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests.AppResources.Comparers
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ContexttualResourceModelEqualityComparerTests
     {
         [TestMethod]

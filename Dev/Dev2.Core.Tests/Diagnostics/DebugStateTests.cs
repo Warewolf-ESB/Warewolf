@@ -2,12 +2,12 @@
 using System.Linq;
 using Dev2.Diagnostics;
 using Dev2.Tests.Weave;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Tests.Diagnostics
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DebugStateTests
     {
         const string LongText = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."

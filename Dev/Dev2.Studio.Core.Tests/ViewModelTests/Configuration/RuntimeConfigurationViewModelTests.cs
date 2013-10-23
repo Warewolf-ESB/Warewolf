@@ -8,14 +8,14 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using System;
 using System.Xml.Linq;
 
 namespace Dev2.Core.Tests.ViewModelTests.Configuration
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class RuntimeConfigurationViewModelTests
     {
         #region Load Tests

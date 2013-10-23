@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Dev2.Diagnostics;
 using Dev2.Providers.Events;
 using Dev2.Studio.ViewModels.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests

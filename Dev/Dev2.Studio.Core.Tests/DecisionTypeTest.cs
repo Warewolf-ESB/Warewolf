@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Dev2.Studio.Core.Models;
 
 namespace Dev2.Core.Tests {
     /// <summary>
     /// Summary description for DecisionTypeTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DecisionTypeTest {
 
         private TestContext testContextInstance;

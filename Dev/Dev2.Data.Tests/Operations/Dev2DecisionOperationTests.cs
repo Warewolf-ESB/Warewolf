@@ -1,9 +1,9 @@
 ﻿using Dev2.Data.Decisions.Operations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Data.Tests.Operations
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class Dev2DecisionOperationTests
     {
         #region Comparing Integers

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
 using Dev2.Services.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.Services
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class UserConfigurationServiceTests
     {
         #region Static Class Init

@@ -2,7 +2,7 @@
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
 using Dev2.Data.SystemTemplates;
 
@@ -17,7 +17,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
     // Fetching a switch case decision model tests - Un-used have commented it out
     // No test cases for SaveModel - Fixed
 
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class WebModelTests
     {
         /// <summary>

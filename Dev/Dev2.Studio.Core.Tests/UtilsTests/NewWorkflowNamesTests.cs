@@ -3,14 +3,14 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Studio.Core.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests.UtilsTests
 {
     /// <summary>
     /// Summary description for NewWorkflowNamesTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class NewWorkflowNamesTests
     {
         public NewWorkflowNamesTests()

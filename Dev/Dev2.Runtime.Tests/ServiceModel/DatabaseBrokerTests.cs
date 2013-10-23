@@ -6,13 +6,13 @@ using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DatabaseBrokerTests
     {
 

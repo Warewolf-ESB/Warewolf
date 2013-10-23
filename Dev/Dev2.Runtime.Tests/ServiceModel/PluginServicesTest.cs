@@ -6,12 +6,12 @@ using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.ServiceModel.Data;
 using DummyNamespaceForTest;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     // BUG 9500 - 2013.05.31 - TWR - Created
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class PluginServicesTest
     {
 

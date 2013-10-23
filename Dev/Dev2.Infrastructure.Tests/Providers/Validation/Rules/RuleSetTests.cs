@@ -1,11 +1,11 @@
 ﻿using System;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class RuleSetTests
     {
         [TestMethod]

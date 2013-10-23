@@ -7,7 +7,7 @@ using Dev2.Studio.Core.Services.Communication;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Utils;
 using Dev2.Studio.ViewModels.Help;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Microsoft.Win32;
 using Moq;
 
@@ -16,7 +16,7 @@ namespace Dev2.Core.Tests.ViewModelTests
     /// <summary>
     /// Summary description for FeedbackViewModelTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class FeedbackViewModelTest
     {
         #region Static Class Init

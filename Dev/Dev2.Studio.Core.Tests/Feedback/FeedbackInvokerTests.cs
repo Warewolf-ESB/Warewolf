@@ -2,7 +2,7 @@
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Feedback;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace Dev2.Core.Tests.Feedback
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class FeedbackInvokerTests
     {
         #region Class Members

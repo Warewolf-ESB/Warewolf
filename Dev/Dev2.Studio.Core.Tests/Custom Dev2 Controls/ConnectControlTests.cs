@@ -14,13 +14,13 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.UI;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Custom_Dev2_Controls
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ConnectControlTests
     {
         [TestMethod]

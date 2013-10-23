@@ -5,13 +5,13 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.Views.Workflow;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class DragDropHelpersTests
     {

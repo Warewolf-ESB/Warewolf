@@ -5,7 +5,7 @@ using System.Linq;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -15,7 +15,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for CalculateActivityTest
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class CalculateActivityTest : BaseActivityUnitTest
     {
         /// <summary>

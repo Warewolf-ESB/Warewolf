@@ -1,11 +1,11 @@
 ﻿using System;
 using Dev2.Communication;
 using Dev2.Providers.Events;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Infrastructure.Tests.Providers.Events
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class EventPublisherTests
     {
         [TestMethod]

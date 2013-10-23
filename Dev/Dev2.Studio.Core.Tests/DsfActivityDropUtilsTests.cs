@@ -2,11 +2,11 @@
 using Dev2.Studio.Enums;
 using Dev2.Studio.Utils;
 using Dev2.Studio.ViewModels.Workflow;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DsfActivityDropUtilsTests
     {
         [TestInitialize]

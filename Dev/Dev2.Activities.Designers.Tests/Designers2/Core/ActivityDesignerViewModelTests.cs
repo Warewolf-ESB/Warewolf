@@ -5,14 +5,14 @@ using System.Windows;
 using System.Windows.Data;
 using Dev2.Activities.Designers.Tests.Designers2.Core.Stubs;
 using Dev2.Activities.Designers2.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Moq.Protected;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.Designers2.Core
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ActivityDesignerViewModelTests
     {
 

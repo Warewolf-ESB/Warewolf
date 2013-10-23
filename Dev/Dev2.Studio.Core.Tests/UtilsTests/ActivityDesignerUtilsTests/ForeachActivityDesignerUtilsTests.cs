@@ -2,7 +2,7 @@
 using System.Activities.Statements;
 using Dev2.Activities.Utils;
 using Dev2.Studio.Core.Activities.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.UtilsTests.ActivityDesignerUtilsTests
@@ -10,7 +10,7 @@ namespace Dev2.Core.Tests.UtilsTests.ActivityDesignerUtilsTests
     /// <summary>
     /// Summary description for ForeachActivityDesignerUtilsTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ForeachActivityDesignerUtilsTests
     {
         public ForeachActivityDesignerUtilsTests()

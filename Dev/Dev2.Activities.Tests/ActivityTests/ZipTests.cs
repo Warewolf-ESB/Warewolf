@@ -9,7 +9,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
 using Dev2.Tests.Activities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -18,7 +18,7 @@ namespace ActivityUnitTests.ActivityTests
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ZipTests : BaseActivityUnitTest
     {
         static TestContext myTestContext;

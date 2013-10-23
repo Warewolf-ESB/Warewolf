@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.Runtime.ESB.Brokers
 {
-    [TestClass]
+    [TestClass][ExcludeFromCodeCoverage]
     public class DatabaseBrokerTests
     {
         #region MsSql
