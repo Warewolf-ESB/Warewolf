@@ -111,17 +111,17 @@ namespace Dev2.Studio.UI.Tests
 
             // check services for warning icon to incidate mappings out of date ;)
 
-            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "TravsTestService(ServiceDesigner)"))
+            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "TravsTestService"))
             {
                 Assert.Fail("'Fix Errors' button not visible");
             }
 
-            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "FetchCities(ServiceDesigner)"))
+            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "FetchCities"))
             {
                 Assert.Fail("'Fix Errors' button not visible");
             }
 
-            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "DummyService(ServiceDesigner)"))
+            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "DummyService"))
             {
                 Assert.Fail("'Fix Errors' button not visible");
             }

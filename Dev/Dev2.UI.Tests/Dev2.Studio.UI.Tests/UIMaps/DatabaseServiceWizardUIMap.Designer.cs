@@ -142,22 +142,22 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             SendKeys.SendWait("{ENTER}");
         }
 
-        public void TabToMappingsTab(UITestControl control)
+        public void TabToMappingsTab()
         {
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
             SendKeys.SendWait("{RIGHT}");
         }
 
-        public void TabToOutputMappings(UITestControl control)
+        public void TabToOutputMappings()
         {
-            TabToMappingsTab(control);
+            TabToMappingsTab();
             Playback.Wait(500);
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");
         }
 
-        public void TabToInputMappings(UITestControl control)
+        public void TabToInputMappings()
         {
-            TabToMappingsTab(control);
+            TabToMappingsTab();
             SendKeys.SendWait("{TAB}");
         }
 

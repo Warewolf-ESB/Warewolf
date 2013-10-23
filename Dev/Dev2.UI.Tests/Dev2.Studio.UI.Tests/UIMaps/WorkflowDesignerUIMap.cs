@@ -1104,7 +1104,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         public void CreateWorkflow()
         {
-            var middle = new Point(UIBusinessDesignStudioWindow.Left + UIBusinessDesignStudioWindow.Width / 2, UIBusinessDesignStudioWindow.Top + UIBusinessDesignStudioWindow.Height / 4);
+            var middle = new Point(StudioWindow.Left + StudioWindow.Width / 2, StudioWindow.Top + StudioWindow.Height / 4);
             Mouse.Click(middle);
             Keyboard.SendKeys("^w");
         }

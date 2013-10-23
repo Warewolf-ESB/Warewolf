@@ -99,10 +99,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
             Mouse.Click(uIItemImage, new Point(638, 459));
         }
 
-        public static void ClickSave()
+        public void ClickSave()
         {
-            var studioWindow = new UIBusinessDesignStudioWindow();
-            var uIItemImage = studioWindow.GetChildren()[0].GetChildren()[0];
+            var uIItemImage = StudioWindow.GetChildren()[0].GetChildren()[0];
             Mouse.Click(uIItemImage, new Point(525, 460));
         }
     }

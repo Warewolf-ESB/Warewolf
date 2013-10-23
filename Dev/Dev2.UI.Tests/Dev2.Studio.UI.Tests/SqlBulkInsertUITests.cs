@@ -79,7 +79,7 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(1000);
             var listOfDbNames = dbDropDown.Items.Select(i => i as WpfListItem).ToList();
             var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDB));
-            Playback.Wait(1000);
+            databaseName.DrawHighlight();
             Mouse.Click(databaseName, new Point(5, 5));
             Playback.Wait(2000);
 
@@ -193,7 +193,7 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(1000);
             var listOfDbNames = dbDropDown.Items.Select(i => i as WpfListItem).ToList();
             var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDB));
-            Playback.Wait(1000);
+            databaseName.DrawHighlight();
             Mouse.Click(databaseName, new Point(5, 5));
 
             //Select a table

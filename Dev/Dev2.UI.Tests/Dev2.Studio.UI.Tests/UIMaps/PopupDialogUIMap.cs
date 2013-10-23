@@ -5,16 +5,15 @@ using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 namespace Dev2.Studio.UI.Tests.UIMaps
 {
-    class PopupDialogUIMap
+    public class PopupDialogUIMap : UIMapBase
     {
         /// <summary>
         /// Returns true if found in the timeout period.
         /// </summary>
-        public static void WaitForDialog()
+        public void WaitForDialog()
         {
             const int timeOut = 5000;
-            var uiBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
-            Type type = uiBusinessDesignStudioWindow.GetChildren()[0].GetType();
+            Type type = StudioWindow.GetChildren()[0].GetType();
             const int interval = 100;
             var timeNow = 0;
             while(type != typeof(WpfWindow))
@@ -25,7 +24,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                 {
                     break;
                 }
-                var tryGetDialog = uiBusinessDesignStudioWindow.GetChildren()[0];
+                var tryGetDialog = StudioWindow.GetChildren()[0];
                 type = tryGetDialog.GetType();
             }
             if (type != typeof (WpfWindow))

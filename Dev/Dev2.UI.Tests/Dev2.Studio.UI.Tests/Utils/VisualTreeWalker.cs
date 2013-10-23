@@ -6,6 +6,8 @@ namespace Dev2.Studio.UI.Tests.Utils
 {
     class VisualTreeWalker
     {
+        static UIMapBase.UIStudioWindow _studioWindow;
+
         private static UITestControl GetChildByAutomationIDPathImpl(UITestControl parent, int bookmark, params string[] automationIDs)
         {
             var children = parent.GetChildren();
@@ -40,8 +42,11 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         public static UITestControl GetControl(params string[] automationIDs)
         {
-            var studioWindow = new UIBusinessDesignStudioWindow();
-            var control = GetChildByAutomationIDPath(studioWindow, automationIDs);
+            if (_studioWindow == null)
+            {
+                _studioWindow = new UIMapBase.UIStudioWindow();
+            }
+            var control = GetChildByAutomationIDPath(_studioWindow, automationIDs);
             if (control == null)
             {
                 throw new UITestControlNotFoundException();

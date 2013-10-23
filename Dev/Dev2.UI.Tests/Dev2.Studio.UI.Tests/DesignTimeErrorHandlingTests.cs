@@ -61,10 +61,10 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.EnterExplorerSearchText(serviceToUse);
             ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", serviceToUse);
             // Get wizard window
-            var wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+
             WizardsUIMap.WaitForWizard();
             // Tab to mappings
-            DatabaseServiceWizardUIMap.TabToOutputMappings(wizardWindow);
+            DatabaseServiceWizardUIMap.TabToOutputMappings();
             // Remove column 1+2's mapping
             SendKeys.SendWait("{TAB}");
             SendKeys.SendWait("{DEL}");
@@ -79,11 +79,12 @@ namespace Dev2.Studio.UI.Tests
             }
 
             ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", serviceToUse);
+
             // Get wizard window
-            wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             WizardsUIMap.WaitForWizard();
+
             // Tab to mappings
-            DatabaseServiceWizardUIMap.TabToOutputMappings(wizardWindow);
+            DatabaseServiceWizardUIMap.TabToOutputMappings();
             // Replace column 1's mapping
             SendKeys.SendWait("{TAB}");
             SendKeys.SendWait("Column1");
@@ -126,12 +127,12 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("Bug_10011_DbService");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
+
             // Get wizard window
             WizardsUIMap.WaitForWizard();
-            var wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
 
             // Tab to mappings
-            DatabaseServiceWizardUIMap.TabToInputMappings(wizardWindow);
+            DatabaseServiceWizardUIMap.TabToInputMappings();
             // Set input mapping to required
             SendKeys.SendWait("{TAB}");
             SendKeys.SendWait(" ");
@@ -144,10 +145,10 @@ namespace Dev2.Studio.UI.Tests
             }
 
             // Fix Errors
-            if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService(ServiceDesigner)"))
+            if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService"))
             {
                 //Assert mappings are prompting the user to add required mapping
-                var getOpenMappingToggle = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Bug_10011_DbService(ServiceDesigner)", "OpenMappingsToggle");
+                var getOpenMappingToggle = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Bug_10011_DbService", "OpenMappingsToggle");
                 var getCloseMappingButton = getOpenMappingToggle.GetChildren()[1];
                 Assert.IsTrue(getCloseMappingButton.Height != -1, "Fix Error does not prompt the user to input required mappings");
             }

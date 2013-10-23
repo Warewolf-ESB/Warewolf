@@ -1,4 +1,6 @@
-﻿namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
+﻿using Dev2.Studio.UI.Tests.Utils;
+
+namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
 {
     using System.Drawing;
     using Microsoft.VisualStudio.TestTools.UITesting;
@@ -8,6 +10,12 @@
     
     public partial class ToolboxUIMap
     {
+        UITestControl _toolTree;
+        public ToolboxUIMap()
+        {
+            _toolTree = VisualTreeWalker.GetControl("UI_DocManager_AutoID", "UI_ToolboxPane_AutoID", "Uia.ToolboxUserControl", "PART_Tools");
+        }
+
         public void clickToolboxItem(string automationID)
         {
             UITestControl theControl = FindControl(automationID);
@@ -66,6 +74,48 @@
             thePixel = pixelGrabber.GetPixel(24, 11).Name;
             result = result || thePixel != White;
 
+            return result;
+        }
+
+        public UITestControl FindControl(string itemAutomationID)
+        {
+            var kids = _toolTree.GetChildren();
+
+            foreach (var kid in kids)
+            {
+                // Now process to find the correct item ;)
+
+                var innerKids = kid.GetChildren();
+
+                foreach (var innerKid in innerKids)
+                {
+                    string autoID = innerKid.GetProperty("AutomationID").ToString();
+                    if (autoID.Contains(itemAutomationID))
+                    {
+                        return innerKid;
+                    }    
+                }
+            }
+            return null;
+        }
+
+        public UITestControlCollection GetAllTools()
+        {
+            UITestControlCollection result = new UITestControlCollection();
+            foreach(var category in _toolTree.GetChildren())
+            {
+                var tools = category.GetChildren();
+                if(tools.Count > 0)
+                {
+                    foreach(var tool in tools)
+                    {
+                        if(tool.ControlType == ControlType.TreeItem)
+                        {
+                            result.Add(tool);
+                        }
+                    }
+                }
+            }
             return result;
         }
     }

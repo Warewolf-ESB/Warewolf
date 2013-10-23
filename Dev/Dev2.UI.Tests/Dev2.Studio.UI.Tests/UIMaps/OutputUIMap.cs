@@ -248,6 +248,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
 
         public void WaitForExecution()
         {
+            Playback.Wait(100);
             while (IsSpinnerSpinning())
             {
                 Playback.Wait(500);

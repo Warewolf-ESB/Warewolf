@@ -32,9 +32,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
     using MouseButtons = System.Windows.Forms.MouseButtons;
 
-    public partial class WebServiceWizardUIMap
+    public partial class WebServiceWizardUIMap : UIMapBase
     {
-        public static void InitializeFullTestServiceAndSource(string serviceName, string sourceName)
+        public void InitializeFullTestServiceAndSource(string serviceName, string sourceName)
         {
             //init
             var _docManager = new DocManagerUIMap();

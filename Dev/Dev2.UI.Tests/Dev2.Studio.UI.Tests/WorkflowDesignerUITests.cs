@@ -228,7 +228,10 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait("[[AssignThis]]{TAB}Some Data");
 
             //run and wait until debug output comes through
-            WorkflowDesignerUIMap.RunWorkflowAndWaitUntilOutputStepCountAtLeast(2);
+            RibbonUIMap.ClickRibbonMenuItem("Debug");
+            PopupDialogUIMap.WaitForDialog();
+            DebugUIMap.ClickExecute();
+            OutputUIMap.WaitForExecution();
 
             //Click step
             DockManagerUIMap.ClickOpenTabPage("Output");

@@ -80,20 +80,6 @@
             Mouse.Click(TabPage, new Point(5, 5));
         }
 
-        public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
-        {
-            get
-            {
-                if((_uiBusinessDesignStudioWindow == null))
-                {
-                    _uiBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
-                }
-                return _uiBusinessDesignStudioWindow;
-            }
-        }
-
-        UIBusinessDesignStudioWindow _uiBusinessDesignStudioWindow;
-
         /// <summary>
         /// Returns true if found in the timeout period.
         /// </summary>

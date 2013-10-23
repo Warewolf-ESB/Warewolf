@@ -36,7 +36,7 @@ using System.Windows.Forms;
         }
         public void EnterWorkflowName(string name) {
             #region Variable Declarations
-            WinWindow uIServiceDetailsWindow1 = this.UIWorkflowServiceDetaiWindow1;
+            WinWindow uIServiceDetailsWindow1 = StudioWindow.GetChildren()[0] as WinWindow;
             #endregion
             uIServiceDetailsWindow1.Find();
             int l1 = uIServiceDetailsWindow1.BoundingRectangle.Left;
@@ -55,7 +55,7 @@ using System.Windows.Forms;
 
         public void EnterWorkflowCategory(string categoryName) {
             #region Variable Declarations
-            WinWindow uIServiceDetailsWindow1 = this.UIWorkflowServiceDetaiWindow1;
+            WinWindow uIServiceDetailsWindow1 = StudioWindow.GetChildren()[0] as WinWindow;
             #endregion
 
             int l1 = uIServiceDetailsWindow1.BoundingRectangle.Left;
@@ -80,7 +80,7 @@ using System.Windows.Forms;
         public void DoneButtonClick()
         {
             #region Variable Declarations
-            WinWindow uIServiceDetailsWindow1 = this.UIWorkflowServiceDetaiWindow1;
+            WinWindow uIServiceDetailsWindow1 = StudioWindow.GetChildren()[0] as WinWindow;
             #endregion
 
             int l1 = uIServiceDetailsWindow1.BoundingRectangle.Left;
@@ -94,27 +94,13 @@ using System.Windows.Forms;
 
         public string GetWorkflowWizardName() {
             #region Variable Declarations
-            WinWindow uIWorkflowServiceDetaiWindow1 = this.UIWorkflowServiceDetaiWindow1;
+            WinWindow uIWorkflowServiceDetaiWindow1 = StudioWindow.GetChildren()[0] as WinWindow;
             #endregion
             if(uIWorkflowServiceDetaiWindow1.WindowTitles.Count > 1) {
                 throw new Exception("More than 1 wizard window opened");
             }
             else {
                 return uIWorkflowServiceDetaiWindow1.WindowTitles[0].ToString();
-            }
-        }
-
-        public bool CloseWizard() {
-            #region Variable Declarations
-            WpfWindow uIServiceDetailsWindow1 = GetWindow();
-            #endregion
-            WpfButton uICloseButton = this.UIWorkflowServiceDetaiWindow.UIWorkflowServiceDetaiTitleBar.UICloseButton;
-            Mouse.Click(uICloseButton, new Point(5, 5));
-            if(uIServiceDetailsWindow1.Exists) {
-                return false;
-            }
-            else {
-                return true;
             }
         }
     }

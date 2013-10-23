@@ -62,25 +62,6 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             return childCount;
         }
 
-        private UIBusinessDesignStudioWindow2 uIBusinessDesignStudio;
-
-        #region Properties
-
-        private UIBusinessDesignStudioWindow2 UIBusinessDesignStudio
-        {
-            get
-            {
-                if (this.uIBusinessDesignStudio == null)
-                {
-                    this.uIBusinessDesignStudio = new UIBusinessDesignStudioWindow2();
-                }
-
-                return uIBusinessDesignStudio;
-            }
-        }
-
-        #endregion Properties
-
         private UITestControlCollection GetWorkflowNotSavedButtons()
         {
             // Workflow not saved...

@@ -10,6 +10,7 @@ using Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WebpageServiceWizardUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses;
@@ -27,6 +28,9 @@ using Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServiceDetailsUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.SwitchUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 namespace Dev2.Studio.UI.Tests
 {
@@ -34,6 +38,22 @@ namespace Dev2.Studio.UI.Tests
     // Please add reference to any maps used to this class
     public abstract class UIMapBase
     {
+        #region Root Mapping for Entire Studio Window
+
+        public class UIStudioWindow : WpfWindow
+        {
+
+            public UIStudioWindow()
+            {
+                SearchProperties.Add(new PropertyExpression(UITestControl.PropertyNames.ClassName, "HwndWrapper",
+                                                                 PropertyExpressionOperator.Contains));
+                SearchProperties.Add(new PropertyExpression(UITestControl.PropertyNames.Name, "Warewolf",
+                                                                 PropertyExpressionOperator.Contains));
+            }
+        }
+
+        #endregion
+
         #region All UI Maps
 
         #region ActivityDropUIMap
@@ -361,6 +381,22 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion Plugin Source Wizard UI Map
 
+        #region Popup Dialog UI Map
+
+        public PopupDialogUIMap PopupDialogUIMap
+        {
+            get
+            {
+                if(_popupDialogUIMap == null)
+                    _popupDialogUIMap = new PopupDialogUIMap();
+                return _popupDialogUIMap;
+            }
+        }
+
+        private PopupDialogUIMap _popupDialogUIMap;
+
+        #endregion Popup Dialog UI Map
+
         #region ResourceChangedPopUp UI Map
 
         public ResourceChangedPopUpUIMap ResourceChangedPopUpUIMap
@@ -432,18 +468,18 @@ namespace Dev2.Studio.UI.Tests
 
         #region Studio Window UI Map
 
-        public UIBusinessDesignStudioWindow StudioWindow
+        public UIStudioWindow StudioWindow
         {
             get
             {
                 if(_studioWindowWizardUIMap == null)
-                    _studioWindowWizardUIMap = new UIBusinessDesignStudioWindow();
+                    _studioWindowWizardUIMap = new UIStudioWindow();
                 return _studioWindowWizardUIMap;
             }
 
         }
 
-        private UIBusinessDesignStudioWindow _studioWindowWizardUIMap;
+        UIStudioWindow _studioWindowWizardUIMap;
 
         #endregion Service Details UI Map
 
@@ -527,6 +563,38 @@ namespace Dev2.Studio.UI.Tests
         private WebpageServiceWizardUIMap _webpageServiceWizardUIMap;
 
         #endregion Webpage Service Wizard UI Map
+
+        #region Web Service Wizard UI Map
+
+        public WebServiceWizardUIMap WebServiceWizardUIMap
+        {
+            get
+            {
+                if(_webServiceWizardUIMap == null)
+                    _webServiceWizardUIMap = new WebServiceWizardUIMap();
+                return _webServiceWizardUIMap;
+            }
+        }
+
+        private WebServiceWizardUIMap _webServiceWizardUIMap;
+
+        #endregion Web Service Wizard UI Map
+
+        #region Wizards UI Map
+
+        public WizardsUIMap WizardsUIMap
+        {
+            get
+            {
+                if(_WizardsUIMap == null)
+                    _WizardsUIMap = new WizardsUIMap();
+                return _WizardsUIMap;
+            }
+        }
+
+        private WizardsUIMap _WizardsUIMap;
+
+        #endregion Wizards UI Map
 
         #region Workflow Designer UI Map
 

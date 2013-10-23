@@ -1,43 +1,22 @@
-﻿using System.Threading;
-using System.Windows.Forms;
-using System.Windows.Input;
+﻿using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
 {
-    using System;
     using System.Drawing;
     using Microsoft.VisualStudio.TestTools.UITesting;
     using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
 
-    public partial class DecisionWizardUIMap
+    public partial class DecisionWizardUIMap : UIMapBase
     {
-        private UIWarewolfWindow mUIWarewolfWindow;
-
-        #region Properties
-
-        public UIWarewolfWindow UIWarewolfWindow
-        {
-            get
-            {
-                if((mUIWarewolfWindow == null))
-                {
-                    mUIWarewolfWindow = new UIWarewolfWindow();
-                }
-                return mUIWarewolfWindow;
-            }
-        }
-
-        #endregion
-
         /// <summary>
         /// ClickCancel
         /// </summary>
         public void ClickCancel()
         {
-            WpfImage uIItemImage = this.UIWarewolfWindow.UIItemImage;
+            WpfImage uIItemImage = StudioWindow.GetChildren()[0].GetChildren()[0] as WpfImage;
             Mouse.DoubleClick(uIItemImage, new Point(760, 484));
         }
 
@@ -46,8 +25,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         /// </summary>
         public void ClickDone()
         {
-            var window = new UIBusinessDesignStudioWindow();
-            var wizard = window.GetChildren()[0].GetChildren()[0];
+            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
             Mouse.Click(wizard, new Point(650, 484));
         }
 
