@@ -131,7 +131,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
 
             ExplorerUIMap.EnterExplorerSearchText(TextToSearchWith);
-            ExplorerUIMap.DragControlToWorkflowDesigner(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith, point);
+            ExplorerUIMap.DragControlToWorkflowDesigner(RemoteServerName, "WORKFLOWS", "TEST", TextToSearchWith, point);
 
             OpenMenuItem("Debug");
             PopupDialogUIMap.WaitForDialog();
@@ -165,10 +165,8 @@ namespace Dev2.Studio.UI.Tests
 
             OpenMenuItem("Debug");
             PopupDialogUIMap.WaitForDialog();
-            SendKeys.SendWait("{F5}");
-            Playback.Wait(1000);
-
-            OutputUIMap.WaitForStepCount(34, 5000);
+            DebugUIMap.ClickExecute();
+            OutputUIMap.WaitForExecution();
 
             Assert.IsFalse(OutputUIMap.IsAnyStepsInError(), "The local workflow threw errors when executed remotely");
         }
