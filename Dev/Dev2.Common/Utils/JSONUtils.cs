@@ -1,4 +1,5 @@
 ﻿using System;
+using Dev2.Providers.Logs;
 
 namespace Dev2.Common.Utils
 {
@@ -35,17 +36,16 @@ namespace Dev2.Common.Utils
         /// <returns></returns>
         public static string ReplaceSlashes(string stringToReplaceIn)
         {
-            int indexOfSlash = stringToReplaceIn.IndexOf("\\", StringComparison.InvariantCulture);
+            int indexOfSlash = stringToReplaceIn.IndexOf(@"\", StringComparison.InvariantCulture);
             if(indexOfSlash != -1)
             {
                 if(indexOfSlash == stringToReplaceIn.Length - 1 || stringToReplaceIn[indexOfSlash + 1] != '"')
                 {
-                    stringToReplaceIn = stringToReplaceIn.Remove(indexOfSlash, 1);
-                    stringToReplaceIn = stringToReplaceIn.Insert(indexOfSlash, "/");
-                    stringToReplaceIn = ReplaceSlashes(stringToReplaceIn);
+                    stringToReplaceIn = stringToReplaceIn.Insert(indexOfSlash, @"\");
+                    stringToReplaceIn = string.Concat(stringToReplaceIn.Substring(0, indexOfSlash + 2), ReplaceSlashes(stringToReplaceIn.Substring(indexOfSlash + 2)));
                 }
             }      
-            return stringToReplaceIn.Replace("//", "/");
+            return stringToReplaceIn;
         }
     }
 }

@@ -120,8 +120,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             var fetchErrors = Compiler.FetchErrors(result.DataListID);
-            var isNullOrEmpty = String.IsNullOrEmpty(fetchErrors);
-            Assert.IsTrue(isNullOrEmpty);
+            if(fetchErrors != string.Empty)
+            {
+                Assert.Fail(fetchErrors);
+            }
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
             
             // remove test datalist ;)
@@ -149,7 +151,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            Assert.IsFalse(Compiler.HasErrors(result.DataListID));
+            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            if(fetchErrors != string.Empty)
+            {
+                Assert.Fail(fetchErrors);
+            }
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
             
             // remove test datalist ;)
@@ -177,7 +183,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            Assert.IsFalse(Compiler.HasErrors(result.DataListID));
+            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            if (fetchErrors != string.Empty)
+            {
+                Assert.Fail(fetchErrors);
+            }
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
             
             // remove test datalist ;)
