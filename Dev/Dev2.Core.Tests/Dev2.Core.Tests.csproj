@@ -198,6 +198,7 @@
     <Compile Include="TestUtils.cs" />
     <Compile Include="DataObjectTest.cs" />
     <Compile Include="TypeExtentionTest.cs" />
+    <Compile Include="Utils\JSONUtilsTests.cs" />
     <Compile Include="Weave\MockByteReaderWriter.cs" />
     <Compile Include="ExecutionStatusCallbackDispatcherTests.cs" />
     <Compile Include="MathOperationTest\FunctionEvaluatorTest.cs" />

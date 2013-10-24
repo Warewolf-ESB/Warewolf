@@ -1,4 +1,5 @@
 ﻿using Dev2.Common;
+using Dev2.Common.Utils;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
@@ -80,11 +81,12 @@ namespace Dev2.Data.Decision
             if (tmp != null)
             {
                 string model = tmp.FetchScalar().TheValue; // Get evalauted data value
+                model = JSONUtils.ReplaceSlashes(model);                
                 if (dlID != GlobalConstants.NullDataListID)
                 {
                     try
                     {
-                        Dev2DecisionStack dds = _compiler.ConvertFromJsonToModel<Dev2DecisionStack>(model.Replace(@"\", @"\\"));
+                        Dev2DecisionStack dds = _compiler.ConvertFromJsonToModel<Dev2DecisionStack>(model);
 
                         if (dds.TheStack != null)
                         {
@@ -172,7 +174,8 @@ namespace Dev2.Data.Decision
             if(payload.StartsWith("{\"TheStack\":[{"))
             {
                 //2013.05.06: Ashley Lewis for PBI 9460 - handle recordsets with stars in their index by resolving them
-                Dev2DecisionStack dds = _compiler.ConvertFromJsonToModel<Dev2DecisionStack>(payload.Replace(@"\", @"\\"));
+                payload = JSONUtils.ReplaceSlashes(payload);
+                Dev2DecisionStack dds = _compiler.ConvertFromJsonToModel<Dev2DecisionStack>(payload);
 
                 if(dds.TheStack != null)
                 {
