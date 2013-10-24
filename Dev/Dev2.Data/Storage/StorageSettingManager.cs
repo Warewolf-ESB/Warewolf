@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using System.Runtime.InteropServices;
 using Dev2.Common;
 using Dev2.Providers.Logs;
@@ -43,7 +44,7 @@ namespace Dev2.Data.Storage
             {
                 foreach(var key in ConfigurationManager.AppSettings.AllKeys)
                 {
-                    Logger.TraceInfo("Can resolve key " + key);
+                    File.AppendAllText("C:\\config.log", " Can resolve key " + key);
                 }
                 return ConfigurationManager.AppSettings["StorageLayerSegmentSize"];
             };
