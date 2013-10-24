@@ -122,9 +122,6 @@
     <Reference Include="DEV2.MultiPartFormPasser, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\Binaries\DEV2.MultiPartFormPasser.dll</HintPath>
     </Reference>
-    <Reference Include="HttpFramework">
-      <HintPath>..\Binaries\HttpFramework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.configuration" />
@@ -204,6 +201,10 @@
       <Project>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</Project>
       <Name>Dev2.Runtime</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ThirdParty\HttpFramework\HttpFramework.csproj">
+      <Project>{c7d946c9-dddc-4bde-9575-f4c12ffa4bf8}</Project>
+      <Name>HttpFramework</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Warewolf Server.exe.config">
@@ -214,6 +215,9 @@
     </None>
     <None Include="Properties\app.manifest" />
     <None Include="Unlimited.Applications.DynamicServicesHost_TemporaryKey.pfx" />
+    <None Include="WarewolfServer.cer">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

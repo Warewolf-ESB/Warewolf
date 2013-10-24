@@ -17,6 +17,8 @@ namespace HttpFramework
 {
 	/// <summary>
 	/// Delegate used to find a realm/domain.
+	/// 
+    /// http://webserver.codeplex.com/
 	/// </summary>
 	/// <param name="domain"></param>
 	/// <returns></returns>
@@ -748,11 +750,7 @@ namespace HttpFramework
 			if (_httpListener != null)
 				return;
 
-
             Init();
-
-            // TODO : Add cert here ;)
-            //X509Certificate cert = new X509Certificate(@"C:\ssl\certs\ca.cer");
 
             _httpListener = new HttpListener(address, port, _components.Get<IHttpContextFactory>()) { LogWriter = LogWriter };
 		    _httpListener.RequestReceived += OnRequest;
@@ -763,12 +761,14 @@ namespace HttpFramework
         /// <summary>
         /// Accept secure connections.
         /// </summary>
-		/// <param name="address">IP Address to listen on, use <see cref="IPAddress.Any"/> to accept connections on all IP Addresses / network cards.</param>
+        /// <param name="address">IP Address to listen on, use <see cref="IPAddress.Any" /> to accept connections on all IP Addresses / network cards.</param>
         /// <param name="port">Port to listen on. 80 can be a good idea =)</param>
-        /// <param name="certificate">Certificate to use</param>
-        /// <param name="protocol">SSL protocol to use</param>
-        /// <param name="clientCertCallback">Client certificate validation callback</param>
-        /// <param name="requireClientCerts">True to require SSL client certificates</param>
+        /// <param name="certificate">The certificate.</param>
+        /// <param name="protocol">The protocol.</param>
+        /// <param name="clientCertCallback">The client cert callback.</param>
+        /// <param name="requireClientCerts">if set to <c>true</c> [require client certs].</param>
+        /// <exception cref="System.ArgumentNullException">address</exception>
+        /// <exception cref="System.ArgumentException">Port cannot be negative.</exception>
         /// <exception cref="ArgumentNullException"><c>address</c> is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">Port must be a positive number.</exception>
         public void Start(IPAddress address, int port, X509Certificate certificate, SslProtocols protocol,
@@ -782,11 +782,10 @@ namespace HttpFramework
                 return;
 
             Init();
-            _httpsListener = new HttpListener(address, port, _components.Get<IHttpContextFactory>(), certificate, clientCertCallback,
-                protocol, requireClientCerts);
+            _httpsListener = HttpListener.Create(address, port, certificate);
 			_httpsListener.LogWriter = LogWriter;
             _httpsListener.RequestReceived += OnRequest;
-			_httpsListener.Start(5);
+			_httpsListener.Start(50);
 		    _httpsListener.ExceptionThrown += _exceptionHandler;
 		}
 

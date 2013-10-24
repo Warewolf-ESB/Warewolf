@@ -239,7 +239,7 @@ namespace Dev2
         #endregion
 
         #region Constructors
-        public WebServer(IPEndPoint[] endPoints, StudioNetworkServer server)
+        public WebServer(Dev2Endpoint[] endPoints, StudioNetworkServer server)
         {
             _server = new HttpServer(endPoints);
             _network = server;

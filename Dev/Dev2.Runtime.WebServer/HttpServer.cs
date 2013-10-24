@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
+using System.Security.Authentication;
+using System.Security.Cryptography.X509Certificates;
+using Dev2;
 using Dev2.Common;
 using HttpFramework;
 using HttpFramework.Sessions;
@@ -11,7 +13,7 @@ namespace Unlimited.Applications.WebServer
     {
         #region Instance Fields
         private bool _isDisposed;
-        private IPEndPoint[] _endPoints;
+        private Dev2Endpoint[] _endPoints;
         private HttpFramework.HttpServer[] _servers;
         private Dictionary<string, List<HttpRequestHandler>> _handlers;
         #endregion
@@ -21,9 +23,10 @@ namespace Unlimited.Applications.WebServer
         #endregion
 
         #region Constructor
-        public HttpServer(IPEndPoint[] endPoints)
+        public HttpServer(Dev2Endpoint[] endPoints)
         {
-            _servers = new HttpFramework.HttpServer[(_endPoints = endPoints).Length];
+            _endPoints = endPoints;
+            _servers = new HttpFramework.HttpServer[(endPoints).Length];
             _handlers = new Dictionary<string, List<HttpRequestHandler>>(StringComparer.OrdinalIgnoreCase);
 
             for (int i = 0; i < _servers.Length; i++)
@@ -31,7 +34,20 @@ namespace Unlimited.Applications.WebServer
                 HttpFramework.HttpServer current = _servers[i] = new HttpFramework.HttpServer();
                 current.ExceptionThrown += new ExceptionHandler(Server_ExceptionThrown);
                 current.Add(new EntryModule(this));
-                current.Start(endPoints[i].Address, endPoints[i].Port);
+
+                // enable https endpoint ;)
+                if (endPoints[i].IsSecured)
+                {
+                    var cert = new X509Certificate(endPoints[i].CertificatePath);
+
+                    current.Start(endPoints[i].Address, endPoints[i].Port, cert, SslProtocols.Default, null, false);
+                }
+                else
+                {
+                    // enable normal http traffic ;)
+                    current.Start(endPoints[i].Address, endPoints[i].Port);
+                }
+                
             }
         }
         #endregion

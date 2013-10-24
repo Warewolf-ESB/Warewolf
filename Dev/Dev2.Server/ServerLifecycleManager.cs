@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Security.Principal;
 using System.ServiceProcess;
 using System.Text;
@@ -190,11 +191,13 @@ namespace Unlimited.Applications.DynamicServicesHost
         #region Instance Fields
         private bool _isDisposed;
         private bool _isWebServerEnabled;
+        private bool _isWebServerSslEnabled;
         private bool _preloadAssemblies;
         private string[] _arguments;
         private AssemblyReference[] _externalDependencies;
         private Dictionary<string, WorkflowEntry[]> _workflowGroups;
-        private IPEndPoint[] _endpoints;
+        private Dev2Endpoint[] _endpoints;
+        //private IPEndPoint[] _endpoints;
         private IFrameworkWebServer _webserver;
         private EsbServicesEndpoint _esbEndpoint;
 
@@ -1290,6 +1293,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                 _isWebServerEnabled = false;
 
                 Boolean.TryParse(ConfigurationManager.AppSettings["webServerEnabled"], out _isWebServerEnabled);
+                Boolean.TryParse(ConfigurationManager.AppSettings["webServerSslEnabled"], out _isWebServerSslEnabled);
 
                 if (_isWebServerEnabled)
                 {
@@ -1306,14 +1310,26 @@ namespace Unlimited.Applications.DynamicServicesHost
                         throw new ArgumentException("Web server port is not valid. Please set the webServerPort value in the configuration file.");
                     }
 
-                    List<IPEndPoint> endpoints = new List<IPEndPoint>();
+                    List<Dev2Endpoint> endpoints = new List<Dev2Endpoint>();
                     var prefixes = new List<string>();
                     prefixes.Add(string.Format("http://*:{0}/", webServerPort));
-                    endpoints.Add(new IPEndPoint(IPAddress.Any, realPort));
 
-                    if (!string.IsNullOrEmpty(webServerSslPort) && _isWebServerEnabled)
+                    var httpEndpoint = new IPEndPoint(IPAddress.Any, realPort);
+
+                    endpoints.Add(new Dev2Endpoint(httpEndpoint));
+
+                    // start SSL traffic if it is enabled ;)
+                    if (!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
                     {
+                        int realWebServerSslPort;
+                        Int32.TryParse(webServerSslPort, out realWebServerSslPort);
+
+                        var sslCertPath = ConfigurationManager.AppSettings["sslCertificateRelativePath"];
+
                         prefixes.Add(string.Format("https://*:{0}/", webServerSslPort));
+
+                        var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
+                        endpoints.Add(new Dev2Endpoint(httpsEndpoint, sslCertPath));
                     }
 
                     _prefixes = prefixes.ToArray();
@@ -1691,7 +1707,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         {
             try
             {
-                var instance = Dev2.Runtime.Configuration.SettingsProvider.Instance;
+                var instance = SettingsProvider.Instance;
                 instance.Stop(StudioMessaging.MessageAggregator);
             }
             // ReSharper disable EmptyGeneralCatchClause
@@ -1807,7 +1823,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         {
             bool result = true;
 
-            if (_isWebServerEnabled)
+            if (_isWebServerEnabled || _isWebServerSslEnabled)
             {
                 try
                 {
