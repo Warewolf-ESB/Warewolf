@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Runtime.InteropServices;
 using Dev2.Common;
+using Dev2.Providers.Logs;
 using Microsoft.VisualBasic.Devices;
 
 namespace Dev2.Data.Storage
@@ -82,7 +83,7 @@ namespace Dev2.Data.Storage
             {
                 if (result < 1)
                 {
-                    ServerLogger.LogDebug(tmp);
+                     Logger.TraceInfo(tmp);
                 }
                 result = GlobalConstants.DefaultStorageSegmentSize;
             }
