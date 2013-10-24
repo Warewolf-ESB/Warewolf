@@ -80,6 +80,10 @@ namespace Dev2.Data.Storage
             // doggy config or 32 bit os, adjust ;)
             if(result < 1 || !OsBitVersionDetector.Is64BitOperatingSystem())
             {
+                if (result < 1)
+                {
+                    ServerLogger.LogDebug(tmp);
+                }
                 result = GlobalConstants.DefaultStorageSegmentSize;
             }
 
