@@ -41,6 +41,10 @@ namespace Dev2.Data.Storage
 
             StorageLayerSegmentSize = () =>
             {
+                foreach(var key in ConfigurationManager.AppSettings.AllKeys)
+                {
+                    Logger.TraceInfo("Can resolve key " + key);
+                }
                 return ConfigurationManager.AppSettings["StorageLayerSegmentSize"];
             };
         }
@@ -81,10 +85,6 @@ namespace Dev2.Data.Storage
             // doggy config or 32 bit os, adjust ;)
             if(result < 1 || !OsBitVersionDetector.Is64BitOperatingSystem())
             {
-                if (result < 1)
-                {
-                     Logger.TraceInfo(tmp);
-                }
                 result = GlobalConstants.DefaultStorageSegmentSize;
             }
 
