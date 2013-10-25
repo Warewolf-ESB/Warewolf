@@ -42,10 +42,6 @@ namespace Dev2.Data.Storage
 
             StorageLayerSegmentSize = () =>
             {
-                foreach(var key in ConfigurationManager.AppSettings.AllKeys)
-                {
-                    File.AppendAllText("C:\\config.log", " Can resolve key " + key);
-                }
                 return ConfigurationManager.AppSettings["StorageLayerSegmentSize"];
             };
         }
