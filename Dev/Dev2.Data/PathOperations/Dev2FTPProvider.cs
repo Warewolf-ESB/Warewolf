@@ -7,6 +7,8 @@ using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
 using Dev2.Common;
+using Tamir.SharpSsh;
+using Tamir.SharpSsh.jsch;
 
 namespace Dev2.PathOperations {
     /// <summary>
@@ -37,57 +39,144 @@ namespace Dev2.PathOperations {
 
         public Stream Get(IActivityIOPath path) {
             
-            FtpWebRequest request = null;
-            FtpWebResponse response = null;
-            Stream ftpStream = null;
             Stream result = null;
-
-            try {
-                request = (FtpWebRequest)FtpWebRequest.Create(ConvertSSLToPlain(path.Path));
-                request.Method = WebRequestMethods.Ftp.DownloadFile;
-                request.UseBinary = true;
-                request.KeepAlive = true;
-                request.EnableSsl = EnableSSL(path);
-
-                if (path.IsNotCertVerifiable)
+            try
+            {
+                if(IsStandardFTP(path))
                 {
-                    ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
+                    ReadFromFTP(path, ref result);
                 }
-
-                if (path.Username != string.Empty) {
-                    request.Credentials = new NetworkCredential(path.Username, path.Password);
-                }
-
-                response = (FtpWebResponse)request.GetResponse();
-                ftpStream = response.GetResponseStream();
-
-                if (ftpStream.CanRead) {
-                    byte[] data = ftpStream.ToByteArray();
-                    result = new MemoryStream(data);
-                }
-                else {
-                    throw new Exception("Fail");
+                else
+                {
+                    ReadFromSFTP(path, ref result);
                 }
             }
-            catch (Exception ex) {
+            catch(Exception ex)
+            {
                 ServerLogger.LogError(ex);
                 throw;
             }
-            finally {
-                if (ftpStream != null) {
-                    ftpStream.Close();
-                }
-                if (response != null) {
-                    response.Close();
-                }
+            return result;
+        }
+
+        static bool IsStandardFTP(IActivityIOPath path)
+        {
+            return path.PathType == enActivityIOPathType.FTP || path.PathType == enActivityIOPathType.FTPES || path.PathType == enActivityIOPathType.FTPS;
+        }
+
+        void ReadFromFTP(IActivityIOPath path, ref Stream result)
+        {
+            FtpWebRequest request;
+            request = (FtpWebRequest)FtpWebRequest.Create(ConvertSSLToPlain(path.Path));
+            request.Method = WebRequestMethods.Ftp.DownloadFile;
+            request.UseBinary = true;
+            request.KeepAlive = true;
+            request.EnableSsl = EnableSSL(path);
+
+            if(path.IsNotCertVerifiable)
+            {
+                ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
             }
 
-            return result;
+            if(path.Username != string.Empty)
+            {
+                request.Credentials = new NetworkCredential(path.Username, path.Password);
+            }
+
+            var response = (FtpWebResponse)request.GetResponse();
+            var ftpStream = response.GetResponseStream();
+
+            if(ftpStream.CanRead)
+            {
+                byte[] data = ftpStream.ToByteArray();
+                result = new MemoryStream(data);
+                response.Close();
+                ftpStream.Close();
+            }
+            else
+            {
+                response.Close();
+                ftpStream.Close();
+                throw new Exception("Fail");
+            }
+        }
+        
+        void ReadFromSFTP(IActivityIOPath path, ref Stream result)
+        {
+            var sftp = BuildSftpClient(path);
+            var ftpPath = ExtractFileNameFromPath(path.Path);
+            try
+            {
+                var tempFileName = Path.Combine(Path.GetTempPath(),Path.GetTempFileName());
+                sftp.Get(ftpPath, tempFileName);
+                result = new FileStream(tempFileName,FileMode.Open);
+                sftp.Close();
+            }
+            catch(Exception)
+            {
+                throw new Exception("Fail");
+            }
+        }
+
+        Sftp BuildSftpClient(IActivityIOPath path)
+        {
+            var hostName = ExtractHostNameFromPath(path.Path);
+            if(String.IsNullOrEmpty(path.Username))
+            {
+                path.Username = "dev2testing";
+            }
+            if(String.IsNullOrEmpty(path.Password))
+            {
+                path.Password = "Q/ulw&]";
+            }
+            var sftp = new Sftp(hostName, path.Username, path.Password);
+            try
+            {
+                sftp.Connect();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return sftp;
+        }
+
+        string ExtractHostNameFromPath(string path)
+        {
+            Uri uriForSftp;
+            if(Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out uriForSftp))
+            {
+                try
+                {
+                    return uriForSftp.Host;
+                }
+                catch(Exception)
+                {
+                    throw new Exception("The path is in the incorrect format.");
+                }
+            }
+            return "";
+        }
+        
+        string ExtractFileNameFromPath(string path)
+        {
+            Uri uriForSftp;
+            if(Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out uriForSftp))
+            {
+                try
+                {
+                    return uriForSftp.AbsolutePath;
+                }
+                catch(Exception)
+                {
+                    throw new Exception("The path is in the incorrect format.");
+                }
+            }
+            return "";
         }
 
         public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo WhereToPut)
         {
-            FtpWebRequest request = null;
             FtpWebResponse response = null;
 
             int result = -1;
@@ -109,51 +198,77 @@ namespace Dev2.PathOperations {
                 }
             }
 
-            if (ok) {
-                try {
-                    request = (FtpWebRequest)FtpWebRequest.Create(ConvertSSLToPlain(dst.Path));
-                    request.Method = WebRequestMethods.Ftp.UploadFile;
-                    request.UseBinary = true;
-                    request.KeepAlive = false;
-                    request.EnableSsl = EnableSSL(dst);                    
-
-                    if (dst.Username != string.Empty) {
-                        request.Credentials = new NetworkCredential(dst.Username, dst.Password);
-                    }
-
-                    if (dst.IsNotCertVerifiable)
-                    {
-                        ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
-                    }
-
-                    request.ContentLength = src.Length;
-                    using(Stream requestStream = request.GetRequestStream())
-                    {
-                        byte[] payload = src.ToByteArray();
-                        int writeLen = payload.Length;
-                        requestStream.Write(payload, 0, writeLen);
-                        requestStream.Close();
-                        requestStream.Dispose();
-                    }
-
-                    result = (int)request.ContentLength;
-
-                    response = (FtpWebResponse)request.GetResponse();
-                    if (response.StatusCode != FtpStatusCode.FileActionOK && response.StatusCode != FtpStatusCode.ClosingData) {
-                        throw new Exception("File was not created");
-                    }
+            if(ok)
+            {
+                try
+                {
+                    result = IsStandardFTP(dst) ? WriteToFTP(src, dst) : WriteToSFTP(src, dst);
                 }
-                catch (Exception ex) {
+                catch(Exception ex)
+                {
                     ServerLogger.LogError(ex);
                     throw;
                 }
-                finally {
-                    if (response != null) {
-                        response.Close();
-                    }
-                }
+            }
+            return result;
+        }
+
+        int WriteToFTP(Stream src, IActivityIOPath dst)
+        {
+            FtpWebRequest request;
+            request = (FtpWebRequest)FtpWebRequest.Create(ConvertSSLToPlain(dst.Path));
+            request.Method = WebRequestMethods.Ftp.UploadFile;
+            request.UseBinary = true;
+            request.KeepAlive = false;
+            request.EnableSsl = EnableSSL(dst);
+
+            if(dst.Username != string.Empty)
+            {
+                request.Credentials = new NetworkCredential(dst.Username, dst.Password);
             }
 
+            if(dst.IsNotCertVerifiable)
+            {
+                ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
+            }
+
+            request.ContentLength = src.Length;
+            using(Stream requestStream = request.GetRequestStream())
+            {
+                byte[] payload = src.ToByteArray();
+                int writeLen = payload.Length;
+                requestStream.Write(payload, 0, writeLen);
+                requestStream.Close();
+                requestStream.Dispose();
+            }
+
+            var result = (int)request.ContentLength;
+
+            var response = (FtpWebResponse)request.GetResponse();
+            if(response.StatusCode != FtpStatusCode.FileActionOK && response.StatusCode != FtpStatusCode.ClosingData)
+            {
+                throw new Exception("File was not created");
+            }
+            return result;
+        }
+        
+        int WriteToSFTP(Stream src, IActivityIOPath dst)
+        {
+            var hostName = ExtractHostNameFromPath(dst.Path);
+            var sftp = new Sftp(hostName, dst.Username, dst.Username);
+            byte[] payload = src.ToByteArray();
+            var tempFileName = Path.Combine(Path.GetTempPath(), Path.GetTempFileName());
+            File.WriteAllBytes(tempFileName,payload);
+            var result = 0;
+            try
+            {
+                sftp.Put(tempFileName,dst.Path);
+            }
+            catch(Exception)
+            {
+                throw new Exception("File was not created");
+            }
+           
             return result;
         }
 
@@ -184,24 +299,27 @@ namespace Dev2.PathOperations {
             return result;
         }
 
-        
-        public IList<IActivityIOPath> ListDirectory(IActivityIOPath src) {
+
+        public IList<IActivityIOPath> ListDirectory(IActivityIOPath src)
+        {
             List<IActivityIOPath> result = new List<IActivityIOPath>();
             FtpWebRequest request = null;
             FtpWebResponse response = null;
 
-            try {
+            try
+            {
                 request = (FtpWebRequest)FtpWebRequest.Create(ConvertSSLToPlain(src.Path));
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
                 request.UseBinary = true;
                 request.KeepAlive = false;
                 request.EnableSsl = EnableSSL(src);
 
-                if (src.Username != string.Empty) {
+                if(src.Username != string.Empty)
+                {
                     request.Credentials = new NetworkCredential(src.Username, src.Password);
                 }
 
-                if (src.IsNotCertVerifiable)
+                if(src.IsNotCertVerifiable)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
                 }
@@ -227,29 +345,35 @@ namespace Dev2.PathOperations {
                     responseStream.Dispose();
                 }
             }
-            catch (WebException webEx) {
+            catch(WebException webEx)
+            {
                 FtpWebResponse webResponse = webEx.Response as FtpWebResponse;
-                if (webResponse != null) {
-                    if (webResponse.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) {
+                if(webResponse != null)
+                {
+                    if(webResponse.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable)
+                    {
                         throw new DirectoryNotFoundException(string.Format("Directory '{0}' was not found", src.Path));
                     }
                 }
             }
-            catch (Exception ex) {
+            catch(Exception ex)
+            {
                 ServerLogger.LogError(ex);
                 throw;
             }
-            finally {
-                if (response != null) {
+            finally
+            {
+                if(response != null)
+                {
                     response.Close();
                 }
             }
 
             return result;
-
         }
 
-        public bool CreateDirectory(IActivityIOPath dst, Dev2CRUDOperationTO args) {
+        public bool CreateDirectory(IActivityIOPath dst, Dev2CRUDOperationTO args)
+        {
             FtpWebRequest request = null;
             FtpWebResponse response = null;
 
@@ -257,59 +381,70 @@ namespace Dev2.PathOperations {
 
             bool ok = false;
 
-            if (args.Overwrite) {
+            if(args.Overwrite)
+            {
                 // delete if it already present
-                if (IsDirectoryAlreadyPresent(dst)) {
+                if(IsDirectoryAlreadyPresent(dst))
+                {
                     Delete(dst);
                 }
                 ok = true;
             }
-            else {
+            else
+            {
                 // does not exist, ok to create
                 ok = !(IsDirectoryAlreadyPresent(dst));
             }
 
-            if (ok) {
+            if(ok)
+            {
 
-                try {
+                try
+                {
                     request = (FtpWebRequest)FtpWebRequest.Create(ConvertSSLToPlain(dst.Path));
                     request.Method = WebRequestMethods.Ftp.MakeDirectory;
-                    
+
                     request.UseBinary = true;
                     request.KeepAlive = false;
                     request.EnableSsl = EnableSSL(dst);
 
-                    if (dst.Username != string.Empty) {
+                    if(dst.Username != string.Empty)
+                    {
                         request.Credentials = new NetworkCredential(dst.Username, dst.Password);
                     }
 
-                    if (dst.IsNotCertVerifiable)
+                    if(dst.IsNotCertVerifiable)
                     {
                         ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
                     }
-                    
+
                     response = (FtpWebResponse)request.GetResponse();
-                    if (response.StatusCode == FtpStatusCode.PathnameCreated) {
+                    if(response.StatusCode == FtpStatusCode.PathnameCreated)
+                    {
                         result = true;
                     }
-                    else {
+                    else
+                    {
                         throw new Exception("Fail");
                     }
                 }
-                catch (Exception ex) {
+                catch(Exception ex)
+                {
                     ServerLogger.LogError(ex);
                     throw;
                 }
-                finally {
-                    if (response != null) {
+                finally
+                {
+                    if(response != null)
+                    {
                         response.Close();
                     }
-                    else {
+                    else
+                    {
                         result = false;
                     }
                 }
             }
-
             return result;
         }
 
@@ -317,28 +452,27 @@ namespace Dev2.PathOperations {
             return true;
         }
 
-        public bool HandlesType(enActivityIOPathType type) {
-            bool result = false;
+        public bool HandlesType(enActivityIOPathType type)
+        {
 
-            if (type == enActivityIOPathType.FTPS || type == enActivityIOPathType.FTP || type == enActivityIOPathType.FTPES) {
-                result = true;
-            }
-
+            var result = type == enActivityIOPathType.FTPS || type == enActivityIOPathType.SFTP || type == enActivityIOPathType.FTP || type == enActivityIOPathType.FTPES;
             return result;
         }
 
-        public enPathType PathIs(IActivityIOPath path) {
+        public enPathType PathIs(IActivityIOPath path)
+        {
             enPathType result = enPathType.File;
 
             // WARN : here for now because FTP has no way of knowing of the user wants a directory or file?!?!
-            if(Dev2ActivityIOPathUtils.IsDirectory(path.Path)){
+            if(Dev2ActivityIOPathUtils.IsDirectory(path.Path))
+            {
                 result = enPathType.Directory;
             }
-
             return result;
         }
 
-        public string PathSeperator() {
+        public string PathSeperator()
+        {
             return "/";
         }
 
@@ -366,10 +500,9 @@ namespace Dev2.PathOperations {
         /// <param name="user"></param>
         /// <param name="pass"></param>
         /// <param name="ssl"></param>
-        private void DeleteHandler(IList<string> pathStack, string user, string pass, bool ssl, bool IsNotCertVerifiable)
+        void DeleteHandler(IList<string> pathStack, string user, string pass, bool ssl, bool IsNotCertVerifiable)
         {
-
-            if (pathStack.Count > 0)
+            if(pathStack.Count > 0)
             {
                 string path = pathStack[0];
                 pathStack.RemoveAt(0);
@@ -379,7 +512,7 @@ namespace Dev2.PathOperations {
                 string tmpDirData = ExtendedDirList(path, user, pass, ssl, IsNotCertVerifiable);
 
                 List<string> dirs = ExtractDirectoryList(path, tmpDirData);
-                if (dirs.Count == 0)
+                if(dirs.Count == 0)
                 {
                     // delete path ;)
                     IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(path, user, pass);
@@ -392,15 +525,14 @@ namespace Dev2.PathOperations {
                     pathStack = pathStack.Union(dirs).ToList();
                 }
 
-                DeleteHandler(pathStack, user, pass, ssl,IsNotCertVerifiable);
+                DeleteHandler(pathStack, user, pass, ssl, IsNotCertVerifiable);
 
-                if (addBack)
+                if(addBack)
                 {
                     // remove the dir now all its sub-dirs are gone ;)
                     DeleteHandler(new List<string> { path }, user, pass, ssl, IsNotCertVerifiable);
                 }
             }
-
         }
 
         /// <summary>
@@ -411,7 +543,7 @@ namespace Dev2.PathOperations {
         /// <param name="pass"></param>
         /// <param name="ssl"></param>
         /// <returns></returns>
-        private string ExtendedDirList(string path, string user, string pass, bool ssl, bool IsNotCertVerifiable)
+        string ExtendedDirList(string path, string user, string pass, bool ssl, bool IsNotCertVerifiable)
         {
             FtpWebRequest req = null;
             FtpWebResponse resp = null;
@@ -421,7 +553,7 @@ namespace Dev2.PathOperations {
             {
                 req = (FtpWebRequest)FtpWebRequest.Create(ConvertSSLToPlain(path));
 
-                if (user != string.Empty)
+                if(user != string.Empty)
                 {
                     req.Credentials = new NetworkCredential(user, pass);
                 }
@@ -430,7 +562,7 @@ namespace Dev2.PathOperations {
                 req.KeepAlive = false;
                 req.EnableSsl = ssl;
 
-                if (IsNotCertVerifiable)
+                if(IsNotCertVerifiable)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
                 }
@@ -454,19 +586,18 @@ namespace Dev2.PathOperations {
                     ios.Dispose();
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 ServerLogger.LogError(ex);
                 throw;
             }
             finally
             {
-                if (resp != null)
+                if(resp != null)
                 {
                     resp.Close();
                 }
             }
-
             return result.ToString();
         }
 
@@ -514,7 +645,7 @@ namespace Dev2.PathOperations {
         }
 
 
-        private bool DeleteOp(IActivityIOPath src)
+        bool DeleteOp(IActivityIOPath src)
         {
             FtpWebRequest request = null;
             FtpWebResponse response = null;
@@ -525,7 +656,7 @@ namespace Dev2.PathOperations {
             {
                 request = (FtpWebRequest)FtpWebRequest.Create(ConvertSSLToPlain(src.Path));
 
-                if (PathIs(src) == enPathType.Directory)
+                if(PathIs(src) == enPathType.Directory)
                 {
                     request.Method = WebRequestMethods.Ftp.RemoveDirectory;
                 }
@@ -538,18 +669,18 @@ namespace Dev2.PathOperations {
                 request.KeepAlive = false;
                 request.EnableSsl = EnableSSL(src);
 
-                if (src.IsNotCertVerifiable)
+                if(src.IsNotCertVerifiable)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
                 }
 
-                if (src.Username != string.Empty)
+                if(src.Username != string.Empty)
                 {
                     request.Credentials = new NetworkCredential(src.Username, src.Password);
                 }
 
                 response = (FtpWebResponse)request.GetResponse();
-                if (response.StatusCode == FtpStatusCode.FileActionOK)
+                if(response.StatusCode == FtpStatusCode.FileActionOK)
                 {
                     result = true;
                 }
@@ -560,25 +691,18 @@ namespace Dev2.PathOperations {
             }
             finally
             {
-                if (response != null)
+                if(response != null)
                 {
                     response.Close();
                 }
             }
-
             return result;
         }
 
 
         private bool EnableSSL(IActivityIOPath path)
         {
-            bool result = false;
-
-            if (path.PathType == enActivityIOPathType.FTPS || path.PathType == enActivityIOPathType.FTPES)
-            {
-                result = true;
-            }
-
+            var result = path.PathType == enActivityIOPathType.FTPS || path.PathType == enActivityIOPathType.FTPES;
             return result;
         }
 
@@ -712,8 +836,7 @@ namespace Dev2.PathOperations {
         {
             return true;
         }
-
-
+        
         #endregion Private Methods
     }
 }

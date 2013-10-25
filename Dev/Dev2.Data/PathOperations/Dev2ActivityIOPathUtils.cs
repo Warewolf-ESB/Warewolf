@@ -147,7 +147,6 @@ namespace Dev2.PathOperations {
 
                 pos++;
             }
-
             return result;
         }
     }

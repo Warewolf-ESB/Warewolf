@@ -80,10 +80,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     // Travis.Frisinger - 01.02.2013 - Bug 8579
                     // fake it so we have a deferred read ;) -- Slightly silly, but consistent
-                    if (dataObject.IsDebug || dataObject.RemoteInvoke)
-                    {
-                        DefferedReadFileContents = broker.Get(endpoint, false);
-                    }
+//                    if (dataObject.IsDebug || dataObject.RemoteInvoke)
+//                    {
+//                        DefferedReadFileContents = broker.Get(endpoint, false);
+//                    }
                     string result = broker.Get(endpoint);
                     outputs[0].OutputStrings.Add(result);
                 }

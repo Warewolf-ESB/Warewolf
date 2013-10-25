@@ -13,6 +13,7 @@ namespace Dev2.PathOperations {
         FileSystem,
         FTP,
         FTPS,
+        SFTP,
         FTPES,
         Invalid
     }
