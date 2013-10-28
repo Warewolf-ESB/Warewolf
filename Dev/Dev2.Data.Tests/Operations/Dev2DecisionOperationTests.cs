@@ -1,4 +1,5 @@
-﻿using Dev2.Data.Decisions.Operations;
+﻿using System.Diagnostics.CodeAnalysis;
+using Dev2.Data.Decisions.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Data.Tests.Operations

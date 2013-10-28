@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
+    // NOTE: Only use for design time in studio as errors will NOT be forwarded!
     public class GetDatabaseTables : IEsbManagementEndpoint
     {
         #region Implementation of ISpookyLoadable<string>
@@ -36,53 +37,75 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataContractException("No parameter values provided.");
             }
             string database;
-            DbSource dbSource = null;
             values.TryGetValue("Database", out database);
+
             if(string.IsNullOrEmpty(database))
             {
-                throw new InvalidDataContractException("No database set.");
+                return new DbTableList("No database set.").ToString();
             }
+
+            DbSource dbSource;
             try
             {
                 dbSource = JsonConvert.DeserializeObject<DbSource>(database);
             }
             catch(Exception e)
             {
-                throw new InvalidDataContractException(string.Format("Invalid JSON data for Database parameter. Exception: {0}", e.Message));
+                return new DbTableList("Invalid JSON data for Database parameter. Exception: {0}", e.Message).ToString();
             }
-            if(String.IsNullOrEmpty(dbSource.DatabaseName) || String.IsNullOrEmpty(dbSource.Server))
+
+            if(string.IsNullOrEmpty(dbSource.DatabaseName) || string.IsNullOrEmpty(dbSource.Server))
             {
-                throw new InvalidDataContractException(string.Format("Invalid database sent {0}.", database));
+                return new DbTableList("Invalid database sent {0}.", database).ToString();
             }
-            DataTable columnInfo = null;
-            var tables = new List<DbTable>();
-            using(var connection = new SqlConnection(dbSource.ConnectionString))
+
+            try
             {
-                try
+                var tables = new DbTableList();
+                DataTable columnInfo;
+                using(var connection = new SqlConnection(dbSource.ConnectionString))
                 {
                     connection.Open();
                     columnInfo = connection.GetSchema("Tables");
                 }
-                catch(Exception e)
+                if(columnInfo != null)
                 {
-                    var dbTable = new DbTable { TableName = e.Message, Columns = new List<DbColumn>() };
-                    tables.Add(dbTable);
-                }
-            }
-            if(columnInfo != null)
-            {
-                foreach(DataRow row in columnInfo.Rows)
-                {
-                    var tableName = row["TABLE_NAME"] as string;
-                    var dbTable = tables.Find(table => table.TableName == tableName);
-                    if(dbTable == null)
+                    foreach(DataRow row in columnInfo.Rows)
                     {
-                        dbTable = new DbTable { TableName = tableName, Columns = new List<DbColumn>() };
-                        tables.Add(dbTable);
+                        var tableName = row["TABLE_NAME"] as string;
+                        var dbTable = tables.Items.Find(table => table.TableName == tableName);
+                        if(dbTable == null)
+                        {
+                            dbTable = new DbTable { TableName = tableName, Columns = new List<DbColumn>() };
+                            tables.Items.Add(dbTable);
+                        }
                     }
                 }
+                if(tables.Items.Count == 0)
+                {
+                    tables.HasErrors = true;
+                    const string ErrorFormat = "The login provided in the database source uses {0} and most probably does not have permissions to perform the following query: "
+                                          + "\r\n\r\n{1}SELECT * FROM INFORMATION_SCHEMA.TABLES;{2}";
+
+                    if(dbSource.AuthenticationType == AuthenticationType.User)
+                    {
+                        tables.Errors = string.Format(ErrorFormat,
+                            "SQL Authentication (User: '" + dbSource.UserID + "')",
+                            "EXECUTE AS USER = '" + dbSource.UserID + "';\r\n",
+                            "\r\nREVERT;");
+                    }
+                    else
+                    {
+                        tables.Errors = string.Format(ErrorFormat, "Windows Authentication", "", "");
+                    }
+                }
+                return tables.ToString();
             }
-            return JsonConvert.SerializeObject(tables);
+            catch(Exception ex)
+            {
+                var tables = new DbTableList(ex);
+                return tables.ToString();
+            }
         }
 
         /// <summary>

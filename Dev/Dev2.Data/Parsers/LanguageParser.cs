@@ -120,20 +120,30 @@ namespace Dev2.DataList.Contract
 
                     // only create if mapsTo is not blank!!
                     if ((!ignoreBlanks || (mapsTo != string.Empty && value != string.Empty)) || _defaultValueToMapsTo) {
+                        if(!_defaultValueToMapsTo) // Outputs only
+                        {
+                            if(String.IsNullOrEmpty(mapsTo))
+                            {
+                                continue;
+                            }
+                        }
                         XmlNode recordSetNode = tmp.Attributes[_recordSetAttribute];
 
                         if (recordSetNode != null) {
                             // check for recordsets on input mapping
+
+                            var theName = tmp.Attributes[_nameAttribute].Value;
                             if (_defaultValueToMapsTo) {
                                 string recordSet = recordSetNode.Value;
                                 // we have a recordset set it as such
-                                result.Add(DataListFactory.CreateDefinition(tmp.Attributes[_nameAttribute].Value, mapsTo, value, recordSet, isEvaluated, defaultValue, isRequired, origValue, emptyToNull));
+                                result.Add(DataListFactory.CreateDefinition(theName, mapsTo, value, recordSet, isEvaluated, defaultValue, isRequired, origValue, emptyToNull));
                             } else {
                                 // if record set add as such
                                 string recordSet = recordSetNode.Value;
                                 result.Add(DataListFactory.CreateDefinition(tmp.Attributes[_nameAttribute].Value, mapsTo, value, recordSet, isEvaluated, defaultValue, isRequired, origValue, emptyToNull));
                             }
                         } else {
+                            
                             result.Add(DataListFactory.CreateDefinition(tmp.Attributes[_nameAttribute].Value, mapsTo, value, isEvaluated, defaultValue, isRequired, origValue, emptyToNull));
                         }
                     }

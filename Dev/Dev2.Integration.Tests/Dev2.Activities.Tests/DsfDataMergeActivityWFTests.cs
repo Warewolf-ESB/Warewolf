@@ -1,4 +1,5 @@
-﻿using Dev2.Integration.Tests.Helpers;
+﻿using Dev2.Common.ExtMethods;
+using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -54,7 +55,7 @@ Michael's surname name is Cullen
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            StringAssert.Contains(ResponseData, expected);
+            StringAssert.Contains(ResponseData.Unescape(), expected);
         }
 
 

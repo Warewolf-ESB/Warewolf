@@ -400,7 +400,10 @@ namespace Dev2.DataList
                 {
                     if (!def.IsRecordSet)
                     {
-                        injectValue = DataListUtil.AddBracketsToValueIfNotExist(def.Name);
+                        if(!String.IsNullOrEmpty(def.RawValue) && String.IsNullOrEmpty(SavedInputMapping))
+                        {
+                            injectValue = DataListUtil.AddBracketsToValueIfNotExist(def.Name);
+                        }
                     }
                     else
                     {
@@ -430,12 +433,18 @@ namespace Dev2.DataList
                             }
                             else
                             {
-                                injectValue = FormatString(def.RecordSetName, def.Name);
+                                if(!String.IsNullOrEmpty(def.RawValue) && String.IsNullOrEmpty(SavedInputMapping))
+                                {
+                                    injectValue = FormatString(def.RecordSetName, def.Name);
+                                }
                             }
                         }
                         else
                         {
-                            injectValue = FormatString(def.RecordSetName, def.Name);
+                            if(!String.IsNullOrEmpty(def.RawValue) && String.IsNullOrEmpty(SavedOutputMapping))
+                            {
+                                injectValue = FormatString(def.RecordSetName, def.Name);
+                            }
                         }
                     }
                 }

@@ -74,17 +74,19 @@ namespace Dev2.Data.Translators
                                 if(c.ChildNodes != null)
                                 {
                                     // build template
-                                    if(!procssesNamespaces.Contains(c.Name))
+                                    if (!procssesNamespaces.Contains(c.Name))
                                     {
+                                        procssesNamespaces.Add(c.Name);
+
                                         // build columns
-                                        foreach(XmlNode subc in c.ChildNodes)
+                                        foreach (XmlNode subc in c.ChildNodes)
                                         {
-                                            if(subc.Attributes != null)
+                                            if (subc.Attributes != null)
                                             {
                                                 descAttribute = subc.Attributes["Description"];
                                             }
 
-                                            if(descAttribute != null)
+                                            if (descAttribute != null)
                                             {
                                                 cols.Add(DataListFactory.CreateDev2Column(subc.Name, descAttribute.Value));
                                             }
@@ -95,23 +97,61 @@ namespace Dev2.Data.Translators
                                         }
                                         string myError;
 
-                                        if(c.Attributes != null)
+                                        if (c.Attributes != null)
                                         {
                                             descAttribute = c.Attributes["Description"];
                                         }
 
-                                        if(descAttribute != null)
+                                        if (descAttribute != null)
                                         {
-                                            if(!result.TryCreateRecordsetTemplate(c.Name, descAttribute.Value, cols, true, out myError))
+                                            if (!result.TryCreateRecordsetTemplate(c.Name, descAttribute.Value, cols, true, out myError))
                                             {
                                                 errors.AddError(myError);
                                             }
                                         }
                                         else
                                         {
-                                            if(!result.TryCreateRecordsetTemplate(c.Name, string.Empty, cols, true, out myError))
+                                            if (!result.TryCreateRecordsetTemplate(c.Name, string.Empty, cols, true, out myError))
                                             {
                                                 errors.AddError(myError);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // it is a duplicate we need to handle this correctly ;)
+                                        // build columns
+
+                                        IBinaryDataListEntry amendEntry;
+                                        result.TryGetEntry(c.Name, out amendEntry, out error);
+                                        errors.AddError(error);
+
+                                        if (amendEntry != null)
+                                        {
+                                            cols = amendEntry.Columns;
+
+                                            foreach (XmlNode subc in c.ChildNodes)
+                                            {
+                                                if (subc.Attributes != null)
+                                                {
+                                                    descAttribute = subc.Attributes["Description"];
+                                                }
+
+                                                if (descAttribute != null)
+                                                {
+                                                    cols.Add(DataListFactory.CreateDev2Column(subc.Name,
+                                                                                              descAttribute.Value));
+                                                }
+                                                else
+                                                {
+                                                    cols.Add(DataListFactory.CreateDev2Column(subc.Name, string.Empty));
+                                                }
+                                            }
+
+                                            // now re-insert the entry ;)
+                                            if(!result.TryCreateRecordsetTemplate(c.Name, string.Empty, cols, true, out error))
+                                            {
+                                                errors.AddError(error);
                                             }
                                         }
                                     }

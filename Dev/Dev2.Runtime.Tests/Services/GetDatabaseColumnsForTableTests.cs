@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Dev2.Runtime.ServiceModel.Data;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class GetDatabaseColumnsForTableTests
     {
         #region Static Class Init
@@ -21,7 +25,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #endregion
 
-        
+
 
         #region Execute
 
@@ -39,73 +43,82 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
-        [ExpectedException(typeof(InvalidDataContractException))]
-        public void GetDatabaseColumnsForTable_UnitTest_ExecuteWithNoDatabaseInValues_ExpectedInvalidDataContractException()
+        public void GetDatabaseColumnsForTable_UnitTest_ExecuteWithNoDatabaseInValues_ExpectedHasErrors()
         {
-
             var esb = new GetDatabaseColumnsForTable();
-            var actual = esb.Execute(new Dictionary<string, string>{{"Database",null}}, null);
-            Assert.AreEqual(string.Empty, actual);
+            var actual = esb.Execute(new Dictionary<string, string> { { "Database", null } }, null);
+            Assert.IsNotNull(actual);
+            var result = JsonConvert.DeserializeObject<DbColumnList>(actual);
+            Assert.IsTrue(result.HasErrors);
+            Assert.AreEqual("No database set.", result.Errors);
         }
-        
+
         [TestMethod]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
-        [ExpectedException(typeof(InvalidDataContractException))]
-        public void GetDatabaseColumnsForTable_UnitTest_ExecuteWithNullDatabase_ExpectedInvalidDataContractException()
+        public void GetDatabaseColumnsForTable_UnitTest_ExecuteWithNullDatabase_ExpectedHasErrors()
         {
 
             var esb = new GetDatabaseColumnsForTable();
             var actual = esb.Execute(new Dictionary<string, string> { { "Database", null } }, null);
-            Assert.AreEqual(string.Empty, actual);
+            Assert.IsNotNull(actual);
+            var result = JsonConvert.DeserializeObject<DbColumnList>(actual);
+            Assert.IsTrue(result.HasErrors);
+            Assert.AreEqual("No database set.", result.Errors);
         }
 
         [TestMethod]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
-        [ExpectedException(typeof(InvalidDataContractException))]
-        public void GetDatabaseColumnsForTable_UnitTest_ExecuteWithBlankDatabase_ExpectInvalidDataContractException()
+        public void GetDatabaseColumnsForTable_UnitTest_ExecuteWithBlankDatabase_ExpectedHasErrors()
         {
-
             var esb = new GetDatabaseColumnsForTable();
             var actual = esb.Execute(new Dictionary<string, string> { { "Database", "" } }, null);
-            Assert.AreEqual(string.Empty, actual);
+            Assert.IsNotNull(actual);
+            var result = JsonConvert.DeserializeObject<DbColumnList>(actual);
+            Assert.IsTrue(result.HasErrors);
+            Assert.AreEqual("No database set.", result.Errors);
         }
 
         [TestMethod]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
-        [ExpectedException(typeof(InvalidDataContractException))]
-        public void GetDatabaseColumnsForTable_UnitTest_ExecuteWithNoTableNameInValues_ExpectedInvalidDataContractException()
+        public void GetDatabaseColumnsForTable_UnitTest_ExecuteWithNoTableNameInValues_ExpectedHasErrors()
         {
 
             var esb = new GetDatabaseColumnsForTable();
-            var actual = esb.Execute(new Dictionary<string, string> { { "Database", "Test" } , {"Something",null}},null);
-            Assert.AreEqual(string.Empty, actual);
+            var actual = esb.Execute(new Dictionary<string, string> { { "Database", "Test" }, { "Something", null } }, null);
+            Assert.IsNotNull(actual);
+            var result = JsonConvert.DeserializeObject<DbColumnList>(actual);
+            Assert.IsTrue(result.HasErrors);
+            Assert.AreEqual("No table name set.", result.Errors);
         }
-        
+
         [TestMethod]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
-        [ExpectedException(typeof(InvalidDataContractException))]
-        public void GetDatabaseColumnsForTable_ExecuteWithNullTableNameExpectedInvalidDataContractException()
+        public void GetDatabaseColumnsForTable_UnitTest_ExecuteWithNullTableNameExpectedHasErrors()
         {
 
             var esb = new GetDatabaseColumnsForTable();
-            var actual = esb.Execute(new Dictionary<string, string> { { "Database", "Test" },{"TableName",null} }, null);
-            Assert.AreEqual(string.Empty, actual);
+            var actual = esb.Execute(new Dictionary<string, string> { { "Database", "Test" }, { "TableName", null } }, null);
+            Assert.IsNotNull(actual);
+            var result = JsonConvert.DeserializeObject<DbColumnList>(actual);
+            Assert.IsTrue(result.HasErrors);
+            Assert.AreEqual("No table name set.", result.Errors);
         }
 
         [TestMethod]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
-        [ExpectedException(typeof(InvalidDataContractException))]
-        public void GetDatabaseColumnsForTable_UnitTest_ExecuteWithBlankTableName_ExpectInvalidDataContractException()
+        public void GetDatabaseColumnsForTable_UnitTest_ExecuteWithBlankTableName_ExpectedHasErrors()
         {
-
             var esb = new GetDatabaseColumnsForTable();
             var actual = esb.Execute(new Dictionary<string, string> { { "Database", "Test" }, { "TableName", "" } }, null);
-            Assert.AreEqual(string.Empty, actual);
+            Assert.IsNotNull(actual);
+            var result = JsonConvert.DeserializeObject<DbColumnList>(actual);
+            Assert.IsTrue(result.HasErrors);
+            Assert.AreEqual("No table name set.", result.Errors);
         }
         #endregion
 

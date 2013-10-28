@@ -827,7 +827,7 @@ namespace Dev2.DataList.Contract
             {
 
                 IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollection(defs, !(isInput));
-                IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs);
+                IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs, !(isInput));
 
                 // open datashape
                 result.Append(string.Concat("<", _adlRoot, ">"));
@@ -878,7 +878,7 @@ namespace Dev2.DataList.Contract
             {
 
                 IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollection(defs,!(isInput));
-                IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs);
+                IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs, !(isInput));
 
                 // open datashape
                 result.Append(string.Concat("<", _adlRoot, ">"));
@@ -1447,8 +1447,8 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Build a scalar shape
         /// </summary>
-        /// <param name="scalarList"></param>
-        /// <param name="isInput"></param>
+        /// <param name="scalarList">The scalar list.</param>
+        /// <param name="isInput">if set to <c>true</c> [is input].</param>
         /// <returns></returns>
         private static string BuildDev2ScalarShape(IList<IDev2Definition> scalarList, bool isInput)
         {
@@ -1458,15 +1458,37 @@ namespace Dev2.DataList.Contract
             {
                 IDev2Definition def = scalarList[i];
 
-                if(isInput)
+                if (!isInput)
                 {
-                    result.Append(string.Concat("<", def.Name, "></", def.Name, ">"));
+                    if (IsEvaluated(def.RawValue))
+                    {
+                        result.Append(string.Concat("<", def.Value, "></", def.Value, ">"));
+                        result.Append(Environment.NewLine);
+                    }
+
+                    if (!string.IsNullOrEmpty(def.Name))
+                    {
+                        result.Append(string.Concat("<", def.Name, "></", def.Name, ">"));
+                        result.Append(Environment.NewLine);
+                    }
                 }
                 else
                 {
-                    result.Append(string.Concat("<", def.Value, "></", def.Value, ">"));
+                    if(!string.IsNullOrEmpty(def.Name))
+                    {
+                        result.Append(string.Concat("<", def.Name, "></", def.Name, ">"));
+                        result.Append(Environment.NewLine);
+                    }
+
+                    // we need to process the RawValue field incase it is not in the recordsets ;)
+                    var rsName = ExtractRecordsetNameFromValue(def.Value);
+                    if (string.IsNullOrEmpty(rsName) && IsEvaluated(def.Value))
+                    {
+                        var tmpValue = RemoveLanguageBrackets(def.Value);
+                        result.Append(string.Concat("<", tmpValue, "></", tmpValue, ">"));
+                        result.Append(Environment.NewLine);   
+                    }
                 }
-                result.Append(Environment.NewLine);
             }
 
             return result.ToString();
@@ -1539,24 +1561,24 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         private static string BuildDev2RecordSetShape(IRecordSetCollection recCol, bool isInput)
         {
+
             StringBuilder result = new StringBuilder();
 
             IList<IRecordSetDefinition> defs = recCol.RecordSets;
-
+            HashSet<string> processedSetNames = new HashSet<string>();
             for(int i = 0; i < defs.Count; i++)
             {
                 IRecordSetDefinition tmp = defs[i];
+                IList<string> postProcessDefs = new List<string>();
                 // get DL recordset Name
                 if(tmp.Columns.Count > 0)
                 {
-                    string setName = DataListUtil.ExtractRecordsetNameFromValue(tmp.Columns[0].Value);
-                    if(isInput)
-                    {
-                        setName = tmp.SetName;
-                    }
+                    string setName = tmp.SetName;
 
                     result.Append(string.Concat("<", setName, ">"));
                     result.Append(Environment.NewLine);
+
+                    processedSetNames.Add(setName);
 
                     IList<IDev2Definition> cols = tmp.Columns;
                     for(int q = 0; q < cols.Count; q++)
@@ -1564,20 +1586,63 @@ namespace Dev2.DataList.Contract
                         IDev2Definition tmpDef = cols[q];
                         if(isInput)
                         {
-                            result.Append(string.Concat("\t<", tmpDef.MapsTo, "></", tmpDef.MapsTo, ">"));
+                            var col = ExtractFieldNameFromValue(tmpDef.MapsTo);
+
+                            if (!string.IsNullOrEmpty(col))
+                            {
+                                var toAppend = ("\t<" + col + "></" + col + ">");
+                                result.Append(toAppend);
+                            }
+
                         }
                         else
                         {
-                            string tag = DataListUtil.ExtractFieldNameFromValue(tmpDef.Value);
+                            //Name
+                            string tag = ExtractFieldNameFromValue(tmpDef.Name);
+
+                            if (string.IsNullOrEmpty(tag))
+                            {
+                                //Name
+                                tag = tmpDef.Name;
+                            }
+
                             result.Append(string.Concat("\t<", tag, "></", tag, ">"));
+
+                            //var postProcess = tmpDef.Value;
+                            //var tmpRSName = ExtractRecordsetNameFromValue(postProcess);
+                            //if(string.IsNullOrEmpty(tmpRSName))
+                            //{
+                            //    var tmp1 = string.Concat("<", postProcess, "/>");
+                            //    if (!postProcessDefs.Contains(tmp1))
+                            //    {
+                            //        postProcessDefs.Add(tmp1);
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    // it is a recordset ;)
+                            //    var tmpRSCol = ExtractFieldNameFromValue(postProcess);
+                            //    var tmp2 = string.Concat("<", tmpRSName, "><", tmpRSCol, "/></", tmpRSName, ">");
+                            //    if (!postProcessDefs.Contains(tmp2))
+                            //    {
+                            //        postProcessDefs.Add(tmp2);
+                            //    }
+                            //}
+
                         }
                         result.Append(Environment.NewLine);
                     }
                     result.Append(string.Concat("</", setName, ">"));
                     result.Append(Environment.NewLine);
+
+                    //  Process post append data ;)
+                    foreach (var col in postProcessDefs)
+                    {
+                        result.Append(col);
+                        result.Append(Environment.NewLine);
+                    }
                 }
             }
-
 
             return result.ToString();
         }

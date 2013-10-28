@@ -1,4 +1,5 @@
 ﻿using System;
+using Dev2.Common.ExtMethods;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,11 +24,11 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         public void Plugins_PluginIntegrationTest_Execution_CorrectResponse()
         {
             string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "BUG_9966_RemotePlugins");
-            const string expected = @"<Message>Exception of type 'HgCo.WindowsLive.SkyDrive.LogOnFailedException' was thrown.</Message>";
+            const string expected = @"<DataList><Message>Exception of type 'HgCo.WindowsLive.SkyDrive.LogOnFailedException' was thrown.</Message></DataList>";
 
             string responseData = TestHelper.PostDataToWebserver(postData);
 
-            StringAssert.Contains(responseData, expected);
+            StringAssert.Contains(responseData.Unescape(), expected);
         }
 
         [TestMethod]
@@ -39,7 +40,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
             string responseData = TestHelper.PostDataToWebserver(postData);
 
-            StringAssert.Contains(responseData, expected, " **** I expected { " + expected + " } but got { " + responseData + " }");
+            StringAssert.Contains(responseData.Unescape(), expected, " **** I expected { " + expected + " } but got { " + responseData + " }");
         }
 
         // Bug 8378

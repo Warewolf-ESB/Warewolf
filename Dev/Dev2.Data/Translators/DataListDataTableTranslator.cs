@@ -90,11 +90,24 @@ namespace Dev2.Data.Translators
                 IBinaryDataListEntry entry;
 
                 var defs = DataListFactory.CreateOutputParser().Parse(outputDefs);
-                var recordsetData = DataListFactory.CreateRecordSetCollection(defs, true);
+                HashSet<string> processedRecNames = new HashSet<string>();
 
-                foreach (var recordset in recordsetData.RecordSets)
+                foreach(var def in defs)
                 {
-                    var rsName = recordset.SetName;
+                    var rsName = DataListUtil.ExtractRecordsetNameFromValue(def.Value);
+                    var rsNameUse = def.RecordSetName;
+
+                    if (string.IsNullOrEmpty(rsName))
+                    {
+                        rsName = rsNameUse;
+                    }
+
+                    if (processedRecNames.Contains(rsName))
+                    {
+                        continue;
+                    }
+
+                    processedRecNames.Add(rsName);
 
                     // build up the columns ;)
                     string error;
@@ -105,7 +118,8 @@ namespace Dev2.Data.Translators
                         {
                             var cols = entry.Columns;
                             IDictionary<int, string> colMapping = BuildColumnNameToIndexMap(entry.Columns,
-                                                                                            dbData.Columns);
+                                                                                            dbData.Columns,
+                                                                                            defs);
 
                             // now convert to binary datalist ;)
                             int rowIdx = entry.FetchAppendRecordsetIndex();
@@ -122,7 +136,7 @@ namespace Dev2.Data.Translators
 
                                     if (colMapping.TryGetValue(idx, out colName))
                                     {
-                                        items.Add(new BinaryDataListItem(item.ToString(), rsName, colName, rowIdx));
+                                        items.Add(new BinaryDataListItem(item.ToString(), rsNameUse, colName, rowIdx));
                                     }
 
                                     idx++;
@@ -156,8 +170,7 @@ namespace Dev2.Data.Translators
                                     pos++;
                                 }
 
-                                entry.TryPutScalar(new BinaryDataListItem(row[idx].ToString(), entry.Namespace),
-                                                   out error);
+                                entry.TryPutScalar(new BinaryDataListItem(row[idx].ToString(), entry.Namespace), out error);
                                 errors.AddError(error);
                             }
                         }
@@ -168,6 +181,11 @@ namespace Dev2.Data.Translators
                     }
                 }
             }
+
+
+            var datalist = compiler.ConvertFrom(targetDL.UID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+
+            datalist += "";
 
             compiler.PushBinaryDataList(targetDL.UID, targetDL, out invokeErrors);
             errors.MergeErrors(invokeErrors);
@@ -210,7 +228,7 @@ namespace Dev2.Data.Translators
                     if (entry.IsRecordset)
                     {
                         var cols = entry.Columns;
-                        IDictionary<int, string> colMapping = BuildColumnNameToIndexMap(entry.Columns, dbData.Columns);
+                        IDictionary<int, string> colMapping = BuildColumnNameToIndexMap(entry.Columns, dbData.Columns,null);
 
                         // now convert to binary datalist ;)
                         int rowIdx = 1;
@@ -281,7 +299,7 @@ namespace Dev2.Data.Translators
         /// <param name="dlCols">The dl cols.</param>
         /// <param name="dtCols">The dt cols.</param>
         /// <returns></returns>
-        private IDictionary<int, string> BuildColumnNameToIndexMap(IEnumerable<Dev2Column> dlCols,  DataColumnCollection dtCols)
+        private IDictionary<int, string> BuildColumnNameToIndexMap(IEnumerable<Dev2Column> dlCols,  DataColumnCollection dtCols, IList<IDev2Definition> defs)
         {
             Dictionary<int, string> result = new Dictionary<int, string>();
 
@@ -293,6 +311,20 @@ namespace Dev2.Data.Translators
                 if (idx != -1)
                 {
                     result.Add(idx,dlC.ColumnName);
+                }
+            }
+
+            if (result.Count == 0 && defs != null)
+            {
+                // use positional adjustment
+                foreach (var def in defs)
+                {
+                    var idx = dtCols.IndexOf(def.Name);
+
+                    if(idx != -1)
+                    {
+                        result.Add(idx, def.Name);
+                    }
                 }
             }
 

@@ -113,37 +113,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 eval = GetEnviromentVariable(dataObject, context, eval);
                             }
 
-                            //2013.06.03: Ashley Lewis for bug 9498 - handle line breaks in multi assign
-                            string[] openParts = Regex.Split(FieldsCollection[i].FieldName, @"\[\[");
-                            string[] closeParts = Regex.Split(FieldsCollection[i].FieldName, @"\]\]");
-                            if(openParts.Count() == closeParts.Count() && openParts.Count() > 2 &&
-                                closeParts.Count() > 2)
-                            {
-                                foreach(var newFieldName in openParts)
-                                {
-                                    if(!string.IsNullOrEmpty(newFieldName))
-                                    {
-                                        string cleanFieldName = null;
-                                        if(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2 <
-                                            newFieldName.Length)
-                                        {
-                                            cleanFieldName = "[[" +
-                                                             newFieldName.Remove(
-                                                                 newFieldName.IndexOf("]]", StringComparison.Ordinal) +
-                                                                 2);
-                                        }
-                                        else
-                                        {
-                                            cleanFieldName = "[[" + newFieldName;
-                                        }
-                                        toUpsert.Add(cleanFieldName, eval);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                toUpsert.Add(FieldsCollection[i].FieldName, eval);
-                            }
+                            toUpsert.Add(FieldsCollection[i].FieldName, eval);
                         }
                     }
 

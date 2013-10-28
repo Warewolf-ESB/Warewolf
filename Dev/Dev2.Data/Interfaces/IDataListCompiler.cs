@@ -225,7 +225,7 @@ namespace Dev2.DataList.Contract
         /// <param name="inputDefinitions">The input definitions.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string inputDefinitions, out ErrorResultTO errors);
+        Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string inputDefinitions, out ErrorResultTO errors, Guid overrideID = default(Guid));
 
         /// <summary>
         /// Shapes the definitions in binary form to create/amended a DL.

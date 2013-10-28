@@ -67,17 +67,31 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
-        public static IList<IDev2Definition> CreateScalarList(IList<IDev2Definition> parsedOutput)
+        public static IList<IDev2Definition> CreateScalarList(IList<IDev2Definition> parsedOutput, bool isOutput)
         {
             IList<IDev2Definition> result = new List<IDev2Definition>();
 
             foreach (IDev2Definition def in parsedOutput)
             {
-                var rsName = DataListUtil.ExtractRecordsetNameFromValue(def.Value);
-                if (!def.IsRecordSet && string.IsNullOrEmpty(rsName))
+                if (isOutput)
                 {
-                    result.Add(def);
+                    var rsName = DataListUtil.ExtractRecordsetNameFromValue(def.Value);
+
+                    if (!def.IsRecordSet && string.IsNullOrEmpty(rsName))
+                    {
+                        result.Add(def);
+                    }
                 }
+                else
+                {
+                    var rsName = DataListUtil.ExtractRecordsetNameFromValue(def.Name);
+
+                    if(!def.IsRecordSet && string.IsNullOrEmpty(rsName))
+                    {
+                        result.Add(def);
+                    }
+                }
+
             }
 
             return result;

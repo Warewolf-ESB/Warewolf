@@ -87,12 +87,12 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void ServiceExecutionTest()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "ServiceExecutionTest");
+            string postData = String.Format("{0}{1}", WebserverURI, "ServiceExecutionTest");
             
             var responseData = string.Empty;
             try
             {
-                responseData = TestHelper.PostDataToWebserver(PostData);
+                responseData = TestHelper.PostDataToWebserver(postData);
             }
             catch (WebException e)
             {
@@ -102,9 +102,9 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
                 }
             }
 
-            string Expected = @"<DataList><rs><val>1</val><result>res = 3</result></rs><rs><val>2</val><result>res = 3</result></rs><rs><val>3</val><result>res = 3</result></rs><rs><val></val><result>res = 3</result></rs></DataList>";
+            const string expected = @"<DataList><rs><val>1</val><result>res = 3</result></rs><rs><val>2</val><result>res = 3</result></rs><rs><val>3</val><result>res = 3</result></rs><rs><val></val><result>res = 3</result></rs></DataList>";
 
-            Assert.IsTrue(responseData.Contains(Expected), "Got [ " + Expected + " ] Expected [ " + Expected + " ]");
+            Assert.IsTrue(responseData.Contains(expected), "Got [ " + responseData + " ] Expected [ " + expected + " ]");
         }
     }
 }

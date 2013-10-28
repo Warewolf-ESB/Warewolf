@@ -14,7 +14,6 @@
     <DeploymentItem filename="Binaries\IronRuby.dll" />
   </Deployment>
   <NamingScheme baseName="UT" useDefault="false" />
-  <Scripts setupScript="C:\TfsBuildUtils\setup.bat" />
   <Execution>
     <Timeouts runTimeout="1800000" testTimeout="120000" />
     <TestTypeSpecific>

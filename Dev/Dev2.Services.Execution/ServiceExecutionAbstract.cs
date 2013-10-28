@@ -259,7 +259,7 @@ namespace Dev2.Services.Execution
                 compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), Service.OutputSpecification, null, shapeDataListID, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
 
-                compiler.ForceDeleteDataListByID(shapeDataListID); // clean up 
+                //compiler.ForceDeleteDataListByID(shapeDataListID); // clean up 
             }
 
         }

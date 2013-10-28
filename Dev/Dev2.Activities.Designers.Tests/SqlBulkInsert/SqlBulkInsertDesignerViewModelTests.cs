@@ -2,6 +2,7 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Linq;
@@ -127,7 +128,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var databases = CreateDatabases(DatabaseCount);
             var selectedDatabase = databases.Keys.First();
             var expectedTables = databases[selectedDatabase];
-            var selectedTable = expectedTables[1];
+            var selectedTable = expectedTables.Items[1];
 
             var modelItem = CreateModelItem();
             modelItem.SetProperty("Database", selectedDatabase);
@@ -160,7 +161,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             Assert.AreEqual("New Database Source...", viewModel.Databases[0].ResourceName);
             Assert.AreNotEqual(Guid.Empty, viewModel.Databases[0].ResourceID);
 
-            Assert.AreEqual(expectedTables.Count, viewModel.Tables.Count);
+            Assert.AreEqual(expectedTables.Items.Count, viewModel.Tables.Count);
             Assert.AreEqual(selectedTable.TableName, viewModel.SelectedTable.TableName);
 
             Assert.AreEqual("InputMappings", viewModel.CollectionName);
@@ -203,10 +204,10 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
-            var selectedTable = selectedTables[1];
+            var selectedTable = selectedTables.Items[1];
 
             var initialDatabase = databases.Keys.Skip(1).First();
-            var initialTable = databases[initialDatabase][3];
+            var initialTable = databases[initialDatabase].Items[3];
             initialTable.TableName = selectedTable.TableName;
 
             var modelItem = CreateModelItem();
@@ -243,10 +244,10 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
-            var selectedTable = selectedTables[1];
+            var selectedTable = selectedTables.Items[1];
 
             var initialDatabase = databases.Keys.Skip(1).First();
-            var initialTable = databases[initialDatabase][3];
+            var initialTable = databases[initialDatabase].Items[3];
 
             var modelItem = CreateModelItem();
             modelItem.SetProperty("Database", initialDatabase);
@@ -273,6 +274,49 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_Database")]
+        public void SqlBulkInsertDesignerViewModel_SelectedDatabase_ChangedAndTableListHasErrors_ErrorsNotNull()
+        {
+            //------------Setup for test--------------------------
+            var databases = CreateDatabases(2);
+
+            var selectedDatabase = databases.Keys.First();
+            var selectedTables = databases[selectedDatabase];
+            selectedTables.HasErrors = true;
+            selectedTables.Errors = "There was an error.";
+
+            var initialDatabase = databases.Keys.Skip(1).First();
+            var initialTable = databases[initialDatabase].Items[3];
+
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("Database", initialDatabase);
+            modelItem.SetProperty("TableName", initialTable.TableName);
+            modelItem.SetProperty("InputMappings", initialTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c }).ToList());
+
+            var viewModel = CreateViewModel(modelItem, databases);
+
+            Assert.AreEqual(initialTable.Columns.Count, viewModel.InputMappings.Count);
+
+            //------------Execute Test---------------------------
+            viewModel.SelectedDatabase = selectedDatabase;
+
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, viewModel.OnSelectedDatabaseChangedHitCount);
+            Assert.AreEqual("Select a Table...", viewModel.SelectedTable.TableName);
+
+            // Skip "Select a Table" 
+            VerifyTables(selectedTables, viewModel.Tables.Skip(1).ToList());
+
+            Assert.AreEqual(0, viewModel.InputMappings.Count);
+
+            Assert.IsNotNull(viewModel.Errors);
+            Assert.AreEqual(1, viewModel.Errors.Count);
+            Assert.AreEqual(selectedTables.Errors, viewModel.Errors[0].Message);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlBulkInsertDesignerViewModel_SelectedTable")]
         public void SqlBulkInsertDesignerViewModel_SelectedTable_Changed_LoadsTableColumns()
         {
@@ -281,7 +325,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var viewModel = CreateViewModel(databases);
 
             var dbSource = databases.Keys.First();
-            var dbTable = databases[dbSource][0];
+            var dbTable = databases[dbSource].Items[0];
 
             //------------Execute Test---------------------------
             viewModel.SelectedDatabase = dbSource;
@@ -298,6 +342,40 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             VerifyColumns(dbTable.Columns, actual);
         }
 
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_SelectedTable")]
+        public void SqlBulkInsertDesignerViewModel_SelectedTable_ChangedAndColumnListHasErrors_ErrorsNotNull()
+        {
+            //------------Setup for test--------------------------
+            const string ErrorMessage = "A column error occurred.";
+
+            var databases = CreateDatabases(2);
+            var viewModel = CreateViewModel(databases, ErrorMessage);
+
+            var dbSource = databases.Keys.First();
+            var dbTable = databases[dbSource].Items[0];
+
+            //------------Execute Test---------------------------
+            viewModel.SelectedDatabase = dbSource;
+            viewModel.SelectedTable = dbTable;
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(dbTable.TableName, viewModel.TableName);
+
+            Assert.IsTrue(viewModel.IsTableSelected);
+            Assert.AreEqual(1, viewModel.OnSelectedTableChangedHitCount);
+
+            var actual = viewModel.InputMappings.Select(m => m.OutputColumn).ToList();
+
+            VerifyColumns(dbTable.Columns, actual);
+
+            Assert.IsNotNull(viewModel.Errors);
+            Assert.AreEqual(1, viewModel.Errors.Count);
+            Assert.AreEqual(ErrorMessage, viewModel.Errors[0].Message);
+        }
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlBulkInsertDesignerViewModel_SelectedTable")]
@@ -308,7 +386,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var viewModel = CreateViewModel(databases);
 
             var selectedDatabase = databases.Keys.First();
-            var selectedTable = databases[selectedDatabase][0];
+            var selectedTable = databases[selectedDatabase].Items[0];
 
             //------------Execute Test---------------------------
             viewModel.SelectedDatabase = selectedDatabase;
@@ -335,7 +413,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
-            var selectedTable = selectedTables[3];
+            var selectedTable = selectedTables.Items[3];
 
             var modelItem = CreateModelItem();
             modelItem.SetProperty("Database", selectedDatabase);
@@ -368,7 +446,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
-            var selectedTable = selectedTables[3];
+            var selectedTable = selectedTables.Items[3];
 
             var modelItem = CreateModelItem();
             modelItem.SetProperty("Database", selectedDatabase);
@@ -402,7 +480,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
-            var selectedTable = selectedTables[3];
+            var selectedTable = selectedTables.Items[3];
 
             var modelItem = CreateModelItem();
             modelItem.SetProperty("Database", selectedDatabase);
@@ -478,7 +556,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
-            var selectedTable = selectedTables[1];
+            var selectedTable = selectedTables.Items[1];
 
             viewModel.SelectedDatabase = selectedDatabase;
             viewModel.SelectedTable = selectedTable;
@@ -509,7 +587,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
-            var selectedTable = selectedTables[3];
+            var selectedTable = selectedTables.Items[3];
 
             var modelItem = CreateModelItem();
             modelItem.SetProperty("Database", selectedDatabase);
@@ -539,7 +617,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
-            var selectedTable = selectedTables[3];
+            var selectedTable = selectedTables.Items[3];
 
             var n = 0;
             var modelItem = CreateModelItem();
@@ -571,7 +649,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
-            var selectedTable = selectedTables[3];
+            var selectedTable = selectedTables.Items[3];
             var inputMappings = selectedTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c }).ToList();
             var inputMapping = inputMappings[0];
             inputMapping.InputColumn = "rs(*).f1]]";
@@ -614,7 +692,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
-            var selectedTable = selectedTables[3];
+            var selectedTable = selectedTables.Items[3];
             var inputMappings = selectedTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c }).ToList();
             var inputMapping = inputMappings[0];
             inputMapping.InputColumn = "[[rs(*).f1]]";
@@ -677,7 +755,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var viewModel = CreateViewModel(databases);
 
             var selectedDatabase = databases.Keys.First();
-            var selectedTable = databases[selectedDatabase][2];
+            var selectedTable = databases[selectedDatabase].Items[2];
 
             viewModel.SelectedDatabase = selectedDatabase;
             viewModel.SelectedTable = selectedTable;
@@ -713,7 +791,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var viewModel = CreateViewModel(databases);
 
             var selectedDatabase = databases.Keys.First();
-            var selectedTable = databases[selectedDatabase][0];
+            var selectedTable = databases[selectedDatabase].Items[0];
 
             viewModel.SelectedDatabase = selectedDatabase;
             viewModel.SelectedTable = selectedTable;
@@ -741,12 +819,12 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var viewModel = CreateViewModel(databases);
 
             var selectedDatabase = databases.Keys.First();
-            var selectedTable = databases[selectedDatabase][3];
+            var selectedTable = databases[selectedDatabase].Items[3];
 
 
             viewModel.SelectedDatabase = selectedDatabase;
             viewModel.SelectedTable = selectedTable;
-            
+
             const int BlankIndex = 2;
             viewModel.ModelItemCollection[BlankIndex].SetProperty("InputColumn", "");
 
@@ -762,18 +840,18 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             Assert.IsFalse(string.IsNullOrEmpty(viewModel.QuickVariableInputViewModel.Prefix));
 
             var i = 0;
-            var expectedVariableList = string.Join(Environment.NewLine, selectedTable.Columns.Select(c => i++ == BlankIndex ? "": c.ColumnName));
+            var expectedVariableList = string.Join(Environment.NewLine, selectedTable.Columns.Select(c => i++ == BlankIndex ? "" : c.ColumnName));
 
             Assert.AreEqual(expectedVariableList, viewModel.QuickVariableInputViewModel.VariableListString);
             Assert.AreEqual(string.Format("{0}(*).", selectedTable.TableName), viewModel.QuickVariableInputViewModel.Prefix);
         }
 
 
-        static void VerifyTables(List<DbTable> expectedTables, List<DbTable> actualTables)
+        static void VerifyTables(DbTableList expectedTables, List<DbTable> actualTables)
         {
-            for(var i = 0; i < expectedTables.Count; i++)
+            for(var i = 0; i < expectedTables.Items.Count; i++)
             {
-                var expected = expectedTables[i];
+                var expected = expectedTables.Items[i];
                 var actual = actualTables[i];
                 Assert.AreEqual(expected.TableName, actual.TableName);
                 Assert.AreEqual(expected.Columns.Count, actual.Columns.Count);
@@ -791,18 +869,18 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             }
         }
 
-        static TestSqlBulkInsertDesignerViewModel CreateViewModel(Dictionary<DbSource, List<DbTable>> sources)
+        static TestSqlBulkInsertDesignerViewModel CreateViewModel(Dictionary<DbSource, DbTableList> sources, string columnListErrors = "")
         {
             var modelItem = CreateModelItem();
-            return CreateViewModel(modelItem, sources);
+            return CreateViewModel(modelItem, sources, columnListErrors);
         }
 
-        static TestSqlBulkInsertDesignerViewModel CreateViewModel(ModelItem modelItem, Dictionary<DbSource, List<DbTable>> sources)
+        static TestSqlBulkInsertDesignerViewModel CreateViewModel(ModelItem modelItem, Dictionary<DbSource, DbTableList> sources, string columnListErrors = "")
         {
-            return CreateViewModel(modelItem, sources, new Mock<IEventAggregator>().Object, new Mock<IResourceModel>().Object);
+            return CreateViewModel(modelItem, sources, new Mock<IEventAggregator>().Object, new Mock<IResourceModel>().Object, columnListErrors);
         }
 
-        static TestSqlBulkInsertDesignerViewModel CreateViewModel(ModelItem modelItem, Dictionary<DbSource, List<DbTable>> sources, IEventAggregator eventAggregator, IResourceModel resourceModel)
+        static TestSqlBulkInsertDesignerViewModel CreateViewModel(ModelItem modelItem, Dictionary<DbSource, DbTableList> sources, IEventAggregator eventAggregator, IResourceModel resourceModel, string columnListErrors = "")
         {
             var sourceDefs = sources == null ? null : sources.Select(s => s.Key.ToXml().ToString());
 
@@ -819,8 +897,8 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                     var xml = XElement.Parse(xmlRequest);
                     var database = xml.Element("Database");
                     var dbSource = JsonConvert.DeserializeObject<DbSource>(database.Value);
-                    var tables = sources[dbSource];
-                    tableJson = JsonConvert.SerializeObject(tables);
+                    var tableList = sources[dbSource];
+                    tableJson = tableList.ToString();
                 })
                 .Returns(() => tableJson);
 
@@ -835,8 +913,15 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                     var dbSource = JsonConvert.DeserializeObject<DbSource>(database.Value);
                     var tables = sources[dbSource];
 
-                    var table = tables.First(t => t.TableName == tableName.Value.Trim(new[] { '"' }));
-                    columnsJson = JsonConvert.SerializeObject(table.Columns);
+                    var table = tables.Items.First(t => t.TableName == tableName.Value.Trim(new[] { '"' }));
+                    var columnList = new DbColumnList();
+                    columnList.Items.AddRange(table.Columns);
+                    if(!string.IsNullOrEmpty(columnListErrors))
+                    {
+                        columnList.HasErrors = true;
+                        columnList.Errors = columnListErrors;
+                    }
+                    columnsJson = columnList.ToString();
                 })
                 .Returns(() => columnsJson);
 
@@ -851,9 +936,9 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             return ModelItemUtils.CreateModelItem(new DsfSqlBulkInsertActivity());
         }
 
-        static Dictionary<DbSource, List<DbTable>> CreateDatabases(int count)
+        static Dictionary<DbSource, DbTableList> CreateDatabases(int count)
         {
-            var result = new Dictionary<DbSource, List<DbTable>>();
+            var result = new Dictionary<DbSource, DbTableList>();
 
             for(var i = 0; i < count; i++)
             {
@@ -887,11 +972,14 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                     tables.Add(new DbTable { TableName = dbName + "_Table_" + j, Columns = columns });
                 }
 
+                var tableList = new DbTableList();
+                tableList.Items.AddRange(tables);
+
                 result.Add(new DbSource
                 {
                     ResourceID = Guid.NewGuid(),
                     ResourceName = dbName,
-                }, tables);
+                }, tableList);
             }
 
             return result;

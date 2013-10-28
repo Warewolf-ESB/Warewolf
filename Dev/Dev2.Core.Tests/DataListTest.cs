@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.DataList.Contract;
 using Dev2.Tests.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
@@ -45,7 +46,7 @@ namespace DataListTset
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DataListFactory_CreateRecordSetCollection")]
-        public void DataListFactory_CreateRecordSetCollection_whenTwoRecordsetsArePresent_ExpectTwoRecordsetDefinitions()
+        public void DataListFactory_CreateRecordSetCollection_WhenTwoRecordsetsArePresent_ExpectTwoRecordsetDefinitions()
         {
             //------------Setup for test--------------------------
             var arguments = @"<Outputs><Output Name=""MapLocationID"" MapsTo=""[[MapLocationID]]"" Value=""[[dbo_proc_GetAllMapLocations(*).MapLocationID]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""StreetAddress"" MapsTo=""[[StreetAddress]]"" Value=""[[dbo_proc_GetAllMapLocations2(*).StreetAddress]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Latitude"" MapsTo=""[[Latitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Latitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Longitude"" MapsTo=""[[Longitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Longitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /></Outputs>";
@@ -67,6 +68,59 @@ namespace DataListTset
 
             // check #2's columns 
             Assert.AreEqual("StreetAddress", result.RecordSets[1].Columns[0].Name);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListFactory_CreateRecordSetCollection")]
+        public void DataListFactory_ParseAndAllowBlanks_WhenTwoRecordsetsArePresentWithBlankMapsToAndName_ExpectTwoRecordsetDefinitionsBlankColumnNotIncluded()
+        {
+            //------------Setup for test--------------------------
+            var arguments = @"<Outputs><Output Name=""MapLocationID"" MapsTo=""[[MapLocationID]]"" Value=""[[dbo_proc_GetAllMapLocations(*).MapLocationID]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""StreetAddress"" MapsTo=""[[StreetAddress]]"" Value=""[[dbo_proc_GetAllMapLocations2(*).StreetAddress]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name="""" MapsTo="""" Value=""[[dbo_proc_GetAllMapLocations(*).Latitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Longitude"" MapsTo=""[[Longitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Longitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /></Outputs>";
+            var defs = DataListFactory.CreateOutputParser().ParseAndAllowBlanks(arguments);
+            
+            //------------Execute Test---------------------------
+            var result = DataListFactory.CreateRecordSetCollection(defs, true);
+
+            //------------Assert Results-------------------------
+
+            // check counts ;)
+            Assert.AreEqual(2, result.RecordSets.Count);
+            Assert.AreEqual(2, result.RecordSets[0].Columns.Count);
+            Assert.AreEqual(1, result.RecordSets[1].Columns.Count);
+
+            // check set names ;)
+            Assert.AreEqual("dbo_proc_GetAllMapLocations", result.RecordSets[0].SetName);
+            Assert.AreEqual("dbo_proc_GetAllMapLocations2", result.RecordSets[1].SetName);
+
+            // check #2's columns 
+            Assert.AreNotEqual("Latitude", result.RecordSets[0].Columns[1].Name);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataListFactory_CreateRecordSetCollection")]
+        public void DataListFactory_CreateRecordSetCollection_WhenInputMappingContainsStar_ExpectValidRecordsetDefinition()
+        {
+            //------------Setup for test--------------------------
+            const string arguments = @"<Inputs><Input Name=""Prefix"" Source=""[[prefix(*).val]]"" /></Inputs>";
+            var defs = DataListFactory.CreateInputParser().Parse(arguments);
+
+            //------------Execute Test---------------------------
+            var result = DataListFactory.CreateRecordSetCollection(defs, false);
+
+            //------------Assert Results-------------------------
+
+            // check counts ;)
+            Assert.AreEqual(1, result.RecordSets.Count);
+            Assert.AreEqual(1, result.RecordSets[0].Columns.Count);
+
+            // check set names ;)
+            Assert.AreEqual("prefix", result.RecordSets[0].SetName);
+
+            // check #2's columns 
+            Assert.AreEqual("Prefix", result.RecordSets[0].Columns[0].Name);
+            Assert.AreEqual("prefix(*).val", result.RecordSets[0].Columns[0].MapsTo);
         }
 
         [TestMethod]
@@ -96,8 +150,8 @@ namespace DataListTset
         public void TestScalarRecordSetMixedParsing()
         {
             IList<IDev2Definition> defs = DataListFactory.CreateOutputParser().Parse(TestStrings.sampleActivityMappingMixed);
-            IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollection(defs, false);
-            IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs);
+            IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollection(defs, true);
+            IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs,true);
 
 
             Assert.IsTrue(scalarList.Count == 1 && recCol.RecordSetNames.Count == 1);

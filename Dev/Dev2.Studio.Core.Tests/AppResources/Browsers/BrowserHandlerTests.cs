@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using CefSharp;
 using Dev2.Studio.Core.AppResources.Browsers;

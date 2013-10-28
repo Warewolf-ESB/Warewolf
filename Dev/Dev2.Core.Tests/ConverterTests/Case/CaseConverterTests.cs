@@ -1,4 +1,5 @@
-﻿using Dev2.DataList.Contract.Binary_Objects;
+﻿using System.Diagnostics.CodeAnalysis;
+using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 

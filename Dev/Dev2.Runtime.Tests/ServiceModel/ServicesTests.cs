@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
+using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
@@ -984,6 +988,22 @@ namespace Dev2.Tests.Runtime.ServiceModel
                     DirectoryHelper.CleanUp(workspacePath);
                 }
             }
+        }
+
+        // ReSharper disable InconsistentNaming
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Service_ToXml")]
+        public void Service_ToXml_WhenNoMappingInOutputsRecordSet_ShouldNotSaveAsOutput()
+        {
+            //------------Setup for test--------------------------
+            var serviceXml = XmlResource.Fetch("WebserviceWithRecordsetFieldsMissing");
+            var webService = new WebService(serviceXml);
+            //------------Execute Test---------------------------
+            var outputs = webService.ToXml().Element("Actions").Element("Action").Element("Outputs").Elements();
+            //------------Assert Results-------------------------    
+            Assert.IsNotNull(outputs);
+            Assert.AreEqual(11,outputs.Count());
         }
 
         [TestMethod]

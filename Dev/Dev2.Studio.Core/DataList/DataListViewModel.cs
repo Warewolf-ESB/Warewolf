@@ -377,7 +377,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
             string errorString;
             CreateListsOfIDataListItemModelToBindTo(out errorString);
-
+            AddRecordsetNamesIfMissing();
             if (!string.IsNullOrEmpty(errorString))
             {
                 throw new Exception(errorString);
@@ -813,7 +813,7 @@ namespace Dev2.Studio.ViewModels.DataList
             varNode.Children = ScalarCollection;
             BaseCollection.Add(varNode);
 
-            AddRecordsetNamesIfMissing();
+            //AddRecordsetNamesIfMissing();
 
             DataListHeaderItemModel recordsetsNode = DataListItemModelFactory.CreateDataListHeaderItem("Recordset");
             if (RecsetCollection.Count == 0)
@@ -943,7 +943,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
             foreach (var recset in RecsetCollection ?? new OptomizedObservableCollection<IDataListItemModel>())
             {
-                if (recset.IsBlank || recset.HasError) continue;
+                if (recset.IsBlank) continue;
                 IEnumerable<IDataListItemModel> filledRecordSets = recset.Children.Where(c => !c.IsBlank && !c.HasError);
                 IList<Dev2Column> cols = filledRecordSets.Select(child => DataListFactory.CreateDev2Column(child.Name, child.Description, child.IsEditable,child.ColumnIODirection))
                                                          .ToList();

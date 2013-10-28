@@ -361,6 +361,17 @@ namespace Dev2.Runtime.Hosting
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             var userServices = LoadWorkspaceViaBuilder(workspacePath, folders.ToArray());
 
+
+
+
+            if(workspaceID != Guid.Empty)
+            {
+                Guid examine = new Guid("48ed5cb8-f226-4a98-8eba-208cb477e422");
+                var wtf = userServices.Where(c => c.ResourceID == examine);
+
+                var foo = wtf.FirstOrDefault();
+            }
+
             var result = userServices.Union(_managementServices.Values);
 
             return result.ToList();

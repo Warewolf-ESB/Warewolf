@@ -857,13 +857,13 @@ namespace Dev2.DataList.Contract
                                         else if (match == search && !isRS)
                                         {
 
-                                            // check for invalid recordset notation
-                                            if (!payload.HangingOpen && refParts[i].Children != null)
-                                            {
-                                                throw new Dev2DataLanguageParseError("Invalid syntax - [[" + payload.Payload + "]] is a recordset with out the (). Please use [[" + payload.Payload + "()]] instead.", payload.StartIndex, payload.EndIndex, enIntellisenseErrorCode.InvalidRecordsetNotation);
+                                            //// check for invalid recordset notation
+                                            //if (!payload.HangingOpen && refParts[i].Children != null)
+                                            //{
+                                            //    throw new Dev2DataLanguageParseError("Invalid syntax - [[" + payload.Payload + "]] is a recordset with out the (). Please use [[" + payload.Payload + "()]] instead.", payload.StartIndex, payload.EndIndex, enIntellisenseErrorCode.InvalidRecordsetNotation);
 
-                                            }
-                                            else
+                                            //}
+                                            //else
                                             {
 
                                                 // check to see if match is a recordset and return it as such

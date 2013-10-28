@@ -20,12 +20,22 @@ namespace Dev2.DataList.Contract
 
             for (int i = 0; i < _parsedOutput.Count; i++) {
                 IDev2Definition tmp = _parsedOutput[i];
-                var rsName = DataListUtil.ExtractRecordsetNameFromValue(tmp.Value);
+                var rsName = DataListUtil.ExtractRecordsetNameFromValue(tmp.Value); // last .Name
                 var scanRsName = tmp.RecordSetName;
 
                 if (IsOutput)
                 {
-                    scanRsName = rsName;
+                    if(!string.IsNullOrEmpty(rsName))
+                    {
+                        scanRsName = rsName;
+                    }else
+                    {
+                        rsName = scanRsName;
+                    }
+                }
+                else
+                {
+                    scanRsName = DataListUtil.ExtractRecordsetNameFromValue(tmp.Value);
                 }
 
                 if (tmp.IsRecordSet) {
@@ -41,19 +51,19 @@ namespace Dev2.DataList.Contract
                     }
                 }
                 // Handle scalars that are really recordsets ;)
-                else if(!string.IsNullOrEmpty(rsName))
+                else if(!string.IsNullOrEmpty(scanRsName))
                 {
                     // is already present in the record set?
-                    if (tmpCollections.ContainsKey(rsName))
+                    if(tmpCollections.ContainsKey(scanRsName))
                     {
-                        tmpCollections[rsName].Add(tmp); // ???
+                        tmpCollections[scanRsName].Add(tmp); // ???
                     }
                     else
                     { // first time adding for this record set
                         IList<IDev2Definition> newList = new List<IDev2Definition>();
                         newList.Add(tmp);
-                        tmpCollections.Add(rsName, newList);
-                        tmpNames.Add(rsName);
+                        tmpCollections.Add(scanRsName, newList);
+                        tmpNames.Add(scanRsName);
                     }
                 }
             }

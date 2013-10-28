@@ -1,4 +1,5 @@
-﻿using ActivityUnitTests;
+﻿using System.Diagnostics.CodeAnalysis;
+using ActivityUnitTests;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;

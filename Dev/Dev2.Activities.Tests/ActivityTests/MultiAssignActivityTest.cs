@@ -1,4 +1,5 @@
-﻿using ActivityUnitTests;
+﻿using System.Diagnostics.CodeAnalysis;
+using ActivityUnitTests;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -267,8 +268,20 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[cRec(100).opt]]", "[[gRec().opt]]", _fieldCollection.Count));
+
+            const string shape = @"<ADL>
+<gRec>
+<opt></opt>
+<display></display>
+</gRec>
+<cRec>
+<opt/>
+<display/>
+</cRec>
+</ADL>";
+
             SetupArguments(
-                            ActivityStrings.mult_assign_expression_both_sides_mult_rs_adl
+                            shape
                           , ActivityStrings.mult_assign_expression_both_sides_mult_rs_adl);
             IDSFDataObject result = ExecuteProcess();
 
@@ -309,8 +322,20 @@ namespace Dev2.Tests.Activities.ActivityTests
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[cRec(100).opt]]", "[[gRec().opt]]", _fieldCollection.Count));
             _fieldCollection.Add(new ActivityDTO("[[cRec(100).display]]", "[[gRec().display]]", _fieldCollection.Count));
+
+            const string shape = @"<ADL>
+<gRec>
+<opt></opt>
+<display></display>
+</gRec>
+<cRec>
+<opt/>
+<display/>
+</cRec>
+</ADL>";
+
             SetupArguments(
-                            ActivityStrings.mult_assign_expression_both_sides_mult_rs_adl
+                            shape
                           , ActivityStrings.mult_assign_expression_both_sides_mult_rs_adl);
             IDSFDataObject result = ExecuteProcess();
 
@@ -321,7 +346,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             // first and row 100
-            Assert.IsTrue(actual.Count == 2 && actual.Last() == "Value2");
+            Assert.AreEqual(2,actual.Count);
+            Assert.AreEqual("Value2", actual.Last());
         }
 
         [TestMethod]
@@ -822,9 +848,19 @@ namespace Dev2.Tests.Activities.ActivityTests
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[gRec(*).opt]]", "[[cRec(*).opt]]", _fieldCollection.Count));
 
+            const string shape = @"<ADL>
+<gRec>
+<opt></opt>
+<display></display>
+</gRec>
+<cRec>
+<opt/>
+<display/>
+</cRec>
+</ADL>";
 
             SetupArguments(
-                ActivityStrings.MutiAssignStarDataList
+                shape
               , ActivityStrings.MutiAssignStarDataList);
 
             IDSFDataObject result = ExecuteProcess();
@@ -855,8 +891,19 @@ namespace Dev2.Tests.Activities.ActivityTests
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[gRec().opt]]", "[[cRec(*).opt]]", _fieldCollection.Count));
 
+            const string shape = @"<ADL>
+<gRec>
+<opt></opt>
+<display></display>
+</gRec>
+<cRec>
+<opt/>
+<display/>
+</cRec>
+</ADL>";
+
             SetupArguments(
-                            ActivityStrings.MutiAssignStarDataList
+                            shape
                           , ActivityStrings.MutiAssignStarDataList);
 
             IDSFDataObject result = ExecuteProcess();
@@ -952,8 +999,19 @@ namespace Dev2.Tests.Activities.ActivityTests
             _fieldCollection.Clear();
             _fieldCollection.Add(new ActivityDTO("[[gRec(2).opt]]", "[[cRec(*).opt]]", _fieldCollection.Count));
 
+            const string shape = @"<ADL>
+<gRec>
+<opt></opt>
+<display></display>
+</gRec>
+<cRec>
+<opt/>
+<display/>
+</cRec>
+</ADL>";
+
             SetupArguments(
-                            ActivityStrings.MutiAssignStarDataList
+                            shape
                           , ActivityStrings.MutiAssignStarDataList);
 
             IDSFDataObject result = ExecuteProcess();
@@ -1156,33 +1214,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(expected, actual, "Assigning to an invalid recordset index did not return an error");
         }
-
-        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in multiassign
-        [TestMethod]
-        public void AssignToMultipleRegionsExpectedAllValuesAssignedTo()
-        {
-            _fieldCollection.Clear();
-            _fieldCollection.Add(new ActivityDTO("[[cRec(1).opt]], [[gRec(1).display]], [[cRec(2).opt]]", "test value", _fieldCollection.Count));
-
-            SetupArguments(
-                ActivityStrings.MutiAssignStarDataList
-              , ActivityStrings.MutiAssignStarDataList);
-
-            const string expected = "test value";
-
-            IDSFDataObject result = ExecuteProcess();
-            string error;
-            List<string> firstActual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error);
-            List<string> secondActual = RetrieveAllRecordSetFieldValues(result.DataListID, "gRec", "display", out error);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(expected, firstActual[0]);
-            Assert.AreEqual(expected, secondActual[0]);
-            Assert.AreEqual(expected, firstActual[1]);
-        }
-
+        
         #endregion Language Tests
 
         #region Calculate Mode Tests

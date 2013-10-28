@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Diagnostics.CodeAnalysis;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.AppResources.Exceptions;
 using Dev2.Studio.Core.Controller;

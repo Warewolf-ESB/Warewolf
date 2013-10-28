@@ -262,6 +262,10 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                     foreach(var field in recordset.Fields)
                     {
+                        if(String.IsNullOrEmpty(field.Name))
+                        {
+                            continue;
+                        }
                         var path = field.Path;
                         var rsAlias = string.IsNullOrEmpty(field.RecordsetAlias) ? "" : field.RecordsetAlias.Replace("()", "");
 

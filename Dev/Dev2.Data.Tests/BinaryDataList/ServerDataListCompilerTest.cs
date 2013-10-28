@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
@@ -440,7 +441,6 @@ namespace Dev2.Data.Tests.BinaryDataList
         }
 
         #endregion
-
 
         #region Basic Shaping For Sub Execution Test
 
@@ -987,5 +987,47 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             _sdlc.DeleteDataListByID(dlID, false);
         }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_BuildOutputExpressionExtractor")]
+        public void ServerDataListCompiler_BuildOutputExpressionExtractor_WhenInputContainsRecordsetAndScalar_ExpectScalarExpression()
+        {
+            //------------Setup for test--------------------------
+            const string inputs = @"<Inputs><Input Name=""input"" Source=""[[rs1(1).f1]]"" /></Inputs>";
+            var def = DataListFactory.CreateInputParser().Parse(inputs);
+
+            //------------Execute Test---------------------------
+            var expression = _sdlc.BuildOutputExpressionExtractor(enDev2ArgumentType.Input);
+
+            var result = expression.Invoke(def.FirstOrDefault());
+
+            //------------Assert Results-------------------------
+            const string expected = "[[input]]";
+
+            Assert.AreEqual(expected, result);
+
+        }
+
+        //[TestMethod]
+        //[Owner("Travis Frisinger")]
+        //[TestCategory("ServerDataListCompiler_BuildOutputExpressionExtractor")]
+        //public void ServerDataListCompiler_BuildOutputExpressionExtractor_WhenInputContains2Recordset_ExpectRecordsetExpression()
+        //{
+        //    //------------Setup for test--------------------------
+        //    const string inputs = @"<Inputs><Input Name=""input"" Source=""[[rs1(1).f1]]"" Recordset=""rs2""/></Inputs>";
+        //    var def = DataListFactory.CreateInputParser().Parse(inputs);
+
+        //    //------------Execute Test---------------------------
+        //    var expression = _sdlc.BuildOutputExpressionExtractor(enDev2ArgumentType.Input);
+
+        //    var result = expression.Invoke(def.FirstOrDefault());
+
+        //    //------------Assert Results-------------------------
+        //    const string expected = "[[rs2().input]]";
+
+        //    Assert.AreEqual(expected, result);
+
+        //}
     }
 }

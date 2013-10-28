@@ -79,10 +79,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                         {
 
                             var myCols = fedKey.ImpactedColumns;
-                            // Convert to _internalReturnValue format ;)
-
-                            // Travis.Frisinger 16/10 Removed for Studio Bug
-                            //&& !theRow.IsEmpty
 
                             if( myCols!= null)
                             {
@@ -145,39 +141,39 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                         throw new Exception("Fatal Internal DataList Storage Error");
                     }
 
-                        // we got the row object, now update it ;)
-                        foreach (IBinaryDataListItem itm in value)
+                    // we got the row object, now update it ;)
+                    foreach (IBinaryDataListItem itm in value)
+                    {
+                        if (!string.IsNullOrEmpty(itm.FieldName))
                         {
-                            if (!string.IsNullOrEmpty(itm.FieldName))
+                            int idx = InternalFetchColumnIndex(itm.FieldName); // Fetch correct index 
+                            BinaryDataListAlias keyAlias;
+
+                            // adjust if there is a mapping ;)
+                            if (_keyToAliasMap.TryGetValue(itm.FieldName, out keyAlias))
                             {
-                                int idx = InternalFetchColumnIndex(itm.FieldName); // Fetch correct index 
-                                BinaryDataListAlias keyAlias;
+                                var parentColumns = keyAlias.MasterEntry.Columns;
+                                var parentColumn = keyAlias.MasterColumn;
 
-                                // adjust if there is a mapping ;)
-                                if (_keyToAliasMap.TryGetValue(itm.FieldName, out keyAlias))
+                                idx = InternalParentFetchColumnIndex(parentColumn, parentColumns);
+
+                                colCnt = (short) parentColumns.Count;
+                            }
+
+                            if (idx == -1 && !IsRecordset)
+                            {
+                                idx = 0; // adjust for scalar
+                            }
+
+                            if (idx >= 0)
+                            {
+                                // it is an alias mapping ;)
+                                if (keyAlias != null)
                                 {
-                                    var parentColumns = keyAlias.MasterEntry.Columns;
-                                    var parentColumn = keyAlias.MasterColumn;
-
-                                    idx = InternalParentFetchColumnIndex(parentColumn, parentColumns);
-
-                                    colCnt = (short) parentColumns.Count;
+                                    // alias update, use row 1
+                                    parentRow.UpdateValue(itm.TheValue, idx, colCnt);
                                 }
-
-                                if (idx == -1 && !IsRecordset)
-                                {
-                                    idx = 0; // adjust for scalar
-                                }
-
-                                if (idx >= 0)
-                                {
-                                    // it is an alias mapping ;)
-                                    if (keyAlias != null)
-                                    {
-                                        // alias update, use row 1
-                                        parentRow.UpdateValue(itm.TheValue, idx, colCnt);
-                                }
-                                    else
+                                else
                                 {
                                         // normal update ;)
                                         childRow.UpdateValue(itm.TheValue, idx, colCnt);

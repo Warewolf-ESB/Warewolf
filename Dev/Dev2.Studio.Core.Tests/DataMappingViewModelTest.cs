@@ -124,8 +124,8 @@ namespace Dev2.Core.Tests
             _dataMappingViewModel.CreateXmlOutput(_dataMappingViewModel.Outputs, _dataMappingViewModel.Inputs);
             string result1 = _dataMappingViewModel.Activity.LiveInputMapping;
             string result2 = _dataMappingViewModel.Activity.LiveOutputMapping;
-            string expected1 = @"<Inputs><Input Name=""reg"" Source=""[[reg]]"" DefaultValue=""NUD2347""><Validator Type=""Required"" /></Input><Input Name=""asdfsad"" Source=""registration223"" DefaultValue=""w3rt24324""><Validator Type=""Required"" /></Input><Input Name=""number"" Source=""[[number]]"" /></Inputs>";
-            string expected2 = @"<Outputs><Output Name=""vehicleVin"" MapsTo=""[[vehicleVin]]"" Value=""[[vehicleVin]]"" /><Output Name=""vehicleColor"" MapsTo=""[[vehicleColor]]"" Value=""[[vehicleColor]]"" /><Output Name=""speed"" MapsTo=""[[Fines(*).speed]]"" Value=""[[Fines().speed]]"" Recordset=""Fines"" /><Output Name=""date"" MapsTo=""Fines.Date"" Value=""Fines.Date"" Recordset=""Fines"" /><Output Name=""location"" MapsTo=""[[Fines(*).location]]"" Value=""[[Fines().location]]"" Recordset=""Fines"" /></Outputs>";
+            string expected1 = @"<Inputs><Input Name=""reg"" Source="""" DefaultValue=""NUD2347""><Validator Type=""Required"" /></Input><Input Name=""asdfsad"" Source=""registration223"" DefaultValue=""w3rt24324""><Validator Type=""Required"" /></Input><Input Name=""number"" Source="""" /></Inputs>";
+            string expected2 = @"<Outputs><Output Name=""vehicleVin"" MapsTo="""" Value="""" /><Output Name=""vehicleColor"" MapsTo="""" Value="""" /><Output Name=""speed"" MapsTo="""" Value="""" Recordset=""Fines"" /><Output Name=""date"" MapsTo=""Fines.Date"" Value=""Fines.Date"" Recordset=""Fines"" /><Output Name=""location"" MapsTo="""" Value="""" Recordset=""Fines"" /></Outputs>";
             Assert.AreEqual(expected1, result1);
             Assert.AreEqual(expected2, result2);
         }

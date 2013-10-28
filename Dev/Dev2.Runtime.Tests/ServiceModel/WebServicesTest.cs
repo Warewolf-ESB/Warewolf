@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.ServiceModel;
@@ -207,6 +208,22 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(22, outputDescription.DataSourceShapes[0].Paths.Count);
 
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Services_FetchRecordsetList")]
+        public void Services_FetchRecordsetList_WhenWebserviceWithJsonDataAndPrimitiveArrayType_ShouldNotIncludeInFieldsList()
+        {
+            //------------Setup for test--------------------------
+            var service = CreateDummyWebService();
+            service.RequestResponse = "{\"results\" : [{\"address_components\": [{\"long_name\" :\"Address:\",\"short_name\" :\"Address:\",\"types\" : [\"point_of_interest\",\"establishment\" ]}]}],\"status\" : \"OK\"}";
+            //------------Execute Test---------------------------
+            WebServices services = new WebServices();
+            var result = services.FetchRecordset(service, true);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, result.Count);
+        }
+
         [TestMethod]
         public void FetchRecordsetWhereRequestResponseJSONExpectValidOutputDescription()
         {

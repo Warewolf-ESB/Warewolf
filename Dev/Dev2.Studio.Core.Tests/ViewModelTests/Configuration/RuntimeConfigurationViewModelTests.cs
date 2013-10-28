@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Diagnostics.CodeAnalysis;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Runtime.Configuration;

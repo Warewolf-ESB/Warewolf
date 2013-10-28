@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
+    // NOTE: Only use for design time in studio as errors will NOT be forwarded!
     public class GetDatabaseColumnsForTable : IEsbManagementEndpoint
     {
         #region Implementation of ISpookyLoadable<string>
@@ -39,50 +40,59 @@ namespace Dev2.Runtime.ESB.Management.Services
             string tableName;
             values.TryGetValue("Database", out database);
             values.TryGetValue("TableName", out tableName);
+
             if(string.IsNullOrEmpty(database))
             {
-                throw new InvalidDataContractException("No database set.");
+                return new DbColumnList("No database set.").ToString();
             }
-
             if(string.IsNullOrEmpty(tableName))
             {
-                throw new InvalidDataContractException("No TableName set.");
-            }
-            var dbColumns = new List<DbColumn>();
-
-            var dbSource = JsonConvert.DeserializeObject<DbSource>(database);
-            DataTable columnInfo;
-            using(var connection = new SqlConnection(dbSource.ConnectionString))
-            {
-                // Connect to the database then retrieve the schema information.
-                connection.Open();
-
-                // See http://msdn.microsoft.com/en-us/library/cc716722.aspx for restrictions
-                var restrictions = new string[4];
-                restrictions[0] = dbSource.DatabaseName;
-                restrictions[2] = tableName.Trim(new[] { '"' });
-                columnInfo = connection.GetSchema("Columns", restrictions);
+                return new DbColumnList("No table name set.").ToString();
             }
 
-            if(columnInfo != null)
+            try
             {
-                foreach(DataRow row in columnInfo.Rows)
+                var dbSource = JsonConvert.DeserializeObject<DbSource>(database);
+
+                DataTable columnInfo;
+                using(var connection = new SqlConnection(dbSource.ConnectionString))
                 {
-                    var columnName = row["COLUMN_NAME"] as string;
-                    var dbColumn = new DbColumn { ColumnName = columnName };
+                    // Connect to the database then retrieve the schema information.
+                    connection.Open();
 
-                    SqlDbType sqlDataType;
-                    var typeValue = row["DATA_TYPE"] as string;
-                    if(Enum.TryParse(typeValue, true, out sqlDataType))
-                    {
-                        dbColumn.SqlDataType = sqlDataType;
-                    }
-                    var columnLength = row["CHARACTER_MAXIMUM_LENGTH"] is int ? (int)row["CHARACTER_MAXIMUM_LENGTH"] : -1;
-                    dbColumn.MaxLength = columnLength;
-                    dbColumns.Add(dbColumn);
+                    // See http://msdn.microsoft.com/en-us/library/cc716722.aspx for restrictions
+                    var restrictions = new string[4];
+                    restrictions[0] = dbSource.DatabaseName;
+                    restrictions[2] = tableName.Trim(new[] { '"' });
+                    columnInfo = connection.GetSchema("Columns", restrictions);
                 }
+
+                var dbColumns = new DbColumnList();
+
+                if(columnInfo != null)
+                {
+                    foreach(DataRow row in columnInfo.Rows)
+                    {
+                        var columnName = row["COLUMN_NAME"] as string;
+                        var dbColumn = new DbColumn { ColumnName = columnName };
+
+                        SqlDbType sqlDataType;
+                        var typeValue = row["DATA_TYPE"] as string;
+                        if(Enum.TryParse(typeValue, true, out sqlDataType))
+                        {
+                            dbColumn.SqlDataType = sqlDataType;
+                        }
+                        var columnLength = row["CHARACTER_MAXIMUM_LENGTH"] is int ? (int)row["CHARACTER_MAXIMUM_LENGTH"] : -1;
+                        dbColumn.MaxLength = columnLength;
+                        dbColumns.Items.Add(dbColumn);
+                    }
+                }
+                return dbColumns.ToString();
             }
-            return JsonConvert.SerializeObject(dbColumns);
+            catch(Exception ex)
+            {
+                return new DbColumnList(ex).ToString();
+            }
         }
 
         /// <summary>

@@ -103,5 +103,25 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
         }
 
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DatabaseService_Mapping")]
+        public void DatabaseService_CanMapToMultipleRecordsets_WhenStraightFromDBService_ExpectPass()
+        {
+
+            //------------Setup for test--------------------------
+            string PostData = String.Format("{0}{1}", WebserverURI, "Service Output To Multiple Recordsets");
+            string expected = @"<result>PASS</result>";
+
+            //------------Execute Test---------------------------
+            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(ResponseData, expected);
+
+        }
+
     }
 }

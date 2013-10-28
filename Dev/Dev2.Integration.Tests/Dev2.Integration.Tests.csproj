@@ -234,6 +234,7 @@
     <Compile Include="Dev2.Activities.Tests\ToolingWorkflowTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\DBServiceTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\EndpointInterrogator\EndpointInterrogatorTest.cs" />
+    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\NestedWorkflow.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\PluginTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\RemoteInvokeTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\WebServiceTest.cs" />
@@ -458,6 +459,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="DeploymentScripts\AutomatedStart.pdb" />
+    <EmbeddedResource Include="Dev2.Application.Server.Tests\Workspace\XML\Bug_10528_Result.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

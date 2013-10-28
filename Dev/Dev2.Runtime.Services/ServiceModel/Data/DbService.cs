@@ -87,7 +87,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     Path = paths.FirstOrDefault(p => output.AttributeSafe("Value").Equals(p.OutputExpression, StringComparison.InvariantCultureIgnoreCase))
                 });
             }
-            if(Recordset.Name == ResourceName)
+            if(String.IsNullOrEmpty(Recordset.Name))
             {
                 Recordset.Name = Method.Name;
             }

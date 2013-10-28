@@ -266,7 +266,16 @@ namespace Dev2.DynamicServices
             var oldID = dataObject.DataListID;
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
+
+            var datalist1 = compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+
+            datalist1 += "";
+
             IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> remainingMappings = ShapeForSubRequest(dataObject, inputDefs, outputDefs, out errors);
+
+            var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+
+            datalist += "";
 
             // local non-scoped execution ;)
             bool isLocal = string.IsNullOrEmpty(dataObject.RemoteInvokerID);
@@ -290,11 +299,29 @@ namespace Dev2.DynamicServices
                 errors.AddError("Null container returned");
             }
 
-            // Adjust the remaining output mappings ;)
-            compiler.SetParentID(dataObject.DataListID, oldID);
-            var outputMappings = remainingMappings.FirstOrDefault(c => c.Key == enDev2ArgumentType.Output);
-            compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputMappings.Value, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
+
+            var datalist2 = compiler.ConvertFrom(result, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+
+            datalist2 += "";
+
+            // If Webservice or Plugin, skip the final shaping junk ;)
+            if (SubExecutionRequiresShape(workspaceID, dataObject.ServiceName))
+            {
+                if (!dataObject.IsDataListScoped && remainingMappings != null)
+                {
+                    // Adjust the remaining output mappings ;)
+                    compiler.SetParentID(dataObject.DataListID, oldID);
+                    var outputMappings = remainingMappings.FirstOrDefault(c => c.Key == enDev2ArgumentType.Output);
+                    compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputMappings.Value,
+                                   out invokeErrors);
+                    errors.MergeErrors(invokeErrors);
+                }
+                else
+                {
+                    compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputDefs, out invokeErrors);
+                    errors.MergeErrors(invokeErrors);
+                }
+            }
 
             return result;
         }
@@ -316,15 +343,37 @@ namespace Dev2.DynamicServices
             ErrorResultTO invokeErrors;
             errors = new ErrorResultTO();
 
-            var theShape = ShapeMappingsToTargetDataList(inputDefs, outputDefs, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
+            string theShape;
 
+            if(IsServiceWorkflow(dataObject.WorkspaceID, dataObject.ServiceName))
+            {
+                theShape = FindServiceShape(dataObject.WorkspaceID, dataObject.ServiceName);
+            }
+            else
+            {
+                theShape = ShapeMappingsToTargetDataList(inputDefs, outputDefs, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
+            }
+            
             var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, theShape, out invokeErrors);
             errors.MergeErrors(invokeErrors);
             dataObject.RawPayload = string.Empty;
 
-            // Now ID flow through mappings ;)
-            IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> remainingMappings = compiler.ShapeForSubExecution(oldID, shapeID, inputDefs, outputDefs, out invokeErrors);
+
+            IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> remainingMappings = null;
+
+            if (!dataObject.IsDataListScoped)
+            {
+                // Now ID flow through mappings ;)
+                remainingMappings =  compiler.ShapeForSubExecution(oldID, shapeID, inputDefs, outputDefs, out invokeErrors);
+            }
+            else
+            {
+                // we have a scoped datalist ;)
+                compiler.SetParentID(shapeID, oldID);
+                shapeID = compiler.Shape(oldID, enDev2ArgumentType.Input, inputDefs, out invokeErrors, shapeID);
+                errors.MergeErrors(invokeErrors);
+            }
 
             // set execution ID ;)
             dataObject.DataListID = shapeID;
@@ -508,6 +557,25 @@ namespace Dev2.DynamicServices
         }
         }
 
+        private bool IsServiceWorkflow(Guid workspaceID, string serviceName)
+        {
+            var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceName);
+
+            var dynamicService = services.FirstOrDefault();
+
+            if (dynamicService != null)
+            {
+                var serviceAction = dynamicService.Actions.FirstOrDefault();
+            
+                if (serviceAction != null)
+                {
+                    return (serviceAction.ActionType == enActionType.Workflow);
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Shapes the mappings automatic target data list.
         /// </summary>
@@ -519,7 +587,7 @@ namespace Dev2.DynamicServices
         {
             errors = new ErrorResultTO(); 
             ErrorResultTO invokeErrors;
-            var oDL = DataListUtil.ShapeDefinitionsToDataList(outputs, enDev2ArgumentType.Output, out invokeErrors, true);
+            var oDL = DataListUtil.ShapeDefinitionsToDataList(outputs, enDev2ArgumentType.Output, out invokeErrors);
             errors.MergeErrors(invokeErrors);
             var iDL = DataListUtil.ShapeDefinitionsToDataList(inputs, enDev2ArgumentType.Input, out invokeErrors);
             errors.MergeErrors(invokeErrors);
@@ -538,6 +606,7 @@ namespace Dev2.DynamicServices
         /// <returns></returns>
         private string GlueInputAndOutputMappingSegments(string inputFragment, string outputFragment, out ErrorResultTO errors)
         {
+
             errors = new ErrorResultTO();
             if(!string.IsNullOrEmpty(outputFragment))
             {
@@ -576,6 +645,51 @@ namespace Dev2.DynamicServices
             }
 
             return "<DataList>" + outputFragment + inputFragment + "</DataList>";
+        }
+
+
+        /// <summary>
+        /// Subs the execution requires shape.
+        /// </summary>
+        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="serviceName">Name of the service.</param>
+        /// <returns></returns>
+        private bool SubExecutionRequiresShape(Guid workspaceID, string serviceName)
+        {
+            var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceName);
+
+            var tmp = services.FirstOrDefault();
+
+            if (tmp != null)
+            {
+                var tmpAction = tmp.Actions.FirstOrDefault();
+                
+                if(tmpAction != null && (tmpAction.ActionType == enActionType.InvokeWebService || tmpAction.ActionType == enActionType.Plugin))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool Foobar(Guid workspaceID, string serviceName)
+        {
+            var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceName);
+
+            var tmp = services.FirstOrDefault();
+
+            if(tmp != null)
+            {
+                var tmpAction = tmp.Actions.FirstOrDefault();
+
+                if(tmpAction != null && (tmpAction.ActionType == enActionType.Workflow))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
     }

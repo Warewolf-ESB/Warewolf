@@ -1,4 +1,5 @@
 ﻿using System;
+using Dev2.Common.ExtMethods;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -117,7 +118,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
             string service = "<Payload><Roles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,DEV2 Limited Internet Access</Roles><ResourceXml>"+BlankService+"</ResourceXml></Payload>";
             var webserverURI = ServerSettings.WebserverURI + "SaveResourceService?" + service;
             //------------Execute Test---------------------------
-            string actual = TestHelper.PostDataToWebserver(webserverURI);
+            string actual = TestHelper.PostDataToWebserver(webserverURI).Unescape();
             //------------Assert Results-------------------------
             var expected = string.Format("<Dev2System.ManagmentServicePayload>Updated WorkflowService 'BlankWorkflow'</Dev2System.ManagmentServicePayload>");
             StringAssert.Contains(actual, expected, "Got [ " + actual + " ]");

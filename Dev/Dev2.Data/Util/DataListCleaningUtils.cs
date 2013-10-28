@@ -45,7 +45,6 @@ namespace Dev2.DataList.Contract
                     IList<ParseTO> makeParts = parser.MakeParts(result);
                     foreach (var makePart in makeParts.Where(c => !c.HangingOpen))
                     {
-
                         if (makePart.Child != null)
                         {
                             int indexOfBracket = makePart.Payload.IndexOf("(", StringComparison.Ordinal);

@@ -356,11 +356,12 @@ namespace Dev2.DataList.Contract
         /// <param name="typeOf">The type of.</param>
         /// <param name="defs">The defs.</param>
         /// <param name="errors">The errors.</param>
+        /// <param name="overrideID">The override unique identifier.</param>
         /// <returns></returns>
-        public Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string defs, out ErrorResultTO errors)
+        public Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string defs, out ErrorResultTO errors,Guid overrideID = default(Guid))
         {
             errors = new ErrorResultTO();
-            return _svrCompiler.Shape(null, curDLID, typeOf, defs, out errors);
+            return _svrCompiler.Shape(null, curDLID, typeOf, defs, out errors, overrideID);
         }
 
         /// <summary>

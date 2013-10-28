@@ -133,8 +133,9 @@ namespace Dev2.Server.Datalist {
         /// <param name="typeOf">The type of.</param>
         /// <param name="defs">The defs.</param>
         /// <param name="errors">The errors.</param>
+        /// <param name="overrideID">The override unique identifier.</param>
         /// <returns></returns>
-        Guid Shape(NetworkContext ctx, Guid curDLID, enDev2ArgumentType typeOf, string defs, out ErrorResultTO errors);
+        Guid Shape(NetworkContext ctx, Guid curDLID, enDev2ArgumentType typeOf, string defs, out ErrorResultTO errors, Guid overrideID = default(Guid));
 
         /// <summary>
         /// Shapes the specified CTX.

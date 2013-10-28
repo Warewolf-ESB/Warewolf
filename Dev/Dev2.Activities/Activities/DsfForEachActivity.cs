@@ -513,7 +513,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     #region Coded Activity
                     var tmp = (operationalData.InnerActivity.InnerActivity as DsfActivityAbstract<string>);
 
+
+                    // this is wrong, we need the last index ;)
+                    
                     int idx = operationalData.IterationCount;
+
+                    //Handle csv and range differently ;)
+                    if(ForEachType == enForEachType.InCSV || ForEachType == enForEachType.InRange)
+                    {
+                        Int32.TryParse(_inputsToken, out idx);
+                    }
 
                     if (tmp != null)
                     {

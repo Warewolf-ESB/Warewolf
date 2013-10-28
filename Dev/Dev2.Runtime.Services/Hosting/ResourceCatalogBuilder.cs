@@ -27,7 +27,7 @@ namespace Dev2.Runtime.Hosting
     public class ResourceCatalogBuilder
     {
         private List<IResource> _resources = new List<IResource>();
-        private HashSet<string> _addedResources = new HashSet<string>();
+        private HashSet<Guid> _addedResources = new HashSet<Guid>();
 
         private object addLock = new object();
 
@@ -163,14 +163,14 @@ namespace Dev2.Runtime.Hosting
         /// <param name="filePath">The file path.</param>
         private void AddResource(IResource res, string filePath)
         {
-            if(!_addedResources.Contains(res.ResourceName))
+            if(!_addedResources.Contains(res.ResourceID))
             {
                 _resources.Add(res);
-                _addedResources.Add(res.ResourceName);
+                _addedResources.Add(res.ResourceID);
             }
             else
             {
-                var dupRes = _resources.Find(c => c.ResourceName == res.ResourceName);
+                var dupRes = _resources.Find(c => c.ResourceID == res.ResourceID);
                 if(dupRes != null)
                 {
                     ServerLogger.LogError(

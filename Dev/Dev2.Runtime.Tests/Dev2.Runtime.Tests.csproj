@@ -102,6 +102,7 @@
     <Compile Include="ESB\Brokers\PluginBrokerTests.cs" />
     <Compile Include="ESB\PluginServiceContainerTests.cs" />
     <Compile Include="ServiceModel\DatabaseBrokerTests.cs" />
+    <Compile Include="ServiceModel\Data\ResultListTests.cs" />
     <Compile Include="ServiceModel\Utils\ServiceMappingHelperTest.cs" />
     <Compile Include="Services\FetchCurrentServerLogTests.cs" />
     <Compile Include="ESB\WebServiceContainerMock.cs" />
@@ -354,6 +355,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\Big Bulk Testing.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\WebserviceWithRecordsetFieldsMissing.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

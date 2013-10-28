@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
@@ -106,10 +107,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 {
                     Name = "Field3",
                     Alias = null
-                },
-                new RecordsetField
-                {
-                },
+                }
             });
             expected.Recordsets.Add(rs1);
 
@@ -135,7 +133,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 var actualRecordset = actual.Recordsets.First(rs => rs.Name == expectedRecordset.Name.Replace("()", ""));
                 foreach(var expectedField in expectedRecordset.Fields)
                 {
-                    var actualField = actualRecordset.Fields.First(f => expectedField.Name == null ? f.Name == "" : f.Name == expectedField.Name);
+                    var actualField = actualRecordset.Fields.FirstOrDefault(f => expectedField.Name == null ? f.Name == "" : f.Name == expectedField.Name);
+                    Assert.IsNotNull(actualField);
                     Assert.AreEqual(expectedField.Alias ?? "", actualField.Alias);
                     if(actualField.Path != null)
                     {

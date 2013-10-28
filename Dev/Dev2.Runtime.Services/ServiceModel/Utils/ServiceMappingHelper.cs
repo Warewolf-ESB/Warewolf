@@ -32,7 +32,7 @@ namespace Dev2.Runtime.ServiceModel.Utils
             foreach(var path in outputsToMap)
             {
                 // Remove bogus names and dots
-                var name = path.DisplayPath.Replace("NewDataSet", "").Replace(".Table.", "").Replace(".", "");
+                var name = path.DisplayPath.Replace("NewDataSet", "").Replace(".Table.", "").Replace(".", "").Replace("DocumentElement","");
 
                 var idx = name.IndexOf("()", StringComparison.InvariantCultureIgnoreCase);
                 if(idx >= 0)

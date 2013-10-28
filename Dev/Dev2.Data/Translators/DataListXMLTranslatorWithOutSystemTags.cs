@@ -301,6 +301,7 @@ namespace Dev2.Data.Translators
             errors.MergeErrors(invokeErrors);
             var parentDataList = compiler.FetchBinaryDataList(targetDataList.ParentUID, out invokeErrors);
             errors.MergeErrors(invokeErrors);
+            var grandparentDL = compiler.FetchBinaryDataList(parentDataList.ParentUID, out invokeErrors);
 
             // as a result we need to re-set some alias operations that took place in the parent DataList where they happended ;)
             foreach(var entry in parentDataList.FetchRecordsetEntries())
@@ -308,6 +309,12 @@ namespace Dev2.Data.Translators
                 entry.AdjustAliasOperationForExternalServicePopulate();
             }
 
+            var parentID = parentDataList.UID;
+            if (grandparentDL != null)
+            {
+                parentID = grandparentDL.UID;
+            }
+            compiler.SetParentID(targetDL, parentID);
             Guid result = compiler.Shape(targetDL, enDev2ArgumentType.Output, outputDefinitions, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
@@ -390,7 +397,14 @@ namespace Dev2.Data.Translators
                             result.Append("<");
                             result.Append(fName);
                             result.Append(">");
-                            result.Append(tu.FullCleanForEmit(val.TheValue));
+                            if (entry.Namespace != GlobalConstants.ManagementServicePayload)
+                            {
+                                result.Append(tu.FullCleanForEmit(val.TheValue));
+                            }
+                            else
+                            {
+                                result.Append(val.TheValue);
+                            }
                             result.Append("</");
                             result.Append(fName);
                             result.Append(">");

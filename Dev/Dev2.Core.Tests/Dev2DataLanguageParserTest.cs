@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Dev2.DataList.Contract;
@@ -508,6 +509,8 @@ namespace Unlimited.UnitTest.Framework
         }
 
         [TestMethod]
+        [Ignore]
+        // Not relavent anymore
         public void Error_On_Non_Recordset_Notation_With_Valid_Recordset()
         {
             string dl = "<ADL><surname></surname><cars><topspeed></topspeed></cars></ADL>";
@@ -518,6 +521,8 @@ namespace Unlimited.UnitTest.Framework
         }
 
         [TestMethod]
+        [Ignore]
+        // Not relavent anymore
         public void Error_On_Non_Recordset_Notation_With_Valid_Recordset_New_Open_Region()
         {
             string dl = "<ADL><surname></surname><cars><topspeed></topspeed></cars></ADL>";

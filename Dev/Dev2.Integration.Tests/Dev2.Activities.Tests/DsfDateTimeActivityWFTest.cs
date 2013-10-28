@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Dev2.Common.ExtMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Integration.Tests.Helpers;
 using System.Text.RegularExpressions;
@@ -26,7 +24,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             expected = regex.Replace(expected, "><");
             ResponseData = regex.Replace(ResponseData, "><");
 
-            StringAssert.Contains(ResponseData, expected);
+            StringAssert.Contains(ResponseData.Unescape(), expected);
         }
 
         #endregion DateTime Complex Tests
@@ -47,7 +45,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             expected = regex.Replace(expected, "><");
             ResponseData = regex.Replace(ResponseData, "><");
 
-            StringAssert.Contains(ResponseData, expected);
+            StringAssert.Contains(ResponseData.Unescape(), expected);
         }
 
         [TestMethod]

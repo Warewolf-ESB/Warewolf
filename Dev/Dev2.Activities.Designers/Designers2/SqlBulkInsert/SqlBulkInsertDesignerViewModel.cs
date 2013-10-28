@@ -35,8 +35,8 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         bool _isInitializing;
 
-        static readonly IEnumerable<DbTable> EmptyDbTables = new DbTable[0];
-        static readonly IEnumerable<DbColumn> EmptyDbColumns = new DbColumn[0];
+        static readonly DbTableList EmptyDbTables = new DbTableList();
+        static readonly DbColumnList EmptyDbColumns = new DbColumnList();
         static readonly DbSource NewDbSource = new DbSource
         {
             ResourceID = Guid.NewGuid(),
@@ -317,9 +317,20 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
             // Get Selected values on UI thread BEFORE starting asyncWorker
             var selectedDatabase = SelectedDatabase;
-            _asyncWorker.Start(() => GetDatabaseTables(selectedDatabase).OrderBy(t => t.TableName), tables =>
+            _asyncWorker.Start(() => GetDatabaseTables(selectedDatabase), tableList =>
             {
-                foreach(var table in tables)
+                if(tableList.HasErrors)
+                {
+                    Errors = new List<IActionableErrorInfo>
+                    {
+                        new ActionableErrorInfo(() => IsSelectedTableFocused = true) { ErrorType = ErrorType.Critical, Message = tableList.Errors }
+                    };
+                }
+                else
+                {
+                    Errors = null;
+                }
+                foreach(var table in tableList.Items.OrderBy(t => t.TableName))
                 {
                     Tables.Add(table);
                 }
@@ -351,9 +362,20 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             // Get Selected values on UI thread BEFORE starting asyncWorker
             var selectedDatabase = SelectedDatabase;
             var selectedTable = SelectedTable;
-            _asyncWorker.Start(() => GetDatabaseTableColumns(selectedDatabase, selectedTable), columns =>
+            _asyncWorker.Start(() => GetDatabaseTableColumns(selectedDatabase, selectedTable), columnList =>
             {
-                foreach(var mapping in columns.Select(column => new DataColumnMapping { OutputColumn = column }))
+                if(columnList.HasErrors)
+                {
+                    Errors = new List<IActionableErrorInfo>
+                    {
+                        new ActionableErrorInfo(() => IsSelectedTableFocused = true) { ErrorType = ErrorType.Critical, Message = columnList.Errors }
+                    };
+                }
+                else
+                {
+                    Errors = null;
+                }
+                foreach(var mapping in columnList.Items.Select(column => new DataColumnMapping { OutputColumn = column }))
                 {
                     var oldColumn = oldColumns.FirstOrDefault(c => c.OutputColumn.ColumnName == mapping.OutputColumn.ColumnName);
                     if(oldColumn != null)
@@ -398,7 +420,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 .Select(o => new DbSource(o.xmlData));
         }
 
-        IEnumerable<DbTable> GetDatabaseTables(DbSource dbSource)
+        DbTableList GetDatabaseTables(DbSource dbSource)
         {
             dynamic request = new UnlimitedObject();
             request.Service = "GetDatabaseTablesService";
@@ -408,11 +430,11 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
             var result = _environmentModel.Connection.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID);
 
-            var tables = JsonConvert.DeserializeObject<List<DbTable>>(result);
+            DbTableList tables = JsonConvert.DeserializeObject<DbTableList>(result);
             return tables ?? EmptyDbTables;
         }
 
-        IEnumerable<DbColumn> GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable)
+        DbColumnList GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable)
         {
             dynamic request = new UnlimitedObject();
             request.Service = "GetDatabaseColumnsForTableService";
@@ -423,8 +445,8 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
             var result = _environmentModel.Connection.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID);
 
-            var tables = JsonConvert.DeserializeObject<List<DbColumn>>(result);
-            return tables ?? EmptyDbColumns;
+            var columns = JsonConvert.DeserializeObject<DbColumnList>(result);
+            return columns ?? EmptyDbColumns;
         }
 
         void SetSelectedDatabase(DbSource dbSource)

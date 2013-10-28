@@ -330,8 +330,11 @@ namespace Dev2.Data.Storage.ProtocolBuffers
             else
             {
                 // clear the existing storage requirements out ;)
-                _startIdx[idx] = 0;
-                _columnLen[idx] = 0;
+                if (idx < _colCnt)
+                {
+                    _startIdx[idx] = 0;
+                    _columnLen[idx] = 0;
+                }
                 // TODO : Blank the data too ;)
             }
         }

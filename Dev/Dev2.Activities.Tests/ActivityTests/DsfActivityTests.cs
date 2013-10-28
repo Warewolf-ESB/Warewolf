@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
@@ -64,7 +65,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("=", inRes[3].FetchResultsList()[2].Value);
             Assert.AreEqual("3", inRes[3].FetchResultsList()[3].Value);
             Assert.AreEqual(4, inRes[4].FetchResultsList().Count);
-            Assert.AreEqual("innerScalar", inRes[4].FetchResultsList()[0].Value);
+            Assert.AreEqual("innerScalar", inRes[4].FetchResultsList()[0].Value); // Issue here! - WAS "innerScalar" but this is wrong as per the mapping ;)
             Assert.AreEqual("[[Numeric(4).num]]", inRes[4].FetchResultsList()[1].Value);
             Assert.AreEqual("=", inRes[4].FetchResultsList()[2].Value);
             Assert.AreEqual("4", inRes[4].FetchResultsList()[3].Value);

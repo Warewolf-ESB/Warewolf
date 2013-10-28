@@ -1,4 +1,5 @@
-﻿using Dev2.Activities.Utils;
+﻿using System.Diagnostics.CodeAnalysis;
+using Dev2.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests.UtilsTests
