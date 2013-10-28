@@ -419,12 +419,6 @@
     <value>Help\StudioShortCutKeys.htm</value>
     <comment>Relative to the executable</comment>
   </data>
-  <data name="Uri_Application_Image_Information" xml:space="preserve">
-    <value>HelpShortcutKeys-32.png</value>
-  </data>
-  <data name="Pack_Uri_Application_Image_Information" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/images/HelpShortcutKeys-32.png</value>
-  </data>
   <data name="Uri_Studio_Homepage" xml:space="preserve">
     <value>Studio\Help\StudioHomepage.htm</value>
   </data>
@@ -555,9 +549,6 @@ Would you like to start the setup now?</value>
   </data>
   <data name="Ribbon_StopExecution" xml:space="preserve">
     <value>Stop</value>
-  </data>
-  <data name="About_Icon" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/images/HelpAbout-32.png</value>
   </data>
   <data name="Navigation_OpenFolder_Icon_Pack_Uri" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/ExplorerFolderOpen-32.png</value>
@@ -784,10 +775,10 @@ Would you like to start the setup now?</value>
   </data>
   <data name="Pack_Uri_EmailSource_Image" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/ToolSendEmail-32.png</value>
-  </data>
+  </data>         
   <data name="Pack_Uri_PluginService_Image" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png</value>
-  </data>
+  </data>  
   <data name="Pack_Uri_WebService_Image" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/WebService-32.png</value>
   </data>

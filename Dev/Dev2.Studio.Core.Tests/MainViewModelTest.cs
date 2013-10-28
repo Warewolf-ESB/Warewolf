@@ -989,8 +989,7 @@ namespace Dev2.Core.Tests
             var languageHelpUri = FileHelper.GetFullPath(StringResources.Uri_Studio_Language_Reference_Document);
             var langHelpCtx = _mainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
             Assert.IsNotNull(langHelpCtx);
-            Assert.IsTrue(langHelpCtx.Uri == languageHelpUri);
-            Assert.AreEqual("pack://application:,,,/images/HelpLanguage-32.png", langHelpCtx.IconPath);
+            Assert.IsTrue(langHelpCtx.Uri == languageHelpUri);           
         }
 
         [TestMethod]

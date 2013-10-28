@@ -83,7 +83,7 @@
                     VerticalAlignment="Center"
                     Background="Transparent" BorderBrush="Transparent" BorderThickness="0"          
                     Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                 <Image  Source="/images/Refresh-32.png" Width="14" Height="14" HorizontalAlignment="Left"/>
+                 <Image  Source="{StaticResource Refresh-32}" Width="14" Height="14" HorizontalAlignment="Left"/>
             </Button>
         </Grid>
 

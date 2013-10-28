@@ -20,12 +20,12 @@
 
     <Style x:Key="ExpandCollapseToggleStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Focusable" Value="False"/>
-        <Setter Property="Width" Value="16"/>
-        <Setter Property="Height" Value="16"/>
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Height" Value="18"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <Border Background="Transparent" Height="16" Padding="4" Width="16">
+                    <Border Background="Transparent" Height="18" Padding="4" Width="18">
                         <Path x:Name="ExpandPath" Data="{StaticResource TreeArrow}" Fill="{StaticResource TreeViewArrowBackgroundBrush}" Stroke="{StaticResource TreeViewArrowBorderBrush}">
                             <Path.RenderTransform>
                                 <RotateTransform Angle="135" CenterY="3" CenterX="3"/>
@@ -67,7 +67,7 @@
         <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="FontWeight" Value="Normal"/>
-        <Setter Property="MinHeight" Value="10" />
+        <Setter Property="MinHeight" Value="12" />
         <Setter Property="Padding" Value="3,0,0,0" />
         <Setter Property="Margin" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />

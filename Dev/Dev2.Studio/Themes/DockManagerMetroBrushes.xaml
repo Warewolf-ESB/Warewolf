@@ -197,7 +197,7 @@
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackOuterBorderFillKey}" Color="{StaticResource Color_022}" />
 
-    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackTextFillKey}" Color="{StaticResource Color_001}" />
+    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackTextFillKey}" Color="{StaticResource Color_001}" />    
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentGlyphFillKey}" Color="{StaticResource Color_009}" Opacity="0.7" />
     
@@ -233,7 +233,7 @@
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneHeaderActiveTextFillKey}" Color="{DynamicResource Color_009}"/>
 
-    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneHeaderNotActiveTextFillKey}" Color="{DynamicResource Color_000}"/>
+    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneHeaderNotActiveTextFillKey}" Color="{DynamicResource Color_000}"/>    
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.ContentPaneBorderFillKey}" Color="{StaticResource Color_011}"/>
 

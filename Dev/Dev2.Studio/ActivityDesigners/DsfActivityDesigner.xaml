@@ -54,7 +54,7 @@
                                     PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" 
                                     PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     AutomationProperties.AutomationId="{Binding ServiceName, Source={RelativeSource Self}, StringFormat=[UI_{0}__EditBtn_AutoID]}">
-                                <Image Source="/Images/ServicePropertyEdit-32.png" Width="15" Height="15"/>
+                                <Image Source="{StaticResource ServicePropertyEdit-32}" Width="15" Height="15"/>
                                 </Button>
                             <adorners:AdornerToggleButton  x:Name="OpenMappingsToggle"  IsChecked="{Binding DataContext.ShowMapping,Mode=TwoWay}"                             
                                                            IsEnabled="{Binding DataContext.IsEditable, Mode=TwoWay}"
@@ -65,10 +65,10 @@
                                     Unchecked="OpenMappingsToggle_OnChecked"  
                                     AutomationProperties.AutomationId="{Binding ServiceName, Source={RelativeSource Self}, StringFormat=[UI_{0}_OpenMappingBtn_AutoID]}">
                                 <Grid>
-                                    <Image Source="/Images/ServiceExpandMapping-32.png" Width="15" Height="15" 
+                                    <Image Source="{StaticResource ServiceExpandMapping-32}" Width="15" Height="15" 
                                            ToolTip="Open Mappings"                              
                                            Visibility="{Binding IsChecked, ElementName=OpenMappingsToggle, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
-                                    <Image Source="/Images/ServiceCollapseMapping-32.png" Width="15" Height="15" 
+                                    <Image Source="{StaticResource ServiceCollapseMapping-32}" Width="15" Height="15" 
                                            ToolTip="Close Mappings"       
                                            Visibility="{Binding  IsChecked, ElementName=OpenMappingsToggle, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
                                 </Grid>

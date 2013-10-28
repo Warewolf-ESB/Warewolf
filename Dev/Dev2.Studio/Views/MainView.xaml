@@ -316,7 +316,7 @@
                                             </Grid.RowDefinitions>
 
                                             <Image Style="{StaticResource ImageStyleRibbon}" 
-                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png"
+                                                   Source="{StaticResource Workflow-32}"
                                                    ToolTip="New Workflow"/>
                                         </Grid>
                                     </Button>
@@ -324,7 +324,7 @@
                                             Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
                                             <Image Style="{StaticResource ImageStyleRibbon}" 
-                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/Save-32.png"
+                                                   Source="{StaticResource Save-32}"
                                                    ToolTip="Save"/>
                                         </Grid>
                                     </Button>
@@ -339,7 +339,7 @@
                                             </Grid.RowDefinitions>
 
                                             <Image Style="{StaticResource ImageStyleRibbon}" 
-                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/Deploy-32.png"
+                                                   Source="{StaticResource Deploy-32}"
                                                    ToolTip ="Deploy"/>
                                         </Grid>
                                     </Button>
@@ -370,7 +370,7 @@
                                             </Grid.RowDefinitions>
 
                                             <Image Style="{StaticResource ImageStyleRibbon}" 
-                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/DatabaseService-32.png"
+                                                   Source="{StaticResource DatabaseService-32}"
                                                    ToolTip="New Database Service"/>
                                         </Grid>
                                     </Button>
@@ -386,7 +386,7 @@
                                             </Grid.RowDefinitions>
 
                                             <Image Style="{StaticResource ImageStyleRibbon}" 
-                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/PluginService-32.png"
+                                                   Source="{StaticResource PluginService-32}"
                                                    ToolTip="New Plugin Service"/>
                                         </Grid>
                                     </Button>
@@ -402,7 +402,7 @@
                                             </Grid.RowDefinitions>
 
                                             <Image Style="{StaticResource ImageStyleRibbon}" 
-                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/WebService-32.png"
+                                                   Source="{StaticResource WebService-32}"
                                                    ToolTip="New Web Service"/>
                                         </Grid>
                                     </Button>
@@ -430,7 +430,7 @@
                                             </Grid.RowDefinitions>
 
                                             <Image Style="{StaticResource ImageStyleRibbon}" 
-                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
+                                                   Source="{StaticResource ExecuteViewInBrowser-32}"
                                                    ToolTip="View in Browser"/>
                                         </Grid>
                                     </Button>
@@ -501,7 +501,7 @@
                                             </Grid.RowDefinitions>
 
                                             <Image Style="{StaticResource ImageStyleRibbon}" 
-                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/HelpFeedback-32.png"
+                                                   Source="{StaticResource HelpFeedback-32}"
                                                    ToolTip="Feedback"/>
                                         </Grid>
                                     </Button>
@@ -514,7 +514,7 @@
                                             </Grid.RowDefinitions>
 
                                             <Image Style="{StaticResource ImageStyleRibbon}" 
-                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/HelpCommunity-32.png"
+                                                   Source="{StaticResource HelpCommunity-32}"
                                                    ToolTip="Community"/>
                                         </Grid>
                                     </Button>
@@ -527,7 +527,7 @@
                                             </Grid.RowDefinitions>
 
                                             <Image Style="{StaticResource ImageStyleRibbon}" 
-                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/HelpShortcutKeys-32.png"
+                                                   Source="{StaticResource HelpShortcutKeys-32}"
                                                    ToolTip="Shortcut Keys"/>
                                         </Grid>
                                     </Button>
@@ -540,7 +540,7 @@
                                             </Grid.RowDefinitions>
 
                                             <Image Style="{StaticResource ImageStyleRibbon}" 
-                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/HelpLanguage-32.png"
+                                                   Source="{StaticResource HelpLanguage-32}"
                                                    ToolTip="Warewolf Language Help"/>
                                         </Grid>
                                     </Button>
@@ -553,7 +553,7 @@
                                             </Grid.RowDefinitions>
 
                                             <Image Style="{StaticResource ImageStyleRibbon}" 
-                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/HelpAbout-32.png"
+                                                   Source="{StaticResource HelpAbout-32}"
                                                    ToolTip="About"/>
                                         </Grid>
                                     </Button>
@@ -577,10 +577,10 @@
                                 <TextBlock Text="Stop recording feedback" VerticalAlignment="Center" Margin="5,0,5,0"
 						                   Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}"
 						                   Style="{StaticResource FlashingFrameworkElement}" />
-                                <Image Source="/Images/HelpRecordFeedback-32.png" Height="16" Width="16" VerticalAlignment="Center"
+                                <Image Source="{StaticResource HelpRecordFeedback-32}" Height="16" Width="16" VerticalAlignment="Center"
 						               Margin="0,0,5,0"
 						               Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterNegative}}" />
-                                <Image Source="/Images/HelpRecordFeedback-32.png" Height="16" Width="16" VerticalAlignment="Center"
+                                <Image Source="{StaticResource HelpRecordFeedback-32}" Height="16" Width="16" VerticalAlignment="Center"
 						               Margin="0,0,5,0"
 						               Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}"
 						               Style="{StaticResource FlashingFrameworkElement}" />

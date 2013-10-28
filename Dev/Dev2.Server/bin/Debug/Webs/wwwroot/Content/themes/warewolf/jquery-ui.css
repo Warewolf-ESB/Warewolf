@@ -663,8 +663,8 @@ html, body{background-color:#ffffff;}
 /* Button states */
 .ui-state-default, .ui-widget-content .ui-state-default{background-color:#f9f9f9;border-color:#b9b9b9;color:#3f3f3f;}
 .ui-state-focus, .ui-widget-content .ui-state-focus{background-color:#f9f9f9;border-color:#ff8613;color:#3f3f3f;}
-.ui-state-hover, .ui-widget-content .ui-state-hover{background-color:#e7e7e7;border-color:#858585;color:#3f3f3f;}
-.ui-state-active, .ui-widget-content .ui-state-active{background-color:#ff8613;border-color:#ff8613;color:#ffffff;}
+.ui-state-hover, .ui-widget-content .ui-state-hover{background-color:#f9f9f9;border-color:#F3700D;color:#3f3f3f;}
+.ui-state-active, .ui-widget-content .ui-state-active{background-color:#7F7F7F;border-color:#ff8613;color:#ffffff;}
 
 
 /* Accordion */

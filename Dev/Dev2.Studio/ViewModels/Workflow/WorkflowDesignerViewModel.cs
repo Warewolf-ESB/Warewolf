@@ -1099,7 +1099,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {WorkflowDesignerColors.DesignerViewShellBarColorGradientBeginKey, Application.Current.Resources["ShellBarViewBackground"]},
                     {WorkflowDesignerColors.DesignerViewShellBarColorGradientEndKey, Application.Current.Resources["ShellBarViewBackground"]},
                     {WorkflowDesignerColors.OutlineViewItemSelectedTextColorKey, Application.Current.Resources["SolidWhite"]},
-                    {WorkflowDesignerColors.OutlineViewItemHighlightBackgroundColorKey, Application.Current.Resources["DesignerBackground"]}
+                    {WorkflowDesignerColors.OutlineViewItemHighlightBackgroundColorKey, Application.Current.Resources["DesignerBackground"]},
+                    
                 };
 
             _wd.PropertyInspectorFontAndColorData = XamlServices.Save(hashTable);
@@ -1117,7 +1118,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 // Disabled for now
                 designerConfigService.AnnotationEnabled = false;
                 designerConfigService.AutoSurroundWithSequenceEnabled = false;
-            }
+            }          
 
             _wdMeta = new DesignerMetadata();
             _wdMeta.Register();
@@ -1146,14 +1147,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
             _wd.View.Measure(new Size(2000,2000));
             _wd.View.Focus();
+
             _wd.Context.Services.Subscribe<DesignerView>(instance =>
             {
                 // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
                 instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
-                instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;
-                
-                
-            });
+                instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;                
+            });            
 
             _wd.Context.Items.Subscribe<Selection>(OnItemSelected);
             _wd.Context.Services.Publish(_designerManagementService);
@@ -1168,7 +1168,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             Selection.Subscribe(_wd.Context, SelectedItemChanged);
 
             // BUG 9304 - 2013.05.08 - TWR
-            _workflowHelper.EnsureImplementation(_modelService);
+            _workflowHelper.EnsureImplementation(_modelService);            
 
             //For Changing the icon of the flowchart.
             WorkflowDesignerIcons.Activities.Flowchart = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png")), new Rect(0, 0, 16, 16)));

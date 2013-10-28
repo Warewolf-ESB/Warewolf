@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using Dev2.Studio.Core;
@@ -23,21 +24,38 @@ namespace Dev2.Studio.AppResources.Converters
         {
             try
             {
-                var iconpath = values[0] as string;
-                if (iconpath != null)
-                    iconpath = (string) values[0];
-
-                var navigationItemViewModel = values[1] as AbstractTreeViewModel;
-                if (navigationItemViewModel == null)
-                    return null;
-
-                Uri uri;
-                if (!Uri.TryCreate(iconpath, UriKind.Absolute, out uri))
+                if(values[0] == null)
                 {
-                    uri = new Uri(new Uri(navigationItemViewModel.EnvironmentModel.Connection.WebServerUri, "icons/"), iconpath);
+                    return null;
                 }
+                var iconpath = values[0] as string;
+                if(iconpath != null)
+                {
+                    if(iconpath.EndsWith(".png"))
+                    {
+                        string[] pathParts = iconpath.Split('/');
+                        string resourceName = pathParts[pathParts.Length-1];
 
-                return new BitmapImage(uri);
+                        resourceName = resourceName.Replace(".png", "");
+
+                        return Application.Current.Resources[resourceName];
+                    }
+                    else
+                    {
+                        var navigationItemViewModel = values[1] as AbstractTreeViewModel;
+                        if(navigationItemViewModel == null)
+                            return null;
+
+                        Uri uri;
+                        if(!Uri.TryCreate(iconpath, UriKind.Absolute, out uri))
+                        {
+                            uri = new Uri(new Uri(navigationItemViewModel.EnvironmentModel.Connection.WebServerUri, "icons/"), iconpath);
+                        }
+
+                        return new BitmapImage(uri);
+                    }                    
+                }                              
+                return new BitmapImage();
             }
             catch (Exception e)
             {

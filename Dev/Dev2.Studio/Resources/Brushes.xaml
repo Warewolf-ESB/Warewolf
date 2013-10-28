@@ -58,7 +58,7 @@
         </GradientBrush.GradientStops>
     </LinearGradientBrush>
 
-    <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888" />
+    <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#c1c3c5" />
 
     <SolidColorBrush x:Key="DisabledBackgroundBrush" Color="DarkGray" />
 

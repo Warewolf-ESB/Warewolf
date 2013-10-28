@@ -43,7 +43,7 @@
                             Command="{Binding Path=RefreshMenuCommand}"
                             Height="22" Width="22" Padding="0"
                             Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                <Image  Source="/images/Refresh-16.png" Width="14" Height="14" HorizontalAlignment="Left"/>
+                <Image  Source="{StaticResource Refresh-32}" Width="14" Height="14" HorizontalAlignment="Left"/>
             </Button>
         </Grid>
         <TreeView x:Name="Navigation" ItemsSource="{Binding Path=Root.Children}" Grid.Row="1" Grid.ColumnSpan="2"

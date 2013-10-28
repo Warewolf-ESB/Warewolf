@@ -4,9 +4,7 @@
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                     xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                    x:Class="ArbitraryNameToEliminateBogusGenericsErrorActivityDesignerStyle">    
-
-    
+                    x:Class="ArbitraryNameToEliminateBogusGenericsErrorActivityDesignerStyle">            
     <!--Using of the actual color codes in this fine as we cant reference the Colors.xaml file in the studio-->
     <ControlTemplate x:Key="ActivityDesignerTemplate"
                      TargetType="{x:Type sap:ActivityDesigner}">
@@ -179,7 +177,8 @@
                                                               Height="20"
                                                               ToolTip="{Binding ToolTip}"
                                                               IsChecked="{Binding IsChecked, Mode=TwoWay}"                                                                                                                               
-                                                              Content="{Binding Image, Mode=TwoWay}">
+                                                              Content="{Binding Image, Mode=TwoWay}"
+                                                               Style="{StaticResource ActivityToggleButtonStyle}">
                                     
                                 </core:ActivityDesignerToggleButton>
                             </DataTemplate>

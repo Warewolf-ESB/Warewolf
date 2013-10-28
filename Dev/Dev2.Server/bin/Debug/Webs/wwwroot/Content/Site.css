@@ -254,7 +254,7 @@ textarea.services-web-code {
 }
 
 .help-text {
-    background-color: #eeeeee;
+    background-color: #C1C3C5;
     border: 1px solid #b9b9b9;
 }
 
@@ -327,6 +327,10 @@ input:focus, button:focus, textarea:focus, select:focus {
     border: 1px solid #ff8613;
 }
 
+input:hover,textarea:hover {
+    border: 1px solid #ff8613;
+}
+
 input, textarea, select {
     padding: 5px;
     width: 247px;
@@ -338,6 +342,12 @@ input, textarea, select {
 select {
     padding: 5px 4px 4px 4px;
 }
+
+select:hover {
+ border: 1px solid #ff8613; 
+}
+
+
 
 textarea {
     width: 500px;
@@ -553,23 +563,28 @@ ol.selectable {
 
     ol.selectable .ui-selected,
     select option:hover {
-        background: #F1CDB2;
-        color: #3f3f3f;
-        border: 1px solid #ff8613;
+        background: #7F7F7F;
+        color: #FFFFFF;
+        border: 1px solid #7F7F7F;        
     }
+
+    ol.selectable li.ui-selected a {
+        color: #FFFFFF;
+    }
+
 
     ol.selectable li {
         cursor: default;
     }
     ol.selectable li a {
         padding: 0.25em;
-        text-decoration: none;
+        text-decoration: none;       
         display: block;
     }
     
     ol.selectable li a:hover {
-        color: #3f3f3f;
-        background-color: #e7e7e7;
+        color: #ffffff;
+        background-color: #7F7F7F;
     }
 
 .text-selectable {

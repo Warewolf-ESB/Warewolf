@@ -92,15 +92,6 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/HelpAbout-32.png.
-        /// </summary>
-        public static string About_Icon {
-            get {
-                return ResourceManager.GetString("About_Icon", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Business Design Studio Administrators,Business Design Studio Developers,Business Design Studio Users.
         /// </summary>
         public static string AllowedRoles_DevelopmentEnvironment {
@@ -817,15 +808,6 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/HelpShortcutKeys-32.png.
-        /// </summary>
-        public static string Pack_Uri_Application_Image_Information {
-            get {
-                return ResourceManager.GetString("Pack_Uri_Application_Image_Information", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/User.png.
         /// </summary>
         public static string Pack_Uri_Application_Image_Webpage {
@@ -1209,15 +1191,6 @@ namespace Dev2 {
         public static string Uri_Application_Image_Home {
             get {
                 return ResourceManager.GetString("Uri_Application_Image_Home", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HelpShortcutKeys-32.png.
-        /// </summary>
-        public static string Uri_Application_Image_Information {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Information", resourceCulture);
             }
         }
         

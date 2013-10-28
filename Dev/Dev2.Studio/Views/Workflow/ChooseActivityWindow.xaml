@@ -27,7 +27,7 @@
             </TextBox>
             
             <Button Command="{Binding Path=RefreshCommand}" Background="Transparent" BorderThickness="0,0,0,0">
-                <Image Source="/images/Refresh-16.png" Height="14" Width="14" HorizontalAlignment="Right" />
+                <Image Source="{StaticResource Refresh-32}" Height="14" Width="14" HorizontalAlignment="Right" />
             </Button>
         </StackPanel>
         <!--<ListView Margin="5" Grid.Row="1" ItemsSource="{Binding Path=Activities}" SelectedItem="{Binding Path=SelectedActivity}" IsSynchronizedWithCurrentItem="True">

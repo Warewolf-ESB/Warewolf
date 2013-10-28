@@ -54,7 +54,7 @@
                                 Width="24"
                                 HorizontalAlignment="Right" VerticalAlignment="Center" 
                                 IsEnabled="{Binding ElementName=TheTextBox,Path=Text,Converter={StaticResource FilterStringToBoolConverter}}">
-                                <Image Source="/images/ClearFilter-32.png" Stretch="UniformToFill"></Image>
+                                <Image Source="{StaticResource ClearFilter-32}" Stretch="UniformToFill"></Image>
                             </Button>
                         </Grid>
                     </Border>
