@@ -455,7 +455,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public void Save(bool isLocalSave = false)
         {
             Save(ContextualResourceModel, isLocalSave);
-            WorkSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
+            if (WorkSurfaceViewModel != null)
+            {
+                WorkSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
+            }
         }
 
         public bool IsEnvironmentConnected()

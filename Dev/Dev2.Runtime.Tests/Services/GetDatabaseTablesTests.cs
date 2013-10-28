@@ -1,12 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Dev2.Runtime.ServiceModel.Data;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class GetDatabaseTablesTests
     {
         #region Static Class Init
@@ -21,7 +26,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #endregion
 
-        
+
 
         #region Execute
 
@@ -39,50 +44,55 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
-        [ExpectedException(typeof(InvalidDataContractException))]
-        public void GetDatabaseTables_UnitTest_ExecuteWithNoDatabaseInValues_ExpectedInvalidDataContractException()
+        public void GetDatabaseTables_UnitTest_ExecuteWithNoDatabaseInValues_ExpectedInvalidHasErrors()
         {
-
             var esb = new GetDatabaseTables();
-            var actual = esb.Execute(new Dictionary<string, string>{{"Database",null}}, null);
-            Assert.AreEqual(string.Empty, actual);
+            var actual = esb.Execute(new Dictionary<string, string> { { "Database", null } }, null);
+            Assert.IsNotNull(actual);
+            var result = JsonConvert.DeserializeObject<DbTableList>(actual);
+            Assert.IsTrue(result.HasErrors);
+            Assert.AreEqual("No database set.", result.Errors);
         }
-        
+
 
         [TestMethod]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
-        [ExpectedException(typeof(InvalidDataContractException))]
-        public void GetDatabaseTables_UnitTest_ExecuteWithBlankDatabase_ExpectInvalidDataContractException()
+        public void GetDatabaseTables_UnitTest_ExecuteWithBlankDatabase_ExpectHasErrors()
         {
-
             var esb = new GetDatabaseTables();
             var actual = esb.Execute(new Dictionary<string, string> { { "Database", "" } }, null);
-            Assert.AreEqual(string.Empty, actual);
+            Assert.IsNotNull(actual);
+            var result = JsonConvert.DeserializeObject<DbTableList>(actual);
+            Assert.IsTrue(result.HasErrors);
+            Assert.AreEqual("No database set.", result.Errors);
         }
 
         [TestMethod]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
-        [ExpectedException(typeof(InvalidDataContractException))]
-        public void GetDatabaseTables_UnitTest_ExecuteWithDatabaseNotValidJson_ExpectedInvalidDataContractException()
+        public void GetDatabaseTables_UnitTest_ExecuteWithDatabaseNotValidJson_ExpectedHasErrors()
         {
-
             var esb = new GetDatabaseTables();
-            var actual = esb.Execute(new Dictionary<string, string> { { "Database", "Test" }}, null);
-            Assert.AreEqual(string.Empty, actual);
+            var actual = esb.Execute(new Dictionary<string, string> { { "Database", "Test" } }, null);
+            Assert.IsNotNull(actual);
+            var result = JsonConvert.DeserializeObject<DbTableList>(actual);
+            Assert.IsTrue(result.HasErrors);
+            Assert.AreEqual("Invalid JSON data for Database parameter. Exception: Unexpected character encountered while parsing value: T. Path '', line 0, position 0.", result.Errors);
         }
-        
+
         [TestMethod]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
-        [ExpectedException(typeof(InvalidDataContractException))]
-        public void GetDatabaseTables_UnitTest_ExecuteWithNotDbSourceJson_ExpectedInvalidDataContractException()
+        public void GetDatabaseTables_UnitTest_ExecuteWithNotDbSourceJson_ExpectedHasErrors()
         {
             var someJsonData = "{Val:1}";
             var esb = new GetDatabaseTables();
             var actual = esb.Execute(new Dictionary<string, string> { { "Database", someJsonData } }, null);
-            Assert.AreEqual(string.Empty, actual);
+            Assert.IsNotNull(actual);
+            var result = JsonConvert.DeserializeObject<DbTableList>(actual);
+            Assert.IsTrue(result.HasErrors);
+            Assert.AreEqual("Invalid database sent {Val:1}.", result.Errors);
         }
 
         #endregion
