@@ -39,11 +39,8 @@ namespace Dev2.Common.Utils
             int indexOfSlash = stringToReplaceIn.IndexOf(@"\", StringComparison.InvariantCulture);
             if(indexOfSlash != -1)
             {
-                if(indexOfSlash == stringToReplaceIn.Length - 1 || stringToReplaceIn[indexOfSlash + 1] != '"')
-                {
-                    stringToReplaceIn = stringToReplaceIn.Insert(indexOfSlash, @"\");
-                    stringToReplaceIn = string.Concat(stringToReplaceIn.Substring(0, indexOfSlash + 2), ReplaceSlashes(stringToReplaceIn.Substring(indexOfSlash + 2)));
-                }
+                stringToReplaceIn = stringToReplaceIn.Insert(indexOfSlash, @"\");
+                stringToReplaceIn = string.Concat(stringToReplaceIn.Substring(0, indexOfSlash + 2), ReplaceSlashes(stringToReplaceIn.Substring(indexOfSlash + 2)));
             }      
             return stringToReplaceIn;
         }
