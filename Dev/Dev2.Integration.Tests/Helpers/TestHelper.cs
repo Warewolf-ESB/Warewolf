@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Web;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Diagnostics;
@@ -45,7 +46,7 @@ namespace Dev2.Integration.Tests.Helpers
             {
                 return _responseData = String.Empty;
             }
-            return _responseData;
+            return HttpUtility.HtmlDecode(_responseData);
         }
 
 
