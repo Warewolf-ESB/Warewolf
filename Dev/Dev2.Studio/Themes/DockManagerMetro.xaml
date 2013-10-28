@@ -1640,6 +1640,7 @@
             <Trigger Property="IsMouseOverTab" Value="true">
                 <Setter Property="Opacity" TargetName="gdContent" Value="1" />
                 <Setter Property="Button.Opacity" TargetName="closeBtn" Value="0.7"/>
+                <Setter Property="TextBlock.Foreground" TargetName="NormalContent" Value="{StaticResource BrushDarkForeground}"/>
                 <!-- AS 1/6/10 TFS25270
                     The center elements bind to the background so we need to change that.
                 <Setter Property="Fill" TargetName="nonSelectedCenterSlice" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackCenterFillKey}}" />-->
@@ -1666,7 +1667,7 @@
                     so I moved this up into the margin property of the element and adjusted it with the other
                     elements.
                 <Setter Property="Margin" TargetName="selectedCenterSlice" Value="0,1,0,-2" />-->
-            </Trigger>
+            </Trigger>            
 
             <MultiTrigger>
                 <MultiTrigger.Conditions>
