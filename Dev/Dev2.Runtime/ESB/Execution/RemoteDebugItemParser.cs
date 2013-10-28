@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Diagnostics;
@@ -29,6 +30,7 @@ namespace Dev2.Runtime.ESB.Execution
                     if (end > start)
                     {
                         var tmp = data.Substring(start, (end - start));
+                        tmp = HttpUtility.HtmlDecode(tmp);
                         IList<DebugState> debugItems = JsonConvert.DeserializeObject<List<DebugState>>(tmp);
 
                         return debugItems;
