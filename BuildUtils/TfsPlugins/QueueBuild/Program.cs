@@ -75,8 +75,8 @@ namespace QueueBuild
             {
                 req.ShelvesetName = shelveSet;
                 req.Reason = BuildReason.ValidateShelveset;
-                req.RequestedFor = user;
             }
+            req.RequestedFor = user;
 
             IQueuedBuild qReq = req.BuildServer.QueueBuild(req);
 
