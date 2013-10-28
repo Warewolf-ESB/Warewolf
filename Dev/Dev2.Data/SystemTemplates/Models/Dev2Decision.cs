@@ -328,9 +328,9 @@ namespace Dev2.Data.SystemTemplates.Models
             }
 
 
-            result[0] = Col1;
-            result[1] = Col2;
-            result[2] = Col3;
+            result[0] = Col1.Replace("\\\\","\\");
+            result[1] = Col2.Replace("\\\\", "\\");
+            result[2] = Col3.Replace("\\\\", "\\");
 
 
             return result;

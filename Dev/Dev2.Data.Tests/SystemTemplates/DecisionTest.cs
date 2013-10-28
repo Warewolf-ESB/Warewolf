@@ -965,6 +965,39 @@ namespace Dev2.Data.Tests.SystemTemplates
             Assert.IsTrue(result);
         }
 
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Dev2DecisionStack_Evaluate")]
+        public void Dev2DecisionStack_Evaluate_FilePathEvaulatedData_Expected_ResultEqualsTrue()
+        {
+            //------------Setup for test--------------------------
+
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+
+            string error;
+            ErrorResultTO errors;
+
+            bdl.TryCreateRecordsetTemplate("Recset", "Test recordset", new List<Dev2Column> { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);           
+
+            // add data to Recset
+            bdl.TryCreateRecordsetValue(@"C:\Temp\PathOperationsTestFolder\OldFolder\OldFolderFirstInnerFolder\TextFile1.txt", "field", "Recset", 1, out error);          
+
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            c.PushBinaryDataList(bdl.UID, bdl, out errors);
+
+            // ExecuteDecisionStack
+            string payload = @"{""TheStack"":[{""Col1"":""C:\Temp\PathOperationsTestFolder\OldFolder\OldFolderFirstInnerFolder\TextFile1.txt"",""Col2"":""[[Recset(1).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+
+            //------------Execute Test---------------------------
+            bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
+
+            c.DeleteDataListByID(bdl.UID); // clean up ;)
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+
+        }
+
         #endregion
 
     }

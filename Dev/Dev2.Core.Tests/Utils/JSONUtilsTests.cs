@@ -7,6 +7,18 @@ namespace Dev2.Tests.Utils
     public class JSONUtilsTests
     {
         [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("JSONUtils_ReplaceSlashes")]
+        public void JSONUtils_ReplaceSlashes_BackSlashes_SlashesReplaced1()
+        {
+            //------------Execute Test---------------------------
+            var actual = JSONUtils.ReplaceSlashes(@"C:\Temp\PathOperationsTestFolder\OldFolder\OldFolderFirstInnerFolder\TextFile1.txt");
+
+            // Assert Slashes Replaced
+            Assert.AreEqual(@"C:\\Temp\\PathOperationsTestFolder\\OldFolder\\OldFolderFirstInnerFolder\\TextFile1.txt", actual, "Slashes not escaped by JSON util");
+        }
+
+        [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("JSONUtils_ReplaceSlashes")]
         public void JSONUtils_ReplaceSlashes_BackSlashes_SlashesReplaced()

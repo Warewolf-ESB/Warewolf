@@ -44,5 +44,7 @@ namespace Dev2.Common.Utils
             }      
             return stringToReplaceIn;
         }
+
+      
     }
 }
