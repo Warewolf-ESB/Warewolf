@@ -298,6 +298,25 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("ResourceRepository_HydrateResourceModel")]
+        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsServer_IconPathIsValid()
+        {
+            var resourceRepository = GetResourceRepository();
+            var data = GetTestData();
+            data = data.Replace("@@@@", "pack://application:,,,/Warewolf Studio;component/images/Non-ExistentFile.png");
+            data = data.Replace("WorkflowService", "Server");
+            var uo = new UnlimitedObject(data);
+
+            //------------Execute Test---------------------------
+            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
+
+            // Assert Icon Path Is Valid
+            Assert.IsNotNull(model);
+            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/ExplorerWarewolfConnection-32.png");
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("ResourceRepository_HydrateResourceModel")]
         public void ResourceRepository_HydrateResourceModel_WhenDataIsNewWorkflow_NewWorkFlowNamesUpdated()
         {
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();

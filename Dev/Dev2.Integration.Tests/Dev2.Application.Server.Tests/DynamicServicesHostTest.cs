@@ -38,10 +38,9 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             // ensure we get the same result 10 times ;)
             for (int i = 0; i < 10; i++)
             {
-                string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI,
-                                                "IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=");
+                string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=");
                 string result = TestHelper.PostDataToWebserver(postData);
-                StringAssert.Contains(result, "<res><val>ZZZ</val></res>", "Got [ " + result + " ]");
+                StringAssert.Contains(result, "<val>ZZZ</val>", "Got [ " + result + " ]");
             }
         }
 
@@ -67,7 +66,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestPluginEmptyToNull", "testType=nullActive&sender=");
             string result = TestHelper.PostDataToWebserver(postData);
 
-            Assert.IsTrue((result.IndexOf("Anonymous email sent") > 0), "Got [ " + result + " ]");
+
+            StringAssert.Contains(result, "Anonymous email sent");
         }
 
 
@@ -77,7 +77,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestPluginEmptyToNull", "testType=nullActive&sender=test@domain.local");
             string result = TestHelper.PostDataToWebserver(postData);
 
-            Assert.IsTrue((result.IndexOf("from test@domain.local") > 0));
+            StringAssert.Contains(result, "from test@domain.local");
+
         }
 
         [TestMethod]
