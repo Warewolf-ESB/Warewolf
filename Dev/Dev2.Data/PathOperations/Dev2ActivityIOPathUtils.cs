@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.IO;
 
@@ -90,6 +91,13 @@ namespace Dev2.PathOperations {
         /// <returns></returns>
         public static bool IsDirectory(string path) {
             bool result = false;
+
+            if(path.Contains("ftp://") || path.Contains("ftps://") || path.Contains("sftp://"))
+            {
+                var ftpUri = new Uri(path);
+                var isFile = ftpUri.IsFile;
+                return isFile;
+            }
 
             if (path.EndsWith("\\") || path.EndsWith("/")) {
                 result = true;

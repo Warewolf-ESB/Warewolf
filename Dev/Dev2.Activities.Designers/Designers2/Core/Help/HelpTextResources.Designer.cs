@@ -350,7 +350,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///Put the full path of the destination you are copying to here.
-        ///You can use File System, URI, FTP or FTPS format..
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string CopyHelpDestination {
             get {
@@ -361,7 +361,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To copy a file or folder, put the full path and file or folder name here.
-        ///You can use File System, URI, FTP or FTPS format..
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string CopyHelpFileFolder {
             get {
@@ -544,7 +544,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To create a file or folder, put the full path and file or folder name here.
-        ///You can use File System, URI, FTP or FTPS format..
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string CreateHelpFileFolder {
             get {
@@ -1002,7 +1002,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To Delete a file or folder, put the full path and file or folder name to delete in here.
-        ///You can use File System, URI, FTP or FTPS format..
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string DeleteHelpFileFolder {
             get {
@@ -1427,7 +1427,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///Put the full path of the destination you are moving to here.
-        ///You can use File System, URI, FTP or FTPS format..
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string MoveHelpDestination {
             get {
@@ -1438,7 +1438,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To Move a file or folder, put the full path and file or folder name to move in here.
-        ///You can use File System, URI, FTP or FTPS format..
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string MoveHelpFileFolder {
             get {
@@ -1734,7 +1734,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To read the content of a file, put the full path and file name in here.
-        ///You can use File System, URI, FTP or FTPS format..
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string ReadFileHelpFilename {
             get {
@@ -1826,7 +1826,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To read the content of a folder, put the full path in here.
-        ///You can use File System, URI, FTP or FTPS format..
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string ReadFolderHelpFolder {
             get {
@@ -1938,7 +1938,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To rename a file or folder, put the full path and file or folder name in here.
-        ///You can use File System, URI, FTP or FTPS format..
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string RenameHelpFileFolder {
             get {
@@ -1958,7 +1958,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///Put the full path and new name of the resource here.
-        ///You can use File System, URI, FTP or FTPS format..
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string RenameHelpNewName {
             get {
@@ -2550,7 +2550,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///Put the full path of the destination you are unzipping to here.
-        ///You can use File System, URI, FTP or FTPS format..
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string UnzipHelpDestination {
             get {
@@ -2671,7 +2671,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To unzip a file, put the full path and zip file name in here.
-        ///You can use File System, URI, FTP or FTPS format..
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string UnzipToolTipZipname {
             get {
@@ -2721,7 +2721,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To write content to a file, put the full path and file name in here.
-        ///You can use File System, URI, FTP or FTPS format..
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string WriteFileHelpFilename {
             get {
@@ -2859,7 +2859,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///Put the full path and name of the newly created zipped file here.
-        ///You can use File System, URI, FTP or FTPS format..
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string ZipHelpDestination {
             get {
@@ -2870,7 +2870,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To zip a file or folder, put the full path of what you want zipped in here.
-        ///You can use File System, URI, FTP or FTPS format..
+        ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string ZipHelpFileFolder {
             get {

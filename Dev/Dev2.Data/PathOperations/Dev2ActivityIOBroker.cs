@@ -331,7 +331,7 @@ namespace Dev2.PathOperations
 
                             IActivityIOPath tmpDst = ActivityIOFactory.CreatePathFromString(dstPath, dst.IOPath.Username, dst.IOPath.Password);
 
-                            if (!src.IOPath.Path.StartsWith("ftp://") && !src.IOPath.Path.StartsWith("ftps://") && !src.IOPath.Path.StartsWith("sftp://"))
+                            if (IsNotFTPTypePath(src))
                             {
                                 var fileInfo = new FileInfo(src.IOPath.Path);
                                 if (fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))
@@ -587,7 +587,7 @@ namespace Dev2.PathOperations
 
                 result = resultOk;
 
-                if (!src.IOPath.Path.StartsWith("ftp://") && !src.IOPath.Path.StartsWith("ftps://"))
+                if (IsNotFTPTypePath(src))
                 {
                     var fileInfo = new FileInfo(src.IOPath.Path);
                     if (fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))
@@ -618,6 +618,16 @@ namespace Dev2.PathOperations
             }
 
             return result;
+        }
+
+        static bool IsNotFTPTypePath(IActivityIOOperationsEndPoint src)
+        {
+            return IsNotFTPTypePath(src.IOPath);
+        }
+        
+        static bool IsNotFTPTypePath(IActivityIOPath src)
+        {
+            return !src.Path.StartsWith("ftp://") && !src.Path.StartsWith("ftps://") && !src.Path.StartsWith("sftp://");
         }
 
         public string UnZip(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2UnZipOperationTO args)
@@ -699,7 +709,18 @@ namespace Dev2.PathOperations
 
             char[] splitOn = splitter.ToCharArray();
 
-            tmp = path.Path.Split(splitOn);
+            if(IsNotFTPTypePath(path))
+            {
+                tmp = path.Path.Split(splitOn);
+                
+            }
+            else
+            {
+                var splitValues = path.Path.Split(new[] { "://" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                splitValues.RemoveAt(0);
+                var newPath = string.Join("/", splitValues);
+                tmp = newPath.Split(splitOn);
+            }
 
             // remove trailing file entry if exist
             string candiate = tmp[tmp.Length - 1];

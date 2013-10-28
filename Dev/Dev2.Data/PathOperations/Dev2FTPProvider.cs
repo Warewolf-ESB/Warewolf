@@ -136,7 +136,11 @@ namespace Dev2.PathOperations {
             }
             catch(Exception e)
             {
-                Console.WriteLine(e);
+                if(path.Path.Contains("\\"))
+                {
+                    throw new Exception(string.Format("Bad format for SFTP. Path {0}. Please correct path.", path.Path));
+                }
+                throw new Exception(string.Format("Error connecting to SFTP location {0}.", path.Path));
             }
             return sftp;
         }
@@ -406,7 +410,7 @@ namespace Dev2.PathOperations {
                 }
 
             }
-            catch(WebException webEx)
+            catch(SftpException webEx)
             {
                 throw new DirectoryNotFoundException(string.Format("Directory '{0}' was not found", src.Path));
             }
@@ -425,9 +429,6 @@ namespace Dev2.PathOperations {
 
         public bool CreateDirectory(IActivityIOPath dst, Dev2CRUDOperationTO args)
         {
-            FtpWebRequest request = null;
-            FtpWebResponse response = null;
-
             bool result = false;
 
             bool ok = false;
@@ -450,51 +451,77 @@ namespace Dev2.PathOperations {
             if(ok)
             {
 
-                try
+                result = IsStandardFTP(dst) ? CreateDirectoryStandardFTP(dst) : CreateDirectorySFTP(dst);
+            }
+            return result;
+        }
+
+        bool CreateDirectoryStandardFTP(IActivityIOPath dst)
+        {
+            FtpWebRequest request;
+            FtpWebResponse response = null;
+            bool result;
+            try
+            {
+                request = (FtpWebRequest)FtpWebRequest.Create(ConvertSSLToPlain(dst.Path));
+                request.Method = WebRequestMethods.Ftp.MakeDirectory;
+
+                request.UseBinary = true;
+                request.KeepAlive = false;
+                request.EnableSsl = EnableSSL(dst);
+
+                if(dst.Username != string.Empty)
                 {
-                    request = (FtpWebRequest)FtpWebRequest.Create(ConvertSSLToPlain(dst.Path));
-                    request.Method = WebRequestMethods.Ftp.MakeDirectory;
-
-                    request.UseBinary = true;
-                    request.KeepAlive = false;
-                    request.EnableSsl = EnableSSL(dst);
-
-                    if(dst.Username != string.Empty)
-                    {
-                        request.Credentials = new NetworkCredential(dst.Username, dst.Password);
-                    }
-
-                    if(dst.IsNotCertVerifiable)
-                    {
-                        ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
-                    }
-
-                    response = (FtpWebResponse)request.GetResponse();
-                    if(response.StatusCode == FtpStatusCode.PathnameCreated)
-                    {
-                        result = true;
-                    }
-                    else
-                    {
-                        throw new Exception("Fail");
-                    }
+                    request.Credentials = new NetworkCredential(dst.Username, dst.Password);
                 }
-                catch(Exception ex)
+
+                if(dst.IsNotCertVerifiable)
                 {
-                    ServerLogger.LogError(ex);
-                    throw;
+                    ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
                 }
-                finally
+                response = (FtpWebResponse)request.GetResponse();
+                if(response.StatusCode == FtpStatusCode.PathnameCreated)
                 {
-                    if(response != null)
-                    {
-                        response.Close();
-                    }
-                    else
-                    {
-                        result = false;
-                    }
+                    result = true;
                 }
+                else
+                {
+                    throw new Exception("Fail");
+                }
+            }
+            catch(Exception ex)
+            {
+                ServerLogger.LogError(ex);
+                throw;
+            }
+            finally
+            {
+                if(response != null)
+                {
+                    response.Close();
+                }
+            }
+            return result;
+        }
+        
+        bool CreateDirectorySFTP(IActivityIOPath dst)
+        {
+            var sftp = BuildSftpClient(dst);
+            bool result;
+            try
+            {
+                var fromPath = ExtractFileNameFromPath(dst.Path);
+                sftp.Mkdir(fromPath);
+                result = true;
+            }
+            catch(Exception ex)
+            {
+                result = false;
+                ServerLogger.LogError(ex);
+            }
+            finally
+            {
+                sftp.Close();
             }
             return result;
         }
@@ -678,19 +705,13 @@ namespace Dev2.PathOperations {
                         continue;
                     }
                     result.AppendLine(filePath.ToString());
-//                    if(filePath.getAttrs().isDir())
-//                    {
-//                        result.Append("d ");
-//                    }
-//                    result.Append(filename);
-//                    result.AppendLine();
                 }
             }
             catch(Exception ex)
             {
                 sftp.Close();
                 ServerLogger.LogError(ex);
-                throw;
+                throw new Exception(string.Format("Path not found {0}. Please ensure that it exists", path));
             }
             return result.ToString();
         }
@@ -817,8 +838,8 @@ namespace Dev2.PathOperations {
             }
             catch(Exception exception)
             {
-                ServerLogger.LogError(exception);
                 result = false;
+                throw new Exception(string.Format("Could not delete {0}. Please check the path exists.", src.Path));
             }
             finally
             {
@@ -1020,7 +1041,6 @@ namespace Dev2.PathOperations {
             catch(Exception ex)
             {
                 ServerLogger.LogError(ex);
-                throw;
             }
             finally
             {

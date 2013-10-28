@@ -492,12 +492,12 @@ To convert the case of some text, put the variable containing the text here.</va
   <data name="CopyHelpDestination" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 Put the full path of the destination you are copying to here.
-You can use File System, URI, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="CopyHelpFileFolder" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To copy a file or folder, put the full path and file or folder name here.
-You can use File System, URI, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="CopyHelpPassword" xml:space="preserve">
     <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
@@ -554,7 +554,7 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="CreateHelpFileFolder" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To create a file or folder, put the full path and file or folder name here.
-You can use File System, URI, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="CreateHelpForceOverWrite" xml:space="preserve">
     <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
@@ -951,12 +951,12 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="MoveHelpDestination" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 Put the full path of the destination you are moving to here.
-You can use File System, URI, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="MoveHelpFileFolder" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To Move a file or folder, put the full path and file or folder name to move in here.
-You can use File System, URI, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="MoveHelpForceoverwrite" xml:space="preserve">
     <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
@@ -1013,7 +1013,7 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="DeleteHelpFileFolder" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To Delete a file or folder, put the full path and file or folder name to delete in here.
-You can use File System, URI, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="DeleteHelpPassword" xml:space="preserve">
     <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
@@ -1057,7 +1057,7 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="ReadFileHelpFilename" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To read the content of a file, put the full path and file name in here.
-You can use File System, URI, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="ReadFileHelpPassword" xml:space="preserve">
     <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
@@ -1105,7 +1105,7 @@ Put the contents you want written to the file in here.</value>
   <data name="WriteFileHelpFilename" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To write content to a file, put the full path and file name in here.
-You can use File System, URI, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="WriteFileHelpMethod" xml:space="preserve">
     <value>Overwrite will replace the file contents with the new content.
@@ -1164,7 +1164,7 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="ReadFolderHelpFolder" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To read the content of a folder, put the full path in here.
-You can use File System, URI, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="ReadFolderHelpPassword" xml:space="preserve">
     <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
@@ -1216,7 +1216,7 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="RenameHelpFileFolder" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To rename a file or folder, put the full path and file or folder name in here.
-You can use File System, URI, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="RenameHelpForceoverwrite" xml:space="preserve">
     <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
@@ -1224,7 +1224,7 @@ You can use File System, URI, FTP or FTPS format.</value>
   <data name="RenameHelpNewName" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 Put the full path and new name of the resource here.
-You can use File System, URI, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="RenameHelpPassword" xml:space="preserve">
     <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
@@ -1278,7 +1278,7 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="UnzipHelpDestination" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 Put the full path of the destination you are unzipping to here.
-You can use File System, URI, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="UnzipHelpForceoverwrite" xml:space="preserve">
     <value>If a file or folder already exists, you can force a new one to overwrite the old one.</value>
@@ -1333,7 +1333,7 @@ You can use File System, URI, FTP or FTPS forma</value>
   <data name="UnzipToolTipZipname" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To unzip a file, put the full path and zip file name in here.
-You can use File System, URI, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="ZipHelpCompressionType" xml:space="preserve">
     <value>The system will try and match your zipping requirements as far as possible.
@@ -1345,12 +1345,12 @@ Max will compress the zipped file as much as possible - slowest.</value>
   <data name="ZipHelpDestination" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 Put the full path and name of the newly created zipped file here.
-You can use File System, URI, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="ZipHelpFileFolder" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To zip a file or folder, put the full path of what you want zipped in here.
-You can use File System, URI, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="ZipHelpPassword" xml:space="preserve">
     <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
