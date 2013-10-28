@@ -88,21 +88,6 @@ namespace Dev2.Data.Tests.Operations
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ActivityIOFactory_ReadFile")]
-       // [Ignore] //This is here as an example and quick test for the SFTP stuff
-        public void ActivityIOFactory_ReadFile_SFTP_ShouldReadFile()
-        {
-            //------------Setup for test--------------------------
-            const string Path = "sftp://sftp.theunlimited.co.za/dot.txt";
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(Path, string.Empty, null, true));
-            //------------Execute Test---------------------------
-            var readData = ActivityIOFactory.CreateOperationsBroker().Get(scrEndPoint);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("tests",readData);
-        }
-
-        [TestMethod]
         public void MoveFileWithPathsExpectedRecursiveMove()
         {
             const string NewFileName = "MovedTempFile";
