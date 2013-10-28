@@ -331,7 +331,7 @@ namespace Dev2.PathOperations
 
                             IActivityIOPath tmpDst = ActivityIOFactory.CreatePathFromString(dstPath, dst.IOPath.Username, dst.IOPath.Password);
 
-                            if (!src.IOPath.Path.StartsWith("ftp://") && !src.IOPath.Path.StartsWith("ftps://"))
+                            if (!src.IOPath.Path.StartsWith("ftp://") && !src.IOPath.Path.StartsWith("ftps://") && !src.IOPath.Path.StartsWith("sftp://"))
                             {
                                 var fileInfo = new FileInfo(src.IOPath.Path);
                                 if (fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))

@@ -24,16 +24,9 @@ namespace Dev2.PathOperations {
 
         public Dev2FTPProvider() { }
        
-        public bool PathExist(IActivityIOPath dst) {
-            bool result = false;
-
-            if (PathIs(dst) == enPathType.Directory) {
-                result = IsDirectoryAlreadyPresent(dst);
-            }
-            else {
-                result = IsFilePresent(dst);
-            }
-
+        public bool PathExist(IActivityIOPath dst)
+        {
+            var result = PathIs(dst) == enPathType.Directory ? IsDirectoryAlreadyPresent(dst) : IsFilePresent(dst);
             return result;
         }
 
@@ -107,15 +100,22 @@ namespace Dev2.PathOperations {
             var ftpPath = ExtractFileNameFromPath(path.Path);
             try
             {
-                var tempFileName = Path.Combine(Path.GetTempPath(),Path.GetTempFileName());
+                var tempFileName = BuildTempFileName();
                 sftp.Get(ftpPath, tempFileName);
                 result = new FileStream(tempFileName,FileMode.Open);
                 sftp.Close();
             }
             catch(Exception)
             {
+                sftp.Close();
                 throw new Exception("Fail");
             }
+        }
+
+        static string BuildTempFileName()
+        {
+            var tempFileName = Path.Combine(Path.GetTempPath(), Path.GetTempFileName());
+            return tempFileName;
         }
 
         Sftp BuildSftpClient(IActivityIOPath path)
@@ -177,22 +177,24 @@ namespace Dev2.PathOperations {
 
         public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo WhereToPut)
         {
-            FtpWebResponse response = null;
+            var result = -1;
 
-            int result = -1;
+            bool ok;
 
-            bool ok = false;
-
-            if (args.Overwrite) {
+            if(args.Overwrite)
+            {
                 ok = true;
             }
-            else {
+            else
+            {
                 // try and fetch the file, if not found ok because we not in Overwrite mode
-                try {
+                try
+                {
                     Get(dst).Close();
                     ok = false;
                 }
-                catch (Exception ex) {
+                catch(Exception ex)
+                {
                     ServerLogger.LogError(ex);
                     ok = true;
                 }
@@ -254,21 +256,32 @@ namespace Dev2.PathOperations {
         
         int WriteToSFTP(Stream src, IActivityIOPath dst)
         {
-            var hostName = ExtractHostNameFromPath(dst.Path);
-            var sftp = new Sftp(hostName, dst.Username, dst.Username);
-            byte[] payload = src.ToByteArray();
-            var tempFileName = Path.Combine(Path.GetTempPath(), Path.GetTempFileName());
-            File.WriteAllBytes(tempFileName,payload);
-            var result = 0;
-            try
+            var result = -1;
+            if(dst != null)
             {
-                sftp.Put(tempFileName,dst.Path);
+                var sftp = BuildSftpClient(dst);
+                if(src != null)
+                {
+                    using(src)
+                    {
+                        byte[] payload = src.ToByteArray();
+                        var tempFileName = Path.Combine(Path.GetTempPath(), Path.GetTempFileName());
+                        File.WriteAllBytes(tempFileName, payload);
+                        try
+                        {
+                            var path = ExtractFileNameFromPath(dst.Path);
+                            sftp.Put(tempFileName, path);
+                            result = 0;
+                            sftp.Close();
+                        }
+                        catch(Exception)
+                        {
+                            sftp.Close();
+                            throw new Exception("File was not created");
+                        }
+                    }
+                }
             }
-            catch(Exception)
-            {
-                throw new Exception("File was not created");
-            }
-           
             return result;
         }
 
@@ -302,6 +315,11 @@ namespace Dev2.PathOperations {
 
         public IList<IActivityIOPath> ListDirectory(IActivityIOPath src)
         {
+            return IsStandardFTP(src) ? ListDirectoryStandardFTP(src) : ListDirectorySFTP(src);
+        }
+
+        IList<IActivityIOPath> ListDirectoryStandardFTP(IActivityIOPath src)
+        {
             List<IActivityIOPath> result = new List<IActivityIOPath>();
             FtpWebRequest request = null;
             FtpWebResponse response = null;
@@ -330,7 +348,6 @@ namespace Dev2.PathOperations {
                 {
                     using(StreamReader reader = new StreamReader(responseStream))
                     {
-
                         while(!reader.EndOfStream)
                         {
                             string uri = string.Format("{0}{1}", src.Path, reader.ReadLine());
@@ -367,6 +384,40 @@ namespace Dev2.PathOperations {
                 {
                     response.Close();
                 }
+            }
+
+            return result;
+        }
+        
+        IList<IActivityIOPath> ListDirectorySFTP(IActivityIOPath src)
+        {
+            List<IActivityIOPath> result = new List<IActivityIOPath>();
+            var sftp = BuildSftpClient(src);
+            try
+            {
+                var fromPath = ExtractFileNameFromPath(src.Path);
+                var fileList = sftp.GetFileList(fromPath);
+                foreach(string file in fileList)
+                {
+                    if(file != "..")
+                    {
+                        result.Add(ActivityIOFactory.CreatePathFromString(file));
+                    }
+                }
+
+            }
+            catch(WebException webEx)
+            {
+                throw new DirectoryNotFoundException(string.Format("Directory '{0}' was not found", src.Path));
+            }
+            catch(Exception ex)
+            {
+                ServerLogger.LogError(ex);
+                throw;
+            }
+            finally
+            {
+                sftp.Close();
             }
 
             return result;
@@ -545,6 +596,15 @@ namespace Dev2.PathOperations {
         /// <returns></returns>
         string ExtendedDirList(string path, string user, string pass, bool ssl, bool IsNotCertVerifiable)
         {
+            if(path.Contains("sftp://"))
+            {
+                return ExtendedDirListSFTP(path, user, pass);
+            }
+            return ExtendedDirListStandardFTP(path, user, pass, ssl, IsNotCertVerifiable);
+        }
+
+        string ExtendedDirListStandardFTP(string path, string user, string pass, bool ssl, bool IsNotCertVerifiable)
+        {
             FtpWebRequest req = null;
             FtpWebResponse resp = null;
             StringBuilder result = new StringBuilder();
@@ -571,7 +631,6 @@ namespace Dev2.PathOperations {
 
                 using(Stream ios = resp.GetResponseStream())
                 {
-
                     int bufLen = 2048; // read 2k at a time
                     byte[] data = new byte[bufLen];
                     int len = ios.Read(data, 0, bufLen);
@@ -597,6 +656,41 @@ namespace Dev2.PathOperations {
                 {
                     resp.Close();
                 }
+            }
+            return result.ToString();
+        }
+
+        string ExtendedDirListSFTP(string path, string user, string pass)
+        {
+            var result = new StringBuilder();
+            var pathFromString = ActivityIOFactory.CreatePathFromString(path, user, pass);
+            var sftp = BuildSftpClient(pathFromString);
+            try
+            {
+                var fromPath = ExtractFileNameFromPath(pathFromString.Path);
+                var fileList = sftp.GetExtendedFileList(fromPath);
+                sftp.Close();
+                foreach(ChannelSftp.LsEntry filePath in fileList)
+                {
+                    string filename = filePath.getFilename();
+                    if(filename.Contains(".."))
+                    {
+                        continue;
+                    }
+                    result.AppendLine(filePath.ToString());
+//                    if(filePath.getAttrs().isDir())
+//                    {
+//                        result.Append("d ");
+//                    }
+//                    result.Append(filename);
+//                    result.AppendLine();
+                }
+            }
+            catch(Exception ex)
+            {
+                sftp.Close();
+                ServerLogger.LogError(ex);
+                throw;
             }
             return result.ToString();
         }
@@ -646,6 +740,11 @@ namespace Dev2.PathOperations {
 
 
         bool DeleteOp(IActivityIOPath src)
+        {
+            return IsStandardFTP(src) ? DeleteUsingStandardFTP(src) : DeleteUsingSFTP(src);
+        }
+
+        bool DeleteUsingStandardFTP(IActivityIOPath src)
         {
             FtpWebRequest request = null;
             FtpWebResponse response = null;
@@ -699,6 +798,34 @@ namespace Dev2.PathOperations {
             return result;
         }
 
+        bool DeleteUsingSFTP(IActivityIOPath src)
+        {
+            bool result;
+            var sftp = BuildSftpClient(src);
+            try
+            {
+                var fromPath = ExtractFileNameFromPath(src.Path);
+                if(PathIs(src) == enPathType.Directory)
+                {
+                    sftp.DeleteDirectory(fromPath);
+                }
+                else
+                {
+                    sftp.DeleteFile(fromPath);
+                }
+                result = true;
+            }
+            catch(Exception exception)
+            {
+                ServerLogger.LogError(exception);
+                result = false;
+            }
+            finally
+            {
+               sftp.Close();
+            }
+            return result;
+        }
 
         private bool EnableSSL(IActivityIOPath path)
         {
@@ -707,6 +834,12 @@ namespace Dev2.PathOperations {
         }
 
         private bool IsFilePresent(IActivityIOPath path)
+        {
+            var isFilePresent = IsStandardFTP(path) ? IsFilePresentStandardFTP(path) : IsFilePresentSFTP(path);
+            return isFilePresent;
+        }
+
+        bool IsFilePresentStandardFTP(IActivityIOPath path)
         {
             FtpWebRequest request = null;
             FtpWebResponse response = null;
@@ -721,12 +854,12 @@ namespace Dev2.PathOperations {
                 request.KeepAlive = false;
                 request.EnableSsl = EnableSSL(path);
 
-                if (path.Username != string.Empty)
+                if(path.Username != string.Empty)
                 {
                     request.Credentials = new NetworkCredential(path.Username, path.Password);
                 }
 
-                if (path.IsNotCertVerifiable)
+                if(path.IsNotCertVerifiable)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
                 }
@@ -748,19 +881,19 @@ namespace Dev2.PathOperations {
                 // exception will be thrown if not present
                 isAlive = true;
             }
-            catch (WebException wex)
+            catch(WebException wex)
             {
                 ServerLogger.LogError(wex);
                 isAlive = false;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 ServerLogger.LogError(ex);
                 throw;
             }
             finally
             {
-                if (response != null)
+                if(response != null)
                 {
                     response.Close();
                 }
@@ -768,8 +901,48 @@ namespace Dev2.PathOperations {
 
             return isAlive;
         }
+        
+        bool IsFilePresentSFTP(IActivityIOPath path)
+        {
+            var sftp = BuildSftpClient(path);
+            bool isAlive = false;
+
+            try
+            {
+                var fromPath = ExtractFileNameFromPath(path.Path);
+                var tempFileName = BuildTempFileName();
+                sftp.Get(fromPath, tempFileName);
+                if(File.ReadAllBytes(tempFileName).Length != 0)
+                {
+                    isAlive = true;
+                }
+            }
+            catch(SftpException ftpException)
+            {
+                ServerLogger.LogError(ftpException);
+                isAlive = false;
+            }
+            catch(Exception ex)
+            {
+                ServerLogger.LogError(ex);
+                throw;
+            }
+            finally
+            {
+                sftp.Close();
+            }
+
+            return isAlive;
+        }
 
         private bool IsDirectoryAlreadyPresent(IActivityIOPath path)
+        {
+            var isAlive = IsStandardFTP(path) ? IsDirectoryAlreadyPresentStandardFTP(path) : IsDirectoryAlreadyPresentSFTP(path);
+
+            return isAlive;
+        }
+
+        bool IsDirectoryAlreadyPresentStandardFTP(IActivityIOPath path)
         {
             FtpWebRequest request = null;
             FtpWebResponse response = null;
@@ -784,12 +957,12 @@ namespace Dev2.PathOperations {
                 request.KeepAlive = false;
                 request.EnableSsl = EnableSSL(path);
 
-                if (path.Username != string.Empty)
+                if(path.Username != string.Empty)
                 {
                     request.Credentials = new NetworkCredential(path.Username, path.Password);
                 }
 
-                if (path.IsNotCertVerifiable)
+                if(path.IsNotCertVerifiable)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
                 }
@@ -811,24 +984,48 @@ namespace Dev2.PathOperations {
                 // exception will be thrown if not present
                 isAlive = true;
             }
-            catch (WebException wex)
+            catch(WebException wex)
             {
                 ServerLogger.LogError(wex);
                 isAlive = false;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 ServerLogger.LogError(ex);
                 throw;
             }
             finally
             {
-                if (response != null)
+                if(response != null)
                 {
                     response.Close();
                 }
             }
+            return isAlive;
+        }
 
+        bool IsDirectoryAlreadyPresentSFTP(IActivityIOPath path)
+        {
+            var sftpClient = BuildSftpClient(path);
+            var isAlive = false;
+            try
+            {
+                var ftpPath = ExtractFileNameFromPath(path.Path);
+                var arrayList = sftpClient.GetFileList(ftpPath);
+                if(arrayList != null && arrayList.Count == 0)
+                {
+                    isAlive = true;    
+                }
+            }
+            catch(Exception ex)
+            {
+                ServerLogger.LogError(ex);
+                throw;
+            }
+            finally
+            {
+                sftpClient.Close();
+            }
             return isAlive;
         }
 
