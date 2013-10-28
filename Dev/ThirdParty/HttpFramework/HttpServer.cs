@@ -633,11 +633,10 @@ namespace HttpFramework
 			}
 
 			ProcessRequestWrapper(context, request);
-
 			// no need to lock, if all threads are busy,
 			// someone is bound to trigger the thread correctly =)
             // Update: Trigger body does not (yet) have any implementation.
-			//_requestQueue.Trigger();
+			_requestQueue.Trigger();
 		}
 
 		/// <summary>
