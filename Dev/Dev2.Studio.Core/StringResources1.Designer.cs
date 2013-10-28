@@ -862,6 +862,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/ExplorerWarewolfConnection-32.png.
+        /// </summary>
+        public static string Pack_Uri_Server_Image {
+            get {
+                return ResourceManager.GetString("Pack_Uri_Server_Image", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStop-32.png.
         /// </summary>
         public static string Pack_Uri_Stop_Image {

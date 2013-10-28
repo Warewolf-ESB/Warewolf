@@ -775,14 +775,17 @@ Would you like to start the setup now?</value>
   </data>
   <data name="Pack_Uri_EmailSource_Image" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/ToolSendEmail-32.png</value>
-  </data>         
+  </data>
   <data name="Pack_Uri_PluginService_Image" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png</value>
-  </data>  
+  </data>
   <data name="Pack_Uri_WebService_Image" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/WebService-32.png</value>
   </data>
   <data name="Pack_Uri_WorkflowService_Image" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png</value>
+  </data>
+  <data name="Pack_Uri_Server_Image" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/ExplorerWarewolfConnection-32.png</value>
   </data>
 </root>

@@ -643,6 +643,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         case ResourceType.WorkflowService:
                             iconPath = StringResources.Pack_Uri_WorkflowService_Image;
                             break;
+                        case ResourceType.Server:
+                            iconPath = StringResources.Pack_Uri_Server_Image;
+                            break;
                     }
                 }
                 else
