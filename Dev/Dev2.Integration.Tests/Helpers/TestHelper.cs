@@ -46,7 +46,27 @@ namespace Dev2.Integration.Tests.Helpers
             {
                 return _responseData = String.Empty;
             }
-            return HttpUtility.HtmlDecode(_responseData);
+
+            return _responseData;
+        }
+
+        public static string PostDataToWebserver(string postandUrl, out bool  wasHTTPS)
+        {
+            wasHTTPS = false;
+            if(postandUrl.Split('?').Count() == 1)
+            {
+                wasHTTPS = ExecuteGetWorker(postandUrl);
+            }
+            else if(postandUrl.Split('?').Count() > 1)
+            {
+                ExecutePostWorker(postandUrl);
+            }
+            else
+            {
+                return _responseData = String.Empty;
+            }
+
+            return _responseData;
         }
 
 
@@ -126,11 +146,13 @@ namespace Dev2.Integration.Tests.Helpers
             return str.Replace("\r", "").Replace("\n", "").Replace(" ", "");
         }
 
-        private static void ExecuteGetWorker(string url)
+        private static bool ExecuteGetWorker(string url)
         {
             GetWorker target = new GetWorker(url);
             target.DoWork();
             _responseData = target.GetResponseData();
+
+            return target.WasHTTPS;
         }
 
         private static void ExecutePostWorker(string postDataWithURL)

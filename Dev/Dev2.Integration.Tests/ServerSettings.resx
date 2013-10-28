@@ -127,6 +127,9 @@
     <value>77</value>
     <comment>Used by ViewModels</comment>
   </data>
+  <data name="WebserverHttpsURI" xml:space="preserve">
+    <value>https://localhost:1236/services/</value>
+  </data>
   <data name="WebserverPort" xml:space="preserve">
     <value>1234</value>
     <comment>Used in ViewModels</comment>

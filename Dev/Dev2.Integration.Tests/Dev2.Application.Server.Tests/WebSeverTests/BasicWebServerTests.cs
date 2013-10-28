@@ -12,34 +12,13 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.WebSeverTests
     public class BasicWebServerTests
     {
         string WebserverURI = ServerSettings.WebserverURI;
+        private string WebserverHttpsURI = ServerSettings.WebserverHttpsURI;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
 
         #region List Service Tests
 
@@ -167,6 +146,23 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.WebSeverTests
             string responseData = TestHelper.PostDataToWebserver(postData);
             //------------Assert Results-------------------------
             var expected = "<DataList><result>PASS</result></DataList>";
+            Assert.AreEqual(expected, responseData, "Expected [ " + expected + "] but got [ " + responseData + " ]");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("WebServer_WhenHTTPS")]
+        public void WebServer_WhenHTTPS_InvokeOnSSLPort_ExpectValidResultViaSSL()
+        {
+            //------------Setup for test--------------------------
+            string postData = String.Format("{0}{1}", WebserverHttpsURI, "Bug9139");
+            //------------Execute Test---------------------------
+            bool wasHTTPS;
+            string responseData = TestHelper.PostDataToWebserver(postData, out wasHTTPS);
+            
+            //------------Assert Results-------------------------
+            var expected = "<DataList><result>PASS</result></DataList>";
+            Assert.IsTrue(wasHTTPS);
             Assert.AreEqual(expected, responseData, "Expected [ " + expected + "] but got [ " + responseData + " ]");
         }
 

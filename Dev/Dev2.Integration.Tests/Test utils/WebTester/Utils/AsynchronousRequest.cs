@@ -17,6 +17,8 @@ namespace Dev2.Integration.Tests.MEF.WebTester
         private string responseData;
         HttpWebResponse _response;
 
+        public bool WasHTTPS { get; set; }
+
         public void ScanSite(string url)
         {
             request = HttpWebRequest.Create(url);
@@ -64,6 +66,12 @@ namespace Dev2.Integration.Tests.MEF.WebTester
         {
             request.Method = "GET";
             request.Timeout = 300000; // wait up to five minutes ;) 
+
+            ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) =>
+                {
+                    WasHTTPS = true;
+                    return true;
+                };
 
             using (var response = request.GetResponse() as HttpWebResponse)
             {
