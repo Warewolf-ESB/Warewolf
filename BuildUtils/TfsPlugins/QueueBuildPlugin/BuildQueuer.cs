@@ -18,7 +18,7 @@ namespace QueueBuildPlugin
             return Path.Combine(dir, LogfileName);
         }
 
-        public int QueueBuild(string server, string project, string def, string shelveSet)
+        public int QueueBuild(string server, string project, string def, string shelveSet, string user)
         {
             DateTime buildTS = DateTime.Now;
 
@@ -27,10 +27,10 @@ namespace QueueBuildPlugin
                 var qb = new BuildQueuerImpl();
 
                 File.WriteAllText(LogFile(), buildTS + " :: Queuing Build With Args { Server : '" + server + "', Project : '" + project +
-                                  "', Definition : '" + def + "'}");
+                                  "', Definition : '" + def + "', for user : '" + user + "'}");
                 try
                 {
-                    return qb.Run(server, project, def, string.Empty);
+                    return qb.Run(server, project, def, string.Empty, user);
                 }
                 catch(Exception e)
                 {
@@ -44,10 +44,10 @@ namespace QueueBuildPlugin
                 var qb = new BuildQueuerImpl();
 
                 File.WriteAllText(LogFile(), buildTS + " :: Queuing Build With Args { Server : '" + server + "', Project : '" + project +
-                                  "', Definition : '" + def + "','" + shelveSet + "'}");
+                                  "', Definition : '" + def + "', for user : '" + user + ", selveset : '" + shelveSet + "'}");
                 try
                 {
-                    return qb.Run(server, project, def, shelveSet);
+                    return qb.Run(server, project, def, shelveSet, user);
                 }
                 catch(Exception e)
                 {
@@ -57,7 +57,7 @@ namespace QueueBuildPlugin
             }
             else
             {
-                File.WriteAllText(LogFile(), buildTS + " :: *** Arguments Error With {  " + server + ", " + project + ", " + def + ", " + shelveSet + " }");
+                File.WriteAllText(LogFile(), buildTS + " :: *** Arguments Error With {  " + server + ", " + project + ", " + def + ", " + user + ", " + shelveSet + " }");
             }
 
             return -1;
@@ -66,7 +66,7 @@ namespace QueueBuildPlugin
 
     public class BuildQueuerImpl
     {
-        public int Run(string server, string project, string def, string shelveSet)
+        public int Run(string server, string project, string def, string shelveSet, string user)
         {
             var tfs = TeamFoundationServerFactory.GetServer(server);
             var buildServer = (IBuildServer)tfs.GetService(typeof(IBuildServer));
@@ -74,6 +74,7 @@ namespace QueueBuildPlugin
 
 
             var req = buildDef.CreateBuildRequest();
+            req.RequestedFor = user;
 
             // is there a shelveset?
             if(!string.IsNullOrEmpty(shelveSet))
