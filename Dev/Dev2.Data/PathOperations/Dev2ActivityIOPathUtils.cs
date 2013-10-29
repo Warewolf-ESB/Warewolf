@@ -28,6 +28,7 @@ namespace Dev2.PathOperations {
 
                 string[] tmp = path.Split(spliter);
 
+
                 if (tmp.Length == 1) {
                     spliter = '\\';
                     tmp = path.Split(spliter);
@@ -95,8 +96,8 @@ namespace Dev2.PathOperations {
             if(path.Contains("ftp://") || path.Contains("ftps://") || path.Contains("sftp://"))
             {
                 var ftpUri = new Uri(path);
-                var isFile = ftpUri.IsFile;
-                return isFile;
+                var isFile = ftpUri.LocalPath.Contains(".");
+                return !isFile;
             }
 
             if (path.EndsWith("\\") || path.EndsWith("/")) {

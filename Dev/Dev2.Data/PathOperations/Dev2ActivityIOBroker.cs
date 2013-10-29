@@ -735,6 +735,11 @@ namespace Dev2.PathOperations
             for (int i = 0; i < len; i++)
             {
                 builderPath += tmp[i] + splitter;
+                if(!IsNotFTPTypePath(path) && !builderPath.Contains("://"))
+                {
+                    var splitValues = path.Path.Split(new[] { "://" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                    builderPath = splitValues[0]+"://" + builderPath;
+                }
                 result.Add(builderPath);
             }
 
