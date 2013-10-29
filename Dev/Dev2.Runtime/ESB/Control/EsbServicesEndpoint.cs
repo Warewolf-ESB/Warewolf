@@ -173,7 +173,6 @@ namespace Dev2.DynamicServices
             }
         }
 
-        #region Travis' New Entry Point 
         /// <summary>
         /// Executes the request.
         /// </summary>
@@ -299,11 +298,6 @@ namespace Dev2.DynamicServices
                 errors.AddError("Null container returned");
             }
 
-
-            var datalist2 = compiler.ConvertFrom(result, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-
-            datalist2 += "";
-
             // If Webservice or Plugin, skip the final shaping junk ;)
             if (SubExecutionRequiresShape(workspaceID, dataObject.ServiceName))
             {
@@ -352,9 +346,9 @@ namespace Dev2.DynamicServices
             else
             {
                 theShape = ShapeMappingsToTargetDataList(inputDefs, outputDefs, out invokeErrors);
-                errors.MergeErrors(invokeErrors);
+            errors.MergeErrors(invokeErrors);
             }
-            
+
             var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, theShape, out invokeErrors);
             errors.MergeErrors(invokeErrors);
             dataObject.RawPayload = string.Empty;
@@ -364,7 +358,7 @@ namespace Dev2.DynamicServices
 
             if (!dataObject.IsDataListScoped)
             {
-                // Now ID flow through mappings ;)
+            // Now ID flow through mappings ;)
                 remainingMappings =  compiler.ShapeForSubExecution(oldID, shapeID, inputDefs, outputDefs, out invokeErrors);
             }
             else
@@ -513,10 +507,6 @@ namespace Dev2.DynamicServices
 
             return innerDatalistID;
         }
-
-        #endregion
-
-
 
         /// <summary>
         /// Manipulates the data list shape for output.
@@ -670,26 +660,7 @@ namespace Dev2.DynamicServices
                 }
             }
 
-            return true;
-        }
-
-        private bool Foobar(Guid workspaceID, string serviceName)
-        {
-            var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceName);
-
-            var tmp = services.FirstOrDefault();
-
-            if(tmp != null)
-            {
-                var tmpAction = tmp.Actions.FirstOrDefault();
-
-                if(tmpAction != null && (tmpAction.ActionType == enActionType.Workflow))
-                {
                     return true;
-                }
-            }
-
-            return false;
         }
 
     }
