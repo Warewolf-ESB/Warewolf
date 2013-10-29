@@ -37,8 +37,13 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         protected XElement CreateXml(enActionType actionType, Resource source, RecordsetList recordsets, params object[] actionContent)
         {
+            return CreateXml(actionType, ResourceName ?? string.Empty, source, recordsets, actionContent);
+        }
+
+        protected XElement CreateXml(enActionType actionType, string actionName, Resource source, RecordsetList recordsets, params object[] actionContent)
+        {
             var action = new XElement("Action",
-                new XAttribute("Name", ResourceName ?? string.Empty),
+                new XAttribute("Name", actionName),
                 new XAttribute("Type", actionType),
                 new XAttribute("SourceID", source.ResourceID),
                 new XAttribute("SourceName", source.ResourceName ?? string.Empty),

@@ -114,6 +114,30 @@ test("SourceNameSubscriberWithChangingSourceNameExpectedSubscriberResetsMethodNa
 
 module("Validate With Recordset Name in Param List");
 
+test("DbService_RecordsetAlias_Changed_UpdatesFieldRecordsetAlias", function () {
+
+    var model = new DbServiceViewModel();
+    model.data.recordset.Fields([{ Name: "Field1", Alias: "Alias1", RecordsetAlias: "rs1" }, { Name: "Field2", Alias: "Alias2", RecordsetAlias: "rs1" }]);
+    model.data.recordset.Alias("rs2");
+    $.each(model.data.recordset.Fields(), function (index, field) {
+        equal(field.RecordsetAlias, "rs2");
+    });
+});
+
+test("DbService_UpdateRecordset_HasNoFields_UsesRecordsetName", function () {
+
+    var model = new DbServiceViewModel();
+    model.updateRecordset("rs2");
+    equal(model.data.recordset.Alias(), "rs2");   
+});
+
+test("DbService_UpdateRecordset_HasFields_UsesFirstFieldsRecordsetAlias", function () {
+
+    var model = new DbServiceViewModel();
+    model.updateRecordset("rs2", [{ Name: "Field1", Alias: "Alias1", RecordsetAlias: "rs1" }, { Name: "Field2", Alias: "Alias2", RecordsetAlias: "rs1" }]);
+    equal(model.data.recordset.Alias(), "rs1");
+});
+
 test("IsFormValidWithMethodParamContainsRecordsetNameExpectedFormIsNotValid", function () {
 
     var model = new DbServiceViewModel();

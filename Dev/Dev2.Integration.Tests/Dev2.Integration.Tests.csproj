@@ -459,6 +459,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="DeploymentScripts\AutomatedStart.pdb" />
+    <EmbeddedResource Include="Dev2.Application.Server.Tests\Workspace\XML\BUG_10638_Result.xml" />
     <EmbeddedResource Include="Dev2.Application.Server.Tests\Workspace\XML\Bug_10528_Result.xml" />
   </ItemGroup>
   <Choose>

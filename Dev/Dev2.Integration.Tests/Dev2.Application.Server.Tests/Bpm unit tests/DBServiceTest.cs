@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Xml.Linq;
+using Dev2.Integration.Tests.Dev2.Application.Server.Tests.Workspace.XML;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -123,5 +125,25 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DatabaseService_Execute")]
+        public void DatabaseService_Execute_CustomOutputMappings_DataReturned()
+        {
+            //------------Setup for test--------------------------
+            var postData = String.Format("{0}{1}", WebserverURI, "10638 - Service IO - TEST");
+
+            var expectedXml = XmlResource.Fetch("BUG_10638_Result.xml");
+            var expected = expectedXml.ToString(SaveOptions.None);
+
+            //------------Execute Test---------------------------
+            var responseData = TestHelper.PostDataToWebserver(postData);
+
+            var actualXml = XElement.Parse(responseData);
+            var actual = actualXml.ToString(SaveOptions.None);
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(expected, actual);
+        }
     }
 }

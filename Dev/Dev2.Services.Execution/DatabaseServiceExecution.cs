@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
@@ -10,7 +11,7 @@ using Dev2.Services.Sql;
 
 namespace Dev2.Services.Execution
 {
-    public class DatabaseServiceExecution:ServiceExecutionAbstract<DbService,DbSource>
+    public class DatabaseServiceExecution : ServiceExecutionAbstract<DbService, DbSource>
     {
         SqlServer _sqlServer;
 
@@ -19,7 +20,7 @@ namespace Dev2.Services.Execution
         #region Constuctors
 
         public DatabaseServiceExecution(IDSFDataObject dataObj)
-            : base(dataObj, true,false)
+            : base(dataObj, true, false)
         {
         }
 
@@ -101,7 +102,7 @@ namespace Dev2.Services.Execution
         {
             var errors = new ErrorResultTO();
             object executeService;
-            var result =  SqlExecution(errors, out executeService) ? executeService : string.Empty;
+            var result = SqlExecution(errors, out executeService) ? executeService : string.Empty;
 
             _errorResult.MergeErrors(errors);
 
@@ -112,13 +113,13 @@ namespace Dev2.Services.Execution
         {
             try
             {
-                if(SqlServer!=null)
+                if(SqlServer != null)
                 {
                     var parameters = GetSqlParameters(Service.Method.Parameters);
 
                     var dataSet = SqlServer.FetchDataTable(parameters.ToArray());
                     {
-
+                        ApplyColumnMappings(dataSet);
                         IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
                         executeService = compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dataSet, InstanceOutputDefintions, DataObj.DataListID, out errors);
@@ -135,7 +136,7 @@ namespace Dev2.Services.Execution
         }
 
         #endregion
-        
+
         #region GetSqlParameters
         static List<SqlParameter> GetSqlParameters(IList<MethodParameter> methodParameters)
         {
@@ -144,10 +145,10 @@ namespace Dev2.Services.Execution
             if(methodParameters.Count > 0)
             {
                 var pos = 0;
-                foreach (var parameter in methodParameters)
+                foreach(var parameter in methodParameters)
                 {
 
-                    if (parameter.EmptyToNull && (parameter.Value == null || string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
+                    if(parameter.EmptyToNull && (parameter.Value == null || string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
                     {
                         sqlParameters.Add(new SqlParameter(string.Format("@{0}", parameter.Name), DBNull.Value));
                     }
@@ -162,6 +163,24 @@ namespace Dev2.Services.Execution
         }
         #endregion
 
+        void ApplyColumnMappings(DataTable dataTable)
+        {
+            if(string.IsNullOrEmpty(Service.OutputSpecification))
+            {
+                return;
+            }
 
+            var outputs = XElement.Parse(Service.OutputSpecification);
+            foreach(var output in outputs.Elements("Output"))
+            {
+                var originalName = output.AttributeSafe("OriginalName", true);
+                var mappedName = output.AttributeSafe("Name", true);
+                if(originalName != null && mappedName != null)
+                {
+                    var dc = dataTable.Columns[originalName];
+                    dc.ColumnName = mappedName;
+                }
+            }
+        }
     }
 }

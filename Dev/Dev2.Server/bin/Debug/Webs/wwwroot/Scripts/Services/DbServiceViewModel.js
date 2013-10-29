@@ -36,13 +36,19 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
         },
         recordset: {
             Name: ko.observable(""),
+            Alias: ko.observable(""),
             Fields: ko.observableArray(),
             Records: ko.observableArray(),
             HasErrors: ko.observable(false),
             ErrorMessage: ko.observable("")
         }
     };
-
+    self.data.recordset.Alias.subscribe(function (newValue) {       
+        $.each(self.data.recordset.Fields(), function (index, field) {
+            field.RecordsetAlias = newValue;
+        });
+    });
+    
     self.sources = ko.observableArray();
     self.sourceMethods = ko.observableArray();
     self.sourceMethodSearchTerm = ko.observable("");
@@ -198,6 +204,10 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
         self.data.recordset.Records(records ? records : []);
         self.data.recordset.HasErrors(hasErrors ? hasErrors : false);
         self.data.recordset.ErrorMessage(errorMessage ? errorMessage : "");        
+
+        // MUST do this last as it will update field aliases
+        var recordsetAlias = fields && fields.length > 0 ? fields[0].RecordsetAlias : self.data.recordset.Name();
+        self.data.recordset.Alias(recordsetAlias);
     };
 
     self.formatRecordsetName = function(name) {
