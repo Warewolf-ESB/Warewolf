@@ -59,8 +59,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return new DbTableList("Invalid database sent {0}.", database).ToString();
             }
 
-            try
-            {
+                try
+                {
                 var tables = new DbTableList();
                 DataTable columnInfo;
                 using(var connection = new SqlConnection(dbSource.ConnectionString))
@@ -68,15 +68,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                     connection.Open();
                     columnInfo = connection.GetSchema("Tables");
                 }
-                if(columnInfo != null)
+            if(columnInfo != null)
+            {
+                foreach(DataRow row in columnInfo.Rows)
                 {
-                    foreach(DataRow row in columnInfo.Rows)
-                    {
-                        var tableName = row["TABLE_NAME"] as string;
+                    var tableName = row["TABLE_NAME"] as string;
                         var dbTable = tables.Items.Find(table => table.TableName == tableName);
-                        if(dbTable == null)
-                        {
-                            dbTable = new DbTable { TableName = tableName, Columns = new List<DbColumn>() };
+                    if(dbTable == null)
+                    {
+                        dbTable = new DbTable { TableName = tableName, Columns = new List<DbColumn>() };
                             tables.Items.Add(dbTable);
                         }
                     }
@@ -98,9 +98,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         tables.Errors = string.Format(ErrorFormat, "Windows Authentication", "", "");
                     }
-                }
+                    }
                 return tables.ToString();
-            }
+                }
             catch(Exception ex)
             {
                 var tables = new DbTableList(ex);

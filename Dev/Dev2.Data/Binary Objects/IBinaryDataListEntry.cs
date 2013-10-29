@@ -92,7 +92,8 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <param name="gaps">The gaps.</param>
         /// <param name="min">The minimum.</param>
         /// <param name="max">The maximum.</param>
-        void AdjustIndexView(HashSet<int> gaps, int min, int max);
+        /// <param name="onMasterEntry">if set to <c>true</c> [configuration master entry].</param>
+        void AdjustIndexView(HashSet<int> gaps, int min, int max, bool onMasterEntry = false);
 
         /// <summary>
         /// Adjusts for io mapping.
@@ -202,8 +203,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <summary>
         /// Fetches the last index of the recordset.
         /// </summary>
+        /// <param name="localOnly">if set to <c>true</c> [local only].</param>
         /// <returns></returns>
-        int FetchLastRecordsetIndex();
+        int FetchLastRecordsetIndex(bool localOnly = false);
 
         /// <summary>
         /// Fetches the index of the append recordset.
