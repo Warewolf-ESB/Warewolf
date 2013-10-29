@@ -26,7 +26,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #endregion
 
-        
+
 
         #region Execute
 
@@ -53,7 +53,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.HasErrors);
             Assert.AreEqual("No database set.", result.Errors);
         }
-        
+
 
         [TestMethod]
         [Description("Service should never get null values")]
@@ -80,7 +80,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.HasErrors);
             Assert.AreEqual("Invalid JSON data for Database parameter. Exception: Unexpected character encountered while parsing value: T. Path '', line 0, position 0.", result.Errors);
         }
-        
+
         [TestMethod]
         [Description("Service should never get null values")]
         [Owner("Huggs")]

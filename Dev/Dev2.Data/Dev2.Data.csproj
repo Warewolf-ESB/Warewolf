@@ -355,7 +355,6 @@
     <Compile Include="TO\SystemTagsTO.cs" />
     <Compile Include="TO\UpsertTO.cs" />
     <Compile Include="TO\WizardDataListMergeTO.cs" />
-    <Compile Include="TO\XMLPopulateIndexTO.cs" />
     <Compile Include="Translators\DataListDataTableTranslator.cs" />
     <Compile Include="Translators\EmitionTypes.cs" />
     <Compile Include="Translators\StudioDebugTranslator.cs" />

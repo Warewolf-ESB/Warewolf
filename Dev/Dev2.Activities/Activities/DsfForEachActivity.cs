@@ -173,7 +173,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, executionID, compiler, out errors);
-
                 if (errors.HasErrors())
                 {
                     allErrors.MergeErrors(errors);

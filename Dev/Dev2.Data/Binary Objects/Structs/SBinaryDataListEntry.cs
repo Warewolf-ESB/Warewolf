@@ -141,39 +141,39 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                         throw new Exception("Fatal Internal DataList Storage Error");
                     }
 
-                        // we got the row object, now update it ;)
-                        foreach (IBinaryDataListItem itm in value)
+                    // we got the row object, now update it ;)
+                    foreach (IBinaryDataListItem itm in value)
+                    {
+                        if (!string.IsNullOrEmpty(itm.FieldName))
                         {
-                            if (!string.IsNullOrEmpty(itm.FieldName))
+                            int idx = InternalFetchColumnIndex(itm.FieldName); // Fetch correct index 
+                            BinaryDataListAlias keyAlias;
+
+                            // adjust if there is a mapping ;)
+                            if (_keyToAliasMap.TryGetValue(itm.FieldName, out keyAlias))
                             {
-                                int idx = InternalFetchColumnIndex(itm.FieldName); // Fetch correct index 
-                                BinaryDataListAlias keyAlias;
+                                var parentColumns = keyAlias.MasterEntry.Columns;
+                                var parentColumn = keyAlias.MasterColumn;
 
-                                // adjust if there is a mapping ;)
-                                if (_keyToAliasMap.TryGetValue(itm.FieldName, out keyAlias))
+                                idx = InternalParentFetchColumnIndex(parentColumn, parentColumns);
+
+                                colCnt = (short) parentColumns.Count;
+                            }
+
+                            if (idx == -1 && !IsRecordset)
+                            {
+                                idx = 0; // adjust for scalar
+                            }
+
+                            if (idx >= 0)
+                            {
+                                // it is an alias mapping ;)
+                                if (keyAlias != null)
                                 {
-                                    var parentColumns = keyAlias.MasterEntry.Columns;
-                                    var parentColumn = keyAlias.MasterColumn;
-
-                                    idx = InternalParentFetchColumnIndex(parentColumn, parentColumns);
-
-                                    colCnt = (short) parentColumns.Count;
+                                    // alias update, use row 1
+                                    parentRow.UpdateValue(itm.TheValue, idx, colCnt);
                                 }
-
-                                if (idx == -1 && !IsRecordset)
-                                {
-                                    idx = 0; // adjust for scalar
-                                }
-
-                                if (idx >= 0)
-                                {
-                                    // it is an alias mapping ;)
-                                    if (keyAlias != null)
-                                    {
-                                        // alias update, use row 1
-                                        parentRow.UpdateValue(itm.TheValue, idx, colCnt);
-                                }
-                                    else
+                                else
                                 {
                                         // normal update ;)
                                         childRow.UpdateValue(itm.TheValue, idx, colCnt);
@@ -261,6 +261,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                     {
                         var aliases = masterEntry.FetchAlias();
 
+                        
                         if (aliases.TryGetValue(masterCol, out binaryDataListAlias))
                         {
                             // we have a hit ;)
@@ -327,34 +328,8 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             _myKeys.RemoveGap(idx);
         }
 
-        public void MoveIndexDataForClone(int min, int max, HashSet<int> gaps, bool onMasterEntry)
+        public void MoveIndexDataForClone(int min, int max, HashSet<int> gaps)
         {
-            //if (!onMasterEntry)
-            //{
-            //    // signal that we have data here ;)
-            //    _appendIndex = 2;
-            //    _isEmpty = false;
-
-            //    _myKeys.MinValue = min;
-            //    _myKeys.MaxValue = max;
-            //    _myKeys.SetGapsCollection(new HashSet<int>(gaps));
-            //}
-            //else
-            //{
-            //    // we need to adjust the master view ;)
-            //    var aliases = FetchAlias();
-            //    var theAlias = aliases.FirstOrDefault();
-
-            //    if (theAlias.Value != null)
-            //    {
-            //        var me = theAlias.Value.MasterEntry;
-            //        if (me != null)
-            //        {
-            //            me.AdjustIndexView(gaps, min, max, true);
-            //        }
-            //    }
-            //    else
-            //    {
             // signal that we have data here ;)
             _appendIndex = 2; 
             _isEmpty = false;
@@ -362,9 +337,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             _myKeys.MinValue = min;
             _myKeys.MaxValue = max;
             _myKeys.SetGapsCollection(new HashSet<int>(gaps));
-                //}
-
-            //}
 
         }
 
@@ -636,40 +608,12 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         /// <param name="thisObj">The this object.</param>
         public void CopyTo(SBinaryDataListEntry thisObj)
         {
-
-            // This is dangerus. We need to check for alias keys and use them instead ;)
             var keys = thisObj._myKeys;
-
-            HashSet<int> gaps = null;
-            int max = -1;
-            int min = -1;
-
-            //var aliases = thisObj.FetchAlias();
-            //var theAlias = aliases.FirstOrDefault();
-
-            //if (theAlias.Value != null)
-            //{
-            //    var me = theAlias.Value.MasterEntry;
-            //    if (me != null)
-            //    {
-            //        var index = me.FetchRecordsetIndexes();
-
-            //        gaps = index.FetchGaps();
-            //        min = index.MinIndex();
-            //        max = index.MaxIndex();
-            //    }
-            //}
-            //else
-            //{
-            gaps = keys.Gaps;
-            min = keys.MinValue;
-            max = keys.MaxValue;
-            //}
 
             this.Columns = thisObj.Columns;
             this._itemStorage = thisObj._itemStorage;
             // avoid referencing issues ;)
-            this._myKeys = new IndexList(gaps, max, min);
+            this._myKeys = new IndexList(keys.Gaps, keys.MaxValue, keys.MinValue);
             this.DataListKey = thisObj.DataListKey;
             this.IsEmtpy = thisObj.IsEmtpy;
             this.IsRecordset = thisObj.IsRecordset;
@@ -677,8 +621,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             this.Namespace = thisObj.Namespace;
             this.IsManagmentServicePayload = thisObj.IsManagmentServicePayload;
             this._strToColIdx = thisObj._strToColIdx;
-            this._keyToAliasMap = thisObj._keyToAliasMap;
-
 
         }
 

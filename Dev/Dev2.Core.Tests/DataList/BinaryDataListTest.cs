@@ -192,8 +192,8 @@ namespace Unlimited.UnitTest.Framework.DataList
             dl1.TryGetEntry("myScalar", out scalar, out error);
             dl1.TryGetEntry("recset", out rs, out error);
 
-            Assert.AreEqual("myValue", scalar.FetchScalar().TheValue);
-            Assert.AreEqual("r1.f1.value", (rs.FetchRecordAt(1, out error)[0]).TheValue);
+            Assert.AreEqual(string.Empty, scalar.FetchScalar().TheValue);
+            Assert.AreEqual(string.Empty, (rs.FetchRecordAt(1, out error)[0]).TheValue);
             Assert.AreEqual(mergeID, dl1.UID);
             Assert.IsFalse(errors.HasErrors());
             
@@ -293,8 +293,31 @@ namespace Unlimited.UnitTest.Framework.DataList
             
         }
 
-        [TestMethod] 
+        [TestMethod] // - ok
         public void IntersectList_Expected_Merged_Shape()
+        {
+            ErrorResultTO errors = new ErrorResultTO();
+
+
+
+                dl1 = dl1.Merge(dl2, enDataListMergeTypes.Intersection, enTranslationDepth.Shape, false, out errors);
+                Guid mergeID = dl1.UID;
+
+                IBinaryDataListEntry scalar;
+                IBinaryDataListEntry rs;
+                string error;
+                dl1.TryGetEntry("myScalar", out scalar, out error);
+                dl1.TryGetEntry("recset", out rs, out error);
+
+                Assert.AreEqual(string.Empty, scalar.FetchScalar().TheValue);
+                Assert.AreEqual(string.Empty, (rs.FetchRecordAt(1, out error)[0]).TheValue);
+                Assert.AreEqual(mergeID, dl1.UID);
+                Assert.IsFalse(errors.HasErrors());
+            
+        }
+
+        [TestMethod] // - ok
+        public void IntersectList_VarList_SomeSame_Expected_Merged_Shape_WithErrors()
         {
             ErrorResultTO errors = new ErrorResultTO();
 
@@ -307,12 +330,13 @@ namespace Unlimited.UnitTest.Framework.DataList
                 dl1.TryGetEntry("myScalar", out scalar, out error);
                 dl1.TryGetEntry("recset", out rs, out error);
 
-            Assert.AreEqual("myValue", scalar.FetchScalar().TheValue);
-            Assert.AreEqual("r1.f1.value", (rs.FetchRecordAt(1, out error)[0]).TheValue);
+                Assert.AreEqual(string.Empty, scalar.FetchScalar().TheValue);
+                Assert.AreEqual(string.Empty, (rs.FetchRecordAt(1, out error)[0]).TheValue);
                 Assert.AreEqual(mergeID, dl1.UID);
                 Assert.IsFalse(errors.HasErrors());
             
         }
+
 
         [TestMethod] // - ok
         public void IntersectVarList_Expected_Merged_Data_Missing_recset2()
@@ -320,6 +344,7 @@ namespace Unlimited.UnitTest.Framework.DataList
             ErrorResultTO errors = new ErrorResultTO();
 
                 dl1 = dl1.Merge(dl4, enDataListMergeTypes.Intersection, enTranslationDepth.Data, false, out errors);
+                Guid mergeID = dl1.UID;
 
                 IBinaryDataListEntry scalar;
                 IBinaryDataListEntry rs;

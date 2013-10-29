@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -1412,35 +1413,37 @@ namespace Dev2.Server.Datalist
 
                 if(expression != string.Empty)
                 {
+                    // TRAVIS
+
                     // Evaluate from extractDL
                     IBinaryDataListEntry val = Evaluate(ctx, extractFromId, enActionType.User, expression, out errors);
 
                     allErrors.MergeErrors(errors);
                     if(val == null)
-                            {
+                    {
                         string errorTmp;
                         val = DataListConstants.baseEntry.Clone(enTranslationDepth.Shape, pushToId, out errorTmp);
                         allErrors.AddError(errorTmp);
-                            }
+                    }
 
                     // now upsert into the pushDL
                     string upsertExpression = outputExpressionExtractor(def);
                     toUpsert.Add(upsertExpression, val);
                 }
                 else if(expression == string.Empty && (typeOf == enDev2ArgumentType.Input) && def.IsRequired)
-                        {
+                {
                     allErrors.AddError("Required input [[" + def.Name + "]] cannot be populated");
                 }
             }
 
             // finally process instruction set and move data
             if(toUpsert.HasData())
-                            {
+            {
                 Upsert(ctx, pushToId, toUpsert, out errors);
                 allErrors.MergeErrors(errors);
             }
 
-                            }
+        }
 
         /// <summary>
         /// Definitions the index of the has numeric.
@@ -1930,7 +1933,8 @@ namespace Dev2.Server.Datalist
                             myIdx = val.FetchLastRecordsetIndex();
                         }
 
-                        var res = val.Clone(enTranslationDepth.Shape, bdl.UID, out error);
+                        var res = val.Clone(enTranslationDepth.Data, bdl.UID, out error);
+                        errors.AddError(error);
                         res.MakeRecordsetEvaluateReady(myIdx, colsToKeep, out error);
                         errors.AddError(error);
 
@@ -2004,7 +2008,7 @@ namespace Dev2.Server.Datalist
                     while(f.HasData())
                     {
                         if(typeof(T) == typeof(RecordsetGroup))
-                    {
+                        {
                             ProcessRecordsetGroup(f.FetchNextFrameItem().Value as RecordsetGroup, bdl, out errors);
                             allErrors.MergeErrors(errors);
                             continue;
@@ -2146,12 +2150,12 @@ namespace Dev2.Server.Datalist
                                             }
                                             else
                                             {
-                                            // 01.02.2013 - Travis.Frisinger : Bug 8579 
-                                            IBinaryDataListItem tmpI = evaluatedValue.TryFetchLastIndexedRecordsetUpsertPayload(out error).Clone();
-                                            tmpI.UpdateField(field);
-                                            entry.TryPutScalar(tmpI, out error);
-                                            allErrors.AddError(error);
-                                        }
+                                                // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                                                IBinaryDataListItem tmpI = evaluatedValue.TryFetchLastIndexedRecordsetUpsertPayload(out error).Clone();
+                                                tmpI.UpdateField(field);
+                                                entry.TryPutScalar(tmpI, out error);
+                                                allErrors.AddError(error);
+                                            }
                                         }
                                     } // else do nothing
                                 }
@@ -2439,8 +2443,8 @@ namespace Dev2.Server.Datalist
                     // move index values
                     if(payload.IsIterativePayload())
                     {
-                    rsis.MoveIndexesToNextPosition();                
-                }                
+                        rsis.MoveIndexesToNextPosition();                
+                    }                
                 }                
 
                 // Now flush all the entries to the bdl for this iteration ;)

@@ -250,7 +250,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
             if(IsRecordset)
             {
-                if(idx <= FetchLastRecordsetIndex(false) && _internalObj.ContainsRow(myIdx))
+                if(idx <= FetchLastRecordsetIndex() && _internalObj.ContainsRow(myIdx))
                 {
                     // entry already exist, so update the row ;)
                     _internalObj[myIdx] = itms; 
@@ -273,7 +273,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
             if(IsRecordset)
             {
-                if(idx <= FetchLastRecordsetIndex(false) && _internalObj.ContainsRow(myIdx))
+                if(idx <= FetchLastRecordsetIndex() && _internalObj.ContainsRow(myIdx))
                 {
                     int colIdx = InternalFetchColumnIndex(item.FieldName);
                     if(colIdx >= 0)
@@ -464,12 +464,19 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     var min = keys.MinIndex();
                     var max = keys.MaxIndex();
                     var gaps = _internalObj.FetchGaps();
-                    result._internalObj.MoveIndexDataForClone(min, max, gaps, false);
+                    result._internalObj.MoveIndexDataForClone(min, max, gaps);
                     
                 }
                 else
                 {
                     IList<IBinaryDataListItem> items = _internalObj[0];
+
+
+                    if (items == null)
+                    {
+                        var a = 1;
+                    }
+
                     IList<IBinaryDataListItem> clone = items.Select(itm => itm.Clone()).ToList();
 
                     // now push back clone
@@ -479,41 +486,35 @@ namespace Dev2.DataList.Contract.Binary_Objects
             }
             else // only wanted the shape cloned
             {
-                var keys = _internalObj.Keys;
-                var min = keys.MinIndex();
-                var max = keys.MaxIndex();
-                var gaps = _internalObj.FetchGaps();
-                result._internalObj.MoveIndexDataForClone(min, max, gaps, false);
-
                 // clone _items
-                //IList<IBinaryDataListItem> blankItems = new List<IBinaryDataListItem>();
-                //if(_internalObj.Count > 0)
-                //{
-                //    if(IsRecordset)
-                //    {
-                //        int firstKey = _internalObj.Keys.MinIndex();
-                //        int listLen = _internalObj[firstKey].Count;
-                //        for(int i = 0; i < listLen; i++)
-                //        {
-                //            int idx = i + 1;
-                //            IBinaryDataListItem itm = DataListConstants.baseItem.Clone();
-                //            itm.UpdateRecordset(Namespace);
-                //            if(Columns != null)
-                //            {
-                //                itm.UpdateField(Columns[i].ColumnName);
-                //            }
-                //            itm.UpdateIndex(idx);
-                //            blankItems.Add(itm);
-                //        }
+                IList<IBinaryDataListItem> blankItems = new List<IBinaryDataListItem>();
+                if(_internalObj.Count > 0)
+                {
+                    if(IsRecordset)
+                    {
+                        int firstKey = _internalObj.Keys.MinIndex();
+                        int listLen = _internalObj[firstKey].Count;
+                        for(int i = 0; i < listLen; i++)
+                        {
+                            int idx = i + 1;
+                            IBinaryDataListItem itm = DataListConstants.baseItem.Clone();
+                            itm.UpdateRecordset(Namespace);
+                            if(Columns != null)
+                            {
+                                itm.UpdateField(Columns[i].ColumnName);
+                            }
+                            itm.UpdateIndex(idx);
+                            blankItems.Add(itm);
+                        }
 
-                //        result._internalObj[firstKey] = blankItems;
-                //    }
-                //    else
-                //    {
-                //        blankItems.Add(DataListConstants.emptyItem);
-                //        result._internalObj[0] = blankItems;
-                //    }
-                //}
+                        result._internalObj[firstKey] = blankItems;
+                    }
+                    else
+                    {
+                        blankItems.Add(DataListConstants.emptyItem);
+                        result._internalObj[0] = blankItems;
+                    }
+                }
             }
 
             result.ComplexExpressionAuditor = ComplexExpressionAuditor;
@@ -553,32 +554,15 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <returns></returns>
         public IIndexIterator FetchRecordsetIndexes()
         {
-            // TODO : Check for a master entry
-
-            var aliases = FetchAlias();
-            var theAlias = aliases.FirstOrDefault();
-
-            if(theAlias.Value != null)
-            {
-                var me = theAlias.Value.MasterEntry;
-                if(me != null)
-                {
-                    var index = me.FetchRecordsetIndexes();
-
-                    return index;
-                }
-            }
-            
             var result = _internalObj.Keys;
             return result;
         }
 
         /// <summary>
-        /// Fetches the last index of the recordset.
+        ///     Fetches the last index of the recordset.
         /// </summary>
-        /// <param name="localOnly">if set to <c>true</c> [local only].</param>
         /// <returns></returns>
-        public int FetchLastRecordsetIndex(bool localOnly = false)
+        public int FetchLastRecordsetIndex()
         {
             int result = 1;
 
@@ -586,19 +570,16 @@ namespace Dev2.DataList.Contract.Binary_Objects
             {
                 // We need to detect if there is an alias mapping and return its MaxValue ;)
 
-                if (!localOnly)
-                {
-                    var aliasDic = _internalObj.FetchAlias();
+                var aliasDic = _internalObj.FetchAlias();
 
-                    if (aliasDic.Count > 0)
+                if (aliasDic.Count > 0)
+                {
+                    var aliasMapping = aliasDic.FirstOrDefault();
+                    var aliasMasterEntry = aliasMapping.Value.MasterEntry;
+                    if (aliasMasterEntry != null)
                     {
-                        var aliasMapping = aliasDic.FirstOrDefault();
-                        var aliasMasterEntry = aliasMapping.Value.MasterEntry;
-                        if (aliasMasterEntry != null)
-                        {
-                            result = aliasMasterEntry.FetchRecordsetIndexes().MaxIndex();
-                            return result;
-                        }
+                        result = aliasMasterEntry.FetchRecordsetIndexes().MaxIndex();
+                        return result;
                     }
                 }
 
@@ -614,7 +595,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <returns></returns>
         public int FetchAppendRecordsetIndex()
         {
-            int result = FetchLastRecordsetIndex(false);
+            int result = FetchLastRecordsetIndex();
             if(result >= 1 && _internalObj._appendIndex > 0)
             {
                 if(!_internalObj.IsEmtpy)
@@ -669,10 +650,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <param name="gaps">The gaps.</param>
         /// <param name="min">The minimum.</param>
         /// <param name="max">The maximum.</param>
-        /// <param name="onMasterEntry">if set to <c>true</c> [configuration master entry].</param>
-        public void AdjustIndexView(HashSet<int> gaps, int min, int max, bool onMasterEntry = false)
+        public void AdjustIndexView(HashSet<int> gaps, int min, int max)
         {
-            _internalObj.MoveIndexDataForClone(min, max, gaps, onMasterEntry);
+            _internalObj.MoveIndexDataForClone(min, max, gaps);
         }
 
         /// <summary>
@@ -729,7 +709,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public IBinaryDataListItem TryFetchLastIndexedRecordsetUpsertPayload(out string error)
         {
 
-            int idx = FetchLastRecordsetIndex(true);
+            int idx = FetchLastRecordsetIndex();
 
             return InternalFetchIndexedRecordsetUpsertPayload(idx, out error);
         }
@@ -979,7 +959,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             tmp.Init(_internalObj.Columns.Count);
 
             _internalObj = tmp;
-            int lastRowIndex = FetchLastRecordsetIndex(false);
+            int lastRowIndex = FetchLastRecordsetIndex();
             _internalObj.Remove(lastRowIndex);
 
             return true;
@@ -991,7 +971,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <returns></returns>
         bool DeleteLastRow()
         {
-            int lastRowIndex = FetchLastRecordsetIndex(false);
+            int lastRowIndex = FetchLastRecordsetIndex();
 
             // Bug 8725
             if(!_internalObj.IsEmtpy)
@@ -1015,7 +995,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         bool DeleteRowAtIndex(int index)
         {
             bool result = false;
-            int lastIndex = FetchLastRecordsetIndex(false);
+            int lastIndex = FetchLastRecordsetIndex();
             if(index <= lastIndex && index > 0)
             {
                 _internalObj.Remove(index);

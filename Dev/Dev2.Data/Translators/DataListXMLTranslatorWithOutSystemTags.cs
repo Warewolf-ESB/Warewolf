@@ -6,8 +6,6 @@ using System.Text;
 using System.Xml;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
-using Dev2.Data.Storage.ProtocolBuffers;
-using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
@@ -312,11 +310,10 @@ namespace Dev2.Data.Translators
             }
 
             var parentID = parentDataList.UID;
-            if(grandparentDL != null)
+            if (grandparentDL != null)
             {
                 parentID = grandparentDL.UID;
             }
-
             compiler.SetParentID(targetDL, parentID);
             Guid result = compiler.Shape(targetDL, enDev2ArgumentType.Output, outputDefinitions, out invokeErrors);
             errors.MergeErrors(invokeErrors);
@@ -402,7 +399,7 @@ namespace Dev2.Data.Translators
                             result.Append(">");
                             if (entry.Namespace != GlobalConstants.ManagementServicePayload)
                             {
-                            result.Append(tu.FullCleanForEmit(val.TheValue));
+                                result.Append(tu.FullCleanForEmit(val.TheValue));
                             }
                             else
                             {
