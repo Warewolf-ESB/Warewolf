@@ -20,7 +20,7 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.WorkSurface;
 
-namespace Dev2.Studio.ViewModels.Configuration
+namespace Dev2.Settings
 {
     public class RuntimeConfigurationViewModel : BaseWorkSurfaceViewModel
     {

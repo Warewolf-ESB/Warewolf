@@ -39,12 +39,6 @@
                          Duration="0:0:1" />
     </Storyboard>
 
-    <Style x:Key="ToggleButtonStyle"
-           TargetType="{x:Type ToggleButton}">
-        <Setter Property="Style"
-                Value="{StaticResource ToggleButtonStyle}"></Setter>
-    </Style>
-
     <Style x:Key="ImageTickStyle"
            TargetType="{x:Type Image}">
         <Setter Property="Height"

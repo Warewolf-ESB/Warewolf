@@ -1,21 +1,25 @@
-﻿<Window
-                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                     xmlns:ribbon="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon"
-                     xmlns:bdsviews="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Views"
-                     xmlns:igDock="http://infragistics.com/DockManager"
-                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-                     xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-                     xmlns:igExtensions="clr-namespace:Dev2.Studio.Dock"
-                     xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
-                     xmlns:dataList="clr-namespace:Dev2.Studio.Views.DataList"
-                     xmlns:explorer="clr-namespace:Dev2.Studio.Views.Explorer"
-                     xmlns:customControls="clr-namespace:Dev2.Studio.Core.CustomControls;assembly=Dev2.Studio.Core"
-                     x:Class="Dev2.Studio.Views.MainView"
-                     WindowState="Maximized"
-                     Title="{Binding DisplayName}"
-                     Icon="pack://application:,,,/Warewolf Studio;component/Warewolf.ico"
-                     x:Name="MainViewWindow" Opacity="1">
+﻿<Window x:Class="Dev2.Studio.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:bdsviews="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Views"
+        xmlns:igDock="http://infragistics.com/DockManager"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
+        xmlns:igExtensions="clr-namespace:Dev2.Studio.Dock"
+        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+        xmlns:dataList="clr-namespace:Dev2.Studio.Views.DataList"
+        xmlns:explorer="clr-namespace:Dev2.Studio.Views.Explorer"
+        xmlns:customControls="clr-namespace:Dev2.Studio.Core.CustomControls;assembly=Dev2.Studio.Core"
+        xmlns:viewModels="clr-namespace:Dev2.Studio.ViewModels"
+        WindowState="Maximized"
+        Title="{Binding DisplayName}"
+        Icon="pack://application:,,,/Warewolf Studio;component/Warewolf.ico"
+        x:Name="MainViewWindow"
+        Opacity="1"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance viewModels:MainViewModel}">
 
     <!--WindowStyle="None"
 		             ResizeMode="NoResize"-->
@@ -265,82 +269,88 @@
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Service" Key="N" Modifiers="Alt" />
     </Window.InputBindings>
 
-    <Grid x:Name="LayoutRoot" Opacity="0" RenderTransformOrigin="0.5,0.5" cal:Bind.Model="{Binding .}">
+    <Grid x:Name="LayoutRoot"
+          Opacity="0"
+          RenderTransformOrigin="0.5,0.5"
+          cal:Bind.Model="{Binding .}">
         <Grid.RenderTransform>
             <TransformGroup>
-                <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
-                <SkewTransform/>
-                <RotateTransform/>
-                <TranslateTransform/>
+                <ScaleTransform ScaleX="0.8"
+                                ScaleY="0.8" />
+                <SkewTransform />
+                <RotateTransform />
+                <TranslateTransform />
             </TransformGroup>
         </Grid.RenderTransform>
-        
+
         <Grid AutomationProperties.AutomationId="MainWindow">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            
-            <Border BorderThickness="0,0,0,3" BorderBrush="{StaticResource BrushAccentColor}">
+
+            <Border BorderThickness="0,0,0,3"
+                    BorderBrush="{StaticResource BrushAccentColor}">
                 <Grid>
-                    <Button Command="{Binding ShowStartPageCommand}"  
-                           Height="60"
-                           Width="60"
-                           HorizontalAlignment="Center"
-                           Style="{DynamicResource ButtonStyleRibbon}"
-                           Template="{StaticResource InsigniaTemplate}">
+                    <Button Command="{Binding ShowStartPageCommand}"
+                            Height="60"
+                            Width="60"
+                            HorizontalAlignment="Center"
+                            Style="{DynamicResource ButtonStyleRibbon}"
+                            Template="{StaticResource InsigniaTemplate}">
                     </Button>
-                    
+
                     <StackPanel Orientation="Horizontal">
-                        
+
                         <!--Workflow-->
                         <Border Style="{StaticResource BorderStyleRibbon}">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Border Grid.Row="1">
-                                    <TextBlock Text="Workflow" Style="{StaticResource TextBlockStyleRibbonHeader}"/>
+                                    <TextBlock Text="Workflow"
+                                               Style="{StaticResource TextBlockStyleRibbonHeader}" />
                                 </Border>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Command="{Binding NewResourceCommand}" 
+                                    <Button Command="{Binding NewResourceCommand}"
                                             CommandParameter="Workflow"
                                             Style="{DynamicResource ButtonStyleRibbon}"
                                             ToolTip="Ctrl+W"
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabWorkflowBtn_AutoID">
                                         <Grid>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
 
-                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                            <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource Workflow-32}"
-                                                   ToolTip="New Workflow"/>
+                                                   ToolTip="New Workflow" />
                                         </Grid>
                                     </Button>
-                                    <Button Command="{Binding SaveCommand}" 
+                                    <Button Command="{Binding SaveCommand}"
                                             Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
-                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                            <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource Save-32}"
-                                                   ToolTip="Save"/>
+                                                   ToolTip="Save" />
                                         </Grid>
                                     </Button>
-                                    
-                                    <Button Command="{Binding DeployCommand}" 
+
+                                    <Button Command="{Binding DeployCommand}"
                                             Style="{DynamicResource ButtonStyleRibbon}"
                                             ToolTip="Ctrl+W">
                                         <Grid>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
 
-                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                            <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource Deploy-32}"
-                                                   ToolTip ="Deploy"/>
+                                                   ToolTip="Deploy" />
                                         </Grid>
                                     </Button>
                                 </StackPanel>
@@ -351,101 +361,102 @@
                         <Border Style="{StaticResource BorderStyleRibbon}">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Border Grid.Row="1">
-                                    <TextBlock Text="Services" Style="{StaticResource TextBlockStyleRibbonHeader}"/>
+                                    <TextBlock Text="Services"
+                                               Style="{StaticResource TextBlockStyleRibbonHeader}" />
                                 </Border>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Command="{Binding NewResourceCommand}" 
-                                CommandParameter="DatabaseService"
-                                Style="{DynamicResource ButtonStyleRibbon}"
-                                ToolTip="Ctrl+Shift+D"
-                                AutomationProperties.AutomationId="UI_RibbonHomeTabDBServiceBtn_AutoID">
+                                    <Button Command="{Binding NewResourceCommand}"
+                                            CommandParameter="DatabaseService"
+                                            Style="{DynamicResource ButtonStyleRibbon}"
+                                            ToolTip="Ctrl+Shift+D"
+                                            AutomationProperties.AutomationId="UI_RibbonHomeTabDBServiceBtn_AutoID">
                                         <Grid>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
 
-                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                            <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource DatabaseService-32}"
-                                                   ToolTip="New Database Service"/>
+                                                   ToolTip="New Database Service" />
                                         </Grid>
                                     </Button>
-                                    <Button Command="{Binding NewResourceCommand}" 
-                                CommandParameter="ResourceService"
-                                Style="{DynamicResource ButtonStyleRibbon}"
-                                ToolTip="Ctrl+Shift+P"
-                                AutomationProperties.AutomationId="UI_RibbonHomeTabPluginServiceBtn_AutoID">
+                                    <Button Command="{Binding NewResourceCommand}"
+                                            CommandParameter="ResourceService"
+                                            Style="{DynamicResource ButtonStyleRibbon}"
+                                            ToolTip="Ctrl+Shift+P"
+                                            AutomationProperties.AutomationId="UI_RibbonHomeTabPluginServiceBtn_AutoID">
                                         <Grid>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
 
-                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                            <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource PluginService-32}"
-                                                   ToolTip="New Plugin Service"/>
+                                                   ToolTip="New Plugin Service" />
                                         </Grid>
                                     </Button>
-                                    <Button Command="{Binding NewResourceCommand}" 
-                                CommandParameter="WebService" 
-                                Style="{DynamicResource ButtonStyleRibbon}"
-                                ToolTip="Ctrl+Shift+W"
-                                AutomationProperties.AutomationId="UI_RibbonHomeTabWebServiceBtn_AutoID">
+                                    <Button Command="{Binding NewResourceCommand}"
+                                            CommandParameter="WebService"
+                                            Style="{DynamicResource ButtonStyleRibbon}"
+                                            ToolTip="Ctrl+Shift+W"
+                                            AutomationProperties.AutomationId="UI_RibbonHomeTabWebServiceBtn_AutoID">
                                         <Grid>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
 
-                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                            <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource WebService-32}"
-                                                   ToolTip="New Web Service"/>
+                                                   ToolTip="New Web Service" />
                                         </Grid>
                                     </Button>
                                 </StackPanel>
                             </Grid>
                         </Border>
-                        
+
                         <!--Tools-->
                         <Border Style="{StaticResource BorderStyleRibbon}">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Border Grid.Row="1">
-                                    <TextBlock Text="Execute" Style="{StaticResource TextBlockStyleRibbonHeader}"/>
+                                    <TextBlock Text="Execute"
+                                               Style="{StaticResource TextBlockStyleRibbonHeader}" />
                                 </Border>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Command="{Binding ViewInBrowserCommand}" 
-                                        Style="{DynamicResource ButtonStyleRibbon}">
+                                    <Button Command="{Binding ViewInBrowserCommand}"
+                                            Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
 
-                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                            <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource ExecuteViewInBrowser-32}"
-                                                   ToolTip="View in Browser"/>
+                                                   ToolTip="View in Browser" />
                                         </Grid>
                                     </Button>
                                     <Button Command="{Binding DebugCommand}"
-                                            
-                                        Style="{DynamicResource ButtonStyleRibbon}">
+                                            Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
 
-                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                            <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{Binding ActiveItem.DebugOutputViewModel.DebugImage,Converter={StaticResource NullToDebugImageConverter},FallbackValue=pack://application:\,\,\,\/Warewolf\ Studio\;component/Images/ExecuteDebugStart-32.png}"
-                                                   ToolTip="{Binding ActiveItem.DebugOutputViewModel.DebugText,Converter={StaticResource NullToDebugRibbonButtonTextConverter},FallbackValue=Debug}"/>                                            
+                                                   ToolTip="{Binding ActiveItem.DebugOutputViewModel.DebugText,Converter={StaticResource NullToDebugRibbonButtonTextConverter},FallbackValue=Debug}" />
                                         </Grid>
                                     </Button>
                                 </StackPanel>
@@ -485,174 +496,242 @@
                         <Border Style="{StaticResource BorderStyleRibbon}">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Border Grid.Row="1">
-                                    <TextBlock Text="Help" Style="{StaticResource TextBlockStyleRibbonHeader}"/>
+                                    <TextBlock Text="Help"
+                                               Style="{StaticResource TextBlockStyleRibbonHeader}" />
                                 </Border>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Command="{Binding StartFeedbackCommand}" 
-                                Style="{DynamicResource ButtonStyleRibbon}">
+                                    <Button Command="{Binding StartFeedbackCommand}"
+                                            Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
 
-                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                            <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource HelpFeedback-32}"
-                                                   ToolTip="Feedback"/>
+                                                   ToolTip="Feedback" />
                                         </Grid>
                                     </Button>
-                                    <Button Command="{Binding ShowCommunityPageCommand}" 
-                                    Style="{DynamicResource ButtonStyleRibbon}">
+                                    <Button Command="{Binding ShowCommunityPageCommand}"
+                                            Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
 
-                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                            <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource HelpCommunity-32}"
-                                                   ToolTip="Community"/>
+                                                   ToolTip="Community" />
                                         </Grid>
                                     </Button>
-                                    <Button Command="{Binding AddStudioShortcutsPageCommand}" 
-                                    Style="{DynamicResource ButtonStyleRibbon}">
+                                    <Button Command="{Binding AddStudioShortcutsPageCommand}"
+                                            Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
 
-                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                            <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource HelpShortcutKeys-32}"
-                                                   ToolTip="Shortcut Keys"/>
+                                                   ToolTip="Shortcut Keys" />
                                         </Grid>
                                     </Button>
-                                    <Button Command="{Binding AddLanguageHelpPageCommand}" 
-                                    Style="{DynamicResource ButtonStyleRibbon}">
+                                    <Button Command="{Binding AddLanguageHelpPageCommand}"
+                                            Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
 
-                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                            <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource HelpLanguage-32}"
-                                                   ToolTip="Warewolf Language Help"/>
+                                                   ToolTip="Warewolf Language Help" />
                                         </Grid>
                                     </Button>
-                                    <Button Command="{Binding DisplayAboutDialogueCommand}" 
-                                    Style="{DynamicResource ButtonStyleRibbon}">
+                                    <Button Command="{Binding DisplayAboutDialogueCommand}"
+                                            Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
 
-                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                            <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource HelpAbout-32}"
-                                                   ToolTip="About"/>
+                                                   ToolTip="About" />
                                         </Grid>
                                     </Button>
                                 </StackPanel>
                             </Grid>
                         </Border>
+
+                        <!--Settings-->
+                        <Border Style="{StaticResource BorderStyleRibbon}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="1">
+                                    <TextBlock Text="Settings"
+                                               Style="{StaticResource TextBlockStyleRibbonHeader}" />
+                                </Border>
+                                <StackPanel Grid.Row="0"
+                                            Orientation="Horizontal">
+                                    <Button Command="{Binding SettingsCommand}"
+                                            Style="{DynamicResource ButtonStyleRibbon}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+
+                                            <Image Style="{StaticResource ImageStyleRibbon}"
+                                                   Source="{StaticResource Settings-32}"
+                                                   ToolTip="Manage Settings" />
+                                        </Grid>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        
                     </StackPanel>
 
-                    <Button BorderThickness="2" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22"
-			                Focusable="False"
-			                Visibility="{Binding FeedBackRecorder.IsRecorderAvailable, Converter={StaticResource BoolToVisConverter}}"
-			                Style="{StaticResource ContentLinkButton}" Command="{Binding StartStopRecordedFeedbackCommand}"
-			                AutomationProperties.AutomationId="MainView_StartStopFeedbackRecording">
+                    <Button BorderThickness="2"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Height="22"
+                            Focusable="False"
+                            Visibility="{Binding FeedBackRecorder.IsRecorderAvailable, Converter={StaticResource BoolToVisConverter}}"
+                            Style="{StaticResource ContentLinkButton}"
+                            Command="{Binding StartStopRecordedFeedbackCommand}"
+                            AutomationProperties.AutomationId="MainView_StartStopFeedbackRecording">
                         <Grid>
-                            <Border Background="Red" Style="{StaticResource FlashingFrameworkElement}"
-					                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-					                Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}" />
+                            <Border Background="Red"
+                                    Style="{StaticResource FlashingFrameworkElement}"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}" />
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Start recording feedback" VerticalAlignment="Center" Margin="5,0,5,0"
-						                   Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterNegative}}" />
-                                <TextBlock Text="Stop recording feedback" VerticalAlignment="Center" Margin="5,0,5,0"
-						                   Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}"
-						                   Style="{StaticResource FlashingFrameworkElement}" />
-                                <Image Source="{StaticResource HelpRecordFeedback-32}" Height="16" Width="16" VerticalAlignment="Center"
-						               Margin="0,0,5,0"
-						               Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterNegative}}" />
-                                <Image Source="{StaticResource HelpRecordFeedback-32}" Height="16" Width="16" VerticalAlignment="Center"
-						               Margin="0,0,5,0"
-						               Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}"
-						               Style="{StaticResource FlashingFrameworkElement}" />
+                                <TextBlock Text="Start recording feedback"
+                                           VerticalAlignment="Center"
+                                           Margin="5,0,5,0"
+                                           Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterNegative}}" />
+                                <TextBlock Text="Stop recording feedback"
+                                           VerticalAlignment="Center"
+                                           Margin="5,0,5,0"
+                                           Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}"
+                                           Style="{StaticResource FlashingFrameworkElement}" />
+                                <Image Source="{StaticResource HelpRecordFeedback-32}"
+                                       Height="16"
+                                       Width="16"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,5,0"
+                                       Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterNegative}}" />
+                                <Image Source="{StaticResource HelpRecordFeedback-32}"
+                                       Height="16"
+                                       Width="16"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,5,0"
+                                       Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}"
+                                       Style="{StaticResource FlashingFrameworkElement}" />
                             </StackPanel>
                         </Grid>
                     </Button>
                 </Grid>
             </Border>
 
-            <igDock:XamDockManager x:Name="dockManager" 
+            <igDock:XamDockManager x:Name="dockManager"
                                    Grid.Row="1"
                                    AutomationProperties.AutomationId="UI_DocManager_AutoID">
                 <i:Interaction.Behaviors>
-                    <local:XamlDockManagerLayoutPersistenceBehavior
-						UserInterfaceLayoutRepository="{Binding UserInterfaceLayoutRepository}"
-						LayoutDataPropertyName="MainViewDockingData" LayoutName="Default" />
+                    <local:XamlDockManagerLayoutPersistenceBehavior UserInterfaceLayoutRepository="{Binding UserInterfaceLayoutRepository}"
+                                                                    LayoutDataPropertyName="MainViewDockingData"
+                                                                    LayoutName="Default" />
                 </i:Interaction.Behaviors>
 
                 <igDock:XamDockManager.Panes>
-                    <igDock:SplitPane x:Name="DockBottom" igDock:XamDockManager.InitialLocation="DockedBottom" Height="200">
+                    <igDock:SplitPane x:Name="DockBottom"
+                                      igDock:XamDockManager.InitialLocation="DockedBottom"
+                                      Height="200">
                         <igDock:TabGroupPane>
-                            <igDock:ContentPane x:Name="OutputPane" Header="Output" AllowInDocumentHost="False"
-								IsPinned="False" AllowClose="False">
-                                <customControls:CachingContentHost cal:View.Model="{Binding ActiveItem.DebugOutputViewModel}"/>
+                            <igDock:ContentPane x:Name="OutputPane"
+                                                Header="Output"
+                                                AllowInDocumentHost="False"
+                                                IsPinned="False"
+                                                AllowClose="False">
+                                <customControls:CachingContentHost cal:View.Model="{Binding ActiveItem.DebugOutputViewModel}" />
                             </igDock:ContentPane>
 
                         </igDock:TabGroupPane>
                     </igDock:SplitPane>
 
-                    <igDock:SplitPane x:Name="DockLeft" igDock:XamDockManager.InitialLocation="DockedLeft" Width="300">
+                    <igDock:SplitPane x:Name="DockLeft"
+                                      igDock:XamDockManager.InitialLocation="DockedLeft"
+                                      Width="300">
                         <igDock:TabGroupPane>
-                            <igDock:ContentPane x:Name="Explorer" Header="Explorer" AllowClose="False"
-								AllowInDocumentHost="False" IsPinned="False"
-								AutomationProperties.AutomationId="UI_ExplorerPane_AutoID">
-                                <explorer:ExplorerView DataContext="{Binding ExplorerViewModel}"/>
+                            <igDock:ContentPane x:Name="Explorer"
+                                                Header="Explorer"
+                                                AllowClose="False"
+                                                AllowInDocumentHost="False"
+                                                IsPinned="False"
+                                                AutomationProperties.AutomationId="UI_ExplorerPane_AutoID">
+                                <explorer:ExplorerView DataContext="{Binding ExplorerViewModel}" />
                             </igDock:ContentPane>
-                            <igDock:ContentPane x:Name="Toolbox" Header="Toolbox" AllowClose="False"
-								AllowInDocumentHost="False" IsPinned="False"
-								AutomationProperties.AutomationId="UI_ToolboxPane_AutoID">
-                                <bdsviews:ToolboxUserControl IsEnabled="{Binding HasActiveConnection}"/>
+                            <igDock:ContentPane x:Name="Toolbox"
+                                                Header="Toolbox"
+                                                AllowClose="False"
+                                                AllowInDocumentHost="False"
+                                                IsPinned="False"
+                                                AutomationProperties.AutomationId="UI_ToolboxPane_AutoID">
+                                <bdsviews:ToolboxUserControl IsEnabled="{Binding HasActiveConnection}" />
                             </igDock:ContentPane>
-                            <igDock:ContentPane x:Name="Variables" 
-								Header="Variables" AllowClose="False"
-								AllowInDocumentHost="False" IsPinned="False">
-                                <dataList:DataListView DataContext="{Binding ActiveItem.DataListViewModel}"/>
+                            <igDock:ContentPane x:Name="Variables"
+                                                Header="Variables"
+                                                AllowClose="False"
+                                                AllowInDocumentHost="False"
+                                                IsPinned="False">
+                                <dataList:DataListView DataContext="{Binding ActiveItem.DataListViewModel}" />
                             </igDock:ContentPane>
                         </igDock:TabGroupPane>
                     </igDock:SplitPane>
                 </igDock:XamDockManager.Panes>
                 <igDock:DocumentContentHost x:Name="DocumentHost"
-					AutomationProperties.AutomationId="UI_DocumentHost_AutoID">
-                    <igDock:SplitPane x:Name="DockCentre" AutomationProperties.AutomationId="UI_SplitPane_AutoID">
+                                            AutomationProperties.AutomationId="UI_DocumentHost_AutoID">
+                    <igDock:SplitPane x:Name="DockCentre"
+                                      AutomationProperties.AutomationId="UI_SplitPane_AutoID">
                         <igDock:TabGroupPane x:Name="TabManager"
-							AutomationProperties.AutomationId="UI_TabManager_AutoID">
+                                             AutomationProperties.AutomationId="UI_TabManager_AutoID">
                             <i:Interaction.Behaviors>
-                                <local:TabGroupPaneBindingBehavior
-									DocumentHost="{Binding ElementName=DocumentHost}"
-									SelectedItem="{Binding DataContext.ActiveItem, ElementName=DocumentHost, Mode=TwoWay}"/>
+                                <local:TabGroupPaneBindingBehavior DocumentHost="{Binding ElementName=DocumentHost}"
+                                                                   SelectedItem="{Binding DataContext.ActiveItem, ElementName=DocumentHost, Mode=TwoWay}" />
                             </i:Interaction.Behaviors>
                             <igExtensions:ContentPaneFactory.PaneFactory>
-                                <igExtensions:ContentPaneFactory 
-									ItemsSource="{Binding Items}"
-									TabHeaderPath="WorkSurfaceViewModel"
-									ContentPath="WorkSurfaceViewModel">
+                                <igExtensions:ContentPaneFactory ItemsSource="{Binding Items}"
+                                                                 TabHeaderPath="WorkSurfaceViewModel"
+                                                                 ContentPath="WorkSurfaceViewModel">
                                     <igExtensions:ContentPaneFactory.ContainerStyle>
-                                        <Style TargetType="{x:Type igDock:ContentPane}" BasedOn="{StaticResource {x:Type igDock:ContentPane}}">
+                                        <Style TargetType="{x:Type igDock:ContentPane}"
+                                               BasedOn="{StaticResource {x:Type igDock:ContentPane}}">
                                             <Setter Property="TabHeaderTemplate">
                                                 <Setter.Value>
                                                     <DataTemplate>
                                                         <StackPanel Orientation="Horizontal">
-                                                            <Image Source="{Binding IconPath}" Height="16" Width="16" AutomationProperties.AutomationId="{Binding DisplayName}" Margin="4,4,4,2"/>
-                                                            <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center"/>
+                                                            <Image Source="{Binding IconPath}"
+                                                                   Height="16"
+                                                                   Width="16"
+                                                                   AutomationProperties.AutomationId="{Binding DisplayName}"
+                                                                   Margin="4,4,4,2" />
+                                                            <TextBlock Text="{Binding DisplayName}"
+                                                                       VerticalAlignment="Center" />
                                                         </StackPanel>
                                                     </DataTemplate>
                                                 </Setter.Value>
@@ -660,16 +739,22 @@
                                             <Setter Property="ContentTemplate">
                                                 <Setter.Value>
                                                     <DataTemplate>
-                                                        <ContentControl cal:View.Model="{Binding .}"/>
+                                                        <ContentControl cal:View.Model="{Binding .}" />
                                                     </DataTemplate>
                                                 </Setter.Value>
                                             </Setter>
-                                            <Setter Property="AllowDockingBottom" Value="False"/>
-                                            <Setter Property="AllowDockingLeft" Value="False"/>
-                                            <Setter Property="AllowDockingRight" Value="False"/>
-                                            <Setter Property="AllowDockingTop" Value="False"/>
-                                            <Setter Property="AutomationProperties.AutomationId" Value="{Binding DisplayName}"/>
-                                            <Setter Property="SaveInLayout" Value="false"/>
+                                            <Setter Property="AllowDockingBottom"
+                                                    Value="False" />
+                                            <Setter Property="AllowDockingLeft"
+                                                    Value="False" />
+                                            <Setter Property="AllowDockingRight"
+                                                    Value="False" />
+                                            <Setter Property="AllowDockingTop"
+                                                    Value="False" />
+                                            <Setter Property="AutomationProperties.AutomationId"
+                                                    Value="{Binding DisplayName}" />
+                                            <Setter Property="SaveInLayout"
+                                                    Value="false" />
                                         </Style>
                                     </igExtensions:ContentPaneFactory.ContainerStyle>
                                 </igExtensions:ContentPaneFactory>

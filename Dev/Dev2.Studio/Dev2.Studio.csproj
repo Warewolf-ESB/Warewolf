@@ -338,6 +338,22 @@
     </Compile>
     <Compile Include="CustomControls\Progress\ProgressFileDownloader.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Settings\Logging\LoggingView.xaml.cs">
+      <DependentUpon>LoggingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Logging\LoggingViewModel.cs" />
+    <Compile Include="Settings\Security\PermissionsDataGrid.xaml.cs">
+      <DependentUpon>PermissionsDataGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Security\SecurityView.xaml.cs">
+      <DependentUpon>SecurityView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Security\SecurityViewModel.cs" />
+    <Compile Include="Settings\Security\WindowsGroupPermission.cs" />
+    <Compile Include="Settings\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\SettingsViewModel.cs" />
     <Compile Include="Utils\HyperlinkUtility.cs" />
     <Compile Include="Utils\ResourceChangeHandler.cs" />
     <Compile Include="ViewModels\ActivityViewModels\DsfActivityViewModel.cs" />
@@ -365,7 +381,7 @@
     </Compile>
     <Compile Include="ViewModels\WorkSurface\BaseWorkSurfaceViewModel.cs" />
     <Compile Include="ViewModels\WorkSurface\WorkSurfaceContextViewModel.cs" />
-    <Compile Include="ViewModels\Configuration\RuntimeConfigurationViewModel.cs" />
+    <Compile Include="Settings\RuntimeConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\Dev2MessageBoxViewModel.cs" />
     <Compile Include="InterfaceImplementors\FileSystemIntellisenseProvider.cs" />
     <Compile Include="InterfaceImplementors\FileSystemQuery.cs" />
@@ -380,7 +396,7 @@
     <Compile Include="Views\Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Configuration\RuntimeConfigurationView.xaml.cs">
+    <Compile Include="Settings\RuntimeConfigurationView.xaml.cs">
       <DependentUpon>RuntimeConfigurationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Dialogs\Dev2MessageBoxView.xaml.cs">
@@ -728,6 +744,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Settings\Logging\LoggingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Settings\Security\PermissionsDataGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\Security\SecurityView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\ActivityStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -924,7 +956,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Configuration\RuntimeConfigurationView.xaml">
+    <Page Include="Settings\RuntimeConfigurationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1357,6 +1389,10 @@
       <Project>{38650e4e-90e2-44de-a32f-30f3c4d1438b}</Project>
       <Name>Dev2.OutputLibraries</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
       <Name>Dev2.Studio.Core</Name>
@@ -1373,6 +1409,8 @@
   <ItemGroup>
     <Folder Include="ActivityDesigners\PathOperationDesigners\" />
     <Folder Include="AppResources\Messages\" />
+    <Folder Include="ViewModels\Configuration\" />
+    <Folder Include="Views\Configuration\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">

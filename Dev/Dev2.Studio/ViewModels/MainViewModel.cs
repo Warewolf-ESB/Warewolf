@@ -13,6 +13,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Diagnostics;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
+using Dev2.Settings;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Controller;
@@ -35,7 +36,6 @@ using Dev2.Studio.Enums;
 using Dev2.Studio.Factory;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.Feedback.Actions;
-using Dev2.Studio.ViewModels.Configuration;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Explorer;
@@ -795,8 +795,8 @@ namespace Dev2.Studio.ViewModels
 
         public void AddSettingsWorkSurface()
         {
-            ActivateOrCreateUniqueWorkSurface<RuntimeConfigurationViewModel>
-                (WorkSurfaceContext.Settings);
+            ActivateOrCreateUniqueWorkSurface<SettingsViewModel>(WorkSurfaceContext.Settings);
+            //ActivateOrCreateUniqueWorkSurface<RuntimeConfigurationViewModel>(WorkSurfaceContext.Settings);
         }
 
         public void AddReportsWorkSurface()

@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="Dev2.Settings.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:settings="clr-namespace:Dev2.Settings"
+             xmlns:logging="clr-namespace:Dev2.Settings.Logging"
+             xmlns:security="clr-namespace:Dev2.Settings.Security"
+             Padding="10"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance settings:SettingsViewModel}">
+    
+    <UserControl.Resources>
+        <logging:LoggingView x:Key="LoggingView"
+                             AutomationProperties.AutomationId="LoggingViewContent" />
+        <security:SecurityView x:Key="SecurityView"
+                               AutomationProperties.AutomationId="SecurityViewContent" />
+
+        <Style x:Key="ContentViewStyle"
+               TargetType="{x:Type ContentControl}">
+            <Setter Property="Margin" Value="10,0,0,0"/>
+            <Style.Triggers>                
+                <!--<DataTrigger Binding="{Binding Path=ShowLogging, Mode=TwoWay}"
+                             Value="true">
+                    <Setter Property="Content"
+                            Value="{StaticResource LoggingView}" />
+                </DataTrigger>-->
+                <DataTrigger Binding="{Binding Path=ShowSecurity, Mode=TwoWay}"
+                             Value="true">
+                    <Setter Property="Content"
+                            Value="{StaticResource SecurityView}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SettingsToggleButtonStyle"
+               BasedOn="{StaticResource ToggleButtonStyle}"
+               TargetType="{x:Type ToggleButton}">
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="150" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" BorderThickness="0,0,1,0" BorderBrush="{StaticResource ButtonBorderBrush}">
+            <StackPanel
+                        Orientation="Vertical">
+                <!--<ToggleButton Content="Logging"
+                              IsChecked="{Binding ShowLogging, Mode=TwoWay}"
+                              Style="{StaticResource SettingsToggleButtonStyle}" />-->
+                <ToggleButton Content="Security"
+                              IsChecked="{Binding ShowSecurity, Mode=TwoWay}"
+                              Style="{StaticResource SettingsToggleButtonStyle}" />
+            </StackPanel>
+        </Border>
+        <ContentControl Grid.Column="1"                                           
+                        Style="{StaticResource ContentViewStyle}" />
+    </Grid>
+</UserControl>

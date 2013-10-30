@@ -1,22 +1,22 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Runtime.Configuration;
+using Dev2.Settings;
 using Dev2.Studio.Core.Configuration;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.ViewModels.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Xml.Linq;
 
 namespace Dev2.Core.Tests.ViewModelTests.Configuration
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class RuntimeConfigurationViewModelTests
     {
         #region Load Tests
@@ -318,7 +318,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForSettingsViewModel(assemblyRepository, windowManager, popup);
             RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel();
-            runtimeConfigurationViewModel.Load(environment.Object); 
+            runtimeConfigurationViewModel.Load(environment.Object);
             runtimeConfigurationViewModel.Save(new XElement("NoData"));
 
             popup.Verify(p => p.Show(), Times.Once(), "A pop was shown on success, this means there was an unexpected error.");
@@ -342,7 +342,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
             ImportService.CurrentContext = CompositionInitializer.InitializeForSettingsViewModel(assemblyRepository, windowManager, popup);
             RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel();
 
-            runtimeConfigurationViewModel.Load(environment.Object); 
+            runtimeConfigurationViewModel.Load(environment.Object);
             runtimeConfigurationViewModel.Save(new XElement("NoData"));
 
             popup.Verify(p => p.Show(), Times.Once(), "An popup was meant to be shown but it wasn't.");
