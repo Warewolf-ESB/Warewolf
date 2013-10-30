@@ -109,7 +109,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         public void DatabaseService_Execute_CustomOutputMappings_DataReturned()
         {
             //------------Setup for test--------------------------
-            var postData = String.Format("{0}{1}", WebserverURI, "10638 - Service IO - TEST");
+            var postData = String.Format("{0}{1}", _webserverURI, "10638 - Service IO - TEST");
 
             var expectedXml = XmlResource.Fetch("BUG_10638_Result.xml");
             var expected = expectedXml.ToString(SaveOptions.None);
