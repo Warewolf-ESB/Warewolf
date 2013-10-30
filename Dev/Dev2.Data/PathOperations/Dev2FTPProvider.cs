@@ -121,14 +121,14 @@ namespace Dev2.PathOperations {
         Sftp BuildSftpClient(IActivityIOPath path)
         {
             var hostName = ExtractHostNameFromPath(path.Path);
-            if(String.IsNullOrEmpty(path.Username))
-            {
-                path.Username = "dev2testing";
-            }
-            if(String.IsNullOrEmpty(path.Password))
-            {
-                path.Password = "Q/ulw&]";
-            }
+            //if(String.IsNullOrEmpty(path.Username))
+            //{
+            //    path.Username = "dev2testing";
+            //}
+            //if(String.IsNullOrEmpty(path.Password))
+            //{
+            //    path.Password = "Q/ulw&]";
+            //}
             var sftp = new Sftp(hostName, path.Username, path.Password);
             try
             {
@@ -354,7 +354,7 @@ namespace Dev2.PathOperations {
                     {
                         while(!reader.EndOfStream)
                         {
-                            string uri = string.Format("{0}{1}", src.Path, reader.ReadLine());
+                            string uri = BuildValidPathForFTP(src, reader.ReadLine());
                             result.Add(ActivityIOFactory.CreatePathFromString(uri));
                         }
 
@@ -375,6 +375,10 @@ namespace Dev2.PathOperations {
                     {
                         throw new DirectoryNotFoundException(string.Format("Directory '{0}' was not found", src.Path));
                     }
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
             catch(Exception ex)
@@ -393,6 +397,15 @@ namespace Dev2.PathOperations {
             return result;
         }
         
+        static string BuildValidPathForFTP(IActivityIOPath src, string fileName)
+        {
+            if(src.Path.EndsWith("/"))
+            {
+                return string.Format("{0}{1}", src.Path, fileName);
+            }
+            return string.Format("{0}/{1}", src.Path, fileName);
+        }
+
         IList<IActivityIOPath> ListDirectorySFTP(IActivityIOPath src)
         {
             List<IActivityIOPath> result = new List<IActivityIOPath>();
@@ -405,7 +418,8 @@ namespace Dev2.PathOperations {
                 {
                     if(file != "..")
                     {
-                        result.Add(ActivityIOFactory.CreatePathFromString(file));
+                        string uri = BuildValidPathForFTP(src, file);
+                        result.Add(ActivityIOFactory.CreatePathFromString(uri));
                     }
                 }
 
@@ -491,8 +505,9 @@ namespace Dev2.PathOperations {
             }
             catch(Exception ex)
             {
+                result = true;
                 ServerLogger.LogError(ex);
-                throw;
+                //throw;
             }
             finally
             {

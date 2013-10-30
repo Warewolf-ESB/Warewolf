@@ -183,20 +183,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void CbxLoad(object sender, RoutedEventArgs e)
         {
             ComboBox cbx = sender as ComboBox;
-            dynamic temp = cbx.DataContext;
-            string selectedVal = temp.SplitType;
+            
             if (cbx != null)
             {
-                if (cbx.Items.Count == 0)
+                dynamic temp = cbx.DataContext;
+                if (temp != null)
                 {
-                    cbx.Items.Add("Index");
-                    cbx.Items.Add("Chars");
-                    cbx.Items.Add("New Line");
-                    cbx.Items.Add("Space");
-                    cbx.Items.Add("Tab");
-                    cbx.Items.Add("End");
+                    string selectedVal = temp.SplitType;
+
+                    if(cbx.Items.Count == 0)
+                    {
+                        cbx.Items.Add("Index");
+                        cbx.Items.Add("Chars");
+                        cbx.Items.Add("New Line");
+                        cbx.Items.Add("Space");
+                        cbx.Items.Add("Tab");
+                        cbx.Items.Add("End");
+                    }
+                    cbx.SelectedValue = selectedVal;    
                 }
-                cbx.SelectedValue = selectedVal;
             }
         }
 

@@ -2004,7 +2004,7 @@ namespace Dev2.Server.Datalist
                     while(f.HasData())
                     {
                         if(typeof(T) == typeof(RecordsetGroup))
-                    {
+                        {
                             ProcessRecordsetGroup(f.FetchNextFrameItem().Value as RecordsetGroup, bdl, out errors);
                             allErrors.MergeErrors(errors);
                             continue;

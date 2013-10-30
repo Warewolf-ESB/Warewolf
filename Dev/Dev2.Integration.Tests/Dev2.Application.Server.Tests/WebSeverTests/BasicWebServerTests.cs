@@ -152,6 +152,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.WebSeverTests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("WebServer_WhenHTTPS")]
+        [Ignore] // Once implemented un-ignore
         public void WebServer_WhenHTTPS_InvokeOnSSLPort_ExpectValidResultViaSSL()
         {
             //------------Setup for test--------------------------

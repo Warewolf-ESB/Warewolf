@@ -10,7 +10,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
     /// Summary description for DBServiceTest
     /// </summary>
     [TestClass]
-    public class DBServiceTest
+    public class DbServiceTest
     {
         /// <summary>
         ///Gets or sets the test context which provides
@@ -18,52 +18,30 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        readonly string WebserverURI = ServerSettings.WebserverURI;
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+        readonly string _webserverURI = ServerSettings.WebserverURI;
 
         [TestMethod]
         public void CanExecuteDbServiceAndReturnItsOutput()
         {
-            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug9139");
-            string expected = @"<DataList><result>PASS</result></DataList>";
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug9139");
+            const string expected = @"<DataList><result>PASS</result></DataList>";
 
-            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+            string responseData = TestHelper.PostDataToWebserver(postData);
 
-            StringAssert.Contains(ResponseData, expected, "Expected [ " + expected + " ] But Got [ " + ResponseData + " ]");
+            StringAssert.Contains(responseData, expected, "Expected [ " + expected + " ] But Got [ " + responseData + " ]");
         }
 
         [TestMethod]
         public void CanReturnDataInCorrectCase()
         {
 
-            string PostData = String.Format("{0}{1}", WebserverURI, "Bug9490");
-            string expected = @"<result><val>abc_def_hij</val></result><result><val>ABC_DEF_HIJ</val></result>";
+            string postData = String.Format("{0}{1}", _webserverURI, "Bug9490");
+            const string expected = @"<result><val>abc_def_hij</val></result><result><val>ABC_DEF_HIJ</val></result>";
 
-            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+            string responseData = TestHelper.PostDataToWebserver(postData);
 
 
-            StringAssert.Contains(ResponseData, expected);
+            StringAssert.Contains(responseData, expected);
 
         }
 
@@ -74,15 +52,15 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         {
 
             //------------Setup for test--------------------------
-            string PostData = String.Format("{0}{1}", WebserverURI, "Bug 10475 Outer WF");
-            string expected = @"<Rows><ID>1</ID></Rows>";
+            string postData = String.Format("{0}{1}", _webserverURI, "Bug 10475 Outer WF");
+            const string expected = @"<Row><ID>1</ID></Row>";
 
             //------------Execute Test---------------------------
-            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+            string responseData = TestHelper.PostDataToWebserver(postData);
 
 
             //------------Assert Results-------------------------
-            StringAssert.Contains(ResponseData, expected);
+            StringAssert.Contains(responseData, expected);
 
         }
 
@@ -93,15 +71,15 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         {
 
             //------------Setup for test--------------------------
-            string PostData = String.Format("{0}{1}", WebserverURI, "DB Service With No Output");
-            string expected = @"<Result>PASS</Result>";
+            string postData = String.Format("{0}{1}", _webserverURI, "DB Service With No Output");
+            const string expected = @"<Result>PASS</Result>";
 
             //------------Execute Test---------------------------
-            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+            string responseData = TestHelper.PostDataToWebserver(postData);
 
 
             //------------Assert Results-------------------------
-            StringAssert.Contains(ResponseData, expected);
+            StringAssert.Contains(responseData, expected);
 
         }
 
@@ -113,15 +91,15 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         {
 
             //------------Setup for test--------------------------
-            string PostData = String.Format("{0}{1}", WebserverURI, "Service Output To Multiple Recordsets");
-            string expected = @"<result>PASS</result>";
+            string postData = String.Format("{0}{1}", _webserverURI, "Service Output To Multiple Recordsets");
+            const string expected = @"<result>PASS</result>";
 
             //------------Execute Test---------------------------
-            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+            string responseData = TestHelper.PostDataToWebserver(postData);
 
 
             //------------Assert Results-------------------------
-            StringAssert.Contains(ResponseData, expected);
+            StringAssert.Contains(responseData, expected);
 
         }
 

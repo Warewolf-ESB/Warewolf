@@ -838,16 +838,23 @@ namespace Dev2.PathOperations
                         IActivityIOPath cpPath = ActivityIOFactory.CreatePathFromString(string.Format("{0}{1}{2}", origDstPath, dst.PathSeperator(), (Dev2ActivityIOPathUtils.ExtractFileName(p.Path))));
                         if (args.Overwrite || !dst.PathExist(cpPath))
                         {
-                            if(dst.PathIs(cpPath) == enPathType.Directory && Directory.Exists(p.Path) && args.DoRecursiveCopy)
+                            if(!IsNotFTPTypePath(p))
                             {
-                                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(cpPath.Path, dst.IOPath.Username, dst.IOPath.Password);
-                                IActivityIOOperationsEndPoint tmpEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
-                                IActivityIOOperationsEndPoint operationEndPointFromIOPath = ActivityIOFactory.CreateOperationEndPointFromIOPath(p);
-                                TransferDirectoryContents(operationEndPointFromIOPath, tmpEP, args, removeSrc);
+                                try
+                                {
+                                    src.ListDirectory(p);
+                                    if(CheckIfShouldDoRecursiveFolderCopy(dst, args, removeSrc, cpPath, true, p)) continue;
+                                }
+                                catch(Exception ex)
+                                {
+                                    //Directory does not exist and source
+                                    if(CheckIfShouldDoRecursiveFolderCopy(dst, args, removeSrc, cpPath, false, p)) continue;
+                                }
                             }
-                            else if (dst.PathIs(cpPath) == enPathType.Directory && Directory.Exists(p.Path) && !args.DoRecursiveCopy)
+                            else
                             {
-                                continue;
+                                var directoryExistsAtSource = Directory.Exists(p.Path);
+                                if(CheckIfShouldDoRecursiveFolderCopy(dst, args, removeSrc, cpPath, directoryExistsAtSource, p)) continue;
                             }
                             using(s = src.Get(p))
                             {
@@ -855,9 +862,9 @@ namespace Dev2.PathOperations
                                 // Need to ensure we have a file name on dst
                                 IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(cpPath.Path, dst.IOPath.Username, dst.IOPath.Password);
                                 IActivityIOOperationsEndPoint tmpEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
+                                var whereToPut = GetWhereToPut(src, dst);
 
-
-                                if (tmpEP.Put(s, tmpEP.IOPath, args, new FileInfo(src.IOPath.Path).Directory) < 0)
+                                if (tmpEP.Put(s, tmpEP.IOPath, args, whereToPut) < 0)
                                 {
                                     result = false;
                                 }
@@ -881,8 +888,10 @@ namespace Dev2.PathOperations
 
                             IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(tmp, dst.IOPath.Username, dst.IOPath.Password);
                             IActivityIOOperationsEndPoint tmpEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
- 
-                            if (tmpEP.Put(s, tmpEP.IOPath, args, new FileInfo(src.IOPath.Path).Directory) < 0)
+
+                            var whereToPut = GetWhereToPut(src, dst);
+
+                            if(tmpEP.Put(s, tmpEP.IOPath, args, whereToPut) < 0)
                             {
                                 result = false;
                             }
@@ -913,6 +922,36 @@ namespace Dev2.PathOperations
             }
 
             return result;
+        }
+
+        static DirectoryInfo GetWhereToPut(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst)
+        {
+            DirectoryInfo whereToPut;
+            if(src.IOPath.PathType == enActivityIOPathType.FileSystem)
+            {
+                whereToPut = new FileInfo(src.IOPath.Path).Directory;
+            }
+            else
+            {
+                whereToPut = new FileInfo(dst.IOPath.Path).Directory;
+            }
+            return whereToPut;
+        }
+
+        bool CheckIfShouldDoRecursiveFolderCopy(IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args, bool removeSrc, IActivityIOPath cpPath, bool directoryExistsAtSource, IActivityIOPath p)
+        {
+            if(dst.PathIs(cpPath) == enPathType.Directory && directoryExistsAtSource && args.DoRecursiveCopy)
+            {
+                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(cpPath.Path, dst.IOPath.Username, dst.IOPath.Password);
+                IActivityIOOperationsEndPoint tmpEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
+                IActivityIOOperationsEndPoint operationEndPointFromIOPath = ActivityIOFactory.CreateOperationEndPointFromIOPath(p);
+                TransferDirectoryContents(operationEndPointFromIOPath, tmpEP, args, removeSrc);
+            }
+            else if(dst.PathIs(cpPath) == enPathType.Directory && directoryExistsAtSource && !args.DoRecursiveCopy)
+            {
+                return true;
+            }
+            return false;
         }
 
         /// <summary>

@@ -485,35 +485,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 var gaps = _internalObj.FetchGaps();
                 result._internalObj.MoveIndexDataForClone(min, max, gaps, false);
 
-                // clone _items
-                //IList<IBinaryDataListItem> blankItems = new List<IBinaryDataListItem>();
-                //if(_internalObj.Count > 0)
-                //{
-                //    if(IsRecordset)
-                //    {
-                //        int firstKey = _internalObj.Keys.MinIndex();
-                //        int listLen = _internalObj[firstKey].Count;
-                //        for(int i = 0; i < listLen; i++)
-                //        {
-                //            int idx = i + 1;
-                //            IBinaryDataListItem itm = DataListConstants.baseItem.Clone();
-                //            itm.UpdateRecordset(Namespace);
-                //            if(Columns != null)
-                //            {
-                //                itm.UpdateField(Columns[i].ColumnName);
-                //            }
-                //            itm.UpdateIndex(idx);
-                //            blankItems.Add(itm);
-                //        }
-
-                //        result._internalObj[firstKey] = blankItems;
-                //    }
-                //    else
-                //    {
-                //        blankItems.Add(DataListConstants.emptyItem);
-                //        result._internalObj[0] = blankItems;
-                //    }
-                //}
             }
 
             result.ComplexExpressionAuditor = ComplexExpressionAuditor;

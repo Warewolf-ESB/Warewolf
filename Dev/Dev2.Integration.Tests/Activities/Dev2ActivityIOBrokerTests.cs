@@ -23,8 +23,8 @@ namespace Dev2.Integration.Tests.Activities
         [TestInitialize]
         public void CreateFiles()
         {
-            tmpfile1 = System.IO.Path.GetTempFileName();
-            tmpfile2 = System.IO.Path.GetTempFileName();
+            tmpfile1 = Path.GetTempFileName();
+            tmpfile2 = Path.GetTempFileName();
 
             FileStream fs1 = File.Create(tmpfile1);
             string tmp = "abc";
@@ -38,8 +38,8 @@ namespace Dev2.Integration.Tests.Activities
             fs2.Write(data, 0, data.Length);
             fs2.Close();
 
-            tmpdir1 = System.IO.Path.GetTempPath() + System.IO.Path.GetRandomFileName();
-            tmpdir2 = System.IO.Path.GetTempPath() + System.IO.Path.GetRandomFileName();
+            tmpdir1 = Path.GetTempPath() + Path.GetRandomFileName();
+            tmpdir2 = Path.GetTempPath() + Path.GetRandomFileName();
 
             Directory.CreateDirectory(tmpdir1);
             Directory.CreateDirectory(tmpdir2);
@@ -1762,7 +1762,7 @@ namespace Dev2.Integration.Tests.Activities
         public void CopyFromFTPSToFileSystem_WithFilePresent_ValidCredentials_Overwrite()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
-            string tmp = System.IO.Path.GetTempFileName();
+            string tmp = Path.GetTempFileName();
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(string.Concat(ParserStrings.PathOperations_FTPS_AuthPath, "/TestDirectory/file1.txt"), ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, true);
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp);
             IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);

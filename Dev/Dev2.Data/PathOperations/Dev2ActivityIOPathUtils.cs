@@ -52,15 +52,22 @@ namespace Dev2.PathOperations {
         public static string ExtractFileName(string path) {
             string result = string.Empty;
 
-            if(!IsDirectory(path))
+            try
             {
-                Uri uri = new Uri(path);
-                result = Path.GetFileName(uri.LocalPath);
+                if(!IsDirectory(path))
+                {
+                    Uri uri = new Uri(path);
+                    result = Path.GetFileName(uri.LocalPath);
+                }
+                else
+                {
+                    Uri uri = new Uri(path);
+                    result = Path.GetFileName(uri.LocalPath);
+                }
             }
-            else
+            catch(Exception e)
             {
-                Uri uri = new Uri(path);
-                result = Path.GetFileName(uri.LocalPath);
+                result = path;
             }
 
             return result;

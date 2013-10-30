@@ -97,6 +97,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
         #region Scalar Tests
         
         [TestMethod]
+        // TODO : Update WF in TFS
         public void ForEachInputOutputMappingTest() {          
             string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachScalarTest");
             string expected = @"<var>5</var><recset><rec1>1</rec1></recset><recset><rec1>2</rec1></recset><recset><rec1>3</rec1></recset><recset><rec1>4</rec1></recset><recset><rec1>5</rec1></recset><recset><rec1>6</rec1></recset>";
@@ -114,7 +115,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
         public void ForEachAllToolsTest()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "ForEachUpgradeTest");
-            string expected = @"<Result>ForEach: Success</Result>";
+            string expected = @"<Result>PASS</Result>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
