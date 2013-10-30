@@ -130,6 +130,27 @@ namespace Dev2.Core.Tests
 
         }
 
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("WorkflowDesignerViewModel_Dispose")]
+        [TestMethod]
+        public void ClassName_MethodName_Scenerio_Result()
+        {
+            // Set up event agg
+            var evtAg = new Mock<IEventAggregator>();
+            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(GetAddMissingWorkflowXml());
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            mockDataListViewModel.Setup(model => model.ScalarCollection).Returns(new OptomizedObservableCollection<IDataListItemModel>());
+            mockDataListViewModel.Setup(model => model.UpdateDataListItems(It.IsAny<IResourceModel>(), It.IsAny<IList<IDataListVerifyPart>>())).Verifiable();
+            var dataListViewModel = mockDataListViewModel.Object;
+            var dataListItems = new OptomizedObservableCollection<IDataListItemModel>();
+            DataListSingleton.SetDataList(dataListViewModel);
+            dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, evtAg.Object);
+
+            workflowDesigner.Dispose();
+        }
+
         #endregion
 
         #region Add Missing DataList Items

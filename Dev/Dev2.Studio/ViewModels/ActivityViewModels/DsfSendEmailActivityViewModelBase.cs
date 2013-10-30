@@ -29,7 +29,6 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         private readonly EmailSource _baseEmailSource = new EmailSource();
         bool _canEditSource;
         bool _hasClickedSave;
-
         #endregion
 
         #region Ctor

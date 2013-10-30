@@ -87,6 +87,7 @@ namespace Dev2.Runtime.Configuration.CustomControls
         private void TextBoxOnGotFocus(object sender, RoutedEventArgs routedEventArgs)
         {
             IsDropDownOpen = true;
+            routedEventArgs.Handled = true;
         }
     }
 }

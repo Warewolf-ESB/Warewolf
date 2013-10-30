@@ -549,15 +549,38 @@ namespace Dev2.Studio.InterfaceImplementors
         #endregion
 
         #region Disposal Handling
+
         public void Dispose()
         {
-            if (_isDisposed) return;
+            if(_isDisposed)
+                return;
             _isDisposed = true;
 
             EventPublishers.Aggregator.Unsubscribe(this);
             _cachedDataList = null;
             GC.SuppressFinalize(this);
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
+                // get rid of managed resources
+            }
+            // get rid of unmanaged resources
+        }
+
+        ~DefaultIntellisenseProvider()
+        {
+            Dispose(false);
+        
+        }
+
+        public void OnDispose()
+        {
+
+        }
+
         #endregion
 
         #region Properties

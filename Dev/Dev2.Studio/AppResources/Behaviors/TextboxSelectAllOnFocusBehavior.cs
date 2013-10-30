@@ -18,6 +18,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             AssociatedObject.GotFocus -= AssociatedObject_GotFocus;
             AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
+            routedEventArgs.Handled = true;
         }
 
         void AssociatedObject_GotFocus(object sender, EventArgs e)

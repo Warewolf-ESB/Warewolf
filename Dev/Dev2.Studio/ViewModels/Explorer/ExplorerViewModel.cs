@@ -30,8 +30,6 @@ namespace Dev2.Studio.ViewModels.Explorer
     {
         #region Class Members
 
-        private RelayCommand _connectCommand;
-        private RelayCommand _renameCommand;
         private RelayCommand _environmentChangedCommand;
         private enDsfActivityType _activityType;
         private bool _fromActivityDrop;

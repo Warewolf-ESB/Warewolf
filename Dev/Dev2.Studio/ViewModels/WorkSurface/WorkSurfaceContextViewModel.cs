@@ -56,12 +56,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         IDataListViewModel _dataListViewModel;
         IWorkSurfaceViewModel _workSurfaceViewModel;
-        readonly DebugOutputViewModel _debugOutputViewModel;
+        DebugOutputViewModel _debugOutputViewModel;
         IContextualResourceModel _contextualResourceModel;
 
         readonly IWindowManager _windowManager;
-        readonly IFrameworkSecurityContext _securityContext;
-        readonly IWorkspaceItemRepository _workspaceItemRepository;
+        IFrameworkSecurityContext _securityContext;
+        IWorkspaceItemRepository _workspaceItemRepository;
 
         ICommand _viewInBrowserCommand;
         ICommand _debugCommand;
@@ -69,6 +69,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         ICommand _saveCommand;
         ICommand _editResourceCommand;
         bool _hasMappingChange;
+        IEnvironmentModel _environmentModel;
 
         #endregion private fields
 
@@ -94,6 +95,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 return _debugOutputViewModel;
             }
+            set { _debugOutputViewModel = value; }
         } 
 
         public bool DeleteRequested { get; set; }
@@ -112,12 +114,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 }
 
                 _dataListViewModel = value;
-                NotifyOfPropertyChange(() => DataListViewModel);
-                if(DataListViewModel != null)
+                if(_dataListViewModel != null)
                 {
-                    DataListViewModel.ConductWith(this);
-                    DataListViewModel.Parent = this;
+                    _dataListViewModel.ConductWith(this);
                 }
+
+                NotifyOfPropertyChange(() => DataListViewModel);
             }
         }
 
@@ -236,21 +238,25 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             var model = WorkSurfaceViewModel as IWorkflowDesignerViewModel;
             if(model != null)
             {
-                var environmentModel = model.EnvironmentModel;
-                if(environmentModel != null)
+                _environmentModel = model.EnvironmentModel;
+                if(_environmentModel != null)
                 {
                     // MUST use connection server event publisher - debug events are published from the server!
-                    _debugOutputViewModel = new DebugOutputViewModel(environmentModel.Connection.ServerEvents, EnvironmentRepository.Instance);
-                    
-                    environmentModel.IsConnectedChanged += (sender, args) =>
-                    {
-                        if(args.IsConnected == false)
-                        {
-                            SetDebugStatus(DebugStatus.Finished);
-                        }
-                    };
+                    DebugOutputViewModel = new DebugOutputViewModel(_environmentModel.Connection.ServerEvents, EnvironmentRepository.Instance);
+                    _environmentModel.IsConnectedChanged += EnvironmentModelOnIsConnectedChanged();
+            }
             }
         }
+
+        EventHandler<ConnectedEventArgs> EnvironmentModelOnIsConnectedChanged()
+        {
+            return (sender, args) =>
+            {
+                if(args.IsConnected == false)
+                {
+                    SetDebugStatus(DebugStatus.Finished);
+                }
+            };
         }
 
         #endregion
@@ -582,7 +588,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             var workflowDesignerViewModel = WorkSurfaceViewModel as WorkflowDesignerViewModel;
             if(workflowDesignerViewModel != null)
             {
-                workflowDesignerViewModel.AddMissingWithNoPopUpAndFindUnusedDataListItems();
+                //workflowDesignerViewModel.AddMissingWithNoPopUpAndFindUnusedDataListItems();
                 //2013.07.03: Ashley Lewis for bug 9637 - set focus to allow ctrl+a
                 if(!workflowDesignerViewModel.Designer.Context.Items.GetValue<Selection>().SelectedObjects.Any() || workflowDesignerViewModel.Designer.Context.Items.GetValue<Selection>().SelectedObjects.Any(c => c.ItemType.Name == "StartNode" || c.ItemType.Name == "Flowchart" || c.ItemType.Name == "ActivityBuilder"))
                 {
@@ -599,6 +605,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         /// </summary>
         protected override void OnDispose()
         {
+            if(_environmentModel != null)
+            {
+                _environmentModel.IsConnectedChanged -= EnvironmentModelOnIsConnectedChanged();
+            }
+
             if(DebugOutputViewModel != null)
             {
                 DebugOutputViewModel.Dispose();
@@ -607,7 +618,21 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 ((SimpleBaseViewModel)DataListViewModel).Dispose();
             }
-            WorkSurfaceViewModel = null;
+            if(ContextualResourceModel != null)
+            {
+                ContextualResourceModel.OnDesignValidationReceived -= ValidationMemoReceived;
+            }
+
+            if(DataListViewModel != null)
+            {
+                DataListViewModel.Dispose();
+            }
+
+            if(DebugOutputViewModel != null)
+            {
+                DebugOutputViewModel.Dispose();
+            }
+
             base.OnDispose();
         }
 

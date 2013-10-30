@@ -136,16 +136,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
         }
-
-        #region Dispose
-
-        public void Dispose()
-        {
-            CleanUp();
-        }
-
-        #endregion
-
+        
         #region Private Methods
 
         string createDisplayName()
@@ -363,11 +354,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
+        #region Dispose
+
+        public void Dispose()
+        {
+            CleanUp();
+        }
+
+        #endregion
+
         #region Clean Up
 
         void CleanUp()
         {
             Context.Items.Unsubscribe<Selection>(SelectionChanged);
+            activity = null;
+            DataContext = null;
+            ViewModel = null;
         }
 
         #endregion        

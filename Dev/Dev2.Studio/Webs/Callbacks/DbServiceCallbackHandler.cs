@@ -5,8 +5,6 @@ namespace Dev2.Studio.Webs.Callbacks
 {
     public class DbServiceCallbackHandler : ServiceCallbackHandler
     {
-        bool _isEditingSource;
-        string _returnUri;
 
         public DbServiceCallbackHandler()
             : this(EnvironmentRepository.Instance)

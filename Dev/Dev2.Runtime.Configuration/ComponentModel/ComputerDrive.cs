@@ -123,18 +123,20 @@ namespace Dev2.Runtime.Configuration.ComponentModel
 
         private void LoadDrivesOrDirectories(string currentTitle)
         {
-            var wc = new WebClient();
-            wc.OpenReadCompleted += ChildrenReadCompleted;
-            Uri webUri;
-            if (string.IsNullOrEmpty(currentTitle) || currentTitle.Equals("/"))
+            using(var wc = new WebClient())
             {
-                webUri = GetDriveUri();
+                wc.OpenReadCompleted += ChildrenReadCompleted;
+                Uri webUri;
+                if(string.IsNullOrEmpty(currentTitle) || currentTitle.Equals("/"))
+                {
+                    webUri = GetDriveUri();
+                }
+                else
+                {
+                    webUri = GetDirectoryUri(currentTitle);
+                }
+                wc.OpenReadAsync(webUri);
             }
-            else
-            {
-                webUri = GetDirectoryUri(currentTitle);
-            }
-            wc.OpenReadAsync(webUri);
         }
 
         private static Uri GetDirectoryUri(string currentTitle)

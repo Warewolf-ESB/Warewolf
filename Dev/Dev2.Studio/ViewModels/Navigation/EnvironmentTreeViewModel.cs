@@ -36,7 +36,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         private RelayCommand _removeCommand;
         private RelayCommand<string> _newResourceCommand;
         private RelayCommand _refreshCommand;
-        WebPropertyEditorWindow _win;
 
         #endregion
 
@@ -383,9 +382,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion
 
         #region private methods
-
-        bool _isRefreshValid = true;
-
+        
         /// <summary>
         /// Refreshes the environment.
         /// </summary>

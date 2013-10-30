@@ -10,7 +10,6 @@ namespace Dev2.Studio.Factory {
         {
             IDataListViewModel dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel);
-
             return dataListViewModel;
         }
     }

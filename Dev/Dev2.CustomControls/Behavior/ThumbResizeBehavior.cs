@@ -55,6 +55,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
             AssociatedObject.DragDelta -= AssociatedObjectOnDragDelta;
+            routedEventArgs.Handled = true;
         }
 
         void AssociatedObjectOnDragDelta(object sender, DragDeltaEventArgs e)

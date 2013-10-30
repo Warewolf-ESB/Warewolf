@@ -397,6 +397,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void CleanUp()
         {
             Context.Items.Unsubscribe<Selection>(SelectionChanged);
+            _activity = null;
         }
 
         #endregion        

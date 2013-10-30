@@ -7,15 +7,10 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Common;
 using Dev2.Common.Enums;
-using Dev2.Common.ExtMethods;
-using Dev2.Data.Enums;
-using System.Linq;
 using Dev2.Utilities;
 
 namespace Dev2.Studio.ActivityDesigners

@@ -44,6 +44,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             WindowNavigationBehavior = null;
             AssociatedObject.Click -= AssociatedObject_Click;
             AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
+            routedEventArgs.Handled = true;
         }
 
         void AssociatedObject_Click(object sender, RoutedEventArgs e)

@@ -33,6 +33,24 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Assert.IsInstanceOfType(vm, typeof(ActivityDesignerViewModel), "Activity view model base cannot initialize");
         }
 
+        [TestMethod]
+        [TestCategory("ActivityDesignerViewModel_ShowHelp")]
+        [Owner("Tshepo Ntlhokoa")]
+        public void ActivityDesignerViewModel_ShowHelp_SetToTrue_SetInitialFocusIsCalled()
+        {
+            var mockModel = new Mock<ModelItem>();
+            var vm = new TestActivityDesignerViewModel(mockModel.Object);
+            var wasCalled = false;
+
+            vm.SetIntialFocusAction(() =>
+            {
+                wasCalled = true;
+            });
+
+            vm.ShowHelp = true;
+
+            Assert.IsTrue(wasCalled);
+        }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]

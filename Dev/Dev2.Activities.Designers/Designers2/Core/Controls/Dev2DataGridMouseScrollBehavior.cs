@@ -60,6 +60,7 @@ namespace Dev2.Activities.Designers2.Core.Controls
             AssociatedObject.SelectionChanged -= AssociatedObject_SelectionChanged;
             AssociatedObject.PreviewMouseWheel -= AssociatedObject_doCustomScroll;
             AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
+            routedEventArgs.Handled = true;
         }
 
         void AssociatedObject_SelectionChanged(object sender, SelectionChangedEventArgs e)

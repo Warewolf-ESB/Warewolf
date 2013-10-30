@@ -73,6 +73,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         private void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
         {
             UnsubscribeFromEvents();
+            routedEventArgs.Handled = true;
         }
 
         #endregion

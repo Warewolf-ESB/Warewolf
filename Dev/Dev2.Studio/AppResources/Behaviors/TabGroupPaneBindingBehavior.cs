@@ -110,6 +110,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         static void GotFocusHandler(object sender, RoutedEventArgs routedEventArgs)
         {
             RefreshActiveEnvironment(sender);
+            routedEventArgs.Handled = true;
         }
 
         static void RefreshActiveEnvironment(object sender)

@@ -62,19 +62,17 @@ namespace Dev2.Studio.Core.Network
                 Uri.TryCreate(new Uri(StringResources.Uri_WebServer), relativeUrl, out url);
             }
 
-            var webClient = new WebClient
+            using(var webClient = new WebClient { Encoding = Encoding.UTF8 })
             {
-                Encoding = Encoding.UTF8
-            };
-
-            if(asyncCallback == null)
-            {
-                webClient.UploadString(url, method.ToString(), data);
-            }
-            else
-            {
-                webClient.UploadStringCompleted += (sender, args) => asyncCallback(args);
-                webClient.UploadStringAsync(url, method.ToString(), data);
+                if(asyncCallback == null)
+                {
+                    webClient.UploadString(url, method.ToString(), data);
+                }
+                else
+                {
+                    webClient.UploadStringCompleted += (sender, args) => asyncCallback(args);
+                    webClient.UploadStringAsync(url, method.ToString(), data);
+                }
             }
         }
 

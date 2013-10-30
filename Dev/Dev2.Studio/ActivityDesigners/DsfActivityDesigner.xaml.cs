@@ -313,6 +313,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void OnUnloaded(object sender, RoutedEventArgs routedEventArgs)
         {
             CleanUp();
+            routedEventArgs.Handled = true;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
@@ -340,6 +341,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 IsItemDragged.Instance.IsDragged = false;
             }
+            routedEventArgs.Handled = true;
         }
 
         void SelectionChanged(Selection item)
@@ -563,6 +565,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void ChildOnGotFocus(object sender, RoutedEventArgs routedEventArgs)
         {
             HideAdorners();
+            routedEventArgs.Handled = true;
         }
 
         private void ChildOnLostFocus(object sender, RoutedEventArgs e)
@@ -587,6 +590,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             CleanUp();
         }
 
+        
+
         private void CleanUp()
         {
             Loaded -= OnLoaded;
@@ -599,6 +604,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             Context.Items.Unsubscribe<Selection>(SelectionChanged);
             Context.Services.Unsubscribe<IDesignerManagementService>(SetDesignerManagementService);
+
+            if (_designerManagementService != null)
+            {
+                _designerManagementService.CollapseAllRequested -= _designerManagementService_CollapseAllRequested;
+                _designerManagementService.ExpandAllRequested -= _designerManagementService_ExpandAllRequested;
+                _designerManagementService.RestoreAllRequested -= _designerManagementService_RestoreAllRequested;
+                _designerManagementService = null;
+            }
 
             SetDesignerManagementService(null);
             _workflowDesignerSelection = null;

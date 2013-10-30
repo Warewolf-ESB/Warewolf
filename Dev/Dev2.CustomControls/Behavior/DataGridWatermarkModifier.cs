@@ -193,6 +193,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         private void AssociatedObjectOnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
             UnsubscribeFromEvents();
+            routedEventArgs.Handled = true;
         }
 
         private void observable_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

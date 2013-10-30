@@ -32,6 +32,7 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         readonly ModelItem _modelItem;
+        Action _setInitialFocus;
 
         readonly ObservableCollection<ActivityDesignerToggle> _titleBarToggles = new ObservableCollection<ActivityDesignerToggle>();
 
@@ -45,7 +46,6 @@ namespace Dev2.Activities.Designers2.Core
             VerifyArgument.IsNotNull("modelItem", modelItem);
             _modelItem = modelItem;
             _modelItem.PropertyChanged += OnModelItemPropertyChanged;
-
             VerifyArgument.IsNotNull("showExampleWorkflow", showExampleWorkflow);
 
             IsValid = true;
@@ -68,6 +68,11 @@ namespace Dev2.Activities.Designers2.Core
                 Mode = BindingMode.TwoWay,
                 Converter = new NegateBooleanConverter()
             });
+        }
+
+        public void SetIntialFocusAction(Action setInitialFocus)
+        {
+            _setInitialFocus = setInitialFocus;
         }
 
         public ModelItem ModelItem { get { return _modelItem; } }
@@ -138,7 +143,20 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         public static readonly DependencyProperty ShowHelpProperty =
-            DependencyProperty.Register("ShowHelp", typeof(bool), typeof(ActivityDesignerViewModel), new PropertyMetadata(false));
+            DependencyProperty.Register("ShowHelp", typeof(bool), typeof(ActivityDesignerViewModel), new PropertyMetadata(false, OnShowHelp));
+
+        static void OnShowHelp(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var vm = d as ActivityDesignerViewModel;
+          
+            if(vm != null && (bool)e.NewValue)
+            {
+                if(vm._setInitialFocus != null)
+                {
+                    vm._setInitialFocus();
+                }
+            }
+        }
 
         public string HelpText
         {
@@ -235,7 +253,7 @@ namespace Dev2.Activities.Designers2.Core
         protected virtual void OnModelItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
         }
-
+        
         protected void AddTitleBarHelpToggle()
         {
             var toggle = ActivityDesignerToggle.Create(

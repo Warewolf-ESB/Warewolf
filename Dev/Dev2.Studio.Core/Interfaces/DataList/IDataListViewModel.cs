@@ -1,11 +1,12 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.DataList.Contract;
 using System.Collections.Generic;
 
 namespace Dev2.Studio.Core.Interfaces.DataList
 {
-    public interface IDataListViewModel : IScreen, IChild
+    public interface IDataListViewModel : IScreen, IChild, IDisposable
     {
         IResourceModel Resource { get; }
         ICommand FindUnusedAndMissingCommand { get; }

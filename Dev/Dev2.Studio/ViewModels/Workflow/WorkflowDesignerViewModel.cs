@@ -82,8 +82,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public delegate void SourceLocationEventHandler(SourceLocation src);
 
-        readonly IDesignerManagementService _designerManagementService;
-        readonly IWorkflowHelper _workflowHelper;
+        IDesignerManagementService _designerManagementService;
+        IWorkflowHelper _workflowHelper;
 
         RelayCommand _collapseAllCommand;
 
@@ -101,7 +101,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         VirtualizedContainerService _virtualizedContainerService;
         MethodInfo _virtualizedContainerServicePopulateAllMethod;
 
-        readonly StudioSubscriptionService<DebugSelectionChangedEventArgs> _debugSelectionChangedService = new StudioSubscriptionService<DebugSelectionChangedEventArgs>();
+        StudioSubscriptionService<DebugSelectionChangedEventArgs> _debugSelectionChangedService = new StudioSubscriptionService<DebugSelectionChangedEventArgs>();
 
         #endregion
 
@@ -1336,7 +1336,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected void WdOnModelChanged(object sender, EventArgs eventArgs)
         {
-            if(Designer.View.IsKeyboardFocusWithin || sender != null)
+            if ((Designer != null && Designer.View.IsKeyboardFocusWithin) || sender != null)
             {
                 var checkServiceDefinition = CheckServiceDefinition();
                 var checkDataList = CheckDataList();
@@ -1666,8 +1666,63 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected override void OnDispose()
         {
-            _wd = null;
-            _designerManagementService.Dispose();
+            if(_wd != null)
+            {
+                _wd.Context.Items.Unsubscribe<Selection>(OnItemSelected);
+                _wd.ModelChanged -= WdOnModelChanged;
+                _wd.Context.Services.Unsubscribe<ModelService>(instance =>
+                {
+                    _modelService = instance;
+                    _modelService.ModelChanged += ModelServiceModelChanged;
+                });
+                _wd.Context.Services.Unsubscribe<ViewStateService>(instance =>
+                { });
+
+                _wd.View.PreviewDrop -= ViewPreviewDrop;
+                _wd.View.PreviewMouseDown -= ViewPreviewMouseDown;
+
+                _wd.Context.Services.Unsubscribe<DesignerView>(instance =>
+                {
+                    // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
+                    instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
+                    instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;
+                });
+
+                Selection.Unsubscribe(_wd.Context, SelectedItemChanged);
+                CommandManager.RemovePreviewExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
+                CommandManager.RemovePreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
+                Selection.Unsubscribe(_wd.Context, SelectedItemChanged);
+               
+            }
+
+            if(_debugSelectionChangedService != null)
+            {
+                _debugSelectionChangedService.Unsubscribe();
+                _debugSelectionChangedService.Dispose();
+            }
+
+            if(_designerManagementService != null)
+            {
+                _designerManagementService.Dispose();
+            }
+
+            if(_resourceModel != null)
+            {
+                _resourceModel.OnDataListChanged -= FireWdChanged;
+                _resourceModel.OnResourceSaved -= UpdateOriginalDataList;
+            }
+
+            if(_modelService != null)
+            {
+                _modelService.ModelChanged -= ModelServiceModelChanged;
+            }
+
+            if(_uniqueWorkflowParts != null)
+            {
+                _uniqueWorkflowParts.Clear();
+                _uniqueWorkflowParts = null;
+            }
+
             base.OnDispose();
         }
 
@@ -1731,16 +1786,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         #endregion
-
-        protected override void OnDeactivate(bool close)
-        {
-            if(close)
-            {
-
-            }
-            base.OnDeactivate(close);
-        }
-
+        
         public void FireWdChanged()
         {
             WdOnModelChanged(new object(), new EventArgs());

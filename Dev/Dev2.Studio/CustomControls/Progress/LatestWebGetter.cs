@@ -8,7 +8,7 @@ using Dev2.Providers.Logs;
 namespace Dev2.Studio.Core.Helpers
 {
     // PBI 9512 - 2013.06.07 - TWR: added
-    public class LatestWebGetter : ILatestGetter
+    public class LatestWebGetter : ILatestGetter, IDisposable
     {
         readonly IDev2WebClient _webClient;
 
@@ -69,5 +69,17 @@ namespace Dev2.Studio.Core.Helpers
                 Invoked(this, EventArgs.Empty);
             }
         }
+
+        #region Implementation of IDisposable
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            _webClient.Dispose();
+        }
+
+        #endregion
     }
 }

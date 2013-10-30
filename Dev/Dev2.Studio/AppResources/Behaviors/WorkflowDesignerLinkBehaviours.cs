@@ -71,6 +71,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         private void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
         {
             CleanUp();
+            routedEventArgs.Handled = true;
         }
 
         private void AssociatedObjectLoaded(object sender, RoutedEventArgs e)

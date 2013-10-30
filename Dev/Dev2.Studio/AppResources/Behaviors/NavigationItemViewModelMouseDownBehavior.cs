@@ -13,7 +13,6 @@ namespace Dev2.Studio.AppResources.Behaviors
 {
     public class NavigationItemViewModelMouseDownBehavior : Behavior<FrameworkElement>
     {
-        private FrameworkElement containingTreeViewItem;
         readonly IEventAggregator _eventPublisher;
 
         public NavigationItemViewModelMouseDownBehavior()

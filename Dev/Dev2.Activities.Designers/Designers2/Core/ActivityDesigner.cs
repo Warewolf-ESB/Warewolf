@@ -15,20 +15,26 @@ using Dev2.Utilities;
 namespace Dev2.Activities.Designers2.Core
 {
     [ActivityDesignerOptions(AllowDrillIn = false, AlwaysCollapseChildren = true)]
-    public class ActivityDesigner<TViewModel> : ActivityDesigner
-        where TViewModel : ActivityDesignerViewModel
+    public class ActivityDesigner<TViewModel> : ActivityDesigner, IDisposable
+        where TViewModel : ActivityDesignerViewModel 
     {
         bool _isInitialFocusDone;
         readonly AdornerControl _helpAdorner;
         readonly AdornerControl _errorsAdorner;
         IDesignerManagementService _designerManagementService;
+        bool _isDisposed;
+        DependencyPropertyDescriptor _zIndexProperty;
+        TViewModel _dataContext;
+        bool _isSetFocusActionSet;
 
         public ActivityDesigner()
         {
+            FocusManager.SetIsFocusScope(this , true);
             _helpAdorner = new HelpAdorner(this);
             _errorsAdorner = new ErrorsAdorner(this);
 
             Loaded += (sender, args) => OnLoaded();
+            Unloaded += ActivityDesigner_Unloaded;
         }
 
         public TViewModel ViewModel { get { return DataContext as TViewModel; } }
@@ -44,34 +50,37 @@ namespace Dev2.Activities.Designers2.Core
             }
             base.OnPreviewMouseDoubleClick(e);
         }
-
-        //protected override void OnGotFocus(RoutedEventArgs e)
-        //{
-        //    base.OnGotFocus(e);
-
-        //    // WORKAROUND: FlowchartDesigner.DoFlowchartGridDrop issues a 
-        //    // Keyboard.Focus() on the activity designer which steals the 
-        //    // focus from the first element on first drop!
-        //    if(!_isInitialFocusDone)
-        //    {
-        //        ContentDesignerTemplate.SetInitialFocus();
-        //        _isInitialFocusDone = true;
-        //    }
-        //}
-
-        protected override void OnContentChanged(object oldContent, object newContent)
+        
+        protected override void OnMouseEnter(MouseEventArgs e)
         {
-            base.OnContentChanged(oldContent, newContent);
-            ContentDesignerTemplate.SetInitialFocus();
+            if (!_isSetFocusActionSet)
+            {
+                var vm = DataContext as ActivityDesignerViewModel;
+                if (vm != null)
+                {
+                    vm.SetIntialFocusAction(SetInitialiFocus);
+                }
+                _isSetFocusActionSet = true;
+            }
+            base.OnMouseEnter(e);
+        }
+
+        private void SetInitialiFocus()
+        {
+            if (!_isInitialFocusDone)
+            {
+                ContentDesignerTemplate.SetInitialFocus();
+                _isInitialFocusDone = true;
+            }
         }
 
         protected virtual void OnLoaded()
         {
-            var viewModel = CreateViewModel();
-            DataContext = viewModel;
+            _dataContext = CreateViewModel();
+            DataContext = _dataContext;
 
-            ApplyBindings(viewModel);
-            ApplyEventHandlers(viewModel);
+            ApplyBindings(_dataContext);
+            ApplyEventHandlers(_dataContext);
         }
 
         protected virtual TViewModel CreateViewModel()
@@ -102,8 +111,8 @@ namespace Dev2.Activities.Designers2.Core
 
         void ApplyEventHandlers(TViewModel viewModel)
         {
-            var zIndexProperty = DependencyPropertyDescriptor.FromProperty(ActivityDesignerViewModel.ZIndexPositionProperty, typeof(TViewModel));
-            zIndexProperty.AddValueChanged(viewModel, OnZIndexPositionChanged);
+            _zIndexProperty = DependencyPropertyDescriptor.FromProperty(ActivityDesignerViewModel.ZIndexPositionProperty, typeof(TViewModel));
+            _zIndexProperty.AddValueChanged(viewModel, OnZIndexPositionChanged);
 
             if(Context != null)
             {
@@ -166,5 +175,85 @@ namespace Dev2.Activities.Designers2.Core
         {
             ActivityHelper.HandleDragEnter(e);
         }
+
+         #region IDisposable Members
+
+
+        ~ActivityDesigner()
+        {
+            // Do not re-create Dispose clean-up code here.
+            // Calling Dispose(false) is optimal in terms of
+            // readability and maintainability.
+            Dispose(false);
+        }
+        
+        /// <summary>
+        /// Child classes can override this method to perform 
+        /// clean-up logic, such as removing event handlers.
+        /// </summary>
+        protected virtual void OnDispose()
+        {
+            if (_designerManagementService != null)
+            {
+                _designerManagementService.CollapseAllRequested -= OnDesignerManagementServiceCollapseAllRequested;
+                _designerManagementService.ExpandAllRequested -= OnDesignerManagementServiceExpandAllRequested;
+                _designerManagementService.RestoreAllRequested -= OnDesignerManagementServiceRestoreAllRequested;
+            }
+
+            if (Context != null)
+            {
+                Context.Items.Unsubscribe<Selection>(OnSelectionChanged);
+                Context.Services.Unsubscribe<IDesignerManagementService>(OnDesignerManagementServiceChanged);
+            }
+
+            if(_zIndexProperty != null)
+            {
+                _zIndexProperty.RemoveValueChanged(_dataContext, OnZIndexPositionChanged);
+            }
+
+            Loaded -= (sender, args) => OnLoaded();
+            Unloaded -= ActivityDesigner_Unloaded;
+        }
+
+
+        void ActivityDesigner_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Dispose();
+        }
+
+        // Do not make this method virtual.
+        // A derived class should not be able to override this method.
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        // Dispose(bool disposing) executes in two distinct scenarios.
+        // If disposing equals true, the method has been called directly
+        // or indirectly by a user's code. Managed and unmanaged resources
+        // can be disposed.
+        // If disposing equals false, the method has been called by the
+        // runtime from inside the finalizer and you should not reference
+        // other objects. Only unmanaged resources can be disposed.
+        void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called.
+            if(!_isDisposed)
+            {
+                // If disposing equals true, dispose all managed
+                // and unmanaged resources.
+                if(disposing)
+                {
+                    // Dispose managed resources.
+                    OnDispose();
+                }
+
+                // Call the appropriate methods to clean up
+                // unmanaged resources here.
+                _isDisposed = true;
+            }
+        }
+
+        #endregion
     }
 }

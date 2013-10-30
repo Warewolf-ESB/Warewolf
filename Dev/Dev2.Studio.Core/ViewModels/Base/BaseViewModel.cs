@@ -16,7 +16,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
     /// </summary>
     public abstract class BaseViewModel : SimpleBaseViewModel
     {
-        readonly IEventAggregator _eventPublisher;
+        IEventAggregator _eventPublisher;
 
         #region Constructor
 
@@ -42,6 +42,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
         protected override void OnDispose()
         {
             _eventPublisher.Unsubscribe(this);
+            _eventPublisher = null;
             base.OnDispose();
         }
 

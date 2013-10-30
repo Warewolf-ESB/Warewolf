@@ -243,7 +243,7 @@ namespace Dev2.Studio.Core.Workspaces
             // BUG 9492 - 2013.06.08 - TWR : added null check
             if(resourceModel == null)
             {
-                throw new ArgumentNullException("resourceModel");
+                return;
             }
             var itemToRemove = WorkspaceItems.FirstOrDefault(c => c.ServiceName == resourceModel.ResourceName);
             if(itemToRemove == null)

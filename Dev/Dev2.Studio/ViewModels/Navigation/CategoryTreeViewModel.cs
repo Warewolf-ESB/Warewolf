@@ -37,7 +37,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         bool _isRenaming;
         string _displayName;
         ICommand _showNewWorkflowWizard;
-        ICommand _keypressCommand;
         ICommand _renameCommand;
         ICommand _deleteFolderCommand;
 

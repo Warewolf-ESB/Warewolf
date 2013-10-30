@@ -43,6 +43,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
             AssociatedObject.DataContextChanged -= AssociatedObject_DataContextChanged;
+            routedEventArgs.Handled = true;
         }
 
         protected override void OnDetaching()

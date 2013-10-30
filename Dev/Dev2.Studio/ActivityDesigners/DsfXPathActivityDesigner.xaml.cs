@@ -19,7 +19,7 @@ using QuickVariableInputViewModel = Dev2.ViewModels.QuickVariableInput.QuickVari
 namespace Dev2.Studio.ActivityDesigners
 {
     // Interaction logic for DsfXPathActivityDesigner.xaml
-    public partial class DsfXPathActivityDesigner
+    public partial class DsfXPathActivityDesigner  : IDisposable
     {
         #region Fields
 
@@ -334,6 +334,28 @@ namespace Dev2.Studio.ActivityDesigners
             }
 
             ShowAdorners = false;
+        }
+
+        #endregion        
+
+        
+        #region Dispose
+
+        public void Dispose()
+        {
+            CleanUp();
+        }
+
+        #endregion
+
+        #region Clean Up
+
+        void CleanUp()
+        {
+            Context.Items.Unsubscribe<Selection>(SelectionChanged);
+            activity = null;
+            DataContext = null;
+            ViewModel = null;
         }
 
         #endregion        

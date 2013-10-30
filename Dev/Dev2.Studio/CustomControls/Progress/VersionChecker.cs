@@ -79,8 +79,10 @@ namespace Dev2.Studio.Core.Helpers
 
             // PBI 9512 - 2013.06.07 - TWR: added
             // PBI 9941 - 2013.07.07 - TWR: modified
-            ILatestGetter latestGetter = new LatestWebGetter(_webClient);
-            latestGetter.GetLatest(StartPageUri, path);
+            using(var latestGetter = new LatestWebGetter(_webClient))
+            {
+                latestGetter.GetLatest(StartPageUri, path);
+            }
 
             if (Latest > Current)
             {

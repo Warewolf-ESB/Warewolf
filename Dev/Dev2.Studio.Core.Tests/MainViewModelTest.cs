@@ -1331,7 +1331,6 @@ namespace Dev2.Core.Tests
         public void MainViewModelShowStartPageExpectedGetsLatestFirst()
         {
                 CreateFullExportsAndVm();
-                _mainViewModel.LatestGetter.Invoked += (sender, args) => Assert.IsTrue(true);
                 var versionChecker = Mock.Get(_mainViewModel.Version);
                 versionChecker.Setup(v => v.StartPageUri).Verifiable();
                 _mainViewModel.ShowStartPage();

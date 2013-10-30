@@ -418,8 +418,6 @@ namespace Dev2.Studio.ViewModels
             WindowManager = windowManager ?? new WindowManager();
             WebController = webController ?? new WebController(PopupProvider);
             FeedbackInvoker = feedbackInvoker ?? new FeedbackInvoker();
-            LatestGetter = new LatestWebGetter(); // PBI 9512 - 2013.06.07 - TWR: added
-
             EnvironmentRepository = environmentRepository;
 
             if(ExplorerViewModel == null)
@@ -574,7 +572,7 @@ namespace Dev2.Studio.ViewModels
 
         public void RefreshActiveEnvironment()
         {
-            if(ActiveItem != null && ActiveItem.Environment != null)
+            if (ActiveItem != null && ActiveItem.Environment != null)
             {
                 Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
                 _eventPublisher.Publish(new SetActiveEnvironmentMessage(ActiveItem.Environment));
@@ -726,7 +724,12 @@ namespace Dev2.Studio.ViewModels
 
             // PBI 9512 - 2013.06.07 - TWR: added
             // PBI 9941 - 2013.07.07 - TWR: modified
-            LatestGetter.GetLatest(Version.StartPageUri, path);
+
+                using(var getter = new LatestWebGetter())
+                {
+                    getter.GetLatest(Version.StartPageUri, path);
+                }
+                
             }, () =>
             {
                 var path = FileHelper.GetAppDataPath(StringResources.Uri_Studio_Homepage);
@@ -942,7 +945,8 @@ namespace Dev2.Studio.ViewModels
             {
                 if(item != null)
                 {
-                    item.Parent = this;
+                    //Not sure what this does
+                   // item.Parent = this;
                     var wfItem = item.WorkSurfaceViewModel as IWorkflowDesignerViewModel;
                     if(wfItem != null)
                     {
@@ -1386,6 +1390,7 @@ namespace Dev2.Studio.ViewModels
                                         NewWorkflowNames.Instance.Remove(resource.ResourceName); 
                                     }
                                     RemoveWorkspaceItem(workflowVM);
+                                    workflowVM.Dispose();
                                     Items.Remove(context);
                                     Logger.TraceInfo("Publish message of type - " + typeof(TabClosedMessage));
                                     _eventPublisher.Publish(new TabClosedMessage(context));

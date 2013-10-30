@@ -179,12 +179,14 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
         {
-            InsertAdorners();          
+            InsertAdorners();
+            e.Handled = true;
         }
 
         private void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
         {
             UnsubscribeFromEvents();
+            routedEventArgs.Handled = true;
         }
 
         private void AdornerLayerOnMouseLeave(object sender, EventArgs eventArgs)

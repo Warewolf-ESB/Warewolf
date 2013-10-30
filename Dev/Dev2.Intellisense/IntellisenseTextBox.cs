@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Windows.Data;
 using Dev2.DataList.Contract;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using System;
 using System.Collections;
@@ -603,6 +604,8 @@ namespace Dev2.UI
 
         private bool _forcedOpen;
         private bool _fromPopup;
+        bool _isDisposed;
+
         #endregion
 
         #region Public Properties
@@ -655,6 +658,7 @@ namespace Dev2.UI
         private void OnUnloaded(object sender, RoutedEventArgs routedEventArgs)
         {
             Unloaded -= OnUnloaded;
+            routedEventArgs.Handled = true;
 
         }
 

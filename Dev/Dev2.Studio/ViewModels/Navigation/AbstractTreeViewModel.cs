@@ -38,7 +38,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         protected ObservableCollection<ITreeNode> _children;
         // ReSharper restore InconsistentNaming
         private RelayCommand _deployCommand;
-        private RelayCommand _editCommand;
         private string _filterText;
         private ICollectionView _filteredChildren;
         private bool _hasUnfilteredExpandStateBeenSet;
@@ -52,7 +51,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         private bool? _unfilteredExpandState;
         bool _isRefreshing;
         int _serverRenameProgress;
-        bool _serverIsNotNotBusyRenaming;
         bool _isNew;
         protected readonly IEventAggregator _eventPublisher;
 

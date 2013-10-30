@@ -441,6 +441,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void CleanUp()
         {
             Context.Items.Unsubscribe<Selection>(SelectionChanged);
+            activity = null;
+            DataContext = null;
+            ViewModel = null;
         }
 
         #endregion        

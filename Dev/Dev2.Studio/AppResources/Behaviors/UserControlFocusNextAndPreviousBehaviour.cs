@@ -19,6 +19,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             AssociatedObject.PreviewKeyDown -= AssociatedObject_PreviewKeyDown;
             AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
+            routedEventArgs.Handled = true;
         }
 
         void AssociatedObject_PreviewKeyDown(object sender, KeyEventArgs e)

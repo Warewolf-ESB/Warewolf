@@ -67,6 +67,7 @@ namespace Dev2.Helpers
         /// </summary>
         public void Dispose()
         {
+            _webClient.Dispose();
         }
 
         #endregion
