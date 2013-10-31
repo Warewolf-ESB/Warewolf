@@ -30,6 +30,15 @@
             <Directory Id="dir1931D9C5012B41449415D8D0C9710DEB" Name="Webs" />
         </DirectoryRef>
         <ComponentGroup Id="Server">
+            <Component Id="cmpD31F5EF4CC334564314D0673C5706C7F" Directory="dirServerRoot" Guid="{AA67B531-8C85-47CF-9CDC-2F8352AA67C2}">
+                <File Id="filB616149A55DCE0B2E9E6492125920C38" KeyPath="yes" Source="..\ProductBuild\Server\Tamir.SharpSSH.dll" />
+            </Component>
+            <Component Id="cmpD31F5EF4CC334564314D0673C5206C7F" Directory="dirServerRoot" Guid="{AC67B531-8C85-47CF-9CDC-2F8352AA67C2}">
+                <File Id="filB616149A55DCE0A2E9E6492125920C38" KeyPath="yes" Source="..\ProductBuild\Server\DiffieHellman.dll" />
+            </Component>
+            <Component Id="cmpD31F5EF4CC334564314D0673C5706A7F" Directory="dirServerRoot" Guid="{AA67B531-8C85-47CF-9CDC-2F8352AA67A2}">
+                <File Id="filB616149A55DCE0B2E9E6492125920A38" KeyPath="yes" Source="..\ProductBuild\Server\Org.Mentalis.Security.dll" />
+            </Component>
             <Component Id="cmpD31F5EF4CC334564314D0673C5706C7A" Directory="dirServerRoot" Guid="{AA67B531-8C85-47CF-9CDC-2F8352AA67C5}">
                 <File Id="filB616149A55DCE0B2E9E6492125920C35" KeyPath="yes" Source="..\ProductBuild\Server\Caliburn.Micro.dll" />
             </Component>
