@@ -6,6 +6,7 @@ using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Test.XML;
+using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
@@ -43,6 +44,26 @@ namespace Dev2.Tests.Runtime.ESB
         #endregion
 
         #region Execute
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("WebserviceExecutionContainer_Execute")]
+        public void WebserviceExecutionContainer_Execute_whenErrors_ExpectValidErrors()
+        {
+            //------------Setup for test--------------------------
+            XElement FaultySource = XmlResource.Fetch("FaultyWebSource");
+            var container = CreateWebServiceContainer(WebServiceWithInputsXml, FaultySource, WebServiceWithInputsResponseXml.ToString(), true);
+
+            ErrorResultTO errors;
+
+            //------------Execute Test---------------------------
+            container.Execute(out errors);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, errors.FetchErrors().Count);
+            Assert.AreEqual("Faulty Things Happened", errors.FetchErrors()[0]);
+
+        }
 
         [TestMethod]
         public void WebServiceContainerExecuteWithValidServiceHavingInputsExpectedExecutesService()
@@ -134,7 +155,7 @@ namespace Dev2.Tests.Runtime.ESB
 
         #region CreateWebServiceContainer
 
-        static WebServiceContainerMock CreateWebServiceContainer(XElement serviceXml, XElement sourceXml, string response)
+        static WebServiceContainer CreateWebServiceContainer(XElement serviceXml, XElement sourceXml, string response, bool isFaulty = false)
         {
             ErrorResultTO errors;
             var compiler = DataListFactory.CreateDataListCompiler();
@@ -147,13 +168,26 @@ namespace Dev2.Tests.Runtime.ESB
             var esbChannel = new Mock<IEsbChannel>();
 
             var sa = CreateServiceAction(serviceXml, sourceXml);
-            var container = new WebServiceContainerMock(sa, dataObj.Object, workspace.Object, esbChannel.Object)
+            WebServiceContainer container = null;
+
+            if (!isFaulty)
+            {
+
+                container = new WebServiceContainerMock(sa, dataObj.Object, workspace.Object, esbChannel.Object)
             {
                 WebRequestRespsonse = response
             };
+            }
+            else
+            {
+                container = new FaultyWebServiceContainerMock(sa, dataObj.Object, workspace.Object, esbChannel.Object)
+                {
+                    WebRequestRespsonse = string.Empty
+                };
+            }
+
             return container;
         }
-
         #endregion
 
         #region CreateServiceAction

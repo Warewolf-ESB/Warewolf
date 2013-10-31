@@ -21,4 +21,21 @@ namespace Dev2.Tests.Runtime.ESB
             service.RequestResponse = WebRequestRespsonse;
         }
     }
+
+
+    public class FaultyWebServiceContainerMock : WebServiceContainer
+    {
+        public FaultyWebServiceContainerMock(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
+            : base(sa, dataObj, theWorkspace, esbChannel)
+        {
+        }
+
+        public string WebRequestRespsonse { get; set; }
+
+        protected override void ExecuteWebRequest(WebService service, out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO();
+            errors.AddError("Faulty Things Happened");
+        }
+    }
 }
