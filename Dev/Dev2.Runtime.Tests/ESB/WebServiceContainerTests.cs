@@ -181,7 +181,7 @@ namespace Dev2.Tests.Runtime.ESB
 
         #region Overrides of WebServiceContainerMock
 
-        protected override void ExecuteWebRequest(WebService service)
+        protected override void ExecuteWebRequest(WebService service, out ErrorResultTO errors)
         {
             throw new Exception("Cannot Execute Web Request");
         }

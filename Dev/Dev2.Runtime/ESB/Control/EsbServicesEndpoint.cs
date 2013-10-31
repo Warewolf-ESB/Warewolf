@@ -265,16 +265,7 @@ namespace Dev2.DynamicServices
             var oldID = dataObject.DataListID;
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-
-            var datalist1 = compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-
-            datalist1 += "";
-
             IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> remainingMappings = ShapeForSubRequest(dataObject, inputDefs, outputDefs, out errors);
-
-            var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-
-            datalist += "";
 
             // local non-scoped execution ;)
             bool isLocal = string.IsNullOrEmpty(dataObject.RemoteInvokerID);

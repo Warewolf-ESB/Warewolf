@@ -1,5 +1,6 @@
 ﻿using System.Xml.Linq;
 using Dev2.Data.Util;
+using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
@@ -20,17 +21,17 @@ namespace Dev2.Runtime.ESB.Execution
             return new WebService(serviceXml) { Source = new WebSource(sourceXml) };
         }
 
-        protected override object ExecuteService(WebService service)
+        protected override object ExecuteService(WebService service, out ErrorResultTO errors)
         {
-            ExecuteWebRequest(service);
+            ExecuteWebRequest(service, out errors);
             var result = Scrubber.Scrub(service.RequestResponse);
             service.RequestResponse = null;
             return result;
         }
 
-        protected virtual void ExecuteWebRequest(WebService service)
+        protected virtual void ExecuteWebRequest(WebService service, out ErrorResultTO errors)
         {
-            WebServices.ExecuteRequest(service);
+            WebServices.ExecuteRequest(service, out errors);
         }
     }
 }

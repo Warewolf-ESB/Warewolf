@@ -37,7 +37,7 @@ namespace Dev2.Runtime.ESB.Execution
         }
 
         protected abstract TService CreateService(XElement serviceXml, XElement sourceXml);
-        protected abstract object ExecuteService(TService service);
+        protected abstract object ExecuteService(TService service, out ErrorResultTO errors);
 
         #region ExecuteImpl
 
@@ -178,7 +178,10 @@ namespace Dev2.Runtime.ESB.Execution
 
             try
             {
-                return ExecuteService(service);
+                ErrorResultTO invokeErrors;
+                var result = ExecuteService(service, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
+                return result;
             }
             catch(Exception ex)
             {

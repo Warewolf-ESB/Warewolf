@@ -1,4 +1,5 @@
-﻿using Dev2.DynamicServices;
+﻿using Dev2.DataList.Contract;
+using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
@@ -14,8 +15,9 @@ namespace Dev2.Tests.Runtime.ESB
 
         public string WebRequestRespsonse { get; set; }
 
-        protected override void ExecuteWebRequest(WebService service)
+        protected override void ExecuteWebRequest(WebService service, out ErrorResultTO errors)
         {
+            errors = new ErrorResultTO();
             service.RequestResponse = WebRequestRespsonse;
         }
     }

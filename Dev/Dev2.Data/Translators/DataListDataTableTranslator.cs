@@ -182,11 +182,6 @@ namespace Dev2.Data.Translators
                 }
             }
 
-
-            var datalist = compiler.ConvertFrom(targetDL.UID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-
-            datalist += "";
-
             compiler.PushBinaryDataList(targetDL.UID, targetDL, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 

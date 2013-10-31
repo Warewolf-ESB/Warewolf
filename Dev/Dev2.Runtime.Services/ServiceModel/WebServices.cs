@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
+using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
@@ -50,7 +51,8 @@ namespace Dev2.Runtime.ServiceModel
 
                 if(string.IsNullOrEmpty(service.RequestResponse))
                 {
-                    ExecuteRequest(service);
+                    ErrorResultTO errors;
+                    ExecuteRequest(service, out errors);
                     service.Source.DisposeClient();
                 }
 
@@ -74,14 +76,14 @@ namespace Dev2.Runtime.ServiceModel
 
         #region ExecuteRequest
 
-        public static void ExecuteRequest(WebService service)
+        public static void ExecuteRequest(WebService service, out ErrorResultTO errors)
         {
             var headers = string.IsNullOrEmpty(service.RequestHeaders)
                               ? new string[0]
                               : service.RequestHeaders.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
             var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
             var requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
-            service.RequestResponse = WebSources.Execute(service.Source, service.RequestMethod, requestUrl, requestBody, headers);
+            service.RequestResponse = WebSources.Execute(service.Source, service.RequestMethod, requestUrl, requestBody, out errors, headers);
         }
 
         #endregion
