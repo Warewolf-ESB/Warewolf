@@ -1177,6 +1177,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\HelpShortcutKeys-32.png" />
     <Resource Include="Resources\HelpCommunity-32_files\image0.png" />
     <Resource Include="Images\PluginService-32.png" />
     <Resource Include="Resources\RemoteWarewolf-32_files\image0.png" />

@@ -37,7 +37,7 @@ namespace Dev2.Studio.Core.AppResources.Enums
         [Description("Dependency Visualiser")]
         DependencyVisualiser,
 
-        [IconLocation("Pack_Uri_Application_Image_Information", typeof(StringResources))]
+        [IconLocation("pack://application:,,,/images/HelpShortcutKeys-32.png")]
         [Description("Shortcut Keys")]
         ShortcutKeys,
 
