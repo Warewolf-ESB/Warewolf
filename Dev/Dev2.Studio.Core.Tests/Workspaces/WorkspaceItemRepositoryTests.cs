@@ -314,14 +314,6 @@ namespace Dev2.Core.Tests.Workspaces
         #region Remove
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void WorkspaceItemRepositoryRemoveWithNullModelExpectedThrowsArgumentNullException()
-        {
-            var repository = new WorkspaceItemRepository(GetUniqueRepositoryPath());
-            repository.Remove(null);
-        }
-
-        [TestMethod]
         public void WorkspaceItemRepositoryRemoveWithNonExistingModelExpectedDoesNothing()
         {
             string resourceName;
