@@ -99,13 +99,14 @@ namespace Dev2.Services.Execution
             DestroySqlServer();
         }
 
-        protected override object ExecuteService()
+        protected override object ExecuteService(out ErrorResultTO errors)
         {
-            var errors = new ErrorResultTO();
+            errors = new ErrorResultTO();
+            var invokeErrors = new ErrorResultTO();
             object executeService;
-            var result = SqlExecution(errors, out executeService) ? executeService : string.Empty;
+            var result = SqlExecution(invokeErrors, out executeService) ? executeService : string.Empty;
 
-            _errorResult.MergeErrors(errors);
+            _errorResult.MergeErrors(invokeErrors);
 
             return result;
         }

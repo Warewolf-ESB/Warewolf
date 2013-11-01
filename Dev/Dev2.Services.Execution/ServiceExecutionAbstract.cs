@@ -89,7 +89,7 @@ namespace Dev2.Services.Execution
 
         public TSource Source { get; set; }
 
-        protected abstract object ExecuteService();
+        protected abstract object ExecuteService(out ErrorResultTO errors);
 
         #region ExecuteImpl
 
@@ -216,7 +216,10 @@ namespace Dev2.Services.Execution
 
             try
             {
-                return ExecuteService();
+                ErrorResultTO invokeErrors;
+                var result =  ExecuteService(out invokeErrors);
+                errors.MergeErrors(invokeErrors);
+                return result;
             }
             catch(Exception ex)
             {

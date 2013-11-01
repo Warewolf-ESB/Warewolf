@@ -22,8 +22,9 @@ namespace Dev2.Services.Execution
         {
         }
 
-        protected override object ExecuteService()
+        protected override object ExecuteService(out ErrorResultTO errors)
         {
+            errors = new ErrorResultTO();
             return null;
         }
 

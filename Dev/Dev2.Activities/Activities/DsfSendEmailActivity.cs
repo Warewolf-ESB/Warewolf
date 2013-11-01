@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Mail;
 using Dev2.Common;
@@ -167,7 +168,6 @@ namespace Dev2.Activities
                 colItr.AddIterator(attachmentsItr);
 
                 int indexToUpsertTo = 0;
-                string expression = string.Empty;
                 while (colItr.HasMoreData())
                 {
                     if (IsDebug)
@@ -180,10 +180,11 @@ namespace Dev2.Activities
                     string result = SendEmail(colItr, fromAccountItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
 
                     allErrors.MergeErrors(errors);
+                    string expression;
                     if (DataListUtil.IsValueRecordset(Result) &&
                             DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
                     {
-                        expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString());
+                        expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                     }
                     else
                     {
@@ -194,7 +195,7 @@ namespace Dev2.Activities
                     {
                         toUpsert.Add(region, result);
                         toUpsert.FlushIterationFrame();
-                        if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                        if (dataObject.IsDebugMode())
                         {
                             AddDebugOutputItem(region, result, executionId, indexToUpsertTo);
                         }
@@ -217,7 +218,7 @@ namespace Dev2.Activities
                     DisplayAndWriteError("DsfSendEmailActivity", allErrors);
                     compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);

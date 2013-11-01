@@ -52,7 +52,7 @@ namespace Dev2.Runtime.ServiceModel
                 if(string.IsNullOrEmpty(service.RequestResponse))
                 {
                     ErrorResultTO errors;
-                    ExecuteRequest(service, out errors);
+                    ExecuteRequest(service, true, out errors);
                     service.Source.DisposeClient();
                 }
 
@@ -76,14 +76,14 @@ namespace Dev2.Runtime.ServiceModel
 
         #region ExecuteRequest
 
-        public static void ExecuteRequest(WebService service, out ErrorResultTO errors)
+        public static void ExecuteRequest(WebService service, bool throwError, out ErrorResultTO errors)
         {
             var headers = string.IsNullOrEmpty(service.RequestHeaders)
                               ? new string[0]
                               : service.RequestHeaders.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
             var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
             var requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
-            service.RequestResponse = WebSources.Execute(service.Source, service.RequestMethod, requestUrl, requestBody, out errors, headers);
+            service.RequestResponse = WebSources.Execute(service.Source, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers);
         }
 
         #endregion

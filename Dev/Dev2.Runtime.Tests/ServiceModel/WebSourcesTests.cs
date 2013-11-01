@@ -9,7 +9,7 @@ using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 
@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             try
             {
                 ErrorResultTO errors;
-                var result = WebSources.Execute(source, WebRequestMethod.Post, "/" + TestMethod, "CountryName=" + CountryName, out errors);
+                var result = WebSources.Execute(source, WebRequestMethod.Post, "/" + TestMethod, "CountryName=" + CountryName, false, out errors);
                 Assert.IsNotNull(result);
             }
             finally

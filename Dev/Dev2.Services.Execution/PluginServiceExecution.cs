@@ -30,9 +30,11 @@ namespace Dev2.Services.Execution
         {
         }
 
-        protected override object ExecuteService()
+        protected override object ExecuteService(out ErrorResultTO errors)
         {
             var dataBuilder = new StringBuilder("<Args><Args>");
+            errors = new ErrorResultTO();
+            _remoteHandler.Errors.ClearErrors();
 
             foreach (var parameter in Service.Method.Parameters)
             {
@@ -63,6 +65,8 @@ namespace Dev2.Services.Execution
             dataBuilder.Append("</Args></Args>");
 
             var result = _remoteHandler.RunPlugin(Source.AssemblyLocation, Service.Namespace, Service.Method.Name, dataBuilder.ToString(), Service.OutputDescription);
+
+            errors.MergeErrors(_remoteHandler.Errors);
 
             return result;
         }

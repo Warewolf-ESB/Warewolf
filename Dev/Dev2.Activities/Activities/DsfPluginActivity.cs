@@ -22,7 +22,9 @@ namespace Dev2.Activities
             var pluginServiceExecution = GetNewPluginServiceExecution(dataObject);
             tmpErrors = new ErrorResultTO();
             tmpErrors.MergeErrors(_errorsTo);
-            return ExecutePluginService(pluginServiceExecution);
+            var result = ExecutePluginService(pluginServiceExecution);
+            tmpErrors.MergeErrors(_errorsTo);
+            return result;
         }
 
         #endregion

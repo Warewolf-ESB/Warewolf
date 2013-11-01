@@ -114,7 +114,7 @@ namespace Dev2.Runtime.ServiceModel
                 ErrorResultTO errors;
                 return new ValidationResult
                 {
-                    Result = Execute(source, WebRequestMethod.Get, source.DefaultQuery, (string)null, out errors)
+                    Result = Execute(source, WebRequestMethod.Get, source.DefaultQuery, (string)null, true, out errors)
                 };
             }
             catch(WebException wex)
@@ -144,23 +144,23 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Execute
 
-        public static string Execute(WebSource source, WebRequestMethod method, string relativeUri, string data, out ErrorResultTO errors, string[] headers = null)
+        public static string Execute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null)
         {
             EnsureWebClient(source, headers);
-            return Execute(source.Client, string.Format("{0}{1}", source.Address, relativeUri), method, data, out errors);
+            return Execute(source.Client, string.Format("{0}{1}", source.Address, relativeUri), method, data, throwError, out errors);
         }
 
-        public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, out ErrorResultTO errors, string[] headers = null)
+        public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers = null)
         {
             EnsureWebClient(source, headers);
-            return Execute(source.Client, string.Format("{0}{1}", source.Address, relativeUri), method, data, out errors);
+            return Execute(source.Client, string.Format("{0}{1}", source.Address, relativeUri), method, data, throwError, out errors);
         }
 
         #endregion
 
         #region Execute(client, address, method, data)
 
-        static byte[] Execute(WebClient client, string address, WebRequestMethod method, byte[] data, out ErrorResultTO errors)
+        static byte[] Execute(WebClient client, string address, WebRequestMethod method, byte[] data, bool throwError, out ErrorResultTO errors)
         {
             EnsureContentType(client);
             errors = new ErrorResultTO();
@@ -174,7 +174,7 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
 
-        static string Execute(WebClient client, string address, WebRequestMethod method, string data, out ErrorResultTO errors)
+        static string Execute(WebClient client, string address, WebRequestMethod method, string data, bool throwError, out ErrorResultTO errors)
         {
             EnsureContentType(client);
             errors = new ErrorResultTO();
@@ -192,6 +192,10 @@ namespace Dev2.Runtime.ServiceModel
             catch (Exception e)
             {
                 errors.AddError(e.Message);
+                if (throwError)
+                {
+                    throw;
+                }
             }
 
             return string.Empty;

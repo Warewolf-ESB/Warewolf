@@ -21,6 +21,23 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Plugin Service Execution
 
         [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfPluginActivity_Execute")]
+        public void DsfPluginActivity_Execute_WhenErrors_ExpectErrors()
+        {
+            //------------Setup for test--------------------------
+            var dsfPluginActivity = new FaultyMockDsfPluginActivity();
+            
+            //------------Execute Test---------------------------
+            ErrorResultTO invokeErrors;
+            dsfPluginActivity.MockExecutionImpl(null, null, null, null, out invokeErrors);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, invokeErrors.FetchErrors().Count);
+            Assert.AreEqual("Something bad happened", invokeErrors.FetchErrors()[0]);
+        }
+
+        [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test 'GetNewPluginServiceExecution' for 'DsfPluginActivity': A valid plugin service execution is constructed by DsfPluginActivity")]
         [Owner("Ashley Lewis")]

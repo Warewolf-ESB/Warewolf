@@ -317,6 +317,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         DisplayAndWriteError("DsfActivity", allErrors);
                         compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                        // add to datalist in variable specified
+                        var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
+                        compiler.Upsert(dataObject.DataListID, upsertVariable, allErrors.MakeDataListReady(), out errors);
                     }
                 }
 

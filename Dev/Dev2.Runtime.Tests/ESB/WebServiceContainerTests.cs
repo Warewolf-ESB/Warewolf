@@ -51,8 +51,7 @@ namespace Dev2.Tests.Runtime.ESB
         public void WebserviceExecutionContainer_Execute_whenErrors_ExpectValidErrors()
         {
             //------------Setup for test--------------------------
-            XElement FaultySource = XmlResource.Fetch("FaultyWebSource");
-            var container = CreateWebServiceContainer(WebServiceWithInputsXml, FaultySource, WebServiceWithInputsResponseXml.ToString(), true);
+            var container = CreateWebServiceContainer(WebServiceWithInputsXml, WebSourceWithInputsXml, WebServiceWithInputsResponseXml.ToString(), true);
 
             ErrorResultTO errors;
 

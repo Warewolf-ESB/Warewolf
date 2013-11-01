@@ -5,6 +5,7 @@ using System.Runtime.Remoting;
 using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.DataList.Contract;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
@@ -39,8 +40,11 @@ namespace Dev2.Services.Execution
     public class RemoteObjectHandler : MarshalByRefObject
     {
 
+        public ErrorResultTO Errors { get; private set; }
+
         public RemoteObjectHandler()
         {
+            Errors = new ErrorResultTO();
         }
 
         /// <summary>
@@ -216,6 +220,8 @@ namespace Dev2.Services.Execution
             }
             catch(Exception ex)
             {
+                Errors.AddError(ex.Message);
+
                 var errorResult = new XElement("Error");
                 errorResult.Add(ex);
                 result = errorResult.ToString();
