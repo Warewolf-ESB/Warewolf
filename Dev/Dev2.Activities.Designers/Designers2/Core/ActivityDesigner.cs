@@ -59,8 +59,9 @@ namespace Dev2.Activities.Designers2.Core
                 if (vm != null)
                 {
                     vm.SetIntialFocusAction(SetInitialiFocus);
+                    _isSetFocusActionSet = true;
+                    return;
                 }
-                _isSetFocusActionSet = true;
             }
             base.OnMouseEnter(e);
         }

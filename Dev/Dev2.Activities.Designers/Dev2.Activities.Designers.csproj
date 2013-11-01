@@ -164,6 +164,17 @@
     <Compile Include="Designers2\Create\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\DateTimeDifference\DateTimeDifferenceDesigner.xaml.cs">
+      <DependentUpon>DateTimeDifferenceDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTimeDifference\DateTimeDifferenceDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTimeDifference\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Designers2\DateTime\DateTimeDesigner.xaml.cs">
       <DependentUpon>DateTimeDesigner.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -190,6 +201,28 @@
     <Compile Include="Designers2\Delete\DeleteDesignerViewModel.cs" />
     <Compile Include="Designers2\Delete\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Email\EmailDesigner.xaml.cs">
+      <DependentUpon>EmailDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Email\EmailDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Email\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\FindIndex\FindIndexDesigner.xaml.cs">
+      <DependentUpon>FindIndexDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\FindIndex\FindIndexDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\FindIndex\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Designers2\FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaDesigner.xaml.cs">
       <DependentUpon>FindRecordsMultipleCriteriaDesigner.xaml</DependentUpon>
@@ -497,6 +530,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\DateTimeDifference\DateTimeDifferenceDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DateTimeDifference\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Designers2\DateTime\DateTimeDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -520,6 +561,22 @@
     <Page Include="Designers2\Delete\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Email\EmailDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Email\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\FindIndex\FindIndexDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\FindIndex\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaDesigner.xaml">
       <SubType>Designer</SubType>

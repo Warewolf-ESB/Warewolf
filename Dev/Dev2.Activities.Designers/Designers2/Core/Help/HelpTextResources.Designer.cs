@@ -957,6 +957,110 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To find the difference in time between two date times, put the first date time in here. The format needs to be the same for the two.
+        ///Leaving this field blank will give you the system date time..
+        /// </summary>
+        public static string DateTimeDifferenceHelpDateTime1 {
+            get {
+                return ResourceManager.GetString("DateTimeDifferenceHelpDateTime1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.
+        ///Leaving this field blank will give you the system date time..
+        /// </summary>
+        public static string DateTimeDifferenceHelpDateTime2 {
+            get {
+                return ResourceManager.GetString("DateTimeDifferenceHelpDateTime2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
+        ///Leaving this field blank will assume the system date time format..
+        /// </summary>
+        public static string DateTimeDifferenceHelpInputFormat {
+            get {
+                return ResourceManager.GetString("DateTimeDifferenceHelpInputFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the unit of time to output the difference in..
+        /// </summary>
+        public static string DateTimeDifferenceHelpOutputType {
+            get {
+                return ResourceManager.GetString("DateTimeDifferenceHelpOutputType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the difference in time between the two date times.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string DateTimeDifferenceHelpResult {
+            get {
+                return ResourceManager.GetString("DateTimeDifferenceHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string DateTimeDifferenceToolTipDateTime1 {
+            get {
+                return ResourceManager.GetString("DateTimeDifferenceToolTipDateTime1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string DateTimeDifferenceToolTipDateTime2 {
+            get {
+                return ResourceManager.GetString("DateTimeDifferenceToolTipDateTime2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string DateTimeDifferenceToolTipInputFormat {
+            get {
+                return ResourceManager.GetString("DateTimeDifferenceToolTipInputFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string DateTimeDifferenceToolTipResult {
+            get {
+                return ResourceManager.GetString("DateTimeDifferenceToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
         ///Leaving this field blank will assume the system date time format..
         /// </summary>
@@ -1133,6 +1237,222 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string DeleteToolTipUsername {
             get {
                 return ResourceManager.GetString("DeleteToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the path to the attachments you want to send separated by a comma..
+        /// </summary>
+        public static string EmailHelpAttachments {
+            get {
+                return ResourceManager.GetString("EmailHelpAttachments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List the accounts or email addresses you want to blind carbon copy on the email you are sending separated by a semicolon ;.
+        /// </summary>
+        public static string EmailHelpBcc {
+            get {
+                return ResourceManager.GetString("EmailHelpBcc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The main body of the email goes in here..
+        /// </summary>
+        public static string EmailHelpBody {
+            get {
+                return ResourceManager.GetString("EmailHelpBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List the accounts or email addresses you want to carbon copy on the email you are sending separated by a semicolon ;.
+        /// </summary>
+        public static string EmailHelpCc {
+            get {
+                return ResourceManager.GetString("EmailHelpCc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any data or variable can go in here.
+        ///To send an email, enter the email address or account name of the account you want to send from..
+        /// </summary>
+        public static string EmailHelpFromAccount {
+            get {
+                return ResourceManager.GetString("EmailHelpFromAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured email source or &quot;New Email Source...&quot; to add a new one..
+        /// </summary>
+        public static string EmailHelpMailSource {
+            get {
+                return ResourceManager.GetString("EmailHelpMailSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the password, if there is one, for the account you are sending from..
+        /// </summary>
+        public static string EmailHelpPassword {
+            get {
+                return ResourceManager.GetString("EmailHelpPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the message priority..
+        /// </summary>
+        public static string EmailHelpPriorityType {
+            get {
+                return ResourceManager.GetString("EmailHelpPriorityType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns Success or Failure depending on the success of the send action..
+        /// </summary>
+        public static string EmailHelpResult {
+            get {
+                return ResourceManager.GetString("EmailHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the subject for your email..
+        /// </summary>
+        public static string EmailHelpSubject {
+            get {
+                return ResourceManager.GetString("EmailHelpSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List the accounts or email addresses you want to send to separated by a semicolon ;.
+        /// </summary>
+        public static string EmailHelpTo {
+            get {
+                return ResourceManager.GetString("EmailHelpTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string EmailToolTipBcc {
+            get {
+                return ResourceManager.GetString("EmailToolTipBcc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string EmailToolTipBody {
+            get {
+                return ResourceManager.GetString("EmailToolTipBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string EmailToolTipCc {
+            get {
+                return ResourceManager.GetString("EmailToolTipCc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string EmailToolTipFromAccount {
+            get {
+                return ResourceManager.GetString("EmailToolTipFromAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured email source or &quot;New Email Source...&quot; to add a new one..
+        /// </summary>
+        public static string EmailToolTipMailSource {
+            get {
+                return ResourceManager.GetString("EmailToolTipMailSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string EmailToolTipPassword {
+            get {
+                return ResourceManager.GetString("EmailToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string EmailToolTipResult {
+            get {
+                return ResourceManager.GetString("EmailToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string EmailToolTipSubject {
+            get {
+                return ResourceManager.GetString("EmailToolTipSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string EmailToolTipTo {
+            get {
+                return ResourceManager.GetString("EmailToolTipTo", resourceCulture);
             }
         }
         
@@ -1732,6 +2052,109 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Determines the character length to generate..
+        /// </summary>
+        public static string RandomHelpLength {
+            get {
+                return ResourceManager.GetString("RandomHelpLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To generate a random number put the lowest/smallest number you would like in here..
+        /// </summary>
+        public static string RandomHelpRangeFrom {
+            get {
+                return ResourceManager.GetString("RandomHelpRangeFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To generate a random number put the highest/largest number you would like in here..
+        /// </summary>
+        public static string RandomHelpRangeTo {
+            get {
+                return ResourceManager.GetString("RandomHelpRangeTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the randomly generated result.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string RandomHelpResult {
+            get {
+                return ResourceManager.GetString("RandomHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type of random information to generate.
+        ///Letters: Alphabetical letters only.
+        ///Numbers: Numbers only.
+        ///Letters and Numbers: A random combination of letters and numbers.
+        ///GUID: A randomly generated Globally Unique Identifier..
+        /// </summary>
+        public static string RandomHelpType {
+            get {
+                return ResourceManager.GetString("RandomHelpType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string RandomToolTipLength {
+            get {
+                return ResourceManager.GetString("RandomToolTipLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string RandomToolTipRangeFrom {
+            get {
+                return ResourceManager.GetString("RandomToolTipRangeFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string RandomToolTipRangeTo {
+            get {
+                return ResourceManager.GetString("RandomToolTipRangeTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string RandomToolTipResult {
+            get {
+                return ResourceManager.GetString("RandomToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To read the content of a file, put the full path and file name in here.
         ///You can use File System, URI, SFTP, FTP or FTPS format..
@@ -2157,6 +2580,60 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string ReplaceToolTipResult {
             get {
                 return ResourceManager.GetString("ReplaceToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to What type of scripting language do you want to use?.
+        /// </summary>
+        public static string ScriptingHelpLanguageType {
+            get {
+                return ResourceManager.GetString("ScriptingHelpLanguageType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the output of the script, if any..
+        /// </summary>
+        public static string ScriptingHelpResult {
+            get {
+                return ResourceManager.GetString("ScriptingHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To run a programming script, put the script you want to execute in here..
+        /// </summary>
+        public static string ScriptingHelpScript {
+            get {
+                return ResourceManager.GetString("ScriptingHelpScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ScriptingToolTipResult {
+            get {
+                return ResourceManager.GetString("ScriptingToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string ScriptingToolTipScript {
+            get {
+                return ResourceManager.GetString("ScriptingToolTipScript", resourceCulture);
             }
         }
         

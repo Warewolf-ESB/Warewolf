@@ -186,9 +186,6 @@
     <Compile Include="ActivityDesigners\DsfDataMergeActivityDesigner.xaml.cs">
       <DependentUpon>DsfDataMergeActivityDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\DsfDateTimeDifferenceActivityDesigner.xaml.cs">
-      <DependentUpon>DsfDateTimeDifferenceActivityDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\DsfFindRecordsActivityDesigner.xaml.cs">
       <DependentUpon>DsfFindRecordsActivityDesigner.xaml</DependentUpon>
     </Compile>
@@ -197,9 +194,6 @@
     </Compile>
     <Compile Include="ActivityDesigners\DsfGatherSystemInformationActivityDesigner.xaml.cs">
       <DependentUpon>DsfGatherSystemInformationActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfIndexActivityDesigner.xaml.cs">
-      <DependentUpon>DsfIndexActivityDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="ActivityDesigners\DsfRandomActivityDesigner.xaml.cs">
       <DependentUpon>DsfRandomActivityDesigner.xaml</DependentUpon>
@@ -215,9 +209,6 @@
     </Compile>
     <Compile Include="ActivityDesigners\Scripting\DsfScriptingJavaScriptDesigner.xaml.cs">
       <DependentUpon>DsfScriptingJavaScriptDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfSendEmailActivityDesigner.xaml.cs">
-      <DependentUpon>DsfSendEmailActivityDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="ActivityDesigners\DsfActivityDesigner.xaml.cs">
       <DependentUpon>DsfActivityDesigner.xaml</DependentUpon>
@@ -357,8 +348,6 @@
     <Compile Include="Utils\HyperlinkUtility.cs" />
     <Compile Include="Utils\ResourceChangeHandler.cs" />
     <Compile Include="ViewModels\ActivityViewModels\DsfActivityViewModel.cs" />
-    <Compile Include="ViewModels\ActivityViewModels\DsfSendEmailActivityViewModelBase.cs" />
-    <Compile Include="ViewModels\ActivityViewModels\DsfSendEmailActivityViewModelImpl.cs" />
     <Compile Include="ViewModels\Administration\DialogueViewModel.cs" />
     <Compile Include="RibbonControl\Dev2RibbonApplicationMenu.cs" />
     <Compile Include="Utils\DsfActivityDropUtils.cs">
@@ -632,10 +621,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ActivityDesigners\DsfDateTimeDifferenceActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ActivityDesigners\DsfCheckpointActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -649,10 +634,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ActivityDesigners\DsfGatherSystemInformationActivityDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ActivityDesigners\DsfIndexActivityDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -673,10 +654,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ActivityDesigners\Scripting\DsfScriptingJavaScriptDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ActivityDesigners\DsfSendEmailActivityDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

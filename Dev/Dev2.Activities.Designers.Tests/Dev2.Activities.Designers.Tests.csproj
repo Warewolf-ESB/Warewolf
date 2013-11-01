@@ -81,6 +81,8 @@
     </Compile>
     <Compile Include="CountRecords\CountRecordsDesignerViewModelTests.cs" />
     <Compile Include="CountRecords\TestCountRecordsDesignerViewModel.cs" />
+    <Compile Include="DateTimeDifference\DateTimeDifferenceDesignerViewModelTests.cs" />
+    <Compile Include="DateTimeDifference\TestDateTimeDifferenceDesignerViewModel.cs" />
     <Compile Include="Designers2\Core\Controls\Dev2DataGridTests.cs" />
     <Compile Include="Designers2\Core\Stubs\ActivityDesignerCollectionViewModelDerived.cs" />
     <Compile Include="Designers2\Core\ActivityDesignerViewModelTests.cs" />
@@ -95,6 +97,10 @@
     <Compile Include="Designers2\Core\ActivityCollectionDesignerViewModelTests.cs" />
     <Compile Include="Designers2\Core\ActivityDesignerButtonTests.cs" />
     <Compile Include="BaseConvert\BaseConvertTests.cs" />
+    <Compile Include="Email\EmailDesignerViewModelTests.cs" />
+    <Compile Include="Email\TestEmailDesignerViewModel.cs" />
+    <Compile Include="FindIndex\FindIndexDesignerViewModelTests.cs" />
+    <Compile Include="FindIndex\TestFindIndexDesignerViewModel.cs" />
     <Compile Include="FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaTests.cs" />
     <Compile Include="FormatNumber\FormatNumberDesignerViewModelTests.cs" />
     <Compile Include="FormatNumber\TestFormatNumberDesignerViewModel.cs" />

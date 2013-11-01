@@ -1427,4 +1427,223 @@ To execute a command line action or actions, enter them in here. Acts like a bat
   <data name="CommentToolTipComment" xml:space="preserve">
     <value>Notes and comments will not be executed at run time but will show up in the debug output.</value>
   </data>
+  <data name="DateTimeDifferenceHelpDateTime1" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To find the difference in time between two date times, put the first date time in here. The format needs to be the same for the two.
+Leaving this field blank will give you the system date time.</value>
+  </data>
+  <data name="DateTimeDifferenceHelpDateTime2" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.
+Leaving this field blank will give you the system date time.</value>
+  </data>
+  <data name="DateTimeDifferenceHelpInputFormat" xml:space="preserve">
+    <value>Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
+Leaving this field blank will assume the system date time format.</value>
+  </data>
+  <data name="DateTimeDifferenceHelpOutputType" xml:space="preserve">
+    <value>Select the unit of time to output the difference in.</value>
+  </data>
+  <data name="DateTimeDifferenceHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the difference in time between the two date times.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="DateTimeDifferenceToolTipDateTime1" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DateTimeDifferenceToolTipDateTime2" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DateTimeDifferenceToolTipInputFormat" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DateTimeDifferenceToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="EmailHelpAttachments" xml:space="preserve">
+    <value>Enter the path to the attachments you want to send separated by a comma.</value>
+  </data>
+  <data name="EmailHelpBcc" xml:space="preserve">
+    <value>List the accounts or email addresses you want to blind carbon copy on the email you are sending separated by a semicolon ;</value>
+  </data>
+  <data name="EmailHelpBody" xml:space="preserve">
+    <value>The main body of the email goes in here.</value>
+  </data>
+  <data name="EmailHelpCc" xml:space="preserve">
+    <value>List the accounts or email addresses you want to carbon copy on the email you are sending separated by a semicolon ;</value>
+  </data>
+  <data name="EmailHelpFromAccount" xml:space="preserve">
+    <value>Any data or variable can go in here.
+To send an email, enter the email address or account name of the account you want to send from.</value>
+  </data>
+  <data name="EmailHelpMailSource" xml:space="preserve">
+    <value>Select a preconfigured email source or "New Email Source..." to add a new one.</value>
+  </data>
+  <data name="EmailHelpPassword" xml:space="preserve">
+    <value>Enter the password, if there is one, for the account you are sending from.</value>
+  </data>
+  <data name="EmailHelpPriorityType" xml:space="preserve">
+    <value>Select the message priority.</value>
+  </data>
+  <data name="EmailHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or Failure depending on the success of the send action.</value>
+  </data>
+  <data name="EmailHelpSubject" xml:space="preserve">
+    <value>Enter the subject for your email.</value>
+  </data>
+  <data name="EmailHelpTo" xml:space="preserve">
+    <value>List the accounts or email addresses you want to send to separated by a semicolon ;</value>
+  </data>
+  <data name="EmailToolTipBcc" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="EmailToolTipBody" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="EmailToolTipCc" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="EmailToolTipFromAccount" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="EmailToolTipMailSource" xml:space="preserve">
+    <value>Select a preconfigured email source or "New Email Source..." to add a new one.</value>
+  </data>
+  <data name="EmailToolTipPassword" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="EmailToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="EmailToolTipSubject" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="EmailToolTipTo" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="RandomHelpLength" xml:space="preserve">
+    <value>Determines the character length to generate.</value>
+  </data>
+  <data name="RandomHelpRangeFrom" xml:space="preserve">
+    <value>To generate a random number put the lowest/smallest number you would like in here.</value>
+  </data>
+  <data name="RandomHelpRangeTo" xml:space="preserve">
+    <value>To generate a random number put the highest/largest number you would like in here.</value>
+  </data>
+  <data name="RandomHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the randomly generated result.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="RandomHelpType" xml:space="preserve">
+    <value>The type of random information to generate.
+Letters: Alphabetical letters only.
+Numbers: Numbers only.
+Letters and Numbers: A random combination of letters and numbers.
+GUID: A randomly generated Globally Unique Identifier.</value>
+  </data>
+  <data name="RandomToolTipLength" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="RandomToolTipRangeFrom" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="RandomToolTipRangeTo" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="RandomToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ScriptingHelpLanguageType" xml:space="preserve">
+    <value>What type of scripting language do you want to use?</value>
+  </data>
+  <data name="ScriptingHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the output of the script, if any.</value>
+  </data>
+  <data name="ScriptingHelpScript" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To run a programming script, put the script you want to execute in here.</value>
+  </data>
+  <data name="ScriptingToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ScriptingToolTipScript" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
 </root>

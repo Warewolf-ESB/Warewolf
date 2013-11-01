@@ -186,4 +186,22 @@
   <data name="DsfCommentActivity" xml:space="preserve">
     <value>Utility - Comment</value>
   </data>
+  <data name="DsfDateTimeDifferenceActivity" xml:space="preserve">
+    <value>Utility - Date and Time Difference</value>
+  </data>
+  <data name="DsfIndexActivity" xml:space="preserve">
+    <value>Utility - Find Index</value>
+  </data>
+  <data name="DsfRandomActivity" xml:space="preserve">
+    <value>Utility - Random</value>
+  </data>
+  <data name="DsfReplaceActivity" xml:space="preserve">
+    <value>Utility - Replace</value>
+  </data>
+  <data name="DsfScriptingActivity" xml:space="preserve">
+    <value>Scripting  - Script</value>
+  </data>
+  <data name="DsfSendEmailActivity" xml:space="preserve">
+    <value>Utility - Email</value>
+  </data>
 </root>

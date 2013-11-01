@@ -106,6 +106,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Utility - Date and Time Difference.
+        /// </summary>
+        internal static string DsfDateTimeDifferenceActivity {
+            get {
+                return ResourceManager.GetString("DsfDateTimeDifferenceActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recordset - Delete Records.
         /// </summary>
         internal static string DsfDeleteRecordActivity {
@@ -156,6 +165,15 @@ namespace Dev2 {
         internal static string DsfFolderRead {
             get {
                 return ResourceManager.GetString("DsfFolderRead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Utility - Find Index.
+        /// </summary>
+        internal static string DsfIndexActivity {
+            get {
+                return ResourceManager.GetString("DsfIndexActivity", resourceCulture);
             }
         }
         
@@ -219,6 +237,42 @@ namespace Dev2 {
         internal static string DsfPathRename {
             get {
                 return ResourceManager.GetString("DsfPathRename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Utility - Random.
+        /// </summary>
+        internal static string DsfRandomActivity {
+            get {
+                return ResourceManager.GetString("DsfRandomActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Utility - Replace.
+        /// </summary>
+        internal static string DsfReplaceActivity {
+            get {
+                return ResourceManager.GetString("DsfReplaceActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scripting  - Script.
+        /// </summary>
+        internal static string DsfScriptingActivity {
+            get {
+                return ResourceManager.GetString("DsfScriptingActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Utility - Email.
+        /// </summary>
+        internal static string DsfSendEmailActivity {
+            get {
+                return ResourceManager.GetString("DsfSendEmailActivity", resourceCulture);
             }
         }
         
