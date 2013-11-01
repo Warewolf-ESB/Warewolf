@@ -7,8 +7,11 @@ namespace Dev2.Services.Execution
     public class MockServiceExecutionAbstract<TService, TSource> : ServiceExecutionAbstract<TService, TSource>
         where TService : Service, new() where TSource : Resource, new()
     {
-        public MockServiceExecutionAbstract(IDSFDataObject dataObj, bool handlesOutputFormatting = true)
-            : base(dataObj, handlesOutputFormatting)
+
+        public bool DidExecuteServiceInvoke { get; private set; }
+
+        public MockServiceExecutionAbstract(IDSFDataObject dataObj, bool handlesOutputFormatting = false)
+            : base(dataObj, handlesOutputFormatting, false)
         {
         }
 
@@ -25,6 +28,7 @@ namespace Dev2.Services.Execution
         protected override object ExecuteService(out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
+            DidExecuteServiceInvoke = true;
             return null;
         }
 
