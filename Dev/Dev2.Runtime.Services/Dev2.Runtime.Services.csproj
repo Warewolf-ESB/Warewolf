@@ -106,6 +106,8 @@
     <Compile Include="ESB\Management\Services\FetchDependantCompileMessages.cs" />
     <Compile Include="ESB\Management\Services\GetDependanciesOnList.cs" />
     <Compile Include="ESB\Management\Services\RenameResource.cs" />
+    <Compile Include="ESB\Management\Services\SecurityRead.cs" />
+    <Compile Include="ESB\Management\Services\SecurityWrite.cs" />
     <Compile Include="Execution\ExecutionToken.cs" />
     <Compile Include="Execution\IExecutionToken.cs" />
     <Compile Include="Hosting\CompileMessageRepo.cs" />
