@@ -692,8 +692,9 @@ namespace Dev2
             {
                 dataObject.ServiceName = serviceName;
             }
+            var esbEndpoint = new EsbServicesEndpoint();
 
-            Guid executionDlid = _esbEndpoint.ExecuteRequest(dataObject, clientGuid, out errors);
+            Guid executionDlid = esbEndpoint.ExecuteRequest(dataObject, clientGuid, out errors);
             allErrors.MergeErrors(errors);
 
             // Fetch return type ;)
@@ -712,8 +713,8 @@ namespace Dev2
                 dataObject.WorkspaceID = clientGuid;
                 dataObject.ServiceName = serviceName;
 
-               
-                executePayload = _esbEndpoint.FetchExecutionPayload(dataObject, formater, out errors);    
+
+                executePayload = esbEndpoint.FetchExecutionPayload(dataObject, formater, out errors);    
 
                 allErrors.MergeErrors(errors);
                 compiler.UpsertSystemTag(executionDlid, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);

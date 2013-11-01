@@ -574,17 +574,27 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        public void ValidateNames(IDataListItemModel item)
+        public void ValidateNames(IDataListItemModel item, bool addItem)
         {
             if (item == null) return;
 
             if (item.IsField)
             {
-                item.Parent.Validator.Move(item);
+                if(addItem)
+                {
+                    item.Parent.Validator.Add(item);
+                }
+                else
+                {
+                    item.Parent.Validator.ValidateChildren(item);
+                }
             }
             else
             {
-                Validator.Move(item);
+                if(addItem)
+                {
+                    Validator.Add(item);
+                }
             }
         }
 

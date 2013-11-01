@@ -79,7 +79,8 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         /// Validates the names.
         /// </summary>
         /// <param name="item">The item.</param>
-        void ValidateNames(IDataListItemModel item);
+        /// <param name="addItem"></param>
+        void ValidateNames(IDataListItemModel item, bool addItem);
 
         /// <summary>
         /// Finds the missing workflow data regions.

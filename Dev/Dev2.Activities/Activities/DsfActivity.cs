@@ -592,12 +592,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 ErrorResultTO errors = new ErrorResultTO();
                 IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);
 
+                if(tmpEntry != null)
+                {
                 DebugItem itemToAdd = new DebugItem();
 
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = dev2Definition.Name });
 
                 itemToAdd.AddRange(CreateDebugItemsFromEntry(dev2Definition.RawValue, tmpEntry, dataList.UID, enDev2ArgumentType.Output));
                 results.Add(itemToAdd);
+            }
+                else
+                {
+                    if(errors.HasErrors())
+                    {
+                        throw new Exception(errors.MakeUserReady());
+                    }
+                }
             }
 
             foreach(IDebugItem debugOutput in results)

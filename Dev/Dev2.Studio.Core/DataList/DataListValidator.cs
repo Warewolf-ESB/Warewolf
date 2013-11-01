@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Parsing.Intellisense;
 using System.Text.RegularExpressions;
 using Dev2.Studio.Core.Interfaces.DataList;
 using System.Xml;
@@ -44,7 +45,7 @@ namespace Dev2.Studio.Core.DataList
             {
                 matchingList.Remove(itemToMove);
                 ValidateDuplicats(matchingList);
-                Add(itemToMove);
+                //Add(itemToMove);
                 itemToMove.LastIndexedName = itemToMove.Name;
             }
             else
@@ -80,34 +81,59 @@ namespace Dev2.Studio.Core.DataList
                 ValidateRecordSetChildren(itemToAdd);
             }
 
-            IList<IDataListItemModel> matchingList = null;
-
-            IndexedDataList.TryGetValue(itemToAdd.Name, out matchingList);
-            if (matchingList == null)
+            if(itemToAdd.IsField)
             {
-                IndexedDataList.Add(itemToAdd.Name, new List<IDataListItemModel> {itemToAdd});
+                ValidateChildren(itemToAdd);
             }
             else
             {
-                if (matchingList.Any(c => itemToAdd.IsRecordset == !c.IsRecordset))
+                IList<IDataListItemModel> matchingList = null;
+                IndexedDataList.TryGetValue(itemToAdd.Name, out matchingList);
+                if(matchingList == null)
                 {
-                    //2013.04.10: Ashley Lewis - Bug 9168 Not only are there duplicates detected but at least one of them is a different type to itemToAdd
-                    matchingList.Add(itemToAdd);
-                    foreach (IDataListItemModel item in matchingList)
-                    {
-                        item.SetError(item.IsRecordset ? StringResources.ErrorMessageDuplicateVariable : StringResources.ErrorMessageDuplicateRecordset);
-                    }
+                    IndexedDataList.Add(itemToAdd.Name, new List<IDataListItemModel> { itemToAdd });
                 }
                 else
                 {
-                    matchingList.Add(itemToAdd);
-                    foreach (IDataListItemModel item in matchingList)
+                    if(matchingList.Any(c => itemToAdd.IsRecordset == !c.IsRecordset))
                     {
-                        item.SetError(StringResources.ErrorMessageDuplicateValue);
+                        //2013.04.10: Ashley Lewis - Bug 9168 Not only are there duplicates detected but at least one of them is a different type to itemToAdd
+                        matchingList.Add(itemToAdd);
+                        foreach(IDataListItemModel item in matchingList)
+                        {
+                            item.SetError(item.IsRecordset ? StringResources.ErrorMessageDuplicateVariable : StringResources.ErrorMessageDuplicateRecordset);
+                        }
+                    }
+                    else
+                    {
+                        matchingList.Add(itemToAdd);
+                        foreach(IDataListItemModel item in matchingList)
+                        {
+                            item.SetError(StringResources.ErrorMessageDuplicateValue);
+                        }
                     }
                 }
             }
             ValidateDataListName(itemToAdd);
+        }
+
+        public void ValidateChildren(IDataListItemModel itemToAdd)
+        {
+            if(itemToAdd.Parent != null)
+            {
+                List<IGrouping<string, IDataListItemModel>> duplicates = itemToAdd.Parent.Children.ToLookup(x => x.Name).ToList();
+                foreach(var duplicate in duplicates)
+                {
+                    if(duplicate.Count() > 1 && !String.IsNullOrEmpty(duplicate.Key))
+                    {
+                        duplicate.ForEach(model => model.SetError(StringResources.ErrorMessageDuplicateValue));
+                    }
+                    else
+                    {
+                        duplicate.ForEach(model => model.RemoveError());
+                    }
+                }
+            }
         }
 
         public void Remove(IDataListItemModel itemToRemove)
@@ -129,8 +155,10 @@ namespace Dev2.Studio.Core.DataList
                 UpdateValidationErrorsOnEntry(itemToRemove);
             }
 
-            if (itemToRemove.IsField)
+            if(itemToRemove.IsField)
+            {
                 ValidateRecordSetChildren(itemToRemove.Parent);
+            }
         }
 
         #endregion Methods

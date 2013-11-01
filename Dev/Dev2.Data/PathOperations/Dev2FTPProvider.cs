@@ -396,7 +396,7 @@ namespace Dev2.PathOperations {
 
             return result;
         }
-        
+
         static string BuildValidPathForFTP(IActivityIOPath src, string fileName)
         {
             if(src.Path.EndsWith("/"))

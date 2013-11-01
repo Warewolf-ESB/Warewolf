@@ -32,7 +32,7 @@ namespace Dev2.Studio.Views.DataList
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _eventPublisher = eventPublisher;
         }
-        
+
         #region Events
 
         private void Nametxt_TextChanged(object sender, RoutedEventArgs e)
@@ -52,12 +52,18 @@ namespace Dev2.Studio.Views.DataList
                     if(itemThatChanged != null)
                     {
                         vm.AddBlankRow(itemThatChanged);
+                        vm.ValidateNames(itemThatChanged,false);
                     }
                 }
             }
         }
 
         private void Nametxt_FocusLost(object sender, RoutedEventArgs e)
+        {
+            DoDataListValidation(sender);
+        }
+
+        void DoDataListValidation(object sender)
         {
             IDataListViewModel vm = this.DataContext as IDataListViewModel;
             if(vm != null)
@@ -68,7 +74,7 @@ namespace Dev2.Studio.Views.DataList
                     IDataListItemModel itemThatChanged = txtbox.DataContext as IDataListItemModel;
                     vm.RemoveBlankRows(itemThatChanged);
                     vm.AddRecordsetNamesIfMissing();
-                    vm.ValidateNames(itemThatChanged);
+                    vm.ValidateNames(itemThatChanged, true);
                 }
             }
         }

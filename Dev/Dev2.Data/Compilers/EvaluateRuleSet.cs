@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Parsing.Tokenization;
 using Dev2.Common;
 using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
@@ -313,7 +314,7 @@ namespace Dev2.Data.Compilers
         public void CompileExpression(IEnumerable<IIntellisenseResult> tokens)
         {
             // first pass binding ;)
-            if (!string.IsNullOrEmpty(Expression) && tokens != null)
+            if (!string.IsNullOrEmpty(Expression) && tokens != null && tokens.Any())
             {
                 int subVar = 0;
                 var compiledExpression = Expression;

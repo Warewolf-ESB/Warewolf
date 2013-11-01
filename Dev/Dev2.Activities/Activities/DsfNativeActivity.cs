@@ -174,6 +174,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     OnExecute(context);
                 }
             }
+            catch(Exception ex)
+            {
+                var errorString = ex.Message;
+                var errorResultTO = new ErrorResultTO();
+                errorResultTO.AddError(errorString);
+                if(compiler != null)
+                {
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, errorResultTO.MakeDataListReady(), out errors);
+                }
+            }
             finally
             {
                 if(!_isExecuteAsync || _isOnDemandSimulation)
@@ -193,13 +203,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 if(dataObject != null)
                                 {
                                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, _tmpErrors.MakeDataListReady(), out errors);
+                                    if(dataObject.IsDebug)
+                                    {
+                                        PerformErrorDebug(dataObject,currentError);
+                                    }
                                     if(!String.IsNullOrEmpty(currentError))
                                     {
                                         PerformCustomErrorHandling(context, compiler, dataObject, currentError, _tmpErrors);
+                                    }
                                 }
                             }
                         }
-                    }
                     }
 
                 }
@@ -269,6 +283,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 };
                 DebugDispatcher.Instance.Write(debugState);
                 context.MarkCanceled();
+            }
+        }
+        
+        void PerformErrorDebug(IDSFDataObject dataObject,string errorMessage)
+        {
+            var service = ExecutableServiceRepository.Instance.Get(dataObject.WorkspaceID, dataObject.ResourceID);
+            if(service != null)
+            {
+                Guid parentInstanceID;
+                Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
+                var debugState = new DebugState
+                {
+                    ID = dataObject.DataListID,
+                    ParentID = parentInstanceID,
+                    WorkspaceID = dataObject.WorkspaceID,
+                    StateType = StateType.End,
+                    StartTime = DateTime.Now,
+                    EndTime = DateTime.Now,
+                    ActivityType = ActivityType.Workflow,
+                    DisplayName = dataObject.ServiceName,
+                    IsSimulation = dataObject.IsOnDemandSimulation,
+                    ServerID = dataObject.ServerID,
+                    OriginatingResourceID = dataObject.ResourceID,
+                    OriginalInstanceID = dataObject.OriginalInstanceID,
+                    Server = string.Empty,
+                    Version = string.Empty,
+                    SessionID = dataObject.DebugSessionID,
+                    EnvironmentID = dataObject.EnvironmentID,
+                    Name = GetType().Name,
+                    ErrorMessage = errorMessage,
+                    HasError = true
+                };
+                DebugDispatcher.Instance.Write(debugState);
             }
         }
 

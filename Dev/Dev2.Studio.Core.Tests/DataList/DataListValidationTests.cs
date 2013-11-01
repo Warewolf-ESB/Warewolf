@@ -369,9 +369,47 @@ namespace Dev2.Core.Tests.DataList
             Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar2"));
             Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar3"));
             Validator.Add(DataListItemModelFactory.CreateDataListModel("TestScalar4"));
-            Validator.Move(newItem1);
+            Validator.Add(newItem1);
 
             Assert.IsTrue(newItem1.HasError && newItem2.HasError);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListValidator_Move_ValidateForDuplicates")]
+        public void DataListValidator_Move_ValidateForDuplicates_WhenRecordSetFieldHasSameName_NoDuplicateItemMessage()
+        {
+            //------------Setup for test--------------------------
+            IDataListItemModel existingRecordset = DataListItemModelFactory.CreateDataListModel("TestRecordset");
+            IDataListItemModel existingRecordsetChild = DataListItemModelFactory.CreateDataListModel("Field");
+            existingRecordset.Children.Add(existingRecordsetChild);
+            Validator.Add(existingRecordset);
+            Validator.Add(existingRecordsetChild);
+            Validator.Add(existingRecordsetChild);
+            Validator.Remove(existingRecordsetChild);
+            //------------Execute Test---------------------------
+            Validator.Move(existingRecordsetChild);
+            //------------Assert Results-------------------------
+            Assert.IsNull(existingRecordsetChild.ErrorMessage, "No Duplicate message should be shown for fields and scalars with the same name.");
+            Assert.IsNull(existingRecordset.ErrorMessage, "No Duplicate message should be shown for fields and scalars with the same name.");
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListValidator_Move_ValidateForDuplicates")]
+        public void DataListValidator_Add_ValidateForDuplicates_WhenScalarAndRecordSetFieldHasSameName_NoDuplicateItemMessage()
+        {
+            //------------Setup for test--------------------------
+            IDataListItemModel existingRecordset = DataListItemModelFactory.CreateDataListModel("TestRecordset");
+            IDataListItemModel existingRecordsetChild = DataListItemModelFactory.CreateDataListModel("Field");
+            existingRecordset.Children.Add(existingRecordsetChild);
+            Validator.Add(existingRecordset);
+            Validator.Add(existingRecordsetChild);
+            //------------Execute Test---------------------------
+            Validator.Add(existingRecordsetChild);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(existingRecordsetChild.ErrorMessage, "No Duplicate message should be shown for fields and scalars with the same name.");
+            StringAssert.Contains(existingRecordsetChild.ErrorMessage, "You cannot enter duplicate names in the Data List");
         }
 
         #endregion Move Tests

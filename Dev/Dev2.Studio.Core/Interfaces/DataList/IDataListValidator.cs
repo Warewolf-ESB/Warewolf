@@ -25,5 +25,6 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         void Remove(IDataListItemModel itemToRemove);
         
         void ValidateRecordSetChildren(IDataListItemModel parent);
+        void ValidateChildren(IDataListItemModel itemToAdd);
     }
 }
