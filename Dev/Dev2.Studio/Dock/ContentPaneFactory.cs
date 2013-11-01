@@ -486,6 +486,7 @@ namespace Dev2.Studio.Dock
                 {
                     var vm = ((WorkSurfaceContextViewModel)pane.DataContext);
                     vm.TryClose();
+                    vm.Dispose();
                     var mainVM = vm.Parent as MainViewModel;
                     if (mainVM != null && !mainVM.CloseCurrent)
                         e.Cancel = true;

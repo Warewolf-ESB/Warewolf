@@ -614,10 +614,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 DebugOutputViewModel.Dispose();
             }
-            if(DataListViewModel != null)
-            {
-                ((SimpleBaseViewModel)DataListViewModel).Dispose();
-            }
+           
             if(ContextualResourceModel != null)
             {
                 ContextualResourceModel.OnDesignValidationReceived -= ValidationMemoReceived;
@@ -625,12 +622,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             if(DataListViewModel != null)
             {
+                ((SimpleBaseViewModel)DataListViewModel).Dispose();
                 DataListViewModel.Dispose();
-            }
-
-            if(DebugOutputViewModel != null)
-            {
-                DebugOutputViewModel.Dispose();
             }
 
             base.OnDispose();

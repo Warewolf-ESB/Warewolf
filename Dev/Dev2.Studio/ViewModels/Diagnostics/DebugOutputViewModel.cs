@@ -593,6 +593,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             Clear();
             _debugWriterSubscriptionService.Unsubscribe();
+            _debugWriterSubscriptionService.Dispose();
             base.OnDispose();
         }
 

@@ -555,19 +555,20 @@ namespace Dev2.Studio.Dock
 		#endregion //ReinitializeElements
 
 		#region RemoveItem
-		private void RemoveItem(object oldItem)
-		{
-			Debug.Assert(_generatedElements.ContainsKey(oldItem));
 
-			DependencyObject container;
-			if (_generatedElements.TryGetValue(oldItem, out container))
-			{
-				_generatedElements.Remove(oldItem);
+	    void RemoveItem(object oldItem)
+	    {
+	        Debug.Assert(_generatedElements.ContainsKey(oldItem));
 
-				this.OnItemRemovedImpl(container, oldItem);
-			}
-		}
-		#endregion //RemoveItem
+	        DependencyObject container;
+	        if(_generatedElements.TryGetValue(oldItem, out container))
+	        {
+	            _generatedElements.Remove(oldItem);
+	            OnItemRemovedImpl(container, oldItem);
+	        }
+	    }
+
+	    #endregion //RemoveItem
 
 		#endregion //Private methods
 

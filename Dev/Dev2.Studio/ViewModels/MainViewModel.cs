@@ -1390,8 +1390,8 @@ namespace Dev2.Studio.ViewModels
                                         NewWorkflowNames.Instance.Remove(resource.ResourceName); 
                                     }
                                     RemoveWorkspaceItem(workflowVM);
-                                    workflowVM.Dispose();
                                     Items.Remove(context);
+                                    workflowVM.Dispose();
                                     Logger.TraceInfo("Publish message of type - " + typeof(TabClosedMessage));
                                     _eventPublisher.Publish(new TabClosedMessage(context));
                                     if(e != null)

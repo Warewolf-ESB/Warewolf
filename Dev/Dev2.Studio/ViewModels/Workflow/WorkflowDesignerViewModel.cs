@@ -1692,13 +1692,13 @@ namespace Dev2.Studio.ViewModels.Workflow
                 CommandManager.RemovePreviewExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
                 CommandManager.RemovePreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
                 Selection.Unsubscribe(_wd.Context, SelectedItemChanged);
-               
             }
 
             if(_debugSelectionChangedService != null)
             {
                 _debugSelectionChangedService.Unsubscribe();
                 _debugSelectionChangedService.Dispose();
+                _debugSelectionChangedService = null;
             }
 
             if(_designerManagementService != null)
@@ -1722,7 +1722,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _uniqueWorkflowParts.Clear();
                 _uniqueWorkflowParts = null;
             }
-
+            _wd = null;
             base.OnDispose();
         }
 

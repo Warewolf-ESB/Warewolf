@@ -42,7 +42,6 @@ namespace Dev2.Studio.Core.ViewModels.Base
         protected override void OnDispose()
         {
             _eventPublisher.Unsubscribe(this);
-            _eventPublisher = null;
             base.OnDispose();
         }
 

@@ -984,6 +984,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             ClearCollections();
             Resource = null;
+            Validator = null;
         }
 
         #endregion Override Methods
