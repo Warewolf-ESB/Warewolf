@@ -333,9 +333,6 @@
       <DependentUpon>LoggingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Logging\LoggingViewModel.cs" />
-    <Compile Include="Settings\Security\PermissionsDataGrid.xaml.cs">
-      <DependentUpon>PermissionsDataGrid.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Settings\Security\SecurityView.xaml.cs">
       <DependentUpon>SecurityView.xaml</DependentUpon>
     </Compile>
@@ -724,10 +721,6 @@
     <Page Include="Settings\Logging\LoggingView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Settings\Security\PermissionsDataGrid.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings\Security\SecurityView.xaml">
       <SubType>Designer</SubType>
