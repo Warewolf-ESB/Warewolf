@@ -11,7 +11,7 @@ using Dev2.Data.Enums;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Tests.Activities.ActivityTests

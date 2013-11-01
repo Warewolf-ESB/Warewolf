@@ -14,7 +14,7 @@ using Dev2.Common;
 using Dev2.Utilities;
 using Microsoft.CSharp.Activities;
 using Microsoft.VisualBasic.Activities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 

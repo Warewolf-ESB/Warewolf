@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Threading;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using ActivityUnitTests;
@@ -8,7 +7,7 @@ using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Activities.ActivityTests.Scripting
 {
@@ -141,7 +140,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            string actual;
             IList<IBinaryDataListItem> dataListItems;
             GetRecordSetFieldValueFromDataList(result.DataListID, "Result", "res", out dataListItems, out error);
 

@@ -2,7 +2,7 @@
 using Dev2.Activities;
 using Dev2.DataList.Contract;
 using Dev2.Services.Execution;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Tests.Activities.ActivityTests

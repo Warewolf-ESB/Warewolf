@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection.Emit;
-using System.Runtime.Remoting;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common;
@@ -13,7 +11,7 @@ using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 // ReSharper disable InconsistentNaming

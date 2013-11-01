@@ -8,7 +8,7 @@ using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
