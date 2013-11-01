@@ -280,6 +280,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="Binaries\TestingArchive_NoPwd.zip" />
     <None Include="Binaries\TestingArchive_Pwd.zip" />
     <CodeAnalysisDictionary Include="Fakes\mscorlib.fakes" />
