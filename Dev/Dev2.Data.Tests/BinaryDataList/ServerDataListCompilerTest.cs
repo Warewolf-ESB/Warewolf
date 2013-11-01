@@ -1009,25 +1009,25 @@ namespace Dev2.Data.Tests.BinaryDataList
 
         }
 
-        //[TestMethod]
-        //[Owner("Travis Frisinger")]
-        //[TestCategory("ServerDataListCompiler_BuildOutputExpressionExtractor")]
-        //public void ServerDataListCompiler_BuildOutputExpressionExtractor_WhenInputContains2Recordset_ExpectRecordsetExpression()
-        //{
-        //    //------------Setup for test--------------------------
-        //    const string inputs = @"<Inputs><Input Name=""input"" Source=""[[rs1(1).f1]]"" Recordset=""rs2""/></Inputs>";
-        //    var def = DataListFactory.CreateInputParser().Parse(inputs);
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_BuildOutputExpressionExtractor")]
+        public void ServerDataListCompiler_BuildOutputExpressionExtractor_WhenInputContains2Recordset_ExpectRecordsetExpression()
+        {
+            //------------Setup for test--------------------------
+            const string inputs = @"<Inputs><Input Name=""input"" Source=""[[rs1(1).f1]]"" Recordset=""rs2""/></Inputs>";
+            var def = DataListFactory.CreateInputParser().Parse(inputs);
 
-        //    //------------Execute Test---------------------------
-        //    var expression = _sdlc.BuildOutputExpressionExtractor(enDev2ArgumentType.Input);
+            //------------Execute Test---------------------------
+            var expression = _sdlc.BuildOutputExpressionExtractor(enDev2ArgumentType.Input);
 
-        //    var result = expression.Invoke(def.FirstOrDefault());
+            var result = expression.Invoke(def.FirstOrDefault());
 
-        //    //------------Assert Results-------------------------
-        //    const string expected = "[[rs2().input]]";
+            //------------Assert Results-------------------------
+            const string expected = "[[rs2(*).input]]";
 
-        //    Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result);
 
-        //}
+        }
     }
 }
