@@ -55,6 +55,30 @@ namespace Dev2.Tests.Activities.ActivityTests
         //
         #endregion
 
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("XPath_Execute")]
+        public void XPath_Execute_WhenLoadingTestResultsFile_ExpectParsableXML()
+        {
+            //------------Setup for test--------------------------
+            _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method", 1));
+            const string dataSplitPreDataList = "<ADL><xmlData/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
+            SetupArguments("<root>" + dataSplitPreDataList + "</root>", dataSplitPreDataList, "", _resultsCollection);
+
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+
+            //------------Assert Results-------------------------
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.AreEqual(string.Empty, actual);
+            
+        }
+
         [TestMethod] // - OK
         public void EmptySourceStringExpectedNoData()
         {
@@ -114,9 +138,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-// ReSharper disable RedundantStringFormatCall
+                // ReSharper disable RedundantStringFormatCall
                 Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-// ReSharper restore RedundantStringFormatCall
+                // ReSharper restore RedundantStringFormatCall
             }
         }
 
@@ -141,9 +165,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-// ReSharper disable RedundantStringFormatCall
+                // ReSharper disable RedundantStringFormatCall
                 Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-// ReSharper restore RedundantStringFormatCall
+                // ReSharper restore RedundantStringFormatCall
             }
         }
 
@@ -254,13 +278,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             
             CollectionAssert.AreEqual(expected, actual, comparer);
         }
-
-        void SetUpActivityArguments()
-        {
-            const string dataSplitPreDataList = "<ADL><xmlData/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
-            SetupArguments("<root>" + dataSplitPreDataList + "</root>", dataSplitPreDataList, _source, _resultsCollection);
-        }
-
 
         [TestMethod]
         public void MixedScalarsAndRecordsetWithoutIndexExpectedXPathValuesToEndInsertingMutipleScalarAndRecordsets()
@@ -442,6 +459,15 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #region Private Test Methods
+
+
+        void SetUpActivityArguments()
+        {
+            const string dataSplitPreDataList = "<ADL><xmlData/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
+            SetupArguments("<root>" + dataSplitPreDataList + "</root>", dataSplitPreDataList, _source, _resultsCollection);
+        }
+
+
 
         private void SetupArguments(string currentDL, string testData, string sourceString, IList<XPathDTO> resultCollection)
         {

@@ -238,6 +238,10 @@ namespace Dev2.Runtime.Security
                     ServerLogger.LogError(e);
                 }
             }
+            else
+            {
+                result = true;
+            }
 
             return result;
         }

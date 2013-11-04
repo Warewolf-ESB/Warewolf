@@ -127,7 +127,7 @@ namespace Dev2.DataList
 
                 if (activity.ResourceModel != null)
                 {
-                IsWorkflow = activity.ResourceModel.ResourceType == ResourceType.WorkflowService;
+                    IsWorkflow = activity.ResourceModel.ResourceType == ResourceType.WorkflowService;
 
                     // extract the IO data too ;)
                     string serviceDefinition = activity.ResourceModel.ServiceDefinition;

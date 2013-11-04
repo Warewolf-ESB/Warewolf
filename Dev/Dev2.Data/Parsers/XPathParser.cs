@@ -39,10 +39,12 @@ namespace Dev2.Data.Parsers
             {
                 bool isFragment;
                 var isXml = DataListUtil.IsXml(xmlData,out isFragment);
+                
                 if(!isXml && !isFragment)
                 {
                     throw new Exception("Input XML is not valid.");
                 }
+
                 using (var stringReader = new StringReader(xmlData))
                 {
                     XmlReaderSettings settings = new XmlReaderSettings();
@@ -52,7 +54,7 @@ namespace Dev2.Data.Parsers
                     using (XmlReader reader = XmlReader.Create(stringReader, settings))
                     {
                         reader.Read();
-                        if (reader.NodeType == XmlNodeType.XmlDeclaration || reader.NodeType == XmlNodeType.Whitespace)
+                        if(reader.NodeType == XmlNodeType.XmlDeclaration || reader.NodeType == XmlNodeType.Whitespace || string.IsNullOrEmpty(reader.Value.Trim()))
                         {
                             reader.Skip();
                         }

@@ -48,7 +48,7 @@ namespace Dev2.Tests.Runtime.ESB
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("WebserviceExecutionContainer_Execute")]
-        public void WebserviceExecutionContainer_Execute_whenErrors_ExpectValidErrors()
+        public void WebserviceExecutionContainer_Execute_WhenErrors_ExpectValidErrors()
         {
             //------------Setup for test--------------------------
             var container = CreateWebServiceContainer(WebServiceWithInputsXml, WebSourceWithInputsXml, WebServiceWithInputsResponseXml.ToString(), true);

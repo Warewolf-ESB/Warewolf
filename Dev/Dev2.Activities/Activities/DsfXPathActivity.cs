@@ -114,7 +114,6 @@ namespace Dev2.Activities
                             for(int i = 0; i < ResultsCollection.Count; i++)
                             {
 
-
                                 if(!string.IsNullOrEmpty(ResultsCollection[i].OutputVariable))
                                 {
 
