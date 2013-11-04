@@ -204,4 +204,7 @@
   <data name="DsfSendEmailActivity" xml:space="preserve">
     <value>Utility - Email</value>
   </data>
+  <data name="DsfForEachActivity" xml:space="preserve">
+    <value>Loop Constructs - For Each</value>
+  </data>
 </root>

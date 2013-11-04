@@ -102,6 +102,8 @@
     <Compile Include="FindIndex\FindIndexDesignerViewModelTests.cs" />
     <Compile Include="FindIndex\TestFindIndexDesignerViewModel.cs" />
     <Compile Include="FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaTests.cs" />
+    <Compile Include="Foreach\ForeachDesignerViewModelTests.cs" />
+    <Compile Include="Foreach\TestForeachDesignerViewModel.cs" />
     <Compile Include="FormatNumber\FormatNumberDesignerViewModelTests.cs" />
     <Compile Include="FormatNumber\TestFormatNumberDesignerViewModel.cs" />
     <Compile Include="GetWebRequestTests\GetWebRequestViewModelTests.cs" />

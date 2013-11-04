@@ -12,6 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
 using Caliburn.Micro;
+using Dev2.Activities.Designers2.Foreach;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.ViewModelTests;
@@ -2556,7 +2557,7 @@ namespace Dev2.Core.Tests
                 { typeof(DsfActivity), typeof(Dev2.Activities.Designers2.Service.ServiceDesigner) },
                 { typeof(DsfMultiAssignActivity), typeof(Dev2.Activities.Designers2.MultiAssign.MultiAssignDesigner) }, 
                 { typeof(DsfAssignActivity), typeof(DsfAssignActivityDesigner) }, 
-                { typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner) }, 
+                { typeof(DsfForEachActivity), typeof(ForeachDesigner) }, 
                 { typeof(DsfCountRecordsetActivity), typeof(Dev2.Activities.Designers2.CountRecords.CountRecordsDesigner) }
             };
 

@@ -235,6 +235,13 @@
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Designers2\Foreach\ForeachDesigner.xaml.cs">
+      <DependentUpon>ForeachDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Foreach\ForeachDesignerViewModel.cs" />
+    <Compile Include="Designers2\Foreach\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\FormatNumber\FormatNumberDesigner.xaml.cs">
       <DependentUpon>FormatNumberDesigner.xaml</DependentUpon>
     </Compile>
@@ -614,6 +621,14 @@
     <Page Include="Designers2\FindRecordsMultipleCriteria\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Foreach\ForeachDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Foreach\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\FormatNumber\FormatNumberDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>

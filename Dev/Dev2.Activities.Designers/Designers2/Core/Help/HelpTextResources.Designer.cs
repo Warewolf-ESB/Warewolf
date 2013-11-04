@@ -1583,60 +1583,45 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This will replace the * in the activity with every number in the comma seperated list provided and execute it once for each of those numbers. eg. CSV of 1,3,4,5,9 will execute [[Customers(*).ID]] as
-        ///[[Customers(1).ID]]
-        ///[[Customers(3).ID]]
-        ///[[Customers(4).ID]]
-        ///[[Customers(5).ID]]
-        ///[[Customers(9).ID]].
+        ///   Looks up a localized string similar to Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
+        ///[[Customer(2).ID]],
+        ///[[Customer(3).ID]].
+        ///* in Range allows you to input a range of indexes.
+        ///* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
+        ///* in Recordset will execute every index in the given recordset.
+        ///No. of executions will execute the activity a given number of times..
         /// </summary>
-        public static string ForEachCsvHelpText {
+        public static string ForEachHelpForEachType {
             get {
-                return ResourceManager.GetString("ForEachCsvHelpText", resourceCulture);
+                return ResourceManager.GetString("ForEachHelpForEachType", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This will execute the activity a given number of times..
+        ///   Looks up a localized string similar to Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
+        ///[[Customer(2).ID]],
+        ///[[Customer(3).ID]].
+        ///* in Range allows you to input a range of indexes.
+        ///* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
+        ///* in Recordset will execute every index in the given recordset.
+        ///No. of executions will execute the activity a given number of times..
         /// </summary>
-        public static string ForEachNumberHelpText {
+        public static string ForEachHelpValue {
             get {
-                return ResourceManager.GetString("ForEachNumberHelpText", resourceCulture);
+                return ResourceManager.GetString("ForEachHelpValue", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This will replace the * in the activity with every number in the range provided and execute it once for each of those numbers. eg. Range of 1-5, will execute [[Customers(*).ID]] as
-        ///[[Customers(1).ID]]
-        ///[[Customers(2).ID]]
-        ///[[Customers(3).ID]]
-        ///[[Customers(4).ID]]
-        ///[[Customers(5).ID]].
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
         /// </summary>
-        public static string ForEachRangeHelpText {
+        public static string ForEachToolTipValue {
             get {
-                return ResourceManager.GetString("ForEachRangeHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This will replace the * in the activity with every index number in the Recordset provided. If the Recordset provided has 3 records, then there will be 3 executions eg [[Customers(*).ID]] as
-        ///[[Customers(1).ID]]
-        ///[[Customers(2).ID]]
-        ///[[Customers(3).ID]].
-        /// </summary>
-        public static string ForEachRecordHelpText {
-            get {
-                return ResourceManager.GetString("ForEachRecordHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Types of loop..
-        /// </summary>
-        public static string ForEachTypeHelpText {
-            get {
-                return ResourceManager.GetString("ForEachTypeHelpText", resourceCulture);
+                return ResourceManager.GetString("ForEachToolTipValue", resourceCulture);
             }
         }
         

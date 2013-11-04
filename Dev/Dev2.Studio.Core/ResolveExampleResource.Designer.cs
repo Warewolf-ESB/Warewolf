@@ -169,6 +169,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loop Constructs - For Each.
+        /// </summary>
+        internal static string DsfForEachActivity {
+            get {
+                return ResourceManager.GetString("DsfForEachActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Utility - Find Index.
         /// </summary>
         internal static string DsfIndexActivity {

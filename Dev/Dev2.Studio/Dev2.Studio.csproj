@@ -197,9 +197,6 @@
     <Compile Include="ActivityDesigners\DsfFindRecordsActivityDesigner.xaml.cs">
       <DependentUpon>DsfFindRecordsActivityDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\DsfForEachActivityDesigner.xaml.cs">
-      <DependentUpon>DsfForEachActivityDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\DsfGatherSystemInformationActivityDesigner.xaml.cs">
       <DependentUpon>DsfGatherSystemInformationActivityDesigner.xaml</DependentUpon>
     </Compile>
@@ -621,10 +618,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ActivityDesigners\DsfFindRecordsActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfForEachActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

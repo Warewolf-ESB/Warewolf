@@ -15,6 +15,7 @@ using Dev2.Activities.Designers2.DeleteRecords;
 using Dev2.Activities.Designers2.Email;
 using Dev2.Activities.Designers2.FindIndex;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
+using Dev2.Activities.Designers2.Foreach;
 using Dev2.Activities.Designers2.FormatNumber;
 using Dev2.Activities.Designers2.GetWebRequest;
 using Dev2.Activities.Designers2.Move;
@@ -73,6 +74,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfRandomActivity), typeof(RandomDesigner) },
                 { typeof(DsfReplaceActivity), typeof(ReplaceDesigner) },
                 { typeof(DsfScriptingActivity), typeof(ScriptDesigner) },
+                 { typeof(DsfForEachActivity), typeof(ForeachDesigner) },
 
                 //{ typeof(DsfActivity), typeof(DsfActivityDesigner) },
                 //{ typeof(DsfDatabaseActivity), typeof(DsfActivityDesigner) },
@@ -81,7 +83,7 @@ namespace Dev2.Studio.ActivityDesigners
                 //{ typeof(DsfCommentActivity), typeof(DsfCommentActivityDesigner) },
                 { typeof(DsfAssignActivity), typeof(DsfAssignActivityDesigner) },
                 //{typeof (TransformActivity), typeof (DsfTransformActivityDesigner)},
-                { typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner) },
+                //{ typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner) },
                 { typeof(DsfWebPageActivity), typeof(DsfWebPageActivityDesigner) },
                 { typeof(DsfWebSiteActivity), typeof(DsfWebSiteActivityDesigner) },
                 { typeof(DsfDataSplitActivity), typeof(DsfDataSplitActivityDesigner) },
