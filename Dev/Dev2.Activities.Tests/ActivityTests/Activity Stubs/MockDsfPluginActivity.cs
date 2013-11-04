@@ -37,6 +37,7 @@ namespace Dev2.Activities
 
         public System.Guid MockExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out DataList.Contract.ErrorResultTO tmpErrors)
         {
+            
             tmpErrors = new ErrorResultTO();
             tmpErrors.AddError("Something bad happened");
             return Guid.Empty;
