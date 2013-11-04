@@ -63,6 +63,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="CubicOrange.Windows.Forms.ActiveDirectory, Version=2.0.5045.24397, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\ActiveDirectory\CubicOrange.Windows.Forms.ActiveDirectory.dll</HintPath>
+    </Reference>
     <Reference Include="Dev2.Studio.Core.Fakes">
       <HintPath>FakesAssemblies\Dev2.Studio.Core.Fakes.dll</HintPath>
     </Reference>
@@ -73,6 +77,10 @@
     <Reference Include="InfragisticsWPF4.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.v12.1.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.ActiveDs">
+      <HintPath>..\Binaries\ActiveDirectory\Interop.ActiveDs.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">

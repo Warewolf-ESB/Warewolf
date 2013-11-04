@@ -10,16 +10,21 @@
              d:DataContext="{d:DesignInstance local:SecurityViewModel}">
     
     <UserControl.Resources>
-        <Style x:Key="PermissionsGridStyle" TargetType="DataGrid">
-            <Setter Property="AutoGenerateColumns" Value="False"/>
+        <local:IgnoreNewItemPlaceHolderConverter x:Key="IgnoreNewItemPlaceHolderConverter"/>
+        
+        <Style x:Key="PermissionsGridStyle" TargetType="{x:Type DataGrid}">
             <Setter Property="GridLinesVisibility" Value="All"/>
             <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource DataGridBorderBrush}"/>
             <Setter Property="VerticalGridLinesBrush" Value="{StaticResource DataGridBorderBrush}"/>
             <Setter Property="HeadersVisibility" Value="Column"/>
-            <Setter Property="CanUserReorderColumns" Value="False"/>
-            <Setter Property="CanUserResizeRows" Value="False"/>
             <Setter Property="BorderThickness" Value="1,1,0,0"/>
             <Setter Property="BorderBrush" Value="{StaticResource DataGridBorderBrush}"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="True"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="CanUserReorderColumns" Value="False"/>
+            <Setter Property="CanUserResizeRows" Value="False"/>
+            <Setter Property="CanUserSortColumns" Value="False"/>
        </Style>
             
         <Style x:Key="PermissionsGridHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
@@ -38,7 +43,25 @@
             <Setter Property="Width" Value="83" />
             <Setter Property="MinWidth" Value="83" />
         </Style>
-                           
+            
+        <Style x:Key="PermissionsGridRowStyle" TargetType="{x:Type DataGridRow}">
+           
+        </Style>
+        
+        <Style x:Key="PermissionsGridRowServerStyle" TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource PermissionsGridRowStyle}">
+            <Style.Triggers>
+                <DataTrigger Value="0">
+                    <DataTrigger.Binding>
+                        <MultiBinding Converter="{StaticResource DataGridRowNumberConverter}">
+                            <Binding />
+                            <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}" />
+                        </MultiBinding>
+                    </DataTrigger.Binding>
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
         <Style x:Key="PermissionsGridCellStyle" TargetType="{x:Type DataGridCell}">
             <Setter Property="IsTabStop" Value="False"/>
         </Style>   
@@ -78,7 +101,7 @@
             <Setter Property="Margin" Value="0"/>
             <Setter Property="Command" Value="{Binding DataContext.PickResourceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
             <Setter Property="CommandParameter" Value="{Binding}"/>
-           <Setter Property="AutomationProperties.AutomationId">
+            <Setter Property="AutomationProperties.AutomationId">
                 <Setter.Value>
                     <MultiBinding StringFormat="UI_Security_Row{1}_PickResourceButton"
                                     Converter="{StaticResource DataGridRowNumberConverter}">
@@ -98,8 +121,10 @@
             <Label Content="Server Permissions"
                    Style="{StaticResource Dev2HeadingLabelStyle}" />
 
-            <DataGrid ItemsSource="{Binding ServerPermissions}"
-                      Style="{StaticResource PermissionsGridStyle}">
+            <DataGrid x:Name="ServerPermissionsDataGrid" ItemsSource="{Binding ServerPermissions}"
+                      Style="{StaticResource PermissionsGridStyle}"
+                      RowStyle="{StaticResource PermissionsGridRowServerStyle}" 
+                      AddingNewItem="OnAddingNewServerItem">
 
                 <DataGrid.Columns>
 
@@ -108,18 +133,36 @@
                                             HeaderStyle="{StaticResource PermissionsGridHeaderStyle}"                                            
                                             d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
+                             <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBox Text="{Binding WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource PermissionsGridTextBoxStyle}"                                             
+                                             GotKeyboardFocus="OnServerTextChanged"/>
+                                    <Button Grid.Column="1" Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}" />
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <!--<DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Text="{Binding WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             Style="{StaticResource PermissionsGridTextBoxStyle}" />
+                                    <TextBox Text="{Binding WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource PermissionsGridTextBoxStyle}"/>
                                     <Button Grid.Column="1" Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}" />
                                 </Grid>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding }"></DataTrigger>
+                                </DataTemplate.Triggers>
                             </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>-->
                     </DataGridTemplateColumn>
 
                     <DataGridTemplateColumn Header="Deploy To"
@@ -196,8 +239,11 @@
                    Style="{StaticResource Dev2HeadingLabelStyle}"
                    Margin="0,10,0,0"/>
 
-            <DataGrid ItemsSource="{Binding ResourcePermissions}"
-                      Style="{StaticResource PermissionsGridStyle}">
+            <DataGrid x:Name="ResourcePermissionsDataGrid"
+                      ItemsSource="{Binding ResourcePermissions}"
+                      Style="{StaticResource PermissionsGridStyle}"
+                      RowStyle="{StaticResource PermissionsGridRowStyle}"
+                      AddingNewItem="OnAddingNewResourceItem">
 
                 <DataGrid.Columns>
 
@@ -212,7 +258,7 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding ResourceName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBlock Text="{Binding ResourceName, Mode=TwoWay}"/>
                                     <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridResourceButtonStyle}" />
                                 </Grid>
@@ -231,8 +277,9 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Text="{Binding WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             Style="{StaticResource PermissionsGridTextBoxStyle}" />
+                                    <TextBox Text="{Binding WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource PermissionsGridTextBoxStyle}" 
+                                             GotKeyboardFocus="OnResourcesTextChanged"/>
                                     <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}" />
                                 </Grid>
@@ -250,7 +297,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-
+                    
                     <DataGridTemplateColumn Header="Execute"
                                             HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
                                             d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}">

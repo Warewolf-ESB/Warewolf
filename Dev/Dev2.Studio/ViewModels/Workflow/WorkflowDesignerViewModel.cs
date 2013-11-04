@@ -1499,7 +1499,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             if(isWorkflow != null)
             {
                 // PBI 10652 - 2013.11.04 - TWR - Refactored to enable re-use!
-                if(!DsfActivityDropUtils.TryPickResource(isWorkflow, out _vm))
+                var resourcePicked = DsfActivityDropUtils.TryPickResource(isWorkflow, out _vm);
+                if(_vm != null && !resourcePicked)
                 {
                     e.Handled = true;
                     dropOccured = false;
