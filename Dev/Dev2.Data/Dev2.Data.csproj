@@ -128,6 +128,7 @@
     <Compile Include="ServiceModel\Resource.cs" />
     <Compile Include="ServiceModel\ResourceForTree.cs" />
     <Compile Include="ServiceModel\ResourceType.cs" />
+    <Compile Include="Settings\Security\WindowsGroupPermission.cs" />
     <Compile Include="Storage\Binary Objects\FederatedStorageKey.cs" />
     <Compile Include="Storage\Binary Objects\SBinaryKeyAlias.cs" />
     <Compile Include="Storage\Binary Objects\StorageKey.cs" />

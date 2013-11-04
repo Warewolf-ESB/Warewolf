@@ -1,7 +1,10 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Services.Events;
+using Dev2.Settings.Logging;
+using Dev2.Settings.Security;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -12,12 +15,16 @@ namespace Dev2.Settings
     public class SettingsViewModel : BaseWorkSurfaceViewModel
     {
         bool _isLoading;
+        bool _isDirty;
         bool _selectionChanging;
 
         bool _showLogging;
         bool _showSecurity = true;
 
+        SecurityViewModel _securityViewModel;
+
         IPopupController _popupController;
+        LoggingViewModel _loggingViewModel;
 
         public SettingsViewModel()
             : this(EventPublishers.Aggregator)
@@ -27,12 +34,29 @@ namespace Dev2.Settings
         public SettingsViewModel(IEventAggregator eventPublisher)
             : base(eventPublisher)
         {
+            SaveCommand = new RelayCommand(o => SaveSettings(), o => IsDirty);
             ServerChangedCommand = new RelayCommand(OnServerChanged, o => true);
         }
+
+        public ICommand SaveCommand { get; private set; }
 
         public ICommand ServerChangedCommand { get; private set; }
 
         public IEnvironmentModel CurrentEnvironment { get; private set; }
+
+        public bool IsDirty
+        {
+            get { return _isDirty; }
+            set
+            {
+                if(value.Equals(_isDirty))
+                {
+                    return;
+                }
+                _isDirty = value;
+                NotifyOfPropertyChange(() => IsDirty);
+            }
+        }
 
         public bool IsLoading
         {
@@ -75,6 +99,34 @@ namespace Dev2.Settings
                 _showSecurity = value;
                 OnSelectionChanged();
                 NotifyOfPropertyChange(() => ShowSecurity);
+            }
+        }
+
+        public SecurityViewModel SecurityViewModel
+        {
+            get { return _securityViewModel; }
+            set
+            {
+                if(Equals(value, _securityViewModel))
+                {
+                    return;
+                }
+                _securityViewModel = value;
+                NotifyOfPropertyChange(() => SecurityViewModel);
+            }
+        }
+
+        public LoggingViewModel LoggingViewModel
+        {
+            get { return _loggingViewModel; }
+            set
+            {
+                if(Equals(value, _loggingViewModel))
+                {
+                    return;
+                }
+                _loggingViewModel = value;
+                NotifyOfPropertyChange(() => LoggingViewModel);
             }
         }
 
@@ -136,6 +188,16 @@ namespace Dev2.Settings
         void LoadSettings()
         {
             //CurrentEnvironment.Connection.ExecuteCommand()
+            SecurityViewModel = SecurityViewModel.Create();
+            SecurityViewModel.PropertyChanged += OnViewModelPropertyChanged;
+        }
+
+        void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if(args.PropertyName == "IsDirty")
+            {
+                IsDirty = true;
+            }
         }
 
         void SaveSettings()

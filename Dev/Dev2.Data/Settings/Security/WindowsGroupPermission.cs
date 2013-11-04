@@ -1,6 +1,6 @@
 using System;
 
-namespace Dev2.Settings.Security
+namespace Dev2.Data.Settings.Security
 {
     public class WindowsGroupPermission : ObservableObject
     {
@@ -14,6 +14,7 @@ namespace Dev2.Settings.Security
         bool _deployTo;
         bool _deployFrom;
         bool _administrator;
+        bool _isNew;
 
         public bool IsServer { get { return _isServer; } set { OnPropertyChanged(ref _isServer, value); } }
 
@@ -34,5 +35,7 @@ namespace Dev2.Settings.Security
         public bool DeployFrom { get { return _deployFrom; } set { OnPropertyChanged(ref _deployFrom, value); } }
 
         public bool Administrator { get { return _administrator; } set { OnPropertyChanged(ref _administrator, value); } }
+
+        public bool IsNew { get { return _isNew; } set { OnPropertyChanged(ref _isNew, value); } }
     }
 }

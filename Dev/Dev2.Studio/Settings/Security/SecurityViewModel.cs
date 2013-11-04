@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Windows;
+using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using CubicOrange.Windows.Forms.ActiveDirectory;
+using Dev2.Data.Settings.Security;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Utils;
@@ -17,23 +17,24 @@ namespace Dev2.Settings.Security
 {
     public class SecurityViewModel : ObservableObject
     {
-        ObservableCollection<WindowsGroupPermission> _serverPermissions;
-        ObservableCollection<WindowsGroupPermission> _resourcePermissions;
+        bool _isDirty;
 
         public SecurityViewModel()
         {
             PickWindowsGroupCommand = new RelayCommand(PickWindowsGroup, o => true);
             PickResourceCommand = new RelayCommand(PickResource, o => true);
+
+            ServerPermissions = new ObservableCollection<WindowsGroupPermission>();
+            ResourcePermissions = new ObservableCollection<WindowsGroupPermission>();
         }
-       
 
-        public ObservableCollection<WindowsGroupPermission> ServerPermissions { get { return _serverPermissions; } set { OnPropertyChanged(ref _serverPermissions, value); } }
-        public ObservableCollection<WindowsGroupPermission> ResourcePermissions { get { return _resourcePermissions; } set { OnPropertyChanged(ref _resourcePermissions, value); } }
-
-        public WindowsGroupPermission SelectedServerPermission { get; set; }
+        public ObservableCollection<WindowsGroupPermission> ServerPermissions { get; private set; }
+        public ObservableCollection<WindowsGroupPermission> ResourcePermissions { get; private set; }
 
         public ICommand PickWindowsGroupCommand { get; private set; }
         public ICommand PickResourceCommand { get; private set; }
+
+        public bool IsDirty { get { return _isDirty; } set { OnPropertyChanged(ref _isDirty, value); } }
 
         void PickResource(object obj)
         {
@@ -104,28 +105,53 @@ namespace Dev2.Settings.Security
 
         void RegisterPropertyChanged(WindowsGroupPermission permission)
         {
-            //var windowsGroupProperty = DependencyPropertyDescriptor.FromProperty(WindowsGroupPermission2.WindowsGroupProperty, typeof(WindowsGroupPermission2));
-            //windowsGroupProperty.AddValueChanged(permission, OnWindowsGroupPropertyChanged);
+            permission.PropertyChanged += OnPermissionPropertyChanged;
         }
 
-        void OnWindowsGroupPropertyChanged(object sender, EventArgs eventArgs)
+        void OnPermissionPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            var permission = (WindowsGroupPermission)sender;
-
-            if(string.IsNullOrEmpty(permission.WindowsGroup))
+            IsDirty = true;
+            if(args.PropertyName == "WindowsGroup" || args.PropertyName == "ResourceName")
             {
-                if(permission.IsServer)
+                var permission = (WindowsGroupPermission)sender;
+
+                if(permission.IsNew)
                 {
-                    ServerPermissions.Remove(permission);
+                    var isEmpty = permission.IsServer
+                        ? string.IsNullOrEmpty(permission.WindowsGroup)
+                        : string.IsNullOrEmpty(permission.WindowsGroup) && string.IsNullOrEmpty(permission.ResourceName);
+                    if(!isEmpty)
+                    {
+                        permission.IsNew = false;
+                        var newPermission = CreateNewPermission(permission.IsServer);
+
+                        if(permission.IsServer)
+                        {
+                            ServerPermissions.Add(newPermission);
+                        }
+                        else
+                        {
+                            ResourcePermissions.Add(newPermission);
+                        }
+                    }
                 }
                 else
                 {
-                    ResourcePermissions.Remove(permission);
+                    var isEmpty = string.IsNullOrEmpty(permission.WindowsGroup);
+                    if(isEmpty)
+                    {
+                        if(permission.IsServer)
+                        {
+                            ServerPermissions.Remove(permission);
+                        }
+                        else
+                        {
+                            ResourcePermissions.Remove(permission);
+                        }
+                    }
                 }
             }
         }
-
-        
 
         public static SecurityViewModel Create()
         {
@@ -177,49 +203,43 @@ namespace Dev2.Settings.Security
                 }
             };
 
-            var viewModel = new SecurityViewModel
-            {
-                _serverPermissions = new ObservableCollection<WindowsGroupPermission>(), 
-                _resourcePermissions = new ObservableCollection<WindowsGroupPermission>()
-            };
+            var viewModel = new SecurityViewModel();
 
             foreach(var permission in serverPermissions)
             {
                 viewModel.RegisterPropertyChanged(permission);
-                viewModel._serverPermissions.Add(permission);
+                viewModel.ServerPermissions.Add(permission);
             }
+            viewModel.ServerPermissions.Add(viewModel.CreateNewPermission(true));
 
             foreach(var permission in resourcePermissions)
             {
                 viewModel.RegisterPropertyChanged(permission);
-                viewModel._resourcePermissions.Add(permission);
+                viewModel.ResourcePermissions.Add(permission);
             }
-
-            // Update bindings
-            viewModel.OnPropertyChanged("ServerPermissions");
-            viewModel.OnPropertyChanged("ResourcePermissions");
+            viewModel.ResourcePermissions.Add(viewModel.CreateNewPermission(false));
 
             return viewModel;
         }
 
+        WindowsGroupPermission CreateNewPermission(bool isServer)
+        {
+            var permission = new WindowsGroupPermission { IsNew = true, IsServer = isServer };
+            RegisterPropertyChanged(permission);
+            return permission;
+        }
     }
 
-    public class IgnoreNewItemPlaceHolderConverter : IValueConverter
+    public class DefaultText : IValueConverter
     {
-        private const string NewItemPlaceholderName = "{NewItemPlaceholder}";
-
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value;
+            return null;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value != null && value.ToString() == NewItemPlaceholderName)
-            {
-                value = DependencyProperty.UnsetValue;
-            }
-            return value;
+            return null;
         }
     }
 }

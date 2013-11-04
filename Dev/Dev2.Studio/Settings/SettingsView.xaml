@@ -16,9 +16,9 @@
     
     <UserControl.Resources>
         <logging:LoggingView x:Key="LoggingView"
-                             AutomationProperties.AutomationId="LoggingViewContent" />
+                             AutomationProperties.AutomationId="LoggingViewContent" DataContext="{Binding LoggingViewModel, Mode=OneWay}"/>
         <security:SecurityView x:Key="SecurityView"
-                               AutomationProperties.AutomationId="SecurityViewContent" />
+                               AutomationProperties.AutomationId="SecurityViewContent" DataContext="{Binding SecurityViewModel, Mode=OneWay}" />
 
         <Style x:Key="ContentViewStyle"
                TargetType="{x:Type ContentControl}">
@@ -89,7 +89,14 @@
                 </StackPanel>
             </Grid>
         </Border>
-        <ContentControl Grid.Column="1"                                           
-                        Style="{StaticResource ContentViewStyle}" />
+        <Grid Grid.Column="1">
+            <ContentControl Style="{StaticResource ContentViewStyle}" />
+
+            <Button Content="Save"
+                    Command="{Binding SaveCommand}"
+                    
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Right" />
+        </Grid>
     </Grid>
 </UserControl>

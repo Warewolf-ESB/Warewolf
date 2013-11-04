@@ -336,7 +336,6 @@
       <DependentUpon>SecurityView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Security\SecurityViewModel.cs" />
-    <Compile Include="Settings\Security\WindowsGroupPermission.cs" />
     <Compile Include="Settings\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>

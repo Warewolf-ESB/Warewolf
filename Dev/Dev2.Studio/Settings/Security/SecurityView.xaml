@@ -9,9 +9,7 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance local:SecurityViewModel}">
     
-    <UserControl.Resources>
-        <local:IgnoreNewItemPlaceHolderConverter x:Key="IgnoreNewItemPlaceHolderConverter"/>
-        
+    <UserControl.Resources>        
         <Style x:Key="PermissionsGridStyle" TargetType="{x:Type DataGrid}">
             <Setter Property="GridLinesVisibility" Value="All"/>
             <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource DataGridBorderBrush}"/>
@@ -20,7 +18,7 @@
             <Setter Property="BorderThickness" Value="1,1,0,0"/>
             <Setter Property="BorderBrush" Value="{StaticResource DataGridBorderBrush}"/>
             <Setter Property="AutoGenerateColumns" Value="False"/>
-            <Setter Property="CanUserAddRows" Value="True"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
             <Setter Property="CanUserDeleteRows" Value="False"/>
             <Setter Property="CanUserReorderColumns" Value="False"/>
             <Setter Property="CanUserResizeRows" Value="False"/>
@@ -115,6 +113,7 @@
     </UserControl.Resources>
     
     <Grid>
+        
         <StackPanel VerticalAlignment="Top"
                     Orientation="Vertical">
 
@@ -123,8 +122,7 @@
 
             <DataGrid x:Name="ServerPermissionsDataGrid" ItemsSource="{Binding ServerPermissions}"
                       Style="{StaticResource PermissionsGridStyle}"
-                      RowStyle="{StaticResource PermissionsGridRowServerStyle}" 
-                      AddingNewItem="OnAddingNewServerItem">
+                      RowStyle="{StaticResource PermissionsGridRowServerStyle}">
 
                 <DataGrid.Columns>
 
@@ -139,30 +137,12 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    
-                                    <TextBox Text="{Binding WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                             Style="{StaticResource PermissionsGridTextBoxStyle}"                                             
-                                             GotKeyboardFocus="OnServerTextChanged"/>
-                                    <Button Grid.Column="1" Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}" />
-                                </Grid>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                        <!--<DataGridTemplateColumn.CellEditingTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
                                     <TextBox Text="{Binding WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Style="{StaticResource PermissionsGridTextBoxStyle}"/>
                                     <Button Grid.Column="1" Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}" />
                                 </Grid>
-                                <DataTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding }"></DataTrigger>
-                                </DataTemplate.Triggers>
                             </DataTemplate>
-                        </DataGridTemplateColumn.CellEditingTemplate>-->
+                        </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
                     <DataGridTemplateColumn Header="Deploy To"
@@ -242,8 +222,7 @@
             <DataGrid x:Name="ResourcePermissionsDataGrid"
                       ItemsSource="{Binding ResourcePermissions}"
                       Style="{StaticResource PermissionsGridStyle}"
-                      RowStyle="{StaticResource PermissionsGridRowStyle}"
-                      AddingNewItem="OnAddingNewResourceItem">
+                      RowStyle="{StaticResource PermissionsGridRowStyle}">
 
                 <DataGrid.Columns>
 
@@ -258,7 +237,15 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding ResourceName, Mode=TwoWay}"/>
+                                    <TextBlock Grid.Column="0"
+                                               Text="Select..."
+                                               VerticalAlignment="Center"
+                                               FontStyle="Italic"
+                                               Foreground="{StaticResource BrushDisabledForeground}"
+                                               Visibility="{Binding IsNew, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
+                                    <TextBlock Grid.Column="0"
+                                             Text="{Binding ResourceName, Mode=TwoWay}"                                             
+                                             Visibility="{Binding IsNew, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
                                     <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridResourceButtonStyle}" />
                                 </Grid>
@@ -278,8 +265,7 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <TextBox Text="{Binding WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                             Style="{StaticResource PermissionsGridTextBoxStyle}" 
-                                             GotKeyboardFocus="OnResourcesTextChanged"/>
+                                             Style="{StaticResource PermissionsGridTextBoxStyle}" />
                                     <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}" />
                                 </Grid>
@@ -323,7 +309,7 @@
                 </DataGrid.Columns>
 
             </DataGrid>
-
         </StackPanel>
+
     </Grid>
 </UserControl>
