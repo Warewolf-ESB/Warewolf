@@ -19,6 +19,7 @@ using Dev2.Activities.Designers2.FormatNumber;
 using Dev2.Activities.Designers2.GetWebRequest;
 using Dev2.Activities.Designers2.Move;
 using Dev2.Activities.Designers2.MultiAssign;
+using Dev2.Activities.Designers2.Random;
 using Dev2.Activities.Designers2.ReadFile;
 using Dev2.Activities.Designers2.ReadFolder;
 using Dev2.Activities.Designers2.Rename;
@@ -68,6 +69,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDateTimeDifferenceActivity), typeof(DateTimeDifferenceDesigner) },
                 { typeof(DsfSendEmailActivity), typeof(EmailDesigner) },
                 { typeof(DsfIndexActivity), typeof(FindIndexDesigner) },
+                { typeof(DsfRandomActivity), typeof(RandomDesigner) },
 
                 //{ typeof(DsfActivity), typeof(DsfActivityDesigner) },
                 //{ typeof(DsfDatabaseActivity), typeof(DsfActivityDesigner) },
@@ -104,7 +106,7 @@ namespace Dev2.Studio.ActivityDesigners
                 //{ typeof(DsfNumberFormatActivity), typeof(DsfNumberFormatActivityDesigner) },
                 //{ typeof(DsfExecuteCommandLineActivity), typeof(DsfExecuteCommandLineActivityDesigner) },
                 { typeof(DsfGatherSystemInformationActivity), typeof(DsfGatherSystemInformationActivityDesigner) },
-                { typeof(DsfRandomActivity), typeof(DsfRandomActivityDesigner) },
+                //{ typeof(DsfRandomActivity), typeof(DsfRandomActivityDesigner) },
                 //{ typeof(DsfSendEmailActivity), typeof(DsfSendEmailActivityDesigner) },
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },
                 { typeof(DsfScriptingActivity), typeof(DsfScriptingActivityDesigner) },

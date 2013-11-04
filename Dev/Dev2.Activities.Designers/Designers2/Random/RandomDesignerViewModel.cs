@@ -1,9 +1,10 @@
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
-using Dev2.Converters.DateAndTime;
+using Dev2.Common.Enums;
 
 namespace Dev2.Activities.Designers2.Random
 {
@@ -13,37 +14,89 @@ namespace Dev2.Activities.Designers2.Random
             : base(modelItem)
         {
             AddTitleBarHelpToggle();
-            TimeModifierTypes = new List<string>(RandomFormatter.TimeModifierTypes);
+            RandomTypes = Dev2EnumConverter.ConvertEnumsTypeToStringList<enRandomType>();
+            SelectedRandomType = Dev2EnumConverter.ConvertEnumValueToString(RandomType);
         }
 
-        public List<string> TimeModifierTypes { get; private set; }
+        public IList<string> RandomTypes { get; private set; }
 
-        public string Dev2DefaultRandom { get { return GlobalConstants.Dev2CustomDefaultRandomFormat; } }
-
-        public string SelectedTimeModifierType
+        public bool IsLengthPath
         {
-            get { return (string)GetValue(SelectedTimeModifierTypeProperty); }
-            set { SetValue(SelectedTimeModifierTypeProperty, value); }
+            get { return (bool)GetValue(IsLengthPathProperty); }
+            set { SetValue(IsLengthPathProperty, value); }
         }
 
-        public static readonly DependencyProperty SelectedTimeModifierTypeProperty =
-            DependencyProperty.Register("SelectedTimeModifierType", typeof(string), typeof(RandomDesignerViewModel), new PropertyMetadata(null, OnSelectedTimeModifierTypeChanged));
+        public static readonly DependencyProperty IsLengthPathProperty =
+            DependencyProperty.Register("IsLengthPath", typeof(bool), typeof(RandomDesignerViewModel), new PropertyMetadata(false));
 
-        static void OnSelectedTimeModifierTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        public string LengthContent
+        {
+            get { return (string)GetValue(LengthContentProperty); }
+            set { SetValue(LengthContentProperty, value); }
+        }
+
+        public static readonly DependencyProperty LengthContentProperty =
+            DependencyProperty.Register("LengthContent", typeof(string), typeof(RandomDesignerViewModel), new PropertyMetadata(null));
+        
+        public Visibility Visibility
+        {
+            get { return (Visibility)GetValue(VisibilityProperty); }
+            set { SetValue(VisibilityProperty, value); }
+        }
+
+        public static readonly DependencyProperty VisibilityProperty =
+            DependencyProperty.Register("Visibility", typeof(Visibility), typeof(RandomDesignerViewModel), new PropertyMetadata(null));
+
+        public string SelectedRandomType
+        {
+            get { return (string)GetValue(SelectedRandomTypeProperty); }
+            set { SetValue(SelectedRandomTypeProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedRandomTypeProperty =
+            DependencyProperty.Register("SelectedRandomType", typeof(string), typeof(RandomDesignerViewModel), new PropertyMetadata(null, OnSelectedRandomTypeChanged));
+
+        static void OnSelectedRandomTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var viewModel = (RandomDesignerViewModel)d;
             var value = e.NewValue as string;
 
-            if(string.IsNullOrWhiteSpace(value))
+            if(!string.IsNullOrWhiteSpace(value))
             {
-                viewModel.TimeModifierAmountDisplay = value;
+                switch (value)
+                {
+                    case "GUID":
+                        viewModel.IsLengthPath = false;
+                        viewModel.Visibility = Visibility.Hidden;
+                        viewModel.Visibility = Visibility.Hidden;
+                        viewModel.Visibility = Visibility.Hidden;
+                        viewModel.LengthContent = "Length";
+                        break;
+
+                    case "Numbers":
+                        viewModel.IsLengthPath = false;
+                        viewModel.Visibility = Visibility.Visible;
+                        viewModel.Visibility = Visibility.Visible;
+                        viewModel.Visibility = Visibility.Visible;
+                        viewModel.LengthContent = "Range";
+                        break;
+
+                    default:
+                        viewModel.IsLengthPath = true;
+                        viewModel.Visibility = Visibility.Hidden;
+                        viewModel.Visibility = Visibility.Hidden;
+                        viewModel.Visibility = Visibility.Hidden;
+                        viewModel.LengthContent = "Length";
+                        break;
+
+                }
+
+                viewModel.RandomType = (enRandomType)Dev2EnumConverter.GetEnumFromStringDiscription(value, typeof(enRandomType)); 
             }
-            viewModel.TimeModifierType = value;
         }
 
         // DO NOT bind to these properties - these are here for convenience only!!!
-        string TimeModifierType { set { SetProperty(value); } }
-        string TimeModifierAmountDisplay { set { SetProperty(value); } }
+        enRandomType RandomType { set { SetProperty(value); } get { return GetProperty<enRandomType>(); } }
 
         public override void Validate()
         {

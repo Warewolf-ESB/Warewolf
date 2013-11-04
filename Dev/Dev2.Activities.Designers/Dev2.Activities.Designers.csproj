@@ -279,6 +279,13 @@
     <Compile Include="Behaviors\DataGridFocusTextOnLoadBehavior.cs" />
     <Compile Include="AttachedProperties\FocusSetter.cs" />
     <Compile Include="AttachedProperties\WizardEngineAttachedProperties.cs" />
+    <Compile Include="Designers2\Random\RandomDesigner.xaml.cs">
+      <DependentUpon>RandomDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Random\RandomDesignerViewModel.cs" />
+    <Compile Include="Designers2\Random\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\ReadFile\ReadFileDesigner.xaml.cs">
       <DependentUpon>ReadFileDesigner.xaml</DependentUpon>
     </Compile>
@@ -621,6 +628,14 @@
     <Page Include="Designers2\MultiAssign\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Random\RandomDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Random\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\ReadFile\ReadFileDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
