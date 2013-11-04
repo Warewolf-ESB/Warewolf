@@ -54,7 +54,7 @@ namespace Dev2.Data.Parsers
                     using (XmlReader reader = XmlReader.Create(stringReader, settings))
                     {
                         reader.Read();
-                        if(reader.NodeType == XmlNodeType.XmlDeclaration || reader.NodeType == XmlNodeType.Whitespace || string.IsNullOrEmpty(reader.Value.Trim()))
+                        if(reader.NodeType == XmlNodeType.XmlDeclaration || reader.NodeType == XmlNodeType.Whitespace)
                         {
                             reader.Skip();
                         }

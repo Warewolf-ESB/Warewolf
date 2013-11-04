@@ -500,10 +500,19 @@ namespace Dev2.DynamicServices
                 }
                 finally
                 {
-                    if (_waitHandle != null) _waitHandle.Set();
-                    ExecutableServiceRepository.Instance.Remove(this);
-                    DispatchDebugState(DataTransferObject, StateType.End, _runTime);
-                    if(DataTransferObject != null) DataTransferObject.NumberOfSteps = _previousNumberOfSteps;
+
+                    try
+                    {
+                        if (_waitHandle != null) _waitHandle.Set();
+                        ExecutableServiceRepository.Instance.Remove(this);
+                        DispatchDebugState(DataTransferObject, StateType.End, _runTime);
+                        if (DataTransferObject != null) DataTransferObject.NumberOfSteps = _previousNumberOfSteps;
+                    }
+                    catch(Exception e)
+                    {
+                        // Best effort ;)
+                        ServerLogger.LogError(e);
+                    }
                 }
 
 

@@ -1355,10 +1355,10 @@ namespace Dev2.DataList.Contract
             {
                 using (TextReader tr = new StringReader(data))
                 {
-                    try
-                    {
-                        using (XmlReader reader = XmlReader.Create(tr, _isXmlReaderSettings))
+                        try
                         {
+                        using (XmlReader reader = XmlReader.Create(tr, _isXmlReaderSettings))
+                            {
 
                             //try
                             //{
@@ -1391,15 +1391,15 @@ namespace Dev2.DataList.Contract
                             //    isFragment = false;
                             //    result = false;
                             //}
+                            }
+                        }
+                    catch (Exception e)
+                        {
+                        ServerLogger.LogError(e);
+                            result = false;
                         }
                     }
-                    catch (Exception e)
-                    {
-                        ServerLogger.LogError(e);
-                        result = false;
-                    }
                 }
-            }
 
             return result;
         }

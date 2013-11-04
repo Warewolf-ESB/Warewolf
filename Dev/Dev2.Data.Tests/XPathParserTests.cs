@@ -34,30 +34,6 @@ namespace Dev2.Data.Tests
             }
         }
 
-        #region Additional test attributes
-
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-
-        #endregion
-
         const string XMLDocument = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>" +
                                    "<!DOCTYPE dotfuscator SYSTEM \"http://www.preemptive.com/dotfuscator/dtd/dotfuscator_v2.3.dtd\">" +
                                    "<dotfuscator version=\"2.3\">\n" +
@@ -77,8 +53,8 @@ namespace Dev2.Data.Tests
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(6,data.Count());
             Assert.AreEqual("<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />",data[1]);
-        }
-
+        } 
+        
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("XPathParser_Parser")]

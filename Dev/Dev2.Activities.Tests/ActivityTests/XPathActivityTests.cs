@@ -138,9 +138,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                // ReSharper disable RedundantStringFormatCall
+// ReSharper disable RedundantStringFormatCall
                 Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-                // ReSharper restore RedundantStringFormatCall
+// ReSharper restore RedundantStringFormatCall
             }
         }
 
@@ -165,9 +165,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                // ReSharper disable RedundantStringFormatCall
+// ReSharper disable RedundantStringFormatCall
                 Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-                // ReSharper restore RedundantStringFormatCall
+// ReSharper restore RedundantStringFormatCall
             }
         }
 
