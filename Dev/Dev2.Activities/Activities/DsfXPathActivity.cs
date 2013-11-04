@@ -136,9 +136,9 @@ namespace Dev2.Activities
                                                     if(!string.IsNullOrEmpty(newFieldName))
                                                     {
                                                         string cleanFieldName = null;
-                                                        if(newFieldName.IndexOf("]]") + 2 < newFieldName.Length)
+                                                        if(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2 < newFieldName.Length)
                                                         {
-                                                            cleanFieldName = "[[" + newFieldName.Remove(newFieldName.IndexOf("]]") + 2);
+                                                            cleanFieldName = "[[" + newFieldName.Remove(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2);
                                                         }
                                                         else
                                                         {

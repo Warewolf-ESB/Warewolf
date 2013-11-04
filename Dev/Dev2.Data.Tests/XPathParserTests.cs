@@ -240,7 +240,7 @@ namespace Dev2.Data.Tests
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(6, data.Count());
-            Assert.AreEqual("name=\"ExtractOutMergeDataFromRequest\"", data[1]);
+            Assert.AreEqual("ExtractOutMergeDataFromRequest", data[1]);
         }
         
         [TestMethod]
@@ -253,8 +253,8 @@ namespace Dev2.Data.Tests
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(12, data.Count());
-            Assert.AreEqual("name=\"ExtractInMergeDataFromRequest\"", data[0]);
-            Assert.AreEqual("signature=\"void(object)\"", data[1]);
+            Assert.AreEqual("ExtractInMergeDataFromRequest", data[0]);
+            Assert.AreEqual("void(object)", data[1]);
         }
 
         [TestMethod]

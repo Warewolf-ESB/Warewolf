@@ -210,7 +210,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments("<root>" + dataSplitPreDataListWithData + "</root>", dataSplitPreDataList, _source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "signature=\"void(object)\",signature=\"void(object)\",signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\",signature=\"void(CommandLine.Text.HelpText)\",signature=\"string()\",signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\"" };
+            List<string> expected = new List<string> { "void(object)","void(object)","void(Dev2.DynamicServices.IDynamicServiceObject, object)","void(CommandLine.Text.HelpText)","string()","Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
             List<string> actual = new List<string>();
 
             for (int i = 1; i <= 1; i++)

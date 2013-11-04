@@ -1346,60 +1346,54 @@ namespace Dev2.DataList.Contract
         /// </summary>
         public static bool IsXml(string data, out bool isFragment, out bool isHtml)
         {
-           
-            bool result = true;
+
+            string trimedData = data.Trim();
+            bool result = (trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA["));
             isFragment = false;
             isHtml = false;
 
             if(result)
             {
-                using (TextReader tr = new StringReader(data))
+                using(TextReader tr = new StringReader(data))
                 {
+                    using(XmlReader reader = XmlReader.Create(tr, _isXmlReaderSettings))
+                    {
+
                         try
                         {
-                        using (XmlReader reader = XmlReader.Create(tr, _isXmlReaderSettings))
+                            long nodeCount = 0;
+                            while(reader.Read() && !isHtml && !isFragment && result &&
+                                   reader.NodeType != XmlNodeType.Document)
                             {
+                                nodeCount++;
 
-                            //try
-                            //{
-                            //    long nodeCount = 0;
-                            //    while (reader.Read() && !isHtml && !isFragment && result && reader.NodeType != XmlNodeType.Document)
-                            //    {
-                            //        nodeCount++;
+                                if(reader.NodeType != XmlNodeType.CDATA)
+                                {
+                                    if(reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" &&
+                                        reader.Depth == 0)
+                                    {
+                                        isHtml = true;
+                                        result = false;
+                                    }
 
-                            //        if (reader.NodeType != XmlNodeType.CDATA)
-                            //        {
-                            //            if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" &&
-                            //                reader.Depth == 0)
-                            //            {
-                            //                isHtml = true;
-                            //                result = false;
-                            //            }
-
-                            //            if (reader.NodeType == XmlNodeType.Element && nodeCount > 1 && reader.Depth == 0)
-                            //            {
-                            //                isFragment = true;
-                            //            }
-                            //        }
-                            //    }
-                            //}
-                            //catch (Exception ex)
-                            //{
-                            //    ServerLogger.LogError(ex);
-                            //    tr.Close();
-                            //    reader.Close();
-                            //    isFragment = false;
-                            //    result = false;
-                            //}
+                                    if(reader.NodeType == XmlNodeType.Element && nodeCount > 1 && reader.Depth == 0)
+                                    {
+                                        isFragment = true;
+                                    }
+                                }
                             }
                         }
-                    catch (Exception e)
+                        catch(Exception ex)
                         {
-                        ServerLogger.LogError(e);
+                            ServerLogger.LogError(ex);
+                            tr.Close();
+                            reader.Close();
+                            isFragment = false;
                             result = false;
                         }
                     }
                 }
+            }
 
             return result;
         }
