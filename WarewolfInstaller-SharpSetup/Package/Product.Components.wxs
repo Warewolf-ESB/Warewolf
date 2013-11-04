@@ -28,8 +28,15 @@
             <Directory Id="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Name="Services" />
             <Directory Id="dirA3C13CC9A90BF0D49E5A0D8F79115F39" Name="Sources" />
             <Directory Id="dir1931D9C5012B41449415D8D0C9710DEB" Name="Webs" />
+            <Directory Id="dir1931D9C5012B41449415D8D0C9710DEC" Name="SSL Generation" />
         </DirectoryRef>
         <ComponentGroup Id="Server">
+            <Component Id="cmp62707DDA8BD0362C71EDB96A68049A9D" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{00B67EEE-C507-4FFD-8AC6-FF6EC29E161C}">
+                <File Id="fil858D36B941DA865CC6CA040563732F66" KeyPath="yes" Source="..\ProductBuild\Server\SSL Generation\makecert.exe" />
+            </Component>
+            <Component Id="cmp62707DDA8BD0311C71EDB96A68049F9D" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{00B67EEE-C507-4FFD-8AC6-FF6EC29E161D}">
+                <File Id="fil818D36B941DA865CC6CA040563732F76" KeyPath="yes" Source="..\ProductBuild\Server\SSL Generation\CreateCertificate.bat" />
+            </Component>
             <Component Id="cmpD31F5EF4CC334564314D0673C5706C7F" Directory="dirServerRoot" Guid="{AA67B531-8C85-47CF-9CDC-2F8352AA67C2}">
                 <File Id="filB616149A55DCE0B2E9E6492125920C38" KeyPath="yes" Source="..\ProductBuild\Server\Tamir.SharpSSH.dll" />
             </Component>
