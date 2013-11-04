@@ -215,9 +215,6 @@
     </None>
     <None Include="Properties\app.manifest" />
     <None Include="Unlimited.Applications.DynamicServicesHost_TemporaryKey.pfx" />
-    <None Include="WarewolfServer-old.cer">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

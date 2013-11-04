@@ -10,16 +10,12 @@ namespace Dev2.Runtime.Security
    
     /// <summary>
     /// Build a self-signed SSL cert
-    /// VIA : http://blog.differentpla.net/post/UUdjnnuYkMwsAAAB/how-do-i-create-a-self-signed-certificate-using-bouncy-castle-#whatsinacertificate
     /// </summary>
     public class SSLCertificateBuilder
     {
 
         // NOTE : We need to ensure we change the -r value for each generation ;)
-
         private static string MakeCertPath = @"\SSL Generation\CreateCertificate.bat";
-        //private static string RootAuthorityCert = " -pe -n \"CN=Test Root Authority{0}\" -ss my -sr LocalMachine -a sha1 -sky signature -r \"Test and Dev Root Authority.cer\" ";
-        //private static string SSLCertGeneration = " -pe -n \"CN=warewolf.local\" -ss my -sr LocalMachine -a sha1 -sky exchange -eku 1.3.6.1.5.5.7.3.1 -in \"Test Root Authority{0}\" -is MY -ir LocalMachine -sp \"Microsoft RSA SChannel Cryptographic Provider\" -sy 12 \"WarewolfServer.cer\"";
 
         public bool EnsureSSLCertificate(string certPath)
         {
@@ -34,7 +30,6 @@ namespace Dev2.Runtime.Security
             {
                 if (!string.IsNullOrEmpty(asmLoc))
                 {
-
                     asmLoc = Path.GetDirectoryName(asmLoc);
                     workingDir = String.Concat(asmLoc, @"\SSL Generation");
                     exeBase = string.Concat(asmLoc, MakeCertPath);
@@ -43,8 +38,6 @@ namespace Dev2.Runtime.Security
 
                     File.WriteAllText(exeBase, writeBack);
                 }
-
-                //var toInvoke = string.Concat("\"", exeBase, "\"");
 
                 if(InvokeProcess("CreateCertificate.bat", workingDir))
                 {
@@ -78,11 +71,10 @@ namespace Dev2.Runtime.Security
 
             Process p = new Process();
             p.StartInfo.CreateNoWindow = true;
-            //p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             p.StartInfo.FileName = cmd;
             p.StartInfo.WorkingDirectory = workingDir;
             
-
             var proc = p.Start();
             
             if (p.Start())
