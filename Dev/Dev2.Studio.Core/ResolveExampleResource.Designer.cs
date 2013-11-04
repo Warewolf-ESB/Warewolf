@@ -320,14 +320,5 @@ namespace Dev2 {
                 return ResourceManager.GetString("DsfZip", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Utility - Random.
-        /// </summary>
-        internal static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
     }
 }

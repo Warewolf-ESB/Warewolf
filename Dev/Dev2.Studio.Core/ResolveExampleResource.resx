@@ -204,7 +204,4 @@
   <data name="DsfSendEmailActivity" xml:space="preserve">
     <value>Utility - Email</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value>Utility - Random</value>
-  </data>
 </root>

@@ -38,7 +38,6 @@
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1" 
                                 Grid.Row="0" 
-                                Margin="0,2"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 DefaultText="InField"
                                 FilterType="All" 
@@ -63,7 +62,6 @@
         <ComboBox Grid.Column="1"
                   Grid.Row="1"
                   Style="{StaticResource ActivityComboBoxStyle}"
-                  Margin="0,2"
                   ItemsSource="{Binding Path=IndexList}"
                   SelectedValue="{Binding Path=SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Indextcbx_AutoID}">
@@ -82,7 +80,6 @@
                Content="Characters" />
         <ui:IntellisenseTextBox Grid.Column="1" 
                                 Grid.Row="2"
-                                Margin="0,2"
                                 DefaultText="Look for info" 
                                 Text="{Binding Path=ModelItem.Characters,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
@@ -105,7 +102,6 @@
         <ComboBox Grid.Column="1"
                   Grid.Row="3"
                   Style="{StaticResource ActivityComboBoxStyle}"
-                  Margin="0,2"
                   ItemsSource="{Binding Path=DirectionList}"
                   SelectedValue="{Binding Path=SelectedDirection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Directioncbx_AutoID}">
@@ -124,7 +120,6 @@
                Content="Result" />
         <ui:IntellisenseTextBox Grid.Column="1" 
                                 Grid.Row="4" 
-                                Margin="0,2"
                                 DefaultText="[[Result]]" 
                                 FilterType="All"
                                 WrapInBrackets="True" 

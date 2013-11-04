@@ -23,6 +23,8 @@ using Dev2.Activities.Designers2.Random;
 using Dev2.Activities.Designers2.ReadFile;
 using Dev2.Activities.Designers2.ReadFolder;
 using Dev2.Activities.Designers2.Rename;
+using Dev2.Activities.Designers2.Replace;
+using Dev2.Activities.Designers2.Script;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Activities.Designers2.SortRecords;
 using Dev2.Activities.Designers2.SqlBulkInsert;
@@ -30,7 +32,6 @@ using Dev2.Activities.Designers2.UniqueRecords;
 using Dev2.Activities.Designers2.Unzip;
 using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Designers2.Zip;
-using Dev2.Studio.ActivityDesigners.Scripting;
 using Dev2.Studio.ViewModels.Workflow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -70,6 +71,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfSendEmailActivity), typeof(EmailDesigner) },
                 { typeof(DsfIndexActivity), typeof(FindIndexDesigner) },
                 { typeof(DsfRandomActivity), typeof(RandomDesigner) },
+                { typeof(DsfReplaceActivity), typeof(ReplaceDesigner) },
+                { typeof(DsfScriptingActivity), typeof(ScriptDesigner) },
 
                 //{ typeof(DsfActivity), typeof(DsfActivityDesigner) },
                 //{ typeof(DsfDatabaseActivity), typeof(DsfActivityDesigner) },
@@ -94,7 +97,7 @@ namespace Dev2.Studio.ActivityDesigners
                 //{ typeof(DsfUnZip), typeof(DsfUnzipDesigner) },
                 //{ typeof(DsfDateTimeDifferenceActivity), typeof(DsfDateTimeDifferenceActivityDesigner) },
                 { typeof(DsfCaseConvertActivity), typeof(DsfCaseConvertActivityDesigner) },
-                { typeof(DsfReplaceActivity), typeof(DsfReplaceActivityDesigner) },
+                //{ typeof(DsfReplaceActivity), typeof(DsfReplaceActivityDesigner) },
                 //{ typeof(DsfIndexActivity), typeof(DsfIndexActivityDesigner) },
                 { typeof(DsfDataMergeActivity), typeof(DsfDataMergeActivityDesigner) },
                 //                    {typeof (DsfRemoveActivity), typeof (DsfRemoveActivityDesigner)},
@@ -109,7 +112,7 @@ namespace Dev2.Studio.ActivityDesigners
                 //{ typeof(DsfRandomActivity), typeof(DsfRandomActivityDesigner) },
                 //{ typeof(DsfSendEmailActivity), typeof(DsfSendEmailActivityDesigner) },
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },
-                { typeof(DsfScriptingActivity), typeof(DsfScriptingActivityDesigner) },
+                //{ typeof(DsfScriptingActivity), typeof(DsfScriptingActivityDesigner) },
                 { typeof(DsfXPathActivity), typeof(DsfXPathActivityDesigner) },
                 // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
             };

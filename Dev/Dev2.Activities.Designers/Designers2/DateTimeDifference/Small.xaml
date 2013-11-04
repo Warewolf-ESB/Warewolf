@@ -84,7 +84,6 @@
                Content="Input Format" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="2"
-                                Margin="0,2,1,2"     
                                 DefaultText="d MM yyyy 24h:min.ss sp"
                                 FilterType="All"
                                 WrapInBrackets="False"
@@ -112,7 +111,6 @@
                Content="Output In" />
         <ComboBox Grid.Column="1"
                   Grid.Row="3"
-                  Margin="0,2,1,2"
                   Style="{StaticResource ActivityComboBoxStyle}"
                   SelectedValue="{Binding SelectedOutputType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding OutputTypes}"

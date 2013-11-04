@@ -9,11 +9,11 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Script"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               Width="270"
-                               MaxWidth="270"
+                               Width="230"
+                               MaxWidth="230"
                                Padding="7"
                                mc:Ignorable="d"
-                               d:DesignWidth="270"
+                               d:DesignWidth="230"
                                d:DataContext="{d:DesignInstance local:ScriptDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
@@ -24,75 +24,26 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition MinWidth="80" />
-            <ColumnDefinition MinWidth="80" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Label Grid.Column="0"
                Grid.Row="0"
-               Content="Input" />
-        <ui:IntellisenseTextBox x:Name="InitialFocusElement"
-                                Grid.ColumnSpan="2"
-                                Grid.Column="1"
-                                Grid.Row="0"
-                                DefaultText="Date Time"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Text="{Binding Path=ModelItem.Script, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
-                                        Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}">
+               Content="Langauge" />
+         <ComboBox x:Name="InitialFocusElement"
+                   Grid.Column="1"
+                   Grid.Row="0"
+                   Style="{StaticResource ActivityComboBoxStyle}"
+                   SelectedValue="{Binding SelectedScriptType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                   ItemsSource="{Binding ScriptTypes}"
+                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_AddTimeTypecbx_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ScriptInputHelpText}"
-                                 DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="Script"
-                                     SourcePropertyValue="{Binding ModelItem.Script, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
-            </i:Interaction.Behaviors>
-
-        </ui:IntellisenseTextBox>
-
-        <Label Grid.Column="0"
-               Grid.Row="1"
-               Content="Input Format" />
-        <ui:IntellisenseTextBox Grid.ColumnSpan="2"
-                                Grid.Column="1"
-                                Grid.Row="1"
-                                DefaultText="{Binding Dev2DefaultScript, Mode=OneTime}"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Text="{Binding Path=ModelItem.InputFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                IntellisenseProvider="{StaticResource ScriptCompositeIntellisenseProvider}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InputFormattxt_AutoID}">
-            <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ScriptInputFormatHelpText}"
-                                 DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="InputFormat"
-                                     SourcePropertyValue="{Binding ModelItem.InputFormat, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
-            </i:Interaction.Behaviors>
-
-        </ui:IntellisenseTextBox>
-
-        <Label Grid.Column="0"
-               Grid.Row="2"
-               Content="Add Time" />
-        <ComboBox Grid.Column="1"
-                  Grid.Row="2"
-                  Margin="0,2,1,2"                  
-                  Style="{StaticResource ActivityComboBoxStyle}"
-                  SelectedValue="{Binding SelectedTimeModifierType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ItemsSource="{Binding TimeModifierTypes}"
-                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_AddTimeTypecbx_AutoID}">
-            <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ScriptAddTimeTypeHelpText}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ScriptingHelpLanguageType}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="SelectedTimeModifierType"
@@ -102,67 +53,48 @@
 
         </ComboBox>
 
-        <ui:IntellisenseTextBox Grid.Column="2"
-                                Grid.Row="2"
-                                DefaultText="+/- time"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                IsEnabled="{Binding SelectedTimeModifierType, Converter={StaticResource EmptyStringToBoolConverter}}"
-                                Text="{Binding Path=ModelItem.TimeModifierAmountDisplay,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_AddTimeAmounttxt_AutoID}">
+        <ui:IntellisenseTextBox  Grid.ColumnSpan="2"
+                                 Grid.Column="0"
+                                 Grid.Row="1" 
+                                 DefaultText="{Binding ScriptTypeDefaultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Height="53"
+                                 MinHeight="53"
+                                 FilterType="All"
+                                 ToolTip="{x:Static help:HelpTextResources.ScriptingToolTipScript}"
+                                 AllowUserCalculateMode="False"
+                                 IsInCalculateMode="True"
+                                 Text="{Binding Path=ModelItem.Script, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_txtScript_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ScriptAddTimeHelpText}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ScriptingHelpScript}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="TimeModifierAmountDisplay"
-                                     SourcePropertyValue="{Binding ModelItem.TimeModifierAmountDisplay, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.Script"
+                                     SourcePropertyValue="{Binding ModelItem.Script, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-
         </ui:IntellisenseTextBox>
-
+       
         <Label Grid.Column="0"
-               Grid.Row="3"
-               Content="Output Format" />
-        <ui:IntellisenseTextBox Grid.ColumnSpan="2"
-                                Grid.Column="1"
-                                Grid.Row="3"
-                                DefaultText="{Binding Dev2DefaultScript, Mode=OneTime}"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Text="{Binding Path=ModelItem.OutputFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_OutputFormattxt_AutoID}"
-                                IntellisenseProvider="{StaticResource ScriptCompositeIntellisenseProvider}">
-            <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ScriptOutputFormatHelpText}"
-                                 DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="OutputFormat"
-                                     SourcePropertyValue="{Binding ModelItem.OutputFormat, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
-            </i:Interaction.Behaviors>
-
-        </ui:IntellisenseTextBox>
-
-        <Label Grid.Column="0"
-               Grid.Row="4"
+               Grid.Row="2"
                Content="Result" />
-        <ui:IntellisenseTextBox Grid.ColumnSpan="2"
-                                Grid.Column="1"
-                                Grid.Row="4"
-                                DefaultText="[[NewScript]]"
-                                WrapInBrackets="True"
+        <ui:IntellisenseTextBox Grid.Column="1"
+                                Grid.Row="2"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                WrapInBrackets="True"
+                                DefaultText="[[Result]]"
+                                FilterType="All"
+                                ToolTip="{x:Static help:HelpTextResources.ScriptingToolTipResult}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ScriptResultHelpText}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ScriptingHelpResult}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-
         </ui:IntellisenseTextBox>
-
     </Grid>
 </core:ActivityDesignerTemplate>

@@ -48,7 +48,6 @@
 
             <ComboBox x:Name="InitialFocusElement"
                       Style="{StaticResource ActivityComboBoxStyle}"
-                      Margin="0"
                       SelectedValue="{Binding SelectedSelectedEmailSource,Mode=TwoWay,NotifyOnSourceUpdated=True}"
                       ItemsSource="{Binding EmailSourceList}"
                       ToolTip="{x:Static help:HelpTextResources.EmailToolTipMailSource}"
@@ -97,7 +96,6 @@
         <ui:IntellisenseTextBox   Grid.Column="1"
                                   Grid.Row="2"
                                   Grid.ColumnSpan="2"
-                                  Margin="0,2,1,2"
                                   Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                   DefaultText="Account or email address"
                                   ToolTip="{x:Static help:HelpTextResources.EmailToolTipTo}"
@@ -119,7 +117,6 @@
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="3"
                                 Grid.ColumnSpan="2"
-                                Margin="0,2,1,2"
                                 DefaultText="Message Subject"
                                 Text="{Binding ModelItem.Subject,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
@@ -148,7 +145,6 @@
                                 AcceptsTab="True"
                                 VerticalContentAlignment="Top"
                                 MinLines="2"
-                                Margin="0,2,1,2"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_bodytxt_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.EmailHelpBody}"
@@ -167,7 +163,6 @@
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="5"
                                 Grid.ColumnSpan="2"                                  
-                                Margin="0,2,1,2" 
                                 DefaultText="Email Content"
                                 ToolTip="{x:Static help:HelpTextResources.EmailToolTipResult}"
                                 Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

@@ -9,11 +9,11 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Replace"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               Width="270"
-                               MaxWidth="270"
+                               Width="250"
+                               MaxWidth="250"
                                Padding="7"
                                mc:Ignorable="d"
-                               d:DesignWidth="270"
+                               d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance local:ReplaceDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
@@ -24,36 +24,32 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition MinWidth="80" />
-            <ColumnDefinition MinWidth="80" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Label Grid.Column="0"
                Grid.Row="0"
-               Content="Input" />
+               Content="In Field(s)" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
-                                Grid.ColumnSpan="2"
                                 Grid.Column="1"
                                 Grid.Row="0"
-                                DefaultText="Date Time"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Text="{Binding Path=ModelItem.Replace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
-                                        Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}">
+                                ToolTip="{x:Static help:HelpTextResources.ReplaceToolTipInField}"
+                                DefaultText="[[Recordset().Field]]"
+                                Text="{Binding ModelItem.FieldsToSearch,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InFiledstxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ReplaceInputHelpText}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ReplaceHelpInField}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="Replace"
-                                     SourcePropertyValue="{Binding ModelItem.Replace, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.FieldsToSearch"
+                                     SourcePropertyValue="{Binding ModelItem.FieldsToSearch, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
 
@@ -61,21 +57,20 @@
 
         <Label Grid.Column="0"
                Grid.Row="1"
-               Content="Input Format" />
-        <ui:IntellisenseTextBox Grid.ColumnSpan="2"
-                                Grid.Column="1"
+               Content="Find"/>
+        <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="1"
-                                DefaultText="{Binding Dev2DefaultReplace, Mode=OneTime}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Text="{Binding Path=ModelItem.InputFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                IntellisenseProvider="{StaticResource ReplaceCompositeIntellisenseProvider}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InputFormattxt_AutoID}">
+                                ToolTip="{x:Static help:HelpTextResources.ReplaceToolTipFind}"
+                                DefaultText="Some Text"
+                                Text="{Binding ModelItem.Find, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Findtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ReplaceInputFormatHelpText}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ReplaceHelpFind}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="InputFormat"
-                                     SourcePropertyValue="{Binding ModelItem.InputFormat, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.Find"
+                                     SourcePropertyValue="{Binding ModelItem.Find, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
 
@@ -83,78 +78,37 @@
 
         <Label Grid.Column="0"
                Grid.Row="2"
-               Content="Add Time" />
-        <ComboBox Grid.Column="1"
+               Content="Replace With" />
+        <ui:IntellisenseTextBox Grid.Column="1"
                   Grid.Row="2"
-                  Margin="0,2,1,2"                  
-                  Style="{StaticResource ActivityComboBoxStyle}"
-                  SelectedValue="{Binding SelectedTimeModifierType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ItemsSource="{Binding TimeModifierTypes}"
-                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_AddTimeTypecbx_AutoID}">
+                  DefaultText="New Text"
+                  Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                  ToolTip="{x:Static help:HelpTextResources.ReplaceToolTipReplaceWith}"
+                  Text="{Binding ModelItem.ReplaceWith,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Replacetxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ReplaceAddTimeTypeHelpText}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ReplaceHelpReplaceWith}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="SelectedTimeModifierType"
-                                     SourcePropertyValue="{Binding SelectedTimeModifierType, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.ReplaceWith"
+                                     SourcePropertyValue="{Binding ModelItem.ReplaceWith, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-
-        </ComboBox>
-
-        <ui:IntellisenseTextBox Grid.Column="2"
-                                Grid.Row="2"
-                                DefaultText="+/- time"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                IsEnabled="{Binding SelectedTimeModifierType, Converter={StaticResource EmptyStringToBoolConverter}}"
-                                Text="{Binding Path=ModelItem.TimeModifierAmountDisplay,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_AddTimeAmounttxt_AutoID}">
-            <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ReplaceAddTimeHelpText}"
-                                 DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="TimeModifierAmountDisplay"
-                                     SourcePropertyValue="{Binding ModelItem.TimeModifierAmountDisplay, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
-            </i:Interaction.Behaviors>
-
         </ui:IntellisenseTextBox>
 
-        <Label Grid.Column="0"
+         <Label Grid.Column="0"
                Grid.Row="3"
-               Content="Output Format" />
-        <ui:IntellisenseTextBox Grid.ColumnSpan="2"
-                                Grid.Column="1"
-                                Grid.Row="3"
-                                DefaultText="{Binding Dev2DefaultReplace, Mode=OneTime}"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Text="{Binding Path=ModelItem.OutputFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_OutputFormattxt_AutoID}"
-                                IntellisenseProvider="{StaticResource ReplaceCompositeIntellisenseProvider}">
-            <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ReplaceOutputFormatHelpText}"
-                                 DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="OutputFormat"
-                                     SourcePropertyValue="{Binding ModelItem.OutputFormat, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
-            </i:Interaction.Behaviors>
-
-        </ui:IntellisenseTextBox>
-
-        <Label Grid.Column="0"
-               Grid.Row="4"
                Content="Result" />
-        <ui:IntellisenseTextBox Grid.ColumnSpan="2"
-                                Grid.Column="1"
-                                Grid.Row="4"
-                                DefaultText="[[NewReplace]]"
-                                WrapInBrackets="True"
+        <ui:IntellisenseTextBox Grid.Column="1"
+                                Grid.Row="3"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                DefaultText="[[ReplacementCount]]"
+                                ToolTip="{x:Static help:HelpTextResources.ReplaceToolTipResult}"
+                                WrapInBrackets="True"
+                                Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ReplaceResultHelpText}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ReplaceHelpResult}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"
