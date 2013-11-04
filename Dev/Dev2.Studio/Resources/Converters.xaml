@@ -9,7 +9,8 @@
                     xmlns:converters2="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                     xmlns:errors="clr-namespace:Dev2.Providers.Errors;assembly=Dev2.Infrastructure"
                     xmlns:valueConverters="clr-namespace:WPF.JoshSmith.Data.ValueConverters;assembly=Dev2.CustomControls"
-    xmlns:converters4="clr-namespace:Dev2.Converters;assembly=Dev2.Core">
+    xmlns:converters4="clr-namespace:Dev2.Converters;assembly=Dev2.Core"
+    xmlns:converters1="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core">
 
     <Activities:ImagePathConverter x:Key="ImagePathConverter" />
     <converters2:FilterStringToBoolConverter x:Key="FilterStringToBoolConverter"></converters2:FilterStringToBoolConverter>
@@ -59,6 +60,7 @@
     <converters:EnumDisplayNameToItemSourceConverter x:Key="EnumDisplayNameToItemSourceConverter" />
     <converters:IntInRangeToVisibilityConverter x:Key="IntInRangeToVisibilityConverter" />
     <converters:IntEnsureMinConverter x:Key="IntEnsureMinConverter" />
+    <converters1:DataGridRowNumberConverter x:Key="DataGridRowNumberConverter"/>
     
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverterenRoundingType">
         <converters:EnumToBoolConverter.TrueEnumValues>

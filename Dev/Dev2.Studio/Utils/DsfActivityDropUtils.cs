@@ -14,9 +14,25 @@ using Dev2.Studio.Views.Workflow;
 namespace Dev2.Studio.Utils
 {
     public class DsfActivityDropUtils
-    {        
+    {
+        
+        public static bool TryPickResource(string typeName, out DsfActivityDropViewModel result)
+        {
+            // PBI 10652 - 2013.11.04 - TWR - Refactored from WorkflowDesignerViewModel.ViewPreviewDrop to enable re-use!
+            result = DetermineDropActivityType(typeName);
 
-        public static bool DoDroppedActivity(DsfActivityDropViewModel viewModel)
+            if(result != null)
+            {
+                result.Init();
+                if(DoDroppedActivity(result))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        static bool DoDroppedActivity(DsfActivityDropViewModel viewModel)
         {
             DsfActivityDropWindow dropWindow = new DsfActivityDropWindow();
 
@@ -31,7 +47,7 @@ namespace Dev2.Studio.Utils
             return false;
         }
 
-        public static DsfActivityDropViewModel DetermineDropActivityType(string typeOfResource)
+        static DsfActivityDropViewModel DetermineDropActivityType(string typeOfResource)
         {
             DsfActivityDropViewModel vm = null;
             if (typeOfResource.Contains("DsfWorkflowActivity"))

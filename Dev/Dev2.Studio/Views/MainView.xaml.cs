@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Interop;
 using Dev2.Studio.StartupResources;
 
 namespace Dev2.Studio.Views
 {
-    public partial class MainView
+    public partial class MainView : System.Windows.Forms.IWin32Window
     {
         #region Constructor
 
@@ -33,5 +34,18 @@ namespace Dev2.Studio.Views
         {
             Dev2SplashScreen.Close(TimeSpan.FromSeconds(0.3));
         }
+
+        #region Implementation of IWin32Window
+
+        public IntPtr Handle
+        {
+            get
+            {
+                var interopHelper = new WindowInteropHelper(this);
+                return interopHelper.Handle;
+            }
+        }
+
+        #endregion
     }
 }

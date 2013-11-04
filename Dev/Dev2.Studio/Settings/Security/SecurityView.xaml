@@ -11,11 +11,84 @@
     
     <UserControl.Resources>
         <Style x:Key="PermissionsGridStyle" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="GridLinesVisibility" Value="All"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource DataGridBorderBrush}"/>
+            <Setter Property="VerticalGridLinesBrush" Value="{StaticResource DataGridBorderBrush}"/>
             <Setter Property="HeadersVisibility" Value="Column"/>
             <Setter Property="CanUserReorderColumns" Value="False"/>
             <Setter Property="CanUserResizeRows" Value="False"/>
-            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="BorderThickness" Value="1,1,0,0"/>
+            <Setter Property="BorderBrush" Value="{StaticResource DataGridBorderBrush}"/>
+       </Style>
+            
+        <Style x:Key="PermissionsGridHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Background" Value="{StaticResource DataGridColumnHeaderBackgroundBrush}" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="3,0" />
+            <Setter Property="BorderThickness" Value="0,0,1,1" />
+            <Setter Property="BorderBrush" Value="{StaticResource DataGridBorderBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource BrushDarkForeground}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Height" Value="Auto" />
+        </Style>     
+        
+        <Style x:Key="PermissionsGridCheckBoxHeaderStyle" TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource PermissionsGridHeaderStyle}">
+            <Setter Property="Width" Value="83" />
+            <Setter Property="MinWidth" Value="83" />
         </Style>
+                           
+        <Style x:Key="PermissionsGridCellStyle" TargetType="{x:Type DataGridCell}">
+            <Setter Property="IsTabStop" Value="False"/>
+        </Style>   
+        
+        <Style x:Key="PermissionsGridTextBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxStyle}">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="AcceptsReturn" Value="False"/>
+            <Setter Property="Width" Value="Auto" />
+        </Style>
+                  
+        <Style x:Key="PermissionsGridCheckBoxStyle" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource CheckBoxStyle}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+                  
+        <Style x:Key="PermissionsGridWindowsGroupButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
+            <Setter Property="Content" Value="..."/>
+            <Setter Property="ToolTip" Value="Select Windows Group"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Command" Value="{Binding DataContext.PickWindowsGroupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+            <Setter Property="CommandParameter" Value="{Binding}"/>
+            <Setter Property="AutomationProperties.AutomationId">
+                <Setter.Value>
+                    <MultiBinding StringFormat="UI_Security_Row{1}_PickWindowsGroupButton"
+                                    Converter="{StaticResource DataGridRowNumberConverter}">
+                        <Binding />
+                        <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+        </Style>
+                     
+        <Style x:Key="PermissionsGridResourceButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
+            <Setter Property="Content" Value="..."/>
+            <Setter Property="ToolTip" Value="Select Resource"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Command" Value="{Binding DataContext.PickResourceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+            <Setter Property="CommandParameter" Value="{Binding}"/>
+           <Setter Property="AutomationProperties.AutomationId">
+                <Setter.Value>
+                    <MultiBinding StringFormat="UI_Security_Row{1}_PickResourceButton"
+                                    Converter="{StaticResource DataGridRowNumberConverter}">
+                        <Binding />
+                        <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+        </Style>
+     
     </UserControl.Resources>
     
     <Grid>
@@ -32,92 +105,85 @@
 
                     <DataGridTemplateColumn Header="Windows Group"
                                             Width="*"
-                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}"
-                                            IsReadOnly="False">
+                                            HeaderStyle="{StaticResource PermissionsGridHeaderStyle}"                                            
+                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBox Text="{Binding WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <DataGridTemplateColumn Header="View"
-                                            Width="83"
-                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}"
-                                            IsReadOnly="False">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding View, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <DataGridTemplateColumn Header="Execute"
-                                            Width="83"
-                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}"
-                                            IsReadOnly="False">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding Execute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <DataGridTemplateColumn Header="Contribute"
-                                            Width="83"
-                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}"
-                                            IsReadOnly="False">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding Contribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource PermissionsGridTextBoxStyle}" />
+                                    <Button Grid.Column="1" Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}" />
+                                </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
                     <DataGridTemplateColumn Header="Deploy To"
-                                            Width="83"
-                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}"
-                                            IsReadOnly="{Binding IsServer, Converter={StaticResource BooleanInvertConverter}}"
-                                            Visibility="{Binding IsServer, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                                            HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox IsChecked="{Binding DeployTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center" />
+                                          Style="{StaticResource PermissionsGridCheckBoxStyle}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
                     <DataGridTemplateColumn Header="Deploy From"
-                                            Width="83"
-                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}"
-                                            IsReadOnly="{Binding IsServer, Converter={StaticResource BooleanInvertConverter}}"
-                                            Visibility="{Binding IsServer, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                                            HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox IsChecked="{Binding DeployFrom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center" />
+                                          Style="{StaticResource PermissionsGridCheckBoxStyle}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
                     <DataGridTemplateColumn Header="Administrator"
-                                            Width="83"
-                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}"
-                                            IsReadOnly="{Binding IsServer, Converter={StaticResource BooleanInvertConverter}}"
-                                            Visibility="{Binding IsServer, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                                            HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox IsChecked="{Binding Administrator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center" />
+                                          Style="{StaticResource PermissionsGridCheckBoxStyle}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="View"
+                                            HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding View, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Style="{StaticResource PermissionsGridCheckBoxStyle}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Execute"
+                                            HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Execute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Style="{StaticResource PermissionsGridCheckBoxStyle}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Contribute"
+                                            HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Contribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Style="{StaticResource PermissionsGridCheckBoxStyle}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -137,62 +203,72 @@
 
                     <DataGridTemplateColumn Header="Resources"
                                             Width="*"
-                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}"
-                                            Visibility="{Binding IsServer, Converter={StaticResource BoolToVisibilityConverterNegative}}"
-                                            IsReadOnly="False">
+                                            HeaderStyle="{StaticResource PermissionsGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding ResourceName, Mode=TwoWay}" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding ResourceName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <Button Grid.Column="1"
+                                            Style="{StaticResource PermissionsGridResourceButtonStyle}" />
+                                </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
                     <DataGridTemplateColumn Header="Windows Group"
-                                            Width="SizeToCells"
-                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}"
-                                            IsReadOnly="False">
+                                            Width="249"
+                                            HeaderStyle="{StaticResource PermissionsGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBox Text="{Binding WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource PermissionsGridTextBoxStyle}" />
+                                    <Button Grid.Column="1"
+                                            Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}" />
+                                </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
                     <DataGridTemplateColumn Header="View"
-                                            Width="83"
-                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}"
-                                            IsReadOnly="False">
+                                            HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox IsChecked="{Binding View, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center" />
+                                          Style="{StaticResource PermissionsGridCheckBoxStyle}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
                     <DataGridTemplateColumn Header="Execute"
-                                            Width="83"
-                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}"
-                                            IsReadOnly="False">
+                                            HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox IsChecked="{Binding Execute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center" />
+                                          Style="{StaticResource PermissionsGridCheckBoxStyle}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
                     <DataGridTemplateColumn Header="Contribute"
-                                            Width="83"
-                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}"
-                                            IsReadOnly="False">
+                                            HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=local:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox IsChecked="{Binding Contribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center" />
+                                          Style="{StaticResource PermissionsGridCheckBoxStyle}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

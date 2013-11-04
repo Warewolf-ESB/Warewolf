@@ -23,8 +23,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xaml;
 using Caliburn.Micro;
-using Dev2.Activities;
-using Dev2.Activities.Adorners;
 using Dev2.Composition;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
@@ -504,49 +502,49 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 var resourceID = ModelItemUtils.TryGetResourceID(modelItem);
 
-                    var envID = ModelItemUtils.GetProperty("EnvironmentID", modelItem) as InArgument<Guid>;
-                    Guid environmentID;
+                var envID = ModelItemUtils.GetProperty("EnvironmentID", modelItem) as InArgument<Guid>;
+                Guid environmentID;
 
-                    if(envID != null)
+                if(envID != null)
+                {
+                    Guid.TryParse(envID.Expression.ToString(), out environmentID);
+                }
+                else
+                {
+                    environmentID = parentEnvironmentID;
+                }
+
+                if(environmentID == Guid.Empty)
+                {
+                    // this was created on a localhost ... BUT ... we may be running it remotely!
+                    // so, ensure that we are running in the context of the parent's environment
+                    environmentID = parentEnvironmentID;
+                }
+
+                var environmentModel = catalog.FindSingle(c => c.ID == environmentID);
+
+                if(environmentModel != null)
+                {
+                    // BUG 9634 - 2013.07.17 - TWR : added connect
+                    if(!environmentModel.IsConnected)
                     {
-                        Guid.TryParse(envID.Expression.ToString(), out environmentID);
+                        environmentModel.Connect();
+                        environmentModel.LoadResources();
+                    }
+                    IResourceModel resource;
+                    if(resourceID != Guid.Empty)
+                    {
+                        resource = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceID);
                     }
                     else
                     {
-                        environmentID = parentEnvironmentID;
+                        var resourceName = ModelItemUtils.GetProperty("ServiceName", modelItem) as string;
+                        resource = environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == resourceName);
                     }
 
-                    if(environmentID == Guid.Empty)
-                    {
-                        // this was created on a localhost ... BUT ... we may be running it remotely!
-                        // so, ensure that we are running in the context of the parent's environment
-                        environmentID = parentEnvironmentID;
-                    }
-
-                    var environmentModel = catalog.FindSingle(c => c.ID == environmentID);
-
-                    if(environmentModel != null)
-                    {
-                        // BUG 9634 - 2013.07.17 - TWR : added connect
-                        if(!environmentModel.IsConnected)
-                        {
-                            environmentModel.Connect();
-                            environmentModel.LoadResources();
-                        }
-                        IResourceModel resource;
-                        if (resourceID != Guid.Empty)
-                        {
-                            resource = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceID);
-                        }
-                        else
-                        {
-                            var resourceName = ModelItemUtils.GetProperty("ServiceName", modelItem) as string;
-                            resource = environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == resourceName);
-                        }
-
-                        WorkflowDesignerUtils.EditResource(resource, EventPublisher);
-                    }
+                    WorkflowDesignerUtils.EditResource(resource, EventPublisher);
                 }
+            }
         }
 
 
@@ -1118,7 +1116,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 // Disabled for now
                 designerConfigService.AnnotationEnabled = false;
                 designerConfigService.AutoSurroundWithSequenceEnabled = false;
-            }          
+            }
 
             _wdMeta = new DesignerMetadata();
             _wdMeta.Register();
@@ -1142,18 +1140,18 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             _wd.Context.Services.Subscribe<ViewStateService>(instance =>
             { });
-            
+
             _wd.View.PreviewDrop += ViewPreviewDrop;
             _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
-            _wd.View.Measure(new Size(2000,2000));
+            _wd.View.Measure(new Size(2000, 2000));
             _wd.View.Focus();
 
             _wd.Context.Services.Subscribe<DesignerView>(instance =>
             {
                 // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
                 instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
-                instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;                
-            });            
+                instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;
+            });
 
             _wd.Context.Items.Subscribe<Selection>(OnItemSelected);
             _wd.Context.Services.Publish(_designerManagementService);
@@ -1168,11 +1166,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             Selection.Subscribe(_wd.Context, SelectedItemChanged);
 
             // BUG 9304 - 2013.05.08 - TWR
-            _workflowHelper.EnsureImplementation(_modelService);            
+            _workflowHelper.EnsureImplementation(_modelService);
 
             //For Changing the icon of the flowchart.
             WorkflowDesignerIcons.Activities.Flowchart = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png")), new Rect(0, 0, 16, 16)));
-            WorkflowDesignerIcons.Activities.StartNode = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/StartNode.png")), new Rect(0, 0, 32, 32)));            
+            WorkflowDesignerIcons.Activities.StartNode = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/StartNode.png")), new Rect(0, 0, 32, 32)));
             SubscribeToDebugSelectionChanged();
         }
 
@@ -1324,19 +1322,19 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void FocusActivityBuilder()
         {
             var findActivityBuilderModel = _wd.Context.Services.GetService<ModelService>();
-            if (findActivityBuilderModel != null)
+            if(findActivityBuilderModel != null)
             {
-            var activityBuilderModel = findActivityBuilderModel.Find(findActivityBuilderModel.Root, typeof(ActivityBuilder)).ToList();
-            if(activityBuilderModel.Count > 0)
-            {
-                activityBuilderModel[0].Focus();
+                var activityBuilderModel = findActivityBuilderModel.Find(findActivityBuilderModel.Root, typeof(ActivityBuilder)).ToList();
+                if(activityBuilderModel.Count > 0)
+                {
+                    activityBuilderModel[0].Focus();
+                }
             }
-        }
         }
 
         protected void WdOnModelChanged(object sender, EventArgs eventArgs)
         {
-            if ((Designer != null && Designer.View.IsKeyboardFocusWithin) || sender != null)
+            if((Designer != null && Designer.View.IsKeyboardFocusWithin) || sender != null)
             {
                 var checkServiceDefinition = CheckServiceDefinition();
                 var checkDataList = CheckDataList();
@@ -1379,11 +1377,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             foreach(var modelItem in _modelService.Find(_modelService.Root, typeof(DsfActivity)))
             {
                 var currentName = ModelItemUtils.GetProperty("ServiceName", modelItem);
-                if (currentName == message.OldName)
+                if(currentName == message.OldName)
                 {
                     ModelItemUtils.SetProperty("ServiceName", message.NewName, modelItem);
+                }
             }
-        }
         }
 
         #endregion
@@ -1500,16 +1498,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             var isWorkflow = e.Data.GetData("WorkflowItemTypeNameFormat") as string;
             if(isWorkflow != null)
             {
-                _vm = DsfActivityDropUtils.DetermineDropActivityType(isWorkflow);
-
-                if(_vm != null)
+                // PBI 10652 - 2013.11.04 - TWR - Refactored to enable re-use!
+                if(!DsfActivityDropUtils.TryPickResource(isWorkflow, out _vm))
                 {
-                    _vm.Init();
-                    if(!DsfActivityDropUtils.DoDroppedActivity(_vm))
-                    {
-                        e.Handled = true;
-                        dropOccured = false;
-                    }
+                    e.Handled = true;
+                    dropOccured = false;
                 }
             }
             if(dropOccured)
@@ -1786,7 +1779,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         #endregion
-        
+
         public void FireWdChanged()
         {
             WdOnModelChanged(new object(), new EventArgs());
