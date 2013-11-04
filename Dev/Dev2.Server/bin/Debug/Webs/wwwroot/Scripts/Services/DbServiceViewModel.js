@@ -204,13 +204,19 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
         self.data.recordset.Records(records ? records : []);
         self.data.recordset.HasErrors(hasErrors ? hasErrors : false);
         self.data.recordset.ErrorMessage(errorMessage ? errorMessage : "");        
-
+        
         // MUST do this last as it will update field aliases
         var recordsetAlias = fields && fields.length > 0 ? fields[0].RecordsetAlias : null;
         if (!recordsetAlias) {
             recordsetAlias = self.data.recordset.Name();
         }
         self.data.recordset.Alias(recordsetAlias);
+
+        $.each(self.data.recordset.Fields(), function (index, field) {
+            if (!field.RecordsetAlias) {
+                field.RecordsetAlias = recordsetAlias;
+            }
+        });
     };
 
     self.formatRecordsetName = function(name) {
