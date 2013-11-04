@@ -33,6 +33,7 @@
 
         <Label Grid.Column="0"
             Grid.Row="0"
+            Style="{StaticResource ActivityLabelStyle}"
             Content="Sort Field" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
             Grid.Column="1"
@@ -57,11 +58,11 @@
 
         <Label Grid.Column="0"
             Grid.Row="1"
+            Style="{StaticResource ActivityLabelStyle}"
             Content="Sort Order" />
 
         <ComboBox Grid.Column="1"
             Grid.Row="1"
-            Margin="0,2,1,2"
             Style="{StaticResource ActivityComboBoxStyle}"
             SelectedValue="{Binding SelectedSelectedSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             ItemsSource="{Binding SortOrderTypes}"

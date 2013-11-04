@@ -37,6 +37,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="0"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Input 1" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1"
@@ -58,6 +59,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="1"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Input 2" />
         <ui:IntellisenseTextBox Grid.ColumnSpan="2"
                                 Grid.Column="1"
@@ -65,6 +67,7 @@
                                 DefaultText="Date Time"
                                 FilterType="All"
                                 WrapInBrackets="False"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Input2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                 ToolTip="{x:Static help:HelpTextResources.DateTimeDifferenceToolTipDateTime2}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Input2txt_AutoID}">
@@ -81,12 +84,14 @@
 
         <Label Grid.Column="0"
                Grid.Row="2"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Input Format" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="2"
                                 DefaultText="d MM yyyy 24h:min.ss sp"
                                 FilterType="All"
                                 WrapInBrackets="False"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.InputFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static help:HelpTextResources.DateTimeDifferenceToolTipInputFormat}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InputFormattxt_AutoID}">
@@ -108,6 +113,7 @@
         
         <Label Grid.Column="0"
                Grid.Row="3"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Output In" />
         <ComboBox Grid.Column="1"
                   Grid.Row="3"
@@ -127,6 +133,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="4"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
         <ui:IntellisenseTextBox Grid.ColumnSpan="2"
                                 Grid.Column="1"

@@ -36,6 +36,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="0"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="File or Folder" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1"
@@ -64,7 +65,8 @@
         </ui:IntellisenseTextBox>
 
          <Label Grid.Column="0"
-               Grid.Row="1"
+                Grid.Row="1"
+                Style="{StaticResource ActivityLabelStyle}"
                Content="Destination" />
         <ui:IntellisenseTextBox Grid.Row="1"
                                 Grid.Column="1"
@@ -93,6 +95,7 @@
         
         <Label Grid.Column="0"
                Grid.Row="2"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
         <ui:IntellisenseTextBox Grid.Row="2"
                                 Grid.Column="1"

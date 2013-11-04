@@ -43,6 +43,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="0"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="In Field(s)" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1"
@@ -50,7 +51,7 @@
                                 DefaultText="[[Recordset().Field]]"
                                 FilterType="RecordsetFields"
                                 Text="{Binding Path=ModelItem.FieldsToSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                Margin="0,2"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 IsUndoEnabled="True"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FieldsToSearch_AutoID}">
             <i:Interaction.Behaviors>
@@ -162,13 +163,14 @@
 
         <Label Grid.Row="2"
                Grid.Column="0"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
         <ui:IntellisenseTextBox Grid.Row="2"
                                 Grid.Column="1"
                                 DefaultText="[[RowWithResult]]"
                                 WrapInBrackets="True"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                Margin="0,2"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsResultHelpText}"

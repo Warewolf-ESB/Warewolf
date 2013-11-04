@@ -37,6 +37,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="0"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Number" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1"
@@ -62,6 +63,7 @@
         </ui:IntellisenseTextBox>
 
         <Label Content="Rounding"
+               Style="{StaticResource ActivityLabelStyle}"
                Grid.Column="0"
                Grid.Row="1" />
         <ComboBox  Grid.Column="1"
@@ -86,9 +88,9 @@
                                 Grid.Row="1"
                                 Grid.ColumnSpan="2"
                                 FilterType="All"
-                                Margin="4,2,1,2"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.RoundingDecimalPlaces, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 HorizontalAlignment="Stretch"
                                 attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
                                 IsEnabled="{Binding ModelItem.RoundingType, Mode=OneWay, Converter={StaticResource EnumToBoolConverterenRoundingType}}"
@@ -97,8 +99,8 @@
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.FormatNumberHelpNumber}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.RoundingType"
-                                     SourcePropertyValue="{Binding ModelItem.RoundingType, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.RoundingDecimalPlaces"
+                                     SourcePropertyValue="{Binding ModelItem.RoundingDecimalPlaces, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
@@ -106,11 +108,10 @@
         <Label Content="Decimals to show"
                Grid.Column="0"
                Grid.Row="2"
+               Style="{StaticResource ActivityLabelStyle}"
                Grid.ColumnSpan="2" />
-
         <ui:IntellisenseTextBox Grid.Column="2"
                                 Grid.Row="2"
-                                Margin="4,2,1,2"
                                 FilterType="All"
                                 ToolTip="{x:Static help:HelpTextResources.FormatNumberToolTipDecimalToShow}"
                                 WrapInBrackets="False"
@@ -122,37 +123,35 @@
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.FormatNumberHelpDecimalToShow}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.CountNumber"
-                                     SourcePropertyValue="{Binding ModelItem.CountNumber, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.DecimalPlacesToShow"
+                                     SourcePropertyValue="{Binding ModelItem.DecimalPlacesToShow, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
         <Label  Grid.Column="0"
                 Grid.Row="3"
+                Style="{StaticResource ActivityLabelStyle}"
                 Content="Result" />
-
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="3"
                                 Grid.ColumnSpan="2"
-                                Margin="0,2,1,2"
                                 DefaultText="[[Result]]"
                                 FilterType="All"
                                 ToolTip="{x:Static help:HelpTextResources.FormatNumberToolTipResult}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Text="{Binding Path=ModelItem.CountNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AllowUserInsertLine="False"
                                 AllowMultilinePaste="False"
                                 HorizontalAlignment="Stretch"
-                                attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_Inputtxt_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.FormatNumberHelpResult}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.CountNumber"
-                                     SourcePropertyValue="{Binding ModelItem.CountNumber, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.Result"
+                                     SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>

@@ -34,6 +34,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="0"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="In Field(s)" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.ColumnSpan="2"
@@ -59,16 +60,15 @@
 
          <Label Grid.Column="0"
                Grid.Row="1"
+                Style="{StaticResource ActivityLabelStyle}"
                Content="Return Fields" />
-
         <ui:IntellisenseTextBox Grid.Row="1"
                                 Grid.Column="1"
-                                Margin="0,2,1,2"
-                                  DefaultText="[[Rec().F3]]" 
+                                DefaultText="[[Rec().F3]]" 
                                 ToolTip="{x:Static help:HelpTextResources.UniqueRecordsToolTipReturnField}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                               Text="{Binding ModelItem.ResultFields,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                Text="{Binding ModelItem.ResultFields,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AllowUserInsertLine="False"
                                 AllowMultilinePaste="False" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_txtReturnFields_AutoID}">
@@ -84,11 +84,10 @@
         
         <Label Grid.Column="0"
                Grid.Row="2"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
-
         <ui:IntellisenseTextBox Grid.Row="2"
                                 Grid.Column="1"
-                                Margin="0,2,1,2"
                                  DefaultText="[[New().F1]]" 
                                 ToolTip="{x:Static help:HelpTextResources.UniqueRecordsToolTipResult}"
                                 WrapInBrackets="True"

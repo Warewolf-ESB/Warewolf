@@ -38,6 +38,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="0"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Input" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.ColumnSpan="2"
@@ -61,6 +62,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="1"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Input Format" />
         <ui:IntellisenseTextBox Grid.ColumnSpan="2"
                                 Grid.Column="1"
@@ -83,10 +85,10 @@
 
         <Label Grid.Column="0"
                Grid.Row="2"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Add Time" />
         <ComboBox Grid.Column="1"
                   Grid.Row="2"
-                  Margin="0,2,1,2"                  
                   Style="{StaticResource ActivityComboBoxStyle}"
                   SelectedValue="{Binding SelectedTimeModifierType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding TimeModifierTypes}"
@@ -122,6 +124,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="3"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Output Format" />
         <ui:IntellisenseTextBox Grid.ColumnSpan="2"
                                 Grid.Column="1"
@@ -144,6 +147,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="4"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
         <ui:IntellisenseTextBox Grid.ColumnSpan="2"
                                 Grid.Column="1"

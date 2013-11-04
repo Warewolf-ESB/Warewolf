@@ -37,7 +37,8 @@
 
         <Label Grid.Column="0"
                Grid.Row="0"
-                Content="Mail Source"  />
+               Style="{StaticResource ActivityLabelStyle}"
+               Content="Mail Source" />
 
         <Grid Grid.Column="1"
               Grid.Row="0">
@@ -70,6 +71,7 @@
         
         <Label Grid.Column="0"
                Grid.Row="1"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="From Account" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="1"
@@ -92,6 +94,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="2"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="To" />
         <ui:IntellisenseTextBox   Grid.Column="1"
                                   Grid.Row="2"
@@ -113,6 +116,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="3"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Subject" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="3"
@@ -134,6 +138,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="4"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Body"/>
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="4"
@@ -143,6 +148,7 @@
                                 Text="{Binding ModelItem.Body,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AllowUserInsertLine="True"
                                 AcceptsTab="True"
+                                Margin="0,2"
                                 VerticalContentAlignment="Top"
                                 MinLines="2"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_bodytxt_AutoID}">
@@ -159,6 +165,7 @@
         
         <Label Grid.Column="0"
                Grid.Row="5"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="5"

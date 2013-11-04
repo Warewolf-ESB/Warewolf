@@ -33,6 +33,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="0"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Recordset" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.ColumnSpan="2"
@@ -58,11 +59,10 @@
 
         <Label Grid.Column="0"
                Grid.Row="1"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
-
         <ui:IntellisenseTextBox Grid.Row="1"
                                 Grid.Column="1"
-                                Margin="0,2,1,2"
                                 DefaultText="[[Success]]"
                                 ToolTip="{x:Static help:HelpTextResources.DeleteRecordsToolTipResult}"
                                 WrapInBrackets="True"

@@ -33,6 +33,7 @@
         <Label Grid.Column="0"
                Grid.Row="0"
                Content="URL"
+               Style="{StaticResource ActivityLabelStyle}"
                VerticalAlignment="Bottom" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="0"
@@ -54,6 +55,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="1"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Result"
                VerticalAlignment="Bottom" />
         <ui:IntellisenseTextBox Grid.Column="1"

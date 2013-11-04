@@ -29,7 +29,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="45" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -46,6 +46,7 @@
                                 Height="45"
                                 MaxHeight="45"
                                 MinHeight="45"
+                                Margin="0,0,0,2"
                                 AllowUserCalculateMode="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 IsInCalculateMode="True"
@@ -75,11 +76,11 @@
 
         <Label Grid.Column="0"
                Grid.Row="1"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
 
         <ui:IntellisenseTextBox Grid.Row="1"
                                 Grid.Column="1"
-                                Margin="0,2,1,2"
                                 DefaultText="[[fxResult]]"
                                 FilterType="All"
                                 ToolTip="{x:Static help:HelpTextResources.CalculateToolTipResult}"

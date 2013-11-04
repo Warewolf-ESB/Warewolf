@@ -34,6 +34,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="0"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="In Field" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1" 
@@ -58,6 +59,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="1"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Index"  />
         <ComboBox Grid.Column="1"
                   Grid.Row="1"
@@ -77,6 +79,7 @@
         
         <Label Grid.Column="0"
                Grid.Row="2"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Characters" />
         <ui:IntellisenseTextBox Grid.Column="1" 
                                 Grid.Row="2"
@@ -98,6 +101,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="3"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Direction" />
         <ComboBox Grid.Column="1"
                   Grid.Row="3"
@@ -117,6 +121,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="4"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
         <ui:IntellisenseTextBox Grid.Column="1" 
                                 Grid.Row="4" 

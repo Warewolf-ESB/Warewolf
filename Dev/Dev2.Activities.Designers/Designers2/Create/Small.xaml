@@ -9,9 +9,9 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Create"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-    xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
-    xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
-    Width="230"
+                               xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                               xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
+                               Width="230"
                                MaxWidth="230"
                                Padding="7"
                                mc:Ignorable="d"
@@ -35,6 +35,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="0"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="File or Folder" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                Grid.Column="1"
@@ -64,6 +65,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="1"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
 
         <ui:IntellisenseTextBox Grid.Row="1"
@@ -72,7 +74,6 @@
                                 FilterType="All" 
                                 WrapInBrackets="True"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                Margin="0,2,1,2"
                                 ToolTip="{x:Static help:HelpTextResources.CreateToolTipResult}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">

@@ -11,9 +11,12 @@
         <Setter Property="Height" Value="24" />
         <Setter Property="MinWidth" Value="17" />
         <Setter Property="IsEditable" Value="False" />
-        <Setter Property="Padding" Value="6,3,17,3" />
-        <Setter Property="Margin" Value="3,2,0,2" />
+        <Setter Property="Margin" Value="0,2,1,2"/>
+        <Setter Property="Padding" Value="2,5,0,0"/>
         <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Margin" Value="0,2,1,2"/>
+        <Setter Property="Padding" Value="2,5,0,0"/>
+        <Setter Property="VerticalContentAlignment" Value="Top"/>
     </Style>
 
     <Style x:Key="ActivityTextBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxStyle}">
@@ -30,10 +33,16 @@
         <Setter Property="AllowUserInsertLine" Value="False"/>
         <Setter Property="AllowMultilinePaste" Value="False"/>
         <Setter Property="Margin" Value="0,2,1,2"/>
-        <Setter Property="Padding" Value="2,6,0,0"/>
+        <Setter Property="Padding" Value="2,5,0,0"/>
         <Setter Property="Width" Value="Auto"/>
         <Setter Property="VerticalContentAlignment" Value="Top"/>
         <Setter Property="MinHeight" Value="24"></Setter>
+    </Style>
+    
+    <Style x:Key="ActivityLabelStyle" TargetType="{x:Type Label}" >
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0,2,2,2"/>
     </Style>
     
     <Style x:Key="ActivityDataGridStyle" TargetType="{x:Type DataGrid}">

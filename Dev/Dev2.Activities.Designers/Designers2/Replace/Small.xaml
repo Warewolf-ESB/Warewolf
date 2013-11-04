@@ -35,6 +35,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="0"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="In Field(s)" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1"
@@ -57,6 +58,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="1"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Find"/>
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="1"
@@ -78,6 +80,7 @@
 
         <Label Grid.Column="0"
                Grid.Row="2"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Replace With" />
         <ui:IntellisenseTextBox Grid.Column="1"
                   Grid.Row="2"
@@ -97,7 +100,8 @@
         </ui:IntellisenseTextBox>
 
          <Label Grid.Column="0"
-               Grid.Row="3"
+                Grid.Row="3"
+                Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="3"

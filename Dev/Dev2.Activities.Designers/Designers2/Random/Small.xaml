@@ -9,11 +9,11 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Random"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               Width="270"
-                               MaxWidth="270"
+                               Width="250"
+                               MaxWidth="250"
                                Padding="7"
                                mc:Ignorable="d"
-                               d:DesignWidth="270"
+                               d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance local:RandomDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
@@ -35,11 +35,11 @@
         <Label x:Name="lblRandomType"
                Grid.Column="0"
                Grid.Row="0"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Type" />
         <ComboBox x:Name="InitialFocusElement"
                   Grid.Column="1" 
                   Grid.Row="0"
-                  Margin="0,2,1,2"                  
                   Style="{StaticResource ActivityComboBoxStyle}"
                   SelectedValue="{Binding Path=SelectedRandomType,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding RandomTypes}"
@@ -57,6 +57,7 @@
         
         <Label Grid.Column="0"
                Grid.Row="1"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="{Binding Path=LengthContent}" />
       
         <Grid  Grid.Column="1"
@@ -88,11 +89,10 @@
             <Label x:Name="lblTo"
                    Visibility="{Binding Visibility}"
                    Content="-"
-                   Padding="2,4,2,0"
+                   Style="{StaticResource ActivityLabelStyle}"
                    Grid.Column="1" />
 
             <ui:IntellisenseTextBox Grid.Column="2"
-                                    Margin="0,2,2,2"
                                     AllowUserInsertLine="False"
                                     DefaultText="Length" 
                                     IsEnabled="{Binding Path=IsLengthPath}"
@@ -111,7 +111,6 @@
             </ui:IntellisenseTextBox>
 
             <ui:IntellisenseTextBox Grid.Column="2"
-                                    Margin="0,2,2,2"
                                     Visibility="{Binding Visibility}"
                                     AllowUserInsertLine="False"
                                     DefaultText="To" 
@@ -129,9 +128,9 @@
             </ui:IntellisenseTextBox>
         </Grid>
         
-        <Label x:Name="lblResult"
-               Grid.Column="0"
+        <Label Grid.Column="0"
                Grid.Row="2"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="2"
