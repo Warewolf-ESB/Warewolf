@@ -89,7 +89,7 @@
       <mtbwa:InvokeForReason DisplayName="Update Build Number for Triggered Builds" sap2010:WorkflowViewState.IdRef="InvokeForReason_1" Reason="Triggered">
         <mtbwa:UpdateBuildNumber BuildNumberFormat="[BuildNumberFormat]" DisplayName="Update Build Number" sap2010:WorkflowViewState.IdRef="UpdateBuildNumber_1" />
       </mtbwa:InvokeForReason>
-      <If Condition="[RunOnUserAgent]" DisplayName="If Run on User Agent 1" sap2010:WorkflowViewState.IdRef="If_48">
+      <If Condition="[RunOnUserAgent]" DisplayName="If Run on User Agent" sap2010:WorkflowViewState.IdRef="If_48">
         <If.Then>
           <Assign sap2010:WorkflowViewState.IdRef="Assign_9">
             <Assign.To>
