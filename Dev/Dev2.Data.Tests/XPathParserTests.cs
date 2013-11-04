@@ -53,12 +53,12 @@ namespace Dev2.Data.Tests
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(6,data.Count());
             Assert.AreEqual("<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />",data[1]);
-        } 
-        
+        }
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("XPathParser_Parser")]
-        public void XPathParser_Parser_WhenTFSResults_ExpectValidData()
+        public void XPathParser_Parser_WhenXPathingAttributes_ExpectValidDataWithoutAttributeName()
         {
             //------------Setup for test--------------------------
 

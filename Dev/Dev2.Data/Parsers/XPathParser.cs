@@ -66,7 +66,18 @@ namespace Dev2.Data.Parsers
                         IEnumerable<object> xdmValue = xNode.XPath2Select(xPath);
                         var list = xdmValue.Select(element =>
                             {
+                            var realElm = element as XObject;
+                            if(realElm != null && realElm.NodeType == XmlNodeType.Attribute)
+                            {
+                                var xAttribute = realElm as XAttribute;
+                                if (xAttribute != null)
+                                {
+                                    return xAttribute.Value;
+                                }
+                            }
+
                                 return element.ToString();
+                            
                             }).ToList();
 
                         return list;
