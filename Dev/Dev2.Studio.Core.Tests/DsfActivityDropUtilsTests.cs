@@ -13,7 +13,7 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void MyTestInitialize()
         {            
-            ImportService.CurrentContext = CompositionInitializer.ExplorerViewModelTest();
+            //ImportService.CurrentContext = CompositionInitializer.ExplorerViewModelTest();
         }
 
         [TestMethod]
