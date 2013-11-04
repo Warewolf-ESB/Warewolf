@@ -1325,7 +1325,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
                         // TODO : Enable ssl cert generation ;)
 
-                        var sslCertPath = ConfigurationManager.AppSettings["sslCertificateRelativePath"];
+                        var sslCertPath = ConfigurationManager.AppSettings["sslCertificateName"];
                         var canEnableSSL = HostSecurityProvider.Instance.EnsureSSL(sslCertPath);
 
                         if (canEnableSSL)
