@@ -2,20 +2,16 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Threading;
 using Dev2.Common;
 
 namespace Dev2.Runtime.Security
 {
-   
     /// <summary>
     /// Build a self-signed SSL cert
     /// </summary>
     public class SSLCertificateBuilder
     {
-
-        // NOTE : We need to ensure we change the -r value for each generation ;)
-        private static string MakeCertPath = @"\SSL Generation\CreateCertificate.bat";
+        private const string MakeCertPath = @"\SSL Generation\CreateCertificate.bat";
 
         public bool EnsureSSLCertificate(string certPath)
         {
@@ -42,7 +38,6 @@ namespace Dev2.Runtime.Security
                 if(InvokeProcess("CreateCertificate.bat", workingDir))
                 {
                     result = true;
-                    
                 }
             }
             catch (Exception e)
@@ -74,8 +69,6 @@ namespace Dev2.Runtime.Security
             p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             p.StartInfo.FileName = cmd;
             p.StartInfo.WorkingDirectory = workingDir;
-            
-            var proc = p.Start();
             
             if (p.Start())
             {
