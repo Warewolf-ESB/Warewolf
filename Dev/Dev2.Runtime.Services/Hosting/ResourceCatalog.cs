@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,8 +14,6 @@ using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Network;
-using Dev2.Network.Messaging.Messages;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.Compiler;
 using Dev2.Runtime.ESB.Management;

@@ -1280,7 +1280,6 @@ namespace Unlimited.Applications.DynamicServicesHost
                     }
                 }
 
-
                 uriAddress = uriAddress ?? ConfigurationManager.AppSettings["endpointAddress"];
                 webServerPort = webServerPort ?? ConfigurationManager.AppSettings["webServerPort"];
                 webServerSslPort = webServerSslPort ?? ConfigurationManager.AppSettings["webServerSslPort"];
@@ -1324,12 +1323,22 @@ namespace Unlimited.Applications.DynamicServicesHost
                         int realWebServerSslPort;
                         Int32.TryParse(webServerSslPort, out realWebServerSslPort);
 
+                        // TODO : Enable ssl cert generation ;)
+
                         var sslCertPath = ConfigurationManager.AppSettings["sslCertificateRelativePath"];
+                        var canEnableSSL = HostSecurityProvider.Instance.EnsureSSL(sslCertPath);
 
-                        prefixes.Add(string.Format("https://*:{0}/", webServerSslPort));
+                        if (canEnableSSL)
+                        {
+                            prefixes.Add(string.Format("https://*:{0}/", webServerSslPort));
 
-                        var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
-                        endpoints.Add(new Dev2Endpoint(httpsEndpoint, sslCertPath));
+                            var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
+                            endpoints.Add(new Dev2Endpoint(httpsEndpoint, sslCertPath));
+                        }
+                        else
+                        {
+                            WriteLine("Could not start webserver to listen for SSL traffic with cert [ " + sslCertPath + " ]");
+                        }
                     }
 
                     _prefixes = prefixes.ToArray();
@@ -1759,6 +1768,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             // First call to instance loads the provider.
             // ReSharper disable UnusedVariable
             var instance = HostSecurityProvider.Instance;
+
             // ReSharper restore UnusedVariable
             return true;
         }

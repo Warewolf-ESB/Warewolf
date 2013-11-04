@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
 using System.Xml;
+using Dev2.Common;
 
 namespace Dev2.Runtime.Security
 {
@@ -217,6 +219,28 @@ namespace Dev2.Runtime.Security
             return Guid.Empty;
         }
 
+        #endregion
+
+        #region EnsureSSL
+        public bool EnsureSSL(string certPath)
+        {
+            bool result = false;
+
+            if (!File.Exists(certPath))
+            {
+                try
+                {
+                    SSLCertificateBuilder certificateBuilder = new SSLCertificateBuilder();
+                    result = certificateBuilder.EnsureSSLCertificate(certPath);
+                }
+                catch (Exception e)
+                {
+                    ServerLogger.LogError(e);
+                }
+            }
+
+            return result;
+        }
         #endregion
     }
 }

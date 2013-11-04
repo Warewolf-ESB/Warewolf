@@ -215,7 +215,7 @@
     </None>
     <None Include="Properties\app.manifest" />
     <None Include="Unlimited.Applications.DynamicServicesHost_TemporaryKey.pfx" />
-    <None Include="WarewolfServer.cer">
+    <None Include="WarewolfServer-old.cer">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -154,6 +154,7 @@
     <Compile Include="Network\StudioMessaging.cs" />
     <Compile Include="Network\StudioNetworkSession.cs" />
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
+    <Compile Include="Security\SSLCertificateBuilder.cs" />
     <Compile Include="ServiceModel\Data\DbTableList.cs" />
     <Compile Include="ServiceModel\Data\DbColumn.cs" />
     <Compile Include="ServiceModel\Data\DbColumnList.cs" />
@@ -257,9 +258,17 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Security\Security.cd" />
+    <None Include="SSL Generation\CreateCertificate.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SSL Generation\makecert.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
