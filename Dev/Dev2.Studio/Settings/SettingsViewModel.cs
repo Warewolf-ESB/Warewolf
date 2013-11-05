@@ -1,16 +1,20 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Data.Settings.Security;
 using Dev2.Services.Events;
 using Dev2.Settings.Logging;
 using Dev2.Settings.Security;
+using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.Threading;
 using Newtonsoft.Json;
 using Unlimited.Framework;
 
@@ -27,17 +31,23 @@ namespace Dev2.Settings
 
         SecurityViewModel _securityViewModel;
 
-        IPopupController _popupController;
+        readonly IPopupController _popupController;
+        readonly IAsyncWorker _asyncWorker;
         LoggingViewModel _loggingViewModel;
 
         public SettingsViewModel()
-            : this(EventPublishers.Aggregator)
+            : this(EventPublishers.Aggregator, new PopupController(), new AsyncWorker())
         {
         }
 
-        public SettingsViewModel(IEventAggregator eventPublisher)
+        public SettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker)
             : base(eventPublisher)
         {
+            VerifyArgument.IsNotNull("popupController", popupController);
+            _popupController = popupController;
+            VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
+            _asyncWorker = asyncWorker;
+
             SaveCommand = new RelayCommand(o => SaveSettings(), o => IsDirty);
             ServerChangedCommand = new RelayCommand(OnServerChanged, o => true);
         }
@@ -111,7 +121,7 @@ namespace Dev2.Settings
         public SecurityViewModel SecurityViewModel
         {
             get { return _securityViewModel; }
-            set
+            private set
             {
                 if(Equals(value, _securityViewModel))
                 {
@@ -125,7 +135,7 @@ namespace Dev2.Settings
         public LoggingViewModel LoggingViewModel
         {
             get { return _loggingViewModel; }
-            set
+            private set
             {
                 if(Equals(value, _loggingViewModel))
                 {
@@ -178,17 +188,8 @@ namespace Dev2.Settings
                 return;
             }
 
-            IsLoading = true;
-
-            try
-            {
-                CurrentEnvironment = server.Environment;
-                LoadSettings();
-            }
-            finally
-            {
-                IsLoading = false;
-            }
+            CurrentEnvironment = server.Environment;
+            LoadSettings();
         }
 
         void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs args)
@@ -202,22 +203,42 @@ namespace Dev2.Settings
         void LoadSettings()
         {
             IsDirty = false;
-            var settingsJson = ExecuteCommand(SettingsServiceAction.Read);
-            Settings = JsonConvert.DeserializeObject<Data.Settings.Settings>(settingsJson);
-            if(Settings.HasError)
+            IsLoading = true;
+
+            _asyncWorker.Start(() =>
             {
-                throw new Exception(Settings.Error);
-            }
-            SecurityViewModel = new SecurityViewModel(Settings.Security);
-            SecurityViewModel.PropertyChanged += OnViewModelPropertyChanged;
+                var settingsJson = ExecuteCommand(SettingsServiceAction.Read);
+                if(!string.IsNullOrEmpty(settingsJson))
+                {
+                    Settings = JsonConvert.DeserializeObject<Data.Settings.Settings>(settingsJson);
+                }
+            }, () =>
+            {
+                if(Settings.HasError)
+                {
+                    ShowError("Load Error", Settings.Error);
+                }
+                SecurityViewModel = new SecurityViewModel(Settings.Security ?? new List<WindowsGroupPermission>());
+                SecurityViewModel.PropertyChanged += OnViewModelPropertyChanged;
+
+                // TODO: Read from server
+                LoggingViewModel = new LoggingViewModel();
+
+                IsLoading = false;
+            });
         }
 
         void SaveSettings()
         {
             var result = ExecuteCommand(SettingsServiceAction.Write);
+            if(result == null)
+            {
+                return;
+            }
             if(result.ToLowerInvariant() != "success")
             {
-                throw new Exception(result);
+                ShowError("Save Error", result);
+                return;
             }
             IsDirty = false;
         }
@@ -236,9 +257,18 @@ namespace Dev2.Settings
             var result = CurrentEnvironment.Connection.ExecuteCommand(dataObj.XmlString, CurrentEnvironment.Connection.WorkspaceID, GlobalConstants.NullDataListID);
             if(result == null)
             {
-                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, serviceName));
+                ShowError("Network Error", string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, serviceName));
             }
             return result;
+        }
+
+        void ShowError(string header, string description)
+        {
+            _popupController.Header = header;
+            _popupController.Description = description;
+            _popupController.Buttons = MessageBoxButton.OK;
+            _popupController.ImageType = MessageBoxImage.Error;
+            _popupController.Show();
         }
 
         enum SettingsServiceAction
