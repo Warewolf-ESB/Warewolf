@@ -27,12 +27,79 @@ namespace Gui
         {
             try
             {
-                
                 Directory.Delete(loc, true);
             }
             catch
             {
                 // Best Effort ;)
+            }
+        }
+
+       
+        /// <summary>
+        /// Cleans up what the installer needs to be removed ;)
+        /// </summary>
+        /// <param name="baseLoc">The base loc.</param>
+        private void CleanUp(string baseLoc)
+        {
+            // force a clean up of server files ;)
+            ProcessServerDirectory(baseLoc);
+
+            // force a clean up of studio files ;)
+            ProcessStudioDirectory(baseLoc);
+        }
+
+        private void ProcessStudioDirectory(string baseLoc)
+        {
+            var dir = baseLoc + "/Studio/";
+
+            if(Directory.Exists(dir))
+            {
+
+                var files = Directory.GetFiles(dir);
+
+                foreach(var file in files)
+                {
+                    try
+                    {
+                        File.Delete(file);
+                    }
+                    catch
+                    {
+                        // best effort ;)
+                    } 
+                }
+            }   
+        }
+
+        /// <summary>
+        /// Processes the server directory.
+        /// </summary>
+        /// <param name="baseLoc">The base loc.</param>
+        private void ProcessServerDirectory(string baseLoc)
+        {
+            var dir = baseLoc + "/Server/";
+
+            if(Directory.Exists(dir))
+            {
+
+                var files = Directory.GetFiles(dir);
+
+                foreach(var file in files)
+                {
+                    // avoid removing config files ;)
+                    if(CanDelete(file.ToLower()))
+                    {
+                        try
+                        {
+                            File.Delete(file);
+                        }
+                        catch
+                        {
+                            // best effort ;)
+                        }
+                    }
+                }
             }
         }
 
@@ -45,14 +112,15 @@ namespace Gui
         /// </returns>
         private bool CanDelete(string file)
         {
-            if (file.IndexOf("config", StringComparison.Ordinal) < 0
+            if(file.IndexOf("secureconfig", StringComparison.Ordinal) < 0
                 && file.IndexOf("lifecycle", StringComparison.Ordinal) < 0
-                && file.IndexOf("serverlog", StringComparison.Ordinal) < 0)
+                && file.IndexOf("serverlog", StringComparison.Ordinal) < 0
+                && !IsSSLCert(file))
             {
                 return true;
             }
 
-            if (file.IndexOf("runtime.config") > 0)
+            if(file.IndexOf("runtime.config", StringComparison.Ordinal) > 0)
             {
                 return true;
             }
@@ -62,69 +130,26 @@ namespace Gui
         }
 
         /// <summary>
-        /// Cleans up what the installer needs to be removed ;)
+        /// Determines whether [is SSL cert] [the specified file].
         /// </summary>
-        /// <param name="baseLoc">The base loc.</param>
-        private void CleanUp(string baseLoc)
+        /// <param name="file">The file.</param>
+        /// <returns></returns>
+        private bool IsSSLCert(string file)
         {
-            // force a clean up of server files ;)
+            if (file.IndexOf(".cer", StringComparison.Ordinal) < 0
+                && file.IndexOf(".crt", StringComparison.Ordinal) < 0
+                && file.IndexOf(".der", StringComparison.Ordinal) < 0
+                && file.IndexOf(".csr", StringComparison.Ordinal) < 0
+                && file.IndexOf(".pfx", StringComparison.Ordinal) < 0
+                && file.IndexOf(".p12", StringComparison.Ordinal) < 0
+                && file.IndexOf(".key", StringComparison.Ordinal) < 0)
             {
-
-                var dir = baseLoc + "/Server/";
-
-                if (Directory.Exists(dir))
-                {
-
-                    var files = Directory.GetFiles(dir);
-
-                    foreach (var file in files)
-                    {
-                        // avoid removing config files ;)
-                        if (CanDelete(file.ToLower()))
-                        {
-                            try
-                            {
-                                File.Delete(file);
-                            }
-                            catch
-                            {
-                                // best effort ;)
-                            }
-                        }
-                    }
-                }
-
+                return false;
             }
 
-            // force a clean up of studio files ;)
-            {
-                var dir = baseLoc + "/Studio/";
-
-                if (Directory.Exists(dir))
-                {
-
-                    var files = Directory.GetFiles(dir);
-
-                    foreach (var file in files)
-                    {
-                        // avoid removing config files ;)
-                        if (file.ToLower().IndexOf("config", System.StringComparison.Ordinal) < 0)
-                        {
-                            try
-                            {
-                                File.Delete(file);
-                            }
-                            catch
-                            {
-                                // best effort ;)
-                            }
-                        }
-                    }
-
-                }
-
-            }
+            return true;
         }
+
 
         private void InstallationStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
         {
@@ -152,6 +177,10 @@ namespace Gui
                     // remove the Studio Server directory ;)
                     var studioServerDir = instLoc + "/Server/Studio Server";
                     TerminateFiles(studioServerDir);
+
+                    // clean up the ssl generation stuff ;)
+                    var SSLGeneration = instLoc + "/Server/SSL Generation";
+                    TerminateFiles(SSLGeneration);
 
                     // remove the Instance Store directory ;)
                     var instDir = instLoc + "/Server/InstanceStore";
