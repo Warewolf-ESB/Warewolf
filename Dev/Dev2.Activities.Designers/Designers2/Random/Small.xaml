@@ -9,11 +9,11 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Random"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               Width="250"
-                               MaxWidth="250"
+                               Width="200"
+                               MaxWidth="200"
                                Padding="7"
                                mc:Ignorable="d"
-                               d:DesignWidth="250"
+                               d:DesignWidth="200"
                                d:DataContext="{d:DesignInstance local:RandomDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>

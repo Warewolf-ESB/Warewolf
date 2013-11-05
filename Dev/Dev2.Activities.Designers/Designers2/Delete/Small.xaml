@@ -11,11 +11,11 @@
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
     xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
     xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
-    Width="250"
-                               MaxWidth="250"
+    Width="200"
+                               MaxWidth="200"
                                Padding="7"
                                mc:Ignorable="d"
-                               d:DesignWidth="184"
+                               d:DesignWidth="200"
                                d:DataContext="{d:DesignInstance local:DeleteDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>

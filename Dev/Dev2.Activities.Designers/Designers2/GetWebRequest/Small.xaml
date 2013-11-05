@@ -9,11 +9,11 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.GetWebRequest"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               Width="255"
-                               MaxWidth="255"
+                               Width="250"
+                               MaxWidth="250"
                                Padding="7"
                                mc:Ignorable="d"
-                               d:DesignWidth="270"
+                               d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance local:GetWebRequestDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>

@@ -14,7 +14,7 @@
                                MaxWidth="250"
                                Padding="7"
                                mc:Ignorable="d"
-                               d:DesignWidth="200"
+                               d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance local:CommentDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>

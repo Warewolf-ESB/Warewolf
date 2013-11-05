@@ -9,11 +9,11 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Email"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               Width="270"
-                               MaxWidth="270"
+                               Width="200"
+                               MaxWidth="200"
                                Padding="7"
                                mc:Ignorable="d"
-                               d:DesignWidth="270"
+                               d:DesignWidth="200"
                                d:DataContext="{d:DesignInstance local:EmailDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
@@ -151,6 +151,9 @@
                                 Margin="0,2"
                                 VerticalContentAlignment="Top"
                                 MinLines="2"
+                                Height="32"
+                                MinHeight="32"
+                                MaxHeight="32"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_bodytxt_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.EmailHelpBody}"
