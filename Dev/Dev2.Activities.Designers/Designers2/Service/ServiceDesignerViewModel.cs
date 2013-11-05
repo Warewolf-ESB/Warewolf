@@ -20,6 +20,7 @@ using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Simulation;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -81,6 +82,11 @@ namespace Dev2.Activities.Designers2.Service
             // MUST InitializeMappings() first!
             InitializeMappings();
             InitializeLastValidationMemo(environment);
+            if(IsItemDragged.Instance.IsDragged)
+            {
+                Expand();
+                IsItemDragged.Instance.IsDragged = false;
+            }
         }
 
         public event EventHandler<DesignValidationMemo> OnDesignValidationReceived;

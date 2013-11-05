@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Dev2.Studio.ActivityDesigners.Singeltons
+﻿namespace Dev2.Activities.Designers2.Core
 {
     public class IsItemDragged
     {

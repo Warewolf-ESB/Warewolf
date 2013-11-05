@@ -236,7 +236,6 @@
     <Compile Include="ActivityDesigners\DsfWebSiteActivityDesigner.xaml.cs">
       <DependentUpon>DsfWebSiteActivityDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\Singeltons\IsItemDragged.cs" />
     <Compile Include="AppResources\AttachedProperties\AvalonEditTextProperty.cs" />
     <Compile Include="AppResources\AttachedProperties\FocusAttachedProperty.cs" />
     <Compile Include="AppResources\AttachedProperties\TreeViewItemScrollBehaviour.cs" />
@@ -1358,6 +1357,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActivityDesigners\PathOperationDesigners\" />
+    <Folder Include="ActivityDesigners\Singeltons\" />
     <Folder Include="AppResources\Messages\" />
     <Folder Include="ViewModels\Configuration\" />
     <Folder Include="Views\Configuration\" />

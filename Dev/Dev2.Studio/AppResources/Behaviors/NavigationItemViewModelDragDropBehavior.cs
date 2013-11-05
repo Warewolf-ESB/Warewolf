@@ -1,5 +1,4 @@
-﻿using Dev2.Studio.ActivityDesigners.Singeltons;
-using Dev2.Studio.ViewModels.Navigation;
+﻿using Dev2.Studio.ViewModels.Navigation;
 using System;
 using System.Activities.Presentation;
 using System.Windows;

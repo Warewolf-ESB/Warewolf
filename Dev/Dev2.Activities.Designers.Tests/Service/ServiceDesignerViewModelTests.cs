@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Caliburn.Micro;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Collections;
 using Dev2.Communication;
@@ -175,6 +176,34 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsNotNull(viewModel.ImageSource);
 
             Assert.AreEqual(3, viewModel.TitleBarToggles.Count);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ServiceDesignerViewModel_Constructor")]
+        public void ServiceDesignerViewModel_Constructor_WhenIsItemDraggedTrue_ShouldBeExpandedAndSetIsItemDraggedFalse()
+        {
+            //------------Setup for test--------------------------
+            IsItemDragged.Instance.IsDragged = true;
+            //------------Execute Test---------------------------
+            var viewModel = CreateServiceDesignerViewModel(Guid.NewGuid());
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.ShowLarge);
+            Assert.IsFalse(IsItemDragged.Instance.IsDragged);
+        }     
+        
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ServiceDesignerViewModel_Constructor")]
+        public void ServiceDesignerViewModel_Constructor_WhenIsItemDraggedFalse_ShouldNotBeExpandedAndSetIsItemDraggedFalse()
+        {
+            //------------Setup for test--------------------------
+            IsItemDragged.Instance.IsDragged = false;
+            //------------Execute Test---------------------------
+            var viewModel = CreateServiceDesignerViewModel(Guid.NewGuid());
+            //------------Assert Results-------------------------
+            Assert.IsFalse(IsItemDragged.Instance.IsDragged);
+            Assert.IsFalse(viewModel.ShowLarge);
         }
 
         [TestMethod]
