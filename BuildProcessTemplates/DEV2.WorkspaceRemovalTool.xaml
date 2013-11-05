@@ -42,7 +42,7 @@
       <Variable x:TypeArguments="mtbc:IBuildAgent" Name="BuildAgent" />
     </Sequence.Variables>
     <Sequence DisplayName="Initialize" sap2010:WorkflowViewState.IdRef="Sequence_1" mtbwt:BuildTrackingParticipant.Importance="Low">
-      <mtbwa:UpdateBuildNumber BuildNumberFormat="Workspace Cleanup Util" DisplayName="Update Build Number" sap2010:WorkflowViewState.IdRef="UpdateBuildNumber_1" />
+      <mtbwa:UpdateBuildNumber BuildNumberFormat="Workspace Cleanup Util_$(Date:yyyyMMdd)$(Rev:.r)" DisplayName="Update Build Number" sap2010:WorkflowViewState.IdRef="UpdateBuildNumber_1" />
       <Assign sap2010:WorkflowViewState.IdRef="Assign_9">
         <Assign.To>
           <OutArgument x:TypeArguments="x:String">[AgentSettings.Name]</OutArgument>
@@ -56,7 +56,7 @@
       <mtbwa:DeleteWorkspace DeleteLocalItems="[True]" DisplayName="Delete Workspace" sap2010:WorkflowViewState.IdRef="DeleteWorkspace_1" mtbwt:BuildTrackingParticipant.Importance="Low" Name="[WorkspaceName]" />
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="------------------- Build DONE -------------------" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>d0NDOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcREVWMi5Xb3Jrc3BhY2VSZW1vdmFsVG9vbC54YW1sEQFhAe8CAQIoAzwOAgEBLAU2EAIBEDcFOhgCAQItBy2lAQIBFi4HNRACARE3sQE3zgECAQc3ggE3pAECAQU33wE3igICAQM4BzjUAQIBDDkHOZkCAgEJLTItSgIBFzMyMz8CARQwMzBHAgESOC84NwIBDzjAATjRAQIBDTl+ObIBAgEL</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d0NDOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcREVWMi5Xb3Jrc3BhY2VSZW1vdmFsVG9vbC54YW1sEQFhAe8CAQIoAzwOAgEBLAU2EAIBEDcFOhgCAQItBy2/AQIBFi4HNRACARE3sQE3zgECAQc3ggE3pAECAQU33wE3igICAQM4BzjUAQIBDDkHOZkCAgEJLTItZAIBFzMyMz8CARQwMzBHAgESOC84NwIBDzjAATjRAQIBDTl+ObIBAgEL</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
