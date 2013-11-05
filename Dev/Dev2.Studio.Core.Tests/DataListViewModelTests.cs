@@ -588,6 +588,44 @@ namespace Dev2.Core.Tests
         }
         
         [TestMethod]
+        public void AddMissingDataListItemsAndThenAddManualy_IsNotField_AddRecordSetWhenDataListContainsRecordsertWithSameName()
+        {
+            Setup();
+            _dataListViewModel.RecsetCollection.Clear();
+            _dataListViewModel.ScalarCollection.Clear();
+
+            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
+            var part = new Mock<IDataListVerifyPart>();
+            part.Setup(c => c.Recordset).Returns("ab");
+            part.Setup(c => c.DisplayValue).Returns("[[ab()]]");
+            part.Setup(c => c.Description).Returns("");
+            part.Setup(c => c.IsScalar).Returns(false);
+            part.Setup(c => c.Field).Returns("");
+            parts.Add(part.Object);
+
+            var part2 = new Mock<IDataListVerifyPart>();
+            part2.Setup(c => c.Recordset).Returns("ab");
+            part2.Setup(c => c.DisplayValue).Returns("[[ab().c]]");
+            part2.Setup(c => c.Description).Returns("");
+            part2.Setup(c => c.IsScalar).Returns(false);
+            part2.Setup(c => c.Field).Returns("c");
+            parts.Add(part2.Object);
+
+            _dataListViewModel.AddMissingDataListItems(parts, false);
+
+            IDataListItemModel item = new DataListItemModel("de()");
+            item.Name = "de";
+
+            _dataListViewModel.RecsetCollection.Insert(1, item);
+
+            _dataListViewModel.RemoveBlankRows(item);
+            _dataListViewModel.AddRecordsetNamesIfMissing();
+            _dataListViewModel.ValidateNames(item, true);                                    
+
+            Assert.AreEqual(false, _dataListViewModel.RecsetCollection[1].HasError);
+        }
+        
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_ValidateNames")]
         public void ValidateNames_ItemToAddTrueWithRecordSetWhenDataListContainsRecordsertWithSameName_ShouldReturnError()
