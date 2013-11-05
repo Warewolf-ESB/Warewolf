@@ -136,7 +136,7 @@
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
 
-                                        <Label Grid.Row="0" Content="Inputs" Style="{StaticResource Dev2HeadingLabelStyle}"></Label>
+                                        <TextBlock Grid.Row="0" Text="Inputs" Style="{StaticResource Dev2HeadingTextBlockStyle}"></TextBlock>
                                         <DataGrid x:Name="inputMappings" Style="{StaticResource DesignSurfaceDataGrid}" 
                                                   Grid.Row="1" ItemsSource="{Binding Path=DataContext.DataMappingViewModel.Inputs}">
                                             <DataGrid.Columns>
@@ -190,7 +190,7 @@
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
 
-                                        <Label Grid.Row="0" Content="Outputs" Style="{StaticResource Dev2HeadingLabelStyle}"></Label>
+                                        <TextBlock Grid.Row="0" Text="Outputs" Style="{StaticResource Dev2HeadingTextBlockStyle}"></TextBlock>
                                         <DataGrid x:Name="outputMappings" Style="{StaticResource DesignSurfaceDataGrid}" 
                                                   Grid.Row="1" ItemsSource="{Binding Path=DataContext.DataMappingViewModel.Outputs}">
                                             <DataGrid.Columns>

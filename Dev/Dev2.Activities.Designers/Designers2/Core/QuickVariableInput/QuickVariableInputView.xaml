@@ -60,9 +60,9 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="6" />
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0"
-                       Content="Quick Variable Input"
-                       Style="{StaticResource Dev2HeadingLabelStyle}" />
+                <TextBlock Grid.Row="0"
+                       Text="Quick Variable Input"
+                       Style="{StaticResource Dev2HeadingTextBlockStyle}" Margin="0,3,0,0" />
                 <Rectangle Grid.Row="1"
                            Fill="LightGray"
                            Margin="1"

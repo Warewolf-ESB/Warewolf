@@ -574,7 +574,7 @@
                         </Border>
 
                         <!--Settings-->
-                        <!--<Border Style="{StaticResource BorderStyleRibbon}">
+                        <Border Style="{StaticResource BorderStyleRibbon}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
@@ -601,7 +601,7 @@
                                     </Button>
                                 </StackPanel>
                             </Grid>
-                        </Border>-->
+                        </Border>
                         
                     </StackPanel>
 

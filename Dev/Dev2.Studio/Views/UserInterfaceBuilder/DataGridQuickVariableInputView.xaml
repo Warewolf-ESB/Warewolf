@@ -41,7 +41,7 @@
                         <RowDefinition Height="28"/>
                         <RowDefinition Height="6"/>
                     </Grid.RowDefinitions>
-                    <Label Content="Quick Variable Input" Grid.Row="0" Style="{StaticResource Dev2HeadingLabelStyle}"/>
+                    <TextBlock Text="Quick Variable Input" Grid.Row="0" Style="{StaticResource Dev2HeadingTextBlockStyle}"/>
                     <Rectangle Fill="LightGray" Margin="1" Height="1" Grid.Row="1"/>
                 </Grid>
                 

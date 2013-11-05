@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
-using Dev2.Common;
 using Dev2.Core.Tests.Utils;
 using Dev2.Data.Settings.Security;
 using Dev2.Settings;
@@ -186,7 +185,8 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsViewModel_SaveCommand")]
-        public void SettingsViewModel_SaveCommand_ResultIsNull_ShowsErrorPopup()
+        [ExpectedException(typeof(Exception))]
+        public void SettingsViewModel_SaveCommand_ResultIsNull_ThrowsException()
         {
             //------------Setup for test--------------------------
             var popupController = new Mock<IPopupController>();
@@ -199,13 +199,13 @@ namespace Dev2.Core.Tests.Settings
             viewModel.SaveCommand.Execute(null);
 
             //------------Assert Results-------------------------
-            VerifyShowErrorPopup(popupController, "Network Error", string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "SettingsWriteService"));
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsViewModel_SaveCommand")]
-        public void SettingsViewModel_SaveCommand_ResultIsError_ShowsErrorPopup()
+        [ExpectedException(typeof(Exception))]
+        public void SettingsViewModel_SaveCommand_ResultIsError_ThrowsException()
         {
             //------------Setup for test--------------------------
             const string ErrorMessage = "A message that is not just the word Success.";
@@ -220,7 +220,6 @@ namespace Dev2.Core.Tests.Settings
             viewModel.SaveCommand.Execute(null);
 
             //------------Assert Results-------------------------
-            VerifyShowErrorPopup(popupController, "Save Error", ErrorMessage);
         }
 
         [TestMethod]
@@ -291,29 +290,30 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsViewModel_ServerChangedCommand")]
-        public void SettingsViewModel_ServerChangedCommand_ServerEnvironmentIsConnectedAndSettingsHasErrors_ShowsErrorPopup()
+        public void SettingsViewModel_ServerChangedCommand_ServerEnvironmentIsConnectedAndSettingsHasErrors_ThrowsException()
         {
             //------------Setup for test--------------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(p => p.Show()).Verifiable();
             popupController.SetupAllProperties();
 
-            //------------Execute Test---------------------------
             var settings = new Data.Settings.Settings
             {
                 HasError = true,
                 Error = "Error occurred loading"
             };
 
+            //------------Execute Test---------------------------
             var viewModel = CreateViewModel(popupController.Object, settings.ToString());
 
             //------------Assert Results-------------------------
+
+            // For some reason (threading??) this exception does not get thrown in test
+            Assert.AreEqual(1, viewModel.ShowErrorHitCount);
             Assert.IsNotNull(viewModel.CurrentEnvironment);
             Assert.IsNotNull(viewModel.SecurityViewModel);
             Assert.IsFalse(viewModel.IsLoading);
             Assert.IsFalse(viewModel.IsDirty);
-
-            VerifyShowErrorPopup(popupController, "Load Error", settings.Error);
         }
 
         [TestMethod]
@@ -366,14 +366,14 @@ namespace Dev2.Core.Tests.Settings
             Assert.AreEqual(MessageBoxImage.Error, popupController.Object.ImageType);
         }
 
-        static SettingsViewModel CreateViewModel(string executeCommandReadResult = "", string executeCommandWriteResult = "")
+        static TestSettingsViewModel CreateViewModel(string executeCommandReadResult = "", string executeCommandWriteResult = "")
         {
             return CreateViewModel(new Mock<IPopupController>().Object, executeCommandReadResult, executeCommandWriteResult);
         }
 
-        static SettingsViewModel CreateViewModel(IPopupController popupController, string executeCommandReadResult = "", string executeCommandWriteResult = "")
+        static TestSettingsViewModel CreateViewModel(IPopupController popupController, string executeCommandReadResult = "", string executeCommandWriteResult = "")
         {
-            var viewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, popupController, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            var viewModel = new TestSettingsViewModel(new Mock<IEventAggregator>().Object, popupController, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
 
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.IsConnected).Returns(true);

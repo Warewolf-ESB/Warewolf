@@ -305,17 +305,12 @@
         <Setter Property="Height"
                 Value="21" />
     </Style>
-
-    <Style x:Key="Dev2HeadingLabelStyle"
-           TargetType="{x:Type Label}">
-        <Setter Property="FontStretch"
-                Value="Medium" />
-        <Setter Property="FontWeight"
-                Value="Bold" />
-        <Setter Property="FontSize"
-                Value="{StaticResource DefaultFontSize}" />
-        <Setter Property="Foreground"
-                Value="Gray" />
+    
+    <Style x:Key="Dev2HeadingTextBlockStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontStretch" Value="Medium" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="{StaticResource HeaderFontSize}" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
     </Style>
 
     <Style x:Key="BlueHeadingStyle"

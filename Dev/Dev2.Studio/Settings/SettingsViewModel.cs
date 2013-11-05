@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common;
@@ -214,10 +214,6 @@ namespace Dev2.Settings
                 }
             }, () =>
             {
-                if(Settings.HasError)
-                {
-                    ShowError("Load Error", Settings.Error);
-                }
                 SecurityViewModel = new SecurityViewModel(Settings.Security ?? new List<WindowsGroupPermission>());
                 SecurityViewModel.PropertyChanged += OnViewModelPropertyChanged;
 
@@ -225,6 +221,11 @@ namespace Dev2.Settings
                 LoggingViewModel = new LoggingViewModel();
 
                 IsLoading = false;
+
+                if(Settings.HasError)
+                {
+                    ShowError("Load Error", Settings.Error);
+                }
             });
         }
 
@@ -262,13 +263,9 @@ namespace Dev2.Settings
             return result;
         }
 
-        void ShowError(string header, string description)
+        protected virtual void ShowError(string header, string description)
         {
-            _popupController.Header = header;
-            _popupController.Description = description;
-            _popupController.Buttons = MessageBoxButton.OK;
-            _popupController.ImageType = MessageBoxImage.Error;
-            _popupController.Show();
+            throw new Exception(string.Format("{0} : {1}", header, description));
         }
 
         enum SettingsServiceAction

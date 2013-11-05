@@ -46,50 +46,57 @@
         
     </UserControl.Resources>
     
-    <Grid>
+    <Grid>       
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="150" />
+            <ColumnDefinition Width="Auto" MinWidth="100" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0" BorderThickness="0,0,1,0" BorderBrush="{StaticResource ButtonBorderBrush}">
-            <Grid Margin="0,0,10,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <ui:ConnectControl Width="250"
-                                   LabelText="Server:"
-                                   Margin="0,0,0,10"
-                                   ServerChangedCommand="{Binding ServerChangedCommand}"
-                                   NewButtonAutomationID="UI_SettingsServerNewButton_AutoID"
-                                   EditButtonAutomationID="UI_SettingsServerEditButton_AutoID"
-                                   ServerComboBoxAutomationID="UI_SettingsServerComboBox_AutoID" />
+        <ui:ConnectControl Grid.Row="0"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           Width="400"
+                           Margin="0,0,0,10"
+                           HorizontalAlignment="Left"                           
+                           LabelText="Server:"
+                           ServerChangedCommand="{Binding ServerChangedCommand}"
+                           NewButtonAutomationID="UI_SettingsServerNewButton_AutoID"
+                           EditButtonAutomationID="UI_SettingsServerEditButton_AutoID"
+                           ServerComboBoxAutomationID="UI_SettingsServerComboBox_AutoID" />
 
-                <customControls:CircularProgressBar Grid.Row="1"
-                                                    Height="30"
-                                                    Width="30"
-                                                    VerticalAlignment="Top"
-                                                    HorizontalAlignment="Center"
-                                                    Margin="0,10,0,0"
-                                                    Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                                    AutomationProperties.AutomationId="UI_SettingsProgress_Indicator" />
-                
-                <StackPanel Grid.Row="1"
-                            Orientation="Vertical"
-                            Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+        <customControls:CircularProgressBar Grid.Row="1"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="2"
+                                            Height="30"
+                                            Width="30"
+                                            VerticalAlignment="Top"
+                                            HorizontalAlignment="Center"
+                                            Margin="0,10,0,0"
+                                            Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                            AutomationProperties.AutomationId="UI_SettingsProgress_Indicator" />
+        
+        <Border Grid.Row="1" Grid.Column="0" BorderThickness="0,0,1,0" BorderBrush="{StaticResource ButtonBorderBrush}">
 
-                    <!--<ToggleButton Content="Logging"
+            <StackPanel
+                        Orientation="Vertical"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+
+                <!--<ToggleButton Content="Logging"
                               IsChecked="{Binding ShowLogging, Mode=TwoWay}"
                               Style="{StaticResource SettingsToggleButtonStyle}" />-->
-                    <ToggleButton Content="Security"
-                                  IsChecked="{Binding ShowSecurity, Mode=TwoWay}"
-                                  Style="{StaticResource SettingsToggleButtonStyle}" />
-                    
-                </StackPanel>
-            </Grid>
+                <ToggleButton Content="Security"
+                              IsChecked="{Binding ShowSecurity, Mode=TwoWay}"
+                              Style="{StaticResource SettingsToggleButtonStyle}" />
+
+            </StackPanel>
+
         </Border>
-        <Grid Grid.Column="1">
+        <Grid  Grid.Row="1" Grid.Column="1">
             <ContentControl Style="{StaticResource ContentViewStyle}" />
 
             <Button Content="Save"

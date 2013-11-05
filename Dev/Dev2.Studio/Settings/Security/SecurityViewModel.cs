@@ -67,7 +67,7 @@ namespace Dev2.Settings.Security
             }
 
             permission.ResourceID = resourceModel.ID;
-            permission.ResourceName = string.Format("{0}\\{1}", resourceModel.ResourceName, resourceModel.Category);
+            permission.ResourceName = string.Format("{0}\\{1}", resourceModel.Category, resourceModel.ResourceName);
         }
 
         void PickWindowsGroup(object obj)
