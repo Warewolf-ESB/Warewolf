@@ -65,6 +65,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("Deploy_ResourceTree")]
+        // 05/11 - Failure is Intermittent ;)
         public void Deploy_ResourceTree_DeployFromExplorer_AllServiceTypesVisibleAndDeployedItemNotFiltered()
         {
             DockManagerUIMap.ClickOpenTabPage("Explorer");
@@ -76,7 +77,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClosePane(theTab);
 
             //wait for resource tree to load
-            Playback.Wait(5000);
+            Playback.Wait(15000);
 
             // Assert All Service Types Visible
             var sourceResources = DeployUIMap.GetSourceNavigationTree();

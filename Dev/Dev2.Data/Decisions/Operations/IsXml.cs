@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Dev2.DataList.Contract;
 
 namespace Dev2.Data.Decisions.Operations
@@ -13,7 +12,10 @@ namespace Dev2.Data.Decisions.Operations
 
         public bool Invoke(string[] cols)
         {
-            return DataListUtil.IsXml(cols[0]);
+            var data = DataListUtil.AdjustForEncodingIssues(cols[0]);
+            bool isFragment;
+            var isXml = DataListUtil.IsXml(data, out isFragment);
+            return isXml || isFragment;
         }
     }
 }

@@ -38,7 +38,7 @@
 
         public void SelectRoundingType(string roundingType)
         {
-            UITestControl roundingTypeDropDown = GetInput("UI__Rounding_ComboBox_AutoID");
+            UITestControl roundingTypeDropDown = GetComboBox();
             WpfComboBox comboBox = (WpfComboBox)roundingTypeDropDown;
             comboBox.SelectedItem = roundingType;
         }
@@ -77,15 +77,41 @@
 
         private UITestControl GetInput(string AutomationId)
         {
+            UITestControlCollection smallViewChildren = GetSmallView().GetChildren();
+            foreach(UITestControl child in smallViewChildren)
+            {
+                if (child.GetProperty("AutomationId").ToString() == AutomationId)
+                {
+                    return child;
+                }
+            }
+            return null;
+        }
+
+        private UITestControl GetComboBox()
+        {
+            UITestControlCollection smallViewChildren = GetSmallView().GetChildren();
+            foreach (UITestControl child in smallViewChildren)
+            {
+                if (child.ClassName == "Uia.ComboBox")
+                {
+                    return child;
+                }
+            }
+            throw new UITestControlNotFoundException("Cannot find rounding type combo box on format number activity");
+        }
+
+        private UITestControl GetSmallView()
+        {
             UITestControlCollection coll = _numberFormatTool.GetChildren();
             foreach (UITestControl ctrl in coll)
             {
-                if (ctrl.GetProperty("AutomationId").ToString() == AutomationId)
+                if(ctrl.GetProperty("AutomationId").ToString() == "SmallViewContent")
                 {
                     return ctrl;
                 }
             }
-            return null;
+            throw new UITestControlNotFoundException("Cannot find format number activity small view");
         }
     }
 }

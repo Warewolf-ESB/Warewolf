@@ -61,7 +61,7 @@ namespace Dev2.Data.Parsers
 
                         using (XmlReader reader = XmlReader.Create(xtr, settings))
                         {
-                        reader.Read();
+                            reader.Read();
 
                             if (reader.NodeType == XmlNodeType.XmlDeclaration || reader.NodeType == XmlNodeType.Whitespace)
                             {
@@ -73,36 +73,38 @@ namespace Dev2.Data.Parsers
                                 }
                                 // skip white space ;)
                                 while(reader.Value.IndexOf("\n", StringComparison.Ordinal) >= 0)
-                        {
-                            reader.Skip();
-                        }
-                            }
-
-                        if (xPath.StartsWith("/" + reader.Name) || xPath.StartsWith("//" + reader.Name))
-                        {
-                            xPath = xPath.Replace("/" + reader.Name, "");
-                        }
-
-                        XNode xNode = XNode.ReadFrom(reader);
-                        IEnumerable<object> xdmValue = xNode.XPath2Select(xPath);
-                        var list = xdmValue.Select(element =>
-                            {
-                            var realElm = element as XObject;
-                                    if (realElm != null && realElm.NodeType == XmlNodeType.Attribute)
-                            {
-                                var xAttribute = realElm as XAttribute;
-                                if (xAttribute != null)
                                 {
-                                    return xAttribute.Value;
+                                    reader.Skip();
                                 }
                             }
 
-                                return element.ToString();
-                            
-                            }).ToList();
+                            if (xPath.StartsWith("/" + reader.Name) || xPath.StartsWith("//" + reader.Name))
+                            {
+                                xPath = xPath.Replace("/" + reader.Name, "");
+                            }
+                            else if(xPath.StartsWith(reader.Name))
+                            {
+                                xPath = xPath.Replace(reader.Name, "/");
+                            }
+
+                            XNode xNode = XNode.ReadFrom(reader);
+                            IEnumerable<object> xdmValue = xNode.XPath2Select(xPath);
+                            var list = xdmValue.Select(element =>
+                                {
+                                    var realElm = element as XObject;
+                                if(realElm != null && realElm.NodeType == XmlNodeType.Attribute)
+                                    {
+                                        var xAttribute = realElm as XAttribute;
+                                    if(xAttribute != null)
+                                        {
+                                            return xAttribute.Value;
+                                        }
+                                    }
+
+                                    return element.ToString();
+
+                                }).ToList();
                             return list;
-
-
                         }
                     }
                 }

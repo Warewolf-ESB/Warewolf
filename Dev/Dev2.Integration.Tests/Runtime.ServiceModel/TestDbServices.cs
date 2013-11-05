@@ -7,8 +7,6 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
     public class TestDbServices : Dev2RuntimeServiceModel.Services
     {
         public SqlDatabaseBroker Broker { get; private set; }
-        public int FetchRecordsetHitCount { get; set; }
-        public bool FetchRecordsetAddFields { get; set; }
 
         public TestDbServices()
         {
@@ -22,13 +20,6 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         protected override SqlDatabaseBroker CreateDatabaseBroker()
         {
             return Broker ?? base.CreateDatabaseBroker();
-        }
-
-        public override Recordset FetchRecordset(DbService service, bool addFields)
-        {
-            FetchRecordsetHitCount++;
-            FetchRecordsetAddFields = addFields;
-            return service.Recordset;
         }
     }
 }

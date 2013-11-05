@@ -35,6 +35,7 @@ namespace Dev2.Studio.UI.Tests
 
         // Bug 6501
         [TestMethod]
+        // 05/11 - Failure is Correct - Broken Functionality ;)
         public void DeleteFirstDatagridRow_Expected_RowIsNotDeleted()
         {
             // Create the workflow
@@ -208,6 +209,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Clicking a debug output step should highlight that activity on the design surface")]
         [Owner("Ashley")]
+        // 05/11 - Failure is Intermittent ;)
         // ReSharper disable InconsistentNaming
         public void DebugOutput_ClickStep_ActivityIsHighlighted()
         // ReSharper restore InconsistentNaming
@@ -343,6 +345,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("for bug 9802 - Foreach drill down test (2013.06.28)")]
         [Owner("Ashley")]
+        // 05/11 - Failure is Intermittent ;)
         public void DragAMultiAssignIntoAndOutOfAForEach_NoDrillDown()
         {
             // Create the workflow
@@ -377,6 +380,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [TestCategory("UITest")]
         [Owner("Tshepo Ntlhokoa")]
+        // 05/11 - Failure is Intermittent ;) AND THIS TEST IS CRAP. Why check tabs for validity?
         public void DragAStartNodeOntoATool_HoverOverAToolForAWhile_NoDrillDownShouldHappen()
         {
             // Create the workflow

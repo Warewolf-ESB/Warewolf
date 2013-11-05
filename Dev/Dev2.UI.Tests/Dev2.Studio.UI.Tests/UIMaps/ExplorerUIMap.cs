@@ -176,6 +176,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Playback.Wait(100);
             SendKeys.SendWait("{ENTER}");
             PopupDialogUIMap.WaitForDialog();
+            Playback.Wait(100);
             var confirmationDialog = UIBusinessDesignStudioWindow.GetChildren()[0];
             var yesButton = confirmationDialog.GetChildren().FirstOrDefault(c => c.FriendlyName == "Yes");
             Mouse.Click(yesButton, new Point(10, 10));

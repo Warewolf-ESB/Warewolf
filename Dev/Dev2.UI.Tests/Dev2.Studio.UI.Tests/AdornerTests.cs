@@ -243,9 +243,8 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("DsfActivityTests")]
         [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands.")]
         [Owner("Massimo Guerrera")]
-        // ReSharper disable InconsistentNaming
+        // 05/11 - Failure is Correct - Broken Functionality ;)
         public void ServiceDesigner_CodedUI_DroppingActivityOntoDesigner_MappingToBeExpanded()
-        // ReSharper restore InconsistentNaming
         {
             //Create a new workflow
             RibbonUIMap.CreateNewWorkflow();

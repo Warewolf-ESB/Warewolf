@@ -240,7 +240,7 @@ namespace Dev2.Runtime.Security
             }
             else
             {
-                result = true;
+                result = File.Exists(certPath);
             }
 
             return result;

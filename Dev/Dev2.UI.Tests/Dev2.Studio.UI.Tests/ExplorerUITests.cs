@@ -32,6 +32,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
 
         [TestMethod]
+        // 05/11 - Failure is Intermittent ;)
         public void SearchAndRefresh_AttemptToSearch_ExpectedSearchFilteredByAllItems()
         {
             DockManagerUIMap.ClickOpenTabPage("Explorer");

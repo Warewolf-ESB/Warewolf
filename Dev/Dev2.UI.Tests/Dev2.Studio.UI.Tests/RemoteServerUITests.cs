@@ -290,6 +290,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
+        // 05/11 - Failure is Correct - TEST IS BROKEN ;)
         public void RemoteServerUITests_AddExecuteRenameAndDeleteALocalWorlFlow_ProcessCompletesSuccessfully()
         {
             ProcessAWorkflow(LocalHostServerName, "WORKFLOWS", "Unassigned");

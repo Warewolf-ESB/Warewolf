@@ -340,7 +340,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             var result = services.DbTest(args, workspaceID, Guid.Empty);
 
             //Assert Updates Recordset Name To Service Method Name
-            Assert.AreEqual(service.Method.Name, result.Name, "Recordset name not defaulting to service method name when null");
+            Assert.AreEqual(service.Method.Name.Replace('.','_'), result.Name, "Recordset name not defaulting to service method name when null");
             Assert.IsFalse(result.HasErrors, "Valid DB service returned error on test");
         }
 
@@ -371,13 +371,14 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             var svc = CreateDev2TestingDbService();
             var args = svc.ToString();
             var workspaceID = Guid.NewGuid();
-            var services = new TestDbServices();
+            var services = new Mock<TestDbServices>();
+            services.Setup(serv => serv.FetchRecordset(It.IsAny<DbService>(), It.IsAny<bool>())).Returns(svc.Recordset).Verifiable();
 
             //------------Execute Test---------------------------
-            var result = services.DbTest(args, workspaceID, Guid.Empty);
+            var result = services.Object.DbTest(args, workspaceID, Guid.Empty);
 
             //Assert Does Not Add Recordset Fields
-            Assert.IsFalse(services.FetchRecordsetAddFields);
+            services.Verify(serv => serv.FetchRecordset(It.IsAny<DbService>(), It.IsAny<bool>()), Times.Once());
             Assert.AreEqual(svc.Recordset.Fields.Count, result.Fields.Count);
         }
 
@@ -391,13 +392,14 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
 
             var args = svc.ToString();
             var workspaceID = Guid.NewGuid();
-            var services = new TestDbServices();
+            var services = new Mock<TestDbServices>();
+            services.Setup(serv => serv.FetchRecordset(It.IsAny<DbService>(), It.IsAny<bool>())).Returns(svc.Recordset).Verifiable();
 
             //------------Execute Test---------------------------
-            services.DbTest(args, workspaceID, Guid.Empty);
+            services.Object.DbTest(args, workspaceID, Guid.Empty);
 
             //Assert Adds Recordset Fields
-            Assert.IsTrue(services.FetchRecordsetAddFields);
+            services.Verify(serv => serv.FetchRecordset(It.IsAny<DbService>(), It.IsAny<bool>()), Times.Once());
         }
 
         [TestMethod]
@@ -408,13 +410,14 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             var svc = CreateDev2TestingDbService();
             var args = svc.ToString();
             var workspaceID = Guid.NewGuid();
-            var services = new TestDbServices();
+            var services = new Mock<TestDbServices>();
+            services.Setup(serv => serv.FetchRecordset(It.IsAny<DbService>(), It.IsAny<bool>())).Returns(svc.Recordset).Verifiable();
 
             //------------Execute Test---------------------------
-            var result = services.DbTest(args, workspaceID, Guid.Empty);
+            var result = services.Object.DbTest(args, workspaceID, Guid.Empty);
 
             //Assert Fetches Recordset
-            Assert.AreEqual(1, services.FetchRecordsetHitCount);
+            services.Verify(serv => serv.FetchRecordset(It.IsAny<DbService>(), It.IsAny<bool>()), Times.Once());
             Assert.AreEqual(result.Name, svc.Recordset.Name);
             Assert.AreEqual(result.Fields.Count, svc.Recordset.Fields.Count);
         }
@@ -427,13 +430,14 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             var service = CreateDev2TestingDbService();
             var args = service.ToString();
             var workspaceID = Guid.NewGuid();
-            var services = new TestDbServices();
+            var services = new Mock<TestDbServices>();
+            services.Setup(serv => serv.FetchRecordset(It.IsAny<DbService>(), It.IsAny<bool>())).Returns(service.Recordset).Verifiable();
 
             //------------Execute Test---------------------------
-            var result = services.DbTest(args, workspaceID, Guid.Empty);
+            var result = services.Object.DbTest(args, workspaceID, Guid.Empty);
 
             //Assert Clears Records First
-            Assert.AreEqual(1, services.FetchRecordsetHitCount);
+            services.Verify(serv => serv.FetchRecordset(It.IsAny<DbService>(), It.IsAny<bool>()), Times.Once());
             Assert.AreEqual(0, result.Records.Count);
         }
 

@@ -58,6 +58,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("SqlBulkInsertUITests")]
+        // 05/11 - Failure is Intermittent - Problems finding LargeView button ;)
         public void SqlBulkInsertTest_OpenLargeViewAndEnterAnInvalidBatchAndTimeoutSizeAndClickDone_CorrectingErrorsAndClickDoneWillReturnToSmallView()
         {
             // Create the workflow
@@ -173,6 +174,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("SqlBulkInsertUITests")]
+        // 05/11 - Failure is Intermittent - Problems finding LargeView button ;)
         public void SqlBulkInsertTest_SelectDatabaseAndTableName_GridHasColumnnames()
         {
             // Create the workflow

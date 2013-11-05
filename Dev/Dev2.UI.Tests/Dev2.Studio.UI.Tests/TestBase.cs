@@ -31,6 +31,7 @@ namespace Dev2.CodedUI.Tests
 
         //PBI_8853
         [TestMethod]
+        // 05/11 - Failure is Correct - Broken Functionality ;)
         public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
         {
             StudioWindow.SetFocus();
@@ -56,6 +57,7 @@ namespace Dev2.CodedUI.Tests
         #endregion New PBI Tests
 
         [TestMethod]
+        // 05/11 - Failure is Correct - Grid View Issue ;)
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
         {
             // Create the workflow
@@ -197,7 +199,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         [TestMethod]
-        // Regression Test
+        // 05/11 - Failure is Correct - Functionality is broken ;)
         public void CheckAddMissingIsWorkingWhenManuallyAddingVariableExpectedToShowVariablesAsUnUsed()
         {
             //Open the correct workflow
@@ -328,6 +330,7 @@ namespace Dev2.CodedUI.Tests
 
         // vi - Can I drop a tool onto the designer?
         [TestMethod]
+        // 05/11 - Failure is Intermittent ;)
         public void DropAWorkflowOrServiceOnFromTheToolBoxAndTestTheWindowThatPopsUp()
         {
             // Create the Workflow
@@ -517,6 +520,7 @@ namespace Dev2.CodedUI.Tests
 
         // Bug 8747
         [TestMethod]
+        // 05/11 - Failure is Intermittent ;)
         public void DebugBuriedErrors_Expected_OnlyErrorStepIsInError()
         {
             DockManagerUIMap.ClickOpenTabPage("Explorer");

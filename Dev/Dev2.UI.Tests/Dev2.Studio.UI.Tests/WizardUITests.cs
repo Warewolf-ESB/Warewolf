@@ -62,6 +62,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         #region Service Wizards
 
         [TestMethod]
+        // 05/11 - Failure is Intermittent ;)
         public void ClickNewPluginServiceExpectedPluginServiceOpens()
         {
             RibbonUIMap.ClickRibbonMenuItem("UI_RibbonHomeTabPluginServiceBtn_AutoID");
@@ -92,9 +93,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             ExplorerUIMap.DoRefresh();
             ExplorerUIMap.EnterExplorerSearchText(serviceName);
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SERVICES", "Unassigned", serviceName));
+            ExplorerUIMap.RightClickDeleteProject("localhost", "SERVICES", "Unassigned", serviceName);
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(sourceName);
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", "Unassigned", sourceName));
+            ExplorerUIMap.RightClickDeleteProject("localhost", "SOURCES", "Unassigned", sourceName);
         }
 
         //2013.03.14: Ashley Lewis - Bug 9217
@@ -127,6 +130,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
 
         [TestMethod]
+        // 05/11 - Failure is Intermittent ;)
         public void NewPluginServiceShortcutKeyExpectedPluginServiceOpens()
         {
             StudioWindow.SetFocus();
@@ -136,6 +140,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
 
         [TestMethod]
+        // 05/11 - Failure is Correct - Broken Functionality ;)
         public void NewWebServiceShortcutKeyExpectedWebServiceOpens()
         {
             StudioWindow.SetFocus();
@@ -150,6 +155,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         //2013.06.22: Ashley Lewis for bug 9478
         [TestMethod]
+        // 05/11 - Failure is Correct - TEST IS FAULTY ;)
         public void EmailSourceWizardCreateNewSourceExpectedSourceCreated()
         {
             //Initialization
@@ -165,7 +171,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             ExplorerUIMap.EnterExplorerSearchText(name);
 
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", "Unassigned", name));
-            TabManagerUIMap.CloseAllTabs();
         }
 
         #endregion
@@ -177,6 +182,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DecisionWizard_Save")]
+        // 05/11 - Failure is Intermittent ;)
         public void DecisionWizard_Save_WhenMouseUsedToSelect2ndAnd3rdInputFields_FieldDataSavedCorrectly()
         {
             //------------Setup for test--------------------------
@@ -322,11 +328,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             // Cancel Decision Wizard
             if(WizardsUIMap.TryWaitForWizard(5000))
-            {
-                var decisionWizardUiMap = new DecisionWizardUIMap();
-                decisionWizardUiMap.ClickCancel();
-            }
-            else
             {
                 Assert.Fail("Got droped ;(");
             }
