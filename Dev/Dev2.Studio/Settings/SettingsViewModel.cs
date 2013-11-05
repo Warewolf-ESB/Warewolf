@@ -1,7 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Services.Events;
 using Dev2.Settings.Logging;
 using Dev2.Settings.Security;
@@ -9,6 +11,8 @@ using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Newtonsoft.Json;
+using Unlimited.Framework;
 
 namespace Dev2.Settings
 {
@@ -102,6 +106,8 @@ namespace Dev2.Settings
             }
         }
 
+        public Data.Settings.Settings Settings { get; private set; }
+
         public SecurityViewModel SecurityViewModel
         {
             get { return _securityViewModel; }
@@ -185,13 +191,6 @@ namespace Dev2.Settings
             }
         }
 
-        void LoadSettings()
-        {
-            //CurrentEnvironment.Connection.ExecuteCommand()
-            SecurityViewModel = SecurityViewModel.Create();
-            SecurityViewModel.PropertyChanged += OnViewModelPropertyChanged;
-        }
-
         void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             if(args.PropertyName == "IsDirty")
@@ -200,8 +199,52 @@ namespace Dev2.Settings
             }
         }
 
+        void LoadSettings()
+        {
+            IsDirty = false;
+            var settingsJson = ExecuteCommand(SettingsServiceAction.Read);
+            Settings = JsonConvert.DeserializeObject<Data.Settings.Settings>(settingsJson);
+            if(Settings.HasError)
+            {
+                throw new Exception(Settings.Error);
+            }
+            SecurityViewModel = new SecurityViewModel(Settings.Security);
+            SecurityViewModel.PropertyChanged += OnViewModelPropertyChanged;
+        }
+
         void SaveSettings()
         {
+            var result = ExecuteCommand(SettingsServiceAction.Write);
+            if(result.ToLowerInvariant() != "success")
+            {
+                throw new Exception(result);
+            }
+            IsDirty = false;
+        }
+
+        string ExecuteCommand(SettingsServiceAction action)
+        {
+            var serviceName = string.Format("Settings{0}Service", action);
+
+            dynamic dataObj = new UnlimitedObject();
+            dataObj.Service = serviceName;
+            if(action == SettingsServiceAction.Write)
+            {
+                dataObj.Settings = Settings.ToString();
+            }
+
+            var result = CurrentEnvironment.Connection.ExecuteCommand(dataObj.XmlString, CurrentEnvironment.Connection.WorkspaceID, GlobalConstants.NullDataListID);
+            if(result == null)
+            {
+                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, serviceName));
+            }
+            return result;
+        }
+
+        enum SettingsServiceAction
+        {
+            Read,
+            Write
         }
     }
 }

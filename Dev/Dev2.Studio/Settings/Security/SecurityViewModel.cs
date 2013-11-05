@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
@@ -19,13 +20,28 @@ namespace Dev2.Settings.Security
     {
         bool _isDirty;
 
-        public SecurityViewModel()
+        public SecurityViewModel(IEnumerable<WindowsGroupPermission> permissions)
         {
             PickWindowsGroupCommand = new RelayCommand(PickWindowsGroup, o => true);
             PickResourceCommand = new RelayCommand(PickResource, o => true);
 
             ServerPermissions = new ObservableCollection<WindowsGroupPermission>();
             ResourcePermissions = new ObservableCollection<WindowsGroupPermission>();
+
+            foreach(var permission in permissions)
+            {
+                RegisterPropertyChanged(permission);
+                if(permission.IsServer)
+                {
+                    ServerPermissions.Add(permission);
+                }
+                else
+                {
+                    ResourcePermissions.Add(permission);
+                }
+            }
+            ServerPermissions.Add(CreateNewPermission(true));
+            ResourcePermissions.Add(CreateNewPermission(false));
         }
 
         public ObservableCollection<WindowsGroupPermission> ServerPermissions { get; private set; }
@@ -151,75 +167,6 @@ namespace Dev2.Settings.Security
                     }
                 }
             }
-        }
-
-        public static SecurityViewModel Create()
-        {
-            var serverPermissions = new[]
-            {
-                new WindowsGroupPermission { IsServer = true, WindowsGroup = "BuiltIn\\Administrators", View = false, Execute = false, Contribute = true, DeployTo = true, DeployFrom = true, Administrator = true },
-                new WindowsGroupPermission { IsServer = true, WindowsGroup = "Deploy Admins", View = false, Execute = false, Contribute = false, DeployTo = true, DeployFrom = true, Administrator = false }
-            };
-            var resourcePermissions = new[]
-            {
-                new WindowsGroupPermission
-                {
-                    ResourceID = Guid.NewGuid(), ResourceName = "Category1\\Workflow1",
-                    WindowsGroup = "Windows Group 1", View = false, Execute = true, Contribute = false
-                },
-                new WindowsGroupPermission
-                {
-                    ResourceID = Guid.NewGuid(), ResourceName = "Category1\\Workflow1",
-                    WindowsGroup = "Windows Group 2", View = false, Execute = false, Contribute = true
-                },
-
-                new WindowsGroupPermission
-                {
-                    ResourceID = Guid.NewGuid(), ResourceName = "Category1\\Workflow2",
-                    WindowsGroup = "Windows Group 1", View = true, Execute = true, Contribute = false
-                },
-
-                new WindowsGroupPermission
-                {
-                    ResourceID = Guid.NewGuid(), ResourceName = "Category2\\Workflow3",
-                    WindowsGroup = "Windows Group 3", View = true, Execute = false, Contribute = false
-                },
-                new WindowsGroupPermission
-                {
-                    ResourceID = Guid.NewGuid(), ResourceName = "Category2\\Workflow3",
-                    WindowsGroup = "Windows Group 4", View = false, Execute = true, Contribute = false
-                },
-
-
-                new WindowsGroupPermission
-                {
-                    ResourceID = Guid.NewGuid(), ResourceName = "Category2\\Workflow4",
-                    WindowsGroup = "Windows Group 3", View = false, Execute = false, Contribute = true
-                },
-                new WindowsGroupPermission
-                {
-                    ResourceID = Guid.NewGuid(), ResourceName = "Category1\\Workflow1",
-                    WindowsGroup = "Windows Group 4", View = false, Execute = false, Contribute = true
-                }
-            };
-
-            var viewModel = new SecurityViewModel();
-
-            foreach(var permission in serverPermissions)
-            {
-                viewModel.RegisterPropertyChanged(permission);
-                viewModel.ServerPermissions.Add(permission);
-            }
-            viewModel.ServerPermissions.Add(viewModel.CreateNewPermission(true));
-
-            foreach(var permission in resourcePermissions)
-            {
-                viewModel.RegisterPropertyChanged(permission);
-                viewModel.ResourcePermissions.Add(permission);
-            }
-            viewModel.ResourcePermissions.Add(viewModel.CreateNewPermission(false));
-
-            return viewModel;
         }
 
         WindowsGroupPermission CreateNewPermission(bool isServer)
