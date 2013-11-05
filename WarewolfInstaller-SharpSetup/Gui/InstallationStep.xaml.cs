@@ -18,6 +18,90 @@ namespace Gui
             this.mode = mode;
         }
 
+        /// <summary>
+        /// Handles the Entered event of the InstallationStep control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
+        private void InstallationStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
+        {
+            try
+            {
+                var instLoc = MsiConnection.Instance.GetProperty("INSTALLLOCATION");
+
+                if(mode == InstallationMode.Uninstall)
+                {
+                    MsiConnection.Instance.Uninstall();
+
+                    if(File.Exists(Properties.Resources.MainMsiFile))
+                        MsiConnection.Instance.Open(Properties.Resources.MainMsiFile, true);
+
+                    CleanUp(instLoc);
+
+                    // remove the studio directory ;)
+                    var studioDir = instLoc + "/Studio";
+                    TerminateFiles(studioDir);
+
+                    // remove the workspace directory ;)
+                    var workspaceDir = instLoc + "/Server/Workspaces";
+                    TerminateFiles(workspaceDir);
+
+                    // remove the Studio Server directory ;)
+                    var studioServerDir = instLoc + "/Server/Studio Server";
+                    TerminateFiles(studioServerDir);
+
+                    // clean up the ssl generation stuff ;)
+                    var SSLGeneration = instLoc + "/Server/SSL Generation";
+                    TerminateFiles(SSLGeneration);
+
+                    // remove the Instance Store directory ;)
+                    var instDir = instLoc + "/Server/InstanceStore";
+                    TerminateFiles(instDir);
+
+                }
+                else if(mode == InstallationMode.Install)
+                {
+                    PrerequisiteManager.Instance.Install();
+
+                    try
+                    {
+                        InstallVariables.InstallRoot = MsiConnection.Instance.GetProperty("INSTALLLOCATION");
+                    }
+                    catch
+                    {
+                        // Best effort to fetch product code, if not present we have big issues ;(
+                        MessageBox.Show("Cannot locate product code to continue install.");
+                        Wizard.Finish();
+                    }
+
+                    try
+                    {
+                        CleanUp(instLoc);
+                    }
+                    catch(Exception e1)
+                    {
+                        MessageBox.Show("Installation failed: " + e1.Message);
+                    }
+
+                    // start the install process ;)
+                    MsiConnection.Instance.Install();
+
+                }
+                else
+                {
+                    MessageBox.Show("Unknown mode");
+                }
+            }
+            catch(MsiException mex)
+            {
+                if(mex.ErrorCode != (uint)InstallError.UserExit)
+                    MessageBox.Show("Installation failed: " + mex.Message);
+                Wizard.Finish();
+            }
+
+            Wizard.NextStep();
+        }
+
 
         /// <summary>
         /// Terminates the files as per the uninstaller ;)
@@ -150,84 +234,5 @@ namespace Gui
             return true;
         }
 
-
-        private void InstallationStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
-        {
-            try
-            {
-                var instLoc = MsiConnection.Instance.GetProperty("INSTALLLOCATION");
-
-                if (mode == InstallationMode.Uninstall)
-                {
-                    MsiConnection.Instance.Uninstall();
-                    
-                    if (File.Exists(Properties.Resources.MainMsiFile))
-                        MsiConnection.Instance.Open(Properties.Resources.MainMsiFile, true);
-
-                    CleanUp(instLoc);
-
-                    // remove the studio directory ;)
-                    var studioDir = instLoc + "/Studio";
-                    TerminateFiles(studioDir);
-
-                    // remove the workspace directory ;)
-                    var workspaceDir = instLoc + "/Server/Workspaces";
-                    TerminateFiles(workspaceDir);
-
-                    // remove the Studio Server directory ;)
-                    var studioServerDir = instLoc + "/Server/Studio Server";
-                    TerminateFiles(studioServerDir);
-
-                    // clean up the ssl generation stuff ;)
-                    var SSLGeneration = instLoc + "/Server/SSL Generation";
-                    TerminateFiles(SSLGeneration);
-
-                    // remove the Instance Store directory ;)
-                    var instDir = instLoc + "/Server/InstanceStore";
-                    TerminateFiles(instDir);
-
-                }
-                else if (mode == InstallationMode.Install)
-                {
-                    PrerequisiteManager.Instance.Install();
-
-                    try
-                    {
-                        InstallVariables.InstallRoot = MsiConnection.Instance.GetProperty("INSTALLLOCATION");
-                    }
-                    catch
-                    {
-                        // Best effort to fetch product code, if not present we have big issues ;(
-                        MessageBox.Show("Cannot locate product code to continue install.");
-                        Wizard.Finish();
-                    }
-
-                    try
-                    {
-                        CleanUp(instLoc);
-                    }
-                    catch (Exception e1)
-                    {
-                        MessageBox.Show("Installation failed: " + e1.Message);
-                    }
-
-                    // start the install process ;)
-                    MsiConnection.Instance.Install();
-
-                }
-                else
-                {
-                    MessageBox.Show("Unknown mode");
-                }
-            }
-            catch (MsiException mex)
-            {
-                if (mex.ErrorCode != (uint)InstallError.UserExit)
-                    MessageBox.Show("Installation failed: " + mex.Message);
-                Wizard.Finish();
-            }
-
-            Wizard.NextStep();
-        }
     }
 }
