@@ -210,10 +210,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     if(!String.IsNullOrEmpty(currentError))
                                     {
                                         PerformCustomErrorHandling(context, compiler, dataObject, currentError, _tmpErrors);
-                                    }
                                 }
                             }
                         }
+                    }
                     }
 
                 }
@@ -285,7 +285,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 context.MarkCanceled();
             }
         }
-        
+
         void PerformErrorDebug(IDSFDataObject dataObject,string errorMessage)
         {
             var service = ExecutableServiceRepository.Instance.Get(dataObject.WorkspaceID, dataObject.ResourceID);

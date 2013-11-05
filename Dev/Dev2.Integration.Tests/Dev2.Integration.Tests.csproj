@@ -232,7 +232,6 @@
     <Compile Include="Dev2.Activities.Tests\DsfDateTimeActivityWFTest.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfActivityAbstractTest.cs" />
     <Compile Include="Dev2.Activities.Tests\ToolingWorkflowTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\DBServiceTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\EndpointInterrogator\EndpointInterrogatorTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\NestedWorkflow.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\PluginTest.cs" />
@@ -254,7 +253,7 @@
     <Compile Include="Dev2.Application.Server.Tests\InternalServices\SaveResourceServiceTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\RelativeUriResourceTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\ServerLifecycleManagerTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Runtime.Services.Tests.cs" />
+    <Compile Include="Runtime.ServiceModel\ConnectionTests.cs" />
     <Compile Include="Dev2.Application.Server.Tests\WebSeverTests\BasicWebServerTests.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Workspace\XML\XmlResource.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\FileSystemQueryTest.cs" />
@@ -294,12 +293,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Enums\WebpartType.cs" />
     <Compile Include="Dev2.Application.Server.Tests\ComplexWebpageTest.cs" />
+    <Compile Include="Runtime.ServiceModel\DbServiceTests.cs" />
+    <Compile Include="Runtime.ServiceModel\PluginSourceTests.cs" />
+    <Compile Include="Runtime.ServiceModel\TestDbServices.cs" />
+    <Compile Include="Runtime.ServiceModel\TestDbSources.cs" />
     <Compile Include="ServerSettings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ServerSettings.resx</DependentUpon>
     </Compile>
-    <Compile Include="Sources\EmailSourceTest.cs" />
+    <Compile Include="Services.Sql\SqlServerTests.cs" />
+    <Compile Include="Services.Sql\SqlDatabaseBrokerTests.cs" />
+    <Compile Include="Runtime.ServiceModel\EmailSourceTest.cs" />
+    <Compile Include="Runtime.ServiceModel\DbSourceTests.cs" />
     <Compile Include="Sql\WorkflowsTests.cs" />
     <Compile Include="Mocks\MockSecurityProvider.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
@@ -440,6 +446,10 @@
     <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
       <Project>{9623c7dd-85ee-41ab-89b1-1a9784a97da7}</Project>
       <Name>Dev2.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Services.Sql\Dev2.Services.Sql.csproj">
+      <Project>{ff3115b2-370e-4e40-99c5-7d239bc28679}</Project>
+      <Name>Dev2.Services.Sql</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Sql\Dev2.Sql.csproj">
       <Project>{2b734597-c85d-4295-9782-c722f4645ed9}</Project>

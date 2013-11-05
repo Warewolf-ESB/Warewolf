@@ -8,6 +8,7 @@ using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
+using Dev2.Services.Sql;
 using Newtonsoft.Json;
 using DbSource = Dev2.Runtime.ServiceModel.Data.DbSource;
 
@@ -131,9 +132,8 @@ namespace Dev2.Runtime.ServiceModel
             switch(dbSourceDetails.ServerType)
             {
                 case enSourceType.SqlDatabase:
-                    var msSqlBroker = new MsSqlBroker();
-                    var databaseSchema = msSqlBroker.GetDatabasesSchema(dbSourceDetails.ConnectionString);
-                    result.DatabaseList = msSqlBroker.GetDatabases(databaseSchema);
+                    var broker = CreateDatabaseBroker();
+                    result.DatabaseList = broker.GetDatabases(dbSourceDetails);
                     break;
                 default:
                     result.IsValid = false;
@@ -143,5 +143,10 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion
+
+        protected virtual SqlDatabaseBroker CreateDatabaseBroker()
+        {
+            return new SqlDatabaseBroker();
+        }
     }
 }

@@ -4,12 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Tamir.SharpSsh.java;
+using Exception = System.Exception;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -125,6 +128,28 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
             UpdateErrorsBasedOnXML(xml);
             LoadDependencies(xml);
+            ReadDataList(xml);
+            GetInputsOutputs(xml);
+        }
+
+        public void ReadDataList(XElement xml)
+        {
+            DataList = xml.ElementStringSafe("DataList");
+        }
+
+        public void GetInputsOutputs(XElement xml)
+        {
+            var tmpB = xml.Elements().FirstOrDefault(c => c.Name == GlobalConstants.ActionsRootTag);
+            var tmpA = xml.Elements().FirstOrDefault(c => c.Name == GlobalConstants.ActionRootTag);
+            if(tmpB != null)
+            {
+                tmpA = tmpB.Elements().FirstOrDefault(c => c.Name == GlobalConstants.ActionRootTag);
+            }
+            if(tmpA != null)
+            {
+                Inputs = tmpA.ElementStringSafe(GlobalConstants.InputRootTag);
+                Outputs = tmpA.ElementStringSafe(GlobalConstants.OutputRootTag);
+            }
         }
 
         void UpdateErrorsBasedOnXML(XElement xml)
@@ -215,6 +240,15 @@ namespace Dev2.Runtime.ServiceModel.Data
         public List<IErrorInfo> Errors { get; set; }
 
         public bool ReloadActions { get; set; }
+        
+        [JsonIgnore]
+        public string DataList { get; set; }
+
+        [JsonIgnore]
+        public string Inputs { get; set; }
+        [JsonIgnore]
+        public string Outputs { get; set; }
+
         #endregion
 
         #region GetResourceTypeFromString

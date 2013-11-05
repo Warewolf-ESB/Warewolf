@@ -321,29 +321,6 @@
   &lt;lname&gt;Frisinger&lt;/lname&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="testWebpageXMLconfig" xml:space="preserve">
-    <value>&lt;WebPage&gt;&lt;WebPageServiceName&gt;Trav_Test_WP&lt;/WebPageServiceName&gt;&lt;WebParts&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;HtmlWidget&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;0&lt;/ColumnIndex&gt;&lt;RowIndex&gt;0&lt;/RowIndex&gt;&lt;Dev2XMLResult&gt;
-  &lt;sr&gt;
-    &lt;sr&gt;
-      &lt;XmlData&gt;
-        &lt;Dev2ResumeData&gt;
-          &lt;XmlData&gt;
-            &lt;Dev2WebServer&gt;http://rsaklfsvrgendev:1234&lt;/Dev2WebServer&gt;
-            &lt;XmlData&gt;
-              &lt;Name&gt;&lt;/Name&gt;
-              &lt;Value&gt;
-                &lt;div&gt; this is test text&lt;/div&gt;
-              &lt;/Value&gt;
-              &lt;cssClass&gt;&lt;/cssClass&gt;
-            &lt;/XmlData&gt;
-            &lt;Async /&gt;
-          &lt;/XmlData&gt;
-        &lt;/Dev2ResumeData&gt;
-      &lt;/XmlData&gt;
-    &lt;/sr&gt;
-  &lt;/sr&gt;
-&lt;/Dev2XMLResult&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;1&lt;/ColumnIndex&gt;&lt;RowIndex&gt;0&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;2&lt;/ColumnIndex&gt;&lt;RowIndex&gt;0&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;3&lt;/ColumnIndex&gt;&lt;RowIndex&gt;0&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;0&lt;/ColumnIndex&gt;&lt;RowIndex&gt;1&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;1&lt;/ColumnIndex&gt;&lt;RowIndex&gt;1&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;2&lt;/ColumnIndex&gt;&lt;RowIndex&gt;1&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;3&lt;/ColumnIndex&gt;&lt;RowIndex&gt;1&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;0&lt;/ColumnIndex&gt;&lt;RowIndex&gt;2&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;1&lt;/ColumnIndex&gt;&lt;RowIndex&gt;2&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;2&lt;/ColumnIndex&gt;&lt;RowIndex&gt;2&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;3&lt;/ColumnIndex&gt;&lt;RowIndex&gt;2&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;0&lt;/ColumnIndex&gt;&lt;RowIndex&gt;3&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;1&lt;/ColumnIndex&gt;&lt;RowIndex&gt;3&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;2&lt;/ColumnIndex&gt;&lt;RowIndex&gt;3&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;3&lt;/ColumnIndex&gt;&lt;RowIndex&gt;3&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;Rows&gt;4&lt;/Rows&gt;&lt;Cols&gt;4&lt;/Cols&gt;&lt;/WebParts&gt;&lt;/WebPage&gt;</value>
-  </data>
   <data name="webpageMagicString" xml:space="preserve">
     <value>method="post" onsubmit="return checkRequired()" id="uiForm" enctype="application/x-www-form-urlencoded"&gt;
           &lt;table&gt;

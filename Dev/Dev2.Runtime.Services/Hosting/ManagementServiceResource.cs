@@ -20,6 +20,7 @@ namespace Dev2.Runtime.Hosting
             ResourceName = service.Name;
             ResourceType = ResourceType.ReservedService;
             ResourcePath = "Management Services";
+            DataList = service.DataListSpecification;
         }
     }
 }

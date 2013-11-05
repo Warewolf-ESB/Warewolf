@@ -83,14 +83,13 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ESB\Brokers\DatabaseBrokerTests.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\SqlDatabaseBrokerTests.cs" />
     <Compile Include="ESB\RemoteWorkflowExecutionContainerMock.cs" />
     <Compile Include="ESB\DatabaseServiceContainerTests.cs" />
     <Compile Include="ESB\DatabaseServiceContainerMock.cs" />
     <Compile Include="ESB\PluginServiceContainerMock.cs" />
     <Compile Include="ESB\RemoteObjectHandlerTests.cs" />
     <Compile Include="ESB\RemoteWorkflowExecutionContainerTests.cs" />
-    <Compile Include="Hosting\ServiceInvokerTest.cs" />
     <Compile Include="MockConnection.cs" />
     <Compile Include="MockNetworkHost.cs" />
     <Compile Include="MockStudioNetworkServer.cs" />
@@ -99,10 +98,12 @@
     <Compile Include="Configuration\NetworkContextMock.cs" />
     <Compile Include="Configuration\SettingsProviderTests.cs" />
     <Compile Include="DynamicServicesEndPointTest.cs" />
-    <Compile Include="ESB\Brokers\PluginBrokerTests.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\PluginBrokerTests.cs" />
     <Compile Include="ESB\PluginServiceContainerTests.cs" />
-    <Compile Include="ServiceModel\DatabaseBrokerTests.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\AbstractDataBaseBrokerTests.cs" />
     <Compile Include="ServiceModel\Data\ResultListTests.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\TestDatabaseBroker.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\TestDbServer.cs" />
     <Compile Include="ServiceModel\Utils\ServiceMappingHelperTest.cs" />
     <Compile Include="Services\FetchCurrentServerLogTests.cs" />
     <Compile Include="ESB\WebServiceContainerMock.cs" />
@@ -110,7 +111,6 @@
     <Compile Include="ESB\WfExecutionContainerTests.cs" />
     <Compile Include="FileSystemInstanceStoreIoTests.cs" />
     <Compile Include="Hosting\ResourceTypeConverterTests.cs" />
-    <Compile Include="ServiceModel\DbServicesTests.cs" />
     <Compile Include="ServiceModel\DummyClassForPluginTest.cs" />
     <Compile Include="ServiceModel\PluginServicesMock.cs" />
     <Compile Include="ServiceModel\PluginServicesTest.cs" />
@@ -128,7 +128,6 @@
     <Compile Include="ServiceModel\Data\PluginServiceTests.cs" />
     <Compile Include="ServiceModel\Data\RecordsetRecordTests.cs" />
     <Compile Include="ServiceModel\Data\RecordsetTests.cs" />
-    <Compile Include="ServiceModel\DbServicesMock.cs" />
     <Compile Include="ServiceModel\EmailSourcesTests.cs" />
     <Compile Include="ServiceModel\WebServicesMock.cs" />
     <Compile Include="ServiceModel\WebServicesTest.cs" />
@@ -217,6 +216,10 @@
     <ProjectReference Include="..\Dev2.Services.Execution\Dev2.Services.Execution.csproj">
       <Project>{019A92B9-9209-4930-BC96-381CB8B1C0EA}</Project>
       <Name>Dev2.Services.Execution</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Services.Sql\Dev2.Services.Sql.csproj">
+      <Project>{FF3115B2-370E-4E40-99C5-7D239BC28679}</Project>
+      <Name>Dev2.Services.Sql</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

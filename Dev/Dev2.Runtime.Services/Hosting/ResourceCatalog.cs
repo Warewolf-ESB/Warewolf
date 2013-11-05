@@ -1011,6 +1011,8 @@ namespace Dev2.Runtime.Hosting
                 resources.RemoveAt(index);
                 updated = true;
             }
+            resource.GetInputsOutputs(xml);
+            resource.ReadDataList(xml);
             resources.Add(resource);
 
             #endregion

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading;
-using Dev2.Common;
 using Dev2.Data.Storage;
 using Dev2.DataList.Contract;
 
@@ -13,9 +11,9 @@ namespace Dev2.Data.Binary_Objects
     /// </summary>
     public static class DataListRegistar
     {
-        private static ConcurrentDictionary<int, IList<Guid>> _registrationRoster = new ConcurrentDictionary<int, IList<Guid>>();
+        private static readonly ConcurrentDictionary<int, IList<Guid>> _registrationRoster = new ConcurrentDictionary<int, IList<Guid>>();
 
-        private static ConcurrentDictionary<int, int> _activityThreadToParentThreadID = new ConcurrentDictionary<int, int>();
+        private static readonly ConcurrentDictionary<int, int> _activityThreadToParentThreadID = new ConcurrentDictionary<int, int>();
 
         /// <summary>
         /// Registers the activity thread automatic parent unique identifier.
@@ -57,7 +55,6 @@ namespace Dev2.Data.Binary_Objects
                 {
                     theList.Add(dataListID);    
                 }
-
             }
             else
             {

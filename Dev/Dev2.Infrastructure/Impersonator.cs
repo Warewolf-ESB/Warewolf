@@ -141,5 +141,19 @@ namespace Dev2
         }
 
         #endregion
+
+        public static bool RunAs(string userName, string domain, string password, Action action)
+        {
+            var result = false;
+            using(var impersonator = new Impersonator())
+            {
+                if(impersonator.Impersonate(userName, domain, password))
+                {
+                    action();
+                    result = true;
+                }
+            }
+            return result;
+        }
     }
 }

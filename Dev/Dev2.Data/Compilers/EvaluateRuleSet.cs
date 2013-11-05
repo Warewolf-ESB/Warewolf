@@ -354,7 +354,7 @@ namespace Dev2.Data.Compilers
             }
             else
             {
-                Errors.AddError("Invalid Data : Either empty expression or empty token list.");
+                Errors.AddError("Invalid Data : Either empty expression or empty token list. Please check that your data list does not contain errors.");
                 CompiledExpression = null;
             }
 

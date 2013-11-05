@@ -24,6 +24,12 @@ namespace Dev2
             var child = elem.Element(name);
             return child == null ? string.Empty : child.Value;
         }
+        
+        public static string ElementStringSafe(this XElement elem, string name)
+        {
+            var child = elem.Element(name);
+            return child == null ? string.Empty : child.ToString();
+        }
 
         public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> enumerable)
         {

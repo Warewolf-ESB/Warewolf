@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -8,7 +9,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices.Test.XML;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
@@ -256,6 +257,189 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(2, resource.Dependencies.Count);
             Assert.AreEqual("GenDev", resource.Dependencies[1].ResourceName);
             Assert.AreEqual("62505a00-b304-4ac0-a55c-50ce85111f16", resource.Dependencies[1].ResourceID.ToString());
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Resource_XmlConstructor")]
+        public void Resource_XmlConstructor_Invoked_ShouldLoadDataList()
+        {
+            #region DataList String
+            const string dataList = "<DataList>" +
+                                    "<result Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" />" +
+                                    "<Rows Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<res Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<start Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" />" +
+                                    "<end Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" />" +
+                                    "<InsertedData Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\">" +
+                                    "<BigID Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column1 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column2 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column3 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column4 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column5 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column6 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column7 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column8 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column9 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column10 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column11 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column12 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column13 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column14 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column15 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column16 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column17 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column18 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column19 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column20 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column21 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column22 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column23 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column24 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column25 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column26 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column27 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column28 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column29 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column30 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column31 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column32 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column33 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column34 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column35 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column36 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column37 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column38 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column39 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column40 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column41 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column42 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column43 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column44 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column45 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column46 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column47 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column48 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column49 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column50 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column51 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column52 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column53 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column54 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column55 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column56 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column57 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column58 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column59 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column60 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column61 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column62 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column63 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column64 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column65 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column66 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column67 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column68 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column69 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column70 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column71 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column72 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column73 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column74 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column75 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column76 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column77 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column78 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column79 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column80 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column81 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column82 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column83 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column84 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column85 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column86 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column87 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column88 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column89 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column90 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column91 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column92 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column93 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column94 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column95 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column96 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column97 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column98 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column99 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column100 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "</InsertedData>" +
+                                    "<Row Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\">" +
+                                    "<BigID Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "<Column100 Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                                    "</Row></DataList>";
+            #endregion
+            //------------Setup for test--------------------------
+            XElement element = XmlResource.Fetch("Big Bulk Testing");
+            //------------Execute Test---------------------------
+            var resource = new Resource(element);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(String.IsNullOrEmpty(resource.DataList));
+            var expected = resource.DataList.Replace(Environment.NewLine,"").Replace(" ","");
+            var actual = dataList.Replace(" ","");
+            Assert.AreEqual(expected,actual);
+        } 
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Resource_XmlConstructor")]
+        public void Resource_XmlConstructor_Invoked_ServiceShouldHaveInputsAndOutputs()
+        {
+            var inputs = "<Inputs>" +
+                                  "<Input Name=\"CityName\" Source=\"CityName\" EmptyToNull=\"false\" DefaultValue=\"Paris-Aeroport Charles De Gaulle\" />" +
+                                  "<Input Name=\"CountryName\" Source=\"CountryName\" EmptyToNull=\"false\" DefaultValue=\"France\" />" +
+                                  "</Inputs>";
+            var outputs = "<Outputs>"+
+                "<Output OriginalName=\"Location\" Name=\"Location\" MapsTo=\"Location\" Value=\"[[Location]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" /> "+
+                "<Output OriginalName=\"Time\" Name=\"Time\" MapsTo=\"Time\" Value=\"[[Time]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />                 "+
+                "<Output OriginalName=\"Wind\" Name=\"Wind\" MapsTo=\"Wind\" Value=\"[[Wind]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />                 "+
+               "<Output OriginalName=\"Visibility\" Name=\"Visibility\" MapsTo=\"Visibility\" Value=\"[[Visibility]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />"+
+               "<Output OriginalName=\"Temperature\" Name=\"Temperature\" MapsTo=\"Temperature\" Value=\"[[Temperature]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />"+
+               "<Output OriginalName=\"DewPoint\" Name=\"DewPoint\" MapsTo=\"DewPoint\" Value=\"[[DewPoint]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />"+
+               "<Output OriginalName=\"RelativeHumidity\" Name=\"RelativeHumidity\" MapsTo=\"RelativeHumidity\" Value=\"[[RelativeHumidity]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />"+
+               "<Output OriginalName=\"Pressure\" Name=\"Pressure\" MapsTo=\"Pressure\" Value=\"[[Pressure]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />"+
+               "<Output OriginalName=\"Status\" Name=\"Status\" MapsTo=\"Status\" Value=\"[[Status]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />"+
+            "</Outputs>";
+            //------------Setup for test--------------------------
+            XElement element = XmlResource.Fetch("WebService");
+            //------------Execute Test---------------------------
+            var resource = new Resource(element);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(String.IsNullOrEmpty(resource.DataList));
+            Assert.AreEqual("<DataList />",resource.DataList);
+            inputs = inputs.Replace(Environment.NewLine, "").Replace(" ", "");
+            outputs = outputs.Replace(Environment.NewLine, "").Replace(" ", "");
+            var actual = resource.Inputs.Replace(Environment.NewLine, "").Replace(" ", "");
+            Assert.AreEqual(inputs, actual);
+            actual = resource.Outputs.Replace(Environment.NewLine, "").Replace(" ", "");
+            Assert.AreEqual(outputs, actual);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Resource_XmlConstructor")]
+        public void Resource_XmlConstructor_Invoked_ServiceNoInputsShouldHaveInputsAndOutputs()
+        {
+            //------------Setup for test--------------------------
+            XElement element = XmlResource.Fetch("WebServiceWithoutInputs");
+            //------------Execute Test---------------------------
+            var resource = new Resource(element);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(String.IsNullOrEmpty(resource.DataList));
+            Assert.AreEqual("<DataList />",resource.DataList);
+            Assert.IsFalse(String.IsNullOrEmpty(resource.Inputs));
+            Assert.IsFalse(String.IsNullOrEmpty(resource.Outputs));
         }
 
         string GetValidXMLString()

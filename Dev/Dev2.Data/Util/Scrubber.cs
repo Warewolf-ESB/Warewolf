@@ -10,6 +10,9 @@ namespace Dev2.Data.Util
     // BUG 9519/9520 - 2013.05.29 - TWR - Created
     public static class Scrubber
     {
+        // Compiled regex are always faster ;)
+        private static Regex XmlRegex = new Regex(string.Format("({0}).*?({1})", Regex.Escape("<?"), Regex.Escape("?>")));
+
         #region Scrub
 
         public static string Scrub(string text)
@@ -66,8 +69,8 @@ namespace Dev2.Data.Util
             // as this may be in weird places!
             // Regex should be: (\\Q<?\\E).*?(\\Q?>\\E) 
             //
-            var regex = new Regex(string.Format("({0}).*?({1})", Regex.Escape("<?"), Regex.Escape("?>")));
-            var result = regex.Replace(text, "");
+
+            var result = XmlRegex.Replace(text, "");
 
             try
             {

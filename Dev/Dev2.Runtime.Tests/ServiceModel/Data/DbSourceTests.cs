@@ -16,39 +16,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
     [TestClass][ExcludeFromCodeCoverage]
     public class DbSourceTests
     {
-        #region Save
-
-        [TestMethod]
-        public void SaveDbSourceWithExistingSourceExpectedServerWorkspaceUpdated()
-        {
-            //Initialize test resource, save then change path
-            string uniquePathText = Guid.NewGuid().ToString();
-            var testResource = new Resource { ResourceName = "test db source", ResourcePath = "initialpath", ResourceType = ResourceType.DbSource, ResourceID = Guid.NewGuid()};
-            new DbSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
-            testResource.ResourcePath = uniquePathText;
-
-            //Execute save again on test resource
-            new DbSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
-
-            //Assert resource saved
-            var getSavedResource = Resources.ReadXml(GlobalConstants.ServerWorkspaceID, ResourceType.DbSource, testResource.ResourceID.ToString());
-            const string PathStartText = "<Category>";
-            int start = getSavedResource.IndexOf(PathStartText, StringComparison.Ordinal);
-            if (start > 0)
-            {
-                start += PathStartText.Length;
-                int end = (getSavedResource.IndexOf("</Category>", start, StringComparison.Ordinal));
-                var savedPath = getSavedResource.Substring(start, end - start);
-                Assert.AreEqual(uniquePathText, savedPath);
-            }
-            else
-            {
-                Assert.Fail("Resource xml malformed after save");
-            }
-        }
-
-        #endregion
-
         #region ToString Tests
 
         [TestMethod]

@@ -6,7 +6,6 @@ using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
-using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
 
@@ -42,12 +41,7 @@ namespace Dev2.Services.Execution
             try
             {
                 _sqlServer = new SqlServer();
-                var connected = SqlServer.Connect(Service.Method.Name, CommandType.StoredProcedure,
-                    Source.Server,
-                    Source.DatabaseName,
-                    Source.Port,
-                    Source.UserID,
-                    Source.Password);
+                var connected = SqlServer.Connect(Source.ConnectionString, CommandType.StoredProcedure, Service.Method.Name);
                 if(!connected)
                 {
                     ServerLogger.LogError(string.Format("Failed to connect with the following connection string: '{0}'", Source.ConnectionString));
@@ -119,7 +113,7 @@ namespace Dev2.Services.Execution
                 {
                     var parameters = GetSqlParameters(Service.Method.Parameters);
 
-                    var dataSet = SqlServer.FetchDataTable(parameters.ToArray());
+                    using(var dataSet = SqlServer.FetchDataTable(parameters.ToArray()))
                     {
                         ApplyColumnMappings(dataSet);
                         IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();

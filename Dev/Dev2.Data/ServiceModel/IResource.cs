@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
 using Dev2.Providers.Errors;
+using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -79,5 +80,17 @@ namespace Dev2.Runtime.ServiceModel.Data
         List<ResourceForTree> Dependencies { get; set; }
         bool IsValid { get; set; }
         List<IErrorInfo> Errors { get; set; }
+
+        [JsonIgnore]
+        string DataList { get; set; }
+
+        [JsonIgnore]
+        string Inputs { get; set; }
+
+        [JsonIgnore]
+        string Outputs { get; set; }
+
+        void ReadDataList(XElement xml);
+        void GetInputsOutputs(XElement xml);
     }
 }

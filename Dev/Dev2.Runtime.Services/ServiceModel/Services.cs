@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.ServiceModel;
@@ -18,6 +16,7 @@ namespace Dev2.Runtime.ServiceModel
         public string ResourceType { get; set; }
         public string ResourceID { get; set; }
     }
+
     public class Services : ExceptionManager
     {
         readonly IResourceCatalog _resourceCatalog;
@@ -158,7 +157,7 @@ namespace Dev2.Runtime.ServiceModel
                 throw new ArgumentNullException("dbService");
             }
 
-            var broker = new MsSqlBroker();
+            var broker = CreateDatabaseBroker();
             var outputDescription = broker.TestService(dbService);
 
             if(outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
@@ -211,11 +210,16 @@ namespace Dev2.Runtime.ServiceModel
 
         public virtual ServiceMethodList FetchMethods(DbSource dbSource)
         {
-            var broker = new MsSqlBroker();
+            var broker = CreateDatabaseBroker();
             return broker.GetServiceMethods(dbSource);
         }
 
         #endregion
+
+        protected virtual SqlDatabaseBroker CreateDatabaseBroker()
+        {
+            return new SqlDatabaseBroker();
+        }
 
         #region DeserializeService
 

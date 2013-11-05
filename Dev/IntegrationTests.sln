@@ -65,9 +65,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Intellisense", "Dev2.I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Activities.Designers", "Dev2.Activities.Designers\Dev2.Activities.Designers.csproj", "{B95B724A-B052-4E18-98A4-88072C8DF2C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Services.Sql", "Dev2.Services.Sql\Dev2.Services.Sql.csproj", "{FF3115B2-370E-4E40-99C5-7D239BC28679}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 29
+		SccNumberOfProjects = 30
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -155,6 +157,9 @@ Global
 		SccProjectUniqueName28 = Dev2.Activities.Designers\\Dev2.Activities.Designers.csproj
 		SccProjectName28 = Dev2.Activities.Designers
 		SccLocalPath28 = Dev2.Activities.Designers
+		SccProjectUniqueName29 = Dev2.Services.Sql\\Dev2.Services.Sql.csproj
+		SccProjectName29 = Dev2.Services.Sql
+		SccLocalPath29 = Dev2.Services.Sql
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = IntegrationTests.vsmdi
@@ -524,6 +529,18 @@ Global
 		{B95B724A-B052-4E18-98A4-88072C8DF2C2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B95B724A-B052-4E18-98A4-88072C8DF2C2}.Release|x64.ActiveCfg = Release|Any CPU
 		{B95B724A-B052-4E18-98A4-88072C8DF2C2}.Release|x86.ActiveCfg = Release|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Release|x64.ActiveCfg = Release|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
