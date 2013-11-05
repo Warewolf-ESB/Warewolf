@@ -88,6 +88,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsFalse(fileData.StartsWith("{"));
             Assert.IsFalse(fileData.EndsWith("}"));
             Assert.IsFalse(fileData.Contains("IsServer"));
+            File.Delete("secure.config");
         }  
         #endregion Exeute
 
