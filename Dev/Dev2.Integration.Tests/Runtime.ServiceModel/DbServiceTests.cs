@@ -340,7 +340,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             var result = services.DbTest(args, workspaceID, Guid.Empty);
 
             //Assert Updates Recordset Name To Service Method Name
-            Assert.AreEqual(service.Method.Name.Replace('.','_'), result.Name, "Recordset name not defaulting to service method name when null");
+            Assert.AreEqual(service.Method.Name, result.Name, "Recordset name not defaulting to service method name when null");
             Assert.IsFalse(result.HasErrors, "Valid DB service returned error on test");
         }
 

@@ -38,49 +38,72 @@ namespace Dev2.Data.Parsers
             try
             {
                 bool isFragment;
-                var isXml = DataListUtil.IsXml(xmlData,out isFragment);
+                var useXmlData = DataListUtil.AdjustForEncodingIssues(xmlData);
+                var isXml = DataListUtil.IsXml(useXmlData, out isFragment);
                 
                 if(!isXml && !isFragment)
                 {
                     throw new Exception("Input XML is not valid.");
                 }
 
-                using (var stringReader = new StringReader(xmlData))
+                using(TextReader stringReader = new StringReader(useXmlData))
                 {
-                    XmlReaderSettings settings = new XmlReaderSettings();
-                    settings.IgnoreWhitespace = true;
-                    settings.DtdProcessing = DtdProcessing.Ignore;
-                    settings.ConformanceLevel = ConformanceLevel.Auto;
-                    using (XmlReader reader = XmlReader.Create(stringReader, settings))
+                    XmlReaderSettings settings = new XmlReaderSettings
                     {
-                        reader.Read();
-                        if(reader.NodeType == XmlNodeType.XmlDeclaration || reader.NodeType == XmlNodeType.Whitespace)
+                        IgnoreWhitespace = true,
+                        DtdProcessing = DtdProcessing.Ignore,
+                        ConformanceLevel = ConformanceLevel.Auto
+                    };
+
+                    using (XmlTextReader xtr = new XmlTextReader(stringReader))
+                    {
+                        xtr.Namespaces = false;
+
+                        using (XmlReader reader = XmlReader.Create(xtr, settings))
                         {
-                            reader.Skip();
-                        }
-                        if (xPath.StartsWith("/" + reader.Name) || xPath.StartsWith("//" + reader.Name))
-                        {
-                            xPath = xPath.Replace("/" + reader.Name, "");
-                        }
-                        XNode xNode = XNode.ReadFrom(reader);
-                        IEnumerable<object> xdmValue = xNode.XPath2Select(xPath);
-                        var list = xdmValue.Select(element =>
+                            reader.Read();
+
+                            if (reader.NodeType == XmlNodeType.XmlDeclaration || reader.NodeType == XmlNodeType.Whitespace)
                             {
-                            var realElm = element as XObject;
-                            if(realElm != null && realElm.NodeType == XmlNodeType.Attribute)
-                            {
-                                var xAttribute = realElm as XAttribute;
-                                if (xAttribute != null)
+                                reader.Skip();
+                                // handle DocumentType nodes
+                                if (reader.NodeType == XmlNodeType.DocumentType)
                                 {
-                                    return xAttribute.Value;
+                                    reader.Skip();
+                                }
+                                // skip white space ;)
+                                while(reader.Value.IndexOf("\n", StringComparison.Ordinal) >= 0)
+                                {
+                                    reader.Skip();
                                 }
                             }
 
-                                return element.ToString();
-                            
-                            }).ToList();
+                            if (xPath.StartsWith("/" + reader.Name) || xPath.StartsWith("//" + reader.Name))
+                            {
+                                xPath = xPath.Replace("/" + reader.Name, "");
+                            }
 
-                        return list;
+                            XNode xNode = XNode.ReadFrom(reader);
+                            IEnumerable<object> xdmValue = xNode.XPath2Select(xPath);
+                            var list = xdmValue.Select(element =>
+                                {
+                                    var realElm = element as XObject;
+                                    if (realElm != null && realElm.NodeType == XmlNodeType.Attribute)
+                                    {
+                                        var xAttribute = realElm as XAttribute;
+                                        if (xAttribute != null)
+                                        {
+                                            return xAttribute.Value;
+                                        }
+                                    }
+
+                                    return element.ToString();
+
+                                }).ToList();
+                            return list;
+
+
+                        }
                     }
                 }
             }
@@ -90,6 +113,7 @@ namespace Dev2.Data.Parsers
                 {
                     throw new Exception("The XPath expression provided is not valid.");
                 }
+
                 ServerLogger.LogError(exception);
                 throw;
             }

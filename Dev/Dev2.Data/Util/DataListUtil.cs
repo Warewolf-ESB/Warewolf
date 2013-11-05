@@ -1346,15 +1346,15 @@ namespace Dev2.DataList.Contract
         /// </summary>
         public static bool IsXml(string data, out bool isFragment, out bool isHtml)
         {
-
             string trimedData = data.Trim();
             bool result = (trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA["));
+            
             isFragment = false;
             isHtml = false;
 
             if(result)
             {
-                using(TextReader tr = new StringReader(data))
+                using(TextReader tr = new StringReader(trimedData))
                 {
                     using(XmlReader reader = XmlReader.Create(tr, _isXmlReaderSettings))
                     {
@@ -1362,15 +1362,13 @@ namespace Dev2.DataList.Contract
                         try
                         {
                             long nodeCount = 0;
-                            while(reader.Read() && !isHtml && !isFragment && result &&
-                                   reader.NodeType != XmlNodeType.Document)
+                            while(reader.Read() && !isHtml && !isFragment && result && reader.NodeType != XmlNodeType.Document)
                             {
                                 nodeCount++;
 
                                 if(reader.NodeType != XmlNodeType.CDATA)
                                 {
-                                    if(reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" &&
-                                        reader.Depth == 0)
+                                    if(reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" && reader.Depth == 0)
                                     {
                                         isHtml = true;
                                         result = false;
@@ -1421,18 +1419,23 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
+        /// <summary>
+        /// Gets the regions from expression.
+        /// </summary>
+        /// <param name="expression">The expression.</param>
+        /// <returns></returns>
         public static IList<string> GetRegionsFromExpression(string expression)
         {
             // Retrieve all the regions from an expression
-            string openRegion = "[[";
-            string closeRegion = "]]";
+            const string openRegion = "[[";
+            const string closeRegion = "]]";
             StringBuilder expressionBuilder = new StringBuilder();
-            expressionBuilder.Append(expression.Substring(expression.IndexOf(openRegion), expression.LastIndexOf(closeRegion) - expression.IndexOf(openRegion)));
+            expressionBuilder.Append(expression.Substring(expression.IndexOf(openRegion, StringComparison.Ordinal), expression.LastIndexOf(closeRegion, StringComparison.Ordinal) - expression.IndexOf(openRegion, StringComparison.Ordinal)));
             string expressionString = (expressionBuilder.ToString().Remove(0, 2));
             expressionString = expressionString.Remove(expressionString.Length - 2, 2);
             expressionBuilder.Clear().Append(expressionString);
             // find the text before the next openregion
-            List<string> regions = new List<string>() { expressionBuilder.ToString().Substring(0, expressionBuilder.ToString().IndexOf(openRegion)) };
+            List<string> regions = new List<string>() { expressionBuilder.ToString().Substring(0, expressionBuilder.ToString().IndexOf(openRegion, StringComparison.Ordinal)) };
             // if there are still regions
             if(expressionBuilder.ToString().Contains(openRegion) && expressionBuilder.ToString().Contains(closeRegion))
             {
@@ -1443,6 +1446,36 @@ namespace Dev2.DataList.Contract
                 return regions;
             }
             return regions;
+        }
+
+        /// <summary>
+        /// Adjusts for encoding issues.
+        /// </summary>
+        /// <param name="payload">The payload.</param>
+        /// <returns></returns>
+        public static string AdjustForEncodingIssues(string payload)
+        {
+            string trimedData = payload.Trim();
+            var isXML = (trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA["));
+            
+            if(!isXML)
+            {
+                // we need to adjust. there might be a silly encoding issue with first char!
+                if(trimedData[1] == '<' && trimedData[2] == '?')
+                {
+                    trimedData = trimedData.Substring(1);    
+                }
+                else if(trimedData[2] == '<' && trimedData[3] == '?')
+                {
+                    trimedData = trimedData.Substring(2);
+                }
+                else if(trimedData[3] == '<' && trimedData[4] == '?')
+                {
+                    trimedData = trimedData.Substring(3);
+                }
+            }
+
+            return trimedData;
         }
 
         /// <summary>
@@ -1609,27 +1642,6 @@ namespace Dev2.DataList.Contract
 
                             result.Append(string.Concat("\t<", tag, "></", tag, ">"));
 
-                            //var postProcess = tmpDef.Value;
-                            //var tmpRSName = ExtractRecordsetNameFromValue(postProcess);
-                            //if(string.IsNullOrEmpty(tmpRSName))
-                            //{
-                            //    var tmp1 = string.Concat("<", postProcess, "/>");
-                            //    if (!postProcessDefs.Contains(tmp1))
-                            //    {
-                            //        postProcessDefs.Add(tmp1);
-                            //    }
-                            //}
-                            //else
-                            //{
-                            //    // it is a recordset ;)
-                            //    var tmpRSCol = ExtractFieldNameFromValue(postProcess);
-                            //    var tmp2 = string.Concat("<", tmpRSName, "><", tmpRSCol, "/></", tmpRSName, ">");
-                            //    if (!postProcessDefs.Contains(tmp2))
-                            //    {
-                            //        postProcessDefs.Add(tmp2);
-                            //    }
-                            //}
-
                         }
                         result.Append(Environment.NewLine);
                     }
@@ -1774,6 +1786,15 @@ namespace Dev2.DataList.Contract
             return stringToEncode.Replace("[", "&#91;").Replace("]", "&#93;");
         }
 
+        /// <summary>
+        /// Upserts the tokens.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="tokenizer">The tokenizer.</param>
+        /// <param name="tokenPrefix">The token prefix.</param>
+        /// <param name="tokenSuffix">The token suffix.</param>
+        /// <param name="removeEmptyEntries">if set to <c>true</c> [remove empty entries].</param>
+        /// <exception cref="System.ArgumentNullException">target</exception>
         public static void UpsertTokens(Collection<ObservablePair<string, string>> target, IDev2Tokenizer tokenizer, string tokenPrefix = null, string tokenSuffix = null, bool removeEmptyEntries = true)
         {
             if(target == null)

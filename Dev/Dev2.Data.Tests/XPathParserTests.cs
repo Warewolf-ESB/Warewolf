@@ -1,38 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Linq;
-using System.Xml;
+using System.Reflection;
+using System.Text;
 using System.Xml.Linq;
-using System.Xml.XPath;
+using System.Xml.Serialization;
 using Dev2.Data.Parsers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using Wmhelp.XPath2;
+using Microsoft.TeamFoundation.TestManagement.Client;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Data.Tests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class XPathParserTests
     {
-        TestContext _testContextInstance;
         readonly XPathParser _xPathParser = new XPathParser();
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return _testContextInstance;
-            }
-            set
-            {
-                _testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         const string XMLDocument = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>" +
                                    "<!DOCTYPE dotfuscator SYSTEM \"http://www.preemptive.com/dotfuscator/dtd/dotfuscator_v2.3.dtd\">" +
@@ -192,6 +182,52 @@ namespace Dev2.Data.Tests
         }
 
         [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("XPathParser_Parser")]
+        public void XPathParser_Parser_WhenXPathingAttributesFromTFSWithNamespace_ExpectException()
+        {
+            //------------Setup for test--------------------------
+
+            #region data
+
+            var data = LoadFile("SampleTFS.trx");
+
+            #endregion
+
+            const string xPath = "//UnitTest/@name";
+
+            //------------Execute Test---------------------------
+            var result = _xPathParser.ExecuteXPath(data, xPath).ToList();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(4241, result.Count);
+            Assert.AreEqual("ActivityCollectionDesignerViewModel_ExecuteShowErrorsCommand_ShowErrorsIsTrue_ShowErrorsIsSetToFalse", result[0]);
+            Assert.AreEqual("Instantiate_Where_MessageBrokerIsNull_Expected_ArgumentNullException", result[4240]);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("XPathParser_Parser")]
+        public void XPathParser_Parser_WhenXPathingAttributesFromTFSWithoutNamespace_ExpectValidDataWithoutAttributeName()
+        {
+            //------------Setup for test--------------------------
+
+            #region data
+
+            var data = LoadFile("SampleTFSNoNamespace.trx");
+            #endregion
+
+            const string xPath = "//UnitTest/@name";
+
+            //------------Execute Test---------------------------
+            var result = _xPathParser.ExecuteXPath(data, xPath).ToList();
+            //------------Assert Results-------------------------
+            
+            Assert.AreEqual(4241, result.Count);
+            Assert.AreEqual("ActivityCollectionDesignerViewModel_ExecuteShowErrorsCommand_ShowErrorsIsTrue_ShowErrorsIsSetToFalse", result[0]);
+            Assert.AreEqual("Instantiate_Where_MessageBrokerIsNull_Expected_ArgumentNullException", result[4240]);
+        }
+
+        [TestMethod]
         public void ExecutePathWhereGivenXMLDocumentExpectXMLReturnedTestXML()
         {
             //------------Setup for test--------------------------
@@ -299,6 +335,29 @@ namespace Dev2.Data.Tests
             //------------Execute Test---------------------------
             _xPathParser.ExecuteXPath("//", "");
             //------------Assert Results-------------------------
+        }
+
+        private string LoadFile(string name)
+        {
+
+            
+
+            var resourceName = string.Format("Dev2.Data.Tests.TestingResources.{0}", name);
+            var assembly = Assembly.GetExecutingAssembly();
+            using(var stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                if (stream != null)
+                {
+                    var readLen = stream.Length;
+                    var byteData = new byte[readLen];
+
+                    stream.Read(byteData, 0, (int)readLen);
+
+                    return Encoding.Default.GetString(byteData);
+                }
+
+                return string.Empty;
+            }
         }
     }
 }

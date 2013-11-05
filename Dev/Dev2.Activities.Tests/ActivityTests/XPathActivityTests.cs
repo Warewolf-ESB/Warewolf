@@ -180,8 +180,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetUpActivityArguments();
             IDSFDataObject result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "name=\"ExtractInMergeDataFromRequest\",name=\"ExtractOutMergeDataFromRequest\",name=\"SetID\",name=\"&lt;GetUsage&gt;b__0\",name=\"GetUsage\",name=\"CreateForm\"", 
-                                                                              "signature=\"void(object)\",signature=\"void(object)\",signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\",signature=\"void(CommandLine.Text.HelpText)\",signature=\"string()\",signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\"" };
+            List<string> expected = new List<string> { "ExtractInMergeDataFromRequest,ExtractOutMergeDataFromRequest,SetID,<GetUsage>b__0,GetUsage,CreateForm", 
+                                                       "void(object),void(object),void(Dev2.DynamicServices.IDynamicServiceObject, object),void(CommandLine.Text.HelpText),string(),Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
             List<string> actual = new List<string>();
 
             for (int i = 1; i <= 2; i++)
@@ -204,13 +204,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
 
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "[[xpaths(*).path]]", 1));
-            //_resultsCollection.Add(new XPathDTO("[[OutVar2]]", "//type/method/@signature", 2));
             const string dataSplitPreDataList = "<ADL><xmlData/><xpaths><path/></xpaths><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             const string dataSplitPreDataListWithData = "<ADL><xmlData/><xpaths><path>//type/method/@name</path></xpaths><xpaths><path>//type/method/@signature</path></xpaths><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             SetupArguments("<root>" + dataSplitPreDataListWithData + "</root>", dataSplitPreDataList, _source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "void(object)","void(object)","void(Dev2.DynamicServices.IDynamicServiceObject, object)","void(CommandLine.Text.HelpText)","string()","Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
+            List<string> expected = new List<string> { "void(object),void(object),void(Dev2.DynamicServices.IDynamicServiceObject, object),void(CommandLine.Text.HelpText),string(),Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
             List<string> actual = new List<string>();
 
             for (int i = 1; i <= 1; i++)
@@ -238,7 +237,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments("<root>" + dataSplitPreDataListWithData + "</root>", dataSplitPreDataList, _source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "signature=\"void(object)\"","signature=\"void(object)\"","signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\"","signature=\"void(CommandLine.Text.HelpText)\"","signature=\"string()\"","signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\"" };
+            List<string> expected = new List<string> { "void(object)", "void(object)", "void(Dev2.DynamicServices.IDynamicServiceObject, object)", "void(CommandLine.Text.HelpText)", "string()", "Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
             string error;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
             // remove test datalist ;)
@@ -258,7 +257,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             List<string> expected = new List<string> { @"" 
-                , "signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\""
+                , "Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)"
             };
             string actualScalar;
             string error;
@@ -266,7 +265,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actualScalar, out error);
 
-            Assert.AreEqual("name=\"ExtractInMergeDataFromRequest\",name=\"ExtractOutMergeDataFromRequest\",name=\"SetID\",name=\"&lt;GetUsage&gt;b__0\",name=\"GetUsage\",name=\"CreateForm\"", actualScalar);
+            Assert.AreEqual("ExtractInMergeDataFromRequest,ExtractOutMergeDataFromRequest,SetID,<GetUsage>b__0,GetUsage,CreateForm", actualScalar);
 
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actualRecordSet, out error);
             
@@ -290,9 +289,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments("<root></root>", dataSplitPreDataList, _source, _resultsCollection);
 
             IDSFDataObject result = ExecuteProcess();
-            List<string> expected = new List<string> { "signature=\"void(object)\"","signature=\"void(object)\"",
-                                                                                "signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\"","signature=\"void(CommandLine.Text.HelpText)\"",
-                                                                                 "signature=\"string()\"","signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\""
+            List<string> expected = new List<string> { "void(object)","void(object)",
+                                                        "void(Dev2.DynamicServices.IDynamicServiceObject, object)","void(CommandLine.Text.HelpText)",
+                                                         "string()","Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)"
                                 };
             List<string> actual = new List<string>();
             string actualScalar;
@@ -300,7 +299,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actualScalar, out error);
 
 
-            Assert.AreEqual("name=\"ExtractInMergeDataFromRequest\",name=\"ExtractOutMergeDataFromRequest\",name=\"SetID\",name=\"&lt;GetUsage&gt;b__0\",name=\"GetUsage\",name=\"CreateForm\"", actualScalar);
+            Assert.AreEqual("ExtractInMergeDataFromRequest,ExtractOutMergeDataFromRequest,SetID,<GetUsage>b__0,GetUsage,CreateForm", actualScalar);
 
             actual.AddRange(RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error));
 
@@ -323,12 +322,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             SetupArguments("<root></root>", "<ADL><xmlData/><recset1>\r\n\t\t<field1/>\r\n\t\t<rec1/>\r\n\t</recset1>\r\n\t<recset2>\r\n\t\t<field2/>\r\n\t</recset2>\r\n\t<OutVar1/>\r\n\t<OutVar2/>\r\n\t<OutVar3/>\r\n\t<OutVar4/>\r\n\t<OutVar5/>\r\n</ADL>", _source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
-            List<string> expected = new List<string> { "name=\"ExtractInMergeDataFromRequest\"","name=\"ExtractOutMergeDataFromRequest\"",
-                                                                                "name=\"SetID\"","name=\"&lt;GetUsage&gt;b__0\"","name=\"GetUsage\"","name=\"CreateForm\"",
-                                                                                "signature=\"void(object)\"","signature=\"void(object)\"",
-                                                                                "signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\"","signature=\"void(CommandLine.Text.HelpText)\"",
-                                                                                 "signature=\"string()\"","signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\""
-                                                        
+            List<string> expected = new List<string> { "ExtractInMergeDataFromRequest","ExtractOutMergeDataFromRequest",
+                                                    "SetID","<GetUsage>b__0","GetUsage","CreateForm",
+                                                    "void(object)","void(object)",
+                                                    "void(Dev2.DynamicServices.IDynamicServiceObject, object)","void(CommandLine.Text.HelpText)",
+                                                    "string()","Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)"
+                                          
             };
             string error;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "rec1", out error);
@@ -355,9 +354,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "signature=\"void(object)\"","signature=\"void(object)\"",
-                                                                                "signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\"","signature=\"void(CommandLine.Text.HelpText)\"",
-                                                                                 "signature=\"string()\"","signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\""
+            List<string> expected = new List<string> { "void(object)","void(object)",
+                                                        "void(Dev2.DynamicServices.IDynamicServiceObject, object)","void(CommandLine.Text.HelpText)",
+                                                        "string()","Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)"
                                 };
             string error;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);

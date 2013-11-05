@@ -59,8 +59,9 @@ namespace Dev2.Tests.Runtime.ESB
             container.Execute(out errors);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, errors.FetchErrors().Count);
-            Assert.AreEqual("Faulty Things Happened", errors.FetchErrors()[0]);
+            Assert.AreEqual(5, errors.FetchErrors().Count);
+            Assert.AreEqual(" [[CityName]] does not exist in your Data List", errors.FetchErrors()[0]);
+            Assert.AreEqual("Faulty Things Happened", errors.FetchErrors()[4]);
 
         }
 
