@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Text;
 using Dev2.Common;
+using Dev2.Data.Settings.Security;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -19,38 +23,87 @@ namespace Dev2.Runtime.ESB.Management.Services
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
             var result = "Success";
-            var byteConverter = new ASCIIEncoding();
-            var hostSecureConfig = new HostSecureConfig();
-            var jsonData = JsonConvert.SerializeObject(new object());
-            byte[] dataToEncrypt = byteConverter.GetBytes(jsonData);
-            var encryptedData = hostSecureConfig.ServerKey.Encrypt(dataToEncrypt,false);
-            File.WriteAllBytes("secure.config", encryptedData);
+            string permissions;
+            if(values == null)
+            {
+                throw new InvalidDataException("Empty values passed.");
+            }
+            values.TryGetValue("Permissions", out permissions);
+            if(string.IsNullOrEmpty(permissions))
+            {
+                throw new InvalidDataException("Empty permissions passed.");
+            }
             try
             {
-                var accessRule = new FileSystemAccessRule("",
-                                     fileSystemRights: FileSystemRights.Modify,
-                                     inheritanceFlags: InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
-                                     propagationFlags: PropagationFlags.InheritOnly,
-                                     type: AccessControlType.Allow);
+                var windowsGroupPermissions = JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(permissions);
+                
+                DoFileEncryption(permissions);
+                try
+                {
+                    var fileInfo = DenyAccessToSecurityFileToEveryone();
 
-                var fileInfo = new FileInfo("secure.config");
-
-                // Get a DirectorySecurity object that represents the current security settings.
-                var accessControl = fileInfo.GetAccessControl();
-
-                // Add the FileSystemAccessRule to the security settings. 
-                accessControl.AddAccessRule(accessRule);
-
-                // Set the new access settings.
-                fileInfo.SetAccessControl(accessControl);
+                    windowsGroupPermissions.Where(permission => permission.IsServer && permission.Administrator).ForEach(permission => SetFullControlToSecurityConfigFile(permission, fileInfo));
+                }
+                catch(Exception ex)
+                {
+                    ServerLogger.LogError(ex);
+                    result = "Error writing security configuration.";
+                }
             }
-            catch(Exception ex)
+            catch(Exception e)
             {
-                ServerLogger.LogError(ex);
-                result = "Error writing security configuration.";
+                throw new InvalidDataException(string.Format("The permissions passed is not a valid list of permissions. Error: {0}", e.Message));
             }
-
             return result;
+        }
+
+        static void DoFileEncryption(string permissions)
+        {
+            var byteConverter = new ASCIIEncoding();
+            var encryptedData = SecurityEncryption.Encrypt(permissions);
+            byte[] dataToEncrypt = byteConverter.GetBytes(encryptedData);
+            File.WriteAllBytes("secure.config", dataToEncrypt);
+        }
+
+        static FileInfo DenyAccessToSecurityFileToEveryone()
+        {
+            
+            var fileInfo = new FileInfo("secure.config");
+
+            // Get a DirectorySecurity object that represents the current security settings.
+            var accessControl = fileInfo.GetAccessControl();
+
+            //remove any inherited access
+            accessControl.SetAccessRuleProtection(true, false);
+
+            //get any special user access
+            var rules = accessControl.GetAccessRules(true, true, typeof(SecurityIdentifier));
+
+            //remove any special access
+            foreach(FileSystemAccessRule rule in rules)
+            {
+                accessControl.RemoveAccessRule(rule);
+            }
+            fileInfo.SetAccessControl(accessControl);
+            return fileInfo;
+        }
+
+        void SetFullControlToSecurityConfigFile(WindowsGroupPermission permission, FileInfo fileInfo)
+        {
+            var accessRule = new FileSystemAccessRule(permission.WindowsGroup,
+                                         fileSystemRights: FileSystemRights.FullControl,
+                                         inheritanceFlags: InheritanceFlags.None,
+                                         propagationFlags: PropagationFlags.InheritOnly,
+                                         type: AccessControlType.Allow);
+
+            // Get a DirectorySecurity object that represents the current security settings.
+            var accessControl = fileInfo.GetAccessControl();
+
+            // Add the FileSystemAccessRule to the security settings. 
+            accessControl.AddAccessRule(accessRule);
+
+            // Set the new access settings.
+            fileInfo.SetAccessControl(accessControl);
         }
 
         public DynamicService CreateServiceEntry()
@@ -58,7 +111,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var dynamicService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = "<DataList><Security/><Result/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
+                DataListSpecification = "<DataList><Permissions/><Result/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
             };
 
             var serviceAction = new ServiceAction
