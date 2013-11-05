@@ -854,6 +854,9 @@
             <Component Id="cmp4F55AB49627E0E2AE798885B471AF8A5_Studio" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{3D7AD122-BF7A-4AF1-9ECC-BB970E121441}">
                 <File Id="filCF76F60D900D86C8C61828C7EE477E01_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Help\StudioHomepage.htm" />
             </Component>
+            <Component Id="cmp4F55AB49627E0E2AE798885B471AF8B5_Studio" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{3D7AD122-BF7A-4AF1-9ECC-BB970E121441}">
+                <File Id="filCF76F60D900D86C8C61828C7EE477E11_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Help\Warewolf Language.htm" />
+            </Component>
             <Component Id="cmp5E04A05CA1E1D9EF0F190A7FD8D04F2E_Studio" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{9DF4B3DA-F67D-4D11-A8D4-F80C972A87C5}">
                 <File Id="filA60E3303E848D13A120615FB6135AC3C_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Help\StudioShortCutKeys.htm" />
             </Component>
