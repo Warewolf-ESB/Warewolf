@@ -40,6 +40,9 @@
             <Component Id="cmpD31F5EF4CC334564314D0673C5706C7F" Directory="dirServerRoot" Guid="{AA67B531-8C85-47CF-9CDC-2F8352AA67C2}">
                 <File Id="filB616149A55DCE0B2E9E6492125920C38" KeyPath="yes" Source="..\ProductBuild\Server\Tamir.SharpSSH.dll" />
             </Component>
+            <Component Id="cmpF21F5EF4CC334564314D0673C5706C7F" Directory="dirServerRoot" Guid="{BC67B531-8C85-47CF-9CDC-2F8352AA67C2}">
+                <File Id="filC916149A55DCE0B2E9E6492125920C38" KeyPath="yes" Source="..\ProductBuild\Server\CubicOrange.Windows.Forms.ActiveDirectory.dll" />
+            </Component>
             <Component Id="cmpD31F5EF4CC334564314D0673C5206C7F" Directory="dirServerRoot" Guid="{AC67B531-8C85-47CF-9CDC-2F8352AA67C2}">
                 <File Id="filB616149A55DCE0A2E9E6492125920C38" KeyPath="yes" Source="..\ProductBuild\Server\DiffieHellman.dll" />
             </Component>
@@ -830,6 +833,12 @@
             <Component Id="cmp26CB4A13CD472B8C7EA7DB6A04D1B084_Studio" Directory="dirStudioRoot" Guid="{2CB80AEE-5D87-4FBC-98AA-554CDA24BA81}">
                 <File Id="filBF12C5483BDDA7EA52060ACDE3FD4FFC_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Vestris.ResourceLib.dll" />
             </Component>
+            <Component Id="cmp26CB4A13CD472B8C7EA7DB6A04D1B124_Studio" Directory="dirStudioRoot" Guid="{2CB80AEE-5D87-4FBC-98AA-554CDA24CC81}">
+                <File Id="filBF12C5483BDDA7EA52062ACDE3FD4FFC_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\CubicOrange.Windows.Forms.ActiveDirectory.dll" />
+            </Component>
+            <Component Id="cmp26CB4A99CD472B8C7EA7DB6A04D1B124_Studio" Directory="dirStudioRoot" Guid="{2CB9AAEE-5D87-4FBC-98AA-554CDA24CC81}">
+                <File Id="filBF12C2473BDDA7EB52062ACDE3FD4FFC_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Org.Mentalis.Security.dll" />
+            </Component>
             <!-- MAIN EXE SHORTCUTS ;) -->
             <Component Id="cmpB14618AC32CAD3052ACEDB86AA6A20FB_Studio" Directory="dirStudioRoot" Guid="{C2AC4ACE-CC2C-4D99-8971-43FFDED2F810}">
                 <File Id="fil7C751B4021A48678ACD04F89200E9E4E_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Warewolf Studio.exe" />
@@ -854,7 +863,7 @@
             <Component Id="cmp4F55AB49627E0E2AE798885B471AF8A5_Studio" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{3D7AD122-BF7A-4AF1-9ECC-BB970E121441}">
                 <File Id="filCF76F60D900D86C8C61828C7EE477E01_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Help\StudioHomepage.htm" />
             </Component>
-            <Component Id="cmp4F55AB49627E0E2AE798885B471AF8B5_Studio" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{3D7AD122-BF7A-4AF1-9ECC-BB970E121441}">
+            <Component Id="cmp4F55AB49627E0E2AE798885B471AF8B5_Studio" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{3D7BD122-BF7A-4AF1-9ECC-BB970E121441}">
                 <File Id="filCF76F60D900D86C8C61828C7EE477E11_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Help\Warewolf Language.htm" />
             </Component>
             <Component Id="cmp5E04A05CA1E1D9EF0F190A7FD8D04F2E_Studio" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{9DF4B3DA-F67D-4D11-A8D4-F80C972A87C5}">
