@@ -284,7 +284,8 @@ namespace Dev2.DynamicServices
 
             if(executionContainer != null)
             {
-                result = executionContainer.Execute(out errors);
+                result = executionContainer.Execute(out invokeErrors);
+                errors.MergeErrors(invokeErrors);
             }
             else
             {
@@ -308,6 +309,7 @@ namespace Dev2.DynamicServices
                     compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputDefs, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
                 }
+
                 if(dataObject.IsDebugMode()) // This is crazy but is needed to make the DebugOutput work. No idea why this works. It needs to be removed and the core issue resolved.
                 {
                     var currentData = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);

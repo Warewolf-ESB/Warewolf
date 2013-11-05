@@ -327,7 +327,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                     "void(object)","void(object)",
                                                     "void(Dev2.DynamicServices.IDynamicServiceObject, object)","void(CommandLine.Text.HelpText)",
                                                     "string()","Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)"
-                                          
+                                                        
             };
             string error;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "rec1", out error);
