@@ -214,24 +214,24 @@ namespace Gui
         }
 
         /// <summary>
-        /// Determines whether [is SSL cert] [the specified file].
+        /// Determines whether file might be ssl cert.
         /// </summary>
         /// <param name="file">The file.</param>
         /// <returns></returns>
         private bool IsSSLCert(string file)
         {
-            if (file.IndexOf(".cer", StringComparison.Ordinal) < 0
-                && file.IndexOf(".crt", StringComparison.Ordinal) < 0
-                && file.IndexOf(".der", StringComparison.Ordinal) < 0
-                && file.IndexOf(".csr", StringComparison.Ordinal) < 0
-                && file.IndexOf(".pfx", StringComparison.Ordinal) < 0
-                && file.IndexOf(".p12", StringComparison.Ordinal) < 0
-                && file.IndexOf(".key", StringComparison.Ordinal) < 0)
+            if (file.IndexOf(".cer", StringComparison.Ordinal) >= 0
+                && file.IndexOf(".crt", StringComparison.Ordinal) >= 0
+                && file.IndexOf(".der", StringComparison.Ordinal) >= 0
+                && file.IndexOf(".csr", StringComparison.Ordinal) >= 0
+                && file.IndexOf(".pfx", StringComparison.Ordinal) >= 0
+                && file.IndexOf(".p12", StringComparison.Ordinal) >= 0
+                && file.IndexOf(".key", StringComparison.Ordinal) >= 0)
             {
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
         }
 
     }
