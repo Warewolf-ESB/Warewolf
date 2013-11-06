@@ -46,7 +46,7 @@ namespace QueueBuild
             BuildQueuer qb = new BuildQueuer();
 
             File.WriteAllText(LogFile(), buildTS + " :: Queuing Build With Args { Server : '" + server + "', Project : '" + project +
-                                "', Definition : '" + def + "', for User : '" + user + "', with shelveset : '" + shelveSet + "'}");
+                                "', Definition : '" + def + "', for User : '" + user + "', with shelveset : '" + shelveSet + "', and running on agents with tag : '" + agentTag + "'}");
 
             try
             {
