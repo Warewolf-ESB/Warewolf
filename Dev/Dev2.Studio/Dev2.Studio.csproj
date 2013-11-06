@@ -182,17 +182,8 @@
     <Compile Include="ActivityDesigners\DsfBaseConvertActivityDesigner.xaml.cs">
       <DependentUpon>DsfBaseConvertActivityDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\DsfDataSplitActivityDesigner.xaml.cs">
-      <DependentUpon>DsfDataSplitActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfCaseConvertActivityDesigner.xaml.cs">
-      <DependentUpon>DsfCaseConvertActivityDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\DsfCheckpointActivityDesigner.xaml.cs">
       <DependentUpon>DsfCheckpointActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfDataMergeActivityDesigner.xaml.cs">
-      <DependentUpon>DsfDataMergeActivityDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="ActivityDesigners\DsfFindRecordsActivityDesigner.xaml.cs">
       <DependentUpon>DsfFindRecordsActivityDesigner.xaml</DependentUpon>
@@ -601,18 +592,6 @@
     <Page Include="ActivityDesigners\DsfBaseConvertActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfDataSplitActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfCaseConvertActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfDataMergeActivityDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ActivityDesigners\DsfCheckpointActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>

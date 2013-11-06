@@ -207,4 +207,13 @@
   <data name="DsfForEachActivity" xml:space="preserve">
     <value>Loop Constructs - For Each</value>
   </data>
+  <data name="DsfCaseConvertActivity" xml:space="preserve">
+    <value>Utility - Case Conversion</value>
+  </data>
+  <data name="DsfDataMergeActivity" xml:space="preserve">
+    <value>Utility - Data Merge</value>
+  </data>
+  <data name="DsfDataSplitActivity" xml:space="preserve">
+    <value>Utility - Data Split</value>
+  </data>
 </root>

@@ -1,30 +1,28 @@
-﻿using Dev2.Interfaces;
+﻿using System.Collections.Generic;
+using Dev2.Interfaces;
 using System.ComponentModel;
+using Dev2.Providers.Errors;
+using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
-using Dev2.Utilities;
+using Dev2.Providers.Validation;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public class DataMergeDTO : INotifyPropertyChanged, IDev2TOFn
+    public class DataMergeDTO : IDev2TOFn, IPerformsValidation
     {
         #region Fields
 
-        private string _inputVariable;
-        private string _mergeType;
-        private string _at;
-        private int _indexNum;
-        private bool _enableAt;
+        string _inputVariable;
+        string _mergeType;
+        string _at;
+        int _indexNum;
+        bool _enableAt;
+        Dictionary<string, List<IActionableErrorInfo>> _errors;
 
         #endregion
 
         #region Ctor
-
-        public DataMergeDTO()
-        {
-
-        }
-
-        public DataMergeDTO(string inputVariable, string mergeType, string at, int indexNum, string padding, string alignment,bool inserted = false)
+        public DataMergeDTO(string inputVariable, string mergeType, string at, int indexNum, string padding, string alignment, bool inserted = false)
         {
             Inserted = inserted;
             InputVariable = inputVariable;
@@ -36,6 +34,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Alignment = alignment;
         }
 
+        public DataMergeDTO()
+        {
+                Errors = new Dictionary<string, List<IActionableErrorInfo>>();
+        }
+
         #endregion
 
         #region Properties
@@ -44,17 +47,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public string WatermarkTextVariable { get; set; }
 
+        void RaiseCanAddRemoveChanged()
+        {
+            OnPropertyChanged("CanRemove");
+            OnPropertyChanged("CanAdd");
+        }
+
         [FindMissing]
         public string Padding { get; set; }
-        
+
         public string Alignment { get; set; }
 
         public bool EnableAt
         {
-            get
-            {
-                return _enableAt;
-            }
+            get { return _enableAt; }
             set
             {
                 _enableAt = value;
@@ -64,10 +70,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public int IndexNumber
         {
-            get
-            {
-                return _indexNum;
-            }
+            get { return _indexNum; }
             set
             {
                 _indexNum = value;
@@ -78,23 +81,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string InputVariable
         {
-            get
-            {
-                return _inputVariable;
-            }
+            get { return _inputVariable; }
             set
             {
                 _inputVariable = value;
                 OnPropertyChanged("InputVariable");
+                RaiseCanAddRemoveChanged();
             }
         }
 
         public string MergeType
         {
-            get
-            {
-                return _mergeType;
-            }
+            get { return _mergeType; }
             set
             {
                 _mergeType = value;
@@ -105,14 +103,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string At
         {
-            get
-            {
-                return _at;
-            }
+            get { return _at; }
             set
             {
                 _at = value;
                 OnPropertyChanged("At");
+                RaiseCanAddRemoveChanged();
             }
         }
 
@@ -124,7 +120,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
+            if(PropertyChanged != null)
             {
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -143,9 +139,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     return true;
                 }
             }
-            else if (MergeType == "None")
+            else if (MergeType == "None" || MergeType == "New Line" || MergeType == "Tab")   
             {
-                return true;
+                if (string.IsNullOrEmpty(InputVariable))
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -163,7 +162,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InputVariable = string.Empty;
             MergeType = "Char";
             At = string.Empty;
-        }        
+        }
 
         #endregion
 
@@ -171,7 +170,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool IsEmpty()
         {
-            if (InputVariable == string.Empty && MergeType == "Index" && string.IsNullOrEmpty(At) || InputVariable == string.Empty && MergeType == "Chars" && string.IsNullOrEmpty(At) || InputVariable == string.Empty && MergeType == "None" && string.IsNullOrEmpty(At))
+            if(InputVariable == string.Empty && MergeType == "Index" && string.IsNullOrEmpty(At) || InputVariable == string.Empty && MergeType == "Chars" && string.IsNullOrEmpty(At) || InputVariable == string.Empty && MergeType == "None" && string.IsNullOrEmpty(At))
             {
                 return true;
             }
@@ -181,6 +180,87 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        #endregion
+
+        #region Implementation of IDataErrorInfo
+
+        /// <summary>
+        /// Gets the error message for the property with the given name.
+        /// </summary>
+        /// <returns>
+        /// The error message for the property. The default is an empty string ("").
+        /// </returns>
+        /// <param name="columnName">The name of the property whose error message to get. </param>
+        public string this[string columnName] { get { return null; } }
+
+        /// <summary>
+        /// Gets an error message indicating what is wrong with this object.
+        /// </summary>
+        /// <returns>
+        /// An error message indicating what is wrong with this object. The default is an empty string ("").
+        /// </returns>
+        public string Error { get; private set; }
+
+        #endregion
+
+        #region Implementation of IPerformsValidation
+
+        public Dictionary<string, List<IActionableErrorInfo>> Errors
+        {
+            get
+            {
+                return _errors;
+            }
+            set
+            {
+                _errors = value;
+                OnPropertyChanged("Errors");
+            }
+        }
+
+        public bool Validate(string propertyName, RuleSet ruleSet)
+        {
+            if (ruleSet == null)
+            {
+                Errors[propertyName] = new List<IActionableErrorInfo>();
+            }
+            else
+            {
+                var errorsTos = ruleSet.ValidateRules();
+                var actionableErrorInfos = errorsTos.ConvertAll<IActionableErrorInfo>(input => new ActionableErrorInfo(input, () =>
+                {
+                    //
+                }));
+                Errors[propertyName] = actionableErrorInfos;
+            }
+            OnPropertyChanged("Errors");
+            List<IActionableErrorInfo> errorList;
+            if (Errors.TryGetValue(propertyName, out errorList))
+            {
+                return errorList.Count == 0;
+            }
+            return false;
+        }
+
+        public bool Validate(string propertyName)
+        {
+            RuleSet ruleSet = null;
+            switch (propertyName)
+            {
+                case "FieldName":
+                    ruleSet = GetFieldNameRuleSet();
+                    break;
+                case "FieldValue":
+                    break;
+            }
+            return Validate(propertyName, ruleSet);
+        }
+
+        RuleSet GetFieldNameRuleSet()
+        {
+            var ruleSet = new RuleSet();
+            return ruleSet;
+        }
         #endregion
     }
 }

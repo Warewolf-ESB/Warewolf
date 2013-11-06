@@ -2,12 +2,15 @@
 using Dev2.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Dev2.Providers.Errors;
+using Dev2.Providers.Validation;
+using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
 using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public class DataSplitDTO : INotifyPropertyChanged, IDev2TOFn, IOutputTOConvert
+    public class DataSplitDTO : IDev2TOFn, IOutputTOConvert, IPerformsValidation
     {
         private string _outputVariable;
         private string _splitType;
@@ -16,10 +19,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private bool _enableAt;
         private bool _include;
         private List<string> _outList;
+        Dictionary<string, List<IActionableErrorInfo>> _errors;
 
         public DataSplitDTO()
         {
-
+            Errors = new Dictionary<string, List<IActionableErrorInfo>>();
         }
 
         public DataSplitDTO(string outputVariable, string splitType, string at, int indexNum, bool include = false,bool inserted = false)
@@ -35,6 +39,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         public string WatermarkTextVariable { get; set; }
+
+        void RaiseCanAddRemoveChanged()
+        {
+            OnPropertyChanged("CanRemove");
+            OnPropertyChanged("CanAdd");
+        }
 
         public bool EnableAt
         {
@@ -98,6 +108,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 _outputVariable = value;
                 OnPropertyChanged("OutputVariable");
+                RaiseCanAddRemoveChanged();
             }
         }
 
@@ -177,5 +188,86 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return DataListFactory.CreateOutputTO(OutputVariable, OutList);
         }
+
+        #region Implementation of IDataErrorInfo
+
+        /// <summary>
+        /// Gets the error message for the property with the given name.
+        /// </summary>
+        /// <returns>
+        /// The error message for the property. The default is an empty string ("").
+        /// </returns>
+        /// <param name="columnName">The name of the property whose error message to get. </param>
+        public string this[string columnName] { get { return null; } }
+
+        /// <summary>
+        /// Gets an error message indicating what is wrong with this object.
+        /// </summary>
+        /// <returns>
+        /// An error message indicating what is wrong with this object. The default is an empty string ("").
+        /// </returns>
+        public string Error { get; private set; }
+
+        #endregion
+
+        #region Implementation of IPerformsValidation
+
+        public Dictionary<string, List<IActionableErrorInfo>> Errors
+        {
+            get
+            {
+                return _errors;
+            }
+            set
+            {
+                _errors = value;
+                OnPropertyChanged("Errors");
+            }
+        }
+
+        public bool Validate(string propertyName, RuleSet ruleSet)
+        {
+            if (ruleSet == null)
+            {
+                Errors[propertyName] = new List<IActionableErrorInfo>();
+            }
+            else
+            {
+                var errorsTos = ruleSet.ValidateRules();
+                var actionableErrorInfos = errorsTos.ConvertAll<IActionableErrorInfo>(input => new ActionableErrorInfo(input, () =>
+                {
+                   //
+                }));
+                Errors[propertyName] = actionableErrorInfos;
+            }
+            OnPropertyChanged("Errors");
+            List<IActionableErrorInfo> errorList;
+            if (Errors.TryGetValue(propertyName, out errorList))
+            {
+                return errorList.Count == 0;
+            }
+            return false;
+        }
+
+        public bool Validate(string propertyName)
+        {
+            RuleSet ruleSet = null;
+            switch (propertyName)
+            {
+                case "FieldName":
+                    ruleSet = GetFieldNameRuleSet();
+                    break;
+                case "FieldValue":
+                    break;
+            }
+            return Validate(propertyName, ruleSet);
+        }
+
+        RuleSet GetFieldNameRuleSet()
+        {
+            var ruleSet = new RuleSet();
+            return ruleSet;
+        }
+        #endregion
     }
 }

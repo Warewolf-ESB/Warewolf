@@ -1161,21 +1161,6 @@
         </DrawingImage.Drawing>
     </DrawingImage>
 
-    <DrawingImage x:Key="ToolDataSplit-32">
-        <DrawingImage.Drawing>
-            <DrawingGroup>
-                <DrawingGroup.Children>
-                    <GeometryDrawing Brush="#FF3583A0"
-                                     Geometry="F1 M 3.33333,0C 3.33333,0 0,0 0,3.33334L 0,39.3333C 0,39.3333 0,42.6667 3.33333,42.6667L 39.3333,42.6667C 39.3333,42.6667 42.6667,42.6667 42.6667,39.3333L 42.6667,3.33334C 42.6667,3.33334 42.6667,0 39.3333,0L 3.33333,0 Z " />
-                    <GeometryDrawing Brush="#FFFFFFFF"
-                                     Geometry="F1 M 1.2468,20.9356C 1.19747,20.8729 1.12147,20.7103 1.12413,20.4983C 1.12147,20.3129 1.17613,20.1649 1.22813,20.0983L 14.5388,7.9996L 14.5388,13.6383L 20.2628,13.6569L 20.2628,27.3623L 14.5388,27.3623L 14.5388,33.0236L 1.2468,20.9356 Z " />
-                    <GeometryDrawing Brush="#FFFFFFFF"
-                                     Geometry="F1 M 41.1393,20.0872C 41.1887,20.1499 41.2647,20.3125 41.262,20.5245C 41.2647,20.7099 41.21,20.8579 41.1593,20.9245L 27.8473,33.0232L 27.8473,27.3859L 22.1233,27.3659L 22.1233,13.6605L 27.8473,13.6605L 27.8473,7.9992L 41.1393,20.0872 Z " />
-                </DrawingGroup.Children>
-            </DrawingGroup>
-        </DrawingImage.Drawing>
-    </DrawingImage>
-
     <DrawingImage x:Key="ToolDateTime-32">
         <DrawingImage.Drawing>
             <DrawingGroup>
@@ -1850,7 +1835,21 @@
 		</DrawingBrush.Drawing>
 	</DrawingBrush>
     
-    <DrawingBrush x:Key="ToolDataMerge-32" Stretch="Uniform">
+    
+    <DrawingImage x:Key="ToolDataMerge-32">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+					<GeometryDrawing Brush="#FF3583A0" Geometry="F1 M 3.33333,0C 3.33333,0 0,0 0,3.33334L 0,39.3333C 0,39.3333 0,42.6667 3.33333,42.6667L 39.3333,42.6667C 39.3333,42.6667 42.6667,42.6667 42.6667,39.3333L 42.6667,3.33334C 42.6667,3.33334 42.6667,0 39.3333,0L 3.33333,0 Z "/>
+					<GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 23.0729,21.0013C 23.0343,21.0493 22.9743,21.1773 22.9769,21.344C 22.9743,21.4893 23.0183,21.6053 23.0583,21.6573L 33.4449,31.1333L 33.4449,26.7173L 37.9103,26.7013L 37.9103,15.968L 33.4449,15.968L 33.4449,11.5333L 23.0729,21.0013 Z "/>
+					<GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 19.5937,21.0013C 19.6324,21.0493 19.6924,21.1773 19.6897,21.344C 19.6924,21.4893 19.6484,21.6053 19.6084,21.6573L 9.22173,31.1333L 9.22173,26.7173L 4.7564,26.7013L 4.7564,15.968L 9.22173,15.968L 9.22173,11.5333L 19.5937,21.0013 Z "/>
+					<GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 35.03,5.37373C 35.03,4.62173 34.422,4.01107 33.674,4.01107L 8.99533,4.01107C 8.24467,4.01107 7.63933,4.62173 7.63933,5.37373L 7.63933,37.2911C 7.63933,38.0457 8.24467,38.6537 8.99533,38.6537L 33.674,38.6537C 34.422,38.6537 35.03,38.0457 35.03,37.2911M 36.4687,38.8857C 36.4687,39.7151 35.798,40.3844 34.97,40.3844L 7.69667,40.3844C 6.87133,40.3844 6.198,39.7151 6.198,38.8857L 6.198,3.77907C 6.198,2.95374 6.87133,2.28307 7.69667,2.28307L 34.97,2.28307C 35.798,2.28307 36.4687,2.95374 36.4687,3.77907L 36.4687,38.8857 Z "/>
+				</DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    
+    <!--<DrawingBrush x:Key="ToolDataMerge-32" Stretch="Uniform">
 		<DrawingBrush.Drawing>
 			<DrawingGroup>
 				<DrawingGroup.Children>
@@ -1861,7 +1860,22 @@
 				</DrawingGroup.Children>
 			</DrawingGroup>
 		</DrawingBrush.Drawing>
-	</DrawingBrush>
+	</DrawingBrush>-->
+    
+    <DrawingImage x:Key="ToolDataSplit-32">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FF3583A0"
+                                     Geometry="F1 M 3.33333,0C 3.33333,0 0,0 0,3.33334L 0,39.3333C 0,39.3333 0,42.6667 3.33333,42.6667L 39.3333,42.6667C 39.3333,42.6667 42.6667,42.6667 42.6667,39.3333L 42.6667,3.33334C 42.6667,3.33334 42.6667,0 39.3333,0L 3.33333,0 Z " />
+                    <GeometryDrawing Brush="#FFFFFFFF"
+                                     Geometry="F1 M 1.2468,20.9356C 1.19747,20.8729 1.12147,20.7103 1.12413,20.4983C 1.12147,20.3129 1.17613,20.1649 1.22813,20.0983L 14.5388,7.9996L 14.5388,13.6383L 20.2628,13.6569L 20.2628,27.3623L 14.5388,27.3623L 14.5388,33.0236L 1.2468,20.9356 Z " />
+                    <GeometryDrawing Brush="#FFFFFFFF"
+                                     Geometry="F1 M 41.1393,20.0872C 41.1887,20.1499 41.2647,20.3125 41.262,20.5245C 41.2647,20.7099 41.21,20.8579 41.1593,20.9245L 27.8473,33.0232L 27.8473,27.3859L 22.1233,27.3659L 22.1233,13.6605L 27.8473,13.6605L 27.8473,7.9992L 41.1393,20.0872 Z " />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
     
     <DrawingBrush x:Key="ServiceQuickVariableInput-32" Stretch="Uniform">
 		<DrawingBrush.Drawing>

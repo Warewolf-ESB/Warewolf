@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.BaseConvert;
 using Dev2.Activities.Designers2.Calculate;
+using Dev2.Activities.Designers2.CaseConvert;
 using Dev2.Activities.Designers2.CommandLine;
 using Dev2.Activities.Designers2.Comment;
 using Dev2.Activities.Designers2.Copy;
 using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Activities.Designers2.Create;
+using Dev2.Activities.Designers2.DataMerge;
+using Dev2.Activities.Designers2.DataSplit;
 using Dev2.Activities.Designers2.DateTime;
 using Dev2.Activities.Designers2.DateTimeDifference;
 using Dev2.Activities.Designers2.Delete;
@@ -74,7 +77,10 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfRandomActivity), typeof(RandomDesigner) },
                 { typeof(DsfReplaceActivity), typeof(ReplaceDesigner) },
                 { typeof(DsfScriptingActivity), typeof(ScriptDesigner) },
-                 { typeof(DsfForEachActivity), typeof(ForeachDesigner) },
+                { typeof(DsfForEachActivity), typeof(ForeachDesigner) },
+                { typeof(DsfCaseConvertActivity), typeof(CaseConvertDesigner) },
+                { typeof(DsfDataMergeActivity), typeof(DataMergeDesigner) },
+                { typeof(DsfDataSplitActivity), typeof(DataSplitDesigner) },
 
                 //{ typeof(DsfActivity), typeof(DsfActivityDesigner) },
                 //{ typeof(DsfDatabaseActivity), typeof(DsfActivityDesigner) },
@@ -86,7 +92,7 @@ namespace Dev2.Studio.ActivityDesigners
                 //{ typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner) },
                 { typeof(DsfWebPageActivity), typeof(DsfWebPageActivityDesigner) },
                 { typeof(DsfWebSiteActivity), typeof(DsfWebSiteActivityDesigner) },
-                { typeof(DsfDataSplitActivity), typeof(DsfDataSplitActivityDesigner) },
+                //{ typeof(DsfDataSplitActivity), typeof(DsfDataSplitActivityDesigner) },
                 //{ typeof(DsfPathCreate), typeof(DsfPathCreateDesigner) },
                 //{ typeof(DsfFileRead), typeof(DsfFileReadDesigner) },
                 //{ typeof(DsfFileWrite), typeof(DsfFileWriteDesigner) },
@@ -98,10 +104,10 @@ namespace Dev2.Studio.ActivityDesigners
                 //{ typeof(DsfZip), typeof(DsfZipDesigner) },
                 //{ typeof(DsfUnZip), typeof(DsfUnzipDesigner) },
                 //{ typeof(DsfDateTimeDifferenceActivity), typeof(DsfDateTimeDifferenceActivityDesigner) },
-                { typeof(DsfCaseConvertActivity), typeof(DsfCaseConvertActivityDesigner) },
+                //{ typeof(DsfCaseConvertActivity), typeof(DsfCaseConvertActivityDesigner) },
                 //{ typeof(DsfReplaceActivity), typeof(DsfReplaceActivityDesigner) },
                 //{ typeof(DsfIndexActivity), typeof(DsfIndexActivityDesigner) },
-                { typeof(DsfDataMergeActivity), typeof(DsfDataMergeActivityDesigner) },
+                //{ typeof(DsfDataMergeActivity), typeof(DsfDataMergeActivityDesigner) },
                 //                    {typeof (DsfRemoveActivity), typeof (DsfRemoveActivityDesigner)},
                 //                    {typeof (DsfTagCountActivity), typeof (DsfTagCountActivityDesigner)},
                 //                    {typeof (AssertActivity), typeof (DsfAssertActivityDesigner)},

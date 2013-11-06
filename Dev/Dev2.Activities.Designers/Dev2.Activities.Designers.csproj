@@ -92,6 +92,13 @@
       <DependentUpon>CalculateDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Calculate\CalculateDesignerViewModel.cs" />
+    <Compile Include="Designers2\CaseConvert\CaseConvertDesigner.xaml.cs">
+      <DependentUpon>CaseConvertDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CaseConvert\CaseConvertDesignerViewModel.cs" />
+    <Compile Include="Designers2\CaseConvert\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\CommandLine\CommandLineDesigner.xaml.cs">
       <DependentUpon>CommandLineDesigner.xaml</DependentUpon>
     </Compile>
@@ -164,6 +171,28 @@
     <Compile Include="Designers2\Create\CreateDesignerViewModel.cs" />
     <Compile Include="Designers2\Create\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DataMerge\DataMergeDesigner.xaml.cs">
+      <DependentUpon>DataMergeDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DataMerge\DataMergeDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DataMerge\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DataSplit\DataSplitDesigner.xaml.cs">
+      <DependentUpon>DataSplitDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DataSplit\DataSplitDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DataSplit\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Designers2\DateTimeDifference\DateTimeDifferenceDesigner.xaml.cs">
       <DependentUpon>DateTimeDifferenceDesigner.xaml</DependentUpon>
@@ -511,6 +540,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\CaseConvert\CaseConvertDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CaseConvert\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\CommandLine\CommandLineDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -566,6 +603,22 @@
     <Page Include="Designers2\Create\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DataMerge\DataMergeDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DataMerge\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DataSplit\DataSplitDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DataSplit\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\DateTimeDifference\DateTimeDifferenceDesigner.xaml">
       <SubType>Designer</SubType>

@@ -79,6 +79,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Utility - Case Conversion.
+        /// </summary>
+        internal static string DsfCaseConvertActivity {
+            get {
+                return ResourceManager.GetString("DsfCaseConvertActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Utility - Comment.
         /// </summary>
         internal static string DsfCommentActivity {
@@ -93,6 +102,24 @@ namespace Dev2 {
         internal static string DsfCountRecordsetActivity {
             get {
                 return ResourceManager.GetString("DsfCountRecordsetActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Utility - Data Merge.
+        /// </summary>
+        internal static string DsfDataMergeActivity {
+            get {
+                return ResourceManager.GetString("DsfDataMergeActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Utility - Data Split.
+        /// </summary>
+        internal static string DsfDataSplitActivity {
+            get {
+                return ResourceManager.GetString("DsfDataSplitActivity", resourceCulture);
             }
         }
         
