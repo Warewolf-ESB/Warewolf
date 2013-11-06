@@ -18,12 +18,7 @@ namespace Dev2.Settings.Security
         readonly IWin32Window _parentWindow;
         bool _isDirty;
 
-        public SecurityViewModel(IEnumerable<WindowsGroupPermission> permissions)
-            : this(permissions, (IWin32Window)System.Windows.Application.Current.MainWindow)
-        {
-        }
-
-        public SecurityViewModel(IEnumerable<WindowsGroupPermission> permissions, IWin32Window parentWindow)
+        internal SecurityViewModel(IEnumerable<WindowsGroupPermission> permissions, IWin32Window parentWindow)
             : this(permissions, new ResourcePickerDialog(), new DirectoryObjectPickerDialog(), parentWindow)
         {
         }

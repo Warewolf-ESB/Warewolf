@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Windows.Forms;
+using Caliburn.Micro;
 using Dev2.Settings;
 using Dev2.Studio.Core.Controller;
 using Dev2.Threading;
@@ -11,8 +12,8 @@ namespace Dev2.Core.Tests.Settings
         {
         }
 
-        public TestSettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker)
-            : base(eventPublisher, popupController, asyncWorker)
+        public TestSettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IWin32Window parentWindow)
+            : base(eventPublisher, popupController, asyncWorker, parentWindow)
         {
         }
 

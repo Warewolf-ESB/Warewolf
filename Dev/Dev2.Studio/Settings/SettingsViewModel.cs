@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common;
@@ -34,20 +34,23 @@ namespace Dev2.Settings
 
         readonly IPopupController _popupController;
         readonly IAsyncWorker _asyncWorker;
+        readonly IWin32Window _parentWindow;
         LoggingViewModel _loggingViewModel;
 
-        public SettingsViewModel()
-            : this(EventPublishers.Aggregator, new PopupController(), new AsyncWorker())
+        internal SettingsViewModel()
+            : this(EventPublishers.Aggregator, new PopupController(), new AsyncWorker(), (IWin32Window)System.Windows.Application.Current.MainWindow)
         {
         }
 
-        public SettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker)
+        public SettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IWin32Window parentWindow)
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("popupController", popupController);
             _popupController = popupController;
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             _asyncWorker = asyncWorker;
+            VerifyArgument.IsNotNull("parentWindow", parentWindow);
+            _parentWindow = parentWindow;
 
             SaveCommand = new RelayCommand(o => SaveSettings(), o => IsDirty);
             ServerChangedCommand = new RelayCommand(OnServerChanged, o => true);
@@ -215,7 +218,7 @@ namespace Dev2.Settings
                 }
             }, () =>
             {
-                SecurityViewModel = new SecurityViewModel(Settings.Security ?? new List<WindowsGroupPermission>());
+                SecurityViewModel = new SecurityViewModel(Settings.Security ?? new List<WindowsGroupPermission>(), _parentWindow);
                 SecurityViewModel.PropertyChanged += OnViewModelPropertyChanged;
 
                 // TODO: Read from server
