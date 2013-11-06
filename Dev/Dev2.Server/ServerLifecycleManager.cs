@@ -1324,20 +1324,24 @@ namespace Unlimited.Applications.DynamicServicesHost
                         Int32.TryParse(webServerSslPort, out realWebServerSslPort);
 
                         // TODO : Enable ssl cert generation ;)
-
                         var sslCertPath = ConfigurationManager.AppSettings["sslCertificateName"];
-                        var canEnableSSL = HostSecurityProvider.Instance.EnsureSSL(sslCertPath);
 
-                        if (canEnableSSL)
+                        if (!string.IsNullOrEmpty(sslCertPath))
                         {
-                            prefixes.Add(string.Format("https://*:{0}/", webServerSslPort));
+                            var canEnableSSL = HostSecurityProvider.Instance.EnsureSSL(sslCertPath);
 
-                            var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
-                            endpoints.Add(new Dev2Endpoint(httpsEndpoint, sslCertPath));
-                        }
-                        else
-                        {
-                            WriteLine("Could not start webserver to listen for SSL traffic with cert [ " + sslCertPath + " ]");
+                            if (canEnableSSL)
+                            {
+                                prefixes.Add(string.Format("https://*:{0}/", webServerSslPort));
+
+                                var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
+                                endpoints.Add(new Dev2Endpoint(httpsEndpoint, sslCertPath));
+                            }
+                            else
+                            {
+                                WriteLine("Could not start webserver to listen for SSL traffic with cert [ " +
+                                          sslCertPath + " ]");
+                            }
                         }
                     }
 
