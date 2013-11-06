@@ -12,6 +12,7 @@ namespace Dev2.Activities.Designers2.Service
             InitializeComponent();
             DataGrid = InputsDataGrid;
             Loaded += (sender, args) => InitializeHeight();
+            SetInitialFocus();
         }
 
         protected override IInputElement GetInitialFocusElement()

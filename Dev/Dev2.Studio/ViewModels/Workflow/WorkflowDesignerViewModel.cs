@@ -1023,11 +1023,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if(selectedItem != null)
             {
-                var tryFindFirstTextBoxInActivity = selectedItem.View.TryFindFirstTextBoxInActivity();
-                if(tryFindFirstTextBoxInActivity != null)
-                {
-                    Keyboard.Focus(tryFindFirstTextBoxInActivity);
-                }
                 if(selectedItem.ItemType == typeof(DsfForEachActivity))
                 {
                     dynamic test = selectedItem;
