@@ -232,6 +232,8 @@ namespace Dev2.Runtime.Security
                 {
                     SSLCertificateBuilder certificateBuilder = new SSLCertificateBuilder();
                     result = certificateBuilder.EnsureSSLCertificate(certPath);
+
+                    result = File.Exists(certPath);
                 }
                 catch (Exception e)
                 {
