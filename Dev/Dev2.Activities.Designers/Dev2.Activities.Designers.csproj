@@ -325,7 +325,7 @@
     <Compile Include="Designers2\Random\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\ReadFile\CredentialsActivityDesignerViewModel.cs" />
+    <Compile Include="Designers2\Core\CredentialsActivityDesignerViewModel.cs" />
     <Compile Include="Designers2\ReadFile\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
