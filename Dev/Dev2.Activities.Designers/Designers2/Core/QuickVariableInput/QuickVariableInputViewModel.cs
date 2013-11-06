@@ -58,14 +58,14 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 
         #region Properties
 
-        public IList<IActionableErrorInfo> Errors
+        public List<IActionableErrorInfo> Errors
         {
-            get { return (IList<IActionableErrorInfo>)GetValue(ErrorsProperty); }
+            get { return (List<IActionableErrorInfo>)GetValue(ErrorsProperty); }
             set { SetValue(ErrorsProperty, value); }
         }
 
         public static readonly DependencyProperty ErrorsProperty =
-            DependencyProperty.Register("Errors", typeof(IList<IActionableErrorInfo>), typeof(QuickVariableInputViewModel), new PropertyMetadata(null, OnErrorsChanged));
+            DependencyProperty.Register("Errors", typeof(List<IActionableErrorInfo>), typeof(QuickVariableInputViewModel), new PropertyMetadata(null, OnErrorsChanged));
 
         static void OnErrorsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

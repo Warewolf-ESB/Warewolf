@@ -5,6 +5,6 @@ namespace Dev2.Providers.Validation
 {
     public interface IErrorsSource
     {
-        IList<IActionableErrorInfo> Errors { get; set; }
+        List<IActionableErrorInfo> Errors { get; set; }
     }
 }

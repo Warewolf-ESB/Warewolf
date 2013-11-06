@@ -88,20 +88,13 @@
                Content="User Name" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="1"
-                                FilterType="All"
                                 DefaultText="[[UserName]]"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static help:HelpTextResources.ReadFileToolTipUsername}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsUserNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_UserNametxt_AutoID}">
-            <ui:IntellisenseTextBox.IntellisenseProvider>
-                <interfaceImplementors:CompositeIntellisenseProvider>
-                    <interfaceImplementors:DefaultIntellisenseProvider />
-                    <provider:FileSystemIntellisenseProvider />
-                </interfaceImplementors:CompositeIntellisenseProvider>
-            </ui:IntellisenseTextBox.IntellisenseProvider>
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_UserNametxt_AutoID}"> 
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.ReadFileHelpUsername}"
                                  DataContext="{Binding}" />
@@ -116,9 +109,6 @@
                Grid.Row="2"
                Style="{StaticResource ActivityLabelStyle}"
                Content="Password" />
-                                <!--
-        Style="{StaticResource ActivityPasswordBoxStyle}"
-        --> 
 
         <PasswordBox Grid.Column="1"
                                 Grid.Row="2"                                                               
