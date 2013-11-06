@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -231,6 +232,10 @@ namespace Dev2.Settings
 
         void SaveSettings()
         {
+            Settings.Security.Clear();
+            UpdateSecurityPermissions(SecurityViewModel.ServerPermissions);
+            UpdateSecurityPermissions(SecurityViewModel.ResourcePermissions);
+
             var result = ExecuteCommand(SettingsServiceAction.Write);
             if(result == null)
             {
@@ -242,6 +247,17 @@ namespace Dev2.Settings
                 return;
             }
             IsDirty = false;
+        }
+
+        void UpdateSecurityPermissions(IEnumerable<WindowsGroupPermission> permissions)
+        {
+            foreach(var permission in permissions)
+            {
+                if(!permission.IsNew)
+                {
+                    Settings.Security.Add(permission);
+                }
+            }
         }
 
         string ExecuteCommand(SettingsServiceAction action)

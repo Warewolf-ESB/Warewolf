@@ -1,27 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Globalization;
-using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Data.Settings.Security;
+using Dev2.Dialogs;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.Utils;
-using Dev2.Studio.ViewModels.Workflow;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Settings.Security
 {
     public class SecurityViewModel : ObservableObject
     {
+        readonly IResourcePickerDialog _resourcePicker;
+        readonly IDirectoryObjectPickerDialog _directoryObjectPicker;
+        readonly IWin32Window _parentWindow;
         bool _isDirty;
 
         public SecurityViewModel(IEnumerable<WindowsGroupPermission> permissions)
+            : this(permissions, (IWin32Window)System.Windows.Application.Current.MainWindow)
         {
+        }
+
+        public SecurityViewModel(IEnumerable<WindowsGroupPermission> permissions, IWin32Window parentWindow)
+            : this(permissions, new ResourcePickerDialog(), new DirectoryObjectPickerDialog(), parentWindow)
+        {
+        }
+
+        public SecurityViewModel(IEnumerable<WindowsGroupPermission> permissions, IResourcePickerDialog resourcePicker, IDirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow)
+        {
+            VerifyArgument.IsNotNull("permissions", permissions);
+            VerifyArgument.IsNotNull("resourcePicker", resourcePicker);
+            VerifyArgument.IsNotNull("directoryObjectPicker", directoryObjectPicker);
+            VerifyArgument.IsNotNull("parentWindow", parentWindow);
+
+            _resourcePicker = resourcePicker;
+            _directoryObjectPicker = directoryObjectPicker;
+            _parentWindow = parentWindow;
+            _directoryObjectPicker.AllowedObjectTypes = ObjectTypes.BuiltInGroups | ObjectTypes.Groups;
+            _directoryObjectPicker.DefaultObjectTypes = ObjectTypes.Groups;
+            _directoryObjectPicker.AllowedLocations = Locations.All;
+            _directoryObjectPicker.DefaultLocations = Locations.JoinedDomain;
+            _directoryObjectPicker.MultiSelect = false;
+            _directoryObjectPicker.TargetComputer = string.Empty;
+            _directoryObjectPicker.ShowAdvancedView = false;
+
             PickWindowsGroupCommand = new RelayCommand(PickWindowsGroup, o => true);
             PickResourceCommand = new RelayCommand(PickResource, o => true);
 
@@ -70,6 +94,12 @@ namespace Dev2.Settings.Security
             permission.ResourceName = string.Format("{0}\\{1}", resourceModel.Category, resourceModel.ResourceName);
         }
 
+        IResourceModel PickResource()
+        {
+            var dialogResult = _resourcePicker.ShowDialog();
+            return dialogResult != DialogResult.OK ? null : _resourcePicker.SelectedResource;
+        }
+
         void PickWindowsGroup(object obj)
         {
             var permission = obj as WindowsGroupPermission;
@@ -78,7 +108,7 @@ namespace Dev2.Settings.Security
                 return;
             }
 
-            var directoryObj = PickWindowsGroup(ObjectTypes.BuiltInGroups | ObjectTypes.Groups, ObjectTypes.Groups, Locations.All, Locations.JoinedDomain);
+            var directoryObj = PickWindowsGroup();
             if(directoryObj == null)
             {
                 return;
@@ -87,36 +117,19 @@ namespace Dev2.Settings.Security
             permission.WindowsGroup = directoryObj.Name;
         }
 
-        protected virtual DirectoryObject PickWindowsGroup(ObjectTypes allowedTypes, ObjectTypes defaultTypes, Locations allowedLocations, Locations defaultLocations)
+        DirectoryObject PickWindowsGroup()
         {
-            var picker = new DirectoryObjectPickerDialog
-            {
-                AllowedObjectTypes = allowedTypes,
-                DefaultObjectTypes = defaultTypes,
-                AllowedLocations = allowedLocations,
-                DefaultLocations = defaultLocations,
-                MultiSelect = false,
-                TargetComputer = string.Empty
-            };
-
-            var dialogResult = picker.ShowDialog((IWin32Window)System.Windows.Application.Current.MainWindow);
+            var dialogResult = _directoryObjectPicker.ShowDialog(_parentWindow);
             if(dialogResult != DialogResult.OK)
             {
                 return null;
             }
-            var results = picker.SelectedObjects;
+            var results = _directoryObjectPicker.SelectedObjects;
             if(results == null || results.Length == 0)
             {
                 return null;
             }
             return results[0];
-        }
-
-        protected virtual IResourceModel PickResource()
-        {
-            var type = typeof(DsfWorkflowActivity);
-            DsfActivityDropViewModel dropViewModel;
-            return DsfActivityDropUtils.TryPickResource(type.FullName, out dropViewModel) ? dropViewModel.SelectedResourceModel : null;
         }
 
         void RegisterPropertyChanged(WindowsGroupPermission permission)
@@ -174,19 +187,6 @@ namespace Dev2.Settings.Security
             var permission = new WindowsGroupPermission { IsNew = true, IsServer = isServer };
             RegisterPropertyChanged(permission);
             return permission;
-        }
-    }
-
-    public class DefaultText : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return null;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return null;
         }
     }
 }

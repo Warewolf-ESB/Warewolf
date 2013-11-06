@@ -328,6 +328,8 @@
       <DependentUpon>LoggingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Logging\LoggingViewModel.cs" />
+    <Compile Include="Dialogs\IResourcePickerDialog.cs" />
+    <Compile Include="Dialogs\ResourcePickerDialog.cs" />
     <Compile Include="Settings\Security\SecurityView.xaml.cs">
       <DependentUpon>SecurityView.xaml</DependentUpon>
     </Compile>

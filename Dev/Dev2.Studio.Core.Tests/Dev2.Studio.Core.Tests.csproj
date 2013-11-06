@@ -122,6 +122,7 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\System.Windows.Interactivity.dll</HintPath>
@@ -177,6 +178,7 @@
     <Compile Include="ConfigureDecisionViewModelTest.cs" />
     <Compile Include="Settings\SettingsViewModelTests.cs" />
     <Compile Include="Settings\TestSettingsViewModel.cs" />
+    <Compile Include="Settings\SecurityViewModelTests.cs" />
     <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />
     <Compile Include="Utils\ResourceChangeHandlerTests.cs" />
     <Compile Include="DataListItemViewModelTest.cs" />
