@@ -7,6 +7,7 @@
                        xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
                        xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                        xmlns:local="clr-namespace:Dev2.Activities.Designers2.CaseConvert"
+                       xmlns:quickVariableInput="clr-namespace:Dev2.Activities.Designers2.Core.QuickVariableInput"
                        mc:Ignorable="d"
                        d:DataContext="{d:DesignInstance local:CaseConvertDesignerViewModel}"
                        Style="{DynamicResource ContentViewStyle}">
@@ -21,12 +22,20 @@
    
     <sap:ActivityDesigner.Resources>
         <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
+        <quickVariableInput:QuickVariableInputView x:Key="QuickVariableInput" AutomationProperties.AutomationId="QuickVariableInputContent" />
         
         <Style x:Key="ContentViewStyle"
                BasedOn="{StaticResource ActivityDesignerStyle}"
                TargetType="{x:Type sap:ActivityDesigner}">
             <Setter Property="Content"
                     Value="{DynamicResource Small}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=ShowQuickVariableInput, Mode=TwoWay}"
+                             Value="true">
+                    <Setter Property="Content"
+                            Value="{DynamicResource QuickVariableInput}" />
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
     </sap:ActivityDesigner.Resources>
 

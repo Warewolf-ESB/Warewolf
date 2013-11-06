@@ -1643,4 +1643,51 @@ No. of executions will execute the activity a given number of times.</value>
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
+  <data name="GatherSystemInformationHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the type of system information selected.</value>
+  </data>
+  <data name="GatherSystemInformationHelpSysInfoType" xml:space="preserve">
+    <value>Select the type of system information you would like to use.</value>
+  </data>
+  <data name="GatherSystemInformationToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="XPathHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the result of the Xpath expression.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+Each Xpath expression returned will be added to the result recordset in a new record or comma separated list if a scalar variable is defined.</value>
+  </data>
+  <data name="XPathHelpXML" xml:space="preserve">
+    <value>Any data or variable can go in here.
+To traverse an XML document and return information from it, enter the raw XML in here.</value>
+  </data>
+  <data name="XPathHelpXPath" xml:space="preserve">
+    <value>Xpath notation describing the route to the data in the XML input.</value>
+  </data>
+  <data name="XPathToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="XPathToolTipXML" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="XPathToolTipXPath" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
 </root>

@@ -13,6 +13,7 @@ namespace Dev2.Activities.Designers2.CaseConvert
         public CaseConvertDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
+            AddTitleBarQuickVariableInputToggle();
             AddTitleBarHelpToggle();
             dynamic mi = ModelItem;
             InitializeItems(mi.ConvertCollection);

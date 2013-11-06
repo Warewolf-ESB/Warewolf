@@ -282,6 +282,14 @@
     <Compile Include="Designers2\FormatNumber\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\GatherSystemInformation\GatherSystemInformationDesigner.xaml.cs">
+      <DependentUpon>GatherSystemInformationDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\GatherSystemInformation\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Designers2\GetWebRequest\GetWebRequestDesigner.xaml.cs">
       <DependentUpon>GetWebRequestDesigner.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -402,6 +410,7 @@
       <DependentUpon>SqlBulkInsertDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\SqlBulkInsert\SqlBulkInsertDesignerViewModel.cs" />
+    <Compile Include="Designers2\GatherSystemInformation\GatherSystemInformationDesignerViewModel.cs" />
     <Compile Include="Designers2\UniqueRecords\UniqueRecordsDesigner.xaml.cs">
       <DependentUpon>UniqueRecordsDesigner.xaml</DependentUpon>
     </Compile>
@@ -423,6 +432,15 @@
     <Compile Include="Designers2\WriteFile\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\XPath\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\XPath\XPathDesigner.xaml.cs">
+      <DependentUpon>XPathDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\XPath\XPathDesignerViewModel.cs" />
     <Compile Include="Designers2\Zip\ZipDesigner.xaml.cs">
       <DependentUpon>ZipDesigner.xaml</DependentUpon>
     </Compile>
@@ -699,6 +717,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\GatherSystemInformation\GatherSystemInformationDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\GatherSystemInformation\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Designers2\GetWebRequest\GetWebRequestDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -834,6 +860,14 @@
     <Page Include="Designers2\WriteFile\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\XPath\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\XPath\XPathDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\Zip\ZipDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>

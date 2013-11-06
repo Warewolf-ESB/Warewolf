@@ -94,7 +94,7 @@
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <ComboBox Style="{StaticResource ActivityComboBoxStyle}"
-                                  Margin="0,0,2,0"
+                                  Margin="0"
                                   ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                   SelectedValue="{Binding Path=ConvertType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}">
                             <i:Interaction.Behaviors>

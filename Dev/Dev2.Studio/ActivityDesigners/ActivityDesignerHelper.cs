@@ -20,6 +20,7 @@ using Dev2.Activities.Designers2.FindIndex;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
 using Dev2.Activities.Designers2.Foreach;
 using Dev2.Activities.Designers2.FormatNumber;
+using Dev2.Activities.Designers2.GatherSystemInformation;
 using Dev2.Activities.Designers2.GetWebRequest;
 using Dev2.Activities.Designers2.Move;
 using Dev2.Activities.Designers2.MultiAssign;
@@ -35,6 +36,7 @@ using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Activities.Designers2.UniqueRecords;
 using Dev2.Activities.Designers2.Unzip;
 using Dev2.Activities.Designers2.WriteFile;
+using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
 using Dev2.Studio.ViewModels.Workflow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -81,47 +83,19 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfCaseConvertActivity), typeof(CaseConvertDesigner) },
                 { typeof(DsfDataMergeActivity), typeof(DataMergeDesigner) },
                 { typeof(DsfDataSplitActivity), typeof(DataSplitDesigner) },
-
-                //{ typeof(DsfActivity), typeof(DsfActivityDesigner) },
-                //{ typeof(DsfDatabaseActivity), typeof(DsfActivityDesigner) },
+                { typeof(DsfGatherSystemInformationActivity), typeof(GatherSystemInformationDesigner) },
+                { typeof(DsfXPathActivity), typeof(XPathDesigner) },
                 { typeof(DsfActivity), typeof(ServiceDesigner) },
                 { typeof(DsfDatabaseActivity), typeof(ServiceDesigner) },
-                //{ typeof(DsfCommentActivity), typeof(DsfCommentActivityDesigner) },
+              
+
+
+
                 { typeof(DsfAssignActivity), typeof(DsfAssignActivityDesigner) },
-                //{typeof (TransformActivity), typeof (DsfTransformActivityDesigner)},
-                //{ typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner) },
                 { typeof(DsfWebPageActivity), typeof(DsfWebPageActivityDesigner) },
                 { typeof(DsfWebSiteActivity), typeof(DsfWebSiteActivityDesigner) },
-                //{ typeof(DsfDataSplitActivity), typeof(DsfDataSplitActivityDesigner) },
-                //{ typeof(DsfPathCreate), typeof(DsfPathCreateDesigner) },
-                //{ typeof(DsfFileRead), typeof(DsfFileReadDesigner) },
-                //{ typeof(DsfFileWrite), typeof(DsfFileWriteDesigner) },
-                // { typeof(DsfFolderRead), typeof(DsfFolderReadDesigner) },
-                //{ typeof(DsfPathCopy), typeof(DsfPathCopyDesigner) },
-                //{ typeof(DsfPathDelete), typeof(DsfPathDeleteDesigner) },
-                //{ typeof(DsfPathMove), typeof(DsfPathMoveDesigner) },
-                //{ typeof(DsfPathRename), typeof(DsfPathRenameDesigner) },
-                //{ typeof(DsfZip), typeof(DsfZipDesigner) },
-                //{ typeof(DsfUnZip), typeof(DsfUnzipDesigner) },
-                //{ typeof(DsfDateTimeDifferenceActivity), typeof(DsfDateTimeDifferenceActivityDesigner) },
-                //{ typeof(DsfCaseConvertActivity), typeof(DsfCaseConvertActivityDesigner) },
-                //{ typeof(DsfReplaceActivity), typeof(DsfReplaceActivityDesigner) },
-                //{ typeof(DsfIndexActivity), typeof(DsfIndexActivityDesigner) },
-                //{ typeof(DsfDataMergeActivity), typeof(DsfDataMergeActivityDesigner) },
-                //                    {typeof (DsfRemoveActivity), typeof (DsfRemoveActivityDesigner)},
-                //                    {typeof (DsfTagCountActivity), typeof (DsfTagCountActivityDesigner)},
-                //                    {typeof (AssertActivity), typeof (DsfAssertActivityDesigner)},
-                //                    {typeof (DsfFileForEachActivity), typeof (DsfFileForEachActivityDesigner)},
-                //                    {typeof (DsfCheckpointActivity), typeof (DsfCheckpointActivityDesigner)},
                 { typeof(DsfFindRecordsActivity), typeof(DsfFindRecordsActivityDesigner) },
-                //{ typeof(DsfNumberFormatActivity), typeof(DsfNumberFormatActivityDesigner) },
-                //{ typeof(DsfExecuteCommandLineActivity), typeof(DsfExecuteCommandLineActivityDesigner) },
-                { typeof(DsfGatherSystemInformationActivity), typeof(DsfGatherSystemInformationActivityDesigner) },
-                //{ typeof(DsfRandomActivity), typeof(DsfRandomActivityDesigner) },
-                //{ typeof(DsfSendEmailActivity), typeof(DsfSendEmailActivityDesigner) },
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },
-                //{ typeof(DsfScriptingActivity), typeof(DsfScriptingActivityDesigner) },
-                { typeof(DsfXPathActivity), typeof(DsfXPathActivityDesigner) },
                 // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
             };
 

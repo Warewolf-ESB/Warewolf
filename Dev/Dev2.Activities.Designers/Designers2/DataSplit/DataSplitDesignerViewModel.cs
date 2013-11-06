@@ -12,6 +12,7 @@ namespace Dev2.Activities.Designers2.DataSplit
         public DataSplitDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
+            AddTitleBarQuickVariableInputToggle();
             AddTitleBarHelpToggle();
             dynamic mi = ModelItem;
             InitializeItems(mi.ResultsCollection);

@@ -14,14 +14,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             TypeSwitch.Do(dto,
             TypeSwitch.Case<ActivityDTO>(x => toReturn = new ActivityDTO(initializeWith, "", index, inserted)),
-            TypeSwitch.Case<DataSplitDTO>(x => toReturn = new DataSplitDTO("", "Index", "", index, false, inserted)),
-            TypeSwitch.Case<DataMergeDTO>(x => toReturn = new DataMergeDTO("", "None", "", index, "", "Left", inserted)),
-            TypeSwitch.Case<CaseConvertTO>(x => toReturn = CaseConverterFactory.CreateCaseConverterTO("", "UPPER", "", index)),
+            TypeSwitch.Case<DataSplitDTO>(x => toReturn = new DataSplitDTO(initializeWith, "Index", "", index, false, inserted)),
+            TypeSwitch.Case<DataMergeDTO>(x => toReturn = new DataMergeDTO(initializeWith, "None", "", index, "", "Left", inserted)),
+            TypeSwitch.Case<CaseConvertTO>(x => toReturn = CaseConverterFactory.CreateCaseConverterTO(initializeWith, "UPPER", "", index)),
             TypeSwitch.Case<BaseConvertTO>(x => toReturn = new BaseConvertTO(initializeWith, "Text", "Base 64", "", index, inserted)),
             TypeSwitch.Case<GatherSystemInformationTO>(x => toReturn = 
                 new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime,
-                    string.Empty, index, inserted)),
-            TypeSwitch.Case<XPathDTO>(x => toReturn = new XPathDTO("", "", index, false, inserted)),
+                    initializeWith, index, inserted)),
+            TypeSwitch.Case<XPathDTO>(x => toReturn = new XPathDTO(initializeWith, "", index, false, inserted)),
             TypeSwitch.Case<FindRecordsTO>(() => toReturn=new FindRecordsTO("","",index,false,inserted)),
             TypeSwitch.Default(() => toReturn =null));
 

@@ -161,7 +161,7 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition Width="115" />
+                <ColumnDefinition Width="125" />
             </Grid.ColumnDefinitions>
 
             <Label  Content="Result"

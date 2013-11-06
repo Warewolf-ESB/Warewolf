@@ -216,4 +216,10 @@
   <data name="DsfDataSplitActivity" xml:space="preserve">
     <value>Utility - Data Split</value>
   </data>
+  <data name="DsfGatherSystemInformationActivity" xml:space="preserve">
+    <value>Utility - System Information</value>
+  </data>
+  <data name="DsfXPathActivity" xml:space="preserve">
+    <value>Utility - XPath</value>
+  </data>
 </root>

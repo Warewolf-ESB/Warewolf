@@ -205,6 +205,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Utility - System Information.
+        /// </summary>
+        internal static string DsfGatherSystemInformationActivity {
+            get {
+                return ResourceManager.GetString("DsfGatherSystemInformationActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Utility - Find Index.
         /// </summary>
         internal static string DsfIndexActivity {
@@ -345,6 +354,15 @@ namespace Dev2 {
         internal static string DsfWebGetRequestActivity {
             get {
                 return ResourceManager.GetString("DsfWebGetRequestActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Utility - XPath.
+        /// </summary>
+        internal static string DsfXPathActivity {
+            get {
+                return ResourceManager.GetString("DsfXPathActivity", resourceCulture);
             }
         }
         

@@ -38,16 +38,12 @@
     <Style x:Key="DatagridIntellisenseTextBoxStyle"
            TargetType="{x:Type ui:IntellisenseTextBox}"
            BasedOn="{StaticResource ActivityIntellisenseTextBoxStyle}">
-        <Setter Property="HorizontalAlignment"
-                Value="Stretch" />
-        <Setter Property="Padding"
-                Value="2,6,0,0" />
-        <Setter Property="Margin"
-                Value="0" />
-        <Setter Property="Width"
-                Value="Auto" />
-        <Setter Property="MaxHeight"
-                Value="23" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Padding" Value="2,5,0,0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="MaxHeight" Value="23" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding Path=HasError}"
                          Value="True">

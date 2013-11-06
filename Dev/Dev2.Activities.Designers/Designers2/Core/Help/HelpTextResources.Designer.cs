@@ -1730,6 +1730,37 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the type of system information selected..
+        /// </summary>
+        public static string GatherSystemInformationHelpResult {
+            get {
+                return ResourceManager.GetString("GatherSystemInformationHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the type of system information you would like to use..
+        /// </summary>
+        public static string GatherSystemInformationHelpSysInfoType {
+            get {
+                return ResourceManager.GetString("GatherSystemInformationHelpSysInfoType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string GatherSystemInformationToolTipResult {
+            get {
+                return ResourceManager.GetString("GatherSystemInformationToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///Put the full path of the destination you are moving to here.
         ///You can use File System, URI, SFTP, FTP or FTPS format..
@@ -3302,6 +3333,76 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string WriteFileToolTipUsername {
             get {
                 return ResourceManager.GetString("WriteFileToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the result of the Xpath expression.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record.
+        ///Each Xpath expression returned will be added to the result recordset in a new record or comma separated list if a scalar variable is defined..
+        /// </summary>
+        public static string XPathHelpResult {
+            get {
+                return ResourceManager.GetString("XPathHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any data or variable can go in here.
+        ///To traverse an XML document and return information from it, enter the raw XML in here..
+        /// </summary>
+        public static string XPathHelpXML {
+            get {
+                return ResourceManager.GetString("XPathHelpXML", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xpath notation describing the route to the data in the XML input..
+        /// </summary>
+        public static string XPathHelpXPath {
+            get {
+                return ResourceManager.GetString("XPathHelpXPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string XPathToolTipResult {
+            get {
+                return ResourceManager.GetString("XPathToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string XPathToolTipXML {
+            get {
+                return ResourceManager.GetString("XPathToolTipXML", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string XPathToolTipXPath {
+            get {
+                return ResourceManager.GetString("XPathToolTipXPath", resourceCulture);
             }
         }
         
