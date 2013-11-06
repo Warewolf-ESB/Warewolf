@@ -78,6 +78,7 @@
     <Compile Include="Adorners\AdornerToggleButton.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AttachedProperties\PasswordBoxAssistant.cs" />
     <Compile Include="Designers2\BaseConvert\BaseConvertDesignerViewModel.cs" />
     <Compile Include="Designers2\BaseConvert\BaseConvertDesigner.xaml.cs">
       <DependentUpon>BaseConvertDesigner.xaml</DependentUpon>
@@ -322,6 +323,9 @@
     <Compile Include="Designers2\Random\RandomDesignerViewModel.cs" />
     <Compile Include="Designers2\Random\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ReadFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\ReadFile\ReadFileDesigner.xaml.cs">
       <DependentUpon>ReadFileDesigner.xaml</DependentUpon>
@@ -725,6 +729,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Random\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ReadFile\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

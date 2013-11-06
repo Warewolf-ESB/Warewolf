@@ -123,7 +123,7 @@
                              DataContext="{Binding PreviewViewModel}" />
 
         <errors:OnError Grid.Column="0"
-                        Grid.Row="4 "
+                        Grid.Row="4"
                         Grid.ColumnSpan="2"
                         Margin="2" />
 
