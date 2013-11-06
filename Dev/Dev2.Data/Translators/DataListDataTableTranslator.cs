@@ -97,9 +97,13 @@ namespace Dev2.Data.Translators
                     var rsName = DataListUtil.ExtractRecordsetNameFromValue(def.Value);
                     var rsNameUse = def.RecordSetName;
 
-                    if (string.IsNullOrEmpty(rsName))
+                    if(string.IsNullOrEmpty(rsName))
                     {
                         rsName = rsNameUse;
+                    }
+                    if(string.IsNullOrEmpty(rsName))
+                    {
+                        rsName = def.Name;
                     }
 
                     if (processedRecNames.Contains(rsName))
