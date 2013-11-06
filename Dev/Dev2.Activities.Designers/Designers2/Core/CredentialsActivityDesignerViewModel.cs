@@ -33,17 +33,7 @@ namespace Dev2.Activities.Designers2.Core
         string UserName { get { return GetProperty<string>(); } }
         string Password { get { return GetProperty<string>(); } }
 
-
-        public override void Validate()
-        {
-            Errors = null;
-            ValidateInputs();
-            ValidateUserNameAndPassword();
-        }
-
-        protected abstract void ValidateInputs();
-
-        void ValidateUserNameAndPassword()
+        protected void ValidateUserNameAndPassword()
         {
             var errors = new List<IActionableErrorInfo>();
 
