@@ -67,18 +67,13 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         static FileInfo DenyAccessToSecurityFileToEveryone()
         {
-            
             var fileInfo = new FileInfo("secure.config");
-
             // Get a DirectorySecurity object that represents the current security settings.
             var accessControl = fileInfo.GetAccessControl();
-
             //remove any inherited access
             accessControl.SetAccessRuleProtection(true, false);
-
             //get any special user access
             var rules = accessControl.GetAccessRules(true, true, typeof(SecurityIdentifier));
-
             //remove any special access
             foreach(FileSystemAccessRule rule in rules)
             {

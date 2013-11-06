@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using Dev2.Common;
 using Dev2.Data.Settings;
+using Dev2.Data.Settings.Security;
 using Dev2.DynamicServices;
 using Dev2.Workspaces;
+using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -18,8 +20,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 var securityRead = new SecurityRead();
-                securityRead.Execute(values, theWorkspace);
-                settings.Security = securityRead.Permissions;
+                var jsonPermissions = securityRead.Execute(values, theWorkspace);
+                settings.Security = JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(jsonPermissions);
 
             }
             catch(Exception ex)
