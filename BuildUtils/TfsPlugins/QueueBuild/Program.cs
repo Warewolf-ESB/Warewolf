@@ -36,7 +36,7 @@ namespace QueueBuild
                 File.WriteAllText(LogFile(), buildTS + " :: *** Arguments Error With {  " + argsPayload + " }");
             }
 
-            string server = "";//args[0].Trim();
+            string server = args[0].Trim();
             string project = args[1].Trim();
             string def = args[2].Trim();
             string user = args[3].Trim();
