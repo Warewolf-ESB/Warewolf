@@ -18,8 +18,9 @@ namespace QueueBuildTest
             string def = "Async Integration Run - Dev Merge";
             string set = "Gated_2013-08-05_01.51.52.5566";
             string user = "Ashley Lewis";
+            string agentTag = "someagenttag";
 
-            int id = bq.Run(server, project, def, set, user);
+            int id = bq.Run(server, project, def, set, user, agentTag);
 
             Assert.IsTrue(id > 0, "ID is not valid");
         }
