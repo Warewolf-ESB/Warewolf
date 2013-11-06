@@ -310,7 +310,7 @@
                           <If Condition="[TryStartEnvironment]" DisplayName="If Try Start Environment" sap2010:WorkflowViewState.IdRef="If_40">
                             <If.Then>
                               <Sequence sap2010:WorkflowViewState.IdRef="Sequence_33">
-                                <If Condition="[UseGhostLauncher]" sap2010:WorkflowViewState.IdRef="If_39">
+                                <If Condition="[UseGhostLauncher]" DisplayName="If Use Ghost Launcher" sap2010:WorkflowViewState.IdRef="If_39">
                                   <If.Then>
                                     <Sequence sap2010:WorkflowViewState.IdRef="Sequence_34">
                                       <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;C:\CodedUI\&quot; &amp; RunBatFileName &amp; &quot;&quot;&quot;&quot;]" DisplayName="Start ENV with GhostLauncher" FileName="C:\TfsBuildUtils\GhostView.exe" sap2010:WorkflowViewState.IdRef="InvokeProcess_8">
