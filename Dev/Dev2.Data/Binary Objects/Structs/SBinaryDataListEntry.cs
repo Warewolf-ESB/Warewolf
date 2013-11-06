@@ -52,11 +52,22 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             }
         }
 
+        public IIndexIterator Keys
+        {
+            get { return _myKeys.FetchIterator(); }
+        }
+
+        public Guid DataListKey { get; set; }
+
+        #endregion
+
+        #region Indexor
+
         public IList<IBinaryDataListItem> this[int key]
         {
             get
             {
-                if (key >= 0)
+                if(key >= 0)
                 {
                     ScrubInternalTO();
 
@@ -64,25 +75,25 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                     var fetchKeys = GenerateFederatedKey(key);
 
                     short colCnt = 1;
-                    if (Columns != null)
+                    if(Columns != null)
                     {
-                        colCnt = (short) Columns.Count;
+                        colCnt = (short)Columns.Count;
                     }
 
                     // I am going to look up all the different pieces then, push them together?!
-                    foreach (var fedKey in fetchKeys.FetchAsList())
+                    foreach(var fedKey in fetchKeys.FetchAsList())
                     {
                         BinaryDataListRow theRow;
                         _itemStorage.TryGetValue(fedKey.TheKey, colCnt, out theRow);
 
-                        if (theRow != null)
+                        if(theRow != null)
                         {
 
                             var myCols = fedKey.ImpactedColumns;
 
-                            if( myCols!= null)
+                            if(myCols != null)
                             {
-                                foreach (var col in myCols)
+                                foreach(var col in myCols)
                                 {
                                     // TODO : Fetch index value from
                                     var internalIdx = InternalFetchColumnIndex(col);
@@ -99,7 +110,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                             {
                                 // we have a scalar value we are dealing with ;)
                                 IBinaryDataListItem tmp = _internalReturnValue[0];
-                                        tmp.UpdateValue(theRow.FetchValue(0,1));
+                                tmp.UpdateValue(theRow.FetchValue(0, 1));
                             }
                         }
                     }
@@ -112,13 +123,13 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
             set
             {
-                if (key >= 0)
+                if(key >= 0)
                 {
                     // we need to fetch federated parts if possible ;)
                     short colCnt = 1;
-                    if (Columns != null)
+                    if(Columns != null)
                     {
-                        colCnt = (short) Columns.Count;
+                        colCnt = (short)Columns.Count;
                     }
 
                     var fetchKeys = GenerateFederatedKey(key);
@@ -127,80 +138,80 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                     BinaryDataListRow childRow = null; // Child location
 
                     // Fetch master location
-                    if (fetchKeys.HasParentKey())
+                    if(fetchKeys.HasParentKey())
                     {
-                        if (!_itemStorage.TryGetValue(fetchKeys.ParentKey.TheKey, colCnt, out parentRow))
+                        if(!_itemStorage.TryGetValue(fetchKeys.ParentKey.TheKey, colCnt, out parentRow))
                         {
                             throw new Exception("Fatal Internal DataList Storage Error");
                         }
                     }
 
                     // fetch child location
-                    if (!_itemStorage.TryGetValue(fetchKeys.ChildKey.TheKey, colCnt, out childRow))
+                    if(!_itemStorage.TryGetValue(fetchKeys.ChildKey.TheKey, colCnt, out childRow))
                     {
                         throw new Exception("Fatal Internal DataList Storage Error");
                     }
 
-                        // we got the row object, now update it ;)
-                        foreach (IBinaryDataListItem itm in value)
+                    // we got the row object, now update it ;)
+                    foreach(IBinaryDataListItem itm in value)
+                    {
+                        if(!string.IsNullOrEmpty(itm.FieldName))
                         {
-                            if (!string.IsNullOrEmpty(itm.FieldName))
+                            int idx = InternalFetchColumnIndex(itm.FieldName); // Fetch correct index 
+                            BinaryDataListAlias keyAlias;
+
+                            // adjust if there is a mapping ;)
+                            if(_keyToAliasMap.TryGetValue(itm.FieldName, out keyAlias))
                             {
-                                int idx = InternalFetchColumnIndex(itm.FieldName); // Fetch correct index 
-                                BinaryDataListAlias keyAlias;
+                                var parentColumns = keyAlias.MasterEntry.Columns;
+                                var parentColumn = keyAlias.MasterColumn;
 
-                                // adjust if there is a mapping ;)
-                                if (_keyToAliasMap.TryGetValue(itm.FieldName, out keyAlias))
+                                idx = InternalParentFetchColumnIndex(parentColumn, parentColumns);
+
+                                colCnt = (short)parentColumns.Count;
+                            }
+
+                            if(idx == -1 && !IsRecordset)
+                            {
+                                idx = 0; // adjust for scalar
+                            }
+
+                            if(idx >= 0)
+                            {
+                                // it is an alias mapping ;)
+                                if(keyAlias != null)
                                 {
-                                    var parentColumns = keyAlias.MasterEntry.Columns;
-                                    var parentColumn = keyAlias.MasterColumn;
-
-                                    idx = InternalParentFetchColumnIndex(parentColumn, parentColumns);
-
-                                    colCnt = (short) parentColumns.Count;
+                                    // alias update, use row 1
+                                    parentRow.UpdateValue(itm.TheValue, idx, colCnt);
                                 }
-
-                                if (idx == -1 && !IsRecordset)
+                                else
                                 {
-                                    idx = 0; // adjust for scalar
-                                }
-
-                                if (idx >= 0)
-                                {
-                                    // it is an alias mapping ;)
-                                    if (keyAlias != null)
-                                    {
-                                        // alias update, use row 1
-                                        parentRow.UpdateValue(itm.TheValue, idx, colCnt);
-                                }
-                                    else
-                                {
-                                        // normal update ;)
-                                        childRow.UpdateValue(itm.TheValue, idx, colCnt);
+                                    // normal update ;)
+                                    childRow.UpdateValue(itm.TheValue, idx, colCnt);
                                 }
                             }
                         }
                     }
 
-                        // adjust correctly ;)
-                    if ((parentRow != null && !parentRow.IsEmpty) || (!childRow.IsEmpty))
+                    // adjust correctly ;)
+                    if((parentRow != null && !parentRow.IsEmpty) || (!childRow.IsEmpty))
                     {
                         _myKeys.SetMaxValue(key, IsEmtpy);
                     }
                     else
                     {
-                    //we removed it?!
+                        //we removed it?!
                         _myKeys.AddGap(key);
                     }
-                        
+
                     // update federated values ;)
-                    if (parentRow != null)
+                    if(parentRow != null)
                     {
                         // TODO : Make Faster, AND Adjust for when my view is different to the row's view!
 
                         // we need to signal master entry to update its view ;)
                         var me = fetchKeys.MasterEntry;
-                        if (me != null)
+                        if(me != null)
                         {
                             me.AdjustIndexView(_myKeys.Gaps, _myKeys.GetMinIndex(), _myKeys.GetMaxIndex());
                         }
@@ -208,7 +219,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                         _itemStorage.TrySetValue(fetchKeys.ParentKey.TheKey, colCnt, parentRow);
                     }
 
-                    if (childRow != null)
+                    if(childRow != null)
                     {
                         _itemStorage.TrySetValue(fetchKeys.ChildKey.TheKey, colCnt, childRow);
                     }
@@ -216,13 +227,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                 }
             }
         }
-
-        public IIndexIterator Keys
-        {
-            get { return _myKeys.FetchIterator(); }
-        }
-
-        public Guid DataListKey { get; set; }
 
         #endregion
 

@@ -519,7 +519,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         }
 
         /// <summary>
-        ///     Fetches the recordset indexs.
+        /// Fetches the recordset indexs.
         /// </summary>
         /// <returns></returns>
         public IIndexIterator FetchRecordsetIndexes()

@@ -35,5 +35,19 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
             Assert.AreEqual(expected, XElement.Parse(ResponseData).ToString(SaveOptions.None));
         }
 
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("WorkflowService_Invoke")]
+        public void WorkflowService_Invoke_WithNestedWorkflowNestedForEachAllSameRecordset_ShouldStillMapCorrectly()
+        {
+            //------------Setup for test--------------------------
+            string PostData = String.Format("{0}{1}", WebserverURI, "Inner Foreach Execution Type Test");
+            string expected = "<Result>PASS</Result>";
+            //------------Execute Test---------------------------
+            string responseData = TestHelper.PostDataToWebserver(PostData);
+            //------------Assert Results-------------------------
+            StringAssert.Contains(responseData, expected);
+        }
+
     }
 }

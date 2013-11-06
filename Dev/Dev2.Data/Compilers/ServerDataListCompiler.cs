@@ -1945,7 +1945,7 @@ namespace Dev2.Server.Datalist
 
                     if(idxType == enRecordsetIndexType.Star)
                     {
-                        var res = val.Clone(enTranslationDepth.Data, bdl.UID, out error);
+                        var res = val.Clone(enTranslationDepth.Shape, bdl.UID, out error);
                         res.MakeRecordsetEvaluateReady(GlobalConstants.AllIndexes, colsToKeep, out error);
                         errors.AddError(error);
 

@@ -58,17 +58,17 @@ namespace Dev2.Data.Translators
 
                         var idxItr = entry.FetchRecordsetIndexes();
 
-                        while (idxItr.HasMore())
+                        while(idxItr.HasMore())
                         {
                             var i = idxItr.FetchNextIndex();
                             IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
-                                errors.AddError(error);
+                            errors.AddError(error);
 
                             result.Append("<");
                             result.Append(entry.Namespace);
                             result.Append(">");
 
-                            foreach (IBinaryDataListItem col in rowData)
+                            foreach(IBinaryDataListItem col in rowData)
                             {
                                 string fName = col.FieldName;
 
