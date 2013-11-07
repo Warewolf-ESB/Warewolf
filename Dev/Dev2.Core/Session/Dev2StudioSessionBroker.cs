@@ -248,7 +248,7 @@ namespace Dev2.Session
                         _debugPersistPath = _rootPath + "\\" + _savePath;
                     }
 
-                    _debugPath = ActivityIOFactory.CreatePathFromString(_debugPersistPath);
+                    _debugPath = ActivityIOFactory.CreatePathFromString(_debugPersistPath,"","");
                     _debugOptsEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(_debugPath);
                 }
             }

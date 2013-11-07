@@ -347,7 +347,7 @@ namespace Dev2.PathOperations {
                         while(!reader.EndOfStream)
                         {
                             string uri = BuildValidPathForFTP(src, reader.ReadLine());
-                            result.Add(ActivityIOFactory.CreatePathFromString(uri));
+                            result.Add(ActivityIOFactory.CreatePathFromString(uri,src.Username,src.Password));
                         }
 
                         reader.Close();
@@ -411,7 +411,7 @@ namespace Dev2.PathOperations {
                     if(file != "..")
                     {
                         string uri = BuildValidPathForFTP(src, file);
-                        result.Add(ActivityIOFactory.CreatePathFromString(uri));
+                        result.Add(ActivityIOFactory.CreatePathFromString(uri,src.Username,src.Password));
                     }
                 }
 

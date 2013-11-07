@@ -124,7 +124,7 @@ namespace Dev2.Integration.Tests.Activities
             try
             {
                 Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
-                IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmpfile2);
+                IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmpfile2,"","");
                 IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile1, TestResource.PathOperations_Incorrect_Username, TestResource.PathOperations_Correct_Password);
                 IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
                 IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
@@ -174,8 +174,8 @@ namespace Dev2.Integration.Tests.Activities
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
             string tmp = System.IO.Path.GetTempFileName();
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp);
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile2);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
             IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
             IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -195,8 +195,8 @@ namespace Dev2.Integration.Tests.Activities
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
             string tmp = System.IO.Path.GetTempFileName();
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp);
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmp);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
             IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -217,8 +217,8 @@ namespace Dev2.Integration.Tests.Activities
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
             string tmp = System.IO.Path.GetTempFileName();
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp);
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(@"C://NoFile.txt");
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(@"C://NoFile.txt", "", "");
             IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
             IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -333,7 +333,7 @@ namespace Dev2.Integration.Tests.Activities
                 Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
                 string tmp = System.IO.Path.GetTempFileName();
                 IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_AuthPath, ParserStrings.PathOperations_Incorrect_Username, ParserStrings.PathOperations_Correct_Password);
-                IActivityIOPath src = ActivityIOFactory.CreatePathFromString(@"ftp://NoFile.txt");
+                IActivityIOPath src = ActivityIOFactory.CreatePathFromString(@"ftp://NoFile.txt", "", "");
                 IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
                 IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -359,7 +359,7 @@ namespace Dev2.Integration.Tests.Activities
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
             string tmp = System.IO.Path.GetTempFileName();
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(string.Concat(ParserStrings.PathOperations_FTPS_AuthPath, "/TestDirectory/Testing.txt"), ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, true);
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmp);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOOperationsEndPoint srcEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
             IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -380,7 +380,7 @@ namespace Dev2.Integration.Tests.Activities
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
             string tmp = System.IO.Path.GetTempFileName();
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(string.Concat(ParserStrings.PathOperations_FTPS_AuthPath, "/TestDirectory/Testing.txt"), ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, false);
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmp);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOOperationsEndPoint srcEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
             IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -409,7 +409,7 @@ namespace Dev2.Integration.Tests.Activities
         {
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
             Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(false, "XYZ", true);
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile1);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile1, "", "");
             IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             string result = broker.PutRaw(endPoint, opTO);
@@ -425,7 +425,7 @@ namespace Dev2.Integration.Tests.Activities
         {
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
             Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(true, "XYZ", false);
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile1);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile1, "", "");
             IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             string result = broker.PutRaw(endPoint, opTO);
@@ -441,7 +441,7 @@ namespace Dev2.Integration.Tests.Activities
         {
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
             Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(true, "XYZ", true);
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile1);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile1, "", "");
             IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             string result = broker.PutRaw(endPoint, opTO);
@@ -480,7 +480,7 @@ namespace Dev2.Integration.Tests.Activities
         {
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
             Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(false, "XYZ", true);
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile1);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile1, "", "");
             IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             string result = broker.PutRaw(endPoint, opTO);
@@ -496,7 +496,7 @@ namespace Dev2.Integration.Tests.Activities
         {
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
             Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(false, "XYZ", true);
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile2);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
             IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             string result = broker.PutRaw(endPoint, opTO);
@@ -662,9 +662,9 @@ namespace Dev2.Integration.Tests.Activities
             string file1 = PathIOTestingUtils.CreateTmpFile(srcDir);
             string file2 = PathIOTestingUtils.CreateTmpFile(srcDir);
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir, "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -695,9 +695,9 @@ namespace Dev2.Integration.Tests.Activities
             string file1 = PathIOTestingUtils.CreateTmpFile(srcDir);
             string file2 = PathIOTestingUtils.CreateTmpFile(srcDir);
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir, "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -724,9 +724,9 @@ namespace Dev2.Integration.Tests.Activities
             string srcDir = PathIOTestingUtils.CreateTmpDirectory();
             string dstDir = PathIOTestingUtils.CreateTmpDirectory();
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir, "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir,"","");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -757,9 +757,9 @@ namespace Dev2.Integration.Tests.Activities
             string file1 = PathIOTestingUtils.CreateTmpFile(srcDir);
             string file2 = PathIOTestingUtils.CreateTmpFile(srcDir);
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir, "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -787,9 +787,9 @@ namespace Dev2.Integration.Tests.Activities
 
             string file1 = PathIOTestingUtils.CreateTmpFile(srcDir);
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(file1);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(file1, "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -817,9 +817,9 @@ namespace Dev2.Integration.Tests.Activities
             string file1 = PathIOTestingUtils.CreateTmpFile(srcDir);
             string file2 = PathIOTestingUtils.CreateTmpFile(srcDir);
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir, "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -847,9 +847,9 @@ namespace Dev2.Integration.Tests.Activities
 
             string file1 = PathIOTestingUtils.CreateTmpFile(srcDir);
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(file1);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(file1, "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -875,9 +875,9 @@ namespace Dev2.Integration.Tests.Activities
             string srcDir = ParserStrings.PathOperations_FTP_NoAuth + "/GET_DATA/";
             string dstDir = ParserStrings.PathOperations_FTP_NoAuth + "/PUT_DATA/";
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir, "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -903,9 +903,9 @@ namespace Dev2.Integration.Tests.Activities
             string srcDir = ParserStrings.PathOperations_FTP_NoAuth + "/GET_DATA/file1.txt";
             string dstDir = ParserStrings.PathOperations_FTP_NoAuth + "/PUT_DATA/";
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir, "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -933,9 +933,9 @@ namespace Dev2.Integration.Tests.Activities
             string file1 = PathIOTestingUtils.CreateTmpFile(dstDir);
             string file2 = PathIOTestingUtils.CreateTmpFile(dstDir);
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir, "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -963,9 +963,9 @@ namespace Dev2.Integration.Tests.Activities
             string file1 = PathIOTestingUtils.CreateTmpFile(dstDir);
             string file2 = PathIOTestingUtils.CreateTmpFile(dstDir);
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir, "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -995,7 +995,7 @@ namespace Dev2.Integration.Tests.Activities
 
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -1025,7 +1025,7 @@ namespace Dev2.Integration.Tests.Activities
 
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir, ParserStrings.PathOperations_Incorrect_Username, ParserStrings.PathOperations_Incorrect_Password);
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -1064,13 +1064,13 @@ namespace Dev2.Integration.Tests.Activities
             string[] files = new string[] { file1 };
             string ZipFileName = PathIOTestingUtils.ZipFile(srcDir, files);
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(ZipFileName);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(ZipFileName, "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-            IActivityIOPath UnzipDestinationPath = ActivityIOFactory.CreatePathFromString(dstDir + "\\Users");
+            IActivityIOPath UnzipDestinationPath = ActivityIOFactory.CreatePathFromString(dstDir + "\\Users", "", "");
             Dev2UnZipOperationTO unzipOpTO = ActivityIOFactory.CreateUnzipTO(null);
             broker.UnZip(srcEP, dstEP, unzipOpTO);
             string fileName = file1.Remove(0, @"C:\".Length);
@@ -1104,7 +1104,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-            IActivityIOPath UnzipDestinationPath = ActivityIOFactory.CreatePathFromString(dstDir + "\\Users");
+            IActivityIOPath UnzipDestinationPath = ActivityIOFactory.CreatePathFromString(dstDir + "\\Users", "", "");
             Dev2UnZipOperationTO unzipOpTO = ActivityIOFactory.CreateUnzipTO(null);
 
             string result = broker.UnZip(srcEP, dstEP, unzipOpTO);
@@ -1200,7 +1200,7 @@ namespace Dev2.Integration.Tests.Activities
 
             string ZipFileName = PathIOTestingUtils.ZipFile(srcDir, files);
             string ZipPath = Path.GetFileName(ZipFileName);
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(ZipFileName);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(ZipFileName, "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, ParserStrings.PathOperations_Incorrect_Username, ParserStrings.PathOperations_Incorrect_Password);
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
@@ -1218,7 +1218,7 @@ namespace Dev2.Integration.Tests.Activities
             {
                 Assert.AreEqual(@"The remote server returned an error: (530) Not logged in.", ex.Message);
             }
-            src = ActivityIOFactory.CreatePathFromString(srcDir);
+            src = ActivityIOFactory.CreatePathFromString(srcDir, "", "");
             srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
             broker.Delete(srcEP);
         }
@@ -1237,9 +1237,9 @@ namespace Dev2.Integration.Tests.Activities
 
             string ZipFileName = PathIOTestingUtils.ZipFile(srcDir, files, "test");
             string ZipPath = Path.GetFileName(ZipFileName);
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(ZipFileName);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(ZipFileName, "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -1267,9 +1267,9 @@ namespace Dev2.Integration.Tests.Activities
             string srcDir = ParserStrings.PathOperations_FTP_NoAuth + "/GET_DATA/";
             string dstDir = ParserStrings.PathOperations_FTP_NoAuth + "/PUT_DATA/Test/";
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir + "TestZipFile.zip");
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir + "TestZipFile.zip", "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -1306,9 +1306,9 @@ namespace Dev2.Integration.Tests.Activities
             string dstDir = PathIOTestingUtils.CreateTmpDirectory();
 
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir, "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -1337,9 +1337,9 @@ namespace Dev2.Integration.Tests.Activities
             string dstDir = PathIOTestingUtils.CreateTmpDirectory();
 
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir, "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -1406,9 +1406,9 @@ namespace Dev2.Integration.Tests.Activities
 
             string dstDir = ParserStrings.PathOperations_FTP_NoAuth + "/PUT_DATA/";
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir, "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -1467,9 +1467,9 @@ namespace Dev2.Integration.Tests.Activities
             string srcDir = ParserStrings.PathOperations_FTP_NoAuth + "/GET_DATA/";
             string dstDir = PathIOTestingUtils.CreateTmpDirectory();
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir + "TestZipFile.zip");
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir + "TestZipFile.zip", "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -1503,9 +1503,9 @@ namespace Dev2.Integration.Tests.Activities
             string srcDir = ParserStrings.PathOperations_FTP_NoAuth + "/testssdfs/";
             string dstDir = PathIOTestingUtils.CreateTmpDirectory();
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir + "TestZipFile.zip");
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir + "TestZipFile.zip", "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -1529,9 +1529,9 @@ namespace Dev2.Integration.Tests.Activities
             string srcDir = ParserStrings.PathOperations_FTP_NoAuth + "/testssdfs/";
             string dstDir = PathIOTestingUtils.CreateTmpDirectory();
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir + "TestZipFile.zip");
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcDir + "TestZipFile.zip", "", "");
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -1559,8 +1559,8 @@ namespace Dev2.Integration.Tests.Activities
         public void CopyFrom_FileSystem_Overwrite_SystemCredentials_FileExists()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmpfile2);
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile1);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile1, "", "");
             IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
             IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -1576,8 +1576,8 @@ namespace Dev2.Integration.Tests.Activities
         public void CopyFrom_FileToFolder_Overwrite_SystemCredentials_FileExists_FolderExists()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmpdir1);
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile1);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmpdir1, "", "");
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile1, "", "");
             IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
             IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -1594,8 +1594,8 @@ namespace Dev2.Integration.Tests.Activities
             string fileName = "\\TestFile.txt";
 
 
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmpdir1 + fileName);
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile1);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmpdir1 + fileName, "", "");
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile1, "", "");
             IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
             IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -1615,8 +1615,8 @@ namespace Dev2.Integration.Tests.Activities
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
             string theDst = tmpdir1 + "\\" + Guid.NewGuid() + "_dir\\" + Guid.NewGuid() + "\\";
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(theDst);
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile1);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(theDst, "", "");
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile1, "", "");
             IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
             IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -1631,9 +1631,9 @@ namespace Dev2.Integration.Tests.Activities
         public void CopyFromFileSystem_WithNoFilePresent_Overwrite_SystemCredentials_OutputExists()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmpfile2);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
             string srcFile = tmpdir1 + "abc.txt";
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcFile);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(srcFile, "", "");
             IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
             IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -1692,8 +1692,8 @@ namespace Dev2.Integration.Tests.Activities
         public void CopyFromFTP_WithNOFilePresent_Overwrite_SystemCredentials()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmpfile2);
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(@"ftp://wrongFile.txt");
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(@"ftp://wrongFile.txt", "", "");
             IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
             IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -1747,7 +1747,7 @@ namespace Dev2.Integration.Tests.Activities
         public void CopyFromFTP_WithFilePresent_InvalidCredentials_OverwriteFalse()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmpfile2);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_AuthPath, ParserStrings.PathOperations_Incorrect_Username, ParserStrings.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
             IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
@@ -1764,7 +1764,7 @@ namespace Dev2.Integration.Tests.Activities
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
             string tmp = Path.GetTempFileName();
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(string.Concat(ParserStrings.PathOperations_FTPS_AuthPath, "/TestDirectory/file1.txt"), ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, true);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
             IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();

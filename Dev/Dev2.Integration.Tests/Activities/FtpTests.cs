@@ -176,7 +176,7 @@ namespace Dev2.Integration.Tests.Activities
         [TestMethod]
         public void GetWithNoUserName_Expected_Stream()
         {
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "GET_DATA/file1.txt");
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "GET_DATA/file1.txt", "", "");
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             Stream result = FTPPro.Get(path);
 
@@ -190,7 +190,7 @@ namespace Dev2.Integration.Tests.Activities
         [TestMethod]
         public void GetWithNoUserName_FileNotPresent_Expected_Error()
         {
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "GET_DATA/file99.txt");
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "GET_DATA/file99.txt", "", "");
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             try
@@ -252,7 +252,7 @@ namespace Dev2.Integration.Tests.Activities
         [TestMethod]
         public void GetWithCorrectUserName_WrongFile_Expected_Error()
         {
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "GET_DATA/file99.txt");
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "GET_DATA/file99.txt", "", "");
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             try
@@ -281,7 +281,7 @@ namespace Dev2.Integration.Tests.Activities
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
             string path = ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/" + Guid.NewGuid() + ".test";
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(path);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(path, "", "");
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             byte[] data = File.ReadAllBytes(tmpfile2);
             Stream s = new MemoryStream(data);
@@ -297,7 +297,7 @@ namespace Dev2.Integration.Tests.Activities
         public void PutWithOverwriteFalse_NoUserPassword_FileExist_Expected_NoStream()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/file1.txt");
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/file1.txt", "", "");
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             byte[] data = File.ReadAllBytes(tmpfile2);
             Stream s = new MemoryStream(data);
@@ -322,7 +322,7 @@ namespace Dev2.Integration.Tests.Activities
         public void PutWithOverwriteTrue_NoUserPassword_FileNotExist_Expected_Stream()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/" + Guid.NewGuid() + ".test");
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/" + Guid.NewGuid() + ".test", "", "");
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             byte[] data = File.ReadAllBytes(tmpfile2);
             Stream s = new MemoryStream(data);
@@ -338,7 +338,7 @@ namespace Dev2.Integration.Tests.Activities
         public void PutWithOverwriteTrue_NoUserPassword_FileExist_Expected_Stream()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/file1.txt");
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/file1.txt", "", "");
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             byte[] data = File.ReadAllBytes(tmpfile2);
             Stream s = new MemoryStream(data);
@@ -539,7 +539,7 @@ namespace Dev2.Integration.Tests.Activities
 
             string delFile = PathIOTestingUtils.CreateFileFTP(ParserStrings.PathOperations_FTP_NoAuth + "DEL_DATA/", string.Empty, string.Empty, false);
 
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(delFile);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(delFile, "", "");
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             Assert.IsTrue(FTPPro.Delete(path));
@@ -549,7 +549,7 @@ namespace Dev2.Integration.Tests.Activities
         public void DeleteWithNoUsername_FileNotPresent_Expected_Error()
         {
 
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "DEL_DATA/abc.txt");
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "DEL_DATA/abc.txt", "", "");
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             try
@@ -638,7 +638,7 @@ namespace Dev2.Integration.Tests.Activities
         [TestMethod]
         public void ListDirectoryWithNoUsername_ValidPath_Expected_List()
         {
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "DIR_LIST/");
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "DIR_LIST/", "", "");
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             IList<IActivityIOPath> tmp = FTPPro.ListDirectory(path);
 
@@ -648,7 +648,7 @@ namespace Dev2.Integration.Tests.Activities
         [TestMethod]
         public void ListDirectoryWithNoUsername_InValidPath_Expected_Error()
         {
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "DIR_LIST2/");
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "DIR_LIST2/", "", "");
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             try
@@ -736,7 +736,7 @@ namespace Dev2.Integration.Tests.Activities
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
             string newDir = Guid.NewGuid() + "_test";
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/DIR_CREATE/" + newDir);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/DIR_CREATE/" + newDir, "", "");
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             bool ok = FTPPro.CreateDirectory(path, opTO);
@@ -756,7 +756,7 @@ namespace Dev2.Integration.Tests.Activities
 
             CreateDirectory(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/DIR_CREATE/" + newDir, "", "", false);
 
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/DIR_CREATE/" + newDir);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/DIR_CREATE/" + newDir, "", "");
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             try
@@ -778,7 +778,7 @@ namespace Dev2.Integration.Tests.Activities
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
             string newDir = Guid.NewGuid() + "_test";
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/DIR_CREATE/" + newDir);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/DIR_CREATE/" + newDir, "", "");
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             bool ok = FTPPro.CreateDirectory(path, opTO);
@@ -798,7 +798,7 @@ namespace Dev2.Integration.Tests.Activities
 
             CreateDirectory(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/DIR_CREATE/" + newDir, "", "", false);
 
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/DIR_CREATE/" + newDir);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/DIR_CREATE/" + newDir, "", "");
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             bool ok = FTPPro.CreateDirectory(path, opTO);

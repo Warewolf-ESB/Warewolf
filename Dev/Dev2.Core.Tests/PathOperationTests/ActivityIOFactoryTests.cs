@@ -62,7 +62,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
         [TestMethod]
         public void CreatePathFromString_Expected_IActivityIOPath_FileSystem_Type() {
 
-            IActivityIOPath result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FileSystem_Path);
+            IActivityIOPath result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FileSystem_Path,"","");
 
             Assert.AreEqual(enActivityIOPathType.FileSystem, result.PathType);
         }
@@ -73,7 +73,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
         [TestMethod]
         public void CreatePathFromString_Expected_IActivityIOPath_FTP_Type() {
 
-            IActivityIOPath result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_Path);
+            IActivityIOPath result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_Path, "", "");
 
             Assert.AreEqual(enActivityIOPathType.FTP, result.PathType);
         }
@@ -84,7 +84,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
         [TestMethod]
         public void CreatePathFromString_Expected_IActivityIOPath_FTPS_Type() {
 
-            IActivityIOPath result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTPS_AuthPath);
+            IActivityIOPath result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTPS_AuthPath, "", "");
 
             Assert.AreEqual(enActivityIOPathType.FTPS, result.PathType);
         }
@@ -100,7 +100,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
         [TestMethod]
         public void CreateOperationEndPointFromIOPath_Expected_IActivityIOOperationsEndPoint_FileSysytemProvider_Type() {
 
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FileSystem_Path);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FileSystem_Path, "", "");
             IActivityIOOperationsEndPoint result = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             Assert.IsTrue(result.GetType() == typeof(Dev2FileSystemProvider));
@@ -113,7 +113,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
         [TestMethod]
         public void CreateOperationEndPointFromIOPath_Expected_IActivityIOOperationsEndPoint_FTPProvider_Type() {
 
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_Path);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_Path, "", "");
             IActivityIOOperationsEndPoint result = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             Assert.IsTrue(result.GetType() == typeof(Dev2FTPProvider));

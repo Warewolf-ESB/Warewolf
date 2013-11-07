@@ -19,15 +19,15 @@ namespace Dev2.PathOperations
         // used to check what type services what
         private static IList<IActivityIOOperationsEndPoint> _referenceCheckers = null;
 
-        /// <summary>
-        /// Return an IActivityIOPath based upont the path string
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public static IActivityIOPath CreatePathFromString(string path)
-        {
-            return CreatePathFromString(path, string.Empty, string.Empty);
-        }
+//        /// <summary>
+//        /// Return an IActivityIOPath based upont the path string
+//        /// </summary>
+//        /// <param name="path"></param>
+//        /// <returns></returns>
+//        public static IActivityIOPath CreatePathFromString(string path)
+//        {
+//            return CreatePathFromString(path, string.Empty, string.Empty);
+//        }
 
         /// <summary>
         /// Return an IActivityIOPath based upont the path string

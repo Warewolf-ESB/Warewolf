@@ -164,7 +164,7 @@ namespace Dev2.PathOperations
            string origDstPath = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(dst.IOPath.Path);
            foreach(var activityIOPath in activityIOPaths)
            {
-               IActivityIOPath pathFromString = ActivityIOFactory.CreatePathFromString(origDstPath + activityIOPath);
+               IActivityIOPath pathFromString = ActivityIOFactory.CreatePathFromString(origDstPath + activityIOPath,dst.IOPath.Username,dst.IOPath.Password);
                dst.CreateDirectory(pathFromString, args);
            }
 
@@ -177,7 +177,8 @@ namespace Dev2.PathOperations
             string result = resultOk;
 
             // check the the dir strucutre exist
-            IList<string> dirParts = MakeDirectoryParts(dst.IOPath, dst.PathSeperator());
+            var activityIOPath = dst.IOPath;
+            IList<string> dirParts = MakeDirectoryParts(activityIOPath, dst.PathSeperator());
 
             // check from lowest path part up
             int deepestIndex = -1;
@@ -187,7 +188,7 @@ namespace Dev2.PathOperations
 
             while (pos >= 0 && deepestIndex == -1)
             {
-                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(dirParts[pos]);
+                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(dirParts[pos],activityIOPath.Username,activityIOPath.Password);
                 try
                 {
                     if (dst.ListDirectory(tmpPath) != null)
@@ -211,7 +212,7 @@ namespace Dev2.PathOperations
 
             while (pos <= startDepth && ok)
             {
-                IActivityIOPath toCreate = ActivityIOFactory.CreatePathFromString(dirParts[pos]);
+                IActivityIOPath toCreate = ActivityIOFactory.CreatePathFromString(dirParts[pos],dst.IOPath.Username,dst.IOPath.Password);
                 dst.IOPath = toCreate;
                 ok = CreateDirectory(dst, args);
                 pos++;
@@ -488,7 +489,7 @@ namespace Dev2.PathOperations
 
                 // tmp dir for files required
                 string tmpDir = CreateTmpDirectory();
-                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(tmpDir);
+                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(tmpDir,src.IOPath.Username,src.IOPath.Password);
                 IActivityIOOperationsEndPoint tmpEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
                 Dev2CRUDOperationTO myArgs = new Dev2CRUDOperationTO(true);
                 // stage contents to local folder
@@ -676,7 +677,7 @@ namespace Dev2.PathOperations
 
             if (dst.RequiresLocalTmpStorage())
             {
-                IActivityIOPath newSrc = ActivityIOFactory.CreatePathFromString(unzipDirectory);
+                IActivityIOPath newSrc = ActivityIOFactory.CreatePathFromString(unzipDirectory,dst.IOPath.Username,dst.IOPath.Password);
                 IActivityIOOperationsEndPoint newSrcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(newSrc);
                 Dev2CRUDOperationTO newArgs = new Dev2CRUDOperationTO(false);
                 Move(newSrcEP, dst, newArgs);
@@ -686,7 +687,7 @@ namespace Dev2.PathOperations
             // clean up local tmp
             if (src.RequiresLocalTmpStorage())
             {
-                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(zipFile);
+                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(zipFile,src.IOPath.Username,src.IOPath.Password);
                 IActivityIOOperationsEndPoint tmpEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
                 Delete(tmpEP);
             }
@@ -835,7 +836,7 @@ namespace Dev2.PathOperations
                     if (dst.PathIs(dst.IOPath) == enPathType.Directory)
                     {
                         
-                        IActivityIOPath cpPath = ActivityIOFactory.CreatePathFromString(string.Format("{0}{1}{2}", origDstPath, dst.PathSeperator(), (Dev2ActivityIOPathUtils.ExtractFileName(p.Path))));
+                        IActivityIOPath cpPath = ActivityIOFactory.CreatePathFromString(string.Format("{0}{1}{2}", origDstPath, dst.PathSeperator(), (Dev2ActivityIOPathUtils.ExtractFileName(p.Path))),dst.IOPath.Username,dst.IOPath.Password);
                         if (args.Overwrite || !dst.PathExist(cpPath))
                         {
                             if(!IsNotFTPTypePath(p))
