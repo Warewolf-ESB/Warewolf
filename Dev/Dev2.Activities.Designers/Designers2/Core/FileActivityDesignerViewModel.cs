@@ -47,17 +47,17 @@ namespace Dev2.Activities.Designers2.Core
         string InputPath { get { return GetProperty<string>(); } }
         string OutputPath { get { return GetProperty<string>(); } }
 
-        protected void ValidateInputPath()
+        protected virtual void ValidateInputPath()
         {
             InputPathValue = ValidatePath(InputPathLabel, InputPath, () => IsInputPathFocused = true);
         }
 
-        protected void ValidateOutputPath()
+        protected virtual void ValidateOutputPath()
         {
             OutputPathValue = ValidatePath(OutputPathLabel, OutputPath, () => IsOutputPathFocused = true);
         }
 
-        protected void ValidInputAndOutputPaths()
+        protected virtual void ValidInputAndOutputPaths()
         {
             ValidateOutputPath();
             ValidateInputPath();

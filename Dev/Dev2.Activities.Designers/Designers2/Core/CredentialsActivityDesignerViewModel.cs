@@ -33,7 +33,7 @@ namespace Dev2.Activities.Designers2.Core
         string Username { get { return GetProperty<string>(); } }
         string Password { get { return GetProperty<string>(); } }
 
-        protected void ValidateUserNameAndPassword()
+        protected virtual void ValidateUserNameAndPassword()
         {
             var errors = new List<IActionableErrorInfo>();
 
@@ -65,7 +65,6 @@ namespace Dev2.Activities.Designers2.Core
             {
                 if(Errors != null)
                 {
-                    // Need to merge current Errors
                     errors.AddRange(Errors);
                 }
 
