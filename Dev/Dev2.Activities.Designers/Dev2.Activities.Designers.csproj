@@ -361,6 +361,9 @@
     <Compile Include="Designers2\ReadFolder\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Rename\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Rename\RenameDesigner.xaml.cs">
       <DependentUpon>RenameDesigner.xaml</DependentUpon>
     </Compile>
@@ -799,6 +802,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\ReadFolder\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Rename\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

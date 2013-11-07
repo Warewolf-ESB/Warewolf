@@ -47,19 +47,19 @@ namespace Dev2.Activities.Designers2.Core
         string InputPath { get { return GetProperty<string>(); } }
         string OutputPath { get { return GetProperty<string>(); } }
 
-        protected virtual void ValidateInputPath()
+        protected virtual void ValidateInputPath(bool isRequired = false)
         {
-            InputPathValue = ValidatePath(InputPathLabel, InputPath, () => IsInputPathFocused = true);
+            InputPathValue = ValidatePath(InputPathLabel, InputPath, () => IsInputPathFocused = true, isRequired);
         }
 
-        protected virtual void ValidateOutputPath()
+        protected virtual void ValidateOutputPath(bool isRequired = false)
         {
-            OutputPathValue = ValidatePath(OutputPathLabel, OutputPath, () => IsOutputPathFocused = true);
+            OutputPathValue = ValidatePath(OutputPathLabel, OutputPath, () => IsOutputPathFocused = true, isRequired);
         }
 
-        protected virtual void ValidInputAndOutputPaths()
+        protected virtual void ValidInputAndOutputPaths(bool isOutputPathRequired = false)
         {
-            ValidateOutputPath();
+            ValidateOutputPath(isOutputPathRequired);
             ValidateInputPath();
 
             if(!string.IsNullOrWhiteSpace(OutputPathValue) && string.IsNullOrWhiteSpace(InputPathValue))
@@ -76,14 +76,15 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        string ValidatePath(string label, string path, Action onError)
+        string ValidatePath(string label, string path, Action onError, bool pathIsRequired = false)
         {
-            if(string.IsNullOrWhiteSpace(path))
+            if(!pathIsRequired && string.IsNullOrWhiteSpace(path))
             {
                 return string.Empty;
             }
 
             var errors = new List<IActionableErrorInfo>();
+
             string pathValue;
             errors.AddRange(path.TryParseVariables(out pathValue, onError));
 

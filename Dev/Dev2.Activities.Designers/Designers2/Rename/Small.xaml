@@ -37,7 +37,7 @@
         <Label Grid.Column="0"
                Grid.Row="0"
                Style="{StaticResource ActivityLabelStyle}"
-               Content="File or Folder"/>
+               Content="{Binding InputPathLabel, Mode=OneWay}" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1"
                                 Grid.Row="0"
@@ -67,16 +67,22 @@
         <Label Grid.Column="0"
                Grid.Row="1"
                Style="{StaticResource ActivityLabelStyle}"
-               Content="New Name" />
+               Content="{Binding OutputPathLabel, Mode=OneWay}" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="1"
-                                 DefaultText="[[FileOrFolderName]]" 
-                                 FilterType="All"
-                                 WrapInBrackets="False"
-                                 Text="{Binding Path=ModelItem.OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                 ToolTip="{x:Static help:HelpTextResources.RenameToolTipNewName}"
-                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_NewNametxt_AutoID}">
+                                FilterType="All"
+                                DefaultText="[[FileOrFolderName]]"
+                                WrapInBrackets="False"
+                                Text="{Binding Path=ModelItem.OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static help:HelpTextResources.RenameToolTipNewName}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_NewNametxt_AutoID}">
+            <ui:IntellisenseTextBox.IntellisenseProvider>
+                <interfaceImplementors:CompositeIntellisenseProvider>
+                    <interfaceImplementors:DefaultIntellisenseProvider />
+                    <provider:FileSystemIntellisenseProvider />
+                </interfaceImplementors:CompositeIntellisenseProvider>
+            </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.RenameHelpNewName}"
                                  DataContext="{Binding}" />
