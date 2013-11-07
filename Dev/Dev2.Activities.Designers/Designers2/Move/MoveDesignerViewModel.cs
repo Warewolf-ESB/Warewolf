@@ -3,16 +3,20 @@ using Dev2.Activities.Designers2.Core;
 
 namespace Dev2.Activities.Designers2.Move
 {
-    public class MoveDesignerViewModel : ActivityDesignerViewModel
+    public class MoveDesignerViewModel : FileActivityDesignerViewModel
     {
         public MoveDesignerViewModel(ModelItem modelItem)
-            : base(modelItem)
+            : base(modelItem, "File or Folder", "Destination")
         {
+            AddTitleBarLargeToggle();
             AddTitleBarHelpToggle();
         }
 
         public override void Validate()
         {
+            Errors = null;
+            ValidateUserNameAndPassword();
+            ValidInputAndOutputPaths();
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Dev2.Activities.Designers2.Create
     public class CreateDesignerViewModel : FileActivityDesignerViewModel
     {
         public CreateDesignerViewModel(ModelItem modelItem)
-            : base(modelItem)
+            : base(modelItem, string.Empty, "File or Folder")
         {
             AddTitleBarLargeToggle();
             AddTitleBarHelpToggle();
@@ -16,7 +16,7 @@ namespace Dev2.Activities.Designers2.Create
         {
             Errors = null;
             ValidateUserNameAndPassword();
-            ValidateOutputs();
+            ValidateOutputPath();
         }
     }
 }

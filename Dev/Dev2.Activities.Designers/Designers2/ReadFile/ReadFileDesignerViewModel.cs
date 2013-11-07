@@ -6,19 +6,17 @@ namespace Dev2.Activities.Designers2.ReadFile
     public class ReadFileDesignerViewModel : FileActivityDesignerViewModel
     {
         public ReadFileDesignerViewModel(ModelItem modelItem)
-            : base(modelItem)
+            : base(modelItem, "File Name", string.Empty)
         {
             AddTitleBarLargeToggle();
             AddTitleBarHelpToggle();
-        }
+        }        
 
-        // DO NOT bind to these properties - these are here for convenience only!!!
         public override void Validate()
         {
             Errors = null;
             ValidateUserNameAndPassword();
-            ValidateInputs();
+            ValidateInputPath();
         }
-        
     }
 }

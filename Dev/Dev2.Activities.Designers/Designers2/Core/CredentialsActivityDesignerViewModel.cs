@@ -30,7 +30,7 @@ namespace Dev2.Activities.Designers2.Core
             set { SetValue(IsPasswordFocusedProperty, value); }
         }
 
-        string UserName { get { return GetProperty<string>(); } }
+        string Username { get { return GetProperty<string>(); } }
         string Password { get { return GetProperty<string>(); } }
 
         protected void ValidateUserNameAndPassword()
@@ -39,30 +39,38 @@ namespace Dev2.Activities.Designers2.Core
 
             Action onUserNameError = () => IsUserNameFocused = true;
             string userName;
-            errors.AddRange(UserName.TryParseVariables(out userName, onUserNameError));
+            errors.AddRange(Username.TryParseVariables(out userName, onUserNameError));
 
-            if(!string.IsNullOrWhiteSpace(userName))
+            if(errors.Count == 0)
             {
-                Action onPasswordError = () => IsPasswordFocused = true;
-                string password;
-                errors.AddRange(Password.TryParseVariables(out password, onPasswordError));
-
-                if(string.IsNullOrWhiteSpace(password))
+                if(!string.IsNullOrWhiteSpace(userName))
                 {
-                    errors.Add(new ActionableErrorInfo(onPasswordError) { ErrorType = ErrorType.Critical, Message = "Password must have a value" });
+                    Action onPasswordError = () => IsPasswordFocused = true;
+                    string password;
+                    errors.AddRange(Password.TryParseVariables(out password, onPasswordError));
+
+                    if(string.IsNullOrWhiteSpace(password))
+                    {
+                        errors.Add(new ActionableErrorInfo(onPasswordError) { ErrorType = ErrorType.Critical, Message = "Password must have a value" });
+                    }
                 }
             }
 
-            if(errors.Count > 0)
+            UpdateErrors(errors);
+        }
+
+        protected void UpdateErrors(List<IActionableErrorInfo> errors)
+        {
+            if(errors != null && errors.Count > 0)
             {
-                if(Errors == null)
+                if(Errors != null)
                 {
-                    Errors = errors;
+                    // Need to merge current Errors
+                    errors.AddRange(Errors);
                 }
-                else
-                {
-                    Errors.AddRange(errors);
-                }
+
+                // Always assign property otherwise binding does not update!
+                Errors = errors;
             }
         }
     }

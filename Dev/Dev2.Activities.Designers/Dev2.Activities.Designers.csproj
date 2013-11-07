@@ -308,6 +308,9 @@
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Designers2\Move\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Move\MoveDesigner.xaml.cs">
       <DependentUpon>MoveDesigner.xaml</DependentUpon>
     </Compile>
@@ -743,6 +746,10 @@
     <Page Include="Designers2\GetWebRequest\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Move\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Move\MoveDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>

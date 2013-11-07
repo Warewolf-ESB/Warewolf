@@ -6,13 +6,12 @@
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                               xmlns:local="clr-namespace:Dev2.Activities.Designers2.ReadFile"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:preview="clr-namespace:Dev2.Activities.Preview"
                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                                xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
+                               xmlns:local="clr-namespace:Dev2.Activities.Designers2.ReadFile"
                                MinWidth="255"
                                Width="255"
                                MaxWidth="600"
@@ -54,7 +53,7 @@
         <Label Grid.Column="0"
                Grid.Row="0"
                Style="{StaticResource ActivityLabelStyle}"
-               Content="File Name" />
+               Content="{Binding InputPathLabel, Mode=OneWay}" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1"
                                 Grid.Row="0"
@@ -109,7 +108,6 @@
                Grid.Row="2"
                Style="{StaticResource ActivityLabelStyle}"
                Content="Password" />
-
         <PasswordBox Grid.Column="1"
                                 Grid.Row="2"                                                               
                                 ToolTip="{x:Static help:HelpTextResources.ReadFileToolTipPassword}"                                
@@ -137,6 +135,7 @@
                                 FilterType="All"
                                 WrapInBrackets="True"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static help:HelpTextResources.ReadFileToolTipResult}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
