@@ -100,11 +100,9 @@
                             <ComboBox Style="{StaticResource ActivityComboBoxStyle}"
                                       Margin="0"
                                       ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                      SelectedValue="{Binding Path=MergeType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                      Text="{Binding Path=MergeType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                      IsEditable="False">
+                                      SelectedValue="{Binding Path=MergeType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}">
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="SelectionChanged">
+                                    <i:EventTrigger EventName="SourceUpdated">
                                         <i:InvokeCommandAction Command="{Binding MergeTypeUpdatedCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                                                CommandParameter="{Binding SelectedIndex, RelativeSource={RelativeSource AncestorType=controls:Dev2DataGrid}}" />
                                     </i:EventTrigger>
@@ -138,7 +136,7 @@
                                                     Padding="3"
                                                     Margin="0"
                                                     WrapInBrackets="False"
-                                                    IsEnabled="{Binding EnableAt,UpdateSourceTrigger=PropertyChanged}"
+                                                    IsEnabled="{Binding EnableAt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Text="{Binding At, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipUsing}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">

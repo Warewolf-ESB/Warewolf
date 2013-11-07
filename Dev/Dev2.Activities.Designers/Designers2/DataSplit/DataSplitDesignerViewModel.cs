@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.DataSplit
 {
@@ -17,12 +16,6 @@ namespace Dev2.Activities.Designers2.DataSplit
             AddTitleBarQuickVariableInputToggle();
             AddTitleBarHelpToggle();
             dynamic mi = ModelItem;
-
-            if (mi.ResultsCollection == null || mi.ResultsCollection.Count <= 0)
-            {
-                mi.ResultsCollection.Add(new DataSplitDTO("", "Index", "", 1));
-                mi.ResultsCollection.Add(new DataSplitDTO("", "Index", "", 2));
-            }
 
             InitializeItems(mi.ResultsCollection);
             ItemsList = new List<string> { "Index", "Chars", "New Line", "Space", "Tab", "End" };
