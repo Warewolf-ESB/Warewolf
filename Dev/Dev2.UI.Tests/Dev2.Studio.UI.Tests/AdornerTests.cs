@@ -166,37 +166,32 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsNotNull(waitForTabToOpen);
         }
 
+
         [TestMethod]
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
         {
-            const string resourceToUse = "CalculateTaxReturns";
-            RibbonUIMap.CreateNewWorkflow();
-
-            UITestControl theTab = TabManagerUIMap.GetActiveTab();
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-
-            // Get a point underneath the start button for the workflow
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 100);
+            const string resourceToUse = "Bug_10528";
+            const string innerResource = "Bug_10528_InnerWorkFlow";
 
             // Open the Explorer
             DockManagerUIMap.ClickOpenTabPage("Explorer");
-
-            // Get a sample workflow
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
-            UITestControl testFlow = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "MO", resourceToUse);
 
-            // Drag it on
-            ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", resourceToUse);
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
+            UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, innerResource);
+            Mouse.Move(controlOnWorkflow, new Point(5, 5));
+            //var button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TravsTestService", "Edit");
+            var mappingsBtn = WorkflowDesignerUIMap.Adorner_GetButton(theTab, innerResource, "Open Mapping") as WpfToggleButton;
 
-            UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse);
-            Mouse.Click(controlOnWorkflow, new Point(5, 5));
-            var mappingsBtn = WorkflowDesignerUIMap.Adorner_GetButton(theTab, resourceToUse, "Open Mapping") as WpfToggleButton;
-            if (mappingsBtn != null && !mappingsBtn.Pressed)
+            if(mappingsBtn == null)
             {
-                Mouse.Click(mappingsBtn);
+                Assert.Fail("Could not find mapping button");
             }
+
+            Mouse.Click(mappingsBtn);
 
             UITestControlCollection controlCollection = controlOnWorkflow.GetChildren();
             Point initialResizerPoint = new Point();
@@ -204,7 +199,7 @@ namespace Dev2.Studio.UI.Tests
             var resizeThumb = controlCollection[controlCollection.Count - 1];
             if(resizeThumb.ControlType.ToString() == "Indicator")
             {
-                if (resizeThumb.BoundingRectangle.X == -1)
+                if(resizeThumb.BoundingRectangle.X == -1)
                 {
                     Assert.Fail("Resize indicator is not visible");
                 }
@@ -241,43 +236,77 @@ namespace Dev2.Studio.UI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        //PBI 9939
+
         [TestMethod]
         [TestCategory("DsfActivityTests")]
-        [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands.")]
+        [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands and the resize control is visible")]
         [Owner("Massimo Guerrera")]
-        // 05/11 - Failure is Correct - Broken Functionality ;)
-        public void ServiceDesigner_CodedUI_DroppingActivityOntoDesigner_MappingToBeExpanded()
+        public void ResizeAdornerMappingsOnDrop_Expected_AdornerMappingIsResized()
         {
-            //Create a new workflow
+            const string resourceToUse = "CalculateTaxReturns";
             RibbonUIMap.CreateNewWorkflow();
 
-            // Get the tab
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
-
-            // Wait a bit for user noticability            
-            Playback.Wait(500);
-
-            // Get the location of the Start button
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
 
-            // Get a point underneath the start button
-            Point p = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+            // Get a point underneath the start button for the workflow
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 100);
 
             // Open the Explorer
             DockManagerUIMap.ClickOpenTabPage("Explorer");
 
-            //Drag workflow onto surface
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
+            // Get a sample workflow
             ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("TestForEachOutput");
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "TestForEachOutput", p);
+            ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
+            UITestControl testFlow = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "MO", resourceToUse);
 
-            //Get Mappings button
-            var button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TestForEachOutput", "Close Mapping") as WpfToggleButton;
+            // Drag it on
+            ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
 
-            //Do Assert
-            Assert.IsNotNull(button, "Mappings do not expand on activity drop");
+            UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse);
+            Mouse.Click(controlOnWorkflow, new Point(5, 5));
+
+            UITestControlCollection controlCollection = controlOnWorkflow.GetChildren();
+            Point initialResizerPoint = new Point();
+            // Validate the assumption that the last child is the resizer
+            var resizeThumb = controlCollection[controlCollection.Count - 1];
+            if(resizeThumb.ControlType.ToString() == "Indicator")
+            {
+                if(resizeThumb.BoundingRectangle.X == -1)
+                {
+                    Assert.Fail("Resize indicator is not visible");
+                }
+
+                initialResizerPoint.X = resizeThumb.BoundingRectangle.X + 5;
+                initialResizerPoint.Y = resizeThumb.BoundingRectangle.Y + 5;
+            }
+            else
+            {
+                Assert.Fail("Cannot find resize indicator");
+            }
+
+            // Drag
+            Mouse.Move(new Point(resizeThumb.Left + 5, resizeThumb.Top + 5));
+            Mouse.StartDragging();
+
+            // Y - 50 since it starts at the lowest point
+            Mouse.StopDragging(new Point(initialResizerPoint.X + 50, initialResizerPoint.Y - 50));
+
+            // Check position to see it dragged
+            Point newResizerPoint = new Point();
+            if(resizeThumb.ControlType.ToString() == "Indicator")
+            {
+                newResizerPoint.X = resizeThumb.BoundingRectangle.X + 5;
+                newResizerPoint.Y = resizeThumb.BoundingRectangle.Y + 5;
+            }
+
+            if(!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y < initialResizerPoint.Y))
+            {
+                Assert.Fail("The control was not resized properly.");
+            }
+
+            // Test complete - Delete itself
+            TabManagerUIMap.CloseAllTabs();
         }
 
         // PBI 8601 (Task 8855)

@@ -70,12 +70,15 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public void DoubleClickOpenProject(string serverName, string serviceType, string folderName, string projectName)
         {
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
-            Point p = new Point(theControl.BoundingRectangle.X + 60, theControl.BoundingRectangle.Y+7);
-            Playback.Wait(200);
-            Mouse.Click(p);
-            Playback.Wait(100);
-            Mouse.DoubleClick(p);
-            Playback.Wait(1500);
+            if (theControl != null)
+            {
+                Point p = new Point(theControl.BoundingRectangle.X + 60, theControl.BoundingRectangle.Y + 7);
+                Playback.Wait(200);
+                Mouse.Click(p);
+                Playback.Wait(100);
+                Mouse.DoubleClick(p);
+                Playback.Wait(1500);
+            }
         }
 
         public bool ValidateServiceExists(string serverName, string serviceType, string folderName, string projectName)

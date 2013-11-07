@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Dev2.Studio.UI.Tests;
+using Dev2.CodedUI.Tests;
 using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -12,9 +12,8 @@ using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-using MouseButtons = System.Windows.Forms.MouseButtons;
 
-namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
+namespace Dev2.Studio.UI.Tests.UIMaps
 {
     public partial class WorkflowDesignerUIMap : UIMapBase
     {
@@ -32,9 +31,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                 string automationId = theControl.GetProperty("AutomationId").ToString();
                 if(automationId.Contains(controlAutomationId) || theControl.FriendlyName.Contains(controlAutomationId))
                 {
-                    {
-                        return theControl;
-                    }
+                    return theControl;
                 }
             }
             return null;

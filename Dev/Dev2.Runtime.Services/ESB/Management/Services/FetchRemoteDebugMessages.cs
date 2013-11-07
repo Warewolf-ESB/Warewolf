@@ -4,8 +4,6 @@ using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
-using Dev2.Runtime.Hosting;
-using Dev2.Data.ServiceModel.Messages;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 

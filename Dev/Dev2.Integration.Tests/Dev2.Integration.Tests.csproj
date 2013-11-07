@@ -234,6 +234,7 @@
     <Compile Include="Dev2.Activities.Tests\ToolingWorkflowTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\EndpointInterrogator\EndpointInterrogatorTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\NestedWorkflow.cs" />
+    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\OnErrorTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\PluginTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\RemoteInvokeTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\WebServiceTest.cs" />
