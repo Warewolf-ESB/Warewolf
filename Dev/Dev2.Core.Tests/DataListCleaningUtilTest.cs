@@ -1,8 +1,5 @@
-﻿using System;
-using Dev2.Common;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+﻿using Dev2.DataList.Contract;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests
 {
@@ -13,7 +10,7 @@ namespace Dev2.Tests
     ///to contain all DataListUtilTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class DataListUtilTest
+    public class DataListCleaningUtilTest
     {
  
         [TestMethod]

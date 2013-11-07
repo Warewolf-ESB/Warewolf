@@ -227,7 +227,7 @@ namespace Dev2.PathOperations {
 
             if(dst.IsNotCertVerifiable)
             {
-                ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
+                ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
             }
 
             request.ContentLength = src.Length;
@@ -483,7 +483,7 @@ namespace Dev2.PathOperations {
 
                 if(dst.IsNotCertVerifiable)
                 {
-                    ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
+                    ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
                 }
                 response = (FtpWebResponse)request.GetResponse();
                 if(response.StatusCode == FtpStatusCode.PathnameCreated)
@@ -499,7 +499,6 @@ namespace Dev2.PathOperations {
             {
                 result = true;
                 ServerLogger.LogError(ex);
-                //throw;
             }
             finally
             {

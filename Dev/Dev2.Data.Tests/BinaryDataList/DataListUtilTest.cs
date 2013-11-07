@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Data.Tests.BinaryDataList
@@ -13,6 +13,86 @@ namespace Dev2.Data.Tests.BinaryDataList
     [TestClass][ExcludeFromCodeCoverage]
     public class DataListUtilTest
     {
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataListUtil_IsXML")]
+        public void DataListUtil_IsXML_CheckIsXML_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            const string defs = @"<Outputs><Output Name=""TableCountry"" MapsTo=""TableCountry"" Value=""[[string_NewDataSet().TableCountry]]"" Recordset=""string_NewDataSet"" /><Output Name=""TableCity"" MapsTo=""[[City]]"" Value=""[[City]]"" Recordset=""string_NewDataSet"" /></Outputs>";
+
+            //------------Execute Test---------------------------
+            bool isFragment;
+            bool isHTML;
+            var result = DataListUtil.IsXml(defs, out isFragment, out isHTML);
+
+            //------------Assert Results-------------------------
+
+            Assert.IsTrue(result);
+            Assert.IsFalse(isFragment);
+            Assert.IsFalse(isHTML);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataListUtil_IsXML")]
+        public void DataListUtil_IsXML_CheckIsFragment_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            const string defs = @"<x><a></a></x><x></x><x></x>";
+
+            //------------Execute Test---------------------------
+            bool isFragment;
+            bool isHTML;
+            var result = DataListUtil.IsXml(defs, out isFragment, out isHTML);
+
+            //------------Assert Results-------------------------
+
+            Assert.IsTrue(result);
+            Assert.IsTrue(isFragment);
+            Assert.IsFalse(isHTML);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataListUtil_IsXML")]
+        public void DataListUtil_IsXML_CheckIsHTML_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            const string defs = @"<html></html>";
+
+            //------------Execute Test---------------------------
+            bool isFragment;
+            bool isHTML;
+            var result = DataListUtil.IsXml(defs, out isFragment, out isHTML);
+
+            //------------Assert Results-------------------------
+
+            Assert.IsFalse(result);
+            Assert.IsFalse(isFragment);
+            Assert.IsTrue(isHTML);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataListUtil_IsXML")]
+        public void DataListUtil_IsXML_CheckIsHTMLWhenDocTypePresent_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            const string defs = @"<!DOCTYPE html><html></html>";
+
+            //------------Execute Test---------------------------
+            bool isFragment;
+            bool isHTML;
+            var result = DataListUtil.IsXml(defs, out isFragment, out isHTML);
+
+            //------------Assert Results-------------------------
+
+            Assert.IsFalse(result);
+            Assert.IsFalse(isFragment);
+            Assert.IsTrue(isHTML);
+        }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -486,7 +566,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             var tokens = new List<string> { "f1", "", "f3", "f4", "" };
             
             var tokenizer = new Mock<IDev2Tokenizer>();
+            // ReSharper disable ImplicitlyCapturedClosure
             tokenizer.Setup(t => t.HasMoreOps()).Returns(() => tokenNumber < TokenCount);
+            // ReSharper restore ImplicitlyCapturedClosure
             tokenizer.Setup(t => t.NextToken()).Returns(() => tokens[tokenNumber++]);
 
             var target = new Collection<ObservablePair<string, string>>();
@@ -522,13 +604,15 @@ namespace Dev2.Data.Tests.BinaryDataList
             var tokens = new List<string> { "f1", "", "f2", "f3", "" };
 
             var tokenizer = new Mock<IDev2Tokenizer>();
+            // ReSharper disable ImplicitlyCapturedClosure
             tokenizer.Setup(t => t.HasMoreOps()).Returns(() => tokenNumber < TokenCount);
+            // ReSharper restore ImplicitlyCapturedClosure
             tokenizer.Setup(t => t.NextToken()).Returns(() => tokens[tokenNumber++]);
 
             var target = new Collection<ObservablePair<string, string>>();
 
             //------------Execute Test---------------------------
-            DataListUtil.UpsertTokens(target, tokenizer.Object, tokenPrefix: "rs(*).", tokenSuffix: "a", removeEmptyEntries: true);
+            DataListUtil.UpsertTokens(target, tokenizer.Object, tokenPrefix: "rs(*).", tokenSuffix: "a");
 
             //------------Assert Results-------------------------
             const int ExpectedCount = TokenCount - 2;
