@@ -37,7 +37,7 @@ namespace Dev2.Settings
         readonly IWin32Window _parentWindow;
         LoggingViewModel _loggingViewModel;
 
-        internal SettingsViewModel()
+        public SettingsViewModel()
             : this(EventPublishers.Aggregator, new PopupController(), new AsyncWorker(), (IWin32Window)System.Windows.Application.Current.MainWindow)
         {
         }
