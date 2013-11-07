@@ -189,9 +189,7 @@ namespace Dev2.Studio.UI.Tests
             // Drag it on
             ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
 
-            // Prepare it
-            Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
-            Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
+
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse);
             Mouse.Click(controlOnWorkflow, new Point(5, 5));
             var mappingsBtn = WorkflowDesignerUIMap.Adorner_GetButton(theTab, resourceToUse, "Open Mapping") as WpfToggleButton;
@@ -206,6 +204,11 @@ namespace Dev2.Studio.UI.Tests
             var resizeThumb = controlCollection[controlCollection.Count - 1];
             if(resizeThumb.ControlType.ToString() == "Indicator")
             {
+                if (resizeThumb.BoundingRectangle.X == -1)
+                {
+                    Assert.Fail("Resize indicator is not visible");
+                }
+
                 initialResizerPoint.X = resizeThumb.BoundingRectangle.X + 5;
                 initialResizerPoint.Y = resizeThumb.BoundingRectangle.Y + 5;
             }

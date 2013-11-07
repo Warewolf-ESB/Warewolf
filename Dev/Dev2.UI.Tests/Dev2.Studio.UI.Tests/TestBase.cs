@@ -309,7 +309,6 @@ namespace Dev2.CodedUI.Tests
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
-
             // Open the Toolbox
             DockManagerUIMap.ClickOpenTabPage("Explorer");
 
