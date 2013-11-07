@@ -72,7 +72,7 @@ namespace Dev2.Tests.Runtime.Services
             windowsGroupPermissions = JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(jsonPermissions);
             //------------Assert Results-------------------------
             Assert.AreEqual(2,windowsGroupPermissions.Count);
-            Assert.AreEqual("Hagashen.Naidu", windowsGroupPermissions[0].WindowsGroup);
+            Assert.AreEqual(Environment.UserName, windowsGroupPermissions[0].WindowsGroup);
             Assert.AreEqual(true,windowsGroupPermissions[0].IsServer);
             Assert.AreEqual(false,windowsGroupPermissions[0].View);
             Assert.AreEqual(false,windowsGroupPermissions[0].Execute);
