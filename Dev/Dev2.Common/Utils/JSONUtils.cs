@@ -34,7 +34,6 @@ namespace Dev2.Common.Utils
         /// </summary>
         /// <param name="stringToReplaceIn">The string to replace in.</param>
         /// <returns></returns>
-        /// THIS METHOD MUST DIE. Large strings cause stack blowout!!!!
         public static string ReplaceSlashes(string stringToReplaceIn)
         {
             var replaceSlashes = stringToReplaceIn.Replace(@"\", @"\\");

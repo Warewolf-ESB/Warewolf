@@ -185,14 +185,13 @@ namespace Dev2.Data.Compilers
                                 if (result == null)
                                 {
                                     var toReplace = scalar.TheValue;
-                                    toReplace = toReplace.Replace("\"", "\\\""); // Handle escaped chars ;)
                                     CompiledExpression = CompiledExpression.Replace(token, toReplace);
                                 }
                                 else
                                 {
                                     var itr = result.FetchRecordsetIndexes();
                                     string error;
-                                    var replaceVal = scalar.TheValue.Replace("\"", "\\\"");
+                                    var replaceVal = scalar.TheValue;
 
                                     while (itr.HasMore())
                                     {
@@ -277,7 +276,7 @@ namespace Dev2.Data.Compilers
                                 {
                                     var preTemplate = template;
                                     var toReplace = binaryValue.TheValue;
-                                    toReplace = toReplace.Replace("\"", "\\\""); // Handle escaped chars ;)
+                                   // toReplace = toReplace.Replace("\"", "\\\""); // Handle escaped chars ;)
                                     template = template.Replace(token, toReplace);
                                     result.TryPutRecordItemAtIndex(new BinaryDataListItem(template, ns, GlobalConstants.EvaluationRsField,expIdx), expIdx, out error);
                                     Errors.AddError(error);

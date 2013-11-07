@@ -1092,6 +1092,57 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        public void RecursiveEvaluateRecordset_WhenDataContainsQuotes_ShouldEvaluateWithoutExtraEscaping()
+        {
+
+            _fieldCollection.Clear();
+            _fieldCollection.Add(new ActivityDTO("[[gRec(1).opt]]", "\"testData\"", _fieldCollection.Count));
+            _fieldCollection.Add(new ActivityDTO("[[gRec(2).opt]]", "some value [[gRec(1).opt]] another", _fieldCollection.Count));
+
+            TestStartNode = new FlowStep
+            {
+                Action = new DsfMultiAssignActivity { OutputMapping = null, FieldsCollection = _fieldCollection }
+            };
+
+            SetupArguments(
+                ActivityStrings.MultiAssignStarDataListWithScalar
+              , ActivityStrings.MultiAssignStarDataListWithScalar);
+            IDSFDataObject result = ExecuteProcess();
+            string error;
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "gRec", "opt", out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+            Assert.AreEqual("some value \"testData\" another",actual[1]);
+        }
+
+        [TestMethod]
+        public void RecursiveEvaluateScalar_WhenDataContainsQuotes_ShouldEvaluateWithoutExtraEscaping()
+        {
+
+            _fieldCollection.Clear();
+            _fieldCollection.Add(new ActivityDTO("[[testScalar]]", "\"testData\"", _fieldCollection.Count));
+            _fieldCollection.Add(new ActivityDTO("[[testScalar]]", "some value [[testScalar]] another", _fieldCollection.Count));
+
+            TestStartNode = new FlowStep
+            {
+                Action = new DsfMultiAssignActivity { OutputMapping = null, FieldsCollection = _fieldCollection }
+            };
+
+            SetupArguments(
+                ActivityStrings.MultiAssignStarDataListWithScalar
+              , ActivityStrings.MultiAssignStarDataListWithScalar);
+            IDSFDataObject result = ExecuteProcess();
+            string error;
+            string actual;
+            GetScalarValueFromDataList(result.DataListID, "testScalar", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+            Assert.AreEqual("some value \"testData\" another",actual);
+        }
+
+        [TestMethod]
         public void RemoveItem_Expected_BlankItemsRemoved()
         {
             _fieldCollection.Clear();

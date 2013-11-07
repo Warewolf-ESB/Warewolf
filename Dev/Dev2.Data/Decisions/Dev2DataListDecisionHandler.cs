@@ -81,7 +81,8 @@ namespace Dev2.Data.Decision
             if (tmp != null)
             {
                 string model = tmp.FetchScalar().TheValue; // Get evalauted data value
-                model = JSONUtils.ReplaceSlashes(model).Replace(@"\""", @"""");                
+                //this is weird but necessary so that strings are properly escaped before going into the decision
+                model = JSONUtils.ReplaceSlashes(model).Replace("\"\"\"", @"""\\""""").Replace(@"\""", @"""");
                 if (dlID != GlobalConstants.NullDataListID)
                 {
                     try
@@ -175,6 +176,7 @@ namespace Dev2.Data.Decision
             {
                 //2013.05.06: Ashley Lewis for PBI 9460 - handle recordsets with stars in their index by resolving them
                 payload = JSONUtils.ReplaceSlashes(payload).Replace(@"\""", @"""");
+                //payload = JSONUtils.ReplaceSlashes(payload);
                 Dev2DecisionStack dds = _compiler.ConvertFromJsonToModel<Dev2DecisionStack>(payload);
 
                 if(dds.TheStack != null)
