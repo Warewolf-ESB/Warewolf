@@ -16,7 +16,6 @@ namespace Dev2.Activities.Designers2.DataSplit
             AddTitleBarQuickVariableInputToggle();
             AddTitleBarHelpToggle();
             dynamic mi = ModelItem;
-            InitializeItems(mi.ResultsCollection);
 
             if (mi.ResultsCollection == null || mi.ResultsCollection.Count <= 0)
             {
@@ -24,6 +23,7 @@ namespace Dev2.Activities.Designers2.DataSplit
                 mi.ResultsCollection.Add(new DataSplitDTO("", "Index", "", 2));
             }
 
+            InitializeItems(mi.ResultsCollection);
             ItemsList = new List<string> { "Index", "Chars", "New Line", "Space", "Tab", "End" };
         }
 

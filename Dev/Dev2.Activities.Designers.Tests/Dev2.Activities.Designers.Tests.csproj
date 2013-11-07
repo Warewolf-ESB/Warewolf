@@ -179,6 +179,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="DataMerge\" />
+    <Folder Include="DataSplit\" />
     <Folder Include="MultiAssignTests\Stubs\" />
   </ItemGroup>
   <ItemGroup>

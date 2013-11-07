@@ -101,6 +101,7 @@
                                       Margin="0"
                                       ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       SelectedValue="{Binding Path=MergeType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                      Text="{Binding Path=MergeType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                       IsEditable="False">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SelectionChanged">
