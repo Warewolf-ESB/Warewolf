@@ -172,7 +172,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void MultipleScalarsExpectedXPathExecuteAndInsertMutipleScalars()
+        [Owner("Travis Frisinger")]
+        [TestCategory("XPathActivity_OnExecute")]
+        public void XPathActivity_Execute_MultipleScalars_XPathExecuteAndInsertMutipleScalars()
         {
 
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method/@name", 1));
@@ -197,10 +199,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             ActivityUnitTests.Utils.StringComparer comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actual, comparer);
-        }  
-        
+        }
+
         [TestMethod]
-        public void ScalarWithXPathInRecsetExpectedXPathExecuteAndInsertMutipleScalars()
+        [Owner("Travis Frisinger")]
+        [TestCategory("XPathActivity_OnExecute")]
+        public void XPathActivity_Execute_ScalarWithXPathInRecset_XPathExecuteAndInsertMutipleScalars()
         {
 
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "[[xpaths(*).path]]", 1));
@@ -248,6 +252,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("XPathActivity_OnExecute")]
         public void MixedScalarsAndRecordsetWithIndexExpectedXPathEvalInsertMutipleScalarAndRecordsets()
         {
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method/@name", 1));
@@ -279,7 +285,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void MixedScalarsAndRecordsetWithoutIndexExpectedXPathValuesToEndInsertingMutipleScalarAndRecordsets()
+        [Owner("Travis Frisinger")]
+        [TestCategory("XPathActivity_OnExecute")]
+        public void XPathActivity_Execute_MixedScalarsAndRecordsetWithoutIndex_XPathValuesToEndInsertingMutipleScalarAndRecordsets()
         {
 
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method/@name", 1));

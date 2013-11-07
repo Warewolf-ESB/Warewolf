@@ -554,7 +554,9 @@ namespace Dev2.Data.Tests
         }
 
         [TestMethod]
-        public void ExecutePathWhereAttrXPathGivenXMLDataExpectXMLReturned()
+        [Owner("Travis Frisinger")]
+        [TestCategory("XPathParser_Parser")]
+        public void XPathParser_ExecutePath_AttrXPathGivenXMLData_XMLReturned()
         {
             //------------Setup for test--------------------------
             const string XPath = "//type/method/@name";
@@ -565,9 +567,11 @@ namespace Dev2.Data.Tests
             Assert.AreEqual(6, data.Count());
             Assert.AreEqual("ExtractOutMergeDataFromRequest", data[1]);
         }
-        
+
         [TestMethod]
-        public void ExecutePathWhereOrXPathGivenXMLDataExpectXMLReturned()
+        [Owner("Travis Frisinger")]
+        [TestCategory("XPathParser_Parser")]
+        public void XPathParser_ExecutePath_OrXPathGivenXMLData_XMLReturned()
         {
             //------------Setup for test--------------------------
             const string XPath = "//type/method/@name|//type/method/@signature";
