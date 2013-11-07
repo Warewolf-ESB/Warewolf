@@ -24,9 +24,19 @@ namespace Dev2.Activities.Designers2.Core
 
         public static readonly DependencyProperty IsInputPathFocusedProperty =
             DependencyProperty.Register("IsInputPathFocused", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
+        
+        public bool IsOutputPathFocused
+        {
+            get { return (bool)GetValue(IsOutputPathFocusedProperty); }
+            set { SetValue(IsOutputPathFocusedProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsOutputPathFocusedProperty =
+            DependencyProperty.Register("IsOutputPathFocused", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
 
 
         protected string InputPath { get { return GetProperty<string>(); } }
+        protected string OutputPath { get { return GetProperty<string>(); } }
 
         protected virtual void ValidateInputs()
         {
@@ -35,6 +45,15 @@ namespace Dev2.Activities.Designers2.Core
                 return;
             }
             ValidateInputPath();
+        }
+        
+        protected virtual void ValidateOutputs()
+        {
+            if(string.IsNullOrWhiteSpace(OutputPath))
+            {
+                return;
+            }
+            ValidateOutputPath();
         }
 
         void ValidateInputPath()
@@ -66,6 +85,40 @@ namespace Dev2.Activities.Designers2.Core
                     Errors = new List<IActionableErrorInfo>
                     {
                         new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = "Please supply a valid InputPath" }
+                    };
+                }
+            }
+        }
+        
+        void ValidateOutputPath()
+        {
+            Action onError = () => IsOutputPathFocused = true;
+            string outputValue;
+            Errors = OutputPath.TryParseVariables(out outputValue, onError);
+            if(!IsValid)
+            {
+                return;
+            }
+
+            if(string.IsNullOrWhiteSpace(outputValue))
+            {
+                Errors = new List<IActionableErrorInfo>
+                {
+                    new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = "OutputPath must have a value" }
+                };
+            }
+            else
+            {
+                Uri uriResult;
+                var isValid = Uri.TryCreate(outputValue, UriKind.Absolute, out uriResult)
+                    ? ValidUriSchemes.Contains(uriResult.Scheme)
+                    : File.Exists(outputValue);
+
+                if(!isValid)
+                {
+                    Errors = new List<IActionableErrorInfo>
+                    {
+                        new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = "Please supply a valid OutputPath" }
                     };
                 }
             }

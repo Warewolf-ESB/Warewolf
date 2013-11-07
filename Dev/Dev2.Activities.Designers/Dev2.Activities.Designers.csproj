@@ -172,6 +172,9 @@
       <DependentUpon>CreateDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Create\CreateDesignerViewModel.cs" />
+    <Compile Include="Designers2\Create\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Create\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
@@ -622,6 +625,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\Create\CreateDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Create\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
