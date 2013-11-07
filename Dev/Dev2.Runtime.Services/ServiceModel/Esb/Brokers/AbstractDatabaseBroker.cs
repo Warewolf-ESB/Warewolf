@@ -44,11 +44,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             VerifyArgument.IsNotNull("dbSource", dbSource);
 
             // Check the cache for a value ;)
+            ServiceMethodList cacheResult;
             if(!dbSource.ReloadActions)
             {
-                ServiceMethodList cacheResult;
-                TheCache.TryGetValue(dbSource.ConnectionString, out cacheResult);
-                if(cacheResult != null)
+                if(GetCachedResult(dbSource, out cacheResult))
                 {
                     return cacheResult;
                 }
@@ -88,9 +87,19 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             }
 
             // Add to cache ;)
-            TheCache.TryAdd(dbSource.ConnectionString, serviceMethods);
+            TheCache.AddOrUpdate(dbSource.ConnectionString, serviceMethods,(s, list) => serviceMethods);
 
-            return serviceMethods;
+            return GetCachedResult(dbSource, out cacheResult) ? cacheResult : serviceMethods;
+        }
+
+        bool GetCachedResult(DbSource dbSource, out ServiceMethodList cacheResult)
+        {
+            TheCache.TryGetValue(dbSource.ConnectionString, out cacheResult);
+            if(cacheResult != null)
+            {
+                return true;
+            }
+            return false;
         }
 
         public virtual IOutputDescription TestService(DbService dbService)
