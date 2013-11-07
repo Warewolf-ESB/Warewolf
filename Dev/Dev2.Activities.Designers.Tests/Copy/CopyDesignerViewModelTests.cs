@@ -44,8 +44,8 @@ namespace Dev2.Activities.Designers.Tests.Copy
             Assert.AreEqual(1, viewModel.ValidateInputPathHitCount);
             Assert.AreEqual(1, viewModel.ValidateOutputPathHitCount);
             Assert.AreEqual(1, viewModel.ValidateUserNameAndPasswordHitCount);
-            Assert.IsTrue(viewModel.IsOutputPathRequired);
-            Assert.IsFalse(viewModel.IsInputPathRequired);
+            Assert.IsTrue(viewModel.ValidateOutputPathIsRequired);
+            Assert.IsFalse(viewModel.ValidateInputPathIsRequired);
         }
 
         static TestCopyDesignerViewModel CopyViewModel()

@@ -43,15 +43,22 @@ namespace Dev2.Activities.Designers2.Core
 
             if(errors.Count == 0)
             {
+                Action onPasswordError = () => IsPasswordFocused = true;
+                string password;
+                errors.AddRange(Password.TryParseVariables(out password, onPasswordError));
+
                 if(!string.IsNullOrWhiteSpace(userName))
                 {
-                    Action onPasswordError = () => IsPasswordFocused = true;
-                    string password;
-                    errors.AddRange(Password.TryParseVariables(out password, onPasswordError));
-
                     if(string.IsNullOrWhiteSpace(password))
                     {
                         errors.Add(new ActionableErrorInfo(onPasswordError) { ErrorType = ErrorType.Critical, Message = "Password must have a value" });
+                    }
+                }
+                else
+                {
+                    if(!string.IsNullOrWhiteSpace(password))
+                    {
+                        errors.Add(new ActionableErrorInfo(onUserNameError) { ErrorType = ErrorType.Critical, Message = "User Name must have a value" });
                     }
                 }
             }

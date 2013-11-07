@@ -11,29 +11,29 @@ namespace Dev2.Activities.Designers.Tests.Rename
         }
 
         public int ValidateInputPathHitCount { get; private set; }
-        public bool IsInputPathRequired { get; private set; }
+        public bool ValidateInputPathIsRequired { get; private set; }
         protected override void ValidateInputPath(bool isRequired = false)
         {
             ValidateInputPathHitCount++;
-            IsInputPathRequired = isRequired;
+            ValidateInputPathIsRequired = isRequired;
             base.ValidateInputPath(isRequired);
         }
 
         public int ValidateOutputPathHitCount { get; private set; }
-        public bool IsOutputPathRequired { get; private set; }
+        public bool ValidateOutputPathIsRequired { get; private set; }
         protected override void ValidateOutputPath(bool isRequired = false)
         {
             ValidateOutputPathHitCount++;
-            IsOutputPathRequired = isRequired;
+            ValidateOutputPathIsRequired = isRequired;
             base.ValidateOutputPath(isRequired);
         }
 
         public int ValidateInputAndOutputPathHitCount { get; private set; }
-        protected override void ValidInputAndOutputPaths(bool isOutputPathRequired = false)
+        protected override void ValidateInputAndOutputPaths(bool isOutputPathRequired = false)
         {
             ValidateInputAndOutputPathHitCount++;
-            IsOutputPathRequired = isOutputPathRequired;
-            base.ValidInputAndOutputPaths(isOutputPathRequired);
+            ValidateOutputPathIsRequired = isOutputPathRequired;
+            base.ValidateInputAndOutputPaths(isOutputPathRequired);
         }
 
         public int ValidateUserNameAndPasswordHitCount { get; private set; }

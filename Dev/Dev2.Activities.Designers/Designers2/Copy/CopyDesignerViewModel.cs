@@ -16,7 +16,7 @@ namespace Dev2.Activities.Designers2.Copy
         {
             Errors = null;
             ValidateUserNameAndPassword();
-            ValidInputAndOutputPaths(true);
+            ValidateInputAndOutputPaths(true);
         }
     }
 }

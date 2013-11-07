@@ -9,7 +9,7 @@ namespace Dev2.Activities.Designers2.Core
 {
     public abstract class FileActivityDesignerViewModel : CredentialsActivityDesignerViewModel
     {
-        static readonly List<string> ValidUriSchemes = new List<string> { "file", "ftp", "ftps", "sftp" };
+        public static readonly List<string> ValidUriSchemes = new List<string> { "file", "ftp", "ftps", "sftp" };
 
         protected FileActivityDesignerViewModel(ModelItem modelItem, string inputPathLabel, string outputPathLabel)
             : base(modelItem)
@@ -57,7 +57,7 @@ namespace Dev2.Activities.Designers2.Core
             OutputPathValue = ValidatePath(OutputPathLabel, OutputPath, () => IsOutputPathFocused = true, isRequired);
         }
 
-        protected virtual void ValidInputAndOutputPaths(bool isOutputPathRequired = false)
+        protected virtual void ValidateInputAndOutputPaths(bool isOutputPathRequired = false)
         {
             ValidateOutputPath(isOutputPathRequired);
             ValidateInputPath();
@@ -76,7 +76,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        string ValidatePath(string label, string path, Action onError, bool pathIsRequired = false)
+        protected virtual string ValidatePath(string label, string path, Action onError, bool pathIsRequired = false)
         {
             if(!pathIsRequired && string.IsNullOrWhiteSpace(path))
             {
@@ -86,7 +86,7 @@ namespace Dev2.Activities.Designers2.Core
             var errors = new List<IActionableErrorInfo>();
 
             string pathValue;
-            errors.AddRange(path.TryParseVariables(out pathValue, onError));
+            errors.AddRange(path.TryParseVariables(out pathValue, onError, ValidUriSchemes[0] + "://temp"));
 
             if(errors.Count == 0)
             {

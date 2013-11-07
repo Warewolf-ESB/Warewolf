@@ -44,8 +44,8 @@ namespace Dev2.Activities.Designers.Tests.Create
             Assert.AreEqual(0, viewModel.ValidateInputPathHitCount);
             Assert.AreEqual(1, viewModel.ValidateOutputPathHitCount);
             Assert.AreEqual(1, viewModel.ValidateUserNameAndPasswordHitCount);
-            Assert.IsFalse(viewModel.IsOutputPathRequired);
-            Assert.IsFalse(viewModel.IsInputPathRequired);
+            Assert.IsFalse(viewModel.ValidateOutputPathIsRequired);
+            Assert.IsFalse(viewModel.ValidateInputPathIsRequired);
         }
 
         static TestCreateDesignerViewModel CreateViewModel()

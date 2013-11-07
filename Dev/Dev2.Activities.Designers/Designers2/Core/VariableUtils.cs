@@ -9,7 +9,7 @@ namespace Dev2.Activities.Designers2.Core
 {
     public static class VariableUtils
     {
-        public static List<IActionableErrorInfo> TryParseVariables(this string inputValue, out string outputValue, Action onError, ObservableCollection<ObservablePair<string, string>> inputs = null)
+        public static List<IActionableErrorInfo> TryParseVariables(this string inputValue, out string outputValue, Action onError, string variableValue = "a", ObservableCollection<ObservablePair<string, string>> inputs = null)
         {
             outputValue = inputValue;
 
@@ -29,7 +29,7 @@ namespace Dev2.Activities.Designers2.Core
                         }
                         else
                         {
-                            s = "a"; // random text to replace variable
+                            s = variableValue; // random text to replace variable
                         }
                         outputValue = outputValue.Replace(v, s);
                     }
