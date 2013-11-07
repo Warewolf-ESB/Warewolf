@@ -79,7 +79,10 @@
     <Compile Include="..\Dev2.Core.Tests\TestUtils.cs">
       <Link>TestUtils.cs</Link>
     </Compile>
+    <Compile Include="CaseConvert\CaseConvertTests.cs" />
     <Compile Include="DataMerge\DataMergeTests.cs" />
+    <Compile Include="DataSplit\DataSplitTests.cs" />
+    <Compile Include="GatherSystemInformation\GatherSystemInformationTests.cs" />
     <Compile Include="Rename\RenameDesignerViewModelTests.cs" />
     <Compile Include="Rename\TestRenameDesignerViewModel.cs" />
     <Compile Include="ReadFile\ReadFileDesignerViewModelTests.cs" />
@@ -140,6 +143,7 @@
     <Compile Include="SqlBulkInsert\TestSqlBulkInsertDesignerViewModel.cs" />
     <Compile Include="SqlBulkInsert\SqlBulkInsertDesignerViewModelTests.cs" />
     <Compile Include="UtilTests\ForEachDesignerUtilsTests.cs" />
+    <Compile Include="XPath\XPathTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
@@ -180,7 +184,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DataSplit\" />
     <Folder Include="MultiAssignTests\Stubs\" />
   </ItemGroup>
   <ItemGroup>
