@@ -46,7 +46,7 @@
                                     MinWidth="86"
                                     Width="86"
                                     HorizontalAlignment="Right"
-                                   DefaultText="[[Xml]]"
+                                    DefaultText="[[Xml]]"
                                     Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     ToolTip="{x:Static help:HelpTextResources.XPathToolTipXML}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
@@ -61,6 +61,7 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
         </Grid>
+        
         <controls:Dev2DataGrid x:Name="SmallDataGrid"
                                Grid.Row="1"
                                Grid.Column="0"
@@ -101,10 +102,10 @@
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="True"
                                                     Text="{Binding OutputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static help:HelpTextResources.XPathToolTipXPath}"
+                                                    ToolTip="{x:Static help:HelpTextResources.XPathToolTipResult}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.XPathHelpXPath}"
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.XPathHelpResult}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="OutputVariable"
@@ -133,10 +134,10 @@
                                                     WrapInBrackets="False"
                                                     DefaultText="XPath" 
                                                     Text="{Binding XPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static help:HelpTextResources.XPathToolTipResult}"
+                                                    ToolTip="{x:Static help:HelpTextResources.XPathToolTipXPath}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.DataMergeHelpUsing}"
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.XPathHelpXPath}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="XPath"

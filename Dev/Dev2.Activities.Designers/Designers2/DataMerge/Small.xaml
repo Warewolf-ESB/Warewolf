@@ -101,8 +101,13 @@
                                       Margin="0"
                                       ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       SelectedValue="{Binding Path=MergeType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                      SelectionChanged="Selector_OnSelectionChanged"
                                       IsEditable="False">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding MergeTypeUpdatedCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
+                                                               CommandParameter="{Binding SelectedIndex, RelativeSource={RelativeSource AncestorType=controls:Dev2DataGrid}}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <i:Interaction.Behaviors>
                                 <help:HelpSetter Text="{x:Static help:HelpTextResources.DataMergeHelpWithType}"
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />

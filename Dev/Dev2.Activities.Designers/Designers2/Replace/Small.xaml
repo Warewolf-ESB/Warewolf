@@ -40,6 +40,7 @@
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1"
                                 Grid.Row="0"
+                                WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 ToolTip="{x:Static help:HelpTextResources.ReplaceToolTipInField}"
                                 DefaultText="[[Recordset().Field]]"

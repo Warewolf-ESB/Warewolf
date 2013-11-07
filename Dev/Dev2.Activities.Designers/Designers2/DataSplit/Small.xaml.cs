@@ -1,6 +1,6 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 
 namespace Dev2.Activities.Designers2.DataSplit
 {
@@ -10,35 +10,23 @@ namespace Dev2.Activities.Designers2.DataSplit
         {
             InitializeComponent();
             DataGrid = SmallDataGrid;
+            SplitTypeUpdatedCommand = new RelayCommand(OnSplitTypeChanged, o => true);
         }
 
-        public ICommand SearchTypeUpdatedCommand { get; private set; }
+        public ICommand SplitTypeUpdatedCommand { get; private set; }
 
         protected override IInputElement GetInitialFocusElement()
         {
             return InitialFocusElement;
         }
 
-        void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        void OnSplitTypeChanged(object obj)
         {
-            var tmpCbx = sender as ComboBox;
-            if (tmpCbx != null)
+            var selectedIndex = (int)obj;
+            var viewModel = (DataSplitDesignerViewModel)DataContext;
+            if(viewModel != null)
             {
-                if (tmpCbx.SelectedItem == null)
-                {
-                    return;
-                }
-
-                dynamic tmpDto = tmpCbx.DataContext;
-                if (tmpCbx.SelectedItem.ToString() == "Index" || tmpCbx.SelectedItem.ToString() == "Chars")
-                {
-                    tmpDto.EnableAt = true;
-                }
-                else
-                {
-                    tmpDto.At = string.Empty;
-                    tmpDto.EnableAt = false;
-                }
+                viewModel.OnSplitTypeChanged(selectedIndex);
             }
         }
     }

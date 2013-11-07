@@ -82,7 +82,7 @@
 
         <DataGrid.Columns>
             <DataGridTemplateColumn Width="25"
-                                    d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}"
+                                    d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}"
                                     IsReadOnly="True">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
@@ -93,7 +93,7 @@
             </DataGridTemplateColumn>
 
             <DataGridTemplateColumn Width="*"
-                                    d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
+                                    d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                             <ui:IntellisenseTextBox AllowUserInsertLine="False"
@@ -102,10 +102,10 @@
                                                     DefaultText="{Binding WatermarkTextVariable}" 
                                                     WrapInBrackets="True"                                                     
                                                     Text="{Binding OutputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipInput}"
+                                                    ToolTip="{x:Static help:HelpTextResources.DataSplitToolTipResult}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                <help:HelpSetter Text="{x:Static help:HelpTextResources.DataMergeHelpInput}"
+                                <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpResult}"
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                 <errors:ErrorsSetter Source="{Binding}"
                                                      SourcePropertyName="OutputVariable"
@@ -125,15 +125,20 @@
             </DataGridTemplateColumn>
 
             <DataGridTemplateColumn Width="*"
-                                    d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
+                                    d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                             <ComboBox Style="{StaticResource ActivityComboBoxStyle}"
                                       Margin="0"
                                       ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                      SelectedValue="{Binding Path=SplitType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                      SelectionChanged="Selector_OnSelectionChanged"
+                                      SelectedValue="{Binding Path=SplitType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
                                       IsEditable="False">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding SplitTypeUpdatedCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
+                                                               CommandParameter="{Binding SelectedIndex, RelativeSource={RelativeSource AncestorType=controls:Dev2DataGrid}}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <i:Interaction.Behaviors>
                                 <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpWithType}"
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -155,7 +160,7 @@
             </DataGridTemplateColumn>
             
              <DataGridTemplateColumn Width="25"
-                                    d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
+                                    d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                             <ui:IntellisenseTextBox AllowUserInsertLine="False"
@@ -165,10 +170,10 @@
                                                     WrapInBrackets="False"
                                                     IsEnabled="{Binding EnableAt,UpdateSourceTrigger=PropertyChanged}"
                                                     Text="{Binding At, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipUsing}"
+                                                    ToolTip="{x:Static help:HelpTextResources.DataSplitToolTipUsing}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.DataMergeHelpUsing}"
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpUsing}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="At"

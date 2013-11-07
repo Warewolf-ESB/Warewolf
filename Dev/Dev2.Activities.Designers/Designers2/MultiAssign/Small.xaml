@@ -69,9 +69,9 @@
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <ui:IntellisenseTextBox AllowUserInsertLine="False"
-                                                VerticalAlignment="Center"
                                                 DefaultText="{Binding WatermarkTextVariable}"
                                                 WrapInBrackets="True"
+                                                Padding="3"
                                                 Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
                                                 Style="{StaticResource DatagridIntellisenseTextBoxStyle}">

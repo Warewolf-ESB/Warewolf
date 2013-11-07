@@ -24,7 +24,7 @@ namespace Dev2.Activities.Designers2.CaseConvert
                 mi.ConvertCollection.Add(CaseConverterFactory.CreateCaseConverterTO("", "UPPER", "", 2));
             }
 
-            ItemsList = CaseConverter.ConvertTypes.Select(i => i.ToUpper()).ToObservableCollection();
+            ItemsList = CaseConverter.ConvertTypes.ToObservableCollection();
         }
 
         public override string CollectionName { get { return "ConvertCollection"; } }

@@ -1,8 +1,6 @@
-﻿using System.Activities.Presentation.Model;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.Windows.Input;
-using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 
 namespace Dev2.Activities.Designers2.DataMerge
 {
@@ -12,36 +10,23 @@ namespace Dev2.Activities.Designers2.DataMerge
         {
             InitializeComponent();
             DataGrid = SmallDataGrid;
+            MergeTypeUpdatedCommand = new RelayCommand(OnMergeTypeChanged, o => true);
         }
 
-        public ICommand SearchTypeUpdatedCommand { get; private set; }
+        public ICommand MergeTypeUpdatedCommand { get; private set; }
 
         protected override IInputElement GetInitialFocusElement()
         {
             return DataGrid.GetFocusElement(0);
         }
-
-        void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        
+        void OnMergeTypeChanged(object obj)
         {
-            var tmpCbx = sender as ComboBox;
-            if (tmpCbx != null)
+            var selectedIndex = (int)obj;
+            var viewModel = (DataMergeDesignerViewModel)DataContext;
+            if(viewModel != null)
             {
-                if(tmpCbx.SelectedItem == null)
-                {
-                    return;
-                }
-
-                var model = (ModelItem)tmpCbx.DataContext;
-               
-                if (tmpCbx.SelectedItem.ToString() == "Index" || tmpCbx.SelectedItem.ToString() == "Chars")
-                {
-                    ModelItemUtils.SetProperty("EnableAt", true, model);
-                }
-                else
-                {
-                    ModelItemUtils.SetProperty("At", string.Empty, model);
-                    ModelItemUtils.SetProperty("EnableAt", false, model);
-                }
+                viewModel.OnMergeTypeChanged(selectedIndex);
             }
         }
     }

@@ -64,10 +64,10 @@
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="True"
                                                     Text="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static help:HelpTextResources.GatherSystemInformationHelpResult}"
+                                                    ToolTip="{x:Static help:HelpTextResources.GatherSystemInformationToolTipResult}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                <help:HelpSetter Text="{x:Static help:HelpTextResources.GatherSystemInformationToolTipResult}"
+                                <help:HelpSetter Text="{x:Static help:HelpTextResources.GatherSystemInformationHelpResult}"
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                 <errors:ErrorsSetter Source="{Binding}"
                                                      SourcePropertyName="Result"
