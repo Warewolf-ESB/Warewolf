@@ -12,55 +12,13 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
     [TestClass]
     public class RemoteInvokeTest
     {
-        public RemoteInvokeTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+        public TestContext TestContext { get; set; }
 
         [TestMethod]
-        [Ignore]
         // TFS Migration Issue
         public void CanInvokeARemoteService()
         {
@@ -88,12 +46,39 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         }
 
         [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("RemoteInvoke_CanFetchDebugItems")]
+        [Ignore]
+        public void RemoteInvoke_CanFetchDebugItems_WhenRemoteInvokeWorkflow_ExpectAllDebugItems()
+        {
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Remote Debug Test");
+
+            Guid id = Guid.NewGuid();
+            TestHelper.PostDataToWebserverAsRemoteAgent(PostData, id);
+
+            var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
+
+            Assert.AreEqual(12, debugItems.Count);
+
+            // TODO : Flesh out the remainer
+
+            // Number of decision
+            // Number of Plugin, DB, WF and Webservice items
+            // Nesting of inner WF call
+            // Ordering
+            // CodedUI for rendering?
+
+        }
+
+
+        // WHY ARE THESE TEST HERE!!!!!!!! ;)
+        [TestMethod]
         public void CanInvokePythonScriptWithFunction()
         {
             var script = @"
-    def Add(x,y):
-        return x + y;
-    return Add(1,1);";
+            def Add(x,y):
+                return x + y;
+            return Add(1,1);";
 
             Dev2PythonContext dev2PythonContext = new Dev2PythonContext();
             string val = dev2PythonContext.Execute(script);
@@ -105,7 +90,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         [TestMethod]
         public void CanInvokePythonScriptWithoutFunction()
         {
-                var script = @"
+            var script = @"
             return 1 + 1;";
 
             Dev2PythonContext dev2PythonContext = new Dev2PythonContext();
