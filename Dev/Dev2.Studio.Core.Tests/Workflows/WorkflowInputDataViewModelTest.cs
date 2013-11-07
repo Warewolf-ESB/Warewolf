@@ -255,47 +255,6 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(expectedPayload, actualPayload);
         }
 
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("WorkflowInputDataViewModel_Save")]
-        public void WorkflowInputDataViewModel_Save_WithScalarVariable_DoesNotThrowException()
-        {
-            //------------Setup for test--------------------------
-            var rm = new Mock<IContextualResourceModel>();
-            rm.Setup(r => r.ServerID).Returns(_serverID);
-            rm.Setup(r => r.ResourceName).Returns(ResourceName);
-            rm.Setup(r => r.WorkflowXaml).Returns(StringResourcesTest.DebugInputWindow_WorkflowXaml);
-            rm.Setup(r => r.ID).Returns(_resourceID);
-            rm.Setup(r => r.DataList).Returns("<DataList><a Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" /></DataList>");
-            rm.Setup(r => r.Environment.DsfChannel).Returns(new Mock<IStudioClientContext>().Object);
-
-            var serviceDebugInfoModel = new ServiceDebugInfoModel
-            {
-                DebugModeSetting = DebugMode.DebugInteractive,
-                RememberInputs = true,
-                ResourceModel = rm.Object,
-                ServiceInputData = "<DataList></DataList>"
-            };
-
-            var debugOutputViewModel = CreateDebugOutputViewModel();
-            var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel);
-            workflowInputDataViewModel.LoadWorkflowInputs();
-
-            //------------Execute Test---------------------------
-            workflowInputDataViewModel.Save();
-
-            //------------Assert Results-------------------------
-            var payload = XElement.Parse(workflowInputDataViewModel.DebugTO.XmlData);
-            payload.Add(new XElement("BDSDebugMode", workflowInputDataViewModel.DebugTO.IsDebugMode));
-            payload.Add(new XElement("DebugSessionID", workflowInputDataViewModel.DebugTO.SessionID));
-            payload.Add(new XElement("EnvironmentID", Guid.Empty));
-
-            var expectedPayload = payload.ToString(SaveOptions.None);
-            var actualPayload = workflowInputDataViewModel.SendExecuteRequestPayload.ToString(SaveOptions.None);
-            Assert.AreEqual(expectedPayload, actualPayload);
-        }
-
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("WorkflowInputDataViewModel_Save")]
