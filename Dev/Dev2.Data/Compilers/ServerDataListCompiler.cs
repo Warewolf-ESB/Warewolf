@@ -540,14 +540,12 @@ namespace Dev2.Server.Datalist
                     string error;
 
                     // NOTE : This is a problem when the RecordsetName differs from the rsName?!
-                    // def.RecordSetName rsName
                     childDL.TryGetEntry(rsName, out entry, out error);
                     errors.AddError(error);
 
                     if (entry != null && !string.IsNullOrEmpty(rsName) && !string.IsNullOrEmpty(rsCol))
                     {
                         entry.AdjustForIOMapping(parentDLID, rsCol, rsName, def.Name, out invokeErrors);
-                        //entry.AdjustForIOMapping(parentDLID, def.Name, rsName, rsCol, out invokeErrors);
                         errors.MergeErrors(invokeErrors);
                         outputRemoveIdx.Add(oPos);
                     }

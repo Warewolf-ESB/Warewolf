@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Security.Cryptography;
 using System.Security.Principal;
 using System.ServiceProcess;
 using System.Text;
@@ -18,7 +17,6 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Reflection;
 using Dev2.Data;
-using Dev2.Data.Binary_Objects;
 using Dev2.Data.Storage;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -197,7 +195,6 @@ namespace Unlimited.Applications.DynamicServicesHost
         private AssemblyReference[] _externalDependencies;
         private Dictionary<string, WorkflowEntry[]> _workflowGroups;
         private Dev2Endpoint[] _endpoints;
-        //private IPEndPoint[] _endpoints;
         private IFrameworkWebServer _webserver;
         private EsbServicesEndpoint _esbEndpoint;
 

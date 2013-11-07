@@ -401,27 +401,20 @@ namespace Dev2.DynamicServices
         {
             var result = "<DataList></DataList>";
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, serviceName);
+
             if(resource == null)
             {
                 return result;
             }
+
             result = resource.DataList;
 
                 // Handle services ;)
             if(result == "<DataList />" && resource.ResourceType != ResourceType.WorkflowService)
-                {
-                //                    var serviceDef = tmp.ResourceDefinition;
-                //
-                    ErrorResultTO errors;
-                //
-                //                        var outputMappings = ServiceUtils.ExtractOutputMapping(serviceDef);
-                //                    var oDL = DataListUtil.ShapeDefinitionsToDataList(outputMappings, enDev2ArgumentType.Output, out errors);
-                //
-                //                        var inputMappings = ServiceUtils.ExtractInputMapping(serviceDef);
-                //                    var iDL = DataListUtil.ShapeDefinitionsToDataList(inputMappings, enDev2ArgumentType.Input, out errors);
-
+            {
+                ErrorResultTO errors;
                 result = GlueInputAndOutputMappingSegments(resource.Outputs, resource.Inputs, out errors);
-                        }
+            }
 
 
             if(string.IsNullOrEmpty(result))
@@ -552,22 +545,8 @@ namespace Dev2.DynamicServices
                 {
                 return false;
             }
+
             return resource.ResourceType == ResourceType.WorkflowService;
-            //            var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceName);
-            //
-            //            var dynamicService = services.FirstOrDefault();
-            //
-            //            if (dynamicService != null)
-            //            {
-            //                var serviceAction = dynamicService.Actions.FirstOrDefault();
-            //            
-            //                if (serviceAction != null)
-            //                {
-            //                    return (serviceAction.ActionType == enActionType.Workflow);
-            //                }
-            //            }
-            //
-            //            return false;
         }
 
         /// <summary>

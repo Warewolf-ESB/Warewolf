@@ -857,53 +857,43 @@ namespace Dev2.DataList.Contract
                                         else if (match == search && !isRS)
                                         {
 
-                                            //// check for invalid recordset notation
-                                            //if (!payload.HangingOpen && refParts[i].Children != null)
-                                            //{
-                                            //    throw new Dev2DataLanguageParseError("Invalid syntax - [[" + payload.Payload + "]] is a recordset with out the (). Please use [[" + payload.Payload + "()]] instead.", payload.StartIndex, payload.EndIndex, enIntellisenseErrorCode.InvalidRecordsetNotation);
-
-                                            //}
-                                            //else
+                                            // check to see if match is a recordset and return it as such
+                                            if (refParts[i].Children != null && refParts[i].Children.Count > 0)
                                             {
-
-                                                // check to see if match is a recordset and return it as such
-                                                if (refParts[i].Children != null && refParts[i].Children.Count > 0)
+                                                // we hav a recordset, return options
+                                                IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationRecordsetPart(refParts[i].Name, "", refParts[i].Description);
+                                                result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
+                                                // add all children
+                                                IList<IDev2DataLanguageIntellisensePart> children = refParts[i].Children;
+                                                if (children != null)
                                                 {
-                                                    // we hav a recordset, return options
-                                                    IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationRecordsetPart(refParts[i].Name, "", refParts[i].Description);
-                                                    result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
-                                                    // add all children
-                                                    IList<IDev2DataLanguageIntellisensePart> children = refParts[i].Children;
-                                                    if (children != null)
+                                                    for (int q = 0; q < children.Count; q++)
                                                     {
-                                                        for (int q = 0; q < children.Count; q++)
-                                                        {
-                                                            part = IntellisenseFactory.CreateDataListValidationRecordsetPart(refParts[i].Name, children[q].Name, children[q].Description + " / Use a field of the Recordset");
-                                                            result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
-                                                        }
+                                                        part = IntellisenseFactory.CreateDataListValidationRecordsetPart(refParts[i].Name, children[q].Name, children[q].Description + " / Use a field of the Recordset");
+                                                        result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                // handle scalar matches
+                                                if (search != match || (search == match && addCompleteParts))
+                                                {
+                                                    // user wants to set index via a scalar, allow it
+                                                    if (payload.Parent != null && payload.Parent.Payload.IndexOf("(", System.StringComparison.Ordinal) >= 0)
+                                                    {
+                                                        IDataListVerifyPart p = IntellisenseFactory.CreateDataListValidationScalarPart(refParts[i].Name);
+                                                        result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, p, " / Select a specific row "));
+                                                    }
+                                                    else
+                                                    {
+                                                        IDataListVerifyPart p = IntellisenseFactory.CreateDataListValidationScalarPart(refParts[i].Name);
+                                                        result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, p, refParts[i].Description));
                                                     }
                                                 }
                                                 else
                                                 {
-                                                    // handle scalar matches
-                                                    if (search != match || (search == match && addCompleteParts))
-                                                    {
-                                                        // user wants to set index via a scalar, allow it
-                                                        if (payload.Parent != null && payload.Parent.Payload.IndexOf("(", System.StringComparison.Ordinal) >= 0)
-                                                        {
-                                                            IDataListVerifyPart p = IntellisenseFactory.CreateDataListValidationScalarPart(refParts[i].Name);
-                                                            result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, p, " / Select a specific row "));
-                                                        }
-                                                        else
-                                                        {
-                                                            IDataListVerifyPart p = IntellisenseFactory.CreateDataListValidationScalarPart(refParts[i].Name);
-                                                            result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, p, refParts[i].Description));
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        emptyOk = true;
-                                                    }
+                                                    emptyOk = true;
                                                 }
                                             }
                                         }

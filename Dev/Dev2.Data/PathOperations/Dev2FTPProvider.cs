@@ -121,14 +121,6 @@ namespace Dev2.PathOperations {
         Sftp BuildSftpClient(IActivityIOPath path)
         {
             var hostName = ExtractHostNameFromPath(path.Path);
-            //if(String.IsNullOrEmpty(path.Username))
-            //{
-            //    path.Username = "dev2testing";
-            //}
-            //if(String.IsNullOrEmpty(path.Password))
-            //{
-            //    path.Password = "Q/ulw&]";
-            //}
             var sftp = new Sftp(hostName, path.Username, path.Password);
             try
             {

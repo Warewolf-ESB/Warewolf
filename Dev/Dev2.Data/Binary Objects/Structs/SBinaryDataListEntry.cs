@@ -333,32 +333,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
         public void MoveIndexDataForClone(int min, int max, HashSet<int> gaps, bool onMasterEntry)
         {
-            //if (!onMasterEntry)
-            //{
-            //    // signal that we have data here ;)
-            //    _appendIndex = 2;
-            //    _isEmpty = false;
-
-            //    _myKeys.MinValue = min;
-            //    _myKeys.MaxValue = max;
-            //    _myKeys.SetGapsCollection(new HashSet<int>(gaps));
-            //}
-            //else
-            //{
-            //    // we need to adjust the master view ;)
-            //    var aliases = FetchAlias();
-            //    var theAlias = aliases.FirstOrDefault();
-
-            //    if (theAlias.Value != null)
-            //    {
-            //        var me = theAlias.Value.MasterEntry;
-            //        if (me != null)
-            //        {
-            //            me.AdjustIndexView(gaps, min, max, true);
-            //        }
-            //    }
-            //    else
-            //    {
             // signal that we have data here ;)
             _appendIndex = 2; 
             _isEmpty = false;
@@ -366,10 +340,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             _myKeys.MinValue = min;
             _myKeys.MaxValue = max;
             _myKeys.SetGapsCollection(new HashSet<int>(gaps));
-                //}
-
-            //}
-
         }
 
         public HashSet<int> FetchGaps()
@@ -648,27 +618,9 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             int max = -1;
             int min = -1;
 
-            //var aliases = thisObj.FetchAlias();
-            //var theAlias = aliases.FirstOrDefault();
-
-            //if (theAlias.Value != null)
-            //{
-            //    var me = theAlias.Value.MasterEntry;
-            //    if (me != null)
-            //    {
-            //        var index = me.FetchRecordsetIndexes();
-
-            //        gaps = index.FetchGaps();
-            //        min = index.MinIndex();
-            //        max = index.MaxIndex();
-            //    }
-            //}
-            //else
-            //{
             gaps = keys.Gaps;
             min = keys.MinValue;
             max = keys.MaxValue;
-            //}
 
             this.Columns = thisObj.Columns;
             this._itemStorage = thisObj._itemStorage;
