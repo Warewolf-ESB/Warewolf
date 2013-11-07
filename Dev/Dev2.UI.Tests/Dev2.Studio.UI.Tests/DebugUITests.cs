@@ -88,11 +88,10 @@ namespace Dev2.Studio.UI.Tests
             // close the window ;)
             DebugUIMap.CloseDebugWindow_ByCancel();
 
-            var expectedXML = @"<DataList>
-  <var>1</var>
+            const string expectedXML = @"<DataList>
   <countries>
-    <CountryID>2</CountryID>
-    <Description></Description>
+    <CountryID>1</CountryID>
+    <Description>2</Description>
   </countries>
 </DataList>";
 

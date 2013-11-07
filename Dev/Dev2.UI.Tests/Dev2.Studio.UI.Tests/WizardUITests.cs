@@ -155,7 +155,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         //2013.06.22: Ashley Lewis for bug 9478
         [TestMethod]
-        // 05/11 - Failure is Correct - TEST IS FAULTY ;)
+        [Owner("Travis Frisinger")]
         public void EmailSourceWizardCreateNewSourceExpectedSourceCreated()
         {
             //Initialization
@@ -167,7 +167,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             //Assert
             DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.DoRefresh();
             ExplorerUIMap.EnterExplorerSearchText(name);
 
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", "Unassigned", name));

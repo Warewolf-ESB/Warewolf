@@ -43,29 +43,39 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
             ExplorerUIMap.EnterExplorerSearchText("$");
             var getLocalServer = ExplorerUIMap.GetLocalServer();
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
-            for (var i = 0; i < 10; i++)
+            for(var i = 0; i < 10; i++)
             {
                 Keyboard.SendKeys("{DOWN}");
             }
+
             SendKeys.SendWait("{ENTER}");
 
             //wait for email source wizard
             WizardsUIMap.WaitForWizard();
 
-            SendKeys.SendWait("{TAB}smtp.afrihost.co.za{TAB}");
+            SendKeys.SendWait("{TAB}");
+            Playback.Wait(500);
+            SendKeys.SendWait("smtp.afrihost.co.za{TAB}");
+            Playback.Wait(500);
             SendKeys.SendWait("dev2test{TAB}");
+            Playback.Wait(500);
             SendKeys.SendWait("Password{TAB}{TAB}");
+            Playback.Wait(500);
             SendKeys.SendWait("{TAB}{TAB}");
             Playback.Wait(500);
             SendKeys.SendWait("{ENTER}");
             SendKeys.SendWait("^AThorLocal@norsegods.com{TAB}");
             SendKeys.SendWait("dev2warewolf@gmail.com{TAB}");
-            Playback.Wait(1000);
+            Playback.Wait(500);
             SendKeys.SendWait("{ENTER}");
             Playback.Wait(30000);//wait for test
             ClickSave();
 
-            SendKeys.SendWait("{TAB}{TAB}{TAB}" + name + "{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}");
+            Playback.Wait(500);
+            SendKeys.SendWait(name);
+            Playback.Wait(500);
+            SendKeys.SendWait("{TAB}{ENTER}");
         }
 
         public void ClickTestConnection()
@@ -76,14 +86,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
         public void ClickSaveEmailSource()
         {
             Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
-        }
-
-        public void EnterEmailAddressAndSend()
-        {
-            Keyboard.SendKeys("^AThorLocal@norsegods.com{TAB}");
-            Keyboard.SendKeys("dev2warewolf@gmail.com{TAB}");
-            Keyboard.SendKeys("{ENTER}");
-            Playback.Wait(10000);
         }
 
         /// <summary>

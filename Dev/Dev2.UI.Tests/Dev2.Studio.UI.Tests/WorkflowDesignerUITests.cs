@@ -380,7 +380,6 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [TestCategory("UITest")]
         [Owner("Tshepo Ntlhokoa")]
-        // 05/11 - Failure is Intermittent ;) AND THIS TEST IS CRAP. Why check tabs for validity?
         public void DragAStartNodeOntoATool_HoverOverAToolForAWhile_NoDrillDownShouldHappen()
         {
             // Create the workflow
@@ -403,9 +402,9 @@ namespace Dev2.Studio.UI.Tests
             Mouse.Move(point);
             Playback.Wait(5000);
 
-            //Get the active tab and compare against the original tab
-            UITestControl activeTab = TabManagerUIMap.GetActiveTab();
-            Assert.AreEqual(theTab, activeTab);
+            // ensure the start btn is visible, hence no drill down
+            theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Assert.IsTrue(theStartButton.Exists, "Start Node Hover Caused Drilldown");
         }
     }
 }

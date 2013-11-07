@@ -1,5 +1,4 @@
-﻿using Dev2.CodedUI.Tests;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
@@ -9,27 +8,6 @@ namespace Dev2.Studio.UI.Tests
     [CodedUITest]
     public class FormatNumberUITests : UIMapBase
     {
-        #region Additional test attributes
-
-        // You can use the following additional attributes as you write your tests:
-
-        ////Use TestInitialize to run code before running each test 
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{        
-        //    // To generate code for this test, select "Generate Code for Coded UI Test" from the shortcut menu and select one of the menu items.
-        //    // For more information on generated code, see http://go.microsoft.com/fwlink/?LinkId=179463
-        //}
-
-        ////Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{        
-        //    // To generate code for this test, select "Generate Code for Coded UI Test" from the shortcut menu and select one of the menu items.
-        //    // For more information on generated code, see http://go.microsoft.com/fwlink/?LinkId=179463
-        //}
-
-        #endregion
 
         #region Context Init
 
@@ -37,27 +15,15 @@ namespace Dev2.Studio.UI.Tests
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-        private TestContext testContextInstance;
-        
+        public TestContext TestContext { get; set; }
+
         #endregion
 
         #region Format Number Inputs Tests
 
-        // BUG 8876 : This test ensure that the input box is enabled when selecting any rounding
-        //           type (except None) in the Format Tool
+        // BUG 8876 : This test ensure that the input box is enabled when selecting any rounding type (except None) in the Format Tool
         [TestMethod]
-        // 05/11 - Failure is Correct - Broken Test ;)
+        [Owner("Travis Frisinger")]
         public void SetRoundingType_Normal_ExpectedRoundingInputIsEnabled()
         {
             RibbonUIMap.CreateNewWorkflow();
@@ -80,7 +46,7 @@ namespace Dev2.Studio.UI.Tests
 
         // BUG 8876 : This test ensure that the input box is empty when selecting none in the Format Tool
         [TestMethod]
-        // 05/11 - Failure is Correct - Broken Test ;)
+        [Owner("Travis Frisinger")]
         public void SetRoundingType_None_ExpectedRoundingInputIsDisabled()
         {
 
@@ -102,10 +68,9 @@ namespace Dev2.Studio.UI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
 
-        // BUG 8876 : This test ensure that the input box is disabled and cleared when changing the rounding
-        //            type to none.
+        // BUG 8876 : This test ensure that the input box is disabled and cleared when changing the rounding type to none.
         [TestMethod]
-        // 05/11 - Failure is Correct -workflowPoint1 is wrong location?! ;)
+        [Owner("Travis Frisinger")]
         public void ChangeRoundingType_None_Expected_RoundingInputBecomesDisabledAndEmpty()
         {
             RibbonUIMap.CreateNewWorkflow();

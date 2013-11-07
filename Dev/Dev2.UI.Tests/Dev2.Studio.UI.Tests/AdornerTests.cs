@@ -1,7 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
-using Dev2.Studio.UI.Tests.UIMaps;
-using Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,6 +19,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ExternalService_EditService")]
+        // 07/11 - Plugin Wizard Issue!
         public void ExternalService_EditService_EditWithNoSecondSaveDialog_ExpectOneDialog()
         {
             //------------Setup for test--------------------------
@@ -29,6 +29,8 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.EnterExplorerSearchText("Edit Service Workflow");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "UI TEST", "Edit Service Workflow");
             Playback.Wait(5000);
+
+            var newMapping = Guid.NewGuid().ToString().Replace("-","").Substring(0, 6);
 
             //------------Execute Test---------------------------
 
@@ -49,7 +51,7 @@ namespace Dev2.Studio.UI.Tests
             DatabaseServiceWizardUIMap.ClickMappingTab();
             SendKeys.SendWait("{TAB}");
             Playback.Wait(500);
-            SendKeys.SendWait("zzz");
+            SendKeys.SendWait(newMapping);
             // -- wizard closed
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
 
@@ -72,7 +74,7 @@ namespace Dev2.Studio.UI.Tests
 
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");
             Playback.Wait(500);
-            SendKeys.SendWait("zzz");
+            SendKeys.SendWait(newMapping);
             // -- wizard closed, account for darn dialog ;(
             SendKeys.SendWait("{TAB}{TAB}{TAB}{ENTER}{TAB}{ENTER}");
             Playback.Wait(1000);
@@ -99,7 +101,7 @@ namespace Dev2.Studio.UI.Tests
             DatabaseServiceWizardUIMap.ClickMappingTab(); // click on the second tab ;)
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");
             Playback.Wait(500);
-            SendKeys.SendWait("zzz");
+            SendKeys.SendWait(newMapping);
             Playback.Wait(500);
             // -- wizard closed, account for darn dialog ;(
             SendKeys.SendWait("{TAB}{TAB}");
@@ -240,7 +242,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [TestCategory("DsfActivityTests")]
         [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands and the resize control is visible")]
-        [Owner("Massimo Guerrera")]
+        [Owner("Travis Frisinger")]
         public void ResizeAdornerMappingsOnDrop_Expected_AdornerMappingIsResized()
         {
             const string resourceToUse = "CalculateTaxReturns";

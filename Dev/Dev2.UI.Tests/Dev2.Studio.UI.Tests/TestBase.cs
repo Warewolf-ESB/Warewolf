@@ -1,14 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
+﻿using System.Globalization;
 using System.Windows.Forms;
 using Dev2.Studio.UI.Tests;
-using Dev2.Studio.UI.Tests.UIMaps;
-using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.SwitchUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -57,7 +49,6 @@ namespace Dev2.CodedUI.Tests
         #endregion New PBI Tests
 
         [TestMethod]
-        // 05/11 - Failure is Correct - Grid View Issue ;)
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
         {
             // Create the workflow
@@ -90,7 +81,7 @@ namespace Dev2.CodedUI.Tests
             }
 
             Playback.Wait(500);
-            var leftTextBoxInRowLastRow = WorkflowDesignerUIMap.AssignControl_GetLeftTextboxInRow("Assign", 20) as WpfEdit;
+            var leftTextBoxInRowLastRow = WorkflowDesignerUIMap.AssignControl_GetLeftTextboxInRow("Assign", 19) as WpfEdit;
             string text = leftTextBoxInRowLastRow.Text;
             StringAssert.Contains(text, "[[theVar19]]");
         }

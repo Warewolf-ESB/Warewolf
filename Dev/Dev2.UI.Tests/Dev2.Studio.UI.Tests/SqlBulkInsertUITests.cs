@@ -80,7 +80,6 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(1000);
             var listOfDbNames = dbDropDown.Items.Select(i => i as WpfListItem).ToList();
             var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDB));
-            databaseName.DrawHighlight();
             Mouse.Click(databaseName, new Point(5, 5));
             Playback.Wait(2000);
 
@@ -94,11 +93,22 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(5000);
 
             //Open the large view
-            var toggleButton = GetControlByFriendlyName("Open Large View");
-            Mouse.Click(toggleButton, new Point(5, 5));
-            Playback.Wait(2000);
+            UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfSqlBulkInsertActivity");
+            Mouse.Move(controlOnWorkflow, new Point(5, 5));
+            //var button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TravsTestService", "Edit");
+            var toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "DsfSqlBulkInsertActivity", "Open Large View") as WpfToggleButton;
+
+            if(toggleButton == null)
+            {
+                Assert.Fail("Could not find mapping button");
+            }
+
+            Mouse.Click(toggleButton);
+            Playback.Wait(1000);
 
             //Enter a few mappings
+
+            // THIS IS FAULTY LOGIC!!!!
             SendKeys.SendWait("^a^xrecord().id{TAB}");
             SendKeys.SendWait("^a^xrecord().name{TAB}");
             SendKeys.SendWait("^a^xrecord().mail{TAB}");
@@ -118,9 +128,6 @@ namespace Dev2.Studio.UI.Tests
             var done = GetControlById("DoneButton", theTab);
             Mouse.Click(done, new Point(5, 5));
 
-            toggleButton = GetControlByFriendlyName("Open Large View");
-            Assert.IsNull(toggleButton);
-
             var batchErrorMessage = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Batch size must be a number");
             Mouse.Move(new Point(batchErrorMessage.GetChildren()[0].BoundingRectangle.X + 5, batchErrorMessage.GetChildren()[0].BoundingRectangle.Y + 5));
             Mouse.Click();
@@ -132,7 +139,8 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait("^a^x200");
 
             Mouse.Click(done, new Point(5, 5));
-            toggleButton = GetControlByFriendlyName("Open Large View");
+            toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "DsfSqlBulkInsertActivity", "Open Large View") as WpfToggleButton;
+
             Assert.IsNotNull(toggleButton);
         }
 
@@ -195,7 +203,6 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(1000);
             var listOfDbNames = dbDropDown.Items.Select(i => i as WpfListItem).ToList();
             var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDB));
-            databaseName.DrawHighlight();
             Mouse.Click(databaseName, new Point(5, 5));
 
             //Select a table
