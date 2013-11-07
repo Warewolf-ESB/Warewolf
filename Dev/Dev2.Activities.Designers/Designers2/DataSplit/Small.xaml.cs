@@ -22,8 +22,13 @@ namespace Dev2.Activities.Designers2.DataSplit
         void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var tmpCbx = sender as ComboBox;
-            if(tmpCbx != null)
+            if (tmpCbx != null)
             {
+                if (tmpCbx.SelectedItem == null)
+                {
+                    return;
+                }
+
                 dynamic tmpDto = tmpCbx.DataContext;
                 if (tmpCbx.SelectedItem.ToString() == "Index" || tmpCbx.SelectedItem.ToString() == "Chars")
                 {

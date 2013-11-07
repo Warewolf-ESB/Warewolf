@@ -151,6 +151,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanRemove()
         {
+            if(string.IsNullOrEmpty(SplitType))
+            {
+                return true;
+            }
+
             if (SplitType == "Index" || SplitType == "Chars")
             {
                 if (string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(At))

@@ -132,6 +132,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanRemove()
         {
+            if (string.IsNullOrEmpty(MergeType))
+            {
+                return true;
+            }
+
             if (MergeType == "Index" || MergeType == "Chars")
             {
                 if (string.IsNullOrEmpty(InputVariable) && string.IsNullOrEmpty(At))

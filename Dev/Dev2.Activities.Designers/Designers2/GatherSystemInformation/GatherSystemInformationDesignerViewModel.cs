@@ -17,13 +17,6 @@ namespace Dev2.Activities.Designers2.GatherSystemInformation
             AddTitleBarHelpToggle();
             dynamic mi = ModelItem;
             InitializeItems(mi.SystemInformationCollection);
-
-            //if (mi.ResultsCollection == null || mi.ResultsCollection.Count <= 0)
-            //{
-            //    mi.SystemInformationCollection.Add(new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime, string.Empty, 1));
-            //    mi.SystemInformationCollection.Add(new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime, string.Empty, 2));
-            //}
-
             ItemsList = Dev2EnumConverter.ConvertEnumsTypeToStringList<enTypeOfSystemInformationToGather>();
         }
         public override string CollectionName { get { return "SystemInformationCollection"; } }

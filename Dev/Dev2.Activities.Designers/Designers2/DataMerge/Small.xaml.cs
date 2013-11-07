@@ -26,8 +26,13 @@ namespace Dev2.Activities.Designers2.DataMerge
             var tmpCbx = sender as ComboBox;
             if (tmpCbx != null)
             {
-                var model = (ModelItem)tmpCbx.DataContext;
+                if(tmpCbx.SelectedItem == null)
+                {
+                    return;
+                }
 
+                var model = (ModelItem)tmpCbx.DataContext;
+               
                 if (tmpCbx.SelectedItem.ToString() == "Index" || tmpCbx.SelectedItem.ToString() == "Chars")
                 {
                     ModelItemUtils.SetProperty("EnableAt", true, model);
