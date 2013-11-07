@@ -90,7 +90,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             //Assert
             DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.DoRefresh();
             ExplorerUIMap.EnterExplorerSearchText(serviceName);
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SERVICES", "Unassigned", serviceName));
             ExplorerUIMap.RightClickDeleteProject("localhost", "SERVICES", "Unassigned", serviceName);
