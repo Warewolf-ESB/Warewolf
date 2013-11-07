@@ -119,17 +119,32 @@ namespace Dev2.Studio.UI.Tests
         public void RemoteServerUITests_DragAndDropWorkflowFromRemoteServerOnALocalHostCreatedWorkflow_WorkFlowIsDropped()
         {
             const string TextToSearchWith = "Recursive File Copy";
+            const string RemoteSourceToSearchFor = "WebSource";
+            const string LocalSourceToSearchFor = "RemoteConnection";
             DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
             //Ensure that we're in localhost
             ExplorerUIMap.ClickServerInServerDDL(LocalHostServerName);
             //Create a workfliow
             RibbonUIMap.CreateNewWorkflow();
+            var theTab = TabManagerUIMap.GetActiveTab();
             DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
             ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
 
             var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
-            ExplorerUIMap.ClearExplorerSearchText();
 
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText(RemoteSourceToSearchFor);
+            ExplorerUIMap.DragControlToWorkflowDesigner(RemoteServerName, "SOURCES", "REMOTETESTS", RemoteSourceToSearchFor, point);
+            Assert.IsNull(WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Remote"), "Can drag a remote source onto a local workflow");
+
+            DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText(LocalSourceToSearchFor);
+            ExplorerUIMap.DragControlToWorkflowDesigner(LocalHostServerName, "SOURCES", "REMOTEUITEST", LocalSourceToSearchFor, point);
+            Assert.IsNull(WorkflowDesignerUIMap.FindControlByAutomationId(theTab, RemoteSourceToSearchFor), "Can drag a local source onto a local workflow");
+
+            DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
+            ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(TextToSearchWith);
             ExplorerUIMap.DragControlToWorkflowDesigner(RemoteServerName, "WORKFLOWS", "UTILITY", TextToSearchWith, point);
 
@@ -147,17 +162,32 @@ namespace Dev2.Studio.UI.Tests
         public void RemoteServerUITests_DragAndDropWorkflowFromALocalServerOnARemoteServerCreatedWorkflow_WorkFlowIsDropped()
         {
             const string TextToSearchWith = "Utility - Assign";
+            const string RemoteSourceToSearchFor = "WebSource";
+            const string LocalSourceToSearchFor = "RemoteConnection";
             DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
             ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
             //Create a workfliow
             RibbonUIMap.CreateNewWorkflow();
+            var theTab = TabManagerUIMap.GetActiveTab();
             DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
             //Connect to local server
             ExplorerUIMap.ClickServerInServerDDL(LocalHostServerName);
 
             var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
-            ExplorerUIMap.ClearExplorerSearchText();
 
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText(LocalSourceToSearchFor);
+            ExplorerUIMap.DragControlToWorkflowDesigner(LocalHostServerName, "SOURCES", "REMOTEUITEST", LocalSourceToSearchFor, point);
+            Assert.IsNull(WorkflowDesignerUIMap.FindControlByAutomationId(theTab, LocalSourceToSearchFor), "Can drag a local source onto a remote workflow");
+
+            DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText(RemoteSourceToSearchFor);
+            ExplorerUIMap.DragControlToWorkflowDesigner(RemoteServerName, "SOURCES", "REMOTETESTS", RemoteSourceToSearchFor, point);
+            Assert.IsNull(WorkflowDesignerUIMap.FindControlByAutomationId(theTab, RemoteSourceToSearchFor), "Can drag a remote source onto a remote workflow");
+
+            DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
+            ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(TextToSearchWith);
             ExplorerUIMap.DragControlToWorkflowDesigner(LocalHostServerName, "WORKFLOWS", "EXAMPLES", TextToSearchWith, point);
 
