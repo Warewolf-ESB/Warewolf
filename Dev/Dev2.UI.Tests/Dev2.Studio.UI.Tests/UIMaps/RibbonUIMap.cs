@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Linq;
+using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
@@ -7,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
 {
-    public partial class RibbonUIMap
+    public partial class RibbonUIMap : UIMapBase
     {
         #region Mappings
 
@@ -90,11 +91,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
 
         public void CreateNewWorkflow()
         {
+            var tabCount = TabManagerUIMap.GetTabCount();
             var uiTestControlCollection = UIBusinessDesignStudioWindow.GetChildren();
             var control = uiTestControlCollection.FirstOrDefault(c => c.FriendlyName == "UI_RibbonHomeTabWorkflowBtn_AutoID");
             var p = new Point(control.BoundingRectangle.Left + 5, control.BoundingRectangle.Top + 5);
             Mouse.Click(p);
-            Playback.Wait(2000);
+            var newTabCount = tabCount;
+            while (newTabCount <= tabCount)
+            {
+                Playback.Wait(1000);
+                newTabCount = TabManagerUIMap.GetTabCount();
+            }
         }
 
         public UITestControl GetControlByName(string name)
