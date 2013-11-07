@@ -9,9 +9,9 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Copy"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-    xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
-    xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
-    Width="200"
+                               xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                               xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
+                               Width="200"
                                MaxWidth="200"
                                Padding="7"
                                mc:Ignorable="d"
@@ -37,7 +37,7 @@
         <Label Grid.Column="0"
                Grid.Row="0"
                Style="{StaticResource ActivityLabelStyle}"
-               Content="File or Folder" />
+               Content="{Binding InputPathLabel, Mode=OneWay}" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1"
                                 Grid.Row="0"
@@ -67,7 +67,7 @@
         <Label Grid.Column="0"
                Grid.Row="1"
                Style="{StaticResource ActivityLabelStyle}"
-               Content="Destination" />
+               Content="{Binding OutputPathLabel, Mode=OneWay}" />
         <ui:IntellisenseTextBox  Grid.Column="1"
                                  Grid.Row="1"
                                  DefaultText="[[CopyToPath]]"

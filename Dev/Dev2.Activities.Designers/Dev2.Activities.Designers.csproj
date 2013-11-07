@@ -118,6 +118,9 @@
       <DependentUpon>CopyDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Copy\CopyDesignerViewModel.cs" />
+    <Compile Include="Designers2\Copy\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Copy\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
@@ -602,6 +605,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Copy\CopyDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Copy\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
