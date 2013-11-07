@@ -32,7 +32,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                 throw new UITestControlNotFoundException("Popup dialog not displayed within the given time out period.");
             }
             //wait for render
-            Playback.Wait(2000);
+            Playback.Wait(20000);
         }
 
         public bool TryWaitForWizard(int timeOut)
