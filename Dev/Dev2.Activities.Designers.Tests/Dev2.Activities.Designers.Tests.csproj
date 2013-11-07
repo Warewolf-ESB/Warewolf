@@ -79,8 +79,20 @@
     <Compile Include="..\Dev2.Core.Tests\TestUtils.cs">
       <Link>TestUtils.cs</Link>
     </Compile>
+    <Compile Include="Rename\RenameDesignerViewModelTests.cs" />
+    <Compile Include="Rename\TestRenameDesignerViewModel.cs" />
+    <Compile Include="ReadFile\ReadFileDesignerViewModelTests.cs" />
+    <Compile Include="ReadFile\TestReadFileDesignerViewModel.cs" />
+    <Compile Include="Delete\DeleteDesignerViewModelTests.cs" />
+    <Compile Include="Delete\TestDeleteDesignerViewModel.cs" />
+    <Compile Include="Move\MoveDesignerViewModelTests.cs" />
+    <Compile Include="Move\TestMoveDesignerViewModel.cs" />
+    <Compile Include="Copy\CopyDesignerViewModelTests.cs" />
+    <Compile Include="Copy\TestCopyDesignerViewModel.cs" />
     <Compile Include="CountRecords\CountRecordsDesignerViewModelTests.cs" />
     <Compile Include="CountRecords\TestCountRecordsDesignerViewModel.cs" />
+    <Compile Include="Create\CreateDesignerViewModelTests.cs" />
+    <Compile Include="Create\TestCreateDesignerViewModel.cs" />
     <Compile Include="DateTimeDifference\DateTimeDifferenceDesignerViewModelTests.cs" />
     <Compile Include="DateTimeDifference\TestDateTimeDifferenceDesignerViewModel.cs" />
     <Compile Include="Designers2\Core\Controls\Dev2DataGridTests.cs" />
