@@ -6,7 +6,6 @@ using Dev2.Activities.Designers2.DataMerge;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers.Tests.DataMerge
 {
@@ -63,17 +62,54 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataMergeViewModel_Constructor")]
-        public void DataMergeViewModel_OnMergeTypeChanged_SetIndexTo0_X()
+        [TestCategory("DataMergeViewModel_OnMergeTypeChanged")]
+        public void DataMergeViewModel_OnMergeTypeChanged_SetIndexToMergeTypeToNone_EnableAtIsSetToFalse()
         {
-            var items = new List<DataMergeDTO>{new DataMergeDTO("", "None", "", 0, "", "Left")};
+            VerifyMergeTypeAgaintsEnabledAt("None", false);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataMergeViewModel_OnMergeTypeChanged")]
+        public void DataMergeViewModel_OnMergeTypeChanged_SetIndexToMergeTypeToTab_EnableAtIsSetToFalse()
+        {
+            VerifyMergeTypeAgaintsEnabledAt("Tab", false);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataMergeViewModel_OnMergeTypeChanged")]
+        public void DataMergeViewModel_OnMergeTypeChanged_SetIndexToMergeTypeToNewLine_EnableAtIsSetToFalse()
+        {
+            VerifyMergeTypeAgaintsEnabledAt("New Line", false);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataMergeViewModel_OnMergeTypeChanged")]
+        public void DataMergeViewModel_OnMergeTypeChanged_SetIndexToMergeTypeToIndex_EnableAtIsSetToTrue()
+        {
+            VerifyMergeTypeAgaintsEnabledAt("Index", true);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataMergeViewModel_OnMergeTypeChanged")]
+        public void DataMergeViewModel_OnMergeTypeChanged_SetIndexToMergeTypeToChars_EnableAtIsSetToTrue()
+        {
+            VerifyMergeTypeAgaintsEnabledAt("Chars", true);
+        }
+
+        static void VerifyMergeTypeAgaintsEnabledAt(string mergeType, bool expectedEnableAt)
+        {
+            var items = new List<DataMergeDTO> { new DataMergeDTO("", mergeType, "", 0, "", "Left") };
             var viewModel = new DataMergeDesignerViewModel(CreateModelItem(items));
             viewModel.OnMergeTypeChanged(0);
             dynamic mi = viewModel.ModelItemCollection[0];
-            var at = mi.GetProperty("At") as string;
-            var enableAt = mi.GetProperty("EnableAt") as bool?;
+            var at = mi.At as string;
+            var actualEnableAt = mi.EnableAt as bool?;
             Assert.AreEqual("", at);
-            Assert.AreEqual(false, enableAt);
+            Assert.AreEqual(expectedEnableAt, actualEnableAt);
         }
 
         static ModelItem CreateModelItem(IEnumerable<DataMergeDTO> items, string displayName = "Merge")
