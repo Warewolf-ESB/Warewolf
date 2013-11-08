@@ -358,8 +358,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SettingsViewModel_OnViewModelPropertyChanged")]
-        public void SettingsViewModel_OnViewModelPropertyChanged_SettingsViewModelIsDirtyPropertyChanged_IsDirtyIsTrue()
+        [TestCategory("SettingsViewModel_IsDirty")]
+        public void SettingsViewModel_IsDirty_SecurityViewModelIsDirtyPropertyChanged_IsDirtyIsTrue()
         {
             //------------Setup for test--------------------------
             var viewModel = CreateViewModel(CreateSettings().ToString());

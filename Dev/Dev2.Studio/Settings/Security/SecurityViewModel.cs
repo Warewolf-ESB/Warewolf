@@ -1,22 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using CubicOrange.Windows.Forms.ActiveDirectory;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Data.Settings.Security;
 using Dev2.Dialogs;
+using Dev2.Help;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 
 namespace Dev2.Settings.Security
 {
-    public class SecurityViewModel : ObservableObject
+    public class SecurityViewModel : DependencyObject, IHelpAdorner
     {
         readonly IResourcePickerDialog _resourcePicker;
         readonly IDirectoryObjectPickerDialog _directoryObjectPicker;
         readonly IWin32Window _parentWindow;
-        bool _isDirty;
+        bool _isUpdatingHelpText;
 
         internal SecurityViewModel(IEnumerable<WindowsGroupPermission> permissions, IWin32Window parentWindow)
             : this(permissions, new ResourcePickerDialog(), new DirectoryObjectPickerDialog(), parentWindow)
@@ -44,6 +47,75 @@ namespace Dev2.Settings.Security
             PickWindowsGroupCommand = new RelayCommand(PickWindowsGroup, o => true);
             PickResourceCommand = new RelayCommand(PickResource, o => true);
 
+            InitializeHelp();
+            InitializePermissions(permissions);
+        }
+
+        public ObservableCollection<WindowsGroupPermission> ServerPermissions { get; private set; }
+
+        public ObservableCollection<WindowsGroupPermission> ResourcePermissions { get; private set; }
+
+        public ActivityDesignerToggle ServerHelpToggle { get; private set; }
+
+        public ActivityDesignerToggle ResourceHelpToggle { get; private set; }
+
+        public ICommand PickWindowsGroupCommand { get; private set; }
+
+        public ICommand PickResourceCommand { get; private set; }
+
+        public ICommand CloseHelpCommand { get; private set; }
+
+        public string HelpText
+        {
+            get { return (string)GetValue(HelpTextProperty); }
+            set { SetValue(HelpTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty HelpTextProperty = DependencyProperty.Register("HelpText", typeof(string), typeof(SecurityViewModel), new PropertyMetadata(null));
+
+        public bool IsDirty
+        {
+            get { return (bool)GetValue(IsDirtyProperty); }
+            set { SetValue(IsDirtyProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.Register("IsDirty", typeof(bool), typeof(SecurityViewModel), new PropertyMetadata(false));
+
+        public bool IsServerHelpVisible
+        {
+            get { return (bool)GetValue(IsServerHelpVisibleProperty); }
+            set { SetValue(IsServerHelpVisibleProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsServerHelpVisibleProperty = DependencyProperty.Register("IsServerHelpVisible", typeof(bool), typeof(SecurityViewModel), new PropertyMetadata(false, IsServerHelpVisiblePropertyChanged));
+
+        static void IsServerHelpVisiblePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            ((SecurityViewModel)d).UpdateHelpText(HelpType.Server);
+        }
+
+        public bool IsResourceHelpVisible
+        {
+            get { return (bool)GetValue(IsResourceHelpVisibleProperty); }
+            set { SetValue(IsResourceHelpVisibleProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsResourceHelpVisibleProperty = DependencyProperty.Register("IsResourceHelpVisible", typeof(bool), typeof(SecurityViewModel), new PropertyMetadata(false, IsResourceHelpVisiblePropertyChanged));
+
+        static void IsResourceHelpVisiblePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            ((SecurityViewModel)d).UpdateHelpText(HelpType.Resource);
+        }
+
+        void InitializeHelp()
+        {
+            ServerHelpToggle = CreateHelpToggle(IsServerHelpVisibleProperty);
+            ResourceHelpToggle = CreateHelpToggle(IsResourceHelpVisibleProperty);
+            CloseHelpCommand = new RelayCommand(o => CloseHelp(), o => true);
+        }
+
+        void InitializePermissions(IEnumerable<WindowsGroupPermission> permissions)
+        {
             ServerPermissions = new ObservableCollection<WindowsGroupPermission>();
             ResourcePermissions = new ObservableCollection<WindowsGroupPermission>();
 
@@ -62,14 +134,6 @@ namespace Dev2.Settings.Security
             ServerPermissions.Add(CreateNewPermission(true));
             ResourcePermissions.Add(CreateNewPermission(false));
         }
-
-        public ObservableCollection<WindowsGroupPermission> ServerPermissions { get; private set; }
-        public ObservableCollection<WindowsGroupPermission> ResourcePermissions { get; private set; }
-
-        public ICommand PickWindowsGroupCommand { get; private set; }
-        public ICommand PickResourceCommand { get; private set; }
-
-        public bool IsDirty { get { return _isDirty; } set { OnPropertyChanged(ref _isDirty, value); } }
 
         void PickResource(object obj)
         {
@@ -183,5 +247,61 @@ namespace Dev2.Settings.Security
             RegisterPropertyChanged(permission);
             return permission;
         }
+
+        ActivityDesignerToggle CreateHelpToggle(DependencyProperty targetProperty)
+        {
+            var toggle = ActivityDesignerToggle.Create(
+                collapseImageSourceUri: "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceHelp-32.png",
+                collapseToolTip: "Close Help",
+                expandImageSourceUri: "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceHelp-32.png",
+                expandToolTip: "Open Help",
+                automationID: "HelpToggle",
+                target: this,
+                dp: targetProperty
+                );
+
+            return toggle;
+        }
+
+        void CloseHelp()
+        {
+            IsServerHelpVisible = false;
+            IsResourceHelpVisible = false;
+        }
+
+        void UpdateHelpText(HelpType helpType)
+        {
+            if(_isUpdatingHelpText)
+            {
+                return;
+            }
+            _isUpdatingHelpText = true;
+            try
+            {
+                switch(helpType)
+                {
+                    case HelpType.Server:
+                        IsResourceHelpVisible = false;
+                        HelpText = HelpTextResources.SettingsSecurityHelpServerPermissions;
+                        break;
+
+                    case HelpType.Resource:
+                        IsServerHelpVisible = false;
+                        HelpText = HelpTextResources.SettingsSecurityHelpResourcePermissions;
+                        break;
+                }
+            }
+            finally
+            {
+                _isUpdatingHelpText = false;
+            }
+        }
+
+        enum HelpType
+        {
+            Server,
+            Resource
+        }
     }
+
 }

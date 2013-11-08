@@ -303,18 +303,27 @@
     <Compile Include="Factory\DialogViewModelFactory.cs" />
     <Compile Include="Factory\WorkSurfaceContextFactory.cs" />
     <Compile Include="Factory\WorkSurfaceKeyFactory.cs" />
+    <Compile Include="Help\HelpTextResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HelpTextResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="IApp.cs" />
     <Compile Include="CustomControls\Progress\ProgressDialog.xaml.cs">
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\Progress\ProgressFileDownloader.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Help\HelpAdorner.xaml.cs">
+      <DependentUpon>HelpAdorner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings\Logging\LoggingView.xaml.cs">
       <DependentUpon>LoggingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Logging\LoggingViewModel.cs" />
     <Compile Include="Dialogs\IResourcePickerDialog.cs" />
     <Compile Include="Dialogs\ResourcePickerDialog.cs" />
+    <Compile Include="Help\IHelpAdorner.cs" />
     <Compile Include="Settings\Security\SecurityView.xaml.cs">
       <DependentUpon>SecurityView.xaml</DependentUpon>
     </Compile>
@@ -662,6 +671,10 @@
     <Page Include="Resources\SplitterExpansionButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Help\HelpAdorner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Settings\Logging\LoggingView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -1081,6 +1094,10 @@
     <None Include="Feedback\6601.cd" />
     <None Include="Feedback\6670.cd" />
     <None Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Help\HelpTextResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>HelpTextResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

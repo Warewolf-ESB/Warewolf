@@ -30,11 +30,11 @@ namespace Dev2.Settings
         bool _showLogging;
         bool _showSecurity = true;
 
-        SecurityViewModel _securityViewModel;
-
         readonly IPopupController _popupController;
         readonly IAsyncWorker _asyncWorker;
         readonly IWin32Window _parentWindow;
+
+        SecurityViewModel _securityViewModel;
         LoggingViewModel _loggingViewModel;
 
         public SettingsViewModel()
@@ -196,14 +196,6 @@ namespace Dev2.Settings
             LoadSettings();
         }
 
-        void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs args)
-        {
-            if(args.PropertyName == "IsDirty")
-            {
-                IsDirty = true;
-            }
-        }
-
         void LoadSettings()
         {
             IsDirty = false;
@@ -219,7 +211,8 @@ namespace Dev2.Settings
             }, () =>
             {
                 SecurityViewModel = new SecurityViewModel(Settings.Security ?? new List<WindowsGroupPermission>(), _parentWindow);
-                SecurityViewModel.PropertyChanged += OnViewModelPropertyChanged;
+                var isDirtyProperty = DependencyPropertyDescriptor.FromProperty(SecurityViewModel.IsDirtyProperty, typeof(SecurityViewModel));
+                isDirtyProperty.AddValueChanged(SecurityViewModel, (sender, args) => IsDirty = true);
 
                 // TODO: Read from server
                 LoggingViewModel = new LoggingViewModel();

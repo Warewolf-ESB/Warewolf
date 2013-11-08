@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Data.Settings.Security;
 using Dev2.Dialogs;
+using Dev2.Help;
 using Dev2.Settings.Security;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -97,6 +98,9 @@ namespace Dev2.Core.Tests.Settings
             var viewModel = new SecurityViewModel(permissions, new Mock<IWin32Window>().Object);
 
             //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.CloseHelpCommand.CanExecute(null));
+            Assert.IsTrue(viewModel.PickResourceCommand.CanExecute(null));
+            Assert.IsTrue(viewModel.PickWindowsGroupCommand.CanExecute(null));
             Assert.IsNotNull(viewModel.PickResourceCommand);
             Assert.IsNotNull(viewModel.PickWindowsGroupCommand);
             Assert.IsNotNull(viewModel.ServerPermissions);
@@ -275,6 +279,40 @@ namespace Dev2.Core.Tests.Settings
             picker.Setup(p => p.SelectedObjects).Returns(new[] { (DirectoryObject)null });
 
             var viewModel = new SecurityViewModel(new[] { permission }, new Mock<IResourcePickerDialog>().Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<System.Windows.Forms.IWin32Window>().Object);
+
+            //------------Execute Test---------------------------
+            viewModel.PickWindowsGroupCommand.Execute(permission);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Deploy Admins", viewModel.ResourcePermissions[0].WindowsGroup);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SecurityViewModel_PickWindowsGroupCommand")]
+        public void SecurityViewModel_PickWindowsGroupCommand_DialogResultIsOKAndNothingSelected_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+            const string ResourceName = "Cat\\Resource";
+            var permission = new WindowsGroupPermission
+            {
+                IsServer = false,
+                WindowsGroup = "Deploy Admins",
+                View = false,
+                Execute = false,
+                Contribute = false,
+                DeployTo = true,
+                DeployFrom = true,
+                Administrator = false,
+                ResourceID = resourceID,
+                ResourceName = ResourceName
+            };
+            var picker = new Mock<IDirectoryObjectPickerDialog>();
+            picker.Setup(p => p.ShowDialog(It.IsAny<IWin32Window>())).Returns(DialogResult.OK);
+            picker.Setup(p => p.SelectedObjects).Returns(new[] { (DirectoryObject)null });
+
+            var viewModel = new SecurityViewModel(new[] { permission }, new Mock<IResourcePickerDialog>().Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object);
 
             //------------Execute Test---------------------------
             viewModel.PickWindowsGroupCommand.Execute(permission);
@@ -563,6 +601,104 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual(newResourceID, viewModel.ResourcePermissions[0].ResourceID);
             Assert.AreEqual("Category2\\Resource2", viewModel.ResourcePermissions[0].ResourceName);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SecurityViewModel_HelpText")]
+        public void SecurityViewModel_HelpText_IsServerHelpVisibleIsTrue_ContainsServerHelpText()
+        {
+            //------------Setup for test--------------------------          
+            var viewModel = new SecurityViewModel(new WindowsGroupPermission[0], new Mock<IResourcePickerDialog>().Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object);
+
+            //------------Execute Test---------------------------
+            viewModel.IsServerHelpVisible = true;
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(HelpTextResources.SettingsSecurityHelpServerPermissions, viewModel.HelpText);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SecurityViewModel_HelpText")]
+        public void SecurityViewModel_HelpText_IsResourceHelpVisibleIsTrue_ContainsResourceHelpText()
+        {
+            //------------Setup for test--------------------------          
+            var viewModel = new SecurityViewModel(new WindowsGroupPermission[0], new Mock<IResourcePickerDialog>().Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object);
+
+            //------------Execute Test---------------------------
+            viewModel.IsResourceHelpVisible = true;
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(HelpTextResources.SettingsSecurityHelpResourcePermissions, viewModel.HelpText);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SecurityViewModel_IsServerHelpVisible")]
+        public void SecurityViewModel_IsServerHelpVisible_ChangedToTrueAndIsResourceHelpVisibleIsTrue_IsResourceHelpVisibleIsFalse()
+        {
+            //------------Setup for test--------------------------          
+            var viewModel = new SecurityViewModel(new WindowsGroupPermission[0], new Mock<IResourcePickerDialog>().Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object);
+            viewModel.IsResourceHelpVisible = true;
+
+            //------------Execute Test---------------------------
+            viewModel.IsServerHelpVisible = true;
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.IsServerHelpVisible);
+            Assert.IsFalse(viewModel.IsResourceHelpVisible);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SecurityViewModel_IsResourceHelpVisible")]
+        public void SecurityViewModel_IsResourceHelpVisible_ChangedToTrueAndIsServerHelpVisibleIsTrue_IsServerHelpVisibleIsFalse()
+        {
+            //------------Setup for test--------------------------          
+            var viewModel = new SecurityViewModel(new WindowsGroupPermission[0], new Mock<IResourcePickerDialog>().Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object);
+            viewModel.IsServerHelpVisible = true;
+
+            //------------Execute Test---------------------------
+            viewModel.IsResourceHelpVisible = true;
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.IsResourceHelpVisible);
+            Assert.IsFalse(viewModel.IsServerHelpVisible);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SecurityViewModel_CloseHelpCommand")]
+        public void SecurityViewModel_CloseHelpCommand_IsServerHelpVisibleIsTrue_IsServerHelpVisibleIsFalse()
+        {
+            //------------Setup for test--------------------------          
+            var viewModel = new SecurityViewModel(new WindowsGroupPermission[0], new Mock<IResourcePickerDialog>().Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object);
+            viewModel.IsServerHelpVisible = true;
+
+            //------------Execute Test---------------------------
+            viewModel.CloseHelpCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(viewModel.IsResourceHelpVisible);
+            Assert.IsFalse(viewModel.IsServerHelpVisible);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SecurityViewModel_CloseHelpCommand")]
+        public void SecurityViewModel_CloseHelpCommand_IsResourceHelpVisibleIsTrue_IsResourceHelpVisibleIsFalse()
+        {
+            //------------Setup for test--------------------------          
+            var viewModel = new SecurityViewModel(new WindowsGroupPermission[0], new Mock<IResourcePickerDialog>().Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object);
+            viewModel.IsResourceHelpVisible = true;
+
+            //------------Execute Test---------------------------
+            viewModel.CloseHelpCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(viewModel.IsResourceHelpVisible);
+            Assert.IsFalse(viewModel.IsServerHelpVisible);
         }
 
         static List<WindowsGroupPermission> CreatePermissions()
