@@ -308,6 +308,51 @@ namespace Dev2.Integration.Tests.Services.Sql
             Verify_FetchStoredProcedures_Pr_CitiesGetCountries(procedureCommand, procedureCommandParameters, procedureHelpText);
             Verify_FetchStoredProcedures_Fn_Greeting(functionCommand, functionCommandParameters, functionHelpText);
         }
+  
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SqlServer_FetchStoredProcedures")]
+        public void SqlServer_FetchStoredProcedures_WithClrTypeStoredProcedure_CorrectDataReturned()
+        {
+            //------------Setup for test--------------------------
+            var dbSource = CreateDev2TestingDbSource();
+
+            IDbCommand procedureCommand = null;
+            List<IDbDataParameter> procedureCommandParameters = null;
+            string procedureHelpText = null;
+
+            IDbCommand functionCommand = null;
+            List<IDbDataParameter> functionCommandParameters = null;
+            string functionHelpText = null;
+
+            var sqlServer = new SqlServer();
+            try
+            {
+                sqlServer.Connect(dbSource.ConnectionString);
+
+                Func<IDbCommand, List<IDbDataParameter>, string, bool> procedureProcessor = (dbCommand, list, helpText) =>
+                {
+                    if(dbCommand.CommandText == "Warewolf.RunWorkflowForSql")
+                    {
+                        procedureCommand = dbCommand;
+                        procedureCommandParameters = list;
+                        procedureHelpText = helpText;
+                    }
+                    return true;
+                };
+                Func<IDbCommand, List<IDbDataParameter>, string, bool> functionProcessor = (dbCommand, list, helpText) => true;
+
+                //------------Execute Test---------------------------
+                sqlServer.FetchStoredProcedures(procedureProcessor, functionProcessor, true);
+            }
+            finally
+            {
+                sqlServer.Dispose();
+            }
+
+            //------------Assert Results-------------------------
+            Verify_FetchStoredProcedures_WarewolfRunForSql(procedureCommandParameters, procedureHelpText);
+        }
 
         static void Verify_DataTable_CountriesPrefixIsA(DataTable countriesDataTable)
         {
@@ -333,9 +378,8 @@ namespace Dev2.Integration.Tests.Services.Sql
             Assert.IsNotNull(actualParameters);
             Assert.IsNotNull(actualHelpText);
 
-            Assert.AreEqual(2, actualCommand.Parameters.Count);
-            Assert.AreEqual("@RETURN_VALUE", ((IDbDataParameter)actualCommand.Parameters[0]).ParameterName);
-            Assert.AreEqual("@Prefix", ((IDbDataParameter)actualCommand.Parameters[1]).ParameterName);
+            Assert.AreEqual(1, actualCommand.Parameters.Count);
+            Assert.AreEqual("@Prefix", ((IDbDataParameter)actualCommand.Parameters[0]).ParameterName);
 
             Assert.AreEqual(1, actualParameters.Count);
             Assert.AreEqual("@Prefix", actualParameters[0].ParameterName);
@@ -358,15 +402,31 @@ order by Description asc
             Assert.AreEqual(ExpectedHelpText, actualHelpText);
         }
 
+        static void Verify_FetchStoredProcedures_WarewolfRunForSql(List<IDbDataParameter> actualParameters, string actualHelpText)
+        {
+            Assert.IsNotNull(actualParameters);
+            Assert.IsNotNull(actualHelpText);
+            
+            Assert.AreEqual(2, actualParameters.Count);
+            Assert.AreEqual("@ServerUri", actualParameters[0].ParameterName);
+            Assert.AreEqual(DbType.String, actualParameters[0].DbType);
+            
+            Assert.AreEqual("@RecordsetName", actualParameters[1].ParameterName);
+            Assert.AreEqual(DbType.String, actualParameters[1].DbType);
+
+            const string ExpectedHelpText = @"There is no text for object 'Warewolf.RunWorkflowForSql'.";
+
+            Assert.AreEqual(ExpectedHelpText, actualHelpText);
+        }
+
         static void Verify_FetchStoredProcedures_Fn_Greeting(IDbCommand actualCommand, List<IDbDataParameter> actualParameters, string actualHelpText)
         {
             Assert.IsNotNull(actualCommand);
             Assert.IsNotNull(actualParameters);
             Assert.IsNotNull(actualHelpText);
 
-            Assert.AreEqual(2, actualCommand.Parameters.Count);
-            Assert.AreEqual("@RETURN_VALUE", ((IDbDataParameter)actualCommand.Parameters[0]).ParameterName);
-            Assert.AreEqual("@Name", ((IDbDataParameter)actualCommand.Parameters[1]).ParameterName);
+            Assert.AreEqual(1, actualCommand.Parameters.Count);
+            Assert.AreEqual("@Name", ((IDbDataParameter)actualCommand.Parameters[0]).ParameterName);
 
             Assert.AreEqual(1, actualParameters.Count);
             Assert.AreEqual("@Name", actualParameters[0].ParameterName);

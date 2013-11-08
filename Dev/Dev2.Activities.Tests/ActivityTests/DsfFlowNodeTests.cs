@@ -55,6 +55,31 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.IsTrue(res);
         }
+        
+        [TestMethod]
+        public void DecisionWithQuotesInDataExpectedNoUnhandledExceptions()
+        {
+
+            Dev2DecisionStack dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.AND };
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            dds.AddModelItem(new Dev2Decision { Col1 = "[[var]]", Col2 = "[[var]]", EvaluationFn = enDecisionType.IsEqual });
+
+            string modelData = dds.ToVBPersistableModel();
+
+            CurrentDl = "<ADL><var/></ADL>";
+            TestData = "<root><var>\"something \"data\" \"</var></root>";
+            ErrorResultTO errors;
+            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+
+            IList<string> getDatalistID = new List<string> { exeID.ToString() };
+
+            var res = new Dev2DataListDecisionHandler().ExecuteDecisionStack(modelData, getDatalistID);
+
+            // remove test datalist ;)
+            DataListRemoval(exeID);
+
+            Assert.IsTrue(res);
+        }
 
         #endregion Decision Tests
 

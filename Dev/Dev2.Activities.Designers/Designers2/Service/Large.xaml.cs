@@ -32,6 +32,7 @@ namespace Dev2.Activities.Designers2.Service
                 viewModel.ThumbVisibility = Visibility.Collapsed;
                 return;
             }
+            viewModel.ThumbVisibility = Visibility.Visible;
 
             var totalCount = (double)(inputsCount + outputsCount);
 

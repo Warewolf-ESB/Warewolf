@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.Text;
+using Dev2.Common;
 using Dev2.Common.Utils;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
@@ -81,8 +82,7 @@ namespace Dev2.Data.Decision
             if (tmp != null)
             {
                 string model = tmp.FetchScalar().TheValue; // Get evalauted data value
-                //this is weird but necessary so that strings are properly escaped before going into the decision
-                model = JSONUtils.ReplaceSlashes(model).Replace("\"\"\"", @"""\\""""").Replace(@"\""", @"""");
+                model = JSONUtils.ReplaceSlashes(model).Replace(@"\""", @"""");                
                 if (dlID != GlobalConstants.NullDataListID)
                 {
                     try
@@ -161,7 +161,6 @@ namespace Dev2.Data.Decision
 
             throw new InvalidExpressionException("Could not populate decision model - DataList Errors!");
         }
-
 
         /// <summary>
         /// Evaluates the region.

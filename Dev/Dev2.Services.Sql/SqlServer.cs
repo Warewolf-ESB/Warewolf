@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -151,7 +152,7 @@ namespace Dev2.Services.Sql
             foreach(DataRow row in proceduresDataTable.Rows)
             {
                 var fullProcedureName = GetFullProcedureName(row, procedureDataColumn, procedureSchemaColumn);
-
+                
                 using(var command = CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName))
                 {
                     try
@@ -196,9 +197,23 @@ namespace Dev2.Services.Sql
 
         static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior, Func<IDataReader, T> handler)
         {
-            using(var reader = command.ExecuteReader(commandBehavior))
+            try
             {
-                return handler(reader);
+                using(var reader = command.ExecuteReader(commandBehavior))
+                {
+                    return handler(reader);
+                }
+            }
+            catch(SqlException e)
+            {
+                if(e.Message.Contains("There is no text for object "))
+                {
+                    var exceptionDataTable = new DataTable("Error");
+                    exceptionDataTable.Columns.Add("ErrorText");
+                    exceptionDataTable.LoadDataRow(new object[] { e.Message }, true);
+                    return handler(new DataTableReader(exceptionDataTable));
+                }
+                throw;
             }
         }
 
@@ -214,7 +229,8 @@ namespace Dev2.Services.Sql
             return new SqlCommand(commandText, connection)
             {
                 CommandType = commandType,
-                CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds
+                CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds,                
+                
             };
         }
 
@@ -273,13 +289,35 @@ namespace Dev2.Services.Sql
             return schemaName + "." + procedureName;
         }
 
-        static List<IDbDataParameter> GetProcedureParameters(SqlCommand command)
+        List<IDbDataParameter> GetProcedureParameters(SqlCommand command)
         {
+            //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
+            var originalCommandText = command.CommandText;
             var parameters = new List<IDbDataParameter>();
-
-            SqlCommandBuilder.DeriveParameters(command);
-            parameters.AddRange(command.Parameters.Cast<SqlParameter>().Where(parameter => !parameter.ParameterName.Equals("@RETURN_VALUE")));
-
+            var parts =command.CommandText.Split('.');
+            command.CommandType = CommandType.Text;
+            command.CommandText = string.Format("select * from information_schema.parameters where specific_name='{0}' and specific_schema='{1}'", parts[1], parts[0]);
+            var dataTable = FetchDataTable(command);
+            foreach(DataRow row in dataTable.Rows)
+            {
+                
+                var parameterName = row["PARAMETER_NAME"] as string;
+                if(String.IsNullOrEmpty(parameterName))
+                {
+                    continue;                    
+                }
+                SqlDbType sqlType;
+                Enum.TryParse(row["DATA_TYPE"] as string, true, out sqlType);
+                var maxLength = row["CHARACTER_MAXIMUM_LENGTH"] is int ? (int)row["CHARACTER_MAXIMUM_LENGTH"] : -1;
+                var sqlParameter = new SqlParameter(parameterName, sqlType, maxLength);
+                command.Parameters.Add(sqlParameter);
+                if(parameterName.ToLower() == "@return_value")
+                {
+                    continue;
+                }
+                parameters.Add(sqlParameter);
+            }
+            command.CommandText = originalCommandText;
             return parameters;
         }
 
