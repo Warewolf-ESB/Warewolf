@@ -1216,7 +1216,7 @@ namespace Dev2.Integration.Tests.Activities
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(@"The remote server returned an error: (530) Not logged in.", ex.Message);
+                StringAssert.Contains(ex.Message, @"Failed to authenticate with user [ Dev2\frank.williams ]");
             }
             src = ActivityIOFactory.CreatePathFromString(srcDir, "", "");
             srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
