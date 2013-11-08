@@ -67,8 +67,11 @@ namespace Dev2
             }
             set
             {
-                _convertType = value;
-                OnPropertyChanged("ConvertType");
+                if (value != null)
+                {
+                    _convertType = value;
+                    OnPropertyChanged("ConvertType");
+                }
             }
         }
 

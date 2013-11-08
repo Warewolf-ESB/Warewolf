@@ -120,8 +120,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             set
             {
-                _splitType = value;
-                OnPropertyChanged("SplitType");
+                if (value != null)
+                {
+                    _splitType = value;
+                    OnPropertyChanged("SplitType");
+                }
             }
         }
 

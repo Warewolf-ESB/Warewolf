@@ -95,8 +95,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get { return _mergeType; }
             set
             {
-                _mergeType = value;
-                OnPropertyChanged("MergeType");
+                if (value != null)
+                {
+                    _mergeType = value;
+                    OnPropertyChanged("MergeType");
+                }
             }
         }
 

@@ -70,7 +70,11 @@ namespace Dev2.Activities.Designers2.Core
                 var oldItem = args.RemovedItems != null && args.RemovedItems.Count > 0 ? args.RemovedItems[0] : null;
                 var newItem = args.AddedItems != null && args.AddedItems.Count > 0 ? args.AddedItems[0] : null;
 
-                viewModel.OnSelectionChanged(oldItem as ModelItem, newItem as ModelItem);
+                // basic null checks ppl - 3 days of crap for this  ;) 
+                if (newItem != null)
+                {
+                    viewModel.OnSelectionChanged(oldItem as ModelItem, newItem as ModelItem);
+                }
             }
         }
     }

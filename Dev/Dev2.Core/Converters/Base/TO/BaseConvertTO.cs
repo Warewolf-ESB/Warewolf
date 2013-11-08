@@ -53,8 +53,11 @@ namespace Dev2
             }
             set
             {
-                _fromType = value;
-                OnPropertyChanged("FromType");
+                if (value != null)
+                {
+                    _fromType = value;
+                    OnPropertyChanged("FromType");
+                }
             }
         }
 
@@ -69,8 +72,11 @@ namespace Dev2
             }
             set
             {
-                _toType = value;
-                OnPropertyChanged("ToType");
+                if (value != null)
+                {
+                    _toType = value;
+                    OnPropertyChanged("ToType");
+                }
             }
         }
 
