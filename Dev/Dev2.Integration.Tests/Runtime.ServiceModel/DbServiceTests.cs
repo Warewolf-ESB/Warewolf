@@ -230,7 +230,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             var result = services.DbMethods(args, workspaceID, Guid.Empty);
 
             // Assert Returns Valid List
-            Assert.AreEqual(24, result.Count);
+            Assert.IsTrue(result.Count >= 25, "DbMethods does not return a list");
         }
 
         [TestMethod]
