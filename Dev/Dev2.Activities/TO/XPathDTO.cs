@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;

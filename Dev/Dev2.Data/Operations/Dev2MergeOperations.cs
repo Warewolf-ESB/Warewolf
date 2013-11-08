@@ -58,6 +58,10 @@ namespace Dev2.Data.Operations
                     case enMergeType.None:
                         NoneMergeOp(value);
                         break;
+
+                    default:
+                        throw new Exception("Error In Dev2MergeOperations");
+                    break;
                 }
             }
             else
@@ -103,6 +107,10 @@ namespace Dev2.Data.Operations
                 case "None":
                     mergingType = enMergeType.None;
                     break;
+
+                default:
+                    throw new Exception("Error In Dev2MergeOperations");
+                break;
             }
             Merge(value, mergingType, at, padding, mergeAlignment);
         }

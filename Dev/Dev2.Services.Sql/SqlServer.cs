@@ -152,7 +152,7 @@ namespace Dev2.Services.Sql
             foreach(DataRow row in proceduresDataTable.Rows)
             {
                 var fullProcedureName = GetFullProcedureName(row, procedureDataColumn, procedureSchemaColumn);
-                
+
                 using(var command = CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName))
                 {
                     try
@@ -199,11 +199,11 @@ namespace Dev2.Services.Sql
         {
             try
             {
-                using(var reader = command.ExecuteReader(commandBehavior))
-                {
-                    return handler(reader);
-                }
+            using(var reader = command.ExecuteReader(commandBehavior))
+            {
+                return handler(reader);
             }
+        }
             catch(SqlException e)
             {
                 if(e.Message.Contains("There is no text for object "))
@@ -300,7 +300,7 @@ namespace Dev2.Services.Sql
             var dataTable = FetchDataTable(command);
             foreach(DataRow row in dataTable.Rows)
             {
-                
+
                 var parameterName = row["PARAMETER_NAME"] as string;
                 if(String.IsNullOrEmpty(parameterName))
                 {

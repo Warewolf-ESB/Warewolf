@@ -5,8 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -42,52 +40,52 @@ namespace Dev2.Studio.UI.Tests
         {
             // Create the workflow
 
-            Assert.Fail("This functionality is broken and causes choas for the remainder of the test run");
-            //RibbonUIMap.CreateNewWorkflow();
+            //Assert.Fail("This functionality is broken and causes choas for the remainder of the test run");
+            RibbonUIMap.CreateNewWorkflow();
 
-            //// Get some design surface
-            //UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-            //UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            //Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+            // Get some design surface
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
-            //// Drag the tool onto the workflow
-            //DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            //UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("BaseConvert");
-            //ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
+            // Drag the tool onto the workflow
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("BaseConvert");
+            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
 
-            //// Enter some data
-            //UITestControl baseConversion = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "BaseConvert");
-            //Point p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
-            //Mouse.Click(p);
-            //SendKeys.SendWait("someText");
+            // Enter some data
+            UITestControl baseConversion = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "BaseConvert");
+            Point p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
+            Mouse.Click(p);
+            SendKeys.SendWait("someText");
+            Playback.Wait(300);
+            SendKeys.SendWait("{TAB}{TAB}{TAB}");
+            Playback.Wait(300);
+            SendKeys.SendWait("someText");
 
-            //// Click the index
-            //p = new Point(baseConversion.BoundingRectangle.X + 20, baseConversion.BoundingRectangle.Y + 40);
-            //Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            //Thread.Sleep(500);
-            //SendKeys.SendWait("{UP}");
-            //Thread.Sleep(500);
-            ////SendKeys.SendWait("{UP}");
-            ////Thread.Sleep(500);
-            ////SendKeys.SendWait("{RIGHT}");
-            ////Thread.Sleep(100);
-            //SendKeys.SendWait("{ENTER}");
-            //Thread.Sleep(100);
+            // Click the index
+            p = new Point(baseConversion.BoundingRectangle.X + 20, baseConversion.BoundingRectangle.Y + 40);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            Thread.Sleep(500);
+            SendKeys.SendWait("{UP}");
+            Thread.Sleep(500);
+            SendKeys.SendWait("{ENTER}");
+            Thread.Sleep(100);
 
-            //// Try type some data
-            //p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
-            //Mouse.Click(p);
-            //SendKeys.SendWait("newText");
-            //SendKeys.SendWait("{END}"); // Shift Home - Highlights the item
-            //SendKeys.SendWait("+{HOME}"); // Shift Home - Highlights the item
-            //// Just to make sure it wasn't already copied before the test
-            //Clipboard.SetText("someRandomText");
-            //SendKeys.SendWait("^c"); // Copy command
-            //string clipboardText = Clipboard.GetText();
-            //if(clipboardText == "someText")
-            //{
-            //    Assert.Fail("Error - The Item was not deleted! [ " + clipboardText + " ]");
-            //}
+            // Try type some data
+            p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
+            Mouse.Click(p);
+            SendKeys.SendWait("newText");
+            SendKeys.SendWait("{END}"); // Shift Home - Highlights the item
+            SendKeys.SendWait("+{HOME}"); // Shift Home - Highlights the item
+            // Just to make sure it wasn't already copied before the test
+            Clipboard.SetText("someRandomText");
+            SendKeys.SendWait("^c"); // Copy command
+            string clipboardText = Clipboard.GetText();
+            if(clipboardText == "someText")
+            {
+                Assert.Fail("Error - The Item was not deleted! [ " + clipboardText + " ]");
+            }
         }
 
         //2013.05.29: Ashley Lewis for bug 9455 - Dont allow copy paste workflow xaml to another workflow

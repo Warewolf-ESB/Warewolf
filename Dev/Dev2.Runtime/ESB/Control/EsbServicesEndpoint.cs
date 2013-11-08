@@ -10,7 +10,6 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.ServiceModel;
-using Dev2.Data.ServiceModel.Helper;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ESB;
 using Dev2.Runtime.ESB.Execution;
@@ -310,10 +309,10 @@ namespace Dev2.DynamicServices
                     errors.MergeErrors(invokeErrors);
                 }
             }
-            // The act of doing this moves the index data correctly ;)
-            // We need to remove this in the future.
-            compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-            compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+                // The act of doing this moves the index data correctly ;)
+                // We need to remove this in the future.
+                compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+                compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
 
             return result;
         }
@@ -629,22 +628,6 @@ namespace Dev2.DynamicServices
                 {
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, serviceName);
             return resource == null || (resource.ResourceType != ResourceType.WebService && resource.ResourceType != ResourceType.PluginService);
-            //            var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceName);
-            //
-            //            var tmp = services.FirstOrDefault();
-            //
-            //            if (tmp != null)
-            //            {
-            //                var tmpAction = tmp.Actions.FirstOrDefault();
-            //                
-            //                if(tmpAction != null && (tmpAction.ActionType == enActionType.InvokeWebService || tmpAction.ActionType == enActionType.Plugin))
-            //                {
-            //                    return false;
-            //                }
-            //            }
-            //
-            //                    return true;
-            //        }
 
         }
     }

@@ -98,7 +98,7 @@ namespace Dev2.Data.Operations
                         index = stringToSearchIn.Length - lastIndex - (charsToSearchFor.Length - 1);
                     }
                     result = new[] { index };
-                    break;
+                break;
 
                 case enIndexFinderOccurrence.LastOccurrence:
                     if (firstIndex != -1)
@@ -106,7 +106,7 @@ namespace Dev2.Data.Operations
                         index = stringToSearchIn.Length - firstIndex - (charsToSearchFor.Length - 1);
                     }
                     result = new[] { index };
-                    break;
+                break;
 
                 case enIndexFinderOccurrence.AllOccurrences:
                     List<int> foundIndexes = new List<int>();
@@ -122,7 +122,11 @@ namespace Dev2.Data.Operations
                         }
                     }
                     result = foundIndexes.ToArray();
-                    break;
+                break;
+
+                default:
+                    throw new Exception("Error In Dev2IndexFinder");
+                break;
             }
             return result;
         }
@@ -171,7 +175,11 @@ namespace Dev2.Data.Operations
                     }
                     
                     result = foundIndexes.ToArray();
-                    break;
+                break;
+
+                default:
+                    throw new Exception("Error In Dev2IndexFinder");
+                break;
             }
             return result;
         }
