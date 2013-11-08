@@ -357,6 +357,9 @@
     <Compile Include="Designers2\ReadFile\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\ReadFolder\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\ReadFolder\ReadFolderDesigner.xaml.cs">
       <DependentUpon>ReadFolderDesigner.xaml</DependentUpon>
     </Compile>
@@ -433,12 +436,19 @@
     <Compile Include="Designers2\UniqueRecords\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Unzip\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Designers2\Unzip\UnzipDesigner.xaml.cs">
       <DependentUpon>UnzipDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Unzip\UnzipDesignerViewModel.cs" />
     <Compile Include="Designers2\Unzip\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WriteFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\WriteFile\WriteFileDesigner.xaml.cs">
       <DependentUpon>WriteFileDesigner.xaml</DependentUpon>
@@ -456,8 +466,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Designers2\XPath\XPathDesignerViewModel.cs" />
+    <Compile Include="Designers2\Zip\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Designers2\Zip\ZipDesigner.xaml.cs">
       <DependentUpon>ZipDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Designers2\Zip\ZipDesignerViewModel.cs" />
     <Compile Include="Designers2\Zip\Small.xaml.cs">
@@ -804,6 +819,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\ReadFolder\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\ReadFolder\ReadFolderDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -880,11 +899,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\Unzip\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Designers2\Unzip\UnzipDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Unzip\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\WriteFile\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -904,13 +931,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\Zip\ZipDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Designers2\Zip\Large.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\Zip\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Zip\ZipDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\ActivityDesignerStyles.xaml">
       <SubType>Designer</SubType>

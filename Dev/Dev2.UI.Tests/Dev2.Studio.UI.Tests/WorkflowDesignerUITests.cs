@@ -149,7 +149,11 @@ namespace Dev2.Studio.UI.Tests
                     "DsfPathRename",
                     "DsfSqlBulkInsertActivity",
                     "DsfPathMove",
-                    "DsfFileRead"
+                    "DsfFileRead",
+                    "DsfFileWrite",
+                    "DsfFolderRead ",
+                    "DsfUnZip",
+                    "DsfZip"
                 };
 
             // Open the Explorer

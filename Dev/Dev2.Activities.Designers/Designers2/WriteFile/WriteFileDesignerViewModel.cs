@@ -3,16 +3,20 @@ using Dev2.Activities.Designers2.Core;
 
 namespace Dev2.Activities.Designers2.WriteFile
 {
-    public class WriteFileDesignerViewModel : ActivityDesignerViewModel
+    public class WriteFileDesignerViewModel : FileActivityDesignerViewModel
     {
         public WriteFileDesignerViewModel(ModelItem modelItem)
-            : base(modelItem)
+            : base(modelItem, "File Name", string.Empty)
         {
+            AddTitleBarLargeToggle();
             AddTitleBarHelpToggle();
         }
 
         public override void Validate()
         {
+            Errors = null;
+            ValidateUserNameAndPassword();
+            ValidateInputPath();
         }
     }
 }

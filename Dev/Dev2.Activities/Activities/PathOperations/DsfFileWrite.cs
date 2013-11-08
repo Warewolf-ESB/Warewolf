@@ -142,6 +142,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set;
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="DsfFileWrite" /> is append top.
+        /// </summary>
+        [Inputs("Append Top")]
+        public bool AppendTop
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="DsfFileWrite" /> is append bottom.
+        /// </summary>
+        [Inputs("Append Bottom")]
+        public bool AppendBottom
+        {
+            get;
+            set;
+        }
+
         #endregion Properties
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)

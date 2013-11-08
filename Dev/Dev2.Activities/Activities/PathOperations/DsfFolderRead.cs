@@ -134,6 +134,41 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Properties
 
         /// <summary>
+        /// Gets or sets the files option.
+        /// </summary>
+        [Inputs("Files")]
+        [FindMissing]
+        public string IsFilesSelected
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the folders otion.
+        /// </summary>
+        [Inputs("Folders")]
+        [FindMissing]
+        public bool IsFoldersSelected
+        {
+            get;
+            set;
+        }
+
+
+        /// <summary>
+        /// Gets or sets the files and folders option.
+        /// </summary>
+        [Inputs("Files & Folders")]
+        [FindMissing]
+        public bool IsFilesAndFoldersSelected
+        {
+            get;
+            set;
+        }
+
+
+        /// <summary>
         /// Gets or sets the input path.
         /// </summary>
         [Inputs("Input Path")]
@@ -143,6 +178,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get;
             set;
         }
+
 
         #endregion Properties
 
