@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
@@ -8,6 +9,7 @@ using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
@@ -139,6 +141,19 @@ namespace Dev2.Studio.UI.Tests
         public void StudioTooling_StudioToolingUITest_CanToolsDisplay_NoExceptionsThrown()
         // ReSharper restore InconsistentNaming
         {
+            var toolsWithLargeView = new List<string>
+                {
+                    "DsfPathCopy",
+                    "DsfPathCreate",
+                    "DsfPathDelete",
+                    "DsfWebGetRequestActivity",
+                    "DsfAssignActivity",
+                    "DsfPathRename",
+                    "DsfSqlBulkInsertActivity",
+                    "DsfPathMove",
+                    "DsfFileRead"
+                };
+
             // Open the Explorer
             DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
@@ -175,6 +190,30 @@ namespace Dev2.Studio.UI.Tests
                     }
                     Assert.IsTrue(WorkflowDesignerUIMap.IsActivityIconVisible(child), child.FriendlyName + " is missing its icon on the design surface");
                     allFoundTools.Add(child);
+
+                    if (toolsWithLargeView.Contains(child.FriendlyName))
+                    {
+                        Mouse.Move(child, new Point(5,5));
+                        Playback.Wait(1000);
+
+                        var toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Open Large View") as WpfToggleButton;
+                        if (toggleButton == null)
+                        {
+                            Assert.Fail("Could not find open large view button");
+                        }
+
+                        Mouse.Click(toggleButton);
+                        Playback.Wait(1000);
+
+                        toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Close Large View") as WpfToggleButton;
+                        if (toggleButton == null)
+                        {
+                            Assert.Fail("Could not find close large view button");
+                        }
+
+                        Mouse.Click(toggleButton);
+                        Playback.Wait(1000);
+                    }
                 }
             }
             Assert.AreEqual(allTools.ToList().Count(child => child.ControlType == "Custom" &&
