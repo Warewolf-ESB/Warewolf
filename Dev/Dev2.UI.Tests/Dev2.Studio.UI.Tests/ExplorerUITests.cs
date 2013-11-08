@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -15,36 +16,48 @@ namespace Dev2.Studio.UI.Tests
         [TestCleanup]
         public void TestCleanup()
         {
-            //close any open wizards
-            var tryFindDialog = StudioWindow.GetChildren()[0];
-            if(tryFindDialog.GetType() == typeof(WpfWindow))
-            {
-                Mouse.Click(tryFindDialog);
-                SendKeys.SendWait("{ESCAPE}");
-                Assert.Fail("Dialog hanging after test, might not have rendered properly");
-            }
-            //close any open tabs
-            TabManagerUIMap.CloseAllTabs();
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
         }
 
         #endregion
 
         [TestMethod]
-        // 05/11 - Failure is Intermittent ;)
         public void SearchAndRefresh_AttemptToSearch_ExpectedSearchFilteredByAllItems()
         {
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
+            try
+            {
+                DockManagerUIMap.ClickOpenTabPage("Explorer");
 
-            // Now count
-            ExplorerUIMap.ClearExplorerSearchText();
-            int allResources = ExplorerUIMap.GetCategoryItems().Count;
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("Integration");
-            Playback.Wait(1000);
-            int allResourcesAfterSearch = ExplorerUIMap.GetCategoryItems().Count;
-            Assert.IsTrue(allResources>allResourcesAfterSearch, "Cannot filter explorer tree");
+                // Now count
+                ExplorerUIMap.ClearExplorerSearchText();
+                var items = ExplorerUIMap.GetCategoryItems();
+                var itemCount = items.Count;
+                Assert.IsTrue(itemCount > 1, "Cannot find any items in the explorer tree, cannot test explorer filter without any explorer items");
+                ExplorerUIMap.ClearExplorerSearchText();
+                ExplorerUIMap.EnterExplorerSearchText("Integration");
+
+                Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+                items[0].WaitForControlReady();
+                Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+
+                items = ExplorerUIMap.GetCategoryItems();
+                int allResourcesAfterSearch = items.Count;
+                Assert.IsTrue(itemCount > allResourcesAfterSearch, "Cannot filter explorer tree");
+            }
+            finally
+            {
+                //close any open wizards
+                var tryFindDialog = StudioWindow.GetChildren()[0];
+                if(tryFindDialog.GetType() == typeof(WpfWindow))
+                {
+                    Mouse.Click(tryFindDialog);
+                    SendKeys.SendWait("{ESCAPE}");
+                    Assert.Fail("Dialog hanging after test, might not have rendered properly");
+                }
+                //close any open tabs
+                TabManagerUIMap.CloseAllTabs();
+                DockManagerUIMap.ClickOpenTabPage("Explorer");
+                ExplorerUIMap.ClearExplorerSearchText();
+            }
         }
 
         [TestMethod]
@@ -52,46 +65,65 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RenameResource_WithDashes")]
         public void RenameResource_WithDashes_ResourceRenamed()
         {
-            TabManagerUIMap.CloseAllTabs();
-            const string newTestResourceWithDashes = "New-Test-Resource-With-Dashes";
-            const string oldResourceName = "OldResourceName";
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
-            if(ExplorerUIMap.ServiceExists("Localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes))
+            try
             {
-                ExplorerUIMap.RightClickDeleteProject("Localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes);
-            }
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText(oldResourceName);
-            if(ExplorerUIMap.ServiceExists("Localhost", "WORKFLOWS", "Unassigned", oldResourceName))
-            {
-                ExplorerUIMap.RightClickDeleteProject("Localhost", "WORKFLOWS", "Unassigned", oldResourceName);
-            }
-            RibbonUIMap.CreateNewWorkflow();
-            SendKeys.SendWait("^s");
-            WizardsUIMap.WaitForWizard();
-            SaveDialogUIMap.ClickAndTypeInNameTextbox(oldResourceName);
-            //wait for save tab switch
-            Playback.Wait(2000);
-            TabManagerUIMap.CloseAllTabs();
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText(oldResourceName);
-            ExplorerUIMap.RightClickRenameProject("Localhost", "WORKFLOWS", "Unassigned", oldResourceName);
-            SendKeys.SendWait("New-Test-Resource-With-Dashes{ENTER}");
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.DoRefresh();
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
-            ExplorerUIMap.DoubleClickOpenProject("Localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes);
-            SendKeys.SendWait("^s");
+                TabManagerUIMap.CloseAllTabs();
+                const string newTestResourceWithDashes = "New-Test-Resource-With-Dashes";
+                const string oldResourceName = "OldResourceName";
+                DockManagerUIMap.ClickOpenTabPage("Explorer");
+                ExplorerUIMap.ClearExplorerSearchText();
+                ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
+                if (ExplorerUIMap.ServiceExists("Localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes))
+                {
+                    ExplorerUIMap.RightClickDeleteProject("Localhost", "WORKFLOWS", "Unassigned",
+                                                          newTestResourceWithDashes);
+                }
+                ExplorerUIMap.ClearExplorerSearchText();
+                ExplorerUIMap.EnterExplorerSearchText(oldResourceName);
+                if (ExplorerUIMap.ServiceExists("Localhost", "WORKFLOWS", "Unassigned", oldResourceName))
+                {
+                    ExplorerUIMap.RightClickDeleteProject("Localhost", "WORKFLOWS", "Unassigned", oldResourceName);
+                }
+                RibbonUIMap.CreateNewWorkflow();
+                SendKeys.SendWait("^s");
+                WizardsUIMap.WaitForWizard();
+                SaveDialogUIMap.ClickAndTypeInNameTextbox(oldResourceName);
+                //wait for save tab switch
+                Playback.Wait(2000);
+                TabManagerUIMap.CloseAllTabs();
+                DockManagerUIMap.ClickOpenTabPage("Explorer");
+                ExplorerUIMap.ClearExplorerSearchText();
+                ExplorerUIMap.EnterExplorerSearchText(oldResourceName);
+                ExplorerUIMap.RightClickRenameProject("Localhost", "WORKFLOWS", "Unassigned", oldResourceName);
+                SendKeys.SendWait("New-Test-Resource-With-Dashes{ENTER}");
+                DockManagerUIMap.ClickOpenTabPage("Explorer");
+                ExplorerUIMap.DoRefresh();
+                ExplorerUIMap.ClearExplorerSearchText();
+                ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
+                ExplorerUIMap.DoubleClickOpenProject("Localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes);
+                SendKeys.SendWait("^s");
 
-            RibbonUIMap.ClickRibbonMenuItem("Debug");
-            if(DebugUIMap.WaitForDebugWindow(5000))
+                RibbonUIMap.ClickRibbonMenuItem("Debug");
+                if (DebugUIMap.WaitForDebugWindow(5000))
+                {
+                    SendKeys.SendWait("{F5}");
+                    Playback.Wait(1000);
+                }
+            }
+            finally
             {
-                SendKeys.SendWait("{F5}");
-                Playback.Wait(1000);
+                //close any open wizards
+                var tryFindDialog = StudioWindow.GetChildren()[0];
+                if(tryFindDialog.GetType() == typeof(WpfWindow))
+                {
+                    Mouse.Click(tryFindDialog);
+                    SendKeys.SendWait("{ESCAPE}");
+                    Assert.Fail("Dialog hanging after test, might not have rendered properly");
+                }
+                //close any open tabs
+                TabManagerUIMap.CloseAllTabs();
+                DockManagerUIMap.ClickOpenTabPage("Explorer");
+                ExplorerUIMap.ClearExplorerSearchText();
             }
         }
 
@@ -115,27 +147,6 @@ namespace Dev2.Studio.UI.Tests
         //    // For more information on generated code, see http://go.microsoft.com/fwlink/?LinkId=179463
         //}
 
-        #endregion
-
-        #region Context Init
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-        private TestContext testContextInstance;
-        
         #endregion
     }
 }

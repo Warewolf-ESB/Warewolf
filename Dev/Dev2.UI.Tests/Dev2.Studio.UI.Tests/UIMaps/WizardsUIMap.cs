@@ -13,9 +13,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// </summary>
         public void WaitForWizard(int timeOut = DefaultTimeOut, bool throwIfNotFound = true)
         {
-            var type = StudioWindow.GetChildren()[0].GetChildren()[0].GetType();
+            Type type = null;
             const int interval = 100;
             var timeNow = 0;
+            UITestControl tryGetDialog = null;
             while(type != typeof(WpfImage))
             {
                 Playback.Wait(interval);
@@ -24,7 +25,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                 {
                     break;
                 }
-                var tryGetDialog = StudioWindow.GetChildren()[0].GetChildren()[0];
+                tryGetDialog = StudioWindow.GetChildren()[0].GetChildren()[0];
                 type = tryGetDialog.GetType();
             }
             if(type != typeof(WpfImage) && throwIfNotFound)
@@ -32,7 +33,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                 throw new UITestControlNotFoundException("Popup dialog not displayed within the given time out period.");
             }
             //wait for render
-            Playback.Wait(2000);
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+            tryGetDialog.WaitForControlReady();
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
         }
 
         public bool TryWaitForWizard(int timeOut)

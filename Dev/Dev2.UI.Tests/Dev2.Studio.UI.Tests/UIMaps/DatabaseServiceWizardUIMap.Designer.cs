@@ -144,8 +144,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 
         public void TabToMappingsTab()
         {
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
-            SendKeys.SendWait("{RIGHT}");
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
+            Keyboard.SendKeys("{RIGHT}");
         }
 
         public void TabToOutputMappings()

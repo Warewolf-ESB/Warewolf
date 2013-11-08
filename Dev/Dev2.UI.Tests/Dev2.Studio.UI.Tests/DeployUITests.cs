@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITest.Extension;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -65,7 +66,6 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("Deploy_ResourceTree")]
-        // 05/11 - Failure is Intermittent ;)
         public void Deploy_ResourceTree_DeployFromExplorer_AllServiceTypesVisibleAndDeployedItemNotFiltered()
         {
             DockManagerUIMap.ClickOpenTabPage("Explorer");
@@ -77,7 +77,9 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClosePane(theTab);
 
             //wait for resource tree to load
-            Playback.Wait(15000);
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+            theTab.WaitForControlReady();
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
 
             // Assert All Service Types Visible
             var sourceResources = DeployUIMap.GetSourceNavigationTree();

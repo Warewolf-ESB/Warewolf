@@ -4,6 +4,7 @@ using System.Threading;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 
 namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 {
@@ -122,6 +123,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             // Get the base control
             UITestControl ddlBase = GetServerDDL();
+
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+            ddlBase.WaitForControlReady();
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
 
             // Click it to expand it
             Mouse.Click(ddlBase, new Point(10, 10));

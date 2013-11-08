@@ -112,14 +112,13 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, mappings on the service are set to required and hitting the fix errors adorner should prompt the user to add required mappings to the activity instance's mappings")]
         [Owner("Ashley")]
-        // 05/11 - Failure is Correct - CRAP test, tabing will never get to input mapping pane ;)
         public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_UserIsPromptedToAddRequiredDbServiceMappings()
         {
             // Open the Workflow
             DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("PBI_9957_UITEST");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "PBI_9957_UITEST");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTCATEGORY", "PBI_9957_UITEST");
             var theTab = TabManagerUIMap.GetActiveTab();
             // Edit the DbService
             DockManagerUIMap.ClickOpenTabPage("Explorer");
@@ -147,9 +146,8 @@ namespace Dev2.Studio.UI.Tests
             if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService"))
             {
                 //Assert mappings are prompting the user to add required mapping
-                var getOpenMappingToggle = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Bug_10011_DbService", "OpenMappingsToggle");
-                var getCloseMappingButton = getOpenMappingToggle.GetChildren()[1];
-                Assert.IsTrue(getCloseMappingButton.Height != -1, "Fix Error does not prompt the user to input required mappings");
+                var getCloseMappingToggle = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Bug_10011_DbService", "Close Mapping");
+                Assert.IsNotNull(getCloseMappingToggle, "Fix Error does not prompt the user to input required mappings");
             }
             else
             {
