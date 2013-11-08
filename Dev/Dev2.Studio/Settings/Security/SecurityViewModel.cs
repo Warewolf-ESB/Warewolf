@@ -9,12 +9,13 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Data.Settings.Security;
 using Dev2.Dialogs;
 using Dev2.Help;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 
 namespace Dev2.Settings.Security
 {
-    public class SecurityViewModel : DependencyObject, IHelpAdorner
+    public class SecurityViewModel : DependencyObject
     {
         readonly IResourcePickerDialog _resourcePicker;
         readonly IDirectoryObjectPickerDialog _directoryObjectPicker;
@@ -107,6 +108,36 @@ namespace Dev2.Settings.Security
             ((SecurityViewModel)d).UpdateHelpText(HelpType.Resource);
         }
 
+        public virtual void Save(List<WindowsGroupPermission> permissions)
+        {
+            VerifyArgument.IsNotNull("permissions", permissions);
+            permissions.Clear();
+            Copy(ServerPermissions, permissions);
+            Copy(ResourcePermissions, permissions);
+        }
+
+        void Copy(IList<WindowsGroupPermission> source, IList<WindowsGroupPermission> target)
+        {
+            for(var i = source.Count - 1; i >= 0; i--)
+            {
+                var permission = source[i];
+                if(permission.IsValid)
+                {
+                    target.Insert(0, permission);
+                }
+                else
+                {
+                    source.RemoveAt(i);
+                    if(permission.IsNew)
+                    {
+                        // re-add new permission
+                        permission = CreateNewPermission(permission.IsServer);
+                        source.Insert(i, permission);
+                    }
+                }
+            }
+        }
+
         void InitializeHelp()
         {
             ServerHelpToggle = CreateHelpToggle(IsServerHelpVisibleProperty);
@@ -150,7 +181,7 @@ namespace Dev2.Settings.Security
             }
 
             permission.ResourceID = resourceModel.ID;
-            permission.ResourceName = string.Format("{0}\\{1}", resourceModel.Category, resourceModel.ResourceName);
+            permission.ResourceName = string.Format("{0}\\{1}\\{2}", resourceModel.ResourceType.GetTreeDescription(), resourceModel.Category, resourceModel.ResourceName);
         }
 
         IResourceModel PickResource()
@@ -205,10 +236,10 @@ namespace Dev2.Settings.Security
 
                 if(permission.IsNew)
                 {
-                    var isEmpty = permission.IsServer
-                        ? string.IsNullOrEmpty(permission.WindowsGroup)
-                        : string.IsNullOrEmpty(permission.WindowsGroup) && string.IsNullOrEmpty(permission.ResourceName);
-                    if(!isEmpty)
+                    //var isEmpty = permission.IsServer
+                    //    ? string.IsNullOrEmpty(permission.WindowsGroup)
+                    //    : string.IsNullOrEmpty(permission.WindowsGroup) && string.IsNullOrEmpty(permission.ResourceName);
+                    if(permission.IsValid)
                     {
                         permission.IsNew = false;
                         var newPermission = CreateNewPermission(permission.IsServer);

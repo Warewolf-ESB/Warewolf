@@ -101,7 +101,8 @@
 
             <Button Content="Save"
                     Command="{Binding SaveCommand}"
-                    
+                    Width="90"
+                    Height="28"
                     VerticalAlignment="Bottom"
                     HorizontalAlignment="Right" />
         </Grid>

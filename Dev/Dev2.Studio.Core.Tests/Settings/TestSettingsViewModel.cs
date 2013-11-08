@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 using Caliburn.Micro;
 using Dev2.Settings;
+using Dev2.Settings.Security;
 using Dev2.Studio.Core.Controller;
 using Dev2.Threading;
 
@@ -22,6 +23,12 @@ namespace Dev2.Core.Tests.Settings
         {
             ShowErrorHitCount++;
             base.ShowError(header, description);
+        }
+
+        public SecurityViewModel TheSecurityViewModel { get; set; }
+        protected override SecurityViewModel CreateSecurityViewModel()
+        {
+            return TheSecurityViewModel ?? base.CreateSecurityViewModel();
         }
     }
 }

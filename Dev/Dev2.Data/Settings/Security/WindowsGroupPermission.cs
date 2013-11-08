@@ -49,5 +49,16 @@ namespace Dev2.Data.Settings.Security
                 return IsServer && WindowsGroup.Equals(BuiltInAdministratorsText, StringComparison.InvariantCultureIgnoreCase);
             }
         }
+
+        [JsonIgnore]
+        public bool IsValid
+        {
+            get
+            {
+                return IsServer
+                    ? !string.IsNullOrEmpty(WindowsGroup)
+                    : !string.IsNullOrEmpty(WindowsGroup) && !string.IsNullOrEmpty(ResourceName);
+            }
+        }
     }
 }

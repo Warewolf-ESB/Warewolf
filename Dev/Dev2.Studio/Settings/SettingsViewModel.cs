@@ -210,9 +210,9 @@ namespace Dev2.Settings
                 }
             }, () =>
             {
-                SecurityViewModel = new SecurityViewModel(Settings.Security ?? new List<WindowsGroupPermission>(), _parentWindow);
-                var isDirtyProperty = DependencyPropertyDescriptor.FromProperty(SecurityViewModel.IsDirtyProperty, typeof(SecurityViewModel));
-                isDirtyProperty.AddValueChanged(SecurityViewModel, (sender, args) => IsDirty = true);
+                SecurityViewModel = CreateSecurityViewModel();
+                var isDirtyProperty = DependencyPropertyDescriptor.FromProperty(Dev2.Settings.Security.SecurityViewModel.IsDirtyProperty, typeof(SecurityViewModel));
+                isDirtyProperty.AddValueChanged(SecurityViewModel, OnIsDirtyPropertyChanged);
 
                 // TODO: Read from server
                 LoggingViewModel = new LoggingViewModel();
@@ -226,11 +226,19 @@ namespace Dev2.Settings
             });
         }
 
+        protected virtual SecurityViewModel CreateSecurityViewModel()
+        {
+            return new SecurityViewModel(Settings.Security ?? new List<WindowsGroupPermission>(), _parentWindow);
+        }
+
+        void OnIsDirtyPropertyChanged(object sender, EventArgs eventArgs)
+        {
+            IsDirty = SecurityViewModel.IsDirty;
+        }
+
         void SaveSettings()
         {
-            Settings.Security.Clear();
-            UpdateSecurityPermissions(SecurityViewModel.ServerPermissions);
-            UpdateSecurityPermissions(SecurityViewModel.ResourcePermissions);
+            SecurityViewModel.Save(Settings.Security);
 
             var result = ExecuteCommand(SettingsServiceAction.Write);
             if(result == null)
@@ -242,18 +250,9 @@ namespace Dev2.Settings
                 ShowError("Save Error", result);
                 return;
             }
-            IsDirty = false;
-        }
 
-        void UpdateSecurityPermissions(IEnumerable<WindowsGroupPermission> permissions)
-        {
-            foreach(var permission in permissions)
-            {
-                if(!permission.IsNew)
-                {
-                    Settings.Security.Add(permission);
-                }
-            }
+            SecurityViewModel.IsDirty = false;
+            IsDirty = false;
         }
 
         string ExecuteCommand(SettingsServiceAction action)

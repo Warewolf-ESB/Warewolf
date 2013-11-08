@@ -177,6 +177,7 @@
     <Compile Include="CompositionInitializer.cs" />
     <Compile Include="ConfigureDecisionViewModelTest.cs" />
     <Compile Include="Settings\SettingsViewModelTests.cs" />
+    <Compile Include="Settings\TestSecurityViewModel.cs" />
     <Compile Include="Settings\TestSettingsViewModel.cs" />
     <Compile Include="Settings\SecurityViewModelTests.cs" />
     <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />

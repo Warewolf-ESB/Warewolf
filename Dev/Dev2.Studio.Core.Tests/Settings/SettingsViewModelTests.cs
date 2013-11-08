@@ -7,6 +7,7 @@ using Caliburn.Micro;
 using Dev2.Core.Tests.Utils;
 using Dev2.Data.Settings.Security;
 using Dev2.Settings;
+using Dev2.Settings.Security;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
@@ -59,6 +60,7 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Assert Results-------------------------
         }
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsViewModel_Constructor")]
@@ -184,10 +186,29 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsViewModel_SaveCommand")]
+        public void SettingsViewModel_SaveCommand_InvokesSaveOnSecurityViewModel_Done()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new TestSecurityViewModel();
+
+            var viewModel = CreateViewModel(CreateSettings().ToString(), "success", securityViewModel);
+
+            //------------Execute Test---------------------------
+            viewModel.SaveCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, securityViewModel.SaveHitCount);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SettingsViewModel_SaveCommand")]
         public void SettingsViewModel_SaveCommand_ResultIsSuccess_IsDirtyFalse()
         {
             //------------Setup for test--------------------------
             var viewModel = CreateViewModel(CreateSettings().ToString(), "Success");
+            viewModel.IsDirty = true;
+            viewModel.SecurityViewModel.IsDirty = true;
 
             //------------Execute Test---------------------------
             viewModel.SaveCommand.Execute(null);
@@ -195,6 +216,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.IsFalse(viewModel.IsLoading);
             Assert.IsFalse(viewModel.IsDirty);
+            Assert.IsFalse(viewModel.SecurityViewModel.IsDirty);
         }
 
         [TestMethod]
@@ -381,14 +403,15 @@ namespace Dev2.Core.Tests.Settings
             Assert.AreEqual(MessageBoxImage.Error, popupController.Object.ImageType);
         }
 
-        static TestSettingsViewModel CreateViewModel(string executeCommandReadResult = "", string executeCommandWriteResult = "")
+        static TestSettingsViewModel CreateViewModel(string executeCommandReadResult = "", string executeCommandWriteResult = "", SecurityViewModel securityViewModel = null)
         {
-            return CreateViewModel(new Mock<IPopupController>().Object, executeCommandReadResult, executeCommandWriteResult);
+            return CreateViewModel(new Mock<IPopupController>().Object, executeCommandReadResult, executeCommandWriteResult, securityViewModel);
         }
 
-        static TestSettingsViewModel CreateViewModel(IPopupController popupController, string executeCommandReadResult = "", string executeCommandWriteResult = "")
+        static TestSettingsViewModel CreateViewModel(IPopupController popupController, string executeCommandReadResult = "", string executeCommandWriteResult = "", SecurityViewModel securityViewModel = null)
         {
             var viewModel = new TestSettingsViewModel(new Mock<IEventAggregator>().Object, popupController, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object);
+            viewModel.TheSecurityViewModel = securityViewModel;
 
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.IsConnected).Returns(true);

@@ -7,6 +7,8 @@ using Dev2.Data.Settings.Security;
 using Dev2.Dialogs;
 using Dev2.Help;
 using Dev2.Settings.Security;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -582,10 +584,11 @@ namespace Dev2.Core.Tests.Settings
                 ResourceID = resourceID,
                 ResourceName = ResourceName
             };
-
+            const ResourceType ResourceType = ResourceType.WorkflowService;
             var newResourceID = Guid.NewGuid();
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.Setup(r => r.ID).Returns(newResourceID);
+            resourceModel.Setup(r => r.ResourceType).Returns(ResourceType);
             resourceModel.Setup(r => r.ResourceName).Returns("Resource2");
             resourceModel.Setup(r => r.Category).Returns("Category2");
 
@@ -600,7 +603,7 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Assert Results-------------------------
             Assert.AreEqual(newResourceID, viewModel.ResourcePermissions[0].ResourceID);
-            Assert.AreEqual("Category2\\Resource2", viewModel.ResourcePermissions[0].ResourceName);
+            Assert.AreEqual(ResourceType.GetTreeDescription() + "\\Category2\\Resource2", viewModel.ResourcePermissions[0].ResourceName);
         }
 
         [TestMethod]
@@ -699,6 +702,54 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.IsFalse(viewModel.IsResourceHelpVisible);
             Assert.IsFalse(viewModel.IsServerHelpVisible);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SecurityViewModel_Save")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void SecurityViewModel_Save_NullPermissions_ThrowsArgumentNullException()
+        {
+            //------------Setup for test--------------------------          
+            var viewModel = new SecurityViewModel(new WindowsGroupPermission[0], new Mock<IResourcePickerDialog>().Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object);
+
+            //------------Execute Test---------------------------
+            viewModel.Save(null);
+
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SecurityViewModel_Save")]
+        public void SecurityViewModel_Save_InvalidPermissions_InvalidPermissionsAreRemoved()
+        {
+            //------------Setup for test--------------------------          
+            var permissions = CreatePermissions();
+
+            var invalidPermission = permissions[permissions.Count - 1];
+            invalidPermission.WindowsGroup = "";
+
+            var viewModel = new SecurityViewModel(permissions, new Mock<IResourcePickerDialog>().Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object);
+
+            var target = new List<WindowsGroupPermission>();
+
+            var expectedCount = permissions.Count - 1;
+            var expectedResourceCount = viewModel.ResourcePermissions.Count - 1;
+
+            //------------Execute Test---------------------------
+            viewModel.Save(target);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expectedCount, target.Count);
+            Assert.AreEqual(expectedResourceCount, viewModel.ResourcePermissions.Count);
+            foreach(var permission in target)
+            {
+                Assert.IsTrue(permission.IsValid);
+                Assert.IsFalse(permission.IsNew);
+            }
+            Assert.AreEqual(1, viewModel.ResourcePermissions.Count(p => p.IsNew));
+            Assert.AreEqual(1, viewModel.ServerPermissions.Count(p => p.IsNew));
         }
 
         static List<WindowsGroupPermission> CreatePermissions()
