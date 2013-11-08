@@ -360,9 +360,6 @@
     <Compile Include="Settings\RuntimeConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\Dev2MessageBoxViewModel.cs" />
     <Compile Include="InterfaceImplementors\FileSystemIntellisenseProvider.cs" />
-    <Compile Include="InterfaceImplementors\FileSystemQuery.cs" />
-    <Compile Include="InterfaceImplementors\IFileSystemQuery.cs" />
-    <Compile Include="InterfaceImplementors\NetworkShareInformation.cs" />
     <Compile Include="ViewModels\QuickVariableInput\QuickVariableInputViewModel.cs" />
     <Compile Include="ViewModels\WorkSurface\IWorkSurfaceViewModel.cs" />
     <Compile Include="Views\Diagnostics\ReportsViewerView.xaml.cs">

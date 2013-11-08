@@ -1,4 +1,5 @@
-﻿using Dev2.Studio.InterfaceImplementors;
+﻿using Dev2.InterfaceImplementors;
+using Dev2.Studio.InterfaceImplementors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests

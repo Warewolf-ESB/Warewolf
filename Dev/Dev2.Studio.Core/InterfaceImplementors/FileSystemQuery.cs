@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.IO;
 using System.Linq;
 
-namespace Dev2.Studio.InterfaceImplementors
+namespace Dev2.InterfaceImplementors
 {
     public class FileSystemQuery:IFileSystemQuery
     {

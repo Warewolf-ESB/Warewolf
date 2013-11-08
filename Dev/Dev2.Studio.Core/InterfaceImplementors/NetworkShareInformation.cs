@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Runtime.InteropServices;
 
-namespace Dev2.Studio.InterfaceImplementors
+namespace Dev2.InterfaceImplementors
 {
 
     #region Share Type

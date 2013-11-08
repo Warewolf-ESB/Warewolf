@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace Dev2.Studio.InterfaceImplementors
+namespace Dev2.InterfaceImplementors
 {
     public interface IFileSystemQuery
     {
