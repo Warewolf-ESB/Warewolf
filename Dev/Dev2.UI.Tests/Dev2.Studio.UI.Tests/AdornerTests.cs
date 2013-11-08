@@ -183,9 +183,11 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", resourceToUse);
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
+            Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
+            Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
+
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, innerResource);
             Mouse.Move(controlOnWorkflow, new Point(5, 5));
-            //var button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TravsTestService", "Edit");
             var mappingsBtn = WorkflowDesignerUIMap.Adorner_GetButton(theTab, innerResource, "Open Mapping") as WpfToggleButton;
 
             if(mappingsBtn == null)
