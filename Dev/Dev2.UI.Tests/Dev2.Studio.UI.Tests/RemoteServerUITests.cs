@@ -108,6 +108,7 @@ namespace Dev2.Studio.UI.Tests
             {
                 Assert.Fail("Cannot get studio window after remote workflow show in browser");
             }
+
             //Try close browser
             ExternalUIMap.CloseAllInstancesOfIE();
         }

@@ -47,11 +47,23 @@
 
         public void CloseAllInstancesOfIE()
         {
-            Process[] processList = Process.GetProcessesByName("iexplore");
-            foreach (Process p in processList)
+            var browsers = new string[]{"iexplore", "chrome"};
+
+            foreach (var browser in browsers)
             {
-                p.Kill();
+                Process[] processList = Process.GetProcessesByName(browser);
+                foreach (Process p in processList)
+                {
+                    try
+                    {
+                        p.Kill();
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                }    
             }
+            
         }
 
         public bool Outlook_HasOpened()
