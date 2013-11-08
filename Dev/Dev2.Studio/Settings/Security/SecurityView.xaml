@@ -128,9 +128,9 @@
                     Orientation="Vertical">
 
             <Grid>
-                <TextBlock Text="Server Permissions"
+            <TextBlock Text="Server Permissions"
                            HorizontalAlignment="Left"
-                           Style="{StaticResource Dev2HeadingTextBlockStyle}" />
+                   Style="{StaticResource Dev2HeadingTextBlockStyle}" />
                 <core:ActivityDesignerToggleButton x:Name="ServerHelpToggleButton"
                                                    Width="20"
                                                    Height="20"
@@ -145,7 +145,8 @@
             </Grid>
             <DataGrid x:Name="ServerPermissionsDataGrid" ItemsSource="{Binding ServerPermissions}"
                       Style="{StaticResource PermissionsGridStyle}"
-                      RowStyle="{StaticResource PermissionsGridRowServerStyle}">
+                      RowStyle="{StaticResource PermissionsGridRowServerStyle}"
+                      Sorting="OnDataGridSorting">
 
                 <DataGrid.Columns>
 
@@ -258,7 +259,7 @@
             </DataGrid>
 
             <Grid Margin="0,10,0,0">
-                <TextBlock Text="Resource Permissions"
+            <TextBlock Text="Resource Permissions"
                            Style="{StaticResource Dev2HeadingTextBlockStyle}" />
                 <core:ActivityDesignerToggleButton x:Name="ResourceHelpToggleButton"
                                                    Width="20"
@@ -275,7 +276,8 @@
             <DataGrid x:Name="ResourcePermissionsDataGrid"
                       ItemsSource="{Binding ResourcePermissions}"
                       Style="{StaticResource PermissionsGridStyle}"
-                      RowStyle="{StaticResource PermissionsGridRowStyle}">
+                      RowStyle="{StaticResource PermissionsGridRowStyle}"
+                      Sorting="OnDataGridSorting">
 
                 <DataGrid.Columns>
 

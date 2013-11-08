@@ -1,9 +1,12 @@
 using System;
+using Newtonsoft.Json;
 
 namespace Dev2.Data.Settings.Security
 {
     public class WindowsGroupPermission : ObservableObject
     {
+        public const string BuiltInAdministratorsText = "BuiltIn\\Administrators";
+
         bool _isServer;
         Guid _resourceID;
         string _resourceName;
@@ -37,5 +40,14 @@ namespace Dev2.Data.Settings.Security
         public bool Administrator { get { return _administrator; } set { OnPropertyChanged(ref _administrator, value); } }
 
         public bool IsNew { get { return _isNew; } set { OnPropertyChanged(ref _isNew, value); } }
+
+        [JsonIgnore]
+        public bool IsBuiltInAdministrators
+        {
+            get
+            {
+                return IsServer && WindowsGroup.Equals(BuiltInAdministratorsText, StringComparison.InvariantCultureIgnoreCase);
+            }
+        }
     }
 }
