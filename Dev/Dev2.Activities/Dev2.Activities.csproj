@@ -121,6 +121,7 @@
     <Compile Include="Activities\DsfWebGetRequestActivity.cs" />
     <Compile Include="Activities\DsfWebPageActivity.cs" />
     <Compile Include="Activities\DsfCommentActivity.cs" />
+    <Compile Include="Activities\DsfWebserviceActivity.cs" />
     <Compile Include="Activities\DsfWorkflowActivity.cs" />
     <Compile Include="Activities\DsfXPathActivity.cs" />
     <Compile Include="Activities\EmailSender.cs" />

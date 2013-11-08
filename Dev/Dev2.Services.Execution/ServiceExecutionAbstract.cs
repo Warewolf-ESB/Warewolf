@@ -19,6 +19,7 @@ namespace Dev2.Services.Execution
     {
         // Plugins need to handle formatting inside the RemoteObjectHandler 
         // and NOT here otherwise serialization issues occur!
+        public string InstanceOutputDefintions { get; set; }
         public IDSFDataObject DataObj { get; set; }
         public bool HandlesOutputFormatting { get; private set; }
         public bool RequiresFormatting { get; set; }
@@ -181,7 +182,7 @@ namespace Dev2.Services.Execution
 
             var response = ExecuteService(Service.Method.Parameters, itrCollection, itrs, out invokeErrors);
             errors.MergeErrors(invokeErrors);
-            if(invokeErrors.HasErrors())
+            if(errors.HasErrors())
             {
                 return;
             }
@@ -241,11 +242,14 @@ namespace Dev2.Services.Execution
             // Format the XML data
             if (RequiresFormatting)
             {
-
+                if(result == null)
+                {
+                   return;
+                }
                 errors = new ErrorResultTO();
                 ErrorResultTO invokeErrors;
-
-                var formattedPayload = result.ToString();
+                var formattedPayload = outputFormatter != null ? outputFormatter.Format(result).ToString() : result.ToString();
+                //var formattedPayload = result.ToString();
 
                 // Create a shape from the service action outputs
                 var dlShape = compiler.ShapeDev2DefinitionsToDataList(Service.OutputSpecification, enDev2ArgumentType.Output, false, out invokeErrors);
@@ -259,7 +263,7 @@ namespace Dev2.Services.Execution
                 // We need to account for alias ops too ;)
                 compiler.SetParentID(shapeDataListID, DataObj.DataListID);
 
-                compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), Service.OutputSpecification, null, shapeDataListID, out invokeErrors);
+                compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), InstanceOutputDefintions, InstanceOutputDefintions, shapeDataListID, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
 
                 //compiler.ForceDeleteDataListByID(shapeDataListID); // clean up 

@@ -72,7 +72,9 @@ namespace Dev2.Studio.ViewModels.Navigation
                 case "PluginService":
                     type = typeof(DsfPluginActivity);
                     break;
-
+                case "WebService":
+                    type = typeof(DsfWebserviceActivity);
+                    break;
                 default:
                     type = typeof(DsfActivity);
                     break;

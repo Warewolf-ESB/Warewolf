@@ -53,7 +53,7 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     ErrorResultTO errors;
                     ExecuteRequest(service, true, out errors);
-                    service.Source.DisposeClient();
+                    ((WebSource)service.Source).DisposeClient();
                 }
 
                 service.Recordsets = FetchRecordset(service, true);
@@ -83,7 +83,7 @@ namespace Dev2.Runtime.ServiceModel
                               : service.RequestHeaders.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
             var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
             var requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
-            service.RequestResponse = WebSources.Execute(service.Source, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers);
+            service.RequestResponse = WebSources.Execute(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers);
         }
 
         #endregion

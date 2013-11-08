@@ -15,7 +15,6 @@ namespace Dev2.Services.Execution
     {
         SqlServer _sqlServer;
 
-        public string InstanceOutputDefintions { get; set; }
 
         #region Constuctors
 

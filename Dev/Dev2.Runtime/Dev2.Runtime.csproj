@@ -114,7 +114,6 @@
     <Compile Include="ESB\Control\ServiceLocator.cs" />
     <Compile Include="ESB\Execution\DatabaseServiceContainer.cs" />
     <Compile Include="ESB\Execution\EsbExecutionContainer.cs" />
-    <Compile Include="ESB\Execution\EsbExecutionContainerAbstract.cs" />
     <Compile Include="ESB\Execution\InternalServiceContainer.cs" />
     <Compile Include="ESB\Execution\PluginServiceContainer.cs" />
     <Compile Include="ESB\Execution\RemoteDebugItemParser.cs" />

@@ -48,7 +48,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("RemoteInvoke_CanFetchDebugItems")]
-        [Ignore]
         public void RemoteInvoke_CanFetchDebugItems_WhenRemoteInvokeWorkflow_ExpectAllDebugItems()
         {
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Remote Debug Test");
@@ -58,7 +57,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
             var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
 
-            Assert.AreEqual(12, debugItems.Count);
+            Assert.AreEqual(6, debugItems.Count);
 
             // TODO : Flesh out the remainer
 

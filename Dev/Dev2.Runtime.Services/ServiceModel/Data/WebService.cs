@@ -17,7 +17,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #region Properties
 
-        public WebSource Source { get; set; }
+        //public WebSource Source { get; set; }
         public string RequestUrl { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
@@ -154,7 +154,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     // Dispose managed resources.
                     if(Source != null)
                     {
-                        Source.Dispose();
+                        ((WebSource)Source).Dispose();
                         Source = null;
                     }
                 }

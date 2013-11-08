@@ -504,6 +504,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                                               where
                                                   (desc.Name.LocalName.Contains("DsfDatabaseActivity") ||
                                                    desc.Name.LocalName.Contains("DsfPluginActivity") ||
+                                                   desc.Name.LocalName.Contains("DsfWebserviceActivity") ||
                                                    desc.Name.LocalName.Contains("DsfActivity")) &&
                                                   desc.Attribute("UniqueID") != null
                                               select desc;

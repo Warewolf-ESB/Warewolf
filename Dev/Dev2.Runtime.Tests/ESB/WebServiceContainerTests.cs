@@ -9,9 +9,12 @@ using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Execution;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Unlimited.Framework.Converters.Graph;
+using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Dev2.Tests.Runtime.ESB
 {
@@ -128,10 +131,10 @@ namespace Dev2.Tests.Runtime.ESB
             container.Execute(out errors);
 
             Assert.IsTrue(errors.HasErrors());
-            Assert.AreEqual("Service Execution Error: Cannot Execute Web Request", errors.FetchErrors()[0]);
+            Assert.AreEqual("Service Execution Error: Object reference not set to an instance of an object.", errors.FetchErrors()[0]);
         }
 
-        WebServiceContainerMock CreateWebServiceContainerThrowingException(XElement serviceXml, XElement sourceXml, string response)
+        WebServiceContainer CreateWebServiceContainerThrowingException(XElement serviceXml, XElement sourceXml, string response)
         {
             ErrorResultTO errors;
             var compiler = DataListFactory.CreateDataListCompiler();
@@ -144,9 +147,16 @@ namespace Dev2.Tests.Runtime.ESB
             var esbChannel = new Mock<IEsbChannel>();
 
             var sa = CreateServiceAction(serviceXml, sourceXml);
-            var container = new WebServiceContainerMockWithError(sa, dataObj.Object, workspace.Object, esbChannel.Object)
+            var serviceExecution = new WebserviceExecution(dataObj.Object,true);
+            var webService = new WebService();
+            webService.Method = new ServiceMethod();
+            var outputDescription = new OutputDescription();
+            outputDescription.Format =OutputFormats.ShapedXML;
+            webService.OutputDescription = outputDescription;
+            serviceExecution.Service = webService;
+            var container = new WebServiceContainerMockWithError(serviceExecution)
             {
-                WebRequestRespsonse = response
+                WebRequestRespsonse = response,                
             };
             return container;
         }
@@ -170,13 +180,13 @@ namespace Dev2.Tests.Runtime.ESB
             var sa = CreateServiceAction(serviceXml, sourceXml);
             WebServiceContainer container = null;
 
-            if (!isFaulty)
+            if(!isFaulty)
             {
 
                 container = new WebServiceContainerMock(sa, dataObj.Object, workspace.Object, esbChannel.Object)
-            {
-                WebRequestRespsonse = response
-            };
+                {
+                    WebRequestRespsonse = response
+                };
             }
             else
             {
@@ -206,16 +216,46 @@ namespace Dev2.Tests.Runtime.ESB
 
     }
 
-    internal class WebServiceContainerMockWithError : WebServiceContainerMock
+    internal class FaultyWebServiceContainerMock : WebServiceContainerMock
+    {
+        public FaultyWebServiceContainerMock(ServiceAction sa, IDSFDataObject dsfDataObject, IWorkspace workspace, IEsbChannel esbChannel)
+            : base(sa,dsfDataObject,workspace,esbChannel)
+        {   
+        }
+
+        #region Overrides of WebServiceContainerMock
+
+        public override Guid Execute(out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO();
+            errors.AddError(" [[CityName]] does not exist in your Data List");
+            errors.AddError("Error");
+            errors.AddError("Error 2");
+            errors.AddError("Error 3");
+            errors.AddError("Faulty Things Happened");
+            return DataObject.DataListID;
+        }
+
+        #endregion
+    }
+
+    internal class WebServiceContainerMockWithError : WebServiceContainer
     {
         public WebServiceContainerMockWithError(ServiceAction sa, IDSFDataObject dsfDataObject, IWorkspace workspace, IEsbChannel esbChannel)
             : base(sa,dsfDataObject,workspace,esbChannel)
         {
         }
+        
+        public WebServiceContainerMockWithError(IServiceExecution serviceExecution)
+            : base(serviceExecution)
+        {
+        }
+
+        public string WebRequestRespsonse { get; set; }
 
         #region Overrides of WebServiceContainerMock
 
-        protected override void ExecuteWebRequest(WebService service, out ErrorResultTO errors)
+        protected void ExecuteWebRequest(WebService service, out ErrorResultTO errors)
         {
             throw new Exception("Cannot Execute Web Request");
         }

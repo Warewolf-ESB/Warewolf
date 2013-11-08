@@ -87,7 +87,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfXPathActivity), typeof(XPathDesigner) },
                 { typeof(DsfActivity), typeof(ServiceDesigner) },
                 { typeof(DsfDatabaseActivity), typeof(ServiceDesigner) },
-              
+                { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
 
 
 
