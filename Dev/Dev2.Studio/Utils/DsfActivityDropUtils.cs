@@ -1,21 +1,34 @@
-﻿using System;
-using System.Activities.Presentation.Model;
-using System.Activities.Presentation.View;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
+﻿using Dev2.Services.Events;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.Views.Workflow;
+using Dev2.Threading;
 
 namespace Dev2.Studio.Utils
 {
     public class DsfActivityDropUtils
     {
-        
+        public static bool TryPickAnyResource(IEnvironmentRepository environmentRepository, out IResourceModel selectedResourceModel)
+        {
+            selectedResourceModel = null;
+
+            var explorer = new ExplorerViewModel(EventPublishers.Aggregator, new AsyncWorker(), environmentRepository, false, enDsfActivityType.All);
+
+            var dropViewModel = new DsfActivityDropViewModel(explorer, enDsfActivityType.Workflow);
+            dropViewModel.Init();
+
+            if(DoDroppedActivity(dropViewModel))
+            {
+                selectedResourceModel = dropViewModel.SelectedResourceModel;
+                return true;
+            }
+            return false;
+        }
+
         public static bool TryPickResource(string typeName, out DsfActivityDropViewModel result)
         {
             // PBI 10652 - 2013.11.04 - TWR - Refactored from WorkflowDesignerViewModel.ViewPreviewDrop to enable re-use!
@@ -39,7 +52,7 @@ namespace Dev2.Studio.Utils
             dropWindow.DataContext = viewModel;
             dropWindow.ShowDialog();
             var response = viewModel.DialogResult;
-            if (response == ViewModelDialogResults.Okay)
+            if(response == ViewModelDialogResults.Okay)
             {
                 return true;
             }
@@ -50,17 +63,17 @@ namespace Dev2.Studio.Utils
         static DsfActivityDropViewModel DetermineDropActivityType(string typeOfResource)
         {
             DsfActivityDropViewModel vm = null;
-            if (typeOfResource.Contains("DsfWorkflowActivity"))
+            if(typeOfResource.Contains("DsfWorkflowActivity"))
             {
                 ExplorerViewModel explorer = new ExplorerViewModel(true, enDsfActivityType.Workflow);
                 vm = new DsfActivityDropViewModel(explorer, enDsfActivityType.Workflow);
             }
-            else if (typeOfResource.Contains("DsfServiceActivity"))
+            else if(typeOfResource.Contains("DsfServiceActivity"))
             {
                 ExplorerViewModel explorer = new ExplorerViewModel(true, enDsfActivityType.Service);
                 vm = new DsfActivityDropViewModel(explorer, enDsfActivityType.Service);
             }
             return vm;
-        }        
+        }
     }
 }

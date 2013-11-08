@@ -63,6 +63,11 @@ namespace Dev2.Studio.Core
 
         #endregion
 
+        public static EnvironmentRepository Create(IEnvironmentModel source)
+        {
+            return new EnvironmentRepository(source);
+        }
+
         #region CTOR
 
         // Singleton instance only

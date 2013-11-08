@@ -20,23 +20,26 @@ namespace Dev2.Settings.Security
         readonly IResourcePickerDialog _resourcePicker;
         readonly IDirectoryObjectPickerDialog _directoryObjectPicker;
         readonly IWin32Window _parentWindow;
+        readonly IEnvironmentModel _environment;
         bool _isUpdatingHelpText;
 
-        internal SecurityViewModel(IEnumerable<WindowsGroupPermission> permissions, IWin32Window parentWindow)
-            : this(permissions, new ResourcePickerDialog(), new DirectoryObjectPickerDialog(), parentWindow)
+        internal SecurityViewModel(IEnumerable<WindowsGroupPermission> permissions, IWin32Window parentWindow, IEnvironmentModel environment)
+            : this(permissions, new ResourcePickerDialog(environment), new DirectoryObjectPickerDialog(), parentWindow, environment)
         {
         }
 
-        public SecurityViewModel(IEnumerable<WindowsGroupPermission> permissions, IResourcePickerDialog resourcePicker, IDirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow)
+        public SecurityViewModel(IEnumerable<WindowsGroupPermission> permissions, IResourcePickerDialog resourcePicker, IDirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IEnvironmentModel environment)
         {
             VerifyArgument.IsNotNull("permissions", permissions);
             VerifyArgument.IsNotNull("resourcePicker", resourcePicker);
             VerifyArgument.IsNotNull("directoryObjectPicker", directoryObjectPicker);
             VerifyArgument.IsNotNull("parentWindow", parentWindow);
+            VerifyArgument.IsNotNull("environment", environment);
 
             _resourcePicker = resourcePicker;
             _directoryObjectPicker = directoryObjectPicker;
             _parentWindow = parentWindow;
+            _environment = environment;
             _directoryObjectPicker.AllowedObjectTypes = ObjectTypes.BuiltInGroups | ObjectTypes.Groups;
             _directoryObjectPicker.DefaultObjectTypes = ObjectTypes.Groups;
             _directoryObjectPicker.AllowedLocations = Locations.All;

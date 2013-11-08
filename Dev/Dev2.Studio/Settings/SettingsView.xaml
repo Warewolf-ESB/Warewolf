@@ -29,11 +29,21 @@
                     <Setter Property="Content"
                             Value="{StaticResource LoggingView}" />
                 </DataTrigger>-->
-                <DataTrigger Binding="{Binding Path=ShowSecurity, Mode=TwoWay}"
+                <!--<DataTrigger Binding="{Binding Path=ShowSecurity, Mode=TwoWay}"                             
                              Value="true">
                     <Setter Property="Content"
                             Value="{StaticResource SecurityView}" />
-                </DataTrigger>
+                </DataTrigger>-->
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Path=IsLoading, Mode=OneWay}"
+                                   Value="False" />
+                        <Condition Binding="{Binding Path=ShowSecurity, Mode=TwoWay}"
+                                   Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Content"
+                            Value="{StaticResource SecurityView}" />
+                </MultiDataTrigger>
             </Style.Triggers>
         </Style>
 

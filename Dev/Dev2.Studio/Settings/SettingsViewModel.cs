@@ -228,7 +228,7 @@ namespace Dev2.Settings
 
         protected virtual SecurityViewModel CreateSecurityViewModel()
         {
-            return new SecurityViewModel(Settings.Security ?? new List<WindowsGroupPermission>(), _parentWindow);
+            return new SecurityViewModel(Settings.Security ?? new List<WindowsGroupPermission>(), _parentWindow, CurrentEnvironment);
         }
 
         void OnIsDirtyPropertyChanged(object sender, EventArgs eventArgs)

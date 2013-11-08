@@ -1,22 +1,33 @@
 ﻿using System.Windows.Forms;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Utils;
-using Dev2.Studio.ViewModels.Workflow;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Dialogs
 {
     public class ResourcePickerDialog : IResourcePickerDialog
     {
+        readonly IEnvironmentRepository _environmentRepository;
+
+        public ResourcePickerDialog(IEnvironmentModel source)
+        {
+            VerifyArgument.IsNotNull("source", source);
+            _environmentRepository = EnvironmentRepository.Create(source);
+        }
+
         public IResourceModel SelectedResource { get; set; }
 
         public DialogResult ShowDialog()
         {
-            var type = typeof(DsfWorkflowActivity);
-            DsfActivityDropViewModel dropViewModel;
-            SelectedResource = DsfActivityDropUtils.TryPickResource(type.FullName, out dropViewModel) ? dropViewModel.SelectedResourceModel : null;
+            SelectedResource = null;
+            IResourceModel selectedResource;
 
-            return SelectedResource == null ? DialogResult.Cancel : DialogResult.OK;
+            if(DsfActivityDropUtils.TryPickAnyResource(_environmentRepository, out selectedResource))
+            {
+                SelectedResource = selectedResource;
+                return DialogResult.OK;
+            }
+            return DialogResult.Cancel;
         }
     }
 }
