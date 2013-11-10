@@ -12,6 +12,7 @@ using Dev2.Help;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Enums;
 
 namespace Dev2.Settings.Security
 {
@@ -24,7 +25,7 @@ namespace Dev2.Settings.Security
         bool _isUpdatingHelpText;
 
         internal SecurityViewModel(IEnumerable<WindowsGroupPermission> permissions, IWin32Window parentWindow, IEnvironmentModel environment)
-            : this(permissions, new ResourcePickerDialog(environment), new DirectoryObjectPickerDialog(), parentWindow, environment)
+            : this(permissions, new ResourcePickerDialog(enDsfActivityType.All, environment), new DirectoryObjectPickerDialog(), parentWindow, environment)
         {
         }
 
@@ -189,8 +190,8 @@ namespace Dev2.Settings.Security
 
         IResourceModel PickResource()
         {
-            var dialogResult = _resourcePicker.ShowDialog();
-            return dialogResult != DialogResult.OK ? null : _resourcePicker.SelectedResource;
+            var hasResult = _resourcePicker.ShowDialog();
+            return hasResult ? _resourcePicker.SelectedResource : null;
         }
 
         void PickWindowsGroup(object obj)

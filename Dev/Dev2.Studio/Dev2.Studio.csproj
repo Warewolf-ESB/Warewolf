@@ -337,9 +337,6 @@
     <Compile Include="ViewModels\ActivityViewModels\DsfActivityViewModel.cs" />
     <Compile Include="ViewModels\Administration\DialogueViewModel.cs" />
     <Compile Include="RibbonControl\Dev2RibbonApplicationMenu.cs" />
-    <Compile Include="Utils\DsfActivityDropUtils.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
     <Compile Include="ViewModels\Diagnostics\ReportsViewerViewModel.cs" />
     <Compile Include="ViewModels\Navigation\CategoryTreeViewModel.cs" />

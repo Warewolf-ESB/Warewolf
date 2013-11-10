@@ -27,6 +27,7 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Composition;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
+using Dev2.Dialogs;
 using Dev2.Enums;
 using Dev2.Factories;
 using Dev2.Interfaces;
@@ -1494,7 +1495,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if(isWorkflow != null)
             {
                 // PBI 10652 - 2013.11.04 - TWR - Refactored to enable re-use!
-                var resourcePicked = DsfActivityDropUtils.TryPickResource(isWorkflow, out _vm);
+                var resourcePicked = ResourcePickerDialog.ShowDropDialog(isWorkflow, out _vm);
                 if(_vm != null && !resourcePicked)
                 {
                     e.Handled = true;

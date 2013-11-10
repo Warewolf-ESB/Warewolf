@@ -1,17 +1,21 @@
 ﻿<Window x:Class="Dev2.Studio.Views.Workflow.DsfActivityDropWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
-        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
-        xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"      
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
         xmlns:NavigationViews="clr-namespace:Dev2.Studio.Views.Navigation"
         xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
-        Title="{Binding DsfActivityType}"         
-        Width="350"        
-        Height="400"       
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:workflow="clr-namespace:Dev2.Studio.ViewModels.Workflow"
+        Title="{Binding Title}"
+        Width="350"
+        Height="400"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterOwner"        
+        WindowStartupLocation="CenterOwner"
         Icon="{Binding IconUri}"
-        >
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance workflow:DsfActivityDropViewModel}">
     <i:Interaction.Behaviors>
         <local:WindowCloseBehviour CloseIndicator="{Binding CloseRequested}" />
     </i:Interaction.Behaviors>

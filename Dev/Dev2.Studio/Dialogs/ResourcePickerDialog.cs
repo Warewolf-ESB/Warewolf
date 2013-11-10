@@ -1,33 +1,96 @@
-﻿using System.Windows.Forms;
+﻿using Caliburn.Micro;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Utils;
+using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Enums;
+using Dev2.Studio.ViewModels.Explorer;
+using Dev2.Studio.ViewModels.Workflow;
+using Dev2.Studio.Views.Workflow;
+using Dev2.Threading;
 
 namespace Dev2.Dialogs
 {
+    // PBI 10652 - 2013.11.04 - TWR - Refactored from WorkflowDesignerViewModel.ViewPreviewDrop to enable re-use!
+
     public class ResourcePickerDialog : IResourcePickerDialog
     {
-        readonly IEnvironmentRepository _environmentRepository;
+        readonly enDsfActivityType _activityType;
+        readonly ExplorerViewModel _explorerViewModel;
 
-        public ResourcePickerDialog(IEnvironmentModel source)
+        /// <summary>
+        /// Creates a picker suitable for dropping from the toolbox.
+        /// </summary>
+        public ResourcePickerDialog(enDsfActivityType activityType)
+            : this(activityType, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), true)
         {
-            VerifyArgument.IsNotNull("source", source);
-            _environmentRepository = EnvironmentRepository.Create(source);
+        }
+
+        /// <summary>
+        /// Creates a picker suitable for picking from the given environment.
+        /// </summary>
+        public ResourcePickerDialog(enDsfActivityType activityType, IEnvironmentModel source)
+            : this(activityType, EnvironmentRepository.Create(source), EventPublishers.Aggregator, new AsyncWorker(), false)
+        {
+        }
+
+        public ResourcePickerDialog(enDsfActivityType activityType, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, bool isFromDrop)
+        {
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
+            VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
+
+            _activityType = activityType;
+            _explorerViewModel = new ExplorerViewModel(eventPublisher, asyncWorker, environmentRepository, isFromDrop, activityType);
         }
 
         public IResourceModel SelectedResource { get; set; }
 
-        public DialogResult ShowDialog()
+        public bool ShowDialog()
         {
-            SelectedResource = null;
-            IResourceModel selectedResource;
+            DsfActivityDropViewModel dropViewModel;
+            return ShowDialog(out dropViewModel);
+        }
 
-            if(DsfActivityDropUtils.TryPickAnyResource(_environmentRepository, out selectedResource))
+        bool ShowDialog(out DsfActivityDropViewModel dropViewModel)
+        {
+            dropViewModel = new DsfActivityDropViewModel(_explorerViewModel, _activityType);
+            var dropWindow = new DsfActivityDropWindow { DataContext = dropViewModel };
+            dropWindow.ShowDialog();
+            if(dropViewModel.DialogResult == ViewModelDialogResults.Okay)
             {
-                SelectedResource = selectedResource;
-                return DialogResult.OK;
+                SelectedResource = dropViewModel.SelectedResourceModel;
+                return true;
             }
-            return DialogResult.Cancel;
+            SelectedResource = null;
+            return false;
+        }
+
+        static enDsfActivityType DetermineDropActivityType(string typeName)
+        {
+            VerifyArgument.IsNotNull("typeName", typeName);
+
+            if(typeName.Contains("DsfWorkflowActivity"))
+            {
+                return enDsfActivityType.Workflow;
+            }
+            if(typeName.Contains("DsfServiceActivity"))
+            {
+                return enDsfActivityType.Service;
+            }
+            return enDsfActivityType.All;
+        }
+
+        public static bool ShowDropDialog(string typeName, out DsfActivityDropViewModel viewModel)
+        {
+            var activityType = DetermineDropActivityType(typeName);
+            if(activityType != enDsfActivityType.All)
+            {
+                var picker = new ResourcePickerDialog(activityType);
+                return picker.ShowDialog(out viewModel);
+            }
+            viewModel = null;
+            return false;
         }
     }
 }

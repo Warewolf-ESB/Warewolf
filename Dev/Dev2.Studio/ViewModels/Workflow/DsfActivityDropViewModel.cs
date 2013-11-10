@@ -28,23 +28,26 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             ExplorerViewModel = explorerViewModel;
             ActivityType = dsfActivityType;
+            Init();
             EventPublishers.Aggregator.Subscribe(this);
         }
 
-        public void Init()
+        void Init()
         {
-            if(ActivityType != null)
+            switch(ActivityType)
             {
-                if(ActivityType == enDsfActivityType.Workflow)
-                {
+                case enDsfActivityType.Workflow:
                     IconUri = new BitmapImage(new Uri("pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png"));
-                    DsfActivityType = "Workflow";
-                }
-                else if(ActivityType == enDsfActivityType.Service)
-                {
+                    Title = "Select A Workflow";
+                    break;
+                case enDsfActivityType.Service:
                     IconUri = new BitmapImage(new Uri("pack://application:,,,/Warewolf Studio;component/Images/ToolService-32.png"));
-                    DsfActivityType = "Service";
-                }
+                    Title = "Select A Service";
+                    break;
+                default:
+                    IconUri = new BitmapImage(new Uri("pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png"));
+                    Title = "Select A Resource";
+                    break;
             }
         }
 
@@ -52,13 +55,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Properties
 
-        public enDsfActivityType ActivityType { get; set; }
+        public enDsfActivityType ActivityType { get; private set; }
 
         public ExplorerViewModel ExplorerViewModel { get; private set; }
 
-        public string DsfActivityType { get; set; }
+        public string Title { get; private set; }
 
-        public BitmapImage IconUri { get; set; }
+        public BitmapImage IconUri { get; private set; }
 
         public string SelectedResourceName { get; set; }
 

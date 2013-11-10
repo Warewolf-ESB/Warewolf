@@ -111,7 +111,7 @@ namespace Dev2.Core.Tests.Settings
             };
 
             //------------Execute Test---------------------------
-            var viewModel = new SecurityViewModel(permissions, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
+            var viewModel = new SecurityViewModel(permissions, new Mock<IResourcePickerDialog>().Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.CloseHelpCommand.CanExecute(null));
@@ -495,7 +495,7 @@ namespace Dev2.Core.Tests.Settings
             };
 
             var picker = new Mock<IResourcePickerDialog>();
-            picker.Setup(p => p.ShowDialog()).Returns(DialogResult.Cancel);
+            picker.Setup(p => p.ShowDialog()).Returns(false);
 
             var viewModel = new SecurityViewModel(new[] { permission }, picker.Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<System.Windows.Forms.IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
 
@@ -564,7 +564,7 @@ namespace Dev2.Core.Tests.Settings
             };
 
             var picker = new Mock<IResourcePickerDialog>();
-            picker.Setup(p => p.ShowDialog()).Returns(DialogResult.OK);
+            picker.Setup(p => p.ShowDialog()).Returns(true);
             picker.Setup(p => p.SelectedResource).Returns((IResourceModel)null);
 
             var viewModel = new SecurityViewModel(new[] { permission }, picker.Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<System.Windows.Forms.IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
@@ -607,7 +607,7 @@ namespace Dev2.Core.Tests.Settings
             resourceModel.Setup(r => r.Category).Returns("Category2");
 
             var picker = new Mock<IResourcePickerDialog>();
-            picker.Setup(p => p.ShowDialog()).Returns(DialogResult.OK);
+            picker.Setup(p => p.ShowDialog()).Returns(true);
             picker.Setup(p => p.SelectedResource).Returns(resourceModel.Object);
 
             var viewModel = new SecurityViewModel(new[] { permission }, picker.Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<System.Windows.Forms.IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
