@@ -78,6 +78,7 @@
     <Compile Include="Collections\ObservableReadOnlyListTests.cs" />
     <Compile Include="Communication\MemoTests.cs" />
     <Compile Include="Communication\DesignValidationMemoTests.cs" />
+    <Compile Include="Logs\LoggerTests.cs" />
     <Compile Include="Providers\Errors\ActionableErrorInfoTests.cs" />
     <Compile Include="Providers\Events\EventPublisherTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

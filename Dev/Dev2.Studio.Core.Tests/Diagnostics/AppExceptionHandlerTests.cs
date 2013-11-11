@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using System.Threading;
 using Caliburn.Micro;
+using Dev2.Infrastructure.Tests.Logs;
 using Dev2.Studio;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Diagnostics;
@@ -70,6 +73,27 @@ namespace Dev2.Core.Tests.Diagnostics
             //Assert
             mockHandler.Protected().Verify("RestartApp", Times.Never());
             Assert.IsTrue(actual, "AppExceptionHandlerAbstract failed to handle valid exception");
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("AppExceptionHandler_Handle")]
+        public void AppExceptionHandlerHandle_WithOneException_ExpectedHandledLogsException()
+        {
+            //------------Setup for test--------------------------
+            var testTraceListner = new TestTraceListner(new StringBuilder());
+            Trace.Listeners.Add(testTraceListner);
+            var e = GetException();
+            var mockHandler = new Mock<AppExceptionHandlerAbstract>();
+            var popupController = new Mock<IAppExceptionPopupController>();
+            mockHandler.Protected().Setup<IAppExceptionPopupController>("CreatePopupController").Returns(popupController.Object);
+            //------------Execute Test---------------------------
+            var actual = mockHandler.Object.Handle(e);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(actual, "AppExceptionHandlerAbstract failed to handle valid exception");
+            StringAssert.Contains(testTraceListner.CurrentlyLogged," :: EXCEPTION ->   : Test Exception\r\n\r\nTest inner Exception\r\n\r\n");
+
         }
 
         [TestMethod]

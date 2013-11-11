@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Dev2.Providers.Logs;
 
 namespace Dev2.Studio.Diagnostics
 {
@@ -25,7 +26,7 @@ namespace Dev2.Studio.Diagnostics
             {
                 _exception = e;
                 _busy = true;
-
+                Logger.Error(_exception);
                 var popupController = CreatePopupController();
                 var exceptionString = ToErrorString(_exception);
                 var lastExceptionSignature = _lastExceptionSignature;
