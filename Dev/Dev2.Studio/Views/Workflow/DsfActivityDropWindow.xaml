@@ -9,6 +9,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:workflow="clr-namespace:Dev2.Studio.ViewModels.Workflow"        
         Title="{Binding Title}"
+        Icon="{Binding ImageSource, Converter={StaticResource StringToResourceConverter}}"
         Width="350"
         Height="400"
         ResizeMode="NoResize"
