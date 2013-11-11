@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -132,15 +133,16 @@ namespace Dev2.Studio.UI.Tests
             // Tab to mappings
             DatabaseServiceWizardUIMap.TabToInputMappings();
             // Set input mapping to required
-            SendKeys.SendWait("{TAB}");
-            SendKeys.SendWait(" ");
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+            var wizard = StudioWindow.GetChildren()[0];
+            Keyboard.SendKeys(wizard, "{TAB}");
+            Keyboard.SendKeys(wizard, " ");
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
             // Save
             DatabaseServiceWizardUIMap.ClickOK();
 
-            if (ResourceChangedPopUpUIMap.WaitForDialog(5000))
-            {
-                ResourceChangedPopUpUIMap.ClickCancel();
-            }
+            Assert.IsTrue(ResourceChangedPopUpUIMap.WaitForDialog(5000), "Resource changed dialog did not show");
+            ResourceChangedPopUpUIMap.ClickCancel();
 
             // Fix Errors
             if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService"))

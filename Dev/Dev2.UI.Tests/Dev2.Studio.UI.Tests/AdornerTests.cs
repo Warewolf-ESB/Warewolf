@@ -283,6 +283,14 @@ namespace Dev2.Studio.UI.Tests
                 // Drag it on
                 ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
 
+                // Scroll down (for if the screen resolution is low)
+                var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
+                if (scrollBar != null)
+                {
+                    Mouse.StartDragging(scrollBar);
+                    Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
+                }
+
                 UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse);
                 Mouse.Click(controlOnWorkflow, new Point(5, 5));
 
@@ -310,7 +318,7 @@ namespace Dev2.Studio.UI.Tests
                 Mouse.StartDragging();
 
                 // Y - 50 since it starts at the lowest point
-                Mouse.StopDragging(new Point(initialResizerPoint.X + 50, initialResizerPoint.Y - 50));
+                Mouse.StopDragging(new Point(initialResizerPoint.X + 50, initialResizerPoint.Y + 50));
 
                 // Check position to see it dragged
                 Point newResizerPoint = new Point();
@@ -320,7 +328,7 @@ namespace Dev2.Studio.UI.Tests
                     newResizerPoint.Y = resizeThumb.BoundingRectangle.Y + 5;
                 }
 
-                if (!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y < initialResizerPoint.Y))
+                if (!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y > initialResizerPoint.Y))
                 {
                     Assert.Fail("The control was not resized properly.");
                 }

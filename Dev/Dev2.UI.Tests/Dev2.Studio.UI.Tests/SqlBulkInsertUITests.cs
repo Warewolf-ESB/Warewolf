@@ -95,7 +95,6 @@ namespace Dev2.Studio.UI.Tests
             //Open the large view
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfSqlBulkInsertActivity");
             Mouse.Move(controlOnWorkflow, new Point(5, 5));
-            //var button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TravsTestService", "Edit");
             var toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "DsfSqlBulkInsertActivity", "Open Large View") as WpfToggleButton;
 
             if(toggleButton == null)

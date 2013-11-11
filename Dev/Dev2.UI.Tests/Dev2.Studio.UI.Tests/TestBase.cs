@@ -204,12 +204,15 @@ namespace Dev2.CodedUI.Tests
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
 
             DockManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.ClickVariableName(0);
+            VariablesUIMap.ClickVariableName(5);
             SendKeys.SendWait("codedUITestVar");
-            VariablesUIMap.ClickVariableName(1);
+            VariablesUIMap.ClickVariableName(4);
 
-            Assert.IsFalse(VariablesUIMap.CheckIfVariableIsUsed(0));
+            Assert.IsFalse(VariablesUIMap.CheckIfVariableIsUsed(5));
             Assert.IsTrue(VariablesUIMap.CheckIfVariableIsUsed(1));
+            Assert.IsTrue(VariablesUIMap.CheckIfVariableIsUsed(2));
+            Assert.IsTrue(VariablesUIMap.CheckIfVariableIsUsed(3));
+            Assert.IsTrue(VariablesUIMap.CheckIfVariableIsUsed(4));
             Playback.Wait(150);
         }
 
