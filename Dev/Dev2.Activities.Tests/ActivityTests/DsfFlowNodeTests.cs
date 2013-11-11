@@ -81,6 +81,31 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(res);
         }
 
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("Dev2DataListDecisionHandler_ExecuteDecisionStack")]
+        [Ignore]//pending bug 10733
+        public void Dev2DataListDecisionHandler_ExecuteDecisionStack_SlashInVariable_CanDeserialize()
+        {
+            CurrentDl = "<ADL><resul><t/></resul></ADL>";
+            TestData = "<root><resul><t>1234</t><t>1234</t><t>1/2\\3/4\\</t><t>1\n2\n3\n4\n</t><t>1 2   3   4   5   </t></resul></root>";
+            ErrorResultTO errors;
+
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            IList<string> getDatalistID = new List<string> { exeID.ToString() };
+
+            var dev2DataListDecisionHandler = new Dev2DataListDecisionHandler();
+
+            //------------Execute Test---------------------------
+            var res = dev2DataListDecisionHandler.ExecuteDecisionStack("{\"TheStack\":[{\"Col1\":\"[[resul(1).t]]\",\"Col2\":\"1234\",\"Col3\":\"\",\"PopulatedColumnCount\":2,\"EvaluationFn\":\"IsEqual\"},{\"Col1\":\"[[resul(2).t]]\",\"Col2\":\"1234\",\"Col3\":\"\",\"PopulatedColumnCount\":2,\"EvaluationFn\":\"IsEqual\"},{\"Col1\":\"[[resul(3).t]]\",\"Col2\":\"1/2\\3/4\\\",\"Col3\":\"\",\"PopulatedColumnCount\":2,\"EvaluationFn\":\"IsEqual\"},{\"Col1\":\"[[resul(4).t]]\",\"Col2\":\"1\n2\n3\n4\n\",\"Col3\":\"\",\"PopulatedColumnCount\":2,\"EvaluationFn\":\"IsEqual\"},{\"Col1\":\"[[resul(5).t]]\",\"Col2\":\"1  2   3   4   5   \",\"Col3\":\"\",\"PopulatedColumnCount\":2,\"EvaluationFn\":\"IsEqual\"}],\"TotalDecisions\":5,\"ModelName\":\"Dev2DecisionStack\",\"Mode\":\"AND\",\"TrueArmText\":\"True\",\"FalseArmText\":\"False\",\"DisplayText\":\"Decision\"}", getDatalistID);
+
+            // Assert Can Deserialize
+            Assert.IsTrue(res);
+
+            DataListRemoval(exeID);
+        }
+
         #endregion Decision Tests
 
         #region GetDebugInputs/Outputs
