@@ -248,7 +248,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (!string.IsNullOrWhiteSpace(labelText))
             {
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
-            }
+            }           
 
             if (valueEntry != null)
             {

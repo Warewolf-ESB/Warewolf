@@ -60,6 +60,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         /// Author : Massimo Guerrera Bug 8104 
         /// </summary>
         [TestMethod]
+        [Owner("Massimo Guerrera")]
         // ReSharper disable InconsistentNaming
         public void Write_Get_Debug_Input_Output_With_Scalar_Expected_Pass()
         // ReSharper restore InconsistentNaming
@@ -75,11 +76,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(4, inRes.Count);
+            Assert.AreEqual(5, inRes.Count);
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[1].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[1].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[3].FetchResultsList().Count);            
+            Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[4].FetchResultsList().Count);
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
@@ -89,6 +91,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         /// Author : Massimo Guerrera Bug 8104 
         /// </summary>
         [TestMethod]
+        [Owner("Massimo Guerrera")]
         // ReSharper disable InconsistentNaming
         public void Write_Get_Debug_Input_Output_With_Recordset_Using_Star_Notation_Expected_Pass()
         // ReSharper restore InconsistentNaming
@@ -114,11 +117,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(4, inRes.Count);
+            Assert.AreEqual(5, inRes.Count);
             Assert.AreEqual(7, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[1].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[1].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[3].FetchResultsList().Count);            
+            Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[4].FetchResultsList().Count);
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);    

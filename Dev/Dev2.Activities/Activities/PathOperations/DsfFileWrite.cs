@@ -65,10 +65,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
             if (dataObject.IsDebug || dataObject.RemoteInvoke)
-            {                
+            {
+              
+                
+
+                
                 AddDebugInputItem(OutputPath, "Output Path", inputPathEntry, executionId);
+
+                DebugItem itemToAdd = new DebugItem();
+                itemToAdd.ResultsList.Add(new DebugItemResult{Type = DebugItemResultType.Label,Value = "Method"});                
+                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetMethod() });
+                _debugInputs.Add(itemToAdd);
+
                 AddDebugInputItem(Username, "Username", usernameEntry, executionId);
-                AddDebugInputItem(Password, "Password", passwordEntry, executionId);
+                itemToAdd = new DebugItem();
+                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Password" });                
+                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetBlankedOutPassword(Password) });
+                _debugInputs.Add(itemToAdd);
                 AddDebugInputItem(FileContents, "File Contents", contentsEntry, executionId);
             }
 
@@ -97,6 +110,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         }
 
+        
 
         #region Properties
 
@@ -163,6 +177,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Properties
+
+        #region Private Methods
+
+        private string GetBlankedOutPassword(string password)
+        {
+            int counter = 0;
+            string result = string.Empty;
+            while(counter < password.Length)
+            {
+                result = result + "*";
+                counter++;
+            }
+            return result;
+        }
+
+        private string GetMethod()
+        {
+            if(Overwrite)
+            {
+                return "Overwrite";
+            }
+            else if(AppendBottom)
+            {
+                return "Append Bottom";
+            }
+            else if(AppendTop)
+            {
+                return "Append Top";
+            }
+            return "No Method selected";
+        }
+
+        #endregion
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {

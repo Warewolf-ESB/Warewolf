@@ -6,6 +6,7 @@ using Dev2.Activities;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
+using Dev2.Diagnostics;
 using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -71,10 +72,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if(dataObject.IsDebug || dataObject.RemoteInvoke)
             {
-                AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);
-                AddDebugInputItem(OutputPath, "Output Path", outputPathEntry, executionId);
+                AddDebugInputItem(InputPath, "Zip Name", inputPathEntry, executionId);
+                AddDebugInputItem(OutputPath, "Destination", outputPathEntry, executionId);
+                DebugItem itemToAdd = new DebugItem();
+                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Overwrite" });                
+                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = Overwrite ? "True" : "False"});
+                _debugInputs.Add(itemToAdd);
                 AddDebugInputItem(Username, "Username", usernameEntry, executionId);
-                AddDebugInputItem(Password, "Password", passwordEntry, executionId);
+                itemToAdd = new DebugItem();
+                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Password" });                
+                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetBlankedOutPassword(Password) });
+                _debugInputs.Add(itemToAdd);
                 AddDebugInputItem(ArchivePassword, "Archive Password", archPassEntry, executionId);
             }
 
@@ -163,6 +171,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Properties
+
+        #region Private Methods
+
+        private string GetBlankedOutPassword(string password)
+        {
+            int counter = 0;
+            string result = string.Empty;
+            while(counter < password.Length)
+            {
+                result = result + "*";
+                counter++;
+            }
+            return result;
+        }   
+
+        #endregion
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {

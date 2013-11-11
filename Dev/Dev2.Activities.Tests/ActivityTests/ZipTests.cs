@@ -121,6 +121,7 @@ namespace ActivityUnitTests.ActivityTests
         /// Author : Massimo Guerrera Bug 8104 
         /// </summary>
         [TestMethod]
+        [Owner("Massimo Guerrera")]
         // ReSharper disable InconsistentNaming
         public void Zip_Get_Debug_Input_Output_With_Scalar_Expected_Pass()
         // ReSharper restore InconsistentNaming
@@ -149,7 +150,7 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(4, inRes[1].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[3].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[5].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[6].FetchResultsList().Count);            
@@ -162,6 +163,7 @@ namespace ActivityUnitTests.ActivityTests
         /// Author : Massimo Guerrera Bug 8104 
         /// </summary>
         [TestMethod]
+        [Owner("Massimo Guerrera")]
         // ReSharper disable InconsistentNaming
         public void Zip_Get_Debug_Input_Output_With_Recordset_Using_Star_Notation_Expected_Pass()
         // ReSharper restore InconsistentNaming
@@ -202,7 +204,7 @@ namespace ActivityUnitTests.ActivityTests
 
             Assert.AreEqual(7, inRes.Count);
             Assert.AreEqual(7, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual("Input Path", inRes[0].ResultsList[0].Value);
+            Assert.AreEqual("File or Folder", inRes[0].ResultsList[0].Value);
             Assert.AreEqual("[[FileNames(1).Name]]", inRes[0].ResultsList[1].Value);
             Assert.AreEqual("=", inRes[0].ResultsList[2].Value);
             Assert.IsFalse(string.IsNullOrEmpty(inRes[0].ResultsList[3].Value));
@@ -210,7 +212,7 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual("=", inRes[0].ResultsList[5].Value);
             Assert.IsFalse(string.IsNullOrEmpty(inRes[0].ResultsList[6].Value));            
             Assert.AreEqual(7, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual("Output Path", inRes[1].ResultsList[0].Value);
+            Assert.AreEqual("Destination", inRes[1].ResultsList[0].Value);
             Assert.AreEqual("[[ZipNames(1).Zips]]", inRes[1].ResultsList[1].Value);
             Assert.AreEqual("=", inRes[1].ResultsList[2].Value);
             Assert.IsFalse(string.IsNullOrEmpty(inRes[1].ResultsList[3].Value));
@@ -219,7 +221,7 @@ namespace ActivityUnitTests.ActivityTests
             Assert.IsFalse(string.IsNullOrEmpty(inRes[1].ResultsList[6].Value));            
             Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
             Assert.AreEqual("Username", inRes[2].ResultsList[0].Value);
-            Assert.AreEqual(1, inRes[3].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
             Assert.AreEqual("Password", inRes[3].ResultsList[0].Value);
             Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
             Assert.AreEqual("Archive Password", inRes[4].ResultsList[0].Value);

@@ -63,8 +63,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (dataObject.IsDebug || dataObject.RemoteInvoke)
             {
                 AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);
+                DebugItem itemToAdd = new DebugItem();
+                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Read" });                
+                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetReadType() });
+                _debugInputs.Add(itemToAdd);
                 AddDebugInputItem(Username, "Username", usernameEntry, executionId);
-                AddDebugInputItem(Password, "Password", passwordEntry, executionId);                
+                itemToAdd = new DebugItem();
+                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Password" });                
+                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetBlankedOutPassword(Password) });
+                _debugInputs.Add(itemToAdd);              
             }
 
             while (colItr.HasMoreData())
@@ -181,6 +188,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
         #endregion Properties
+
+        #region Private Methods
+
+        private string GetBlankedOutPassword(string password)
+        {
+            int counter = 0;
+            string result = string.Empty;
+            while(counter < password.Length)
+            {
+                result = result + "*";
+                counter++;
+            }
+            return result;
+        }
+
+        private string GetReadType()
+        {
+            if(IsFoldersSelected)
+            {
+                return "Folders";
+            }
+            else if(IsFilesSelected)
+            {
+                return "Files";
+            }
+            else if(IsFilesAndFoldersSelected)
+            {
+                return "Files & Folders";
+            }
+            return "No option selected";
+        }
+
+        #endregion
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
