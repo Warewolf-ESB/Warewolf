@@ -481,6 +481,43 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [TestCategory("DataListViewModel_WriteResourceModel")]
+        public void WriteResourceModel_DataListContainingScalarWithError_WithDoubleBracketedScalar_Expected_Positive()
+        {
+
+            //------------Setup for test--------------------------
+            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
+
+            _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+
+            _dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            _dataListViewModel.InitializeDataListViewModel(_mockResourceModel.Object);
+            _dataListViewModel.RecsetCollection.Clear();
+            _dataListViewModel.ScalarCollection.Clear();
+
+            IDataListItemModel carRecordset = DataListItemModelFactory.CreateDataListModel("[[Car]]", "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
+            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Make", "Make of vehicle", carRecordset));
+            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Model", "Model of vehicle", carRecordset));
+
+            _dataListViewModel.RecsetCollection.Add(carRecordset);
+            var scalarDataListItemWithError = DataListItemModelFactory.CreateDataListModel("[[Country]]", "name of Country", enDev2ColumnArgumentDirection.Both);
+            scalarDataListItemWithError.HasError = true;
+            scalarDataListItemWithError.ErrorMessage = "This is an Error";
+            _dataListViewModel.ScalarCollection.Add(scalarDataListItemWithError);
+            _dataListViewModel.ScalarCollection.Add(scalarDataListItemWithError);
+            _dataListViewModel.ValidateNames(scalarDataListItemWithError,true);
+            DataListSingleton.SetDataList(_dataListViewModel);
+            //------------Execute Test---------------------------
+            var xmlDataList = _dataListViewModel.WriteToResourceModel();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2,_dataListViewModel.ScalarCollection.Count);
+            Assert.IsTrue(_dataListViewModel.ScalarCollection[0].DisplayName == "Country");
+            Assert.IsTrue(_dataListViewModel.ScalarCollection[1].DisplayName == "Country");
+            StringAssert.Contains(xmlDataList,"Country");
+        }     
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_AddRecordSetNamesIfMissing")]
         public void AddRecordSetNamesIfMissing_DataListContainingRecordSet_WithSingleBracketedScalar_Expected_Positive()
         {
