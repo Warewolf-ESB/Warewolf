@@ -117,10 +117,10 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.CloseHelpCommand.CanExecute(null));
-            Assert.IsTrue(viewModel.PickResourceCommand.CanExecute(null));
-            Assert.IsTrue(viewModel.PickWindowsGroupCommand.CanExecute(null));
             Assert.IsNotNull(viewModel.PickResourceCommand);
+            Assert.IsTrue(viewModel.PickResourceCommand.CanExecute(null));
             Assert.IsNotNull(viewModel.PickWindowsGroupCommand);
+            Assert.IsTrue(viewModel.PickWindowsGroupCommand.CanExecute(null));
             Assert.IsNotNull(viewModel.ServerPermissions);
             Assert.IsNotNull(viewModel.ResourcePermissions);
 
