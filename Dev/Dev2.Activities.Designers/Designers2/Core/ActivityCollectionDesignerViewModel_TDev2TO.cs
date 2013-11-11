@@ -210,7 +210,7 @@ namespace Dev2.Activities.Designers2.Core
             //
             // DO NOT invoke Renumber() from here - this method is called MANY times when invoking AddToCollection()!!
             //
-            var dto = DTOFactory.CreateNewDTO(new TDev2TOFn(), indexNumber, false, initializeWith);
+            var dto = CreateDTO(indexNumber, initializeWith);
             AttachEvents(dto);
 
             var idx = dto.IndexNumber - 1;
@@ -222,6 +222,11 @@ namespace Dev2.Activities.Designers2.Core
             {
                 ModelItemCollection.Insert(idx, dto);
             }
+        }
+
+        protected virtual IDev2TOFn CreateDTO(int indexNumber, string initializeWith)
+        {
+            return DTOFactory.CreateNewDTO(new TDev2TOFn(), indexNumber, false, initializeWith);
         }
 
         void RemoveDTO(TDev2TOFn dto)
