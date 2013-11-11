@@ -212,7 +212,7 @@ namespace Dev2.Integration.Tests.Activities
         /// Movefile file system to file system overwrite no file specified expected file not found exception thrown by broker.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(FileNotFoundException))]
+        [ExpectedException(typeof(Exception))]
         public void MoveFile_FileSystemToFileSystem_Overwrite_NoFile_Expected_FileNotFoundExceptionThrownByBroker()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
@@ -1627,7 +1627,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FileNotFoundException))]
+        [ExpectedException(typeof(Exception))]
         public void CopyFromFileSystem_WithNoFilePresent_Overwrite_SystemCredentials_OutputExists()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
