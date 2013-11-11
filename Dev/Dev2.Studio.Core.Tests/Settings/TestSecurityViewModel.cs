@@ -17,10 +17,10 @@ namespace Dev2.Core.Tests.Settings
         }
 
         public int SaveHitCount { get; private set; }
-        public override void Save(List<WindowsGroupPermission> permissions)
+        public override void Save(List<WindowsGroupPermission> permissions, List<string> errors)
         {
             SaveHitCount++;
-            base.Save(permissions);
+            base.Save(permissions, errors);
         }
     }
 }

@@ -774,7 +774,7 @@ namespace Dev2.Core.Tests.Settings
             var viewModel = new SecurityViewModel(new WindowsGroupPermission[0], new Mock<IResourcePickerDialog>().Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
 
             //------------Execute Test---------------------------
-            viewModel.Save(null);
+            viewModel.Save(null, null);
 
             //------------Assert Results-------------------------
         }
@@ -798,7 +798,7 @@ namespace Dev2.Core.Tests.Settings
             var expectedResourceCount = viewModel.ResourcePermissions.Count - 1;
 
             //------------Execute Test---------------------------
-            viewModel.Save(target);
+            viewModel.Save(target, new List<string>());
 
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedCount, target.Count);

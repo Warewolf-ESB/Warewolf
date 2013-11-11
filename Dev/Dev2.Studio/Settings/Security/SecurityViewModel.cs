@@ -113,9 +113,10 @@ namespace Dev2.Settings.Security
             ((SecurityViewModel)d).UpdateHelpText(HelpType.Resource);
         }
 
-        public virtual void Save(List<WindowsGroupPermission> permissions)
+        public virtual void Save(List<WindowsGroupPermission> permissions, List<string> errors)
         {
             VerifyArgument.IsNotNull("permissions", permissions);
+            VerifyArgument.IsNotNull("errors", errors);
             permissions.Clear();
             Copy(ServerPermissions, permissions);
             Copy(ResourcePermissions, permissions);
@@ -195,12 +196,12 @@ namespace Dev2.Settings.Security
             {
                 if(_environment.ResourceRepository != null)
                 {
-                var foundResourceModel = _environment.ResourceRepository.FindSingle(model => model.ID == permission.ResourceID);
-                if(foundResourceModel != null)
-                {
-                    _resourcePicker.SelectedResource = foundResourceModel;
+                    var foundResourceModel = _environment.ResourceRepository.FindSingle(model => model.ID == permission.ResourceID);
+                    if(foundResourceModel != null)
+                    {
+                        _resourcePicker.SelectedResource = foundResourceModel;
+                    }
                 }
-            }
             }
             var hasResult = _resourcePicker.ShowDialog();
             return hasResult ? _resourcePicker.SelectedResource : null;

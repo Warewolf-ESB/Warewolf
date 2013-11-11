@@ -26,6 +26,9 @@ namespace Dev2.Settings
         bool _isLoading;
         bool _isDirty;
         bool _selectionChanging;
+        bool _hasErrors;
+        string _errors;
+        bool _isSaved;
 
         bool _showLogging;
         bool _showSecurity = true;
@@ -61,6 +64,48 @@ namespace Dev2.Settings
         public ICommand ServerChangedCommand { get; private set; }
 
         public IEnvironmentModel CurrentEnvironment { get; private set; }
+
+        public bool HasErrors
+        {
+            get { return _hasErrors; }
+            private set
+            {
+                if(value.Equals(_hasErrors))
+                {
+                    return;
+                }
+                _hasErrors = value;
+                NotifyOfPropertyChange(() => HasErrors);
+            }
+        }
+
+        public string Errors
+        {
+            get { return _errors; }
+            set
+            {
+                if(value == _errors)
+                {
+                    return;
+                }
+                _errors = value;
+                NotifyOfPropertyChange(() => Errors);
+            }
+        }
+
+        public bool IsSaved
+        {
+            get { return _isSaved; }
+            private set
+            {
+                if(value.Equals(_isSaved))
+                {
+                    return;
+                }
+                _isSaved = value;
+                NotifyOfPropertyChange(() => IsSaved);
+            }
+        }
 
         public bool IsDirty
         {
@@ -198,6 +243,8 @@ namespace Dev2.Settings
 
         void LoadSettings()
         {
+            ClearErrors();
+            IsSaved = false;
             IsDirty = false;
             IsLoading = true;
 
@@ -238,7 +285,15 @@ namespace Dev2.Settings
 
         void SaveSettings()
         {
-            SecurityViewModel.Save(Settings.Security);
+            ClearErrors();
+
+            var errors = new List<string>();
+            SecurityViewModel.Save(Settings.Security, errors);
+
+            if(errors.Count > 0)
+            {
+                ShowError("Save Error", string.Join(Environment.NewLine, errors));
+            }
 
             var result = ExecuteCommand(SettingsServiceAction.Write);
             if(result == null)
@@ -253,6 +308,7 @@ namespace Dev2.Settings
 
             SecurityViewModel.IsDirty = false;
             IsDirty = false;
+            IsSaved = true;
         }
 
         string ExecuteCommand(SettingsServiceAction action)
@@ -274,9 +330,17 @@ namespace Dev2.Settings
             return result;
         }
 
+        void ClearErrors()
+        {
+            HasErrors = false;
+            Errors = null;
+        }
+
         protected virtual void ShowError(string header, string description)
         {
-            throw new Exception(string.Format("{0} : {1}", header, description));
+            HasErrors = true;
+            Errors = description;
+            //throw new Exception(string.Format("{0} : {1}", header, description));
         }
 
         enum SettingsServiceAction

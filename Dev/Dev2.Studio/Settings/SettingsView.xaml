@@ -109,12 +109,43 @@
         <Grid  Grid.Row="1" Grid.Column="1">
             <ContentControl Style="{StaticResource ContentViewStyle}" />
 
-            <Button Content="Save"
-                    Command="{Binding SaveCommand}"
-                    Width="90"
-                    Height="28"
-                    VerticalAlignment="Bottom"
-                    HorizontalAlignment="Right" />
+            <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Right">
+
+                <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <StackPanel.Visibility>
+                        <MultiBinding Converter="{StaticResource MultipleBoolToVisibilityValueConverter}">
+                            <Binding Path="IsSaved" Mode="TwoWay"/>
+                            <Binding Path="HasErrors" Mode="TwoWay" Converter="{StaticResource BooleanInvertConverter}" />
+                        </MultiBinding>
+                    </StackPanel.Visibility>
+                    <TextBlock Text="Settings saved successfully"
+                               VerticalAlignment="Center" />
+                    <Image Style="{StaticResource ImageTickStyle}"
+                           VerticalAlignment="Center"
+                           Margin="3,0,0,0" />
+                </StackPanel>
+
+                <TextBlock Foreground="{StaticResource ValidationErrorElement}"
+                           Text="{Binding Errors}"
+                           VerticalAlignment="Center">
+                    <TextBlock.Visibility>
+                        <MultiBinding Converter="{StaticResource MultipleBoolToVisibilityValueConverter}">
+                            <Binding Path="IsSaved" Mode="TwoWay"/>
+                            <Binding Path="HasErrors" Mode="TwoWay" />
+                        </MultiBinding>
+                    </TextBlock.Visibility>
+                </TextBlock>
+
+                <Button Content="Save"
+                        Command="{Binding SaveCommand}"
+                        Margin="5,0,0,0"
+                        Width="90"
+                        Height="28" />
+            </StackPanel>
+
         </Grid>
     </Grid>
 </UserControl>

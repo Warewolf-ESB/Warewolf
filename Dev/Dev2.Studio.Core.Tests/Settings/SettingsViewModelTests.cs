@@ -241,8 +241,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsViewModel_SaveCommand")]
-        [ExpectedException(typeof(Exception))]
-        public void SettingsViewModel_SaveCommand_ResultIsError_ThrowsException()
+        public void SettingsViewModel_SaveCommand_ResultIsError_HasErrorsIsTrue()
         {
             //------------Setup for test--------------------------
             const string ErrorMessage = "A message that is not just the word Success.";
@@ -257,6 +256,8 @@ namespace Dev2.Core.Tests.Settings
             viewModel.SaveCommand.Execute(null);
 
             //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.HasErrors);
+            Assert.AreEqual(ErrorMessage, viewModel.Errors);
         }
 
         [TestMethod]
