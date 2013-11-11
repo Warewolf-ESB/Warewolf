@@ -117,6 +117,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 if(_dataListViewModel != null)
                 {
                     _dataListViewModel.ConductWith(this);
+                    _dataListViewModel.Parent = this;
                 }
 
                 NotifyOfPropertyChange(() => DataListViewModel);
@@ -622,6 +623,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             if(DataListViewModel != null)
             {
+                DataListViewModel.Parent = null;
                 ((SimpleBaseViewModel)DataListViewModel).Dispose();
                 DataListViewModel.Dispose();
             }

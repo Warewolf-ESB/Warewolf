@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -593,7 +594,31 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 if(addItem)
                 {
-                    Validator.Add(item);
+                    if(item.IsRecordset)
+                    {
+                        Validator.Add(item);
+                    }
+                }
+                if(!item.IsRecordset && !item.IsRecordset)
+                {
+                    ValidateScalar();
+                }
+                
+            }
+        }
+
+        void ValidateScalar()
+        {
+            List<IGrouping<string, IDataListItemModel>> duplicates = ScalarCollection.ToLookup(x => x.Name).ToList();
+            foreach(var duplicate in duplicates)
+            {
+                if(duplicate.Count() > 1 && !String.IsNullOrEmpty(duplicate.Key))
+                {
+                    duplicate.ForEach(model => model.SetError(StringResources.ErrorMessageDuplicateValue));
+                }
+                else
+                {
+                    duplicate.ForEach(model => model.RemoveError());
                 }
             }
         }

@@ -631,7 +631,7 @@ namespace Dev2.Core.Tests
         public void ValidateNames_ItemToAddTrueWithRecordSetWhenDataListContainsRecordsertWithSameName_ShouldReturnError()
         {
             //------------Setup for test--------------------------
-            var item = SetupForValidateNamesDuplicateTests();
+            var item = SetupForValidateNamesDuplicateRecordSetFieldsTests();
 
             _dataListViewModel.RecsetCollection[0].Children.Insert(1, item);
 
@@ -652,7 +652,7 @@ namespace Dev2.Core.Tests
         public void ValidateNames_WhenAddItemFalseAndItemExist_ShouldCauseErrorToShow()
         {
             //------------Setup for test--------------------------
-            var item = SetupForValidateNamesDuplicateTests();
+            var item = SetupForValidateNamesDuplicateRecordSetFieldsTests();
             _dataListViewModel.RecsetCollection[0].Children.Insert(1, item);
 
             _dataListViewModel.RemoveBlankRows(item);
@@ -671,7 +671,7 @@ namespace Dev2.Core.Tests
         public void ValidateNames_WhenAddItemFalseAndItemNotExist_ShouldNotCauseErrorToShow()
         {
             //------------Setup for test--------------------------
-            var item = SetupForValidateNamesDuplicateTests();
+            var item = SetupForValidateNamesDuplicateRecordSetFieldsTests();
             
             _dataListViewModel.RemoveBlankRows(item);
             //------------Execute Test---------------------------
@@ -686,12 +686,80 @@ namespace Dev2.Core.Tests
         public void ValidateNames_WhenAddItemTrueAndItemNotExist_ShouldNotCauseErrorToShow()
         {
             //------------Setup for test--------------------------
-            var item = SetupForValidateNamesDuplicateTests();
+            var item = SetupForValidateNamesDuplicateRecordSetFieldsTests();
+            _dataListViewModel.RemoveBlankRows(item);
+            //------------Execute Test---------------------------
+            _dataListViewModel.ValidateNames(item, true);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(_dataListViewModel.RecsetCollection[0].Children[0].HasError);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListViewModel_ValidateNames")]
+        public void ValidateNames_ItemToAddTrueWithScalarWhenDataListContainsScalarWithSameName_ShouldReturnError()
+        {
+            //------------Setup for test--------------------------
+            var item = SetupForValidateNamesDuplicateScalarTests();
+
+            _dataListViewModel.ScalarCollection.Insert(1, item);
+
+            _dataListViewModel.RemoveBlankRows(item);
+            //------------Execute Test---------------------------
+            _dataListViewModel.ValidateNames(item, true);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(_dataListViewModel.ScalarCollection[0].HasError);
+            Assert.AreEqual("You cannot enter duplicate names in the Data List", _dataListViewModel.ScalarCollection[0].ErrorMessage);
+            Assert.IsTrue(_dataListViewModel.ScalarCollection[1].HasError);
+            Assert.AreEqual("You cannot enter duplicate names in the Data List", _dataListViewModel.ScalarCollection[1].ErrorMessage);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListViewModel_ValidateNames")]
+        public void ValidateNames_WhenAddItemFalseAndScalarItemExist_ShouldCauseErrorToShow()
+        {
+            //------------Setup for test--------------------------
+            var item = SetupForValidateNamesDuplicateScalarTests();
+            _dataListViewModel.ScalarCollection.Insert(1, item);
+
             _dataListViewModel.RemoveBlankRows(item);
             //------------Execute Test---------------------------
             _dataListViewModel.ValidateNames(item, false);
             //------------Assert Results-------------------------
-            Assert.IsFalse(_dataListViewModel.RecsetCollection[0].Children[0].HasError);
+            Assert.IsTrue(_dataListViewModel.ScalarCollection[0].HasError);
+            Assert.AreEqual("You cannot enter duplicate names in the Data List", _dataListViewModel.ScalarCollection[0].ErrorMessage);
+            Assert.IsTrue(_dataListViewModel.ScalarCollection[1].HasError);
+            Assert.AreEqual("You cannot enter duplicate names in the Data List", _dataListViewModel.ScalarCollection[1].ErrorMessage);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListViewModel_ValidateNames")]
+        public void ValidateNames_WhenAddItemFalseAndScalarItemNotExist_ShouldNotCauseErrorToShow()
+        {
+            //------------Setup for test--------------------------
+            var item = SetupForValidateNamesDuplicateScalarTests();
+            
+            _dataListViewModel.RemoveBlankRows(item);
+            //------------Execute Test---------------------------
+            _dataListViewModel.ValidateNames(item, false);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(_dataListViewModel.ScalarCollection[0].HasError);
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListViewModel_ValidateNames")]
+        public void ValidateNames_WhenAddItemTrueAndScalarItemNotExist_ShouldNotCauseErrorToShow()
+        {
+            //------------Setup for test--------------------------
+            var item = SetupForValidateNamesDuplicateScalarTests();
+            _dataListViewModel.RemoveBlankRows(item);
+            //------------Execute Test---------------------------
+            _dataListViewModel.ValidateNames(item, true);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(_dataListViewModel.ScalarCollection[0].HasError);
         }
 
 
@@ -1273,7 +1341,7 @@ namespace Dev2.Core.Tests
             Assert.IsFalse(dataListViewModel.RecsetCollection[0].Children[0].IsVisable);
         }
 
-        IDataListItemModel SetupForValidateNamesDuplicateTests()
+        IDataListItemModel SetupForValidateNamesDuplicateRecordSetFieldsTests()
         {
             Setup();
             _dataListViewModel.RecsetCollection.Clear();
@@ -1301,6 +1369,20 @@ namespace Dev2.Core.Tests
             IDataListItemModel item = new DataListItemModel("ab().c");
             item.Name = "c";
             item.Parent = _dataListViewModel.RecsetCollection[0];
+            return item;
+        }
+ 
+        IDataListItemModel SetupForValidateNamesDuplicateScalarTests()
+        {
+            Setup();
+            _dataListViewModel.RecsetCollection.Clear();
+            _dataListViewModel.ScalarCollection.Clear();
+
+            
+
+            IDataListItemModel item = new DataListItemModel("ab");
+            item.Name = "ab";
+            _dataListViewModel.ScalarCollection.Insert(0,item);
             return item;
         }
 
