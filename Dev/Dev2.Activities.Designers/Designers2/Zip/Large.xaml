@@ -97,6 +97,12 @@
                                 ToolTip="{x:Static help:HelpTextResources.ZipToolTipDestination}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ZipNametxt_AutoID}">
+            <ui:IntellisenseTextBox.IntellisenseProvider>
+                <interfaceImplementors:CompositeIntellisenseProvider>
+                    <interfaceImplementors:DefaultIntellisenseProvider />
+                    <provider:FileSystemIntellisenseProvider />
+                </interfaceImplementors:CompositeIntellisenseProvider>
+            </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpDestination}"
                                  DataContext="{Binding}" />
@@ -158,15 +164,16 @@
         <ComboBox Grid.Column="1" 
                   Grid.Row="4"
                   Style="{StaticResource ActivityComboBoxStyle}"
-                  SelectedValue="{Binding ModelItem.CompressionRatio,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                  DisplayMemberPath="DisplayName"
+                  SelectedValue="{Binding SelectedCompressionRatio,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding CompressionTypes}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SelectedCompressionType_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpCompressionType}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.CompressionRatio"
-                                     SourcePropertyValue="{Binding ModelItem.CompressionRatio, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="SelectedCompressionRatio"
+                                     SourcePropertyValue="{Binding SelectedCompressionRatio, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ComboBox>

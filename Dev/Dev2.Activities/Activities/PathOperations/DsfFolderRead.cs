@@ -138,7 +138,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>
         [Inputs("Files")]
         [FindMissing]
-        public string IsFilesSelected
+        public bool IsFilesSelected
         {
             get;
             set;

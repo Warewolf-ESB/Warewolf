@@ -10,6 +10,11 @@ namespace Dev2.Activities.Designers2.ReadFolder
         {
             AddTitleBarLargeToggle();
             AddTitleBarHelpToggle();
+
+            if (!IsFilesAndFoldersSelected && !IsFoldersSelected && !IsFilesSelected)
+            {
+                IsFilesSelected = true;
+            }
         }
 
         public override void Validate()
@@ -18,5 +23,9 @@ namespace Dev2.Activities.Designers2.ReadFolder
             ValidateUserNameAndPassword();
             ValidateInputPath();
         }
+
+        bool IsFilesAndFoldersSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
+        bool IsFoldersSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
+        bool IsFilesSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
     }
 }

@@ -10,13 +10,22 @@ namespace Dev2.Activities.Designers2.WriteFile
         {
             AddTitleBarLargeToggle();
             AddTitleBarHelpToggle();
+
+            if (!Overwrite && !AppendTop && !AppendBottom)
+            {
+                Overwrite = true;
+            }
         }
 
         public override void Validate()
         {
             Errors = null;
             ValidateUserNameAndPassword();
-            ValidateInputPath();
+            ValidateInputPath(true);
         }
+
+        bool Overwrite { set { SetProperty(value); } get { return GetProperty<bool>(); } }
+        bool AppendTop { set { SetProperty(value); } get { return GetProperty<bool>(); } }
+        bool AppendBottom { set { SetProperty(value); } get { return GetProperty<bool>(); } }
     }
 }

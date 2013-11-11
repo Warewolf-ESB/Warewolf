@@ -23,6 +23,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// </summary>
     public class DsfZip : DsfAbstractFileActivity, IZip, IPathInput, IPathOutput
     {
+        private string _compressionRatio;
 
         public DsfZip()
             : base("Zip")
@@ -158,12 +159,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Gets or sets the compression ratio.
         /// </summary>
-        [Inputs("Compession Ratio")]
-        [FindMissing]
+        [Inputs("Compession Ratio"), FindMissing]
         public string CompressionRatio
         {
-            get;
-            set;
+            get { return _compressionRatio; }
+            set
+            {
+                _compressionRatio = string.IsNullOrEmpty(value) ? value : value.Replace(" ", "");
+            }
         }
 
         /// <summary>
