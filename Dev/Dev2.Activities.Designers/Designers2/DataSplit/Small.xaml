@@ -13,11 +13,11 @@
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                                xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                               Width="250"
-                               MaxWidth="250"
+                               Width="280"
+                               MaxWidth="280"
                                Padding="7"
                                mc:Ignorable="d"
-                               d:DesignWidth="250"
+                               d:DesignWidth="280"
                                d:DataContext="{d:DesignInstance local:DataSplitDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>

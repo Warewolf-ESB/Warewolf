@@ -17,9 +17,9 @@ namespace Dev2.Studio.UI.Tests
     /// Summary description for CodedUITest1
     /// </summary>
     [CodedUITest, System.Runtime.InteropServices.GuidAttribute("7E6836ED-8C14-4BFD-ADD0-3C5C6F0CB815")]
-// ReSharper disable InconsistentNaming
+    // ReSharper disable InconsistentNaming
     public class WorkflowDesignerUITests : UIMapBase
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
     {
         private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
 
@@ -46,7 +46,8 @@ namespace Dev2.Studio.UI.Tests
             // Get some design surface
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X,
+                                             theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
             DockManagerUIMap.ClickOpenTabPage("Toolbox");
@@ -82,7 +83,7 @@ namespace Dev2.Studio.UI.Tests
             Clipboard.SetText("someRandomText");
             SendKeys.SendWait("^c"); // Copy command
             string clipboardText = Clipboard.GetText();
-            if(clipboardText == "someText")
+            if (clipboardText == "someText")
             {
                 Assert.Fail("Error - The Item was not deleted! [ " + clipboardText + " ]");
             }
@@ -97,13 +98,15 @@ namespace Dev2.Studio.UI.Tests
             RibbonUIMap.CreateNewWorkflow();
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             WorkflowDesignerUIMap.CopyWorkflowXamlWithContextMenu(theTab);
-            Assert.IsTrue(string.IsNullOrWhiteSpace(Clipboard.GetText()), "Able to copy workflow Xaml using context menu");
+            Assert.IsTrue(string.IsNullOrWhiteSpace(Clipboard.GetText()),
+                          "Able to copy workflow Xaml using context menu");
             RibbonUIMap.CreateNewWorkflow();
             theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             var startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
             Mouse.Click(new Point(startButton.BoundingRectangle.X - 5, startButton.BoundingRectangle.Y - 5));
             SendKeys.SendWait("^V");
-            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "Unsaved 1(FlowchartDesigner)"));
+            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab,
+                                                                                    "Unsaved 1(FlowchartDesigner)"));
             TabManagerUIMap.CloseAllTabs();
         }
 
@@ -119,25 +122,93 @@ namespace Dev2.Studio.UI.Tests
 
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("email service");
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", new Point(startButton.BoundingRectangle.X + 50, startButton.BoundingRectangle.Y + 150));
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service",
+                                                        new Point(startButton.BoundingRectangle.X + 50,
+                                                                  startButton.BoundingRectangle.Y + 150));
 
             DockManagerUIMap.ClickOpenTabPage("Explorer");
 
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", new Point(startButton.BoundingRectangle.X + 50, startButton.BoundingRectangle.Y + 300));
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service",
+                                                        new Point(startButton.BoundingRectangle.X + 50,
+                                                                  startButton.BoundingRectangle.Y + 300));
 
             DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
 
-            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "DsfActivity(ServiceDesigner)"), "Dropped services display title was 'DsfActivity' rather than the name of the service");
+            Assert.IsFalse(
+                WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "DsfActivity(ServiceDesigner)"),
+                "Dropped services display title was 'DsfActivity' rather than the name of the service");
         }
 
         [TestMethod]
         [TestCategory("UITest")]
-        [Description("Test for 'All Tools' workflow: The workflow is openned. The icons must display. The tab must be able to close again")]
+        [Description(
+            "Test for 'All Tools' workflow: The workflow is openned. The icons must display. The tab must be able to close again"
+            )]
         [Owner("Ashley")]
         // ReSharper disable InconsistentNaming
         public void StudioTooling_StudioToolingUITest_CanToolsDisplay_NoExceptionsThrown()
-        // ReSharper restore InconsistentNaming
+            // ReSharper restore InconsistentNaming
+        {
+            // Open the Explorer
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("AllTools");
+
+            // Open the Workflow
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+
+            // Assert all the icons are visible
+            var designer = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
+            var allTools = designer.GetChildren();
+            var allFoundTools = new UITestControlCollection();
+            foreach (var child in allTools)
+            {
+                if (child.ControlType == "Custom" &&
+                    child.ClassName != "Uia.ConnectorWithoutStartDot" &&
+                    child.ClassName != "Uia.StartSymbol" &&
+                    child.ClassName != "Uia.UserControl" &&
+                    child.ClassName != "Uia.DsfWebPageActivityDesigner")
+                {
+                    //Some of the tools on the design surface are out of view, look for them...
+                    if (child.BoundingRectangle.Y > 800)
+                    {
+                        //Look low
+                        Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
+                        Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
+                    }
+                    else
+                    {
+                        //Look high
+                        Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
+                        Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollUp(theTab));
+                    }
+                    Assert.IsTrue(WorkflowDesignerUIMap.IsActivityIconVisible(child),
+                                  child.FriendlyName + " is missing its icon on the design surface");
+                    allFoundTools.Add(child);
+                }
+            }
+            Assert.AreEqual(allTools.ToList().Count(child => child.ControlType == "Custom" &&
+                                                             child.ClassName != "Uia.ConnectorWithoutStartDot" &&
+                                                             child.ClassName != "Uia.StartSymbol" &&
+                                                             child.ClassName != "Uia.UserControl" &&
+                                                             child.ClassName != "Uia.DsfWebPageActivityDesigner"),
+                            allFoundTools.Count,
+                            "Not all tools on the alls tools text workflow can be checked for icons");
+
+            Assert.IsTrue(true, "Studio was terminated or hung while opening and closing the all tools workflow");
+        }
+
+        [TestMethod]
+        [TestCategory("UITest")]
+        [Description(
+            "Test for 'All Tools' workflow: The workflow is openned. Large views can be opened and closed again"
+            )]
+        [Owner("Tshepo Ntlhokoa")]
+        // ReSharper disable InconsistentNaming
+        public void StudioTooling_StudioToolingUITest_CanOpenLargeView_NoExceptionsThrown()
+            // ReSharper restore InconsistentNaming
         {
             var toolsWithLargeView = new List<string>
                 {
@@ -165,66 +236,51 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
 
-            // Assert all the icons are visible
             var designer = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
-            var allTools = designer.GetChildren();
-            var allFoundTools = new UITestControlCollection();
-            foreach(var child in allTools)
+
+            var toolsWithLargeViews = designer.GetChildren()
+                                              .Where(t => toolsWithLargeView.Contains(t.FriendlyName))
+                                              .ToList();
+
+            foreach (var child in toolsWithLargeViews)
             {
-                if(child.ControlType == "Custom" &&
-                    child.ClassName != "Uia.ConnectorWithoutStartDot" &&
-                    child.ClassName != "Uia.StartSymbol" &&
-                    child.ClassName != "Uia.UserControl" &&
-                    child.ClassName != "Uia.DsfWebPageActivityDesigner")
+                //Some of the tools on the design surface are out of view, look for them...
+                if (child.BoundingRectangle.Y > 800)
                 {
-                    //Some of the tools on the design surface are out of view, look for them...
-                    if(child.BoundingRectangle.Y > 800)
-                    {
-                        //Look low
-                        Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
-                        Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
-                    }
-                    else
-                    {
-                        //Look high
-                        Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
-                        Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollUp(theTab));
-                    }
-                    Assert.IsTrue(WorkflowDesignerUIMap.IsActivityIconVisible(child), child.FriendlyName + " is missing its icon on the design surface");
-                    allFoundTools.Add(child);
-
-                    if (toolsWithLargeView.Contains(child.FriendlyName))
-                    {
-                        Mouse.Move(child, new Point(5,5));
-                        Playback.Wait(1000);
-
-                        var toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Open Large View") as WpfToggleButton;
-                        if (toggleButton == null)
-                        {
-                            Assert.Fail("Could not find open large view button");
-                        }
-
-                        Mouse.Click(toggleButton);
-                        Playback.Wait(1000);
-
-                        toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Close Large View") as WpfToggleButton;
-                        if (toggleButton == null)
-                        {
-                            Assert.Fail("Could not find close large view button");
-                        }
-
-                        Mouse.Click(toggleButton);
-                        Playback.Wait(1000);
-                    }
+                    //Look low
+                    Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
+                    Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
                 }
-            }
-            Assert.AreEqual(allTools.ToList().Count(child => child.ControlType == "Custom" &&
-                    child.ClassName != "Uia.ConnectorWithoutStartDot" &&
-                    child.ClassName != "Uia.StartSymbol" &&
-                    child.ClassName != "Uia.UserControl" &&
-                    child.ClassName != "Uia.DsfWebPageActivityDesigner"), allFoundTools.Count, "Not all tools on the alls tools text workflow can be checked for icons");
+                else
+                {
+                    //Look high
+                    Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
+                    Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollUp(theTab));
+                }
 
-            Assert.IsTrue(true, "Studio was terminated or hung while opening and closing the all tools workflow");
+                Mouse.Move(child, new Point(5, 5));
+                Playback.Wait(1000);
+
+                var toggleButton =
+                    WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Open Large View") as
+                    WpfToggleButton;
+                if (toggleButton == null)
+                {
+                    Assert.Fail("Could not find open large view button");
+                }
+
+                Mouse.Click(toggleButton);
+
+                toggleButton =
+                    WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Close Large View") as
+                    WpfToggleButton;
+                if (toggleButton == null)
+                {
+                    Assert.Fail("Could not find close large view button");
+                }
+
+                Mouse.Click(toggleButton);
+            }
         }
 
         [TestMethod]
@@ -233,13 +289,14 @@ namespace Dev2.Studio.UI.Tests
         [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void Toolbox_UITest_OpenToolbox_IconsAreDisplayed()
-        // ReSharper restore InconsistentNaming
+            // ReSharper restore InconsistentNaming
         {
             RibbonUIMap.CreateNewWorkflow();
             DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            foreach(var tool in ToolboxUIMap.GetAllTools())
+            foreach (var tool in ToolboxUIMap.GetAllTools())
             {
-                Assert.IsTrue(ToolboxUIMap.IsIconVisible(tool), tool.FriendlyName + " is missing its icon in the toolbox");
+                Assert.IsTrue(ToolboxUIMap.IsIconVisible(tool),
+                              tool.FriendlyName + " is missing its icon in the toolbox");
             }
         }
 
@@ -255,7 +312,7 @@ namespace Dev2.Studio.UI.Tests
         // 05/11 - Failure is Intermittent ;)
         // ReSharper disable InconsistentNaming
         public void DebugOutput_ClickStep_ActivityIsHighlighted()
-        // ReSharper restore InconsistentNaming
+            // ReSharper restore InconsistentNaming
         {
             //Create testing workflow
             RibbonUIMap.CreateNewWorkflow();
@@ -292,7 +349,8 @@ namespace Dev2.Studio.UI.Tests
 
             //Assert the design surface activity is highlighted
             var workflow = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
-            Assert.IsTrue(WorkflowDesignerUIMap.IsControlSelected(workflow), "Selecting a step in the debug output does not select the activity on the design surface");
+            Assert.IsTrue(WorkflowDesignerUIMap.IsControlSelected(workflow),
+                          "Selecting a step in the debug output does not select the activity on the design surface");
 
             TabManagerUIMap.CloseAllTabs();
         }
@@ -303,7 +361,7 @@ namespace Dev2.Studio.UI.Tests
         [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void Tabs_UnsavedStar_SwitchingTabs_DoesNotChangeUnsavedStatus()
-        // ReSharper restore InconsistentNaming
+            // ReSharper restore InconsistentNaming
         {
             var firstName = "Test" + Guid.NewGuid().ToString().Substring(24);
             var secondName = "Test" + Guid.NewGuid().ToString().Substring(24);
@@ -317,13 +375,13 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("PBI_9957_UITEST");
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "BUGS", "PBI_9957_UITEST",
-                new Point(theStartNode.BoundingRectangle.X + 20,
-                            theStartNode.BoundingRectangle.Y + 100));
+                                                        new Point(theStartNode.BoundingRectangle.X + 20,
+                                                                  theStartNode.BoundingRectangle.Y + 100));
             RibbonUIMap.ClickRibbonMenuItem("Save");
             WizardsUIMap.WaitForWizard();
             SaveDialogUIMap.ClickAndTypeInNameTextbox(firstName);
             Playback.Wait(3000);
-          
+
             // Create second workflow
             RibbonUIMap.CreateNewWorkflow();
             Playback.Wait(1000);
@@ -331,8 +389,8 @@ namespace Dev2.Studio.UI.Tests
             theStartNode = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "StartSymbol");
             DockManagerUIMap.ClickOpenTabPage("Toolbox");
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolboxUIMap.FindToolboxItemByAutomationId("MultiAssign"),
-                new Point(theStartNode.BoundingRectangle.X + 20,
-                            theStartNode.BoundingRectangle.Y + 100));
+                                                       new Point(theStartNode.BoundingRectangle.X + 20,
+                                                                 theStartNode.BoundingRectangle.Y + 100));
             RibbonUIMap.ClickRibbonMenuItem("Save");
             WizardsUIMap.WaitForWizard(10000);
             SaveDialogUIMap.ClickAndTypeInNameTextbox(secondName);
@@ -371,14 +429,14 @@ namespace Dev2.Studio.UI.Tests
             DockManagerUIMap.ClickOpenTabPage("Explorer");
 
             // Open the Dependancy Window twice
-            for(int openCount = 0; openCount < 2; openCount++)
+            for (int openCount = 0; openCount < 2; openCount++)
             {
                 DockManagerUIMap.ClickOpenTabPage("Explorer");
                 ExplorerUIMap.RightClickShowProjectDependancies("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
             }
 
             string activeTab = TabManagerUIMap.GetActiveTabName();
-            if(activeTab == "Base64ToString")
+            if (activeTab == "Base64ToString")
             {
                 Assert.Fail("Opening the Dependency View twice should keep the UI on the same tab");
             }
@@ -386,8 +444,7 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [TestCategory("UITest")]
-        [Description("for bug 9802 - Foreach drill down test (2013.06.28)")]
-        [Owner("Ashley")]
+        [Owner("Tshepo Ntlhokoa")]
         // 05/11 - Failure is Intermittent ;)
         public void DragAMultiAssignIntoAndOutOfAForEach_NoDrillDown()
         {
@@ -397,7 +454,8 @@ namespace Dev2.Studio.UI.Tests
             // Get some variables
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X,
+                                             theStartButton.BoundingRectangle.Y + 200);
 
             Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             requiredPoint.Offset(20, 50);
@@ -410,7 +468,8 @@ namespace Dev2.Studio.UI.Tests
             // Get a multiassign, and drag it onto the "Drop Activity Here" part of the ForEach box
             DockManagerUIMap.ClickOpenTabPage("Toolbox");
             UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25));
+            ToolboxUIMap.DragControlToWorkflowDesigner(theControl,
+                                                       new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25));
 
             // pause for drill down...
             Playback.Wait(5000);
@@ -448,6 +507,120 @@ namespace Dev2.Studio.UI.Tests
             // ensure the start btn is visible, hence no drill down
             theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Assert.IsTrue(theStartButton.Exists, "Start Node Hover Caused Drilldown");
+        }
+        
+        [TestMethod]
+        [TestCategory("UITest")]
+        [Description(
+            "Test for 'All Tools' workflow: The workflow is openned. Select items on grided tools. Open and close QVI. Selected items are preserved"
+            )]
+        [Owner("Tshepo Ntlhokoa")]
+        // ReSharper disable InconsistentNaming
+        public void QuickVariableInput_GriddedToolsWithComboboxes_OpenAndCloseQVI_SelectedValueIsPreserved()
+        // ReSharper restore InconsistentNaming
+        {
+            var gridedToolsWithComboboxes = new List<string>
+                {
+                    "DsfDataMergeActivity",
+                    "DsfDataSplitActivity",
+                     "DsfBaseConvertActivity",
+                    "DsfCaseConvertActivity"
+                };
+
+            // Open the Explorer
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("AllTools");
+
+            // Open the Workflow
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+
+            var designer = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
+
+            var toolsWithLargeViews = designer.GetChildren()
+                                              .Where(t => gridedToolsWithComboboxes.Contains(t.FriendlyName))
+                                              .ToList();
+
+            foreach (var tool in toolsWithLargeViews)
+            {
+                //Some of the tools on the design surface are out of view, look for them...
+                if (tool.BoundingRectangle.Y > 800)
+                {
+                    //Look low
+                    Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
+                    Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
+                }
+                else
+                {
+                    //Look high
+                    Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
+                    Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollUp(theTab));
+                }
+                //
+                var selectedItems = SelectItemOnComboBox(tool.FriendlyName, theTab);
+                //Get Mappings button
+                UITestControl toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, tool.FriendlyName,
+                                                                                     "Open Quick Variable Input") as
+                                             WpfToggleButton;
+                // Click it
+                Mouse.Click(toggleButton);
+                //Get Mappings button
+                toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, tool.FriendlyName,
+                                                                       "Close Quick Variable Input") as
+                               WpfToggleButton;
+                // Click it
+                Mouse.Click(toggleButton);
+
+                //Assert
+                Assert.IsTrue(VerifySelectedItems(tool.FriendlyName, theTab, selectedItems));
+            }
+        }
+
+        private List<WpfListItem> SelectItemOnComboBox(string autoId, UITestControl theTab)
+        {
+            var selectedItems = new List<WpfListItem>();
+            WpfTable middleBox = WorkflowDesignerUIMap.AssignControl_GetSmallViewTable(theTab, autoId, 0);
+            // Get the textbox
+            var uiTestControlCollection = middleBox.Rows[0]
+                .GetChildren()
+                .SelectMany(c => c.GetChildren())
+                .Where(c => c.ControlType == ControlType.ComboBox)
+                .ToList();
+
+            foreach (WpfComboBox dbDropDownControl in uiTestControlCollection)
+            {
+                Point pointOnDropDownControl = new Point(dbDropDownControl.BoundingRectangle.X + 25,
+                                                         dbDropDownControl.BoundingRectangle.Y + 5);
+                Mouse.Click(pointOnDropDownControl);
+                Playback.Wait(1000);
+                var comboBoxList = dbDropDownControl.Items.Select(i => i as WpfListItem).ToList();
+                var selectedItem = comboBoxList[1];
+                selectedItems.Add(selectedItem);
+                Mouse.Click(selectedItem, new Point(5, 5));
+                Playback.Wait(1000);
+            }
+            return selectedItems;
+        }
+
+
+        private bool VerifySelectedItems(string autoId, UITestControl theTab,  List<WpfListItem> selectedItems)
+        {
+            bool isValid  = false;
+            WpfTable middleBox = WorkflowDesignerUIMap.AssignControl_GetSmallViewTable(theTab, autoId, 0);
+            // Get the textbox
+            var uiTestControlCollection = middleBox.Rows[0]
+                .GetChildren()
+                .SelectMany(c => c.GetChildren())
+                .Where(c => c.ControlType == ControlType.ComboBox)
+                .ToList();
+
+            foreach (WpfComboBox dbDropDownControl in uiTestControlCollection)
+            {
+                isValid = selectedItems.Select(i => i.DisplayText).Contains(dbDropDownControl.SelectedItem);
+            }
+
+            return isValid;
         }
     }
 }
