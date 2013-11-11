@@ -21,7 +21,7 @@ namespace Dev2.Activities.Designers2.ReadFolder
         {
             Errors = null;
             ValidateUserNameAndPassword();
-            ValidateInputPath();
+            ValidateInputPath(true);
         }
 
         bool IsFilesAndFoldersSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }

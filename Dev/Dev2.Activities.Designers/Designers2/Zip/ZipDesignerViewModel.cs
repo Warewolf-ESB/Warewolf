@@ -30,7 +30,8 @@ namespace Dev2.Activities.Designers2.Zip
         {
             Errors = null;
             ValidateUserNameAndPassword();
-            ValidateInputAndOutputPaths(true);
+            ValidateOutputPath(true);
+            ValidateInputPath(true);
         }
 
         public CompressionType SelectedCompressionRatio
