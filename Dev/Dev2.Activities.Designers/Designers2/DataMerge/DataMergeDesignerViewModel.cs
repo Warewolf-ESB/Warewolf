@@ -1,7 +1,9 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Windows.Input;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.ViewModels.Base;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.DataMerge
@@ -15,12 +17,14 @@ namespace Dev2.Activities.Designers2.DataMerge
         {
             AddTitleBarQuickVariableInputToggle();
             AddTitleBarHelpToggle();
-            dynamic mi = ModelItem;
-           
-            InitializeItems(mi.MergeCollection);
-            ItemsList = new List<string> { "None", "Index", "Chars", "New Line", "Tab" };
 
-            for(int i = 0; i < mi.MergeCollection.Count ; i ++)
+            ItemsList = new List<string> { "None", "Index", "Chars", "New Line", "Tab" };
+            MergeTypeUpdatedCommand = new RelayCommand(OnMergeTypeChanged, o => true);
+
+            dynamic mi = ModelItem;
+            InitializeItems(mi.MergeCollection);
+
+            for(var i = 0; i < mi.MergeCollection.Count; i++)
             {
                 OnMergeTypeChanged(i);
             }
@@ -28,9 +32,13 @@ namespace Dev2.Activities.Designers2.DataMerge
 
         public override string CollectionName { get { return "MergeCollection"; } }
 
-        public void OnMergeTypeChanged(int index)
+        public ICommand MergeTypeUpdatedCommand { get; private set; }
+
+        void OnMergeTypeChanged(object indexObj)
         {
-            if (index < 0 || index >= ItemCount)
+            var index = (int)indexObj;
+
+            if(index < 0 || index >= ItemCount)
             {
                 return;
             }
@@ -38,7 +46,7 @@ namespace Dev2.Activities.Designers2.DataMerge
             var mi = ModelItemCollection[index];
             var mergeType = mi.GetProperty("MergeType") as string;
 
-            if (mergeType == "Index" || mergeType == "Chars")
+            if(mergeType == "Index" || mergeType == "Chars")
             {
                 mi.SetProperty("EnableAt", true);
             }

@@ -104,7 +104,7 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
         {
             var items = new List<DataSplitDTO> { new DataSplitDTO("", SplitType, "", 0) };
             var viewModel = new DataSplitDesignerViewModel(CreateModelItem(items));
-            viewModel.OnSplitTypeChanged(0);
+            viewModel.SplitTypeUpdatedCommand.Execute(0);
             dynamic mi = viewModel.ModelItemCollection[0];
             var at = mi.At as string;
             var actualEnableAt = mi.EnableAt as bool?;

@@ -80,6 +80,7 @@
       <Link>TestUtils.cs</Link>
     </Compile>
     <Compile Include="DataMerge\DataMergeTests.cs" />
+    <Compile Include="DataSplit\DataSplitTests.cs" />
     <Compile Include="Designers2\Core\Credentials\CredentialsActivityDesignerViewModelTests.cs" />
     <Compile Include="Designers2\Core\Credentials\TestCredentialsActivityDesignerViewModel.cs" />
     <Compile Include="Designers2\Core\FileActivityDesigner\FileActivityDesignerViewModelTests.cs" />
@@ -186,7 +187,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DataSplit\" />
     <Folder Include="MultiAssignTests\Stubs\" />
   </ItemGroup>
   <ItemGroup>

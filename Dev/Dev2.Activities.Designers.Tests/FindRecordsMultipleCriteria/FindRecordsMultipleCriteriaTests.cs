@@ -126,7 +126,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             Assert.IsFalse(findRecordsTO.IsSearchCriteriaEnabled);
 
             //------------Execute Test---------------------------
-            viewModel.OnSearchTypeChanged(0);
+            viewModel.SearchTypeUpdatedCommand.Execute(0);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(isSearchCriteriaEnabled, findRecordsTO.IsSearchCriteriaEnabled);
@@ -163,7 +163,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             }
 
             //------------Execute Test---------------------------
-            viewModel.OnSearchTypeChanged(index);
+            viewModel.SearchTypeUpdatedCommand.Execute(index);
 
             //------------Assert Results-------------------------
             foreach(var dto in items)

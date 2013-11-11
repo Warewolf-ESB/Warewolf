@@ -104,7 +104,7 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
         {
             var items = new List<DataMergeDTO> { new DataMergeDTO("", mergeType, "", 0, "", "Left") };
             var viewModel = new DataMergeDesignerViewModel(CreateModelItem(items));
-            viewModel.OnMergeTypeChanged(0);
+            viewModel.MergeTypeUpdatedCommand.Execute(0);
             dynamic mi = viewModel.ModelItemCollection[0];
             var at = mi.At as string;
             var actualEnableAt = mi.EnableAt as bool?;

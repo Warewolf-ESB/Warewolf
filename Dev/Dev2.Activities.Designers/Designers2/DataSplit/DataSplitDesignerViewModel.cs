@@ -1,6 +1,8 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Windows.Input;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -15,12 +17,14 @@ namespace Dev2.Activities.Designers2.DataSplit
         {
             AddTitleBarQuickVariableInputToggle();
             AddTitleBarHelpToggle();
-            dynamic mi = ModelItem;
 
-            InitializeItems(mi.ResultsCollection);
             ItemsList = new List<string> { "Index", "Chars", "New Line", "Space", "Tab", "End" };
+            SplitTypeUpdatedCommand = new RelayCommand(OnSplitTypeChanged, o => true);
 
-            for (int i = 0; i < mi.ResultsCollection.Count; i++)
+            dynamic mi = ModelItem;
+            InitializeItems(mi.ResultsCollection);
+
+            for(var i = 0; i < mi.ResultsCollection.Count; i++)
             {
                 OnSplitTypeChanged(i);
             }
@@ -28,8 +32,11 @@ namespace Dev2.Activities.Designers2.DataSplit
 
         public override string CollectionName { get { return "ResultsCollection"; } }
 
-        public void OnSplitTypeChanged(int index)
+        public ICommand SplitTypeUpdatedCommand { get; private set; }
+
+        void OnSplitTypeChanged(object indexObj)
         {
+            var index = (int)indexObj;
             if(index < 0 || index >= ItemCount)
             {
                 return;

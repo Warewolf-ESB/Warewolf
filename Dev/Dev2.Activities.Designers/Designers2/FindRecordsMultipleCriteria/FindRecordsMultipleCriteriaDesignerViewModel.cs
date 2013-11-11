@@ -2,9 +2,11 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 using Dev2.Activities.Designers2.Core;
 using Dev2.DataList;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.ViewModels.Base;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
@@ -19,6 +21,7 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
             AddTitleBarHelpToggle();
 
             WhereOptions = new ObservableCollection<string>(FindRecsetOptions.FindAll().Select(c => c.HandlesType()).OrderBy(c => c));
+            SearchTypeUpdatedCommand = new RelayCommand(OnSearchTypeChanged, o => true);
 
             dynamic mi = ModelItem;
             InitializeItems(mi.ResultsCollection);
@@ -26,10 +29,14 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
 
         public override string CollectionName { get { return "ResultsCollection"; } }
 
+        public ICommand SearchTypeUpdatedCommand { get; private set; }
+
         public ObservableCollection<string> WhereOptions { get; private set; }
 
-        public void OnSearchTypeChanged(int index)
+        void OnSearchTypeChanged(object indexObj)
         {
+            var index = (int)indexObj;
+
             if(index < 0 || index >= ItemCount)
             {
                 return;
