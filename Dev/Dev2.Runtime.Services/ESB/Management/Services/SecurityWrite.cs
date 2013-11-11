@@ -8,7 +8,6 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Data.Settings.Security;
 using Dev2.DynamicServices;
-using Dev2.Runtime.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 using ServiceStack.Common.Extensions;
@@ -36,7 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 var windowsGroupPermissions = JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(permissions);
-                
+
                 DoFileEncryption(permissions);
                 try
                 {
@@ -44,10 +43,15 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                     windowsGroupPermissions.Where(permission => permission.IsServer && permission.Administrator).ForEach(permission => SetFullControlToSecurityConfigFile(permission, fileInfo));
                 }
+                catch(IdentityNotMappedException inmex)
+                {
+                    ServerLogger.LogError(inmex);
+                    result = "Error writing security configuration: One or more Windows Groups are invalid.";
+                }
                 catch(Exception ex)
                 {
                     ServerLogger.LogError(ex);
-                    result = "Error writing security configuration.";
+                    result = "Error writing security configuration: " + ex.Message;
                 }
             }
             catch(Exception e)

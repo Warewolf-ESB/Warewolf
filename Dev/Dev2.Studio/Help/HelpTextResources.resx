@@ -121,7 +121,7 @@
     <value />
   </data>
   <data name="SettingsSecurityResourceHelpDefault" xml:space="preserve">
-    <value>Resource permissions help goes here</value>
+    <value />
   </data>
   <data name="SettingsSecurityResourceHelpExecute" xml:space="preserve">
     <value />
@@ -136,19 +136,19 @@
     <value />
   </data>
   <data name="SettingsSecurityResourceToolTipContribute" xml:space="preserve">
-    <value />
+    <value>Edit this resource</value>
   </data>
   <data name="SettingsSecurityResourceToolTipExecute" xml:space="preserve">
-    <value />
+    <value>Run and Debug this resource</value>
   </data>
   <data name="SettingsSecurityResourceToolTipResource" xml:space="preserve">
-    <value />
+    <value>Select Resource</value>
   </data>
   <data name="SettingsSecurityResourceToolTipView" xml:space="preserve">
-    <value />
+    <value>Open and inspect this resource</value>
   </data>
   <data name="SettingsSecurityResourceToolTipWindowsGroup" xml:space="preserve">
-    <value />
+    <value>Select Windows Group</value>
   </data>
   <data name="SettingsSecurityServerHelpAdministrator" xml:space="preserve">
     <value>Administrators can ammend security permissions and change server settings.
@@ -159,7 +159,7 @@ The local machine Administrators are automaticaly given this permission.</value>
 To do this they can also View and Execute workflows.</value>
   </data>
   <data name="SettingsSecurityServerHelpDefault" xml:space="preserve">
-    <value>To set server wide permissions for security, enter the windows group name here followed by the system access for that group. You can click on the Elipses for help with identifying the correct Group.
+    <value>To set server wide permissions for security, enter the windows group name here followed by the system access for that group. You can click on the Ellipsis for help with identifying the correct Group.
 By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.
 Permissions are cumulative in nature e.g. If someone is the member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission.</value>
   </data>
@@ -178,7 +178,7 @@ Deploy may mean overwritting existing work or workflows and can be done without 
 Typicaly this is used by Business Analysts to sign off work and participate in the development process.</value>
   </data>
   <data name="SettingsSecurityServerHelpWindowsGroup" xml:space="preserve">
-    <value>To set server wide permissions for security, enter the windows group name here followed by the system access for that group. You can click on the Elipses for help with identifying the correct Group.
+    <value>To set server wide permissions for security, enter the windows group name here followed by the system access for that group. You can click on the Ellipsis for help with identifying the correct Group.
 By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.
 Permissions are cumulative in nature e.g. If someone is the member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission.</value>
   </data>

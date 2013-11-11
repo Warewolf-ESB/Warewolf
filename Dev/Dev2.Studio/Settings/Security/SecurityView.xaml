@@ -96,7 +96,6 @@
                   
         <Style x:Key="PermissionsGridWindowsGroupButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
             <Setter Property="Content" Value="..."/>
-            <Setter Property="ToolTip" Value="Select Windows Group"/>
             <Setter Property="Margin" Value="1"/>
             <Setter Property="Command" Value="{Binding DataContext.PickWindowsGroupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
             <Setter Property="CommandParameter" Value="{Binding}"/>
@@ -113,7 +112,6 @@
                      
         <Style x:Key="PermissionsGridResourceButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
             <Setter Property="Content" Value="..."/>
-            <Setter Property="ToolTip" Value="Select Resource"/>
             <Setter Property="Margin" Value="1"/>
             <Setter Property="Command" Value="{Binding DataContext.PickResourceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
             <Setter Property="CommandParameter" Value="{Binding}"/>
@@ -191,8 +189,9 @@
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </TextBox>
-                                    <Button Grid.Column="1"
-                                        Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}" />
+                                <Button Grid.Column="1"
+                                        Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}"
+                                        ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipWindowsGroup}" />
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -372,7 +371,8 @@
                                     </i:Interaction.Behaviors>
                                 </TextBlock>
                                 <Button Grid.Column="1"
-                                        Style="{StaticResource PermissionsGridResourceButtonStyle}" />
+                                        Style="{StaticResource PermissionsGridResourceButtonStyle}"
+                                        ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipResource}"/>
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -400,7 +400,8 @@
                                     </i:Interaction.Behaviors>
                                 </TextBox>
                                 <Button Grid.Column="1"
-                                        Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}" />
+                                        Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}"
+                                        ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipWindowsGroup}" />
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
