@@ -147,13 +147,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     return true;
                 }
             }
-            else if (MergeType == "None" || MergeType == "New Line" || MergeType == "Tab")   
+            if (string.IsNullOrEmpty(InputVariable))
             {
-                if (string.IsNullOrEmpty(InputVariable))
-                {
-                    return true;
-                }
+                return true;
             }
+
             return false;
         }
 

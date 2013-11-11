@@ -16,9 +16,14 @@ namespace Dev2.Activities.Designers2.DataMerge
             AddTitleBarQuickVariableInputToggle();
             AddTitleBarHelpToggle();
             dynamic mi = ModelItem;
-
+           
             InitializeItems(mi.MergeCollection);
             ItemsList = new List<string> { "None", "Index", "Chars", "New Line", "Tab" };
+
+            for(int i = 0; i < mi.MergeCollection.Count ; i ++)
+            {
+                OnMergeTypeChanged(i);
+            }
         }
 
         public override string CollectionName { get { return "MergeCollection"; } }

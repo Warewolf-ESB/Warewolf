@@ -19,6 +19,11 @@ namespace Dev2.Activities.Designers2.DataSplit
 
             InitializeItems(mi.ResultsCollection);
             ItemsList = new List<string> { "Index", "Chars", "New Line", "Space", "Tab", "End" };
+
+            for (int i = 0; i < mi.ResultsCollection.Count; i++)
+            {
+                OnSplitTypeChanged(i);
+            }
         }
 
         public override string CollectionName { get { return "ResultsCollection"; } }
