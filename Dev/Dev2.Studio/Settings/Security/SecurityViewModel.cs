@@ -7,9 +7,9 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Data.Settings.Security;
 using Dev2.Dialogs;
-using Dev2.Help;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -17,7 +17,7 @@ using Dev2.Studio.Enums;
 
 namespace Dev2.Settings.Security
 {
-    public class SecurityViewModel : DependencyObject
+    public class SecurityViewModel : DependencyObject, IHelpSource
     {
         readonly IResourcePickerDialog _resourcePicker;
         readonly IDirectoryObjectPickerDialog _directoryObjectPicker;
@@ -329,12 +329,12 @@ namespace Dev2.Settings.Security
                 {
                     case HelpType.Server:
                         IsResourceHelpVisible = false;
-                        HelpText = HelpTextResources.SettingsSecurityServerHelpDefault;
+                        HelpText = Help.HelpTextResources.SettingsSecurityServerHelpDefault;
                         break;
 
                     case HelpType.Resource:
                         IsServerHelpVisible = false;
-                        HelpText = HelpTextResources.SettingsSecurityResourceHelpDefault;
+                        HelpText = Help.HelpTextResources.SettingsSecurityResourceHelpDefault;
                         break;
                 }
             }

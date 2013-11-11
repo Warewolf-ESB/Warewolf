@@ -1097,7 +1097,7 @@
     <None Include="Feedback\6670.cd" />
     <None Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Help\HelpTextResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>HelpTextResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -184,9 +184,10 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBox Text="{Binding WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                         Style="{StaticResource PermissionsGridTextBoxStyle}">
+                                         Style="{StaticResource PermissionsGridTextBoxStyle}"
+                                         ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipWindowsGroup}">
                                     <i:Interaction.Behaviors>
-                                        <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipWindowsGroup}"
+                                        <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpWindowsGroup}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </TextBox>
@@ -206,7 +207,13 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox IsChecked="{Binding DeployTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{StaticResource PermissionsGridCheckBoxStyle}" />
+                                      Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                      ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipDeployTo}">
+                                <i:Interaction.Behaviors>
+                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpDeployTo}"
+                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -220,7 +227,13 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox IsChecked="{Binding DeployFrom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{StaticResource PermissionsGridCheckBoxStyle}" />
+                                      Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                      ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipDeployFrom}" >
+                                <i:Interaction.Behaviors>
+                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpDeployFrom}"
+                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -234,7 +247,13 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox IsChecked="{Binding Administrator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{StaticResource PermissionsGridCheckBoxStyle}" />
+                                      Style="{StaticResource PermissionsGridCheckBoxStyle}" 
+                                      ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipAdministrator}">
+                                <i:Interaction.Behaviors>
+                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpAdministrator}"
+                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -248,7 +267,13 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox IsChecked="{Binding View, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{StaticResource PermissionsGridCheckBoxStyle}" />
+                                      Style="{StaticResource PermissionsGridCheckBoxStyle}" 
+                                      ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipView}">
+                                <i:Interaction.Behaviors>
+                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpView}"
+                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -262,7 +287,13 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox IsChecked="{Binding Execute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{StaticResource PermissionsGridCheckBoxStyle}" />
+                                      Style="{StaticResource PermissionsGridCheckBoxStyle}" 
+                                      ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipExecute}">
+                                <i:Interaction.Behaviors>
+                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpExecute}"
+                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -276,7 +307,13 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox IsChecked="{Binding Contribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{StaticResource PermissionsGridCheckBoxStyle}" />
+                                      Style="{StaticResource PermissionsGridCheckBoxStyle}" 
+                                      ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipContribute}">
+                                <i:Interaction.Behaviors>
+                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpContribute}"
+                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -327,7 +364,13 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0"
                                            Text="{Binding ResourceName, Mode=TwoWay}"
-                                           Style="{StaticResource PermissionsGridTextBlockStyle}" />
+                                           Style="{StaticResource PermissionsGridTextBlockStyle}"
+                                           ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipResource}">
+                                      <i:Interaction.Behaviors>
+                                        <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpResource}"
+                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                </TextBlock>
                                 <Button Grid.Column="1"
                                         Style="{StaticResource PermissionsGridResourceButtonStyle}" />
                             </Grid>
@@ -349,7 +392,13 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBox Text="{Binding WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                         Style="{StaticResource PermissionsGridTextBoxStyle}" />
+                                         Style="{StaticResource PermissionsGridTextBoxStyle}"
+                                         ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipWindowsGroup}">
+                                      <i:Interaction.Behaviors>
+                                        <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpWindowsGroup}"
+                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
                                 <Button Grid.Column="1"
                                         Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}" />
                             </Grid>
@@ -366,7 +415,13 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox IsChecked="{Binding View, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{StaticResource PermissionsGridCheckBoxStyle}" />
+                                      Style="{StaticResource PermissionsGridCheckBoxStyle}" 
+                                      ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipView}">
+                                <i:Interaction.Behaviors>
+                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpView}"
+                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -380,7 +435,13 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox IsChecked="{Binding Execute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{StaticResource PermissionsGridCheckBoxStyle}" />
+                                      Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                      ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipExecute}">
+                                <i:Interaction.Behaviors>
+                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpExecute}"
+                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -394,7 +455,13 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox IsChecked="{Binding Contribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{StaticResource PermissionsGridCheckBoxStyle}" />
+                                      Style="{StaticResource PermissionsGridCheckBoxStyle}" 
+                                      ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipContribute}">
+                                <i:Interaction.Behaviors>
+                                    <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpContribute}"
+                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

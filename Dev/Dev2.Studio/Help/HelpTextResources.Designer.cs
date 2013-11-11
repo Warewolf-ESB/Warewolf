@@ -22,7 +22,7 @@ namespace Dev2.Help {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class HelpTextResources {
+    public class HelpTextResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Dev2.Help {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Dev2.Help.HelpTextResources", typeof(HelpTextResources).Assembly);
@@ -51,7 +51,7 @@ namespace Dev2.Help {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,11 +61,121 @@ namespace Dev2.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SettingsSecurityResourceHelpContribute {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceHelpContribute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resource permissions help goes here.
         /// </summary>
-        internal static string SettingsSecurityResourceHelpDefault {
+        public static string SettingsSecurityResourceHelpDefault {
             get {
                 return ResourceManager.GetString("SettingsSecurityResourceHelpDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SettingsSecurityResourceHelpExecute {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceHelpExecute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SettingsSecurityResourceHelpResource {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceHelpResource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SettingsSecurityResourceHelpView {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceHelpView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SettingsSecurityResourceHelpWindowsGroup {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceHelpWindowsGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SettingsSecurityResourceToolTipContribute {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceToolTipContribute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SettingsSecurityResourceToolTipExecute {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceToolTipExecute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SettingsSecurityResourceToolTipResource {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceToolTipResource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SettingsSecurityResourceToolTipView {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceToolTipView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SettingsSecurityResourceToolTipWindowsGroup {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceToolTipWindowsGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Administrators can ammend security permissions and change server settings.
+        ///The local machine Administrators are automaticaly given this permission..
+        /// </summary>
+        public static string SettingsSecurityServerHelpAdministrator {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerHelpAdministrator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By Default this group will be able to Add New workflows, Edit workflows and Delete existing workflows on this server. 
+        ///To do this they can also View and Execute workflows..
+        /// </summary>
+        public static string SettingsSecurityServerHelpContribute {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerHelpContribute", resourceCulture);
             }
         }
         
@@ -74,16 +184,119 @@ namespace Dev2.Help {
         ///By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.
         ///Permissions are cumulative in nature e.g. If someone is the member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission..
         /// </summary>
-        internal static string SettingsSecurityServerHelpDefault {
+        public static string SettingsSecurityServerHelpDefault {
             get {
                 return ResourceManager.GetString("SettingsSecurityServerHelpDefault", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to By Default this group will be able to deploy resources off this server..
         /// </summary>
-        internal static string SettingsSecurityServerToolTipWindowsGroup {
+        public static string SettingsSecurityServerHelpDeployFrom {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerHelpDeployFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By Default this group will be able to deploy resources onto this server.
+        ///Deploy may mean overwritting existing work or workflows and can be done without Contribute privelages..
+        /// </summary>
+        public static string SettingsSecurityServerHelpDeployTo {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerHelpDeployTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By Default this group will be able to call or execute workflows on this server..
+        /// </summary>
+        public static string SettingsSecurityServerHelpExecute {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerHelpExecute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By Default this group will be able to open and view resources on the server. 
+        ///Typicaly this is used by Business Analysts to sign off work and participate in the development process..
+        /// </summary>
+        public static string SettingsSecurityServerHelpView {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerHelpView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To set server wide permissions for security, enter the windows group name here followed by the system access for that group. You can click on the Elipses for help with identifying the correct Group.
+        ///By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.
+        ///Permissions are cumulative in nature e.g. If someone is the member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission..
+        /// </summary>
+        public static string SettingsSecurityServerHelpWindowsGroup {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerHelpWindowsGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amend security and admin tasks.
+        /// </summary>
+        public static string SettingsSecurityServerToolTipAdministrator {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerToolTipAdministrator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit and Create workflows and services.
+        /// </summary>
+        public static string SettingsSecurityServerToolTipContribute {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerToolTipContribute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deploy resources off this server.
+        /// </summary>
+        public static string SettingsSecurityServerToolTipDeployFrom {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerToolTipDeployFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deploy resources to this server.
+        /// </summary>
+        public static string SettingsSecurityServerToolTipDeployTo {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerToolTipDeployTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run and Debug workflows.
+        /// </summary>
+        public static string SettingsSecurityServerToolTipExecute {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerToolTipExecute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open and inspect resources.
+        /// </summary>
+        public static string SettingsSecurityServerToolTipView {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerToolTipView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Windows Group.
+        /// </summary>
+        public static string SettingsSecurityServerToolTipWindowsGroup {
             get {
                 return ResourceManager.GetString("SettingsSecurityServerToolTipWindowsGroup", resourceCulture);
             }
