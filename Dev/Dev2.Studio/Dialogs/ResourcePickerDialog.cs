@@ -36,9 +36,9 @@ namespace Dev2.Dialogs
 
         public ResourcePickerDialog(enDsfActivityType activityType, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, bool isFromDrop)
         {
+            VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
-            VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
 
             _activityType = activityType;
             _explorerViewModel = new ExplorerViewModel(eventPublisher, asyncWorker, environmentRepository, isFromDrop, activityType);
@@ -55,7 +55,7 @@ namespace Dev2.Dialogs
         bool ShowDialog(out DsfActivityDropViewModel dropViewModel)
         {
             dropViewModel = new DsfActivityDropViewModel(_explorerViewModel, _activityType);
-            var dropWindow = new DsfActivityDropWindow { DataContext = dropViewModel };
+            var dropWindow = CreateDialog(dropViewModel);
             dropWindow.ShowDialog();
             if(dropViewModel.DialogResult == ViewModelDialogResults.Okay)
             {
@@ -64,6 +64,11 @@ namespace Dev2.Dialogs
             }
             SelectedResource = null;
             return false;
+        }
+
+        protected virtual IDialog CreateDialog(DsfActivityDropViewModel dataContext)
+        {
+            return new DsfActivityDropWindow { DataContext = dataContext };
         }
 
         static enDsfActivityType DetermineDropActivityType(string typeName)
@@ -81,15 +86,15 @@ namespace Dev2.Dialogs
             return enDsfActivityType.All;
         }
 
-        public static bool ShowDropDialog(string typeName, out DsfActivityDropViewModel viewModel)
+        public static bool ShowDropDialog(string typeName, out DsfActivityDropViewModel dropViewModel)
         {
             var activityType = DetermineDropActivityType(typeName);
             if(activityType != enDsfActivityType.All)
             {
                 var picker = new ResourcePickerDialog(activityType);
-                return picker.ShowDialog(out viewModel);
+                return picker.ShowDialog(out dropViewModel);
             }
-            viewModel = null;
+            dropViewModel = null;
             return false;
         }
     }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows.Input;
-using System.Windows.Media.Imaging;
+﻿using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
@@ -37,15 +35,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             switch(ActivityType)
             {
                 case enDsfActivityType.Workflow:
-                    IconUri = new BitmapImage(new Uri("pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png"));
+                    ImageSource = "Workflow-32";
                     Title = "Select A Workflow";
                     break;
                 case enDsfActivityType.Service:
-                    IconUri = new BitmapImage(new Uri("pack://application:,,,/Warewolf Studio;component/Images/ToolService-32.png"));
+                    ImageSource = "ToolService-32";
                     Title = "Select A Service";
                     break;
                 default:
-                    IconUri = new BitmapImage(new Uri("pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png"));
+                    ImageSource = "ExplorerWarewolfConnection-32";
                     Title = "Select A Resource";
                     break;
             }
@@ -55,13 +53,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Properties
 
+        public string Title { get; private set; }
+
+        public string ImageSource { get; private set; }
+
         public enDsfActivityType ActivityType { get; private set; }
 
         public ExplorerViewModel ExplorerViewModel { get; private set; }
-
-        public string Title { get; private set; }
-
-        public BitmapImage IconUri { get; private set; }
 
         public string SelectedResourceName { get; set; }
 

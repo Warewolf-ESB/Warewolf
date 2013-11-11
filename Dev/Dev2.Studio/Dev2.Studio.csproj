@@ -388,6 +388,7 @@
     <Compile Include="Views\Workflow\DsfActivityDropWindow.xaml.cs">
       <DependentUpon>DsfActivityDropWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\IDialog.cs" />
     <Compile Include="Views\Workflow\WorkflowInputDataView.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>WorkflowInputDataView.xaml</DependentUpon>

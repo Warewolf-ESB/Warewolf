@@ -167,6 +167,8 @@
     <Compile Include="DataList\InputOutputViewModelEqualityComparerTest.cs" />
     <Compile Include="DebugOutputViewModelTest.Append.cs" />
     <Compile Include="Deploy\DeployUnitTestIsolation.cs" />
+    <Compile Include="Dialogs\ResourcePickerDialogTests.cs" />
+    <Compile Include="Dialogs\TestResourcePickerDialog.cs" />
     <Compile Include="Factories\WorkSurfaceContextFactoryTests.cs" />
     <Compile Include="MainViewModelMock.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2DataGridTests.cs" />

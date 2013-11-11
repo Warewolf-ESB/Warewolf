@@ -17,6 +17,7 @@
 
     <!-- ========== Converter for XamDock ========== -->
 
+    <converters:StringToResourceConverter x:Key="StringToResourceConverter" />
     <converters4:TypeToIconConverter x:Key="TypeToIconConverter" />
     <converters2:BoolToVisibilityConverter x:Key="BoolToVisConverter" />
     <converters:PercentageConverter x:Key="PercentageConverter" />
