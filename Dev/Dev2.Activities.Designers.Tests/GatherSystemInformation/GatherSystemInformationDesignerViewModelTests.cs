@@ -10,12 +10,12 @@ using Dev2.Data.Enums;
 namespace Dev2.Activities.Designers.Tests.GatherSystemInformation
 {
     [TestClass][ExcludeFromCodeCoverage]
-    public class GatherSystemInformationTests
+    public class GatherSystemInformationDesignerViewModelTests
     {
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("GatherSystemInformationViewModel_Constructor")]
-        public void GatherSystemInformationViewModel_Constructor_ModelItemIsValid_ListHasFourItems()
+        [TestCategory("GatherSystemInformationDesignerViewModel_Constructor")]
+        public void GatherSystemInformationDesignerViewModel_Constructor_ModelItemIsValid_ListHasFourItems()
         {
             var items = new List<GatherSystemInformationTO> { new GatherSystemInformationTO() };
             var viewModel = new GatherSystemInformationDesignerViewModel(CreateModelItem(items));
@@ -24,8 +24,8 @@ namespace Dev2.Activities.Designers.Tests.GatherSystemInformation
         
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("GatherSystemInformationViewModel_Constructor")]
-        public void GatherSystemInformationViewModel_Constructor_ModelItemIsValid_CollectionNameIsSetToSystemInformationCollection()
+        [TestCategory("GatherSystemInformationDesignerViewModel_Constructor")]
+        public void GatherSystemInformationDesignerViewModel_Constructor_ModelItemIsValid_CollectionNameIsSetToSystemInformationCollection()
         {
             var items = new List<GatherSystemInformationTO> { new GatherSystemInformationTO() };
             var viewModel = new GatherSystemInformationDesignerViewModel(CreateModelItem(items));
@@ -34,8 +34,8 @@ namespace Dev2.Activities.Designers.Tests.GatherSystemInformation
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("GatherSystemInformationViewModel_Constructor")]
-        public void GatherSystemInformationViewModel_Constructor_ModelItemIsValid_SystemInformationCollectionHasTwoItems()
+        [TestCategory("GatherSystemInformationDesignerViewModel_Constructor")]
+        public void GatherSystemInformationDesignerViewModel_Constructor_ModelItemIsValid_SystemInformationCollectionHasTwoItems()
         {
             var modelItem = ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity());
             var viewModel = new GatherSystemInformationDesignerViewModel(modelItem);
@@ -45,8 +45,8 @@ namespace Dev2.Activities.Designers.Tests.GatherSystemInformation
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("GatherSystemInformationViewModel_Constructor")]
-        public void GatherSystemInformationViewModel_Constructor_ModelItemIsInitializedWith4Items_SystemInformationCollectionHasFourItems()
+        [TestCategory("GatherSystemInformationDesignerViewModel_Constructor")]
+        public void GatherSystemInformationDesignerViewModel_Constructor_ModelItemIsInitializedWith4Items_SystemInformationCollectionHasFourItems()
         {
             var items = new List<GatherSystemInformationTO>
             {

@@ -1,4 +1,6 @@
 ﻿using System.Activities.Presentation.Model;
+using System.Linq;
+using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,10 +11,23 @@ namespace Dev2.Activities.Designers.Tests.Script
     [TestClass][ExcludeFromCodeCoverage]
     public class ScriptDesignerViewModelTests
     {
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ScriptDesignerViewModel_Constructor")]
-        public void ScriptDesignerViewModel_Constructor_ModelItemIsValid_SelectedScriptTypeIsInitialized()
+        public void ScriptDesignerViewModel_Constructor_PropertiesInitialized()
+        {
+            var modelItem = CreateModelItem();
+            var viewModel = new TestScriptDesignerViewModel(modelItem);
+            var expected = Dev2EnumConverter.ConvertEnumsTypeToStringList<enScriptType>();
+            CollectionAssert.AreEqual(expected.ToList(), viewModel.ScriptTypes.ToList());
+        }
+
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ScriptDesignerViewModel_SelectedScriptType")]
+        public void ScriptDesignerViewModel_SelectedScriptType_JavaScript_PropertiesInitialized()
         {
             var modelItem = CreateModelItem();
             var viewModel = new TestScriptDesignerViewModel(modelItem);
@@ -23,18 +38,8 @@ namespace Dev2.Activities.Designers.Tests.Script
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ScriptDesignerViewModel_Constructor")]
-        public void ScriptDesignerViewModel_Constructor_ModelItemIsValid_ScriptTypesHasThreeItems()
-        {
-            var modelItem = CreateModelItem();
-            var viewModel = new TestScriptDesignerViewModel(modelItem);
-            Assert.AreEqual(3, viewModel.ScriptTypes.Count);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ScriptDesignerViewModel_SetSelectedScriptType")]
-        public void ScriptDesignerViewModel_SetSelectedScriptType_ValidScriptType_ScriptTypeOnModelItemIsAlsoSet()
+        [TestCategory("ScriptDesignerViewModel_SelectedScriptType")]
+        public void ScriptDesignerViewModel_SelectedScriptType_Python_PropertiesInitialized()
         {
             var modelItem = CreateModelItem();
             var viewModel = new TestScriptDesignerViewModel(modelItem);
@@ -42,6 +47,19 @@ namespace Dev2.Activities.Designers.Tests.Script
             viewModel.SelectedScriptType = ExpectedValue;
             Assert.AreEqual(enScriptType.Python, viewModel.ScriptType);
             Assert.AreEqual("Python Syntax", viewModel.ScriptTypeDefaultText); 
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ScriptDesignerViewModel_SelectedScriptType")]
+        public void ScriptDesignerViewModel_SelectedScriptType_Ruby_PropertiesInitialized()
+        {
+            var modelItem = CreateModelItem();
+            var viewModel = new TestScriptDesignerViewModel(modelItem);
+            const string ExpectedValue = "Ruby";
+            viewModel.SelectedScriptType = ExpectedValue;
+            Assert.AreEqual(enScriptType.Ruby, viewModel.ScriptType);
+            Assert.AreEqual("Ruby Syntax", viewModel.ScriptTypeDefaultText);
         }
 
         static ModelItem CreateModelItem()

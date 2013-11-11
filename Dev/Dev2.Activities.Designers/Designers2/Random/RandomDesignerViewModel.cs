@@ -68,23 +68,17 @@ namespace Dev2.Activities.Designers2.Random
                     case "GUID":
                         viewModel.IsLengthPath = false;
                         viewModel.Visibility = Visibility.Hidden;
-                        viewModel.Visibility = Visibility.Hidden;
-                        viewModel.Visibility = Visibility.Hidden;
                         viewModel.LengthContent = "Length";
                         break;
 
                     case "Numbers":
                         viewModel.IsLengthPath = false;
                         viewModel.Visibility = Visibility.Visible;
-                        viewModel.Visibility = Visibility.Visible;
-                        viewModel.Visibility = Visibility.Visible;
                         viewModel.LengthContent = "Range";
                         break;
 
                     default:
                         viewModel.IsLengthPath = true;
-                        viewModel.Visibility = Visibility.Hidden;
-                        viewModel.Visibility = Visibility.Hidden;
                         viewModel.Visibility = Visibility.Hidden;
                         viewModel.LengthContent = "Length";
                         break;

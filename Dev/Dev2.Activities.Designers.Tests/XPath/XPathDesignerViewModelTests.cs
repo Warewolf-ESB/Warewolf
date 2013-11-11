@@ -9,12 +9,12 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.XPath
 {
     [TestClass][ExcludeFromCodeCoverage]
-    public class XPathTests
+    public class XPathDesignerViewModelTests
     {        
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("XPathViewModel_Constructor")]
-        public void XPathViewModel_Constructor_ModelItemIsValid_CollectionNameIsSetToResultsCollection()
+        [TestCategory("XPathDesignerViewModel_Constructor")]
+        public void XPathDesignerViewModel_Constructor_ModelItemIsValid_CollectionNameIsSetToResultsCollection()
         {
             var items = new List<XPathDTO> { new XPathDTO() };
             var viewModel = new XPathDesignerViewModel(CreateModelItem(items));
@@ -23,8 +23,8 @@ namespace Dev2.Activities.Designers.Tests.XPath
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("XPathViewModel_Constructor")]
-        public void XPathViewModel_Constructor_ModelItemIsValid_ResultsCollectionHasTwoItems()
+        [TestCategory("XPathDesignerViewModel_Constructor")]
+        public void XPathDesignerViewModel_Constructor_ModelItemIsValid_ResultsCollectionHasTwoItems()
         {
             var modelItem = ModelItemUtils.CreateModelItem(new DsfXPathActivity());
             var viewModel = new XPathDesignerViewModel(modelItem);
@@ -34,8 +34,8 @@ namespace Dev2.Activities.Designers.Tests.XPath
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("XPathViewModel_Constructor")]
-        public void XPathViewModel_Constructor_ModelItemIsInitializedWith4Items_ResultsCollectionHasFourItems()
+        [TestCategory("XPathDesignerViewModel_Constructor")]
+        public void XPathDesignerViewModel_Constructor_ModelItemIsInitializedWith4Items_ResultsCollectionHasFourItems()
         {
             var items = new List<XPathDTO>
             {
