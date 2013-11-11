@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Dev2.Common;
 using Dev2.Data.Settings;
@@ -17,32 +18,31 @@ namespace Dev2.Runtime.ESB.Management.Services
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
             var result = "Success";
-
+            if(values == null)
+            {
+                throw new InvalidDataException("Empty values passed.");
+            }
             string settingsJson;
             values.TryGetValue("Settings", out settingsJson);
-
             if(string.IsNullOrEmpty(settingsJson))
             {
-                result = "Error: Unable to parse values.";
+                throw new InvalidDataException("Error: Unable to parse values.");
             }
-            else
+            var errors = new StringBuilder();
+            try
             {
                 var settings = JsonConvert.DeserializeObject<Settings>(settingsJson);
-                var errors = new StringBuilder();
-                try
-                {
-                    ExecuteService(new SecurityWrite(), "Permissions", settings.Security, theWorkspace, errors);
-                }
-                catch(Exception ex)
-                {
-                    ServerLogger.LogError(ex);
-                    errors.AppendLine("Error writing settings configuration.");
-                }
+                ExecuteService(new SecurityWrite(), "Permissions", settings.Security, theWorkspace, errors);
+            }
+            catch(Exception ex)
+            {
+                ServerLogger.LogError(ex);
+                errors.AppendLine("Error writing settings configuration.");
+            }
 
-                if(errors.Length > 0)
-                {
-                    result = errors.ToString();
-                }
+            if(errors.Length > 0)
+            {
+                result = errors.ToString();
             }
             return result;
         }

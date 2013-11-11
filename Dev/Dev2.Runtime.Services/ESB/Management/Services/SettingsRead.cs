@@ -28,7 +28,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 ServerLogger.LogError(ex);
                 settings.HasError = true;
-                settings.Error = "Error writing settings configuration : " + ex.Message;
+                settings.Error = "Error reading settings configuration : " + ex.Message;
             }
 
             return settings.ToString();

@@ -91,33 +91,12 @@ namespace Dev2.Tests.Runtime.Services
             
         }
 
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityWrite_Execute")]
-        public void SecurityWrite_Execute_PermissionsValuePassedValidJSON_ShouldWriteFile()
-        {
-            //------------Setup for test--------------------------
-            var permission = new WindowsGroupPermission { Administrator = true, IsServer = true, WindowsGroup = Environment.UserName };
-            var windowsGroupPermissions = new List<WindowsGroupPermission> { permission };
-            var serializeObject = JsonConvert.SerializeObject(windowsGroupPermissions);
-            var securityWrite = new SecurityWrite();
-            //------------Execute Test---------------------------
-            securityWrite.Execute(new Dictionary<string, string> { { "Permissions", serializeObject } }, null);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(File.Exists("secure.config"));
-            var fileData = File.ReadAllText("secure.config");
-            Assert.IsFalse(fileData.StartsWith("{"));
-            Assert.IsFalse(fileData.EndsWith("}"));
-            Assert.IsFalse(fileData.Contains("IsServer"));
-            File.Delete("secure.config");
-        }  
-
         #endregion Exeute
 
         #region HandlesType
 
         [TestMethod]
-        public void SecurityWriteHandlesTypeExpectedReturnsSecurityWriteService()
+        public void SecurityReadHandlesTypeExpectedReturnsSecurityWriteService()
         {
             var esb = new SecurityRead();
             var result = esb.HandlesType();
@@ -129,7 +108,7 @@ namespace Dev2.Tests.Runtime.Services
         #region CreateServiceEntry
 
         [TestMethod]
-        public void SecurityWriteCreateServiceEntryExpectedReturnsDynamicService()
+        public void SecurityReadCreateServiceEntryExpectedReturnsDynamicService()
         {
             var esb = new SecurityRead();
             var result = esb.CreateServiceEntry();

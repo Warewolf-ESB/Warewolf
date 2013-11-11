@@ -2,20 +2,19 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using Dev2.Data.Settings;
 using Dev2.Data.Settings.Security;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Services
 {
-    // ReSharper disable InconsistentNaming
-
     [TestClass][ExcludeFromCodeCoverage]
-    public class SecurityWriteTests
+    public class SettingsWriteTests
     {
-        static string _testDir;
 
         #region ClassInitialize
 
@@ -30,63 +29,62 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityWrite_Execute")]
+        [TestCategory("SettingsWrite_Execute")]
         [ExpectedException(typeof(InvalidDataException))]
-        public void SecurityWrite_Execute_NoPermissionsValuePassed_ExceptionThrown()
+        public void SettingsWrite_Execute_NoSettingsValuePassed_ExceptionThrown()
         {
             //------------Setup for test--------------------------
-            var securityWrite = new SecurityWrite();
+            var settingsWrite = new SettingsWrite();
             //------------Execute Test---------------------------
-            securityWrite.Execute(new Dictionary<string, string> { { "NoPermisisons", "Something" } }, null);
+            settingsWrite.Execute(new Dictionary<string, string> { { "NoSettings", "Something" } }, null);
             //------------Assert Results-------------------------
         }  
         
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityWrite_Execute")]
+        [TestCategory("SettingsWrite_Execute")]
         [ExpectedException(typeof(InvalidDataException))]
-        public void SecurityWrite_Execute_NoValuesPassed_ExceptionThrown()
+        public void SettingsWrite_Execute_NoValuesPassed_ExceptionThrown()
         {
             //------------Setup for test--------------------------
-            var securityWrite = new SecurityWrite();
+            var settingsWrite = new SettingsWrite();
             //------------Execute Test---------------------------
-            securityWrite.Execute(null, null);
+            settingsWrite.Execute(null, null);
             //------------Assert Results-------------------------
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityWrite_Execute")]
-        [ExpectedException(typeof(InvalidDataException))]
-        public void SecurityWrite_Execute_PermissionsValuePassedNotValidJSON_ExceptionThrown()
+        [TestCategory("SettingsWrite_Execute")]
+        public void SettingsWrite_Execute_SettingsValuePassedNotValidJSON_ExceptionThrown()
         {
             //------------Setup for test--------------------------
-            var securityWrite = new SecurityWrite();
+            var settingsWrite = new SettingsWrite();
             //------------Execute Test---------------------------
-            securityWrite.Execute(new Dictionary<string, string> { { "Permissions", "Something" } }, null);
+            var execute = settingsWrite.Execute(new Dictionary<string, string> { { "Settings", "Something" } }, null);
             //------------Assert Results-------------------------
+            StringAssert.Contains(execute, "Error writing settings configuration.");
+
         } 
  
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityWrite_Execute")]
-        public void SecurityWrite_Execute_PermissionsValuePassedValidJSON_ShouldWriteFile()
+        [TestCategory("SettingsWrite_Execute")]
+        public void SettingsWrite_Execute_SettingsWriteValuePassedValidJSON_ShouldDoSecurityWrite()
         {
             //------------Setup for test--------------------------
             var permission = new WindowsGroupPermission { Administrator = true, IsServer = true, WindowsGroup = Environment.UserName };
             var windowsGroupPermissions = new List<WindowsGroupPermission> { permission };
-            var serializeObject = JsonConvert.SerializeObject(windowsGroupPermissions);
-            var securityWrite = new SecurityWrite();
+            var settings = new Settings { Security = windowsGroupPermissions };
+            var serializeObject = JsonConvert.SerializeObject(settings);
+            var settingsWrite = new SettingsWrite();
             //------------Execute Test---------------------------
-            securityWrite.Execute(new Dictionary<string, string> { { "Permissions", serializeObject } }, null);
+            var execute = settingsWrite.Execute(new Dictionary<string, string> { { "Settings", serializeObject } }, null);
             //------------Assert Results-------------------------
             Assert.IsTrue(File.Exists("secure.config"));
-            var fileData = File.ReadAllText("secure.config");
-            Assert.IsFalse(fileData.StartsWith("{"));
-            Assert.IsFalse(fileData.EndsWith("}"));
-            Assert.IsFalse(fileData.Contains("IsServer"));
             File.Delete("secure.config");
+            Assert.AreEqual("Success", execute);
         }  
 
         #endregion Exeute
@@ -94,11 +92,11 @@ namespace Dev2.Tests.Runtime.Services
         #region HandlesType
 
         [TestMethod]
-        public void SecurityWriteHandlesTypeExpectedReturnsSecurityWriteService()
+        public void SettingsWriteHandlesTypeExpectedReturnsSecurityWriteService()
         {
-            var esb = new SecurityWrite();
+            var esb = new SettingsWrite();
             var result = esb.HandlesType();
-            Assert.AreEqual("SecurityWriteService", result);
+            Assert.AreEqual("SettingsWriteService", result);
         }
 
         #endregion
@@ -106,12 +104,12 @@ namespace Dev2.Tests.Runtime.Services
         #region CreateServiceEntry
 
         [TestMethod]
-        public void SecurityWriteCreateServiceEntryExpectedReturnsDynamicService()
+        public void SettingsWriteCreateServiceEntryExpectedReturnsDynamicService()
         {
-            var esb = new SecurityWrite();
+            var esb = new SettingsWrite();
             var result = esb.CreateServiceEntry();
             Assert.AreEqual(esb.HandlesType(), result.Name);
-            Assert.AreEqual("<DataList><Permissions/><Result/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", result.DataListSpecification);
+            Assert.AreEqual("<DataList><Settings/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", result.DataListSpecification);
             Assert.AreEqual(1, result.Actions.Count);
 
             var serviceAction = result.Actions[0];

@@ -156,6 +156,8 @@
     <Compile Include="Services\RenameCategoryResourceTests.cs" />
     <Compile Include="Services\SecurityReadTests.cs" />
     <Compile Include="Services\SecurityWriteTests.cs" />
+    <Compile Include="Services\SettingsReadTests.cs" />
+    <Compile Include="Services\SettingsWriteTests.cs" />
     <Compile Include="Services\TerminateExecutionTest.cs" />
     <Compile Include="Services\RenameResourceTests.cs" />
     <Compile Include="Services\AbstractServiceExecutionTests.cs" />
