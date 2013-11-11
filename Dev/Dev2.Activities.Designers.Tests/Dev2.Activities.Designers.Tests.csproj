@@ -145,6 +145,7 @@
     <Compile Include="SqlBulkInsert\TestSqlBulkInsertDesignerViewModel.cs" />
     <Compile Include="SqlBulkInsert\SqlBulkInsertDesignerViewModelTests.cs" />
     <Compile Include="UtilTests\ForEachDesignerUtilsTests.cs" />
+    <Compile Include="XPath\XPathTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
