@@ -194,10 +194,13 @@ namespace Dev2.Settings.Security
         {
             if(permission != null && permission.ResourceID != Guid.Empty)
             {
-                var foundResourceModel = _environment.ResourceRepository.FindSingle(model => model.ID == permission.ResourceID);
-                if(foundResourceModel != null)
+                if(_environment.ResourceRepository != null)
                 {
-                    _resourcePicker.SelectedResource = foundResourceModel;
+                    var foundResourceModel = _environment.ResourceRepository.FindSingle(model => model.ID == permission.ResourceID);
+                    if(foundResourceModel != null)
+                    {
+                        _resourcePicker.SelectedResource = foundResourceModel;
+                    }
                 }
             }
             var hasResult = _resourcePicker.ShowDialog();
