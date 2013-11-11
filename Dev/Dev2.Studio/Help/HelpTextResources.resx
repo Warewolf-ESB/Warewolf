@@ -117,10 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SettingsSecurityHelpResourcePermissions" xml:space="preserve">
+  <data name="SettingsSecurityResourceHelpDefault" xml:space="preserve">
     <value>Resource permissions help goes here</value>
   </data>
-  <data name="SettingsSecurityHelpServerPermissions" xml:space="preserve">
-    <value>Server permissions help goes here</value>
+  <data name="SettingsSecurityServerHelpDefault" xml:space="preserve">
+    <value>To set server wide permissions for security, enter the windows group name here followed by the system access for that group. You can click on the Elipses for help with identifying the correct Group.
+By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.
+Permissions are cumulative in nature e.g. If someone is the member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission.</value>
+  </data>
+  <data name="SettingsSecurityServerToolTipWindowsGroup" xml:space="preserve">
+    <value />
   </data>
 </root>

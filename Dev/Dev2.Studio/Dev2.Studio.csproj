@@ -303,6 +303,9 @@
     <Compile Include="Factory\DialogViewModelFactory.cs" />
     <Compile Include="Factory\WorkSurfaceContextFactory.cs" />
     <Compile Include="Factory\WorkSurfaceKeyFactory.cs" />
+    <Compile Include="Help\HelpControl.xaml.cs">
+      <DependentUpon>HelpControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Help\HelpTextResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -648,6 +651,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControls\Progress\ProgressDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Help\HelpControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1092,6 +1099,7 @@
     <EmbeddedResource Include="Help\HelpTextResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>HelpTextResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

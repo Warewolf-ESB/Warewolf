@@ -9,31 +9,5 @@
                          d:DesignHeight="300"
                          d:DesignWidth="300"
                          d:DataContext="{d:DesignInstance help:IHelpAdorner}">
-    <Border HorizontalAlignment="Left"
-            Style="{StaticResource HelpAdornerBorderStyle}">
-
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Top"
-                       Text="Help"
-                       FontWeight="Bold"></TextBlock>
-            <Button Grid.Row="0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Command="{Binding CloseHelpCommand}"
-                    ToolTip="Close Help"
-                    Style="{StaticResource CloseButtonStyle}">
-            </Button>
-            <TextBlock Grid.Row="1"
-                       Margin="0,5,0,0"
-                       Text="{Binding HelpText}"
-                       VerticalAlignment="Top"
-                       TextWrapping="WrapWithOverflow"></TextBlock>
-        </Grid>
-    </Border>
+    <help:HelpControl />
 </adorners:AdornerControl>

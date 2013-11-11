@@ -678,7 +678,7 @@ namespace Dev2.Core.Tests.Settings
             viewModel.IsServerHelpVisible = true;
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(HelpTextResources.SettingsSecurityHelpServerPermissions, viewModel.HelpText);
+            Assert.AreEqual(HelpTextResources.SettingsSecurityServerHelpDefault, viewModel.HelpText);
         }
 
         [TestMethod]
@@ -693,7 +693,7 @@ namespace Dev2.Core.Tests.Settings
             viewModel.IsResourceHelpVisible = true;
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(HelpTextResources.SettingsSecurityHelpResourcePermissions, viewModel.HelpText);
+            Assert.AreEqual(HelpTextResources.SettingsSecurityResourceHelpDefault, viewModel.HelpText);
         }
 
         [TestMethod]

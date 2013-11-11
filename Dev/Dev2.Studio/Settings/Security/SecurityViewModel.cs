@@ -11,7 +11,6 @@ using Dev2.Data.Settings.Security;
 using Dev2.Dialogs;
 using Dev2.Help;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
-using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
@@ -196,12 +195,12 @@ namespace Dev2.Settings.Security
             {
                 if(_environment.ResourceRepository != null)
                 {
-                    var foundResourceModel = _environment.ResourceRepository.FindSingle(model => model.ID == permission.ResourceID);
-                    if(foundResourceModel != null)
-                    {
-                        _resourcePicker.SelectedResource = foundResourceModel;
-                    }
+                var foundResourceModel = _environment.ResourceRepository.FindSingle(model => model.ID == permission.ResourceID);
+                if(foundResourceModel != null)
+                {
+                    _resourcePicker.SelectedResource = foundResourceModel;
                 }
+            }
             }
             var hasResult = _resourcePicker.ShowDialog();
             return hasResult ? _resourcePicker.SelectedResource : null;
@@ -330,12 +329,12 @@ namespace Dev2.Settings.Security
                 {
                     case HelpType.Server:
                         IsResourceHelpVisible = false;
-                        HelpText = HelpTextResources.SettingsSecurityHelpServerPermissions;
+                        HelpText = HelpTextResources.SettingsSecurityServerHelpDefault;
                         break;
 
                     case HelpType.Resource:
                         IsServerHelpVisible = false;
-                        HelpText = HelpTextResources.SettingsSecurityHelpResourcePermissions;
+                        HelpText = HelpTextResources.SettingsSecurityResourceHelpDefault;
                         break;
                 }
             }

@@ -63,18 +63,29 @@ namespace Dev2.Help {
         /// <summary>
         ///   Looks up a localized string similar to Resource permissions help goes here.
         /// </summary>
-        internal static string SettingsSecurityHelpResourcePermissions {
+        internal static string SettingsSecurityResourceHelpDefault {
             get {
-                return ResourceManager.GetString("SettingsSecurityHelpResourcePermissions", resourceCulture);
+                return ResourceManager.GetString("SettingsSecurityResourceHelpDefault", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Server permissions help goes here.
+        ///   Looks up a localized string similar to To set server wide permissions for security, enter the windows group name here followed by the system access for that group. You can click on the Elipses for help with identifying the correct Group.
+        ///By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.
+        ///Permissions are cumulative in nature e.g. If someone is the member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission..
         /// </summary>
-        internal static string SettingsSecurityHelpServerPermissions {
+        internal static string SettingsSecurityServerHelpDefault {
             get {
-                return ResourceManager.GetString("SettingsSecurityHelpServerPermissions", resourceCulture);
+                return ResourceManager.GetString("SettingsSecurityServerHelpDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string SettingsSecurityServerToolTipWindowsGroup {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerToolTipWindowsGroup", resourceCulture);
             }
         }
     }
