@@ -203,10 +203,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 if(dataObject != null)
                                 {
                                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, _tmpErrors.MakeDataListReady(), out errors);
-                                    if(dataObject.IsDebug)
-                                    {
-                                        PerformErrorDebug(dataObject,currentError);
-                                    }
                                     if(!String.IsNullOrEmpty(currentError))
                                     {
                                         PerformCustomErrorHandling(context, compiler, dataObject, currentError, _tmpErrors);
@@ -298,7 +294,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     ID = dataObject.DataListID,
                     ParentID = parentInstanceID,
                     WorkspaceID = dataObject.WorkspaceID,
-                    StateType = StateType.End,
+                    StateType = StateType.Append,
                     StartTime = DateTime.Now,
                     EndTime = DateTime.Now,
                     ActivityType = ActivityType.Workflow,
@@ -516,7 +512,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugState.EndTime = DateTime.Now;
                 _debugState.HasError = hasError;
                 _debugState.ErrorMessage = errorMessage;
-                Copy(GetDebugOutputs(dataList), _debugState.Outputs);
+                try
+                {
+                    Copy(GetDebugOutputs(dataList), _debugState.Outputs);
+                }
+                catch(Exception e)
+                {
+                    _debugState.ErrorMessage = e.Message;
+                    _debugState.HasError = true;
+                }
             }
 
             if(!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity") && remoteID == Guid.Empty)

@@ -605,7 +605,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(errors.HasErrors())
                     {
-                        throw new Exception(errors.MakeUserReady());
+                        throw new Exception(errors.MakeDisplayReady());
                     }
                 }
             }
