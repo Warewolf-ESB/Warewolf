@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Windows.Forms;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Data.Settings.Security;
@@ -10,6 +11,7 @@ using Dev2.Settings.Security;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -618,6 +620,50 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual(newResourceID, viewModel.ResourcePermissions[0].ResourceID);
             Assert.AreEqual(ResourceType.GetTreeDescription() + "\\Category2\\Resource2", viewModel.ResourcePermissions[0].ResourceName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SecurityViewModel_PickResourceCommand")]
+        public void SecurityViewModel_PickResourceCommand_PermissionHasResource_PickerShouldHavePermissionResourceAsSelectedResource()
+        {
+            //------------Setup for test--------------------------
+            const ResourceType ResourceType = ResourceType.WorkflowService;
+            const string ResourceName = "Resource2";
+            var resourceID = Guid.NewGuid();
+            var resourceModel = new Mock<IResourceModel>();
+            resourceModel.Setup(r => r.ID).Returns(resourceID);
+            resourceModel.Setup(r => r.ResourceType).Returns(ResourceType);
+            resourceModel.Setup(r => r.ResourceName).Returns(ResourceName);
+            resourceModel.Setup(r => r.Category).Returns("Category2");
+
+            var permission = new WindowsGroupPermission
+            {
+                IsServer = false,
+                WindowsGroup = "Deploy Admins",
+                View = false,
+                Execute = false,
+                Contribute = false,
+                DeployTo = true,
+                DeployFrom = true,
+                Administrator = false,
+                ResourceID = resourceID,
+                ResourceName = ResourceName
+            };
+            
+            var picker = new Mock<IResourcePickerDialog>();
+            picker.Setup(p => p.ShowDialog()).Returns(false);
+            picker.SetupProperty(p => p.SelectedResource);
+
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceModel.Object);
+            mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
+            var viewModel = new SecurityViewModel(new[] { permission }, picker.Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<System.Windows.Forms.IWin32Window>().Object, mockEnvironmentModel.Object);
+            //------------Execute Test---------------------------
+            viewModel.PickResourceCommand.Execute(viewModel.ResourcePermissions[0]);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(resourceModel.Object,picker.Object.SelectedResource);
         }
 
         [TestMethod]

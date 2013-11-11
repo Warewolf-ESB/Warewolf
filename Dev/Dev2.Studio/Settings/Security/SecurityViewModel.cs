@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
@@ -10,6 +11,7 @@ using Dev2.Data.Settings.Security;
 using Dev2.Dialogs;
 using Dev2.Help;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
+using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
@@ -178,7 +180,7 @@ namespace Dev2.Settings.Security
                 return;
             }
 
-            var resourceModel = PickResource();
+            var resourceModel = PickResource(permission);
             if(resourceModel == null)
             {
                 return;
@@ -188,8 +190,16 @@ namespace Dev2.Settings.Security
             permission.ResourceName = string.Format("{0}\\{1}\\{2}", resourceModel.ResourceType.GetTreeDescription(), resourceModel.Category, resourceModel.ResourceName);
         }
 
-        IResourceModel PickResource()
+        IResourceModel PickResource(WindowsGroupPermission permission)
         {
+            if(permission != null && permission.ResourceID != Guid.Empty)
+            {
+                var foundResourceModel = _environment.ResourceRepository.FindSingle(model => model.ID == permission.ResourceID);
+                if(foundResourceModel != null)
+                {
+                    _resourcePicker.SelectedResource = foundResourceModel;
+                }
+            }
             var hasResult = _resourcePicker.ShowDialog();
             return hasResult ? _resourcePicker.SelectedResource : null;
         }

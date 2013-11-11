@@ -7,7 +7,9 @@
         xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:workflow="clr-namespace:Dev2.Studio.ViewModels.Workflow"        
+        xmlns:workflow="clr-namespace:Dev2.Studio.ViewModels.Workflow"
+        xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
+        xmlns:behavior2="clr-namespace:Dev2.CustomControls.Behavior"
         Title="{Binding Title}"
         Icon="{Binding ImageSource, Converter={StaticResource StringToResourceConverter}}"
         Width="350"
@@ -39,6 +41,10 @@
                             Value="{Binding IsSelected, Mode=TwoWay}" />
                     <Setter Property="AutomationProperties.AutomationId"
                             Value="{Binding Path=DataContext.DisplayName,RelativeSource={RelativeSource Self},Converter={StaticResource StringToAutomationIdConverter}}" />
+                     
+                    <!-- This is a hack. Need to rethink how to get this behavior attached properly-->
+                    <Setter Property="behavior:AttachBehavior.BehaviorType" Value="{x:Type behavior2:BringIntoViewWhenSelectedBehavior}"/>
+                    
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsConnected}"
                                      Value="False">

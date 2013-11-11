@@ -55,6 +55,15 @@ namespace Dev2.Dialogs
         bool ShowDialog(out DsfActivityDropViewModel dropViewModel)
         {
             dropViewModel = new DsfActivityDropViewModel(_explorerViewModel, _activityType);
+            var contextualResourceModel = SelectedResource as IContextualResourceModel;
+            if(SelectedResource != null && contextualResourceModel != null)
+            {
+                dropViewModel.SelectedResourceModel = contextualResourceModel;
+                if(_explorerViewModel.NavigationViewModel != null)
+                {
+                    _explorerViewModel.NavigationViewModel.BringItemIntoView(contextualResourceModel);
+                }
+            }
             var dropWindow = CreateDialog(dropViewModel);
             dropWindow.ShowDialog();
             if(dropViewModel.DialogResult == ViewModelDialogResults.Okay)
