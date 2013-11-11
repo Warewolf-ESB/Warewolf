@@ -21,6 +21,8 @@ namespace Dev2.Activities.Designers2.Core
     public abstract class ActivityCollectionDesignerViewModel<TDev2TOFn> : ActivityCollectionDesignerViewModel
         where TDev2TOFn : class, IDev2TOFn, IPerformsValidation, new()
     {
+        TDev2TOFn _initialDto = new TDev2TOFn();
+
         protected ActivityCollectionDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
@@ -129,7 +131,13 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         protected override void AddToCollection(IEnumerable<string> source, bool overwrite)
-        {
+        {            
+            var firstModelItem = ModelItemCollection.FirstOrDefault();
+            if(firstModelItem != null)
+            {
+                _initialDto = (TDev2TOFn)firstModelItem.GetCurrentValue();
+            }
+
             var indexNumber = GetIndexForAdd(overwrite);
 
             // Always insert items before blank row
@@ -143,7 +151,11 @@ namespace Dev2.Activities.Designers2.Core
             SetIndexNumber(lastModelItem, indexNumber);
 
             UpdateDisplayName();
+
+            // Restore 
+            _initialDto = new TDev2TOFn();
         }
+
 
         /// <summary>
         /// Gets the insert index for <see cref="AddToCollection"/>. 
@@ -171,8 +183,8 @@ namespace Dev2.Activities.Designers2.Core
                     if(firstDTO.CanRemove() && lastDTO.CanRemove())
                     {
                         RemoveAt(lastDTO.IndexNumber, lastDTO);
-                    }
-                    indexNumber = 1;
+                        indexNumber = indexNumber - 1;
+                    }                    
                 }
             }
             return indexNumber;
@@ -200,7 +212,7 @@ namespace Dev2.Activities.Designers2.Core
             var isLastRowBlank = lastDTO.CanRemove();
             if(!isLastRowBlank)
             {
-                AddDTO(lastDTO.IndexNumber + 1);
+                AddDTO(lastDTO.IndexNumber+1);
                 UpdateDisplayName();
             }
         }
@@ -213,8 +225,8 @@ namespace Dev2.Activities.Designers2.Core
             var dto = CreateDTO(indexNumber, initializeWith);
             AttachEvents(dto);
 
-            var idx = dto.IndexNumber - 1;
-            if(idx == ModelItemCollection.Count)
+            var idx = indexNumber-1;
+            if(idx >= ModelItemCollection.Count)
             {
                 ModelItemCollection.Add(dto);
             }
@@ -225,8 +237,8 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         protected virtual IDev2TOFn CreateDTO(int indexNumber, string initializeWith)
-        {
-            return DTOFactory.CreateNewDTO(new TDev2TOFn(), indexNumber, false, initializeWith);
+        {  
+            return DTOFactory.CreateNewDTO(_initialDto, indexNumber, false, initializeWith);
         }
 
         void RemoveDTO(TDev2TOFn dto)

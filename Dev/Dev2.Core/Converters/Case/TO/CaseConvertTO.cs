@@ -31,8 +31,8 @@ namespace Dev2
         {
             Inserted = inserted;
             StringToConvert = stringToConvert;
-            ConvertType = convertType;
-            Result = result;
+            ConvertType = string.IsNullOrEmpty(convertType) ? "UPPER" : convertType;
+            Result = string.IsNullOrEmpty(result) ? string.Empty : result;
             IndexNumber = indexNumber;
         }
 

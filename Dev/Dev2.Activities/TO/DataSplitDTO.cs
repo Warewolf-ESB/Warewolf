@@ -30,8 +30,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             Inserted = inserted;
             OutputVariable = outputVariable;
-            SplitType = splitType;
-            At = at;
+            SplitType = string.IsNullOrEmpty(splitType) ? "Index" : splitType;
+            At = string.IsNullOrEmpty(at) ? string.Empty : at;
             IndexNumber = indexNum;
             Include = include;
             _enableAt = true;

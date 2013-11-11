@@ -11,7 +11,7 @@ namespace Dev2.Tests.Activities.TOTests
 {
     [TestClass][ExcludeFromCodeCoverage]
     public class ActivityDtoTests
-    {
+    {   
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_Constructor")]

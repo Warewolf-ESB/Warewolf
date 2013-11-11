@@ -29,9 +29,9 @@ namespace Dev2
         public BaseConvertTO(string fromExpression, string fromType, string toType, string toExpression, int indexNumber,bool inserted = false)
         {
             Inserted = inserted;
-            ToType = toType;
-            FromType = fromType;
-            ToExpression = toExpression;
+            ToType = string.IsNullOrEmpty(toType) ? "Base 64" : toType;
+            FromType = string.IsNullOrEmpty(fromType) ? "Text" : fromType; ;
+            ToExpression = string.IsNullOrEmpty(toExpression) ? string.Empty : toExpression; ;
             FromExpression = fromExpression;
             IndexNumber = indexNumber;
         }

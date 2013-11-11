@@ -151,6 +151,10 @@
       <DependentUpon>ActivityStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="TOTests\ActivityDTOTests.cs" />
+    <Compile Include="TOTests\BaseConvertDTOTests.cs" />
+    <Compile Include="TOTests\CaseConvertDTOTests.cs" />
+    <Compile Include="TOTests\DataMergeTOTests.cs" />
+    <Compile Include="TOTests\DataSplitDTOTests.cs" />
     <Compile Include="TOTests\FindRecordsTOTests.cs" />
     <Compile Include="Utils\DsfFakeActivity.cs" />
     <Compile Include="Utils\MockDsfNativeActivity.cs" />

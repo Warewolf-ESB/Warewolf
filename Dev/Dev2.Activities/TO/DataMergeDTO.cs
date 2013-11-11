@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Dev2.Interfaces;
 using System.ComponentModel;
 using Dev2.Providers.Errors;
@@ -26,12 +27,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             Inserted = inserted;
             InputVariable = inputVariable;
-            MergeType = mergeType;
-            At = at;
+            MergeType = string.IsNullOrEmpty(mergeType) ? "Index" : mergeType;
+            At = string.IsNullOrEmpty(at) ? string.Empty:at;
             IndexNumber = indexNum;
             _enableAt = true;
-            Padding = padding;
-            Alignment = alignment;
+            Padding = string.IsNullOrEmpty(padding) ? string.Empty : padding;
+            Alignment = string.IsNullOrEmpty(alignment) ? "Left": alignment;
         }
 
         public DataMergeDTO()
