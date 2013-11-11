@@ -12,7 +12,6 @@ using Dev2.Providers.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Models;
 using Dev2.Studio.Enums;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -23,6 +22,7 @@ namespace Dev2.Core.Tests.Dialogs
     [TestClass]
     public class ResourcePickerDialogTests
     {
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResourcePickerDialog_Constructor")]
@@ -33,6 +33,21 @@ namespace Dev2.Core.Tests.Dialogs
 
             //------------Execute Test---------------------------
             var dialog = new ResourcePickerDialog(enDsfActivityType.All, null, null, null, false);
+
+            //------------Assert Results-------------------------
+
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourcePickerDialog_Constructor")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourcePickerDialog_ConstructorWith2Args_NullEnvironmentRepository_ThrowsArgumentNullException()
+        {
+            //------------Setup for test-------------------------
+
+            //------------Execute Test---------------------------
+            var dialog = new ResourcePickerDialog(enDsfActivityType.All, null);
 
             //------------Assert Results-------------------------
         }
@@ -97,13 +112,6 @@ namespace Dev2.Core.Tests.Dialogs
             Assert.AreNotSame(EnvironmentRepository.Instance, dialog.CreateDialogDataContext.ExplorerViewModel.EnvironmentRepository);
         }
 
-        static void SetupMef()
-        {
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-            ImportService.Initialize(new List<ComposablePartCatalog>());
-            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
-        }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -214,6 +222,86 @@ namespace Dev2.Core.Tests.Dialogs
             Assert.IsFalse(selectedTreeNode.IsSelected);
         }
 
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ResourcePickerDialog_DetermineDropActivityType")]
+        public void ResourcePickerDialog_DetermineDropActivityType_WhenWorkflowExactMatch_ExpectWorkflow()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var typeOf = ResourcePickerDialog.DetermineDropActivityType("DsfWorkflowActivity");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(enDsfActivityType.Workflow, typeOf);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ResourcePickerDialog_DetermineDropActivityType")]
+        public void ResourcePickerDialog_DetermineDropActivityType_WhenWorkflowFuzzyMatch_ExpectWorkflow()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var typeOf = ResourcePickerDialog.DetermineDropActivityType("DsfWorkflowActivityFoobar");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(enDsfActivityType.Workflow, typeOf);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ResourcePickerDialog_DetermineDropActivityType")]
+        public void ResourcePickerDialog_DetermineDropActivityType_WhenServiceExactMatch_ExpectWorkflow()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var typeOf = ResourcePickerDialog.DetermineDropActivityType("DsfServiceActivity");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(enDsfActivityType.Service, typeOf);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ResourcePickerDialog_DetermineDropActivityType")]
+        public void ResourcePickerDialog_DetermineDropActivityType_WhenServiceFuzzyMatch_ExpectWorkflow()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var typeOf = ResourcePickerDialog.DetermineDropActivityType("DsfServiceActivityFoobar");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(enDsfActivityType.Service, typeOf);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ResourcePickerDialog_DetermineDropActivityType")]
+        public void ResourcePickerDialog_DetermineDropActivityType_WhenServiceNull_ExpectAll()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var typeOf = ResourcePickerDialog.DetermineDropActivityType(null);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(enDsfActivityType.All, typeOf);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ResourcePickerDialog_DetermineDropActivityType")]
+        public void ResourcePickerDialog_DetermineDropActivityType_WhenServiceRubishName_ExpectAll()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var typeOf = ResourcePickerDialog.DetermineDropActivityType("Foobar");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(enDsfActivityType.All, typeOf);
+        }
+
+
         static Mock<IResourceRepository> CreateMockResourceRepository(Mock<IEnvironmentModel> mockEnvironmentModel)
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
@@ -246,5 +334,14 @@ namespace Dev2.Core.Tests.Dialogs
             mockResourceRepository.Setup(r => r.All()).Returns(mockResources);
             return mockResourceRepository;
         }
+
+        static void SetupMef()
+        {
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+            ImportService.Initialize(new List<ComposablePartCatalog>());
+            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
+        }
+
     }
 }

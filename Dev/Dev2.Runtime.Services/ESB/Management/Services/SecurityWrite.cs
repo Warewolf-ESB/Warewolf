@@ -23,20 +23,25 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var result = "Success";
             string permissions;
+
             if(values == null)
             {
                 throw new InvalidDataException("Empty values passed.");
             }
+            
             values.TryGetValue("Permissions", out permissions);
+            
             if(string.IsNullOrEmpty(permissions))
             {
                 throw new InvalidDataException("Empty permissions passed.");
             }
+
             try
             {
                 var windowsGroupPermissions = JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(permissions);
 
                 DoFileEncryption(permissions);
+
                 try
                 {
                     var fileInfo = DenyAccessToSecurityFileToEveryone();
@@ -58,6 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 throw new InvalidDataException(string.Format("The permissions passed is not a valid list of permissions. Error: {0}", e.Message));
             }
+
             return result;
         }
 

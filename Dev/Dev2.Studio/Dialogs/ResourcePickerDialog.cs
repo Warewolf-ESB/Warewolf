@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -80,18 +81,20 @@ namespace Dev2.Dialogs
             return new DsfActivityDropWindow { DataContext = dataContext };
         }
 
-        static enDsfActivityType DetermineDropActivityType(string typeName)
+        public static enDsfActivityType DetermineDropActivityType(string typeName)
         {
             VerifyArgument.IsNotNull("typeName", typeName);
 
-            if(typeName.Contains("DsfWorkflowActivity"))
+            if(typeName.Contains(GlobalConstants.ResourcePickerWorkflowString))
             {
                 return enDsfActivityType.Workflow;
             }
-            if(typeName.Contains("DsfServiceActivity"))
+
+            if(typeName.Contains(GlobalConstants.ResourcePickerServiceString))
             {
                 return enDsfActivityType.Service;
             }
+
             return enDsfActivityType.All;
         }
 

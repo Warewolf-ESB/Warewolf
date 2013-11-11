@@ -190,5 +190,9 @@ namespace Dev2.Common
 
         public static string AnythingToXmlPathSeperator = ",";
         public static string AnytingToXmlCommaToken = "__COMMA__";
+
+        // Resource Picker
+        public static string ResourcePickerWorkflowString = "DsfWorkflowActivity";
+        public static string ResourcePickerServiceString = "DsfServiceActivity";
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Dev2.Data.Settings.Security;
 using Dev2.DynamicServices;
