@@ -331,7 +331,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             List<string> actual = strategy.GetActivityFields(activity);
-            List<string> expected = new List<string> { "[[InputPath]]", "[[Password]]", "[[Username]]", "[[Result]]" };
+            List<string> expected = new List<string> { "False", "False", "[[InputPath]]", "[[Password]]", "[[Username]]", "[[Result]]" };
             CollectionAssert.AreEqual(expected, actual);
         }
 

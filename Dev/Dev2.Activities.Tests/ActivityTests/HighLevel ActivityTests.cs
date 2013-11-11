@@ -140,7 +140,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Couldnt find DsfFolderRead.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 1);
+            Assert.IsTrue(properties.Count() == 4);
         }
 
         [TestMethod]
@@ -152,7 +152,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Couldnt find DsfFileWrite.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 4);
+            Assert.IsTrue(properties.Count() == 6);
         }
 
         [TestMethod]

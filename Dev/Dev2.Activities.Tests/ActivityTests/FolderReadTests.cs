@@ -38,7 +38,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(inputs.UID);
 
-            Assert.AreEqual(4,res);
+            Assert.AreEqual(7,res);
         }
 
         [TestMethod]

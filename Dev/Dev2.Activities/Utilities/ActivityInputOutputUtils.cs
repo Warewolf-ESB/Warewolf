@@ -33,7 +33,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Utilities
                 {
                     if (binaryDL.TryCreateScalarTemplate(string.Empty, listOfInputs[0].UserVisibleName, "", true, out error))
                     {
-                        binaryDL.TryCreateScalarValue(pi.GetValue(obj, null).ToString(), listOfInputs[0].UserVisibleName, out error);
+                        binaryDL.TryCreateScalarValue(pi.GetValue(obj, null)!=null? pi.GetValue(obj, null).ToString() : string.Empty, listOfInputs[0].UserVisibleName, out error);
                     }
                 }
             }

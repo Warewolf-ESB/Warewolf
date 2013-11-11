@@ -36,7 +36,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(inputs.UID);
 
-            Assert.AreEqual(7,inputs.FetchAllEntries().Count);
+            Assert.AreEqual(9,inputs.FetchAllEntries().Count);
         }
 
         [TestMethod]
