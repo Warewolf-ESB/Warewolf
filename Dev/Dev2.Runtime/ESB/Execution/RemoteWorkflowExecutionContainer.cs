@@ -91,7 +91,7 @@ namespace Dev2.Runtime.ESB.Execution
             errors.MergeErrors(invokeErrors);
             string result = string.Empty;
 
-            var connection = GetConnection(DataObject.ResourceID);
+            var connection = GetConnection(DataObject.EnvironmentID);
             if(connection == null)
             {
                 errors.AddError("Server source not found.");
