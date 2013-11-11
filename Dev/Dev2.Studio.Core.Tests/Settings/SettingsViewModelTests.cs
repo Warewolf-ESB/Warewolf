@@ -222,7 +222,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsViewModel_SaveCommand")]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(NullReferenceException))]
         public void SettingsViewModel_SaveCommand_ResultIsNull_ThrowsException()
         {
             //------------Setup for test--------------------------
