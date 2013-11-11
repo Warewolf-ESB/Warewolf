@@ -29,9 +29,7 @@
 
     <core:ActivityDesignerTemplate.InputBindings>
         <KeyBinding Command="{Binding QuickVariableInputViewModel.ClearCommand}"
-                    Key="Escape" />
-        <KeyBinding Command="{Binding QuickVariableInputViewModel.AddCommand}"
-                    Key="Enter" />
+                    Key="Escape" />      
     </core:ActivityDesignerTemplate.InputBindings>
 
     <Grid x:Name="ParentContext">
