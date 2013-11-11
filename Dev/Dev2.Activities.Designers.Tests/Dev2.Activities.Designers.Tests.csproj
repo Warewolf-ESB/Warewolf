@@ -79,9 +79,9 @@
     <Compile Include="..\Dev2.Core.Tests\TestUtils.cs">
       <Link>TestUtils.cs</Link>
     </Compile>
-    <Compile Include="CaseConvert\CaseConvertTests.cs" />
-    <Compile Include="DataMerge\DataMergeTests.cs" />
-    <Compile Include="DataSplit\DataSplitTests.cs" />
+    <Compile Include="CaseConvert\CaseConvertDesignerViewModelTests.cs" />
+    <Compile Include="DataMerge\DataMergeDesignerViewModelTests.cs" />
+    <Compile Include="DataSplit\DataSplitDesignerViewModelSplitTests.cs" />
     <Compile Include="Designers2\Core\Credentials\CredentialsActivityDesignerViewModelTests.cs" />
     <Compile Include="Designers2\Core\Credentials\TestCredentialsActivityDesignerViewModel.cs" />
     <Compile Include="Designers2\Core\FileActivityDesigner\FileActivityDesignerViewModelTests.cs" />

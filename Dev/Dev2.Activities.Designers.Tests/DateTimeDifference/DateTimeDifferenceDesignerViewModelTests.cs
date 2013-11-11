@@ -1,4 +1,6 @@
 ﻿using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using Dev2.Converters.DateAndTime;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -26,7 +28,8 @@ namespace Dev2.Activities.Designers.Tests.DateTimeDifference
         {
             var modelItem = CreateModelItem();
             var viewModel = new TestDateTimeDifferenceDesignerViewModel(modelItem);
-            Assert.AreEqual(8, viewModel.OutputTypes.Count);
+            var expected = new List<string>(DateTimeComparer.OutputFormatTypes);
+            CollectionAssert.AreEqual(expected, viewModel.OutputTypes);
         }
 
         [TestMethod]

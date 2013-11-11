@@ -10,12 +10,12 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.DataSplit
 {
     [TestClass][ExcludeFromCodeCoverage]
-    public class DataSplitTests
+    public class DataSplitDesignerViewModelSplitTests
     {
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataSplitViewModel_Constructor")]
-        public void DataSplitViewModel_Constructor__ModelItemIsValid_ListHasFourItems()
+        [TestCategory("DataSplitDesignerViewModel_Constructor")]
+        public void DataSplitDesignerViewModel_Constructor__ModelItemIsValid_ListHasFourItems()
         {
             var items = new List<DataSplitDTO> { new DataSplitDTO() };
             var viewModel = new DataSplitDesignerViewModel(CreateModelItem(items));
@@ -24,8 +24,8 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
         
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataSplitViewModel_Constructor")]
-        public void DataSplitViewModel_Constructor__ModelItemIsValid_CollectionNameIsSetToResultsCollection()
+        [TestCategory("DataSplitDesignerViewModel_Constructor")]
+        public void DataSplitDesignerViewModel_Constructor__ModelItemIsValid_CollectionNameIsSetToResultsCollection()
         {
             var items = new List<DataSplitDTO> { new DataSplitDTO() };
             var viewModel = new DataSplitDesignerViewModel(CreateModelItem(items));
@@ -34,8 +34,8 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataSplitViewModel_Constructor")]
-        public void DataSplitViewModel_Constructor_ModelItemIsValid_ResultsCollectionHasTwoItems()
+        [TestCategory("DataSplitDesignerViewModel_Constructor")]
+        public void DataSplitDesignerViewModel_Constructor_ModelItemIsValid_ResultsCollectionHasTwoItems()
         {
             var modelItem = ModelItemUtils.CreateModelItem(new DsfDataSplitActivity());
             var viewModel = new DataSplitDesignerViewModel(modelItem);
@@ -45,8 +45,8 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataSplitViewModel_Constructor")]
-        public void DataSplitViewModel_Constructor_ModelItemIsInitializedWith4Items_ResultsCollectionHasFourItems()
+        [TestCategory("DataSplitDesignerViewModel_Constructor")]
+        public void DataSplitDesignerViewModel_Constructor_ModelItemIsInitializedWith4Items_ResultsCollectionHasFourItems()
         {
             var items = new List<DataSplitDTO>
             {
@@ -62,40 +62,40 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataSplitViewModel_OnSplitTypeChanged")]
-        public void DataSplitViewModel_OnSplitTypeChanged_SetIndexToSplitTypeToNone_EnableAtIsSetToFalse()
+        [TestCategory("DataSplitDesignerViewModel_OnSplitTypeChanged")]
+        public void DataSplitDesignerViewModel_OnSplitTypeChanged_SetIndexToSplitTypeToNone_EnableAtIsSetToFalse()
         {
             VerifySplitTypeAgaintsEnabledAt("None", false);
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataSplitViewModel_OnSplitTypeChanged")]
-        public void DataSplitViewModel_OnSplitTypeChanged_SetIndexToSplitTypeToTab_EnableAtIsSetToFalse()
+        [TestCategory("DataSplitDesignerViewModel_OnSplitTypeChanged")]
+        public void DataSplitDesignerViewModel_OnSplitTypeChanged_SetIndexToSplitTypeToTab_EnableAtIsSetToFalse()
         {
             VerifySplitTypeAgaintsEnabledAt("Tab", false);
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataSplitViewModel_OnSplitTypeChanged")]
-        public void DataSplitViewModel_OnSplitTypeChanged_SetIndexToSplitTypeToNewLine_EnableAtIsSetToFalse()
+        [TestCategory("DataSplitDesignerViewModel_OnSplitTypeChanged")]
+        public void DataSplitDesignerViewModel_OnSplitTypeChanged_SetIndexToSplitTypeToNewLine_EnableAtIsSetToFalse()
         {
             VerifySplitTypeAgaintsEnabledAt("New Line", false);
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataSplitViewModel_OnSplitTypeChanged")]
-        public void DataSplitViewModel_OnSplitTypeChanged_SetIndexToSplitTypeToIndex_EnableAtIsSetToTrue()
+        [TestCategory("DataSplitDesignerViewModel_OnSplitTypeChanged")]
+        public void DataSplitDesignerViewModel_OnSplitTypeChanged_SetIndexToSplitTypeToIndex_EnableAtIsSetToTrue()
         {
             VerifySplitTypeAgaintsEnabledAt("Index", true);
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataSplitViewModel_OnSplitTypeChanged")]
-        public void DataSplitViewModel_OnSplitTypeChanged_SetIndexToSplitTypeToChars_EnableAtIsSetToTrue()
+        [TestCategory("DataSplitDesignerViewModel_OnSplitTypeChanged")]
+        public void DataSplitDesignerViewModel_OnSplitTypeChanged_SetIndexToSplitTypeToChars_EnableAtIsSetToTrue()
         {
             VerifySplitTypeAgaintsEnabledAt("Chars", true);
         }

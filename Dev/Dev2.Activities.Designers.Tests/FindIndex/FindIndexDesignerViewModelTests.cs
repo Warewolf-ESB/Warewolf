@@ -1,4 +1,6 @@
 ﻿using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Linq;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics.CodeAnalysis;
@@ -27,7 +29,12 @@ namespace Dev2.Activities.Designers.Tests.FindIndex
         {
             var modelItem = CreateModelItem();
             var viewModel = new TestFindIndexDesignerViewModel(modelItem);
-            Assert.AreEqual(3, viewModel.IndexList.Count);
+
+            var expectedIndices = new List<string> { "First Occurrence", "Last Occurrence", "All Occurrences" };
+            var expectedDirections = new List<string> { "Left to Right", "Right to Left" };
+
+            CollectionAssert.AreEqual(expectedIndices, viewModel.IndexList.ToList());
+            CollectionAssert.AreEqual(expectedDirections, viewModel.DirectionList.ToList());
         }
 
         [TestMethod]
