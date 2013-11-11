@@ -26,9 +26,6 @@
     </core:ActivityDesignerTemplate.Resources>
 
     <controls:Dev2DataGrid x:Name="SmallDataGrid"
-                           Grid.Row="1"
-                           Grid.Column="0"
-                           Grid.ColumnSpan="2"
                            ItemsSource="{Binding ModelItem.ConvertCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            Style="{StaticResource SpacedActivityDataGridStyle}"
                            MinHeight="56">

@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Input;
 
 namespace Dev2.Activities.Designers2.GatherSystemInformation
 {
@@ -10,8 +9,6 @@ namespace Dev2.Activities.Designers2.GatherSystemInformation
             InitializeComponent();
             DataGrid = SmallDataGrid;
         }
-
-        public ICommand SearchTypeUpdatedCommand { get; private set; }
 
         protected override IInputElement GetInitialFocusElement()
         {

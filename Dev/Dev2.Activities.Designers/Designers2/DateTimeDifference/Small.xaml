@@ -61,8 +61,7 @@
                Grid.Row="1"
                Style="{StaticResource ActivityLabelStyle}"
                Content="Input 2" />
-        <ui:IntellisenseTextBox Grid.ColumnSpan="2"
-                                Grid.Column="1"
+        <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="1"
                                 DefaultText="Date Time"
                                 FilterType="All"
@@ -135,8 +134,7 @@
                Grid.Row="4"
                Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
-        <ui:IntellisenseTextBox Grid.ColumnSpan="2"
-                                Grid.Column="1"
+        <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="4"
                                 DefaultText="[[Difference]]" 
                                 FilterType="All"

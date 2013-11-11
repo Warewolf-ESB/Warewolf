@@ -33,7 +33,6 @@
         <controls:Dev2DataGrid x:Name="SmallDataGrid"
                                Grid.Row="0"
                                Grid.Column="0"
-                               Grid.ColumnSpan="2"
                                ItemsSource="{Binding ModelItem.MergeCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource SpacedActivityDataGridStyle}"
                                MinHeight="56">
