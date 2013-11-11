@@ -61,7 +61,8 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to By Default this group will be able to Edit or Delete this resource. 
+        ///To do this they can also View and Execute..
         /// </summary>
         public static string SettingsSecurityResourceHelpContribute {
             get {
@@ -70,16 +71,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string SettingsSecurityResourceHelpDefault {
-            get {
-                return ResourceManager.GetString("SettingsSecurityResourceHelpDefault", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to By Default this group will be able to call or execute this workflow..
         /// </summary>
         public static string SettingsSecurityResourceHelpExecute {
             get {
@@ -88,7 +80,9 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to To set specific permissions for a resource on this server, select the resource here.
+        ///Any permissions applied to this resource will OVERWRITE the server settings above.
+        ///By specifying a resource here, it will not inherit permissions from the server (above)..
         /// </summary>
         public static string SettingsSecurityResourceHelpResource {
             get {
@@ -97,7 +91,8 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to By Default this group will be able to open and view this resource.
+        ///Typically this is used by Business Analysts to sign off work and participate in the development process..
         /// </summary>
         public static string SettingsSecurityResourceHelpView {
             get {
@@ -106,7 +101,8 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Type in the Windows Group (or click the ellipsis) to specify permissions at a resource level for items on this server.
+        ///Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission..
         /// </summary>
         public static string SettingsSecurityResourceHelpWindowsGroup {
             get {
@@ -115,7 +111,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit this resource.
+        ///   Looks up a localized string similar to Edit and Delete this workflow.
         /// </summary>
         public static string SettingsSecurityResourceToolTipContribute {
             get {
@@ -124,7 +120,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run and Debug this resource.
+        ///   Looks up a localized string similar to Run and Debug this workflow.
         /// </summary>
         public static string SettingsSecurityResourceToolTipExecute {
             get {
@@ -133,7 +129,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Resource.
+        ///   Looks up a localized string similar to Click the Ellipsis to add a resource.
         /// </summary>
         public static string SettingsSecurityResourceToolTipResource {
             get {
@@ -160,8 +156,8 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Administrators can ammend security permissions and change server settings.
-        ///The local machine Administrators are automaticaly given this permission..
+        ///   Looks up a localized string similar to Administrators can amend security permissions and change server settings.
+        ///The local machine Administrators are automatically given this permission..
         /// </summary>
         public static string SettingsSecurityServerHelpAdministrator {
             get {
@@ -170,23 +166,12 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to By Default this group will be able to Add New workflows, Edit workflows and Delete existing workflows on this server. 
-        ///To do this they can also View and Execute workflows..
+        ///   Looks up a localized string similar to By Default this group will be able to Add New resources, Edit resources and Delete existing resources on this server. 
+        ///To do this they can also View and Execute..
         /// </summary>
         public static string SettingsSecurityServerHelpContribute {
             get {
                 return ResourceManager.GetString("SettingsSecurityServerHelpContribute", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To set server wide permissions for security, enter the windows group name here followed by the system access for that group. You can click on the Ellipsis for help with identifying the correct Group.
-        ///By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.
-        ///Permissions are cumulative in nature e.g. If someone is the member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission..
-        /// </summary>
-        public static string SettingsSecurityServerHelpDefault {
-            get {
-                return ResourceManager.GetString("SettingsSecurityServerHelpDefault", resourceCulture);
             }
         }
         
@@ -201,7 +186,7 @@ namespace Dev2.Help {
         
         /// <summary>
         ///   Looks up a localized string similar to By Default this group will be able to deploy resources onto this server.
-        ///Deploy may mean overwritting existing work or workflows and can be done without Contribute privelages..
+        ///Deploy may mean overwriting existing work and can be done without Contribute privileges..
         /// </summary>
         public static string SettingsSecurityServerHelpDeployTo {
             get {
@@ -210,7 +195,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to By Default this group will be able to call or execute workflows on this server..
+        ///   Looks up a localized string similar to By Default this group will be able to call or execute resources on this server..
         /// </summary>
         public static string SettingsSecurityServerHelpExecute {
             get {
@@ -220,7 +205,7 @@ namespace Dev2.Help {
         
         /// <summary>
         ///   Looks up a localized string similar to By Default this group will be able to open and view resources on the server. 
-        ///Typicaly this is used by Business Analysts to sign off work and participate in the development process..
+        ///Typically this is used by Business Analysts to sign off work and participate in the development process..
         /// </summary>
         public static string SettingsSecurityServerHelpView {
             get {
@@ -229,9 +214,9 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To set server wide permissions for security, enter the windows group name here followed by the system access for that group. You can click on the Ellipsis for help with identifying the correct Group.
+        ///   Looks up a localized string similar to To set server wide permissions for security, enter the windows group name here followed by the system access for that group. You can click on the ellipsis for help with identifying the correct Group.
         ///By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.
-        ///Permissions are cumulative in nature e.g. If someone is the member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission..
+        ///Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission..
         /// </summary>
         public static string SettingsSecurityServerHelpWindowsGroup {
             get {
@@ -249,7 +234,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit and Create workflows and services.
+        ///   Looks up a localized string similar to Edit, Create and Delete workflows and services.
         /// </summary>
         public static string SettingsSecurityServerToolTipContribute {
             get {

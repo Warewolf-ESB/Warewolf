@@ -118,31 +118,33 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="SettingsSecurityResourceHelpContribute" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SettingsSecurityResourceHelpDefault" xml:space="preserve">
-    <value />
+    <value>By Default this group will be able to Edit or Delete this resource. 
+To do this they can also View and Execute.</value>
   </data>
   <data name="SettingsSecurityResourceHelpExecute" xml:space="preserve">
-    <value />
+    <value>By Default this group will be able to call or execute this workflow.</value>
   </data>
   <data name="SettingsSecurityResourceHelpResource" xml:space="preserve">
-    <value />
+    <value>To set specific permissions for a resource on this server, select the resource here.
+Any permissions applied to this resource will OVERWRITE the server settings above.
+By specifying a resource here, it will not inherit permissions from the server (above).</value>
   </data>
   <data name="SettingsSecurityResourceHelpView" xml:space="preserve">
-    <value />
+    <value>By Default this group will be able to open and view this resource.
+Typically this is used by Business Analysts to sign off work and participate in the development process.</value>
   </data>
   <data name="SettingsSecurityResourceHelpWindowsGroup" xml:space="preserve">
-    <value />
+    <value>Type in the Windows Group (or click the ellipsis) to specify permissions at a resource level for items on this server.
+Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission.</value>
   </data>
   <data name="SettingsSecurityResourceToolTipContribute" xml:space="preserve">
-    <value>Edit this resource</value>
+    <value>Edit and Delete this workflow</value>
   </data>
   <data name="SettingsSecurityResourceToolTipExecute" xml:space="preserve">
-    <value>Run and Debug this resource</value>
+    <value>Run and Debug this workflow</value>
   </data>
   <data name="SettingsSecurityResourceToolTipResource" xml:space="preserve">
-    <value>Select Resource</value>
+    <value>Click the Ellipsis to add a resource</value>
   </data>
   <data name="SettingsSecurityResourceToolTipView" xml:space="preserve">
     <value>Open and inspect this resource</value>
@@ -151,42 +153,37 @@
     <value>Select Windows Group</value>
   </data>
   <data name="SettingsSecurityServerHelpAdministrator" xml:space="preserve">
-    <value>Administrators can ammend security permissions and change server settings.
-The local machine Administrators are automaticaly given this permission.</value>
+    <value>Administrators can amend security permissions and change server settings.
+The local machine Administrators are automatically given this permission.</value>
   </data>
   <data name="SettingsSecurityServerHelpContribute" xml:space="preserve">
-    <value>By Default this group will be able to Add New workflows, Edit workflows and Delete existing workflows on this server. 
-To do this they can also View and Execute workflows.</value>
-  </data>
-  <data name="SettingsSecurityServerHelpDefault" xml:space="preserve">
-    <value>To set server wide permissions for security, enter the windows group name here followed by the system access for that group. You can click on the Ellipsis for help with identifying the correct Group.
-By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.
-Permissions are cumulative in nature e.g. If someone is the member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission.</value>
+    <value>By Default this group will be able to Add New resources, Edit resources and Delete existing resources on this server. 
+To do this they can also View and Execute.</value>
   </data>
   <data name="SettingsSecurityServerHelpDeployFrom" xml:space="preserve">
     <value>By Default this group will be able to deploy resources off this server.</value>
   </data>
   <data name="SettingsSecurityServerHelpDeployTo" xml:space="preserve">
     <value>By Default this group will be able to deploy resources onto this server.
-Deploy may mean overwritting existing work or workflows and can be done without Contribute privelages.</value>
+Deploy may mean overwriting existing work and can be done without Contribute privileges.</value>
   </data>
   <data name="SettingsSecurityServerHelpExecute" xml:space="preserve">
-    <value>By Default this group will be able to call or execute workflows on this server.</value>
+    <value>By Default this group will be able to call or execute resources on this server.</value>
   </data>
   <data name="SettingsSecurityServerHelpView" xml:space="preserve">
     <value>By Default this group will be able to open and view resources on the server. 
-Typicaly this is used by Business Analysts to sign off work and participate in the development process.</value>
+Typically this is used by Business Analysts to sign off work and participate in the development process.</value>
   </data>
   <data name="SettingsSecurityServerHelpWindowsGroup" xml:space="preserve">
-    <value>To set server wide permissions for security, enter the windows group name here followed by the system access for that group. You can click on the Ellipsis for help with identifying the correct Group.
+    <value>To set server wide permissions for security, enter the windows group name here followed by the system access for that group. You can click on the ellipsis for help with identifying the correct Group.
 By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.
-Permissions are cumulative in nature e.g. If someone is the member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission.</value>
+Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission.</value>
   </data>
   <data name="SettingsSecurityServerToolTipAdministrator" xml:space="preserve">
     <value>Amend security and admin tasks</value>
   </data>
   <data name="SettingsSecurityServerToolTipContribute" xml:space="preserve">
-    <value>Edit and Create workflows and services</value>
+    <value>Edit, Create and Delete workflows and services</value>
   </data>
   <data name="SettingsSecurityServerToolTipDeployFrom" xml:space="preserve">
     <value>Deploy resources off this server</value>

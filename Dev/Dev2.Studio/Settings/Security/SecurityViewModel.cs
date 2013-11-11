@@ -330,12 +330,12 @@ namespace Dev2.Settings.Security
                 {
                     case HelpType.Server:
                         IsResourceHelpVisible = false;
-                        HelpText = Help.HelpTextResources.SettingsSecurityServerHelpDefault;
+                        HelpText = Help.HelpTextResources.SettingsSecurityServerHelpWindowsGroup;
                         break;
 
                     case HelpType.Resource:
                         IsServerHelpVisible = false;
-                        HelpText = Help.HelpTextResources.SettingsSecurityResourceHelpDefault;
+                        HelpText = Help.HelpTextResources.SettingsSecurityResourceHelpResource;
                         break;
                 }
             }
