@@ -76,7 +76,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugInputItem(OutputPath, "Destination", outputPathEntry, executionId);
                 AddDebugInputItemOverwrite(executionId, Overwrite);
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
-                AddDebugInputItem(ArchivePassword, "Archive Password", archPassEntry, executionId);
+                AddDebugInputItemPassword("Archive Password", ArchivePassword);
             }
 
             while(colItr.HasMoreData())

@@ -92,6 +92,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 AddDebugInputItem(InputPath, "File or Folder", inputPathEntry, executionId);
                 AddDebugInputItem(OutputPath, "Destination", outputPathEntry, executionId);
+                AddDebugInputItemOverwrite(executionId, Overwrite);
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
                 AddDebugInputItemPassword("Archive Password",ArchivePassword);
                 AddDebugInputItem(CompressionRatio, "Compression Ratio", compressionRatioEntry, executionId);

@@ -150,10 +150,10 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(7, inRes.Count);
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(4, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[5].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[3].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[4].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[5].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[6].FetchResultsList().Count);            
 
             Assert.AreEqual(1, outRes.Count);
@@ -220,14 +220,14 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual("[[ZipNames(2).Zips]]", inRes[1].ResultsList[4].Value);
             Assert.AreEqual("=", inRes[1].ResultsList[5].Value);
             Assert.IsFalse(string.IsNullOrEmpty(inRes[1].ResultsList[6].Value));            
-            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
-            Assert.AreEqual("Username", inRes[2].ResultsList[0].Value);
-            Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
-            Assert.AreEqual("Password", inRes[3].ResultsList[0].Value);
-            Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
-            Assert.AreEqual("Archive Password", inRes[4].ResultsList[0].Value);
-            Assert.AreEqual(1, inRes[5].FetchResultsList().Count);
-            Assert.AreEqual("Archive Name", inRes[5].ResultsList[0].Value);
+            Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
+            Assert.AreEqual("Overwrite", inRes[2].ResultsList[0].Value);
+            Assert.AreEqual(1, inRes[3].FetchResultsList().Count);
+            Assert.AreEqual("Username", inRes[3].ResultsList[0].Value);
+            Assert.AreEqual(2, inRes[4].FetchResultsList().Count);
+            Assert.AreEqual("Password", inRes[4].ResultsList[0].Value);
+            Assert.AreEqual(2, inRes[5].FetchResultsList().Count);
+            Assert.AreEqual("Archive Password", inRes[5].ResultsList[0].Value);
             Assert.AreEqual(1, inRes[6].FetchResultsList().Count);            
 
             Assert.AreEqual(1, outRes.Count);
@@ -328,7 +328,7 @@ namespace ActivityUnitTests.ActivityTests
             //------------Assert Results-------------------------
             Assert.IsTrue(File.Exists(Path.GetTempPath() + NewFileName + ".zip"));
         }
-
+        
 
         #endregion
     }
