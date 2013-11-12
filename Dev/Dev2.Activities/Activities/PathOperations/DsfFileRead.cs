@@ -63,8 +63,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (dataObject.IsDebug || dataObject.RemoteInvoke)
             {
                 AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);                
-                AddDebugInputItem(Username, "Username", usernameEntry, executionId);
-                AddDebugInputItem(Password, "Password", passwordEntry, executionId);
+                AddDebugInputItemUserNamePassword(executionId, usernameEntry);
             }
 
             while (colItr.HasMoreData())

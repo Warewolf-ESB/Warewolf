@@ -74,15 +74,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 AddDebugInputItem(InputPath, "Zip Name", inputPathEntry, executionId);
                 AddDebugInputItem(OutputPath, "Destination", outputPathEntry, executionId);
-                DebugItem itemToAdd = new DebugItem();
-                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Overwrite" });                
-                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = Overwrite ? "True" : "False"});
-                _debugInputs.Add(itemToAdd);
-                AddDebugInputItem(Username, "Username", usernameEntry, executionId);
-                itemToAdd = new DebugItem();
-                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Password" });                
-                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetBlankedOutPassword(Password) });
-                _debugInputs.Add(itemToAdd);
+                AddDebugInputItemOverwrite(executionId, Overwrite);
+                AddDebugInputItemUserNamePassword(executionId, usernameEntry);
                 AddDebugInputItem(ArchivePassword, "Archive Password", archPassEntry, executionId);
             }
 

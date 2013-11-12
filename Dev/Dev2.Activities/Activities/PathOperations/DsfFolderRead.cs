@@ -67,11 +67,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Read" });                
                 itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetReadType() });
                 _debugInputs.Add(itemToAdd);
-                AddDebugInputItem(Username, "Username", usernameEntry, executionId);
-                itemToAdd = new DebugItem();
-                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Password" });                
-                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetBlankedOutPassword(Password) });
-                _debugInputs.Add(itemToAdd);              
+                AddDebugInputItemUserNamePassword(executionId, usernameEntry);
             }
 
             while (colItr.HasMoreData())
@@ -190,18 +186,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion Properties
 
         #region Private Methods
-
-        private string GetBlankedOutPassword(string password)
-        {
-            int counter = 0;
-            string result = string.Empty;
-            while(counter < password.Length)
-            {
-                result = result + "*";
-                counter++;
-            }
-            return result;
-        }
 
         private string GetReadType()
         {

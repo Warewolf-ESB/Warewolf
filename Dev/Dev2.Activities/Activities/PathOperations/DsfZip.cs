@@ -91,11 +91,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 AddDebugInputItem(InputPath, "File or Folder", inputPathEntry, executionId);
                 AddDebugInputItem(OutputPath, "Destination", outputPathEntry, executionId);
-                AddDebugInputItem(Username, "Username", usernameEntry, executionId);
-                DebugItem itemToAdd = new DebugItem();
-                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Password" });                
-                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetBlankedOutPassword(Password) });
-                _debugInputs.Add(itemToAdd);
+                AddDebugInputItemUserNamePassword(executionId, usernameEntry);
                 AddDebugInputItem(ArchivePassword, "Archive Password", archPassEntry, executionId);
                 AddDebugInputItem(ArchiveName, "Archive Name", archiveNameEntry, executionId);
                 AddDebugInputItem(CompressionRatio, "Compression Ratio", compressionRatioEntry, executionId);
@@ -195,22 +191,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Properties
-
-        #region Private Methods
-
-        private string GetBlankedOutPassword(string password)
-        {
-            int counter = 0;
-            string result = string.Empty;
-            while(counter < password.Length)
-            {
-                result = result + "*";
-                counter++;
-            }
-            return result;
-        }  
-
-        #endregion
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {

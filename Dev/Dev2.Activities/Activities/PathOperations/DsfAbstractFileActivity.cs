@@ -4,6 +4,7 @@ using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
+using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
 using System;
@@ -22,7 +23,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     public abstract class DsfAbstractFileActivity : DsfActivityAbstract<string>, IPathAuth, IResult, IPathCertVerify
     {
         // Travis.Frisinger - 01.02.2013 : Bug 8579
-        private bool _isStandardUpsert = true;
+        bool _isStandardUpsert = true;
 
         internal string DefferedReadFileContents = string.Empty;
 
@@ -49,7 +50,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> toUpsertDeferred = Dev2DataListBuilderFactory.CreateBinaryDataListUpsertBuilder(true);
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
             // Process if no errors
-            if (!errors.HasErrors())
+            if(!errors.HasErrors())
             {
                 try
                 {
@@ -57,25 +58,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     outputs = ExecuteConcreteAction(context, out errors);
                     allErrors.MergeErrors(errors);
 
-                    if (outputs.Count > 0)
+                    if(outputs.Count > 0)
                     {
                         int iterationCount = 0;
-                        foreach (OutputTO output in outputs)
+                        foreach(OutputTO output in outputs)
                         {
-                            if (output.OutputStrings.Count > 0)
+                            if(output.OutputStrings.Count > 0)
                             {
-                                foreach (string value in output.OutputStrings)
+                                foreach(string value in output.OutputStrings)
                                 {
-                                    if (output.OutPutDescription == GlobalConstants.ErrorPayload)
+                                    if(output.OutPutDescription == GlobalConstants.ErrorPayload)
                                     {
                                         errors.AddError(value);
                                     }
                                     else
                                     {
-                                        if (_isStandardUpsert)
+                                        if(_isStandardUpsert)
                                         {
                                             //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                                            foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
+                                            foreach(var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
                                             {
 
                                                 toUpsert.Add(region, value);
@@ -87,7 +88,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                                 }
 
-                                if (_isStandardUpsert)
+                                if(_isStandardUpsert)
                                 {
                                     toUpsert.FlushIterationFrame();
                                 }
@@ -99,16 +100,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                         }
 
-                        if (_isStandardUpsert)
+                        if(_isStandardUpsert)
                         {
-                            compiler.Upsert(dlID, toUpsert, out errors);                           
+                            compiler.Upsert(dlID, toUpsert, out errors);
                         }
                         else
                         {
                             // deferred read ;)
-                            compiler.Upsert(dlID, toUpsertDeferred, out errors);                           
+                            compiler.Upsert(dlID, toUpsertDeferred, out errors);
                         }
-                        if (dataObject.IsDebug || dataObject.RemoteInvoke)
+                        if(dataObject.IsDebug || dataObject.RemoteInvoke)
                         {
                             ErrorResultTO error = new ErrorResultTO();
                             if(!String.IsNullOrEmpty(Result))
@@ -128,20 +129,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     allErrors.AddError(ex.Message);
                 }
                 finally
                 {
                     // Handle Errors
-                    if (allErrors.HasErrors())
+                    if(allErrors.HasErrors())
                     {
                         DisplayAndWriteError("DsfFileActivity", allErrors);
                         compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                     }
 
-                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                    if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                     {
                         DispatchDebugState(context, StateType.Before);
                         DispatchDebugState(context, StateType.After);
@@ -156,7 +157,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>
         public void MakeDeferredAction(string deferredLoc)
         {
-           // Do nothing ;)
+            // Do nothing ;)
         }
 
         /// <summary>
@@ -167,7 +168,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="error">The error.</param>
         /// <returns></returns>
         protected abstract IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context, out ErrorResultTO error);
-
 
         #region Properties
 
@@ -276,5 +276,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        protected void AddDebugInputItemUserNamePassword(Guid executionId, IBinaryDataListEntry usernameEntry)
+        {
+            AddDebugInputItem(Username, "Username", usernameEntry, executionId);
+
+            var itemToAdd = new DebugItem();
+            itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Password" });
+            itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetBlankedOutPassword(Password) });
+            _debugInputs.Add(itemToAdd);
+        }
+
+        protected void AddDebugInputItemOverwrite(Guid executionId, bool overWrite)
+        {
+            var itemToAdd = new DebugItem();
+            itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Overwrite" });
+            itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = overWrite ? "True" : "False" });
+            _debugInputs.Add(itemToAdd);
+        }
+
+        static string GetBlankedOutPassword(string password)
+        {
+            return "".PadRight((password ?? "").Length, '*');
+        }
     }
 }

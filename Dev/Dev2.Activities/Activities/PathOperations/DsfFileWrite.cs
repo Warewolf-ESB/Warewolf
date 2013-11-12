@@ -66,10 +66,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (dataObject.IsDebug || dataObject.RemoteInvoke)
             {
-              
-                
-
-                
                 AddDebugInputItem(OutputPath, "Output Path", inputPathEntry, executionId);
 
                 DebugItem itemToAdd = new DebugItem();
@@ -77,11 +73,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetMethod() });
                 _debugInputs.Add(itemToAdd);
 
-                AddDebugInputItem(Username, "Username", usernameEntry, executionId);
-                itemToAdd = new DebugItem();
-                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Password" });                
-                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetBlankedOutPassword(Password) });
-                _debugInputs.Add(itemToAdd);
+                AddDebugInputItemUserNamePassword(executionId, usernameEntry);
+                AddDebugInputItemOverwrite(executionId, Overwrite);
+
                 AddDebugInputItem(FileContents, "File Contents", contentsEntry, executionId);
             }
 
@@ -109,8 +103,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return outputs;
 
         }
-
-        
 
         #region Properties
 
@@ -180,17 +172,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private string GetBlankedOutPassword(string password)
-        {
-            int counter = 0;
-            string result = string.Empty;
-            while(counter < password.Length)
-            {
-                result = result + "*";
-                counter++;
-            }
-            return result;
-        }
 
         private string GetMethod()
         {
