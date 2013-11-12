@@ -26,6 +26,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         bool _isStandardUpsert = true;
 
         internal string DefferedReadFileContents = string.Empty;
+        private string _username;
+        private string _password;
 
         public DsfAbstractFileActivity(string displayName)
             : base(displayName)
@@ -178,8 +180,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string Password
         {
-            get;
-            set;
+            get { return _password; }
+            set { _password = value; }
         }
 
         /// <summary>
@@ -189,8 +191,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string Username
         {
-            get;
-            set;
+            get { return _username; }
+            set { _username = value; }
         }
 
         /// <summary>

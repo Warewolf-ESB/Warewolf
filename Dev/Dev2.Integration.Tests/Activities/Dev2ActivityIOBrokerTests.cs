@@ -1088,7 +1088,8 @@ namespace Dev2.Integration.Tests.Activities
         /// Unzip from file system to file system invalid credentials expected_ file created.
         /// </summary>
         [TestMethod]
-        public void UnZip_From_FileSystem_To_FileSystem_InvalidCredentials_Expected_FileCreated()
+        [ExpectedException(typeof(Exception))]
+        public void UnZip_From_FileSystem_To_FileSystem_InvalidCredentials_ThrowsException()
         {
 
             string srcDir = PathIOTestingUtils.CreateTmpDirectory();
@@ -1098,9 +1099,32 @@ namespace Dev2.Integration.Tests.Activities
             string[] files = new string[] { file1 };
             string ZipFileName = PathIOTestingUtils.ZipFile(srcDir, files);
 
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(ZipFileName, ParserStrings.PathOperations_Incorrect_Username, ParserStrings.PathOperations_Incorrect_Password);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(ZipFileName, ParserStrings.PathOperations_Correct_Password, ParserStrings.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, ParserStrings.PathOperations_Incorrect_Username, ParserStrings.PathOperations_Incorrect_Password);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Username);
+            IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
+
+            IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
+            IActivityIOPath UnzipDestinationPath = ActivityIOFactory.CreatePathFromString(dstDir + "\\Users", "", "");
+            Dev2UnZipOperationTO unzipOpTO = ActivityIOFactory.CreateUnzipTO(null);
+
+            string result = broker.UnZip(srcEP, dstEP, unzipOpTO);
+        }
+
+        [TestMethod]
+        public void UnZip_From_FileSystem_To_FileSystem_CredentialsNotRequired_Expected_FileCreated()
+        {
+
+            string srcDir = PathIOTestingUtils.CreateTmpDirectory();
+            string dstDir = PathIOTestingUtils.CreateTmpDirectory();
+
+            string file1 = PathIOTestingUtils.CreateTmpFile(srcDir);
+            string[] files = new string[] { file1 };
+            string ZipFileName = PathIOTestingUtils.ZipFile(srcDir, files);
+
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(ZipFileName,true);
+            IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir,true);
             IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
@@ -1117,7 +1141,6 @@ namespace Dev2.Integration.Tests.Activities
             PathIOTestingUtils.DeleteTmpDir(srcDir);
 
             Assert.IsTrue(unzippedFileExists);
-
         }
 
         //BUILD

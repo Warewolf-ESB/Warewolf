@@ -637,20 +637,25 @@ namespace Dev2.PathOperations
         {
 
             string zipFile = src.IOPath.Path;
-
+            ZipFile zip = null;
             if (src.RequiresLocalTmpStorage())
             {
 
                 string tmpZip = CreateTmpFile();
-                using(Stream s = src.Get(src.IOPath))
+                using (Stream s = src.Get(src.IOPath))
                 {
-                    
+
                     File.WriteAllBytes(tmpZip, s.ToByteArray());
                     s.Close();
                     s.Dispose();
                 }
 
                 zipFile = tmpZip;
+                zip = ZipFile.Read(zipFile);
+            }
+            else
+            {
+                zip = ZipFile.Read(src.Get(src.IOPath));
             }
 
             string unzipDirectory = dst.IOPath.Path;
@@ -661,22 +666,24 @@ namespace Dev2.PathOperations
                 unzipDirectory = CreateTmpDirectory();
             }
 
-
-            using (ZipFile zip = ZipFile.Read(zipFile))
+            // var stream = src.Get(src.IOPath);
+            if (zip != null)
             {
-
-                if (args.ArchivePassword != string.Empty)
+                using (zip)
                 {
-                    zip.Password = args.ArchivePassword;
+
+                    if (args.ArchivePassword != string.Empty)
+                    {
+                        zip.Password = args.ArchivePassword;
+                    }
+
+                    foreach (ZipEntry ze in zip)
+                    {
+                        ze.Extract(unzipDirectory, ExtractExistingFileAction.OverwriteSilently);
+                    }
                 }
 
-                foreach (ZipEntry ze in zip)
-                {
-                    ze.Extract(unzipDirectory, ExtractExistingFileAction.OverwriteSilently);
-                }
             }
-
-
             if (dst.RequiresLocalTmpStorage())
             {
                 IActivityIOPath newSrc = ActivityIOFactory.CreatePathFromString(unzipDirectory,dst.IOPath.Username,dst.IOPath.Password);
