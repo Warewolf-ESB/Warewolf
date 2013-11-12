@@ -58,8 +58,8 @@
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.WriteFileHelpFilename}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.InputPath"
-                                     SourcePropertyValue="{Binding  ModelItem.InputPath, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.OutputPath"
+                                     SourcePropertyValue="{Binding  ModelItem.OutputPath, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>

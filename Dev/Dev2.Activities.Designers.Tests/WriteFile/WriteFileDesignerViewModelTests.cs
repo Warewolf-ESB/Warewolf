@@ -18,8 +18,8 @@ namespace Dev2.Activities.Designers.Tests.WriteFile
             var viewModel = WriteFileViewModel();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual("File Name", viewModel.InputPathLabel);
-            Assert.AreEqual("", viewModel.OutputPathLabel);
+            Assert.AreEqual("File Name", viewModel.OutputPathLabel);
+            Assert.AreEqual("", viewModel.InputPathLabel);
             Assert.IsNull(viewModel.InputPathValue);
             Assert.IsNull(viewModel.OutputPathValue);
             Assert.IsNull(viewModel.Errors);
@@ -41,8 +41,8 @@ namespace Dev2.Activities.Designers.Tests.WriteFile
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, viewModel.ValidateInputAndOutputPathHitCount);
-            Assert.AreEqual(1, viewModel.ValidateInputPathHitCount);
-            Assert.AreEqual(0, viewModel.ValidateOutputPathHitCount);
+            Assert.AreEqual(0, viewModel.ValidateInputPathHitCount);
+            Assert.AreEqual(1, viewModel.ValidateOutputPathHitCount);
             Assert.AreEqual(1, viewModel.ValidateUserNameAndPasswordHitCount);
         }
 

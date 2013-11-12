@@ -88,6 +88,7 @@
     <Compile Include="Interfaces\IDev2TOFn.cs" />
     <Compile Include="Common\JScriptEval.cs" />
     <Compile Include="Interfaces\IFrameworkRepository.cs" />
+    <Compile Include="Lookups\CompressionType.cs" />
     <Compile Include="Patterns\ISpookyLoadable.cs" />
     <Compile Include="Patterns\SpookyAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

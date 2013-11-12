@@ -39,7 +39,7 @@ namespace Dev2.Activities.Designers.Tests.Zip
             //------------Execute Test---------------------------
             viewModel.Validate();
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, viewModel.ValidateInputAndOutputPathHitCount);
+            Assert.AreEqual(0, viewModel.ValidateInputAndOutputPathHitCount);
             Assert.AreEqual(1, viewModel.ValidateInputPathHitCount);
             Assert.AreEqual(1, viewModel.ValidateOutputPathHitCount);
             Assert.AreEqual(1, viewModel.ValidateUserNameAndPasswordHitCount);

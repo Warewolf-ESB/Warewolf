@@ -6,7 +6,7 @@ namespace Dev2.Activities.Designers2.WriteFile
     public class WriteFileDesignerViewModel : FileActivityDesignerViewModel
     {
         public WriteFileDesignerViewModel(ModelItem modelItem)
-            : base(modelItem, "File Name", string.Empty)
+            : base(modelItem, string.Empty, "File Name")
         {
             AddTitleBarLargeToggle();
             AddTitleBarHelpToggle();
@@ -21,7 +21,7 @@ namespace Dev2.Activities.Designers2.WriteFile
         {
             Errors = null;
             ValidateUserNameAndPassword();
-            ValidateInputPath();
+            ValidateOutputPath();
         }
 
         bool Overwrite { set { SetProperty(value); } get { return GetProperty<bool>(); } }

@@ -55,7 +55,7 @@
         <Label Grid.Column="0"
                Grid.Row="0"
                Style="{StaticResource ActivityLabelStyle}"
-               Content="{Binding InputPathLabel, Mode=OneWay}" />
+               Content="{Binding OutputPathLabel, Mode=OneWay}" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1"
                                 Grid.Row="0"
@@ -63,7 +63,7 @@
                                 FilterType="All"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                attachedProperties:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                attachedProperties:FocusSetter.IsFocused="{Binding IsOutputPathFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static help:HelpTextResources.WriteFileToolTipFilename}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileNametxt_AutoID}">
@@ -77,8 +77,8 @@
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.WriteFileHelpFilename}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.InputPath"
-                                     SourcePropertyValue="{Binding  ModelItem.InputPath, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.OutputPath"
+                                     SourcePropertyValue="{Binding ModelItem.OutputPath, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
@@ -107,7 +107,6 @@
                                 DefaultText="[[logtext]]"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.FileContents, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                attachedProperties:FocusSetter.IsFocused="{Binding IsOutputPathFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static help:HelpTextResources.WriteFileToolTipContent}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Contentstxt_AutoID}">

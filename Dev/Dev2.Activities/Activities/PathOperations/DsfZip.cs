@@ -1,5 +1,6 @@
 ﻿using Dev2;
 using Dev2.Activities;
+using Dev2.Common.Lookups;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
@@ -94,7 +95,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
                 AddDebugInputItem(ArchivePassword, "Archive Password", archPassEntry, executionId);
                 AddDebugInputItem(ArchiveName, "Archive Name", archiveNameEntry, executionId);
-                AddDebugInputItem(CompressionRatio, "Compression Ratio", compressionRatioEntry, executionId);
+                AddDebugInputItem(CompressionType.GetName(CompressionRatio), "Compression Ratio", compressionRatioEntry, executionId);
             }
 
             while (colItr.HasMoreData())
