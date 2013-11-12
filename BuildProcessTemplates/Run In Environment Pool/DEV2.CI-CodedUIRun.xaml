@@ -476,7 +476,7 @@
                         </Sequence>
                       </ActivityAction>
                     </ForEach>
-                    <If Condition="[TryStartEnvironment]" sap2010:WorkflowViewState.IdRef="If_41">
+                    <If Condition="[TryStartEnvironment]" DisplayName="If Can Start Environment" sap2010:WorkflowViewState.IdRef="If_41">
                       <If.Then>
                         <mtbwa:InvokeProcess DisplayName="Kill ENV" FileName="[SourcesDirectory &amp; &quot;\CodedUI\exit.bat&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_4">
                           <mtbwa:InvokeProcess.ErrorDataReceived>
