@@ -669,7 +669,7 @@ namespace Dev2.Integration.Tests.Activities
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
-            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, "TestArchive.zip");
+            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, "TestArchive.zip", true);
 
             string result = broker.Zip(srcEP, dstEP, args);
 
@@ -702,7 +702,7 @@ namespace Dev2.Integration.Tests.Activities
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
-            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, "test", "TestArchive.zip");
+            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, "test", "TestArchive.zip", true);
 
             string result = broker.Zip(srcEP, dstEP, args);
 
@@ -731,7 +731,7 @@ namespace Dev2.Integration.Tests.Activities
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
-            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, "TestArchive.zip");
+            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, "TestArchive.zip", true);
 
             string result = broker.Zip(srcEP, dstEP, args);
 
@@ -764,7 +764,7 @@ namespace Dev2.Integration.Tests.Activities
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
-            Dev2ZipOperationTO args = new Dev2ZipOperationTO(Ionic.Zlib.CompressionLevel.BestCompression.ToString(), string.Empty, "TestArchive.zip");
+            Dev2ZipOperationTO args = new Dev2ZipOperationTO(Ionic.Zlib.CompressionLevel.BestCompression.ToString(), string.Empty, "TestArchive.zip", true);
 
             string result = broker.Zip(srcEP, dstEP, args);
 
@@ -794,7 +794,7 @@ namespace Dev2.Integration.Tests.Activities
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
-            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, "TestArchive.zip");
+            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, "TestArchive.zip", true);
 
             string result = broker.Zip(srcEP, dstEP, args);
 
@@ -825,7 +825,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
             string tmpID = Guid.NewGuid().ToString();
-            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, (tmpID + "TestArchive.zip"));
+            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, (tmpID + "TestArchive.zip"), true);
 
             string result = broker.Zip(srcEP, dstEP, args);
 
@@ -855,7 +855,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
             string tmpID = Guid.NewGuid().ToString();
-            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, (tmpID + "TestArchive.zip"));
+            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, (tmpID + "TestArchive.zip"), true);
 
             string result = broker.Zip(srcEP, dstEP, args);
 
@@ -883,7 +883,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
             string tmpID = Guid.NewGuid().ToString();
-            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, (tmpID + "TestArchive.zip"));
+            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, (tmpID + "TestArchive.zip"), true);
 
             string result = broker.Zip(srcEP, dstEP, args);
 
@@ -911,7 +911,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
             string tmpID = Guid.NewGuid().ToString();
-            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, (tmpID + "TestArchive.zip"));
+            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, (tmpID + "TestArchive.zip"), true);
 
             string result = broker.Zip(srcEP, dstEP, args);
 
@@ -941,7 +941,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
             string tmpID = Guid.NewGuid().ToString();
-            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, "TestArchive.zip");
+            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, "TestArchive.zip", true);
 
             string result = broker.Zip(srcEP, dstEP, args);
 
@@ -971,7 +971,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
             string tmpID = Guid.NewGuid().ToString();
-            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, "TestArchive.zip");
+            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, "TestArchive.zip", true);
 
             string result = broker.Zip(srcEP, dstEP, args);
 
@@ -1001,7 +1001,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
             string tmpID = Guid.NewGuid().ToString();
-            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, "TestArchive.zip");
+            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, "TestArchive.zip", true);
 
             string result = broker.Zip(srcEP, dstEP, args);
 
@@ -1031,7 +1031,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
             string tmpID = Guid.NewGuid().ToString();
-            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, "TestArchive.zip");
+            Dev2ZipOperationTO args = new Dev2ZipOperationTO(string.Empty, string.Empty, "TestArchive.zip", true);
             try
             {
                 string result = broker.Zip(srcEP, dstEP, args);
