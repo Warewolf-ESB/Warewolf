@@ -330,7 +330,7 @@
                               </ForEach>
                             </If.Then>
                           </If>
-                          <If Condition="[1 = 1]" sap2010:WorkflowViewState.IdRef="If_38">
+                          <If Condition="[1 = 2]" sap2010:WorkflowViewState.IdRef="If_38">
                             <If.Else>
                               <Sequence sap2010:WorkflowViewState.IdRef="Sequence_32">
                                 <mtbwa:InvokeProcess DisplayName="KILL ENV" FileName="C:\CodedUI\exit.bat" sap2010:WorkflowViewState.IdRef="InvokeProcess_8">
