@@ -52,27 +52,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 category.Add(new ToolboxItemWrapper(typeof(DsfSqlBulkInsertActivity), "/images/ToolSqlBulkInsert-32.png", "SQL Bulk Insert"));
             }
 
-
-            category = GetToolboxCategoryByName("Utility");
+            category = GetToolboxCategoryByName("Data");
             if(category != null)
             {
                 category.Add(new ToolboxItemWrapper(typeof(DsfMultiAssignActivity), "/images/ToolAssign-32.png", "Assign"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfBaseConvertActivity), "/images/ToolBaseConversion-32.png", "Base Conversion"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfCalculateActivity), "/images/ToolCalculate-32.png", "Calculate"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfNumberFormatActivity), "/images/ToolFormatNumber-32.png", "Format Number"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfRandomActivity), "/images/ToolRandom-32.png", "Random"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfCaseConvertActivity), "/images/ToolCaseConversion-32.png", "Case Conversion"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfDataMergeActivity), "/images/ToolDataMerge-32.png", "Data Merge"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfDataSplitActivity), "/images/ToolDataSplit-32.png", "Data Split"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfIndexActivity), "/images/ToolFindIndex-32.png", "Find Index"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfReplaceActivity), "/images/ToolReplace-32.png", "Replace"));
+            }
+
+
+            category = GetToolboxCategoryByName("Utility");
+            if(category != null)
+            {                                
+                category.Add(new ToolboxItemWrapper(typeof(DsfCalculateActivity), "/images/ToolCalculate-32.png", "Calculate"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfNumberFormatActivity), "/images/ToolFormatNumber-32.png", "Format Number"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfRandomActivity), "/images/ToolRandom-32.png", "Random"));                
                 category.Add(new ToolboxItemWrapper(typeof(DsfDateTimeActivity), "/images/ToolDateTime-32.png", "Date and Time"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfDateTimeDifferenceActivity), "/images/ToolDateTimeDifference-32.png", "Date and Time Difference"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfSendEmailActivity), "/images/ToolSendEmail-32.png", "Email"));
 
                 // TODO PBI 8291
                 //category.Add(new ToolboxItemWrapper(typeof(DsfWebPageActivity), "/images/User.png", "Human Interface"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfIndexActivity), "/images/ToolFindIndex-32.png", "Find Index"));
-
-                category.Add(new ToolboxItemWrapper(typeof(DsfReplaceActivity), "/images/ToolReplace-32.png", "Replace"));
+                
                 category.Add(new ToolboxItemWrapper(typeof(DsfGatherSystemInformationActivity), "/images/ToolSystemInformation-32.png", "System Information"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfXPathActivity), "/images/ToolUtilityXpath-32.png", "XPath"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfCommentActivity), "/images/ToolComment-32.png", "Comment"));

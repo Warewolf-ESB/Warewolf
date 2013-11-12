@@ -3041,6 +3041,16 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Specify the password needed to open the zip file here.
+        ///Leaving the Archive Password blank will result in no password being used to open the file..
+        /// </summary>
+        public static string UnzipHelpArchivePassword {
+            get {
+                return ResourceManager.GetString("UnzipHelpArchivePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///Put the full path of the destination you are unzipping to here.
         ///You can use File System, URI, SFTP, FTP or FTPS format..
@@ -3098,6 +3108,19 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string UnzipHelpZipname {
             get {
                 return ResourceManager.GetString("UnzipHelpZipname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string UnzipToolTipArchivePassword {
+            get {
+                return ResourceManager.GetString("UnzipToolTipArchivePassword", resourceCulture);
             }
         }
         
@@ -3407,6 +3430,16 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Specify the password needed to open the zip file here.
+        ///Leaving the Archive Password blank will result in no password being required to open the file..
+        /// </summary>
+        public static string ZipHelpArchivePassword {
+            get {
+                return ResourceManager.GetString("ZipHelpArchivePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The system will try and match your zipping requirements as far as possible.
         ///None creates the new file with the content and adds no compression - fastest.
         ///Partial attempts some compression.
@@ -3438,6 +3471,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string ZipHelpFileFolder {
             get {
                 return ResourceManager.GetString("ZipHelpFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If a file already exists, you can force a new one to overwrite the old one..
+        /// </summary>
+        public static string ZipHelpForceoverwrite {
+            get {
+                return ResourceManager.GetString("ZipHelpForceoverwrite", resourceCulture);
             }
         }
         
@@ -3478,6 +3520,19 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///[[Recordset(*).Field]]   
         ///[[Recordset().Field]].
         /// </summary>
+        public static string ZipToolTipArchivePassword {
+            get {
+                return ResourceManager.GetString("ZipToolTipArchivePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data   
+        ///[[Scalar]]   
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
         public static string ZipToolTipDestination {
             get {
                 return ResourceManager.GetString("ZipToolTipDestination", resourceCulture);
@@ -3494,6 +3549,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string ZipToolTipFileFolder {
             get {
                 return ResourceManager.GetString("ZipToolTipFileFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If it exists already, force an overwrite.
+        /// </summary>
+        public static string ZipToolTipForceoverwrite {
+            get {
+                return ResourceManager.GetString("ZipToolTipForceoverwrite", resourceCulture);
             }
         }
         

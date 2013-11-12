@@ -24,35 +24,33 @@ namespace Dev2.Activities.Designers2.Zip
                                                c => c.CompressionRatio.Replace(" ", "").Equals(CompressionRatio));
         }
 
-        public override void Validate()
-        {
-            Errors = null;
-            ValidateUserNameAndPassword();
-            ValidateInputAndOutputPaths();
-        }
-
         public CompressionType SelectedCompressionRatio
         {
-            get { return (CompressionType) GetValue(SelectedCompressionRatioProperty); }
+            get { return (CompressionType)GetValue(SelectedCompressionRatioProperty); }
             set { SetValue(SelectedCompressionRatioProperty, value); }
         }
 
         public static readonly DependencyProperty SelectedCompressionRatioProperty =
-            DependencyProperty.Register("SelectedCompressionRatio", typeof (CompressionType),
-                                        typeof (ZipDesignerViewModel),
+            DependencyProperty.Register("SelectedCompressionRatio", typeof(CompressionType),
+                                        typeof(ZipDesignerViewModel),
                                         new PropertyMetadata(null, OnSelectedCompressionRatioChanged));
 
         private static void OnSelectedCompressionRatioChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var viewModel = (ZipDesignerViewModel) d;
+            var viewModel = (ZipDesignerViewModel)d;
             var value = e.NewValue as CompressionType;
 
             if(value != null)
             {
                 viewModel.CompressionRatio = value.CompressionRatio;
             }
-    }
-
+        }
+        public override void Validate()
+        {
+            Errors = null;
+            ValidateUserNameAndPassword();
+            ValidateInputAndOutputPaths();
+        }
 
         private string CompressionRatio
         {
@@ -61,3 +59,4 @@ namespace Dev2.Activities.Designers2.Zip
         }
     }
 }
+

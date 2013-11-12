@@ -93,9 +93,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugInputItem(InputPath, "File or Folder", inputPathEntry, executionId);
                 AddDebugInputItem(OutputPath, "Destination", outputPathEntry, executionId);
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
-                AddDebugInputItem(ArchivePassword, "Archive Password", archPassEntry, executionId);
-                AddDebugInputItem(ArchiveName, "Archive Name", archiveNameEntry, executionId);
-                AddDebugInputItem(CompressionType.GetName(CompressionRatio), "Compression Ratio", compressionRatioEntry, executionId);
+                AddDebugInputItemPassword("Archive Password",ArchivePassword);
+                AddDebugInputItem(CompressionRatio, "Compression Ratio", compressionRatioEntry, executionId);
             }
 
             while (colItr.HasMoreData())
@@ -133,6 +132,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #region Properties
+
+        /// <summary>
+        /// Gets or sets if the user wants to overwrite the file location.
+        /// </summary>
+        [Inputs("Overwrite")]
+        [FindMissing]
+        public bool Overwrite
+        {
+            get; 
+            set;
+        }
 
         /// <summary>
         /// Gets or sets the name of the archive.

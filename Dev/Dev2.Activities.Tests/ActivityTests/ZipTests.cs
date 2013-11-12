@@ -100,7 +100,7 @@ namespace ActivityUnitTests.ActivityTests
 
             IBinaryDataList inputs = testAct.GetInputs();
 
-            Assert.IsTrue(inputs.FetchAllEntries().Count == 8);
+            Assert.IsTrue(inputs.FetchAllEntries().Count == 9);
         }
 
         [TestMethod]
@@ -253,6 +253,28 @@ namespace ActivityUnitTests.ActivityTests
             ActivityIOFactory.CreateOperationsBroker().Zip(scrEndPoint, dstEndPoint, zipTO);
             Assert.IsTrue(File.Exists(Path.GetTempPath() + NewFileName+ ".zip"));
         }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DsfZip_ExecuteConcreteAction")]
+        public void DsfZip_ExecuteConcreteAction_WithArchivePassword_FileZippedWithPassword()
+        {
+            //------------Setup for test--------------------------
+            var dsfZip = new DsfZip();
+            dsfZip.ArchivePassword = "TestPassword";
+
+            tempFile = Path.GetTempFileName();
+            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true));
+            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(NewFileName, string.Empty, null, true));
+
+            Dev2ZipOperationTO zipTO = ActivityIOFactory.CreateZipTO(null, null, null);                       
+            
+            //------------Execute Test---------------------------
+            ActivityIOFactory.CreateOperationsBroker().Zip(scrEndPoint, dstEndPoint, zipTO);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(File.Exists(Path.GetTempPath() + NewFileName + ".zip"));
+        }
+        
 
         #endregion
     }

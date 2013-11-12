@@ -1690,4 +1690,32 @@ To traverse an XML document and return information from it, enter the raw XML in
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
+  <data name="UnzipHelpArchivePassword" xml:space="preserve">
+    <value>Specify the password needed to open the zip file here.
+Leaving the Archive Password blank will result in no password being used to open the file.</value>
+  </data>
+  <data name="UnzipToolTipArchivePassword" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ZipHelpArchivePassword" xml:space="preserve">
+    <value>Specify the password needed to open the zip file here.
+Leaving the Archive Password blank will result in no password being required to open the file.</value>
+  </data>
+  <data name="ZipHelpForceoverwrite" xml:space="preserve">
+    <value>If a file already exists, you can force a new one to overwrite the old one.</value>
+  </data>
+  <data name="ZipToolTipArchivePassword" xml:space="preserve">
+    <value>Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ZipToolTipForceoverwrite" xml:space="preserve">
+    <value>If it exists already, force an overwrite</value>
+  </data>
 </root>

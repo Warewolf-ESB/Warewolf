@@ -15,9 +15,9 @@
                                MinWidth="255"
                                Width="255"
                                MaxWidth="600"
-                               MinHeight="315"
-                               Height="315"
-                               MaxHeight="315"
+                               MinHeight="340"
+                               Height="340"
+                               MaxHeight="340"
                                Padding="7"
                                mc:Ignorable="d"
                                d:DataContext="{d:DesignInstance local:UnzipDesignerViewModel}">
@@ -39,6 +39,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -174,13 +175,33 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </PasswordBox>
-
+        
         <Label Grid.Column="0"
                Grid.Row="5"
                Style="{StaticResource ActivityLabelStyle}"
+               Content="Archive Password" />
+        <PasswordBox Grid.Column="1"
+                                Grid.Row="5"                                                               
+                                ToolTip="{x:Static help:HelpTextResources.UnzipToolTipArchivePassword}"                                                                
+                                attachedProperties:PasswordBoxAssistant.BindPassword="true"
+                                attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.ArchivePassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ArchivePasswordtxt_AutoID}">
+            <i:Interaction.Behaviors>
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.UnzipHelpArchivePassword}"
+                                 DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.ArchivePassword"
+                                     SourcePropertyValue="{Binding  ModelItem.ArchivePassword, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </PasswordBox>
+
+        <Label Grid.Column="0"
+               Grid.Row="6"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="5"
+                                Grid.Row="6"
                                 DefaultText="[[Success]]"
                                 FilterType="All"
                                 WrapInBrackets="True"
@@ -199,7 +220,7 @@
         </ui:IntellisenseTextBox>
 
         <errors:OnError Grid.Column="0"
-                        Grid.Row="6"
+                        Grid.Row="7"
                         Grid.ColumnSpan="2"
                         Margin="2" />
 

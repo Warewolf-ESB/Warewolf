@@ -280,10 +280,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected void AddDebugInputItemUserNamePassword(Guid executionId, IBinaryDataListEntry usernameEntry)
         {
             AddDebugInputItem(Username, "Username", usernameEntry, executionId);
+            AddDebugInputItemPassword("Password", Password);
+        }
 
+        protected void AddDebugInputItemPassword(string label, string password)
+        {
             var itemToAdd = new DebugItem();
-            itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Password" });
-            itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetBlankedOutPassword(Password) });
+            itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = label });
+            itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetBlankedOutPassword(password) });
             _debugInputs.Add(itemToAdd);
         }
 

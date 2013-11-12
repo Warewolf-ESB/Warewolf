@@ -15,9 +15,9 @@
                                MinWidth="255"
                                Width="255"
                                MaxWidth="600"
-                               MinHeight="315"
-                               Height="315"
-                               MaxHeight="315"
+                               MinHeight="375"
+                               Height="375"
+                               MaxHeight="375"
                                Padding="7"
                                mc:Ignorable="d"
                                d:DataContext="{d:DesignInstance local:ZipDesignerViewModel}">
@@ -43,6 +43,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />            
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -118,9 +120,29 @@
         <Label Grid.Column="0"
                Grid.Row="2"
                Style="{StaticResource ActivityLabelStyle}"
+               Content="If it exists" />
+        <CheckBox Grid.Column="1"
+                  Grid.Row="2"
+                  Margin="-4,0,0,0"
+                  Content="Overwrite"
+                  IsChecked="{Binding Path=ModelItem.Overwrite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="{x:Static help:HelpTextResources.ZipToolTipForceoverwrite}">
+            <i:Interaction.Behaviors>
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpForceoverwrite}"
+                                 DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.Overwrite"
+                                     SourcePropertyValue="{Binding ModelItem.Overwrite, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </CheckBox>
+        
+        <Label Grid.Column="0"
+               Grid.Row="3"
+               Style="{StaticResource ActivityLabelStyle}"
                Content="User Name" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="2"
+                                Grid.Row="3"
                                 DefaultText="[[UserName]]"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -139,11 +161,11 @@
         </ui:IntellisenseTextBox>
 
         <Label Grid.Column="0"
-               Grid.Row="3"
+               Grid.Row="4"
                Style="{StaticResource ActivityLabelStyle}"
                Content="Password" />
         <PasswordBox Grid.Column="1"
-                                Grid.Row="3"                                                               
+                                Grid.Row="4"                                                               
                                 ToolTip="{x:Static help:HelpTextResources.ZipToolTipPassword}"                                
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 attachedProperties:PasswordBoxAssistant.BindPassword="true"
@@ -157,14 +179,34 @@
                                      SourcePropertyValue="{Binding  ModelItem.Password, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
+        </PasswordBox>                
+
+        <Label Grid.Column="0"
+               Grid.Row="5"
+               Style="{StaticResource ActivityLabelStyle}"
+               Content="Archive Password" />
+        <PasswordBox Grid.Column="1"
+                                Grid.Row="5"                                                               
+                                ToolTip="{x:Static help:HelpTextResources.ZipToolTipArchivePassword}"                                                                
+                                attachedProperties:PasswordBoxAssistant.BindPassword="true"
+                                attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.ArchivePassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ArchivePasswordtxt_AutoID}">
+            <i:Interaction.Behaviors>
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpArchivePassword}"
+                                 DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.ArchivePassword"
+                                     SourcePropertyValue="{Binding  ModelItem.ArchivePassword, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
         </PasswordBox>
 
         <Label Grid.Column="0"
-               Grid.Row="4"
+               Grid.Row="6"
                Style="{StaticResource ActivityLabelStyle}"
                Content="Compression" />
         <ComboBox Grid.Column="1" 
-                  Grid.Row="4"
+                  Grid.Row="6"
                   Style="{StaticResource ActivityComboBoxStyle}"
                   DisplayMemberPath="DisplayName"
                   SelectedValue="{Binding SelectedCompressionRatio,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -181,11 +223,11 @@
         </ComboBox>
         
         <Label Grid.Column="0"
-               Grid.Row="5"
+               Grid.Row="7"
                Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="5"
+                                Grid.Row="7"
                                 DefaultText="[[Success]]"
                                 FilterType="All"
                                 WrapInBrackets="True"
@@ -204,7 +246,7 @@
         </ui:IntellisenseTextBox>
 
         <errors:OnError Grid.Column="0"
-                        Grid.Row="6"
+                        Grid.Row="8"
                         Grid.ColumnSpan="2"
                         Margin="2" />
 

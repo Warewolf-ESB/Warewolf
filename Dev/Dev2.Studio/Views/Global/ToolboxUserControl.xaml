@@ -19,8 +19,9 @@
                 </DataTemplate>
             </sadt:ToolboxControl.ToolTemplate>
             <sadt:ToolboxCategory CategoryName="Control Flow"></sadt:ToolboxCategory>            
-            <sadt:ToolboxCategory CategoryName="Loop Constructs"></sadt:ToolboxCategory>
+            <sadt:ToolboxCategory CategoryName="Loop Constructs"></sadt:ToolboxCategory>            
             <sadt:ToolboxCategory CategoryName="Recordset"></sadt:ToolboxCategory>
+            <sadt:ToolboxCategory CategoryName="Data"></sadt:ToolboxCategory>
             <sadt:ToolboxCategory CategoryName="Resources"></sadt:ToolboxCategory>
             <sadt:ToolboxCategory CategoryName="Utility"></sadt:ToolboxCategory>
             <sadt:ToolboxCategory CategoryName="File and Folder"></sadt:ToolboxCategory>
