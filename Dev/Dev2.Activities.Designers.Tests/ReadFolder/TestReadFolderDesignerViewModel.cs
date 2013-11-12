@@ -11,29 +11,24 @@ namespace Dev2.Activities.Designers.Tests.ReadFolder
         }
 
         public int ValidateInputPathHitCount { get; private set; }
-        public bool ValidateInputPathIsRequired { get; private set; }
-        protected override void ValidateInputPath(bool isRequired = false)
+        protected override void ValidateInputPath()
         {
             ValidateInputPathHitCount++;
-            ValidateInputPathIsRequired = isRequired;
-            base.ValidateInputPath(isRequired);
+            base.ValidateInputPath();
         }
 
         public int ValidateOutputPathHitCount { get; private set; }
-        public bool ValidateOutputPathIsRequired { get; private set; }
-        protected override void ValidateOutputPath(bool isRequired = false)
+        protected override void ValidateOutputPath()
         {
             ValidateOutputPathHitCount++;
-            ValidateOutputPathIsRequired = isRequired;
-            base.ValidateOutputPath(isRequired);
+            base.ValidateOutputPath();
         }
 
         public int ValidateInputAndOutputPathHitCount { get; private set; }
-        protected override void ValidateInputAndOutputPaths(bool isOutputPathRequired = false)
+        protected override void ValidateInputAndOutputPaths()
         {
             ValidateInputAndOutputPathHitCount++;
-            ValidateOutputPathIsRequired = isOutputPathRequired;
-            base.ValidateInputAndOutputPaths(isOutputPathRequired);
+            base.ValidateInputAndOutputPaths();
         }
 
         public int ValidateUserNameAndPasswordHitCount { get; private set; }

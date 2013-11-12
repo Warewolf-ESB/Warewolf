@@ -23,15 +23,14 @@ namespace Dev2.Activities.Designers2.Zip
                     new CompressionType("Max", "Best Compression")
                 };
 
-            SelectedCompressionRatio = string.IsNullOrEmpty(CompressionRatio) ? CompressionTypes[0] : CompressionTypes.SingleOrDefault(c => c.CompressionRatio.Replace(" ","").Equals(CompressionRatio));
+            SelectedCompressionRatio = string.IsNullOrEmpty(CompressionRatio) ? CompressionTypes[0] : CompressionTypes.SingleOrDefault(c => c.CompressionRatio.Replace(" ", "").Equals(CompressionRatio));
         }
 
         public override void Validate()
         {
             Errors = null;
             ValidateUserNameAndPassword();
-            ValidateOutputPath(true);
-            ValidateInputPath(true);
+            ValidateInputAndOutputPaths();
         }
 
         public CompressionType SelectedCompressionRatio
@@ -48,7 +47,7 @@ namespace Dev2.Activities.Designers2.Zip
             var viewModel = (ZipDesignerViewModel)d;
             var value = e.NewValue as CompressionType;
 
-            if (value != null)
+            if(value != null)
             {
                 viewModel.CompressionRatio = value.CompressionRatio;
             }
@@ -67,7 +66,7 @@ namespace Dev2.Activities.Designers2.Zip
         public CompressionType(string name, string compressionRatio)
         {
             CompressionRatio = compressionRatio;
-            DisplayName = string.Format("{0} ({1})", name , compressionRatio);
+            DisplayName = string.Format("{0} ({1})", name, compressionRatio);
         }
     }
 }

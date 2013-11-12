@@ -71,7 +71,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             Assert.IsFalse(viewModel.IsInputPathFocused);
 
             //------------Execute Test---------------------------
-            viewModel.TestValidateInputPath(true);
+            viewModel.TestValidateInputPath();
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, viewModel.ValidatePathHitCount);
@@ -80,6 +80,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             // Verify that correct on error action was assigned
             viewModel.Errors[0].Do();
             Assert.IsTrue(viewModel.IsInputPathFocused);
+            Assert.AreEqual("Please supply a valid " + viewModel.InputPathLabel, viewModel.Errors[0].Message);
         }
 
         [TestMethod]
@@ -92,7 +93,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             Assert.IsFalse(viewModel.IsOutputPathFocused);
 
             //------------Execute Test---------------------------
-            viewModel.TestValidateOutputPath(true);
+            viewModel.TestValidateOutputPath();
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, viewModel.ValidatePathHitCount);
@@ -101,6 +102,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             // Verify that correct on error action was assigned
             viewModel.Errors[0].Do();
             Assert.IsTrue(viewModel.IsOutputPathFocused);
+            Assert.AreEqual("Please supply a valid " + viewModel.OutputPathLabel, viewModel.Errors[0].Message);
         }
 
         [TestMethod]
@@ -112,38 +114,11 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             var viewModel = CreateViewModel();
 
             //------------Execute Test---------------------------
-            viewModel.TestValidateInputAndOutputPaths(true);
+            viewModel.TestValidateInputAndOutputPaths();
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, viewModel.ValidateInputPathHitCount);
-            Assert.IsFalse(viewModel.ValidateInputPathIsRequired);
             Assert.AreEqual(1, viewModel.ValidateOutputPathHitCount);
-            Assert.IsTrue(viewModel.ValidateOutputPathIsRequired);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("FileActivityDesignerViewModel_ValidateInputAndOutputPaths")]
-        public void FileActivityDesignerViewModel_ValidateInputAndOutputPaths_OutputPathIsNotEmptyAndInputPathIsEmpty_HasErrors()
-        {
-            //------------Setup for test-------------------------    
-            var viewModel = CreateViewModel(outputPath: "C:\\", inputPath: "");
-            var expectedMessage = viewModel.InputPathLabel + " must have a value if " + viewModel.OutputPathLabel + " has a value";
-
-            Assert.IsFalse(viewModel.IsInputPathFocused);
-
-            //------------Execute Test---------------------------
-            viewModel.TestValidateInputAndOutputPaths(true);
-
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(viewModel.Errors);
-            Assert.AreEqual(1, viewModel.Errors.Count);
-
-            var error = viewModel.Errors[0];
-            Assert.AreEqual(expectedMessage, error.Message);
-
-            error.Do();
-            Assert.IsTrue(viewModel.IsInputPathFocused);
         }
 
         [TestMethod]

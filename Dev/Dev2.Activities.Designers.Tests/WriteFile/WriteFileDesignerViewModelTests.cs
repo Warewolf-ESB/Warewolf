@@ -44,8 +44,6 @@ namespace Dev2.Activities.Designers.Tests.WriteFile
             Assert.AreEqual(1, viewModel.ValidateInputPathHitCount);
             Assert.AreEqual(0, viewModel.ValidateOutputPathHitCount);
             Assert.AreEqual(1, viewModel.ValidateUserNameAndPasswordHitCount);
-            Assert.IsFalse(viewModel.ValidateOutputPathIsRequired);
-            Assert.IsTrue(viewModel.ValidateInputPathIsRequired);
         }
 
         [TestMethod]

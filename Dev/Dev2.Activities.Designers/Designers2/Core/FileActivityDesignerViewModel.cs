@@ -47,36 +47,23 @@ namespace Dev2.Activities.Designers2.Core
         string InputPath { get { return GetProperty<string>(); } }
         string OutputPath { get { return GetProperty<string>(); } }
 
-        protected virtual void ValidateInputPath(bool isRequired = false)
+        protected virtual void ValidateInputPath()
         {
-            InputPathValue = ValidatePath(InputPathLabel, InputPath, () => IsInputPathFocused = true, isRequired);
+            InputPathValue = ValidatePath(InputPathLabel, InputPath, () => IsInputPathFocused = true, true);
         }
 
-        protected virtual void ValidateOutputPath(bool isRequired = false)
+        protected virtual void ValidateOutputPath()
         {
-            OutputPathValue = ValidatePath(OutputPathLabel, OutputPath, () => IsOutputPathFocused = true, isRequired);
+            OutputPathValue = ValidatePath(OutputPathLabel, OutputPath, () => IsOutputPathFocused = true, true);
         }
 
-        protected virtual void ValidateInputAndOutputPaths(bool isOutputPathRequired = false)
+        protected virtual void ValidateInputAndOutputPaths()
         {
-            ValidateOutputPath(isOutputPathRequired);
+            ValidateOutputPath();
             ValidateInputPath();
-
-            if(!string.IsNullOrWhiteSpace(OutputPathValue) && string.IsNullOrWhiteSpace(InputPathValue))
-            {
-                var errors = new List<IActionableErrorInfo>
-                {
-                    new ActionableErrorInfo(() => IsInputPathFocused = true)
-                    {
-                        ErrorType = ErrorType.Critical,
-                        Message = InputPathLabel + " must have a value if " + OutputPathLabel + " has a value"
-                    }
-                };
-                UpdateErrors(errors);
-            }
         }
 
-        protected virtual string ValidatePath(string label, string path, Action onError, bool pathIsRequired = false)
+        protected virtual string ValidatePath(string label, string path, Action onError, bool pathIsRequired)
         {
             if(!pathIsRequired && string.IsNullOrWhiteSpace(path))
             {

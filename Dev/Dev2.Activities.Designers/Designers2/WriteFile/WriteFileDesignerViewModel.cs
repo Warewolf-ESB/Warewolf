@@ -21,7 +21,7 @@ namespace Dev2.Activities.Designers2.WriteFile
         {
             Errors = null;
             ValidateUserNameAndPassword();
-            ValidateInputPath(true);
+            ValidateInputPath();
         }
 
         bool Overwrite { set { SetProperty(value); } get { return GetProperty<bool>(); } }

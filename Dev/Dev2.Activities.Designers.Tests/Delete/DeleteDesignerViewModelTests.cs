@@ -44,8 +44,6 @@ namespace Dev2.Activities.Designers.Tests.Delete
             Assert.AreEqual(1, viewModel.ValidateInputPathHitCount);
             Assert.AreEqual(0, viewModel.ValidateOutputPathHitCount);
             Assert.AreEqual(1, viewModel.ValidateUserNameAndPasswordHitCount);
-            Assert.IsFalse(viewModel.ValidateOutputPathIsRequired);
-            Assert.IsFalse(viewModel.ValidateInputPathIsRequired);
         }
 
         static TestDeleteDesignerViewModel DeleteViewModel()

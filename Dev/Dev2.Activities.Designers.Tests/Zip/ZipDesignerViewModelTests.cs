@@ -43,8 +43,6 @@ namespace Dev2.Activities.Designers.Tests.Zip
             Assert.AreEqual(1, viewModel.ValidateInputPathHitCount);
             Assert.AreEqual(1, viewModel.ValidateOutputPathHitCount);
             Assert.AreEqual(1, viewModel.ValidateUserNameAndPasswordHitCount);
-            Assert.IsTrue(viewModel.ValidateOutputPathIsRequired);
-            Assert.IsFalse(viewModel.ValidateInputPathIsRequired);
         }
 
         [TestMethod]

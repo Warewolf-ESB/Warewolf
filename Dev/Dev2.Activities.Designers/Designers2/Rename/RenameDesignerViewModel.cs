@@ -16,7 +16,7 @@ namespace Dev2.Activities.Designers2.Rename
         {
             Errors = null;
             ValidateUserNameAndPassword();
-            ValidateInputAndOutputPaths(true);
+            ValidateInputAndOutputPaths();
         }
     }
 }
