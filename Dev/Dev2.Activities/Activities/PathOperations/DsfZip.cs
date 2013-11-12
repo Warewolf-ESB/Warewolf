@@ -22,7 +22,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Status : New 
     /// Purpose : To provide an activity that can zip the contents of a file/folder from FTP, FTPS and file system
     /// </summary>
-    public class DsfZip : DsfAbstractFileActivity, IZip, IPathInput, IPathOutput
+    public class DsfZip : DsfAbstractFileActivity, IZip, IPathInput, IPathOutput,IPathOverwrite
     {
         private string _compressionRatio;
 
@@ -118,7 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     Dev2ZipOperationTO zipTO = ActivityIOFactory.CreateZipTO(colItr.FetchNextRow(compresItr).TheValue,
                                                                                 colItr.FetchNextRow(archPassItr).TheValue,
-                                                                                colItr.FetchNextRow(archNameItr).TheValue);
+                                                                                colItr.FetchNextRow(archNameItr).TheValue,Overwrite);
                     string result = broker.Zip(scrEndPoint, dstEndPoint, zipTO);
                     outputs[0].OutputStrings.Add(result);
                 }

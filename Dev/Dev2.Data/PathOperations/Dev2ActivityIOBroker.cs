@@ -414,7 +414,6 @@ namespace Dev2.PathOperations
                                 s.Close();
                                 s.Dispose();
                             }
-
                             // delete original file ;)
                             src.Delete(src.IOPath);
                         }
@@ -448,13 +447,16 @@ namespace Dev2.PathOperations
                     if (!Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
                     {
                         // single file
-                        using(Stream s = src.Get(src.IOPath))
+                        if(args.Overwrite || !dst.PathExist(dst.IOPath))
                         {
-                            dst.Put(s, dst.IOPath, args, new FileInfo(src.IOPath.Path).Directory);
-                            s.Close();
-                            s.Dispose();
+                            using(Stream s = src.Get(src.IOPath))
+                            {
+                                dst.Put(s, dst.IOPath, args, new FileInfo(src.IOPath.Path).Directory);
+                                s.Close();
+                                s.Dispose();
+                            }
+                            src.Delete(src.IOPath);
                         }
-                        src.Delete(src.IOPath);
                     }
                     else
                     {
@@ -584,7 +586,7 @@ namespace Dev2.PathOperations
                 // add archive name to path
                 dst = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipLoc, dst.IOPath.Username, dst.IOPath.Password));
 
-                Dev2CRUDOperationTO zipTransferArgs = new Dev2CRUDOperationTO(false);
+                Dev2CRUDOperationTO zipTransferArgs = new Dev2CRUDOperationTO(args.Overwrite);
 
                 result = resultOk;
 

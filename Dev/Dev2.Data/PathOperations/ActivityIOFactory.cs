@@ -137,9 +137,9 @@ namespace Dev2.PathOperations
         /// Create an ZipOperationTO object
         /// </summary>
         /// <returns></returns>
-        public static Dev2ZipOperationTO CreateZipTO(string ratio, string passwd, string name)
+        public static Dev2ZipOperationTO CreateZipTO(string ratio, string passwd, string name,bool overwrite=false)
         {
-            return new Dev2ZipOperationTO(ratio, passwd, name);
+            return new Dev2ZipOperationTO(ratio, passwd, name,overwrite);
         }
     }
 }

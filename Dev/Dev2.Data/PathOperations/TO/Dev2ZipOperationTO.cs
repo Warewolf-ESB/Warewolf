@@ -11,10 +11,11 @@ namespace Dev2.PathOperations {
     /// </summary>
     public class Dev2ZipOperationTO : IZip {
 
-        public Dev2ZipOperationTO(string ratio, string passwd, string name) {
+        public Dev2ZipOperationTO(string ratio, string passwd, string name,bool overwrite) {
             CompressionRatio = ratio;
             ArchivePassword = passwd;
             ArchiveName = name;
+            Overwrite = overwrite;
         }
 
         public string CompressionRatio {
@@ -31,5 +32,7 @@ namespace Dev2.PathOperations {
             get;
             set;
         }
+
+        public bool Overwrite { get; set; }
     }
 }

@@ -168,6 +168,11 @@ namespace Dev2.Common
             if(EnableErrorOutput)
             {
                 InternalLogMessage(e.Message + Environment.NewLine + e.StackTrace, "ERROR");
+                while(e.InnerException != null)
+                {
+                    e = e.InnerException;
+                    InternalLogMessage(e.Message+Environment.NewLine+e.StackTrace,"Error");
+                }
             }
         }
 

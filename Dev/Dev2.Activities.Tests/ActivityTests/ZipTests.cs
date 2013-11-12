@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
@@ -252,6 +253,59 @@ namespace ActivityUnitTests.ActivityTests
             Dev2ZipOperationTO zipTO = ActivityIOFactory.CreateZipTO(null, null, null);
             ActivityIOFactory.CreateOperationsBroker().Zip(scrEndPoint, dstEndPoint, zipTO);
             Assert.IsTrue(File.Exists(Path.GetTempPath() + NewFileName+ ".zip"));
+            Assert.IsFalse(zipTO.Overwrite);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ActivityIOBroker_Zip")]
+        public void ActivityIOBroker_Zip_WhenOverwriteSetTrue_ShouldOverwriteFile()
+        {
+            //------------Setup for test--------------------------
+            tempFile = Path.GetTempFileName();
+            var zipPathName = Path.GetTempPath() + NewFileName + ".zip";
+            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true));
+            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipPathName, string.Empty, null, true));
+            Dev2ZipOperationTO zipTO = ActivityIOFactory.CreateZipTO(null, null, null,true);
+            File.WriteAllText(zipPathName,"");
+            //------------Assert Preconditions-------------------
+            Assert.IsTrue(zipTO.Overwrite);
+            Assert.IsTrue(File.Exists(zipPathName));
+            var readAllBytes = File.ReadAllBytes(zipPathName);
+            Assert.AreEqual(0,readAllBytes.Count());
+            //------------Execute Test---------------------------
+            ActivityIOFactory.CreateOperationsBroker().Zip(scrEndPoint, dstEndPoint, zipTO);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(File.Exists(zipPathName));
+            readAllBytes = File.ReadAllBytes(zipPathName);
+            Assert.AreNotEqual(0, readAllBytes.Count());
+            
+        }     
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ActivityIOBroker_Zip")]
+        public void ActivityIOBroker_Zip_WhenOverwriteSetFalse_ShouldNotOverwriteFile()
+        {
+            //------------Setup for test--------------------------
+            tempFile = Path.GetTempFileName();
+            var zipPathName = Path.GetTempPath() + NewFileName + ".zip";
+            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true));
+            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipPathName, string.Empty, null, true));
+            Dev2ZipOperationTO zipTO = ActivityIOFactory.CreateZipTO(null, null, null,false);
+            File.WriteAllText(zipPathName,"");
+            //------------Assert Preconditions-------------------
+            Assert.IsFalse(zipTO.Overwrite);
+            Assert.IsTrue(File.Exists(zipPathName));
+            var readAllBytes = File.ReadAllBytes(zipPathName);
+            Assert.AreEqual(0,readAllBytes.Count());
+            //------------Execute Test---------------------------
+            ActivityIOFactory.CreateOperationsBroker().Zip(scrEndPoint, dstEndPoint, zipTO);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(File.Exists(zipPathName));
+            readAllBytes = File.ReadAllBytes(zipPathName);
+            Assert.AreEqual(0, readAllBytes.Count());
+            
         }
 
         [TestMethod]
@@ -274,7 +328,7 @@ namespace ActivityUnitTests.ActivityTests
             //------------Assert Results-------------------------
             Assert.IsTrue(File.Exists(Path.GetTempPath() + NewFileName + ".zip"));
         }
-        
+
 
         #endregion
     }

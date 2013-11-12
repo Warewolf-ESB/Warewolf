@@ -107,6 +107,35 @@ namespace Dev2.Data.Tests.Operations
             string newFilePath = tempPath + NewFileName;
             Assert.IsTrue(File.Exists(newFilePath));
             Assert.IsFalse(File.Exists(tempFileName));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Dev2ActivityIOBroker_Move")]
+        public void Dev2ActivityIOBroker_Move_WhenOverwriteFalseAndDestinationExists_ShouldNotRemoveSourceFile()
+        {
+            //------------Setup for test--------------------------
+            const string NewFileName = "MovedTempFile.tmp";
+            string tempPath = Path.GetTempPath();
+            string tempFileName = Path.GetFileName(Path.GetTempFileName());
+            string tempData = "some string data";
+            var tempFile = Path.Combine(tempPath,tempFileName);
+            Directory.CreateDirectory(Path.GetDirectoryName(tempFile));
+            File.WriteAllText(tempFile,tempData);
+            string newFilePath = Path.Combine(tempPath, NewFileName);
+            tempData = "some other data";
+            File.WriteAllText(newFilePath,tempData);
+            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true));
+            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(newFilePath, string.Empty, null, true));
+
+            var moveTO = new Dev2CRUDOperationTO(false);
+            //------------Execute Test---------------------------
+            ActivityIOFactory.CreateOperationsBroker().Move(scrEndPoint, dstEndPoint, moveTO);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(File.Exists(newFilePath));
+            Assert.IsTrue(File.Exists(tempFile));
+            StringAssert.Contains(File.ReadAllText(newFilePath), "some other data");
+            StringAssert.Contains(File.ReadAllText(tempFile), "some string data");
         } 
         
         [TestMethod]

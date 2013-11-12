@@ -152,6 +152,7 @@ namespace Dev2.Activities
                 compiler.Upsert(executionID, toUpsert, out errors);
                 AddDebugOutputItemFromEntry(Result, compiler, executionID, debugOutputIndexCounter);
                 allErrors.AddError(e.Message);
+                ServerLogger.LogError(e);
             }
             finally
             {
