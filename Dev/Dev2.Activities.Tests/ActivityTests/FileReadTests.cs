@@ -80,7 +80,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(3, inRes.Count);
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
@@ -125,7 +125,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(3, inRes.Count);
             Assert.AreEqual(13, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);            
