@@ -24,7 +24,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DsfFlowNodeTests : BaseActivityUnitTest
     {
         #region Decision Tests
@@ -55,7 +56,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.IsTrue(res);
         }
-        
+
         [TestMethod]
         public void DecisionWithQuotesInDataExpectedNoUnhandledExceptions()
         {
@@ -321,38 +322,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(1, outRes[0].FetchResultsList().Count);
             Assert.AreEqual("Passed Test", outRes[0].ResultsList[0].Value);
-        }
-
-        #endregion
-
-        #region Switch Tests
-
-        [TestMethod]
-        // ReSharper disable InconsistentNaming
-        //Bug 8104
-        public void FileRead_Get_Debug_Input_Output_With_Recordset_Using_Star_Notation_Expected_Pass()
-        // ReSharper restore InconsistentNaming
-        {
-            DsfFileRead act = new DsfFileRead { InputPath = "[[Numeric(*).num]]", Result = "[[CompanyName]]" };
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-
-            Assert.AreEqual(3, inRes.Count);
-            Assert.AreEqual(31, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
-
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual("[[CompanyName]]", outRes[0].ResultsList[0].Value);
-            Assert.AreEqual("=", outRes[0].ResultsList[1].Value);
-            Assert.AreEqual("Dev2", outRes[0].ResultsList[2].Value);
         }
 
         #endregion

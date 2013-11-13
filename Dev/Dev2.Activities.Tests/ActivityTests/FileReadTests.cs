@@ -128,8 +128,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
 
             Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);            
-        }
+            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
+            Assert.AreEqual("[[res]]", outRes[0].ResultsList[0].Value);
+            Assert.AreEqual("=", outRes[0].ResultsList[1].Value);
+            Assert.AreEqual("TestData", outRes[0].ResultsList[2].Value);
+        }    
 
         #endregion
 
