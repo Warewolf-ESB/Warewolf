@@ -128,9 +128,9 @@ namespace Dev2.PathOperations
         /// Create an UnZipOperationTO object
         /// </summary>
         /// <returns></returns>
-        public static Dev2UnZipOperationTO CreateUnzipTO(string passwd)
+        public static Dev2UnZipOperationTO CreateUnzipTO(string passwd, bool overwrite)
         {
-            return new Dev2UnZipOperationTO(passwd);
+            return new Dev2UnZipOperationTO(passwd, overwrite);
         }
 
         /// <summary>

@@ -15,5 +15,10 @@ namespace Dev2.PathOperations {
         /// The password for UnZiping
         /// </summary>
         string ArchivePassword { get; set; }
+
+        /// <summary>
+        /// Indicates if the destination must be overwritten or not
+        /// </summary>
+        bool Overwrite { get; set; }
     }
 }

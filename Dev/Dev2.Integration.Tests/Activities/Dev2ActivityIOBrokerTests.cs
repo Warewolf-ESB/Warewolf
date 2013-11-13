@@ -1,4 +1,5 @@
-﻿using Dev2.PathOperations;
+﻿using System.Threading;
+using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
@@ -1071,7 +1072,7 @@ namespace Dev2.Integration.Tests.Activities
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
             IActivityIOPath UnzipDestinationPath = ActivityIOFactory.CreatePathFromString(dstDir + "\\Users", "", "");
-            Dev2UnZipOperationTO unzipOpTO = ActivityIOFactory.CreateUnzipTO(null);
+            Dev2UnZipOperationTO unzipOpTO = ActivityIOFactory.CreateUnzipTO(null, false);
             broker.UnZip(srcEP, dstEP, unzipOpTO);
             string fileName = file1.Remove(0, @"C:\".Length);
             bool unzippedFileExists = File.Exists(dstDir + @"\" + Path.GetFileName(file1));
@@ -1081,7 +1082,6 @@ namespace Dev2.Integration.Tests.Activities
             PathIOTestingUtils.DeleteTmpDir(srcDir);
 
             Assert.IsTrue(unzippedFileExists);
-
         }
 
         /// <summary>
@@ -1106,7 +1106,7 @@ namespace Dev2.Integration.Tests.Activities
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
             IActivityIOPath UnzipDestinationPath = ActivityIOFactory.CreatePathFromString(dstDir + "\\Users", "", "");
-            Dev2UnZipOperationTO unzipOpTO = ActivityIOFactory.CreateUnzipTO(null);
+            Dev2UnZipOperationTO unzipOpTO = ActivityIOFactory.CreateUnzipTO(null, false);
 
             string result = broker.UnZip(srcEP, dstEP, unzipOpTO);
         }
@@ -1129,7 +1129,7 @@ namespace Dev2.Integration.Tests.Activities
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
             IActivityIOPath UnzipDestinationPath = ActivityIOFactory.CreatePathFromString(dstDir + "\\Users", "", "");
-            Dev2UnZipOperationTO unzipOpTO = ActivityIOFactory.CreateUnzipTO(null);
+            Dev2UnZipOperationTO unzipOpTO = ActivityIOFactory.CreateUnzipTO(null, false);
 
             string result = broker.UnZip(srcEP, dstEP, unzipOpTO);
 
@@ -1141,6 +1141,72 @@ namespace Dev2.Integration.Tests.Activities
             PathIOTestingUtils.DeleteTmpDir(srcDir);
 
             Assert.IsTrue(unzippedFileExists);
+        }
+
+        /// <summary>
+        /// Unzip from file system overwrite is set to true.
+        /// </summary>
+        [TestMethod]
+        public void UnZip_From_FileSystem_Overwrite_Is_Set_To_True_DestinationFiles_Are_Overwritten()
+        {
+            string srcDir = PathIOTestingUtils.CreateTmpDirectory();
+            string dstDir = PathIOTestingUtils.CreateTmpDirectory();
+
+            string file = PathIOTestingUtils.CreateTmpFile(srcDir);
+            PathIOTestingUtils.CreateTmpFile(dstDir, file.Replace(srcDir, ""));
+
+            string[] files = new string[] { file };
+            string ZipFileName = PathIOTestingUtils.ZipFile(srcDir, files);
+
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(ZipFileName, "", "");
+            IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
+            IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
+
+            IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
+          
+            Dev2UnZipOperationTO unzipOpTO = ActivityIOFactory.CreateUnzipTO(null, true);
+            broker.UnZip(srcEP, dstEP, unzipOpTO);
+
+           var actual = File.ReadAllText(new DirectoryInfo(dstDir).GetFiles()[0].FullName);
+           
+            PathIOTestingUtils.DeleteTmpDir(dstDir);
+            PathIOTestingUtils.DeleteTmpDir(srcDir);
+
+            Assert.AreEqual(actual, "abc");
+        }
+
+        /// <summary>
+        /// Unzip from file system overwrite is set to true.
+        /// </summary>
+        [TestMethod]
+        public void UnZip_From_FileSystem_Overwrite_Is_Set_To_False_DestinationFiles_Are_Not_Overwritten()
+        {
+            string srcDir = PathIOTestingUtils.CreateTmpDirectory();
+            string dstDir = PathIOTestingUtils.CreateTmpDirectory();
+
+            string file = PathIOTestingUtils.CreateTmpFile(srcDir);
+            PathIOTestingUtils.CreateTmpFile(dstDir, file.Replace(srcDir, ""));
+
+            string[] files = new string[] { file };
+            string ZipFileName = PathIOTestingUtils.ZipFile(srcDir, files);
+
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(ZipFileName, "", "");
+            IActivityIOOperationsEndPoint srcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(dstDir, "", "");
+            IActivityIOOperationsEndPoint dstEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
+
+            IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
+
+            Dev2UnZipOperationTO unzipOpTO = ActivityIOFactory.CreateUnzipTO(null, false);
+            broker.UnZip(srcEP, dstEP, unzipOpTO);
+
+            var actual = File.ReadAllText(new DirectoryInfo(dstDir).GetFiles()[0].FullName);
+
+            PathIOTestingUtils.DeleteTmpDir(dstDir);
+            PathIOTestingUtils.DeleteTmpDir(srcDir);
+
+            Assert.AreEqual(actual, "def");
         }
 
         //BUILD
@@ -1232,7 +1298,7 @@ namespace Dev2.Integration.Tests.Activities
 
             string tmpID = Guid.NewGuid().ToString();
 
-            Dev2UnZipOperationTO args = ActivityIOFactory.CreateUnzipTO(null);
+            Dev2UnZipOperationTO args = ActivityIOFactory.CreateUnzipTO(null, false);
             try
             {
                 string result = broker.UnZip(srcEP, dstEP, args);
@@ -1267,7 +1333,7 @@ namespace Dev2.Integration.Tests.Activities
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
-            Dev2UnZipOperationTO args = ActivityIOFactory.CreateUnzipTO("test123");
+            Dev2UnZipOperationTO args = ActivityIOFactory.CreateUnzipTO("test123", false);
 
 
             try
@@ -1298,7 +1364,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
             string tmpID = Guid.NewGuid().ToString();
-            Dev2UnZipOperationTO args = ActivityIOFactory.CreateUnzipTO(null);
+            Dev2UnZipOperationTO args = ActivityIOFactory.CreateUnzipTO(null, false);
 
             string result = broker.UnZip(srcEP, dstEP, args);
 
@@ -1336,7 +1402,7 @@ namespace Dev2.Integration.Tests.Activities
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
-            Dev2UnZipOperationTO args = ActivityIOFactory.CreateUnzipTO("test");
+            Dev2UnZipOperationTO args = ActivityIOFactory.CreateUnzipTO("test", false);
 
 
             string result = broker.UnZip(srcEP, dstEP, args);
@@ -1367,7 +1433,7 @@ namespace Dev2.Integration.Tests.Activities
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
-            Dev2UnZipOperationTO args = ActivityIOFactory.CreateUnzipTO("tester");
+            Dev2UnZipOperationTO args = ActivityIOFactory.CreateUnzipTO("tester", false);
 
             try
             {
@@ -1436,7 +1502,7 @@ namespace Dev2.Integration.Tests.Activities
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
-            Dev2UnZipOperationTO args = ActivityIOFactory.CreateUnzipTO("Incorrect");
+            Dev2UnZipOperationTO args = ActivityIOFactory.CreateUnzipTO("Incorrect", false);
 
 
             try
@@ -1498,7 +1564,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
             string tmpID = Guid.NewGuid().ToString();
-            Dev2UnZipOperationTO args = ActivityIOFactory.CreateUnzipTO(null);
+            Dev2UnZipOperationTO args = ActivityIOFactory.CreateUnzipTO(null, false);
 
             string result = broker.UnZip(srcEP, dstEP, args);
 
@@ -1534,7 +1600,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
             string tmpID = Guid.NewGuid().ToString();
-            Dev2UnZipOperationTO args = ActivityIOFactory.CreateUnzipTO(null);
+            Dev2UnZipOperationTO args = ActivityIOFactory.CreateUnzipTO(null, false);
 
             try
             {
@@ -1560,7 +1626,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
             string tmpID = Guid.NewGuid().ToString();
-            Dev2UnZipOperationTO args = ActivityIOFactory.CreateUnzipTO(null);
+            Dev2UnZipOperationTO args = ActivityIOFactory.CreateUnzipTO(null, false);
 
             try
             {

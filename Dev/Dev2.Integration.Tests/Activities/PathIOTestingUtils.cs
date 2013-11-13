@@ -98,6 +98,16 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
 
             return (dir + "\\" + fileName);
         }
+        
+        public static void CreateTmpFile(string dir , string fileName)
+        {
+            byte[] data = new byte[3];
+            data[0] = (byte)'d';
+            data[1] = (byte)'e';
+            data[2] = (byte)'f';
+
+            File.WriteAllBytes(dir + "\\" + fileName, data);
+        }
 
         public static void DeleteTmpDir(string path) {
             Directory.Delete(path, true);

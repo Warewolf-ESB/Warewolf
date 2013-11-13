@@ -28,6 +28,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ArchivePassword = string.Empty;
             InputPath = string.Empty;
             OutputPath = string.Empty;
+            Overwrite = false;
         }
 
         protected override IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context, out ErrorResultTO allErrors)
@@ -84,11 +85,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 string error = string.Empty;
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-                Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(Overwrite);
 
                 try
                 {
-                    Dev2UnZipOperationTO zipTO = ActivityIOFactory.CreateUnzipTO(colItr.FetchNextRow(archPassItr).TheValue);
+                    Dev2UnZipOperationTO zipTO = ActivityIOFactory.CreateUnzipTO(colItr.FetchNextRow(archPassItr).TheValue,
+                                                                                 Overwrite);
 
                     IActivityIOPath src = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(inputItr).TheValue,
                                                                                 colItr.FetchNextRow(unameItr).TheValue,

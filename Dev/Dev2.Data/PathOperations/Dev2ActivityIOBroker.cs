@@ -23,7 +23,7 @@ namespace Dev2.PathOperations
         private static string resultBad = "Failure";
 
         // See interfaces summary's for more detail
-
+        
         public string Get(IActivityIOOperationsEndPoint path, bool deferredRead = false)
         {
 
@@ -482,7 +482,6 @@ namespace Dev2.PathOperations
 
         public string Zip(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2ZipOperationTO args)
         {
-
             // tmp zip file location
             string tmpZip = CreateTmpFile();
 
@@ -635,7 +634,6 @@ namespace Dev2.PathOperations
 
         public string UnZip(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2UnZipOperationTO args)
         {
-
             string zipFile = src.IOPath.Path;
             ZipFile zip = null;
             if (src.RequiresLocalTmpStorage())
@@ -672,14 +670,17 @@ namespace Dev2.PathOperations
                 using (zip)
                 {
 
-                    if (args.ArchivePassword != string.Empty)
+                    if (!string.IsNullOrEmpty(args.ArchivePassword))
                     {
                         zip.Password = args.ArchivePassword;
                     }
 
                     foreach (ZipEntry ze in zip)
                     {
-                        ze.Extract(unzipDirectory, ExtractExistingFileAction.OverwriteSilently);
+                        ze.Extract(unzipDirectory,
+                            args.Overwrite ? 
+                            ExtractExistingFileAction.OverwriteSilently :
+                            ExtractExistingFileAction.DoNotOverwrite);
                     }
                 }
 
