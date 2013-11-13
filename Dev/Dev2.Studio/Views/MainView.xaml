@@ -263,6 +263,7 @@
         <KeyBinding Command="{Binding DeployCommand}" Key="D" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding NewResourceCommand}"  CommandParameter="DatabaseService" Key="D" Modifiers="Ctrl+Shift" />
         <KeyBinding Command="{Binding NewResourceCommand}"  CommandParameter="ResourceService" Key="P" Modifiers="Ctrl+Shift" />
+        <KeyBinding Command="{Binding NewResourceCommand}"  CommandParameter="WebService" Key="W" Modifiers="Ctrl+Shift" />
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Unknown" Key="N" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Workflow" Key="W" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Source" Key="C" Modifiers="Alt" />

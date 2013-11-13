@@ -1,4 +1,5 @@
-﻿using System.Activities.Statements;
+﻿using System;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -464,6 +465,134 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, actual.Count, "XPath tool upserted to many results");
             Assert.AreEqual("1", actual[0], "XPath tool upserted the wrong result");
         }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfXPathActivity_UpdateForEachInputs")]
+        public void DsfXPathActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
+            var act = new DsfXPathActivity { ResultsCollection = _resultsCollection,SourceString = "xml"};
+
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[recset1(*).field1]]", act.ResultsCollection[0].OutputVariable);
+            Assert.AreEqual("//x/a/text()", act.ResultsCollection[0].XPath);
+            Assert.AreEqual("xml",act.SourceString);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfXPathActivity_UpdateForEachInputs")]
+        public void DsfXPathActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
+        {
+            //------------Setup for test--------------------------
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
+            var act = new DsfXPathActivity { ResultsCollection = _resultsCollection,SourceString = "xml"};
+
+            var tuple1 = new Tuple<string, string>("//x/a/text()", "Test");
+            var tuple2 = new Tuple<string, string>("xml", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[recset1(*).field1]]", act.ResultsCollection[0].OutputVariable);
+            Assert.AreEqual("Test", act.ResultsCollection[0].XPath);
+            Assert.AreEqual("Test2", act.SourceString);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfXPathActivity_UpdateForEachOutputs")]
+        public void DsfXPathActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
+            var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
+
+            act.UpdateForEachOutputs(null, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[recset1(*).field1]]", act.ResultsCollection[0].OutputVariable);
+            Assert.AreEqual("//x/a/text()", act.ResultsCollection[0].XPath);
+            Assert.AreEqual("xml", act.SourceString);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfXPathActivity_UpdateForEachOutputs")]
+        public void DsfXPathActivity_UpdateForEachOutputs_MoreThan1Updates_Updates()
+        {
+            //------------Setup for test--------------------------
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
+            var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
+
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>("[[recset1(*).field1]]", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test2", act.ResultsCollection[0].OutputVariable);
+            Assert.AreEqual("//x/a/text()", act.ResultsCollection[0].XPath);
+            Assert.AreEqual("xml", act.SourceString);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfUniqueActivity_UpdateForEachOutputs")]
+        public void DsfXPathActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
+        {
+            //------------Setup for test--------------------------
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
+            var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
+
+            var tuple1 = new Tuple<string, string>("[[recset1(*).field1]]", "Test");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Test", act.ResultsCollection[0].OutputVariable);
+            Assert.AreEqual("//x/a/text()", act.ResultsCollection[0].XPath);
+            Assert.AreEqual("xml", act.SourceString);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfUniqueActivity_GetForEachInputs")]
+        public void DsfXPathActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        {
+            //------------Setup for test--------------------------
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
+            var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachInputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, dsfForEachItems.Count);
+            Assert.AreEqual("xml", dsfForEachItems[0].Name);
+            Assert.AreEqual("xml", dsfForEachItems[0].Value);
+            Assert.AreEqual("//x/a/text()", dsfForEachItems[1].Name);
+            Assert.AreEqual("//x/a/text()", dsfForEachItems[1].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfXPathActivity_GetForEachOutputs")]
+        public void DsfXPathActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
+        {
+            //------------Setup for test--------------------------
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
+            var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
+
+            //------------Execute Test---------------------------
+            var dsfForEachItems = act.GetForEachOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual("[[recset1(*).field1]]", dsfForEachItems[0].Name);
+            Assert.AreEqual("[[recset1(*).field1]]", dsfForEachItems[0].Value);
+        }
+
 
         #region Private Test Methods
 
