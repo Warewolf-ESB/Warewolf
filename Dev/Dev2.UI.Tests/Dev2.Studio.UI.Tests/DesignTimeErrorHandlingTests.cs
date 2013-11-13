@@ -135,9 +135,10 @@ namespace Dev2.Studio.UI.Tests
             // Set input mapping to required
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             var wizard = StudioWindow.GetChildren()[0];
-            Keyboard.SendKeys(wizard, "{TAB}");
-            Keyboard.SendKeys(wizard, " ");
+            wizard.WaitForControlReady();
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+            SendKeys.SendWait("{TAB}");
+            SendKeys.SendWait(" ");
             // Save
             DatabaseServiceWizardUIMap.ClickOK();
 

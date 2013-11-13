@@ -146,9 +146,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         {
             var wizard = StudioWindow.GetChildren()[0];
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
-            Keyboard.SendKeys(wizard, "{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
-            Keyboard.SendKeys(wizard, "{RIGHT}");
+            wizard.WaitForControlReady();
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
+            SendKeys.SendWait("{RIGHT}");
         }
 
         public void TabToOutputMappings()
