@@ -33,7 +33,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
             string actual = TestHelper.PostDataToWebserver(webserverURI).Unescape();
             //------------Assert Results-------------------------
             var expected = string.Format("<Dev2System.ManagmentServicePayload>Updated WorkflowService 'BlankWorkflow'</Dev2System.ManagmentServicePayload>");
-            StringAssert.Contains(actual, expected, "Got [ " + actual + " ]");
+            Assert.IsTrue(actual.Contains(expected) || actual.Contains(expected.Replace("Updated", "Added")), "Expected [ " + expected + " ] But Got [ " + actual + " ]");
             webserverURI = ServerSettings.WebserverURI + @"FindResourceService?ResourceName=BlankWorkflow&ResourceType=WorkflowService";
             string fromServer = TestHelper.PostDataToWebserver(webserverURI);
             Assert.IsFalse(string.IsNullOrEmpty(fromServer));
