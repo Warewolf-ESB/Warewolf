@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
@@ -93,29 +94,25 @@ namespace Dev2.Data.ServiceModel.Helper
 
         public static bool MappingValuesChanged(IList<IDev2Definition> oldMappings, IList<IDev2Definition> newMappings)
         {
-            var mappingChanged = false;
-            newMappings.ToList().ForEach(definition =>
-            {
-                if(oldMappings.ToList().Find(dev2Definition => dev2Definition.Value == definition.Value) == null)
-                {
-                    mappingChanged = true;
-                }
-            });
-            return mappingChanged;
+            return MappingChanged(oldMappings, newMappings, (oldMapping, newMapping) => oldMapping.Value == newMapping.Value);
         }
 
         public static bool MappingNamesChanged(IList<IDev2Definition> oldMappings, IList<IDev2Definition> newMappings)
         {
-            var mappingChanged = false;
-            newMappings.ToList().ForEach(definition =>
-            {
-                if(oldMappings.ToList().Find(dev2Definition => dev2Definition.Name == definition.Name) == null)
-                {
-                    mappingChanged = true;
-                }
-            });
-            return mappingChanged;
+            return MappingChanged(oldMappings, newMappings, (oldMapping, newMapping) => oldMapping.Name == newMapping.Name);
         }
+
+
+        static bool MappingChanged(ICollection<IDev2Definition> oldMappings, ICollection<IDev2Definition> newMappings, Func<IDev2Definition, IDev2Definition, bool> equals)
+        {
+            if(oldMappings == null || newMappings == null || oldMappings.Count != newMappings.Count)
+            {
+                return true;
+            }
+
+            return newMappings.Select(newMapping => oldMappings.FirstOrDefault(old => @equals(old, newMapping))).Any(oldMapping => oldMapping == null);
+        }
+
     }
 
 }

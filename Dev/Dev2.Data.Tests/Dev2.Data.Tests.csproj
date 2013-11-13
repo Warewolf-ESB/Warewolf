@@ -110,6 +110,7 @@
     <Compile Include="Persistence\Dev2BinaryStorageTest.cs" />
     <Compile Include="Persistence\StorageSettingsManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceModel\ServiceUtilsTests.cs" />
     <Compile Include="Settings\Security\WindowsGroupPermissionComparerTests.cs" />
     <Compile Include="SystemTemplates\DecisionTest.cs" />
     <Compile Include="TestStrings.Designer.cs">
