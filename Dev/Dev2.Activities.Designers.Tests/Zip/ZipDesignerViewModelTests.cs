@@ -1,4 +1,7 @@
-﻿using Dev2.Studio.Core.Activities.Utils;
+﻿using System.Collections.Generic;
+using Dev2.Common.ExtMethods;
+using Dev2.Common.Lookups;
+using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -51,8 +54,7 @@ namespace Dev2.Activities.Designers.Tests.Zip
         public void ZipDesignerViewModel_Constructor_ModelItemIsValid_SelectedCompressionRatioIsInitialized()
         {
             var viewModel = ZipViewModel();
-            Assert.AreEqual("No Compression", viewModel.CompressionRatio);
-            Assert.AreEqual(viewModel.CompressionTypes[0], viewModel.SelectedCompressionRatio);
+            Assert.AreEqual("Default", viewModel.CompressionRatio);            
         }
 
         [TestMethod]
@@ -61,7 +63,7 @@ namespace Dev2.Activities.Designers.Tests.Zip
         public void ZipDesignerViewModel_Constructor_ModelItemIsValid_CompressionRatiosHasThreeItems()
         {
             var viewModel = ZipViewModel();
-            Assert.AreEqual(4, viewModel.CompressionTypes.Count);
+            Assert.AreEqual(4, viewModel.CompressionRatioList.Count);
         }
 
         [TestMethod]
@@ -70,8 +72,26 @@ namespace Dev2.Activities.Designers.Tests.Zip
         public void ZipDesignerViewModel_SetSelectedCompressionRatio_ValidCompressionRatio_CompressionRatioOnModelItemIsAlsoSet()
         {
             var viewModel = ZipViewModel();
-            viewModel.SelectedCompressionRatio = viewModel.CompressionTypes[1];
-            Assert.AreEqual("Best Speed", viewModel.CompressionRatio);
+            viewModel.SelectedCompressionRatioDescription = CompressionRatios.BestSpeed.GetDescription();
+            Assert.AreEqual("BestSpeed", viewModel.CompressionRatio);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("ZipDesignerViewModel_Constructor")]
+        public void ZipDesignerViewModel_Constructor_InitList_ListMatchesEnumDescriptions()
+        {
+            //------------Setup for test--------------------------
+            
+            
+            //------------Execute Test---------------------------
+            var zipDesignerViewModel_Constructor = ZipViewModel();
+                       
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CompressionRatios.NoCompression.GetDescription(), zipDesignerViewModel_Constructor.CompressionRatioList[0]);
+            Assert.AreEqual(CompressionRatios.BestSpeed.GetDescription(), zipDesignerViewModel_Constructor.CompressionRatioList[1]);
+            Assert.AreEqual(CompressionRatios.Default.GetDescription(), zipDesignerViewModel_Constructor.CompressionRatioList[2]);
+            Assert.AreEqual(CompressionRatios.BestCompression.GetDescription(), zipDesignerViewModel_Constructor.CompressionRatioList[3]);           
         }
 
         static TestZipDesignerViewModel ZipViewModel()

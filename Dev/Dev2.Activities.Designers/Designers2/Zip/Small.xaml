@@ -68,7 +68,7 @@
         <Label Grid.Column="0"
                Grid.Row="1"
                Style="{StaticResource ActivityLabelStyle}"
-               Content="Zip Name" />
+               Content="Destination" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="1"
                                 AllowUserInsertLine="False" 

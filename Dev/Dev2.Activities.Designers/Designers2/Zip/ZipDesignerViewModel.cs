@@ -1,50 +1,61 @@
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Lookups;
 
 namespace Dev2.Activities.Designers2.Zip
 {
     public class ZipDesignerViewModel : FileActivityDesignerViewModel
     {
-        public IList<CompressionType> CompressionTypes { get; set; }
+        public IList<string> CompressionRatioList { get; private set; }
 
         public ZipDesignerViewModel(ModelItem modelItem)
             : base(modelItem, "File or Folder", "Destination")
         {
             AddTitleBarLargeToggle();
             AddTitleBarHelpToggle();
-            CompressionTypes = CompressionType.GetTypes();
 
-            SelectedCompressionRatio = string.IsNullOrEmpty(CompressionRatio)
-                                           ? CompressionTypes[0]
-                                           : CompressionTypes.SingleOrDefault(
-                                               c => c.CompressionRatio.Replace(" ", "").Equals(CompressionRatio));
+            CompressionRatioList = Dev2EnumConverter.ConvertEnumsTypeToStringList<CompressionRatios>();
+
+            var selectionRatio = string.IsNullOrEmpty(CompressionRatio)
+                ? CompressionRatios.Default
+                : (CompressionRatios)Enum.Parse(typeof(CompressionRatios), CompressionRatio);
+
+            SelectedCompressionRatioDescription = selectionRatio.GetDescription();
         }
 
-        public CompressionType SelectedCompressionRatio
+        public string SelectedCompressionRatioDescription
         {
-            get { return (CompressionType)GetValue(SelectedCompressionRatioProperty); }
-            set { SetValue(SelectedCompressionRatioProperty, value); }
+            get { return (string)GetValue(SelectedCompressionRatioDescriptionProperty); }
+            set { SetValue(SelectedCompressionRatioDescriptionProperty, value); }
         }
 
-        public static readonly DependencyProperty SelectedCompressionRatioProperty =
-            DependencyProperty.Register("SelectedCompressionRatio", typeof(CompressionType),
-                                        typeof(ZipDesignerViewModel),
-                                        new PropertyMetadata(null, OnSelectedCompressionRatioChanged));
+        public static readonly DependencyProperty SelectedCompressionRatioDescriptionProperty = DependencyProperty.Register("SelectedCompressionRatioDescription", typeof(string), typeof(ZipDesignerViewModel), new PropertyMetadata(default(string), OnSelectedCompressionRatioDescriptionPropertyChanged));
 
-        private static void OnSelectedCompressionRatioChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        static void OnSelectedCompressionRatioDescriptionPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
             var viewModel = (ZipDesignerViewModel)d;
-            var value = e.NewValue as CompressionType;
+            var description = args.NewValue as string;
 
-            if(value != null)
+            var enumValue = Dev2EnumConverter.GetEnumFromStringDiscription(description, typeof(CompressionRatios));
+            if(enumValue != null)
             {
-                viewModel.CompressionRatio = value.CompressionRatio;
+                viewModel.CompressionRatio = enumValue.ToString();
             }
         }
+
+        // This MUST be the enum.ToString()!!!
+        string CompressionRatio
+        {
+            set { SetProperty(value); }
+            get { return GetProperty<string>(); }
+        }
+
         public override void Validate()
         {
             Errors = null;
@@ -52,11 +63,6 @@ namespace Dev2.Activities.Designers2.Zip
             ValidateInputAndOutputPaths();
         }
 
-        private string CompressionRatio
-        {
-            set { SetProperty(value); }
-            get { return GetProperty<string>(); }
-        }
     }
 }
 
