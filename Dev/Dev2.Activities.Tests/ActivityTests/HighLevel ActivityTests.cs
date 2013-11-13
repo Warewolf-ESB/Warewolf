@@ -55,7 +55,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Couldnt find DsfZip.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 5);
+            Assert.IsTrue(properties.Count() == 6);
         }
 
         [TestMethod]
