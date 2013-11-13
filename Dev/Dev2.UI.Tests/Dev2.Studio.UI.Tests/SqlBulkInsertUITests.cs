@@ -5,6 +5,7 @@ using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -61,8 +62,8 @@ namespace Dev2.Studio.UI.Tests
         // 05/11 - Failure is Intermittent - Problems finding LargeView button ;)
         public void SqlBulkInsertTest_OpenLargeViewAndEnterAnInvalidBatchAndTimeoutSizeAndClickDone_CorrectingErrorsAndClickDoneWillReturnToSmallView()
         {
-            // Create the workflow
-            RibbonUIMap.CreateNewWorkflow();
+            //// Create the workflow
+            //RibbonUIMap.CreateNewWorkflow();
             var theTab = TabManagerUIMap.GetActiveTab();
 
             // Get some variables
@@ -108,9 +109,13 @@ namespace Dev2.Studio.UI.Tests
             //Enter a few mappings
 
             // THIS IS FAULTY LOGIC!!!!
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+            var getFirstTextbox = WorkflowDesignerUIMap.GetSqlBulkInsertLargeViewFirstInputTextbox(controlOnWorkflow);
+            Mouse.Click(getFirstTextbox);
             SendKeys.SendWait("^a^xrecord().id{TAB}");
             SendKeys.SendWait("^a^xrecord().name{TAB}");
             SendKeys.SendWait("^a^xrecord().mail{TAB}");
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
 
             var batchSize = GetControlById("UI__BatchSize_AutoID", theTab);
             Mouse.Click(batchSize, new Point(5, 5));

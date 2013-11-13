@@ -1126,5 +1126,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             return uiTestControls;
         }
+
+        public UITestControl GetSqlBulkInsertLargeViewFirstInputTextbox(UITestControl sqlBulkInsertToolOnWorkflow)
+        {
+            return VisualTreeWalker.GetChildByAutomationIDPath(sqlBulkInsertToolOnWorkflow, "LargeViewContent", "LargeDataGrid", "Uia.DataGridRow", "Item: Dev2.TO.DataColumnMapping, Column Display In...", "UI_Row0_InputColumn_AutoID");
+        }
     }
 }

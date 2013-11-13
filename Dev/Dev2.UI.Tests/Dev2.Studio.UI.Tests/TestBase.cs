@@ -283,7 +283,7 @@ namespace Dev2.CodedUI.Tests
 
             // And drag it down
             Mouse.StartDragging();
-            Mouse.StopDragging(new Point(workflowPoint1.X, workflowPoint1.Y + 100));
+            Mouse.StopDragging(new Point(workflowPoint1.X - 200, workflowPoint1.Y + 100));
 
             // Now get its position
             UITestControl calcTaxReturnsControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "CalculateTaxReturns");

@@ -192,8 +192,13 @@ namespace Dev2.Studio.UI.Tests
                                                      resourceToUse);
                 UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
-                Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
-                Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
+                //try scroll resize thumb into view
+                var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
+                if (scrollBar != null)
+                {
+                    Mouse.StartDragging(scrollBar);
+                    Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
+                }
 
                 UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, innerResource);
                 Mouse.Move(controlOnWorkflow, new Point(5, 5));
