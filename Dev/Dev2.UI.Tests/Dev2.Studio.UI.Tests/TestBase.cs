@@ -76,6 +76,58 @@ namespace Dev2.CodedUI.Tests
         #endregion New PBI Tests
 
         [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DataGridLargeView_AssignLargeView")]
+        public void DataGridLargeView_AssignLargeView_EnteringMultipleRows_IndexingWorksFine()
+        {
+            // Create the workflow
+            RibbonUIMap.CreateNewWorkflow();
+
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Drag the tool onto the workflow
+            DockManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
+            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
+
+            //Get Large View button
+            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign",
+                                                                           "Open Large View");
+
+            // Click it
+            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
+            Mouse.Click();
+
+            // Add the data!
+            WorkflowDesignerUIMap.AssignControl_LargeViewClickLeftTextboxInRow(theTab, "Assign", 0);
+            // moved from 100 to 20 for time
+            for(int j = 0; j < 20; j++)
+            {
+                // Sleeps are due to the delay when adding a lot of items
+                SendKeys.SendWait("[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
+                Playback.Wait(15);
+                SendKeys.SendWait("{TAB}");
+                Playback.Wait(15);
+                SendKeys.SendWait(j.ToString(CultureInfo.InvariantCulture));
+                Playback.Wait(15);
+                SendKeys.SendWait("{TAB}");
+                Playback.Wait(15);
+            }
+
+            // Click it
+            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
+            Mouse.Click();
+
+            Playback.Wait(500);
+            var leftTextBoxInRowLastRow = WorkflowDesignerUIMap.AssignControl_GetLeftTextboxInRow("Assign", 19) as WpfEdit;
+            string text = leftTextBoxInRowLastRow.Text;
+            StringAssert.Contains(text, "[[theVar19]]");
+        }
+
+        [TestMethod]
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
         {
             // Create the workflow

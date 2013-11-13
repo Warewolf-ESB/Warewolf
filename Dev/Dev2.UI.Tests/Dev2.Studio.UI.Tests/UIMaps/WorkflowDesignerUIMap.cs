@@ -422,9 +422,51 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             throw new UITestControlNotFoundException("Cannot find multiassign small view content");
         }
 
+        public WpfTable AssignControl_GetLargeViewTable(UITestControl theTab, string controlAutomationId, int row)
+        {
+            UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
+            UITestControl findContent = null;
+            foreach(var child in assignControl.GetChildren())
+            {
+                if(child.FriendlyName == "LargeViewContent")
+                {
+                    findContent = child;
+                    break;
+                }
+            }
+            if(findContent != null)
+            {
+                UITestControl findTable = null;
+                foreach(var child in findContent.GetChildren())
+                {
+                    if(child.FriendlyName == "LargeDataGrid")
+                    {
+                        findTable = child;
+                        break;
+                    }
+                }
+                if(findTable != null)
+                {
+                    WpfTable foundTable = (WpfTable)findTable;
+                    return foundTable;
+                }
+            }
+            throw new UITestControlNotFoundException("Cannot find multiassign large view content");
+        }
+
         public void AssignControl_ClickLeftTextboxInRow(UITestControl theTab, string controlAutomationId, int row)
         {
             WpfTable middleBox = AssignControl_GetSmallViewTable(theTab, controlAutomationId, row);
+            // Get the textbox
+            UITestControl leftTextboxInRow = middleBox.Rows[row].GetChildren()[2].GetChildren()[0];
+            Point locationOfVariableTextbox = new Point(leftTextboxInRow.BoundingRectangle.X + 25,
+                                                        leftTextboxInRow.BoundingRectangle.Y + 5);
+            Mouse.Click(locationOfVariableTextbox);
+        }
+
+        public void AssignControl_LargeViewClickLeftTextboxInRow(UITestControl theTab, string controlAutomationId, int row)
+        {
+            WpfTable middleBox = AssignControl_GetLargeViewTable(theTab, controlAutomationId, row);
             // Get the textbox
             UITestControl leftTextboxInRow = middleBox.Rows[row].GetChildren()[2].GetChildren()[0];
             Point locationOfVariableTextbox = new Point(leftTextboxInRow.BoundingRectangle.X + 25,
