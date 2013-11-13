@@ -65,6 +65,12 @@ namespace Dev2.Studio.Views.Workflow
                 return false;
             }
 
+            //if source dont allow the drop
+            if(contextualResourceModel.ResourceType == ResourceType.Source)
+            {
+                return true;
+            }
+
             //gets the viewmodel on which we gonna drop it.
             var currentViewModel = _workflowDesignerView.DataContext as IWorkflowDesignerViewModel;
             if(currentViewModel == null)
