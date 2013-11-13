@@ -338,7 +338,7 @@
         </InvokeMethod.Result>
         <InArgument x:TypeArguments="x:String">[BinariesDirectory &amp; "\ChangeSetID.txt"]</InArgument>
       </InvokeMethod>
-      <Assign sap2010:WorkflowViewState.IdRef="Assign_8">
+      <Assign DisplayName="Generate Test Results File Name" sap2010:WorkflowViewState.IdRef="Assign_8">
         <Assign.To>
           <OutArgument x:TypeArguments="x:String">[TestResultsFileName]</OutArgument>
         </Assign.To>
