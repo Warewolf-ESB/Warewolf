@@ -33,6 +33,7 @@ namespace Dev2.Studio.UI.Tests
 
             // make the mouse quick ;)
             Mouse.MouseMoveSpeed = 10000;
+            Mouse.MouseDragSpeed = 10000;
         }
 
         //[ClassCleanup]
@@ -178,12 +179,10 @@ namespace Dev2.Studio.UI.Tests
                     }
                 }
 
-                Mouse.Move(child, new Point(5, 5));
+                Mouse.Move(child, new Point(15, 15));
                 Playback.Wait(1000);
 
-                var toggleButton =
-                    WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Open Large View") as
-                    WpfToggleButton;
+                var toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Open Large View") as WpfToggleButton;
                 if (toggleButton == null)
                 {
                     Assert.Fail("Could not find open large view button");

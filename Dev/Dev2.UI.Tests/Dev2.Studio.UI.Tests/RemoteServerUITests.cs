@@ -40,6 +40,7 @@ namespace Dev2.Studio.UI.Tests
 
             // make the mouse quick ;)
             Mouse.MouseMoveSpeed = 10000;
+            Mouse.MouseDragSpeed = 10000;
         }
 
         //[ClassCleanup]
@@ -364,6 +365,7 @@ namespace Dev2.Studio.UI.Tests
             DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(InitialName);
+            Playback.Wait(2000);
             ExplorerUIMap.RightClickRenameProject(serverName, serviceType, folderName, InitialName);
             string RenameTo = Guid.NewGuid().ToString();
             SendKeys.SendWait(RenameTo + "{ENTER}");

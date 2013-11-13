@@ -32,6 +32,7 @@ namespace Dev2.Studio.UI.Tests
 
             // make the mouse quick ;)
             Mouse.MouseMoveSpeed = 10000;
+            Mouse.MouseDragSpeed = 10000;
         }
 
         //[ClassCleanup]
@@ -134,7 +135,7 @@ namespace Dev2.Studio.UI.Tests
             // Get wizard window
             WizardsUIMap.WaitForWizard();
 
-            // Tab to mappings
+            
             DatabaseServiceWizardUIMap.TabToInputMappings();
             // Set input mapping to required
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;

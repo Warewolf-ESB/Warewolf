@@ -24,6 +24,7 @@ namespace Dev2.Studio.UI.Tests
 
             // make the mouse quick ;)
             Mouse.MouseMoveSpeed = 10000;
+            Mouse.MouseDragSpeed = 10000;
         }
 
         //[ClassCleanup]

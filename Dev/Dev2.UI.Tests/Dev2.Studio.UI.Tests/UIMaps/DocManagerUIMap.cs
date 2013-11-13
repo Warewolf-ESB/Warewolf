@@ -20,25 +20,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses
         }
 
         /// <summary>
-        /// Speed up the locating tabs ;)
-        /// </summary>
-        private static IDictionary<string, WpfTabPage> _tabCache = new Dictionary<string, WpfTabPage>();
-
-        /// <summary>
         /// Clicks open one of the DocManager tabs
         /// </summary>
         /// <param name="tabName">The name of the tab (EG: Explorer, Toolbox, Variables, Output, etc)</param>
         public void ClickOpenTabPage(string tabName)
         {
-            WpfTabPage theTab;
+            WpfTabPage theTab= FindTabPage(tabName);
 
-            //if (!_tabCache.TryGetValue(tabName, out theTab))
-            //{
-                theTab = FindTabPage(tabName);
-                _tabCache[tabName] = theTab;
-            //}
+            //var tabX = theTab.BoundingRectangle.X;
+            //var tabY = theTab.BoundingRectangle.Y;
 
-            Mouse.MouseMoveSpeed = 10000;
             Mouse.Click(theTab, new Point(10, 10));
         }
 

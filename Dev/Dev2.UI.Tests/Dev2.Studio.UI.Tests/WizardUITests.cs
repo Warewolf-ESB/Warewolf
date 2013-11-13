@@ -54,6 +54,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             // make the mouse quick ;)
             Mouse.MouseMoveSpeed = 10000;
+            Mouse.MouseDragSpeed = 10000;
         }
 
         //[ClassCleanup]
@@ -130,7 +131,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             StudioWindow.SetFocus();
             SendKeys.SendWait("^+D");
-            WizardsUIMap.WaitForWizard();
+            Playback.Wait(3000);
             DatabaseServiceWizardUIMap.ClickCancel();
         }
 
