@@ -617,8 +617,14 @@ namespace Dev2.Studio.ViewModels.DataList
                     duplicate.ForEach(model => model.SetError(StringResources.ErrorMessageDuplicateValue));
                 }
                 else
-                {
-                    duplicate.ForEach(model => model.RemoveError());
+                {                    
+                    duplicate.ForEach(model =>
+                    {
+                        if(model.ErrorMessage != null && model.ErrorMessage.Contains(StringResources.ErrorMessageDuplicateValue))
+                        {
+                            model.RemoveError();    
+                        }                        
+                    });
                 }
             }
         }

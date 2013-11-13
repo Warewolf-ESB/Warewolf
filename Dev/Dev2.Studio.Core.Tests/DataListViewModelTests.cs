@@ -925,6 +925,22 @@ namespace Dev2.Core.Tests
         #endregion
 
         [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DataListViewModel_ValidateNames")]
+        public void DataListViewModel_ValidateNames_ItemHasInvalidChar_ErrorNotRemovedFromDuplicateCheck()
+        {
+            //------------Setup for test--------------------------
+            var dataListViewModel = new DataListViewModel();
+            IDataListItemModel dataListItemModel = new DataListItemModel("test@");
+            dataListItemModel.HasError = true;
+            dataListItemModel.ErrorMessage = StringResources.ErrorMessageInvalidChar;            
+            //------------Execute Test---------------------------
+            dataListViewModel.ValidateNames(dataListItemModel,false);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(StringResources.ErrorMessageInvalidChar,dataListItemModel.ErrorMessage);
+        }
+
+        [TestMethod]
         [TestCategory("DataListViewModel_CanSortItems")]
         public void DataListViewModel_UnitTest_CanSortItemsWhereEmptyCollections_ExpectFalse()
         {

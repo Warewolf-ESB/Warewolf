@@ -3,7 +3,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Data.Binary_Objects;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Models.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.DataList;
@@ -413,5 +415,24 @@ namespace Dev2.Core.Tests.DataList
         }
 
         #endregion Move Tests
+
+        #region Validation Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DataListValidator_ValidateChildren")]
+        public void DataListValidator_ValidateChildren_HasCharError_DontRemoveCharError()
+        {
+            //------------Setup for test--------------------------            
+            IDataListItemModel dataListItemModel = new DataListItemModel("Test@",enDev2ColumnArgumentDirection.None,string.Empty);
+            dataListItemModel.HasError = true;
+            dataListItemModel.ErrorMessage = StringResources.ErrorMessageInvalidChar;
+            //------------Execute Test---------------------------
+            Validator.ValidateChildren(dataListItemModel);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(StringResources.ErrorMessageInvalidChar,dataListItemModel.ErrorMessage);
+        }
+
+        #endregion
     }
 }

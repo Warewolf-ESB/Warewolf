@@ -31,7 +31,7 @@ namespace Dev2.Studio.Core.DataList
 
         public void Move(IDataListItemModel itemToMove)
         {
-            if (itemToMove == null)
+            if(itemToMove == null)
                 return;
 
             IList<IDataListItemModel> matchingList = null;
@@ -41,7 +41,7 @@ namespace Dev2.Studio.Core.DataList
             IndexedDataList.TryGetValue(itemToMove.Name, out matchingList);
 
 
-            if (matchingList != null)
+            if(matchingList != null)
             {
                 matchingList.Remove(itemToMove);
                 ValidateDuplicats(matchingList);
@@ -61,15 +61,15 @@ namespace Dev2.Studio.Core.DataList
 
             UpdateValidationErrorsOnEntry(itemToMove);
 
-            if (itemToMove.IsField)
+            if(itemToMove.IsField)
                 ValidateRecordSetChildren(itemToMove.Parent);
-            else if (itemToMove.IsRecordset)
+            else if(itemToMove.IsRecordset)
                 ValidateRecordSetChildren(itemToMove);
         }
 
         public void Add(IDataListItemModel itemToAdd)
         {
-            if (itemToAdd == null || String.IsNullOrWhiteSpace(itemToAdd.DisplayName)) return;
+            if(itemToAdd == null || String.IsNullOrWhiteSpace(itemToAdd.DisplayName)) return;
 
             //2013.04.10: Ashley Lewis - Bug 9168 Moved child validation to before parent validation (recordsets lose their errors during child validation)
             if(itemToAdd.IsField)
@@ -130,7 +130,14 @@ namespace Dev2.Studio.Core.DataList
                     }
                     else
                     {
-                        duplicate.ForEach(model => model.RemoveError());
+
+                        duplicate.ForEach(model =>
+                        {
+                            if(model.ErrorMessage != null && model.ErrorMessage.Contains(StringResources.ErrorMessageDuplicateValue))
+                            {
+                                model.RemoveError();
+                            }
+                        });
                     }
                 }
             }
@@ -138,17 +145,17 @@ namespace Dev2.Studio.Core.DataList
 
         public void Remove(IDataListItemModel itemToRemove)
         {
-            if (itemToRemove == null) return;
+            if(itemToRemove == null) return;
 
             IList<IDataListItemModel> matchingList = null;
 
             IndexedDataList.TryGetValue(itemToRemove.LastIndexedName, out matchingList);
 
-            if (matchingList != null)
+            if(matchingList != null)
             {
                 matchingList.Remove(itemToRemove);
                 ValidateDuplicats(matchingList);
-                if (matchingList.Count == 0)
+                if(matchingList.Count == 0)
                 {
                     IndexedDataList.Remove(itemToRemove.LastIndexedName);
                 }
@@ -167,23 +174,23 @@ namespace Dev2.Studio.Core.DataList
 
         private void ValidateDuplicats(IList<IDataListItemModel> itemsToValidate)
         {
-            if (itemsToValidate != null)
+            if(itemsToValidate != null)
             {
-                if (itemsToValidate.Count > 1)
+                if(itemsToValidate.Count > 1)
                 {
-                    foreach (IDataListItemModel item in itemsToValidate)
+                    foreach(IDataListItemModel item in itemsToValidate)
                     {
                         item.SetError(StringResources.ErrorMessageDuplicateValue);
                     }
                 }
-                else if (itemsToValidate.Count == 1)
+                else if(itemsToValidate.Count == 1)
                 {
                     IDataListItemModel item = itemsToValidate[0];
-                    if (item.HasError && !item.ErrorMessage.Equals(StringResources.ErrorMessageInvalidChar))
+                    if(item.HasError && !item.ErrorMessage.Equals(StringResources.ErrorMessageInvalidChar))
                     {
                         item.RemoveError();
                     }
-                    else if (item.HasError && !item.ErrorMessage.Equals(StringResources.ErrorMessageDuplicateValue))
+                    else if(item.HasError && !item.ErrorMessage.Equals(StringResources.ErrorMessageDuplicateValue))
                     {
                         item.RemoveError();
                     }
@@ -198,19 +205,19 @@ namespace Dev2.Studio.Core.DataList
         public void ValidateRecordSetChildren(IDataListItemModel parent)
         {
             //Only applicable for recordsets
-            if (!parent.IsRecordset) return;
+            if(!parent.IsRecordset) return;
 
             //If DisplayName is empty do not validate
-            if (String.IsNullOrWhiteSpace(parent.DisplayName)) return;
+            if(String.IsNullOrWhiteSpace(parent.DisplayName)) return;
 
-           
+
 
             //If no children - show error (This situation should not occur, there is always at least one empty one
-            if (parent.Children.Count == 0 || parent.Children == null)
+            if(parent.Children.Count == 0 || parent.Children == null)
             {
                 parent.SetError(StringResources.ErrorMessageEmptyRecordSet);
             }
-                //Check that there is at least one child
+            //Check that there is at least one child
             else if(parent.Children.Count == 1 && String.IsNullOrWhiteSpace(parent.Children.First().DisplayName))
             {
                 parent.SetError(StringResources.ErrorMessageEmptyRecordSet);
@@ -224,7 +231,7 @@ namespace Dev2.Studio.Core.DataList
             }
             if(parent.Children.Count > 0)
             {
-                parent.Children.ForEach(ValidateDataListName);                
+                parent.Children.ForEach(ValidateDataListName);
             }
         }
 
@@ -236,11 +243,11 @@ namespace Dev2.Studio.Core.DataList
         {
             IList<IDataListItemModel> matches;
             IndexedDataList.TryGetValue(candidateEntry.Name, out matches);
-            if (matches != null)
+            if(matches != null)
             {
                 ValidateDuplicats(matches);
             }
-            else if (candidateEntry.HasError && candidateEntry.ErrorMessage.Equals(StringResources.ErrorMessageDuplicateValue))
+            else if(candidateEntry.HasError && candidateEntry.ErrorMessage.Equals(StringResources.ErrorMessageDuplicateValue))
             {
                 candidateEntry.RemoveError();
             }
