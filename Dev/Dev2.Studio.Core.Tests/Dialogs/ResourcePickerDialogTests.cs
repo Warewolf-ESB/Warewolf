@@ -278,14 +278,13 @@ namespace Dev2.Core.Tests.Dialogs
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourcePickerDialog_DetermineDropActivityType")]
-        public void ResourcePickerDialog_DetermineDropActivityType_WhenServiceNull_ExpectAll()
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourcePickerDialog_DetermineDropActivityType_WhenServiceNull_ExpectException()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var typeOf = ResourcePickerDialog.DetermineDropActivityType(null);
-
+            ResourcePickerDialog.DetermineDropActivityType(null);
             //------------Assert Results-------------------------
-            Assert.AreEqual(enDsfActivityType.All, typeOf);
         }
 
         [TestMethod]
