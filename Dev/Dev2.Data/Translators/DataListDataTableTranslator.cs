@@ -163,7 +163,7 @@ namespace Dev2.Data.Translators
 
                                 int pos = 0;
                                 var cols = dbData.Columns;
-                                int idx = 0;
+                                int idx = -1;
 
                                 while (pos < cols.Count && idx == -1)
                                 {

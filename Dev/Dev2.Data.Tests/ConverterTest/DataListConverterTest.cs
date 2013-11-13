@@ -374,5 +374,31 @@ namespace Dev2.Data.Tests.ConverterTest
             // Assert Message Converted To Outdated Server Error
             Assert.AreEqual(expected, result, "Error message not relevent");
         }
+
+        [TestMethod]
+        [TestCategory("DataTableTranslator_UnitTest")]
+        [Description("Test that a DataTableTranslator can convert to a single scalar value")]
+        [Owner("Hagashen Naidu")]
+        public void Populate_WithScalarValuesInDatatable_AddsToDataList()
+        {
+            //-------------------Setup ----------------------------------
+            var outputDefs = "<Outputs><Output Name=\"One\" MapsTo=\"[[One]]\" Value=\"[[One]]\" /><Output Name=\"Two\" MapsTo=\"[[Two]]\" Value=\"[[Two]]\" /><Output Name=\"Three\" MapsTo=\"[[Three]]\" Value=\"[[Three]]\" /></Outputs>";
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            Guid dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), "<root></root>", "<root><One/><Two/><Three/></root>", out errors);
+            // build up DataTable
+            DataTable dbData = new DataTable("rs");
+            dbData.Columns.Add("One", typeof(string));
+            dbData.Columns.Add("Two", typeof(string));
+            dbData.Columns.Add("Three", typeof(string));
+            dbData.Rows.Add("aaa","bbb","ccc");
+
+            // Execute Translator
+            Guid dlID = compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, outputDefs, dataListID, out errors);
+
+            string data = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+
+            Assert.AreEqual("<DataList><One>aaa</One><Two>bbb</Two><Three>ccc</Three></DataList>", data);
+        }
     }
 }
