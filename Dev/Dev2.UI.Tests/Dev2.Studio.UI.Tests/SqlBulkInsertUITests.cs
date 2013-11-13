@@ -27,12 +27,34 @@ namespace Dev2.Studio.UI.Tests
         const int TableIndex = 1;
         #endregion
 
-        #region Test Methods
-        [TestCleanup]
-        public void TestCleanup()
+        #region Cleanup
+
+        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
+
+        [ClassInitialize]
+        public static void ClassInit(TestContext tctx)
         {
-            TabManagerUIMap.CloseAllTabs();
+            Playback.Initialize();
+            Playback.PlaybackSettings.ContinueOnError = true;
+            Playback.PlaybackSettings.ShouldSearchFailFast = true;
+            Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+            Playback.PlaybackSettings.MatchExactHierarchy = true;
+
+            // make the mouse quick ;)
+            Mouse.MouseMoveSpeed = 10000;
         }
+
+        //[ClassCleanup]
+        //public static void MyTestCleanup()
+        //{
+        //    _tabManager.CloseAllTabs();
+        //}
+
+        #endregion
+
+
+        #region Test Methods
+       
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -63,7 +85,7 @@ namespace Dev2.Studio.UI.Tests
         public void SqlBulkInsertTest_OpenLargeViewAndEnterAnInvalidBatchAndTimeoutSizeAndClickDone_CorrectingErrorsAndClickDoneWillReturnToSmallView()
         {
             //// Create the workflow
-            //RibbonUIMap.CreateNewWorkflow();
+            RibbonUIMap.CreateNewWorkflow();
             var theTab = TabManagerUIMap.GetActiveTab();
 
             // Get some variables
@@ -91,7 +113,7 @@ namespace Dev2.Studio.UI.Tests
             var listOfTableNames = tableDropDown.Items.Select(i => i as WpfListItem).ToList();
             Playback.Wait(1000);
             Mouse.Click(listOfTableNames[TableIndex], new Point(5, 5));
-            Playback.Wait(5000);
+            Playback.Wait(1000);
 
             //Open the large view
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfSqlBulkInsertActivity");
@@ -109,13 +131,12 @@ namespace Dev2.Studio.UI.Tests
             //Enter a few mappings
 
             // THIS IS FAULTY LOGIC!!!!
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             var getFirstTextbox = WorkflowDesignerUIMap.GetSqlBulkInsertLargeViewFirstInputTextbox(controlOnWorkflow);
             Mouse.Click(getFirstTextbox);
             SendKeys.SendWait("^a^xrecord().id{TAB}");
             SendKeys.SendWait("^a^xrecord().name{TAB}");
             SendKeys.SendWait("^a^xrecord().mail{TAB}");
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+            Playback.Wait(1000);
 
             var batchSize = GetControlById("UI__BatchSize_AutoID", theTab);
             Mouse.Click(batchSize, new Point(5, 5));
@@ -169,7 +190,7 @@ namespace Dev2.Studio.UI.Tests
             //Open the quick variable input view
             var toggleButton = GetControlByFriendlyName("Open Quick Variable Input");
             Mouse.Click(toggleButton, new Point(5, 5));
-            Playback.Wait(5000);
+            Playback.Wait(2000);
 
             var quickVarInputContent = GetControlByFriendlyName("QuickVariableInputContent");
             Assert.IsNotNull(quickVarInputContent);
@@ -177,7 +198,7 @@ namespace Dev2.Studio.UI.Tests
             //Close the quick variable input view
             toggleButton = GetControlByFriendlyName("Close Quick Variable Input");
             Mouse.Click(toggleButton, new Point(5, 5));
-            Playback.Wait(5000);
+            Playback.Wait(2000);
 
             var smallDataGrid = GetControlById("SmallDataGrid", theTab);
             Assert.IsNotNull(smallDataGrid);
@@ -216,7 +237,7 @@ namespace Dev2.Studio.UI.Tests
             var listOfTableNames = tableDropDown.Items.Select(i => i as WpfListItem).ToList();
             Playback.Wait(1000);
             Mouse.Click(listOfTableNames[TableIndex], new Point(5, 5));
-            Playback.Wait(5000);
+            Playback.Wait(2000);
 
             //Assert that grid is not empty
             var smallDataGrid = GetControlById("SmallDataGrid", theTab);

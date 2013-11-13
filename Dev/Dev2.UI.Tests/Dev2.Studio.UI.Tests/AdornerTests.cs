@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,13 +12,39 @@ namespace Dev2.Studio.UI.Tests
     [CodedUITest]
     public class AdornerTests : UIMapBase
     {
+
+        #region Cleanup
+
+        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
+
+        [ClassInitialize]
+        public static void ClassInit(TestContext tctx)
+        {
+            Playback.Initialize();
+            Playback.PlaybackSettings.ContinueOnError = true;
+            Playback.PlaybackSettings.ShouldSearchFailFast = true;
+            Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+            Playback.PlaybackSettings.MatchExactHierarchy = true;
+
+            // make the mouse quick ;)
+            Mouse.MouseMoveSpeed = 10000;
+        }
+
+        //[ClassCleanup]
+        //public static void MyTestCleanup()
+        //{
+        //    _tabManager.CloseAllTabs();
+        //}
+
+        #endregion
+
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ExternalService_EditService")]
         public void ExternalService_EditService_EditWithNoSecondSaveDialog_ExpectOneDialog()
         {
-            try
-            {
+
                 //------------Setup for test--------------------------
                 // Open the workflow
                 DockManagerUIMap.ClickOpenTabPage("Explorer");
@@ -122,12 +150,8 @@ namespace Dev2.Studio.UI.Tests
                 {
                     Assert.Fail("'Fix Errors' button not visible");
                 }
+
             }
-            finally
-            {
-                TabManagerUIMap.CloseAllTabs();
-            }
-        }
 
 
         [TestMethod]
@@ -136,8 +160,6 @@ namespace Dev2.Studio.UI.Tests
         [Owner("Tshepo")]
         public void AdornerHelpButtonOpenAnExampleWorlkflowTest()
         {
-            try
-            {
                 // Create the workflow
                 RibbonUIMap.CreateNewWorkflow();
                 // Get some design surface
@@ -167,19 +189,14 @@ namespace Dev2.Studio.UI.Tests
 
                 //Assert workflow opened after a time out.
                 Assert.IsNotNull(waitForTabToOpen);
-            }
-            finally
-            {
-                TabManagerUIMap.CloseAllTabs();
-            }
+
         }
 
 
         [TestMethod]
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
         {
-            try
-            {
+
                 const string resourceToUse = "Bug_10528";
                 const string innerResource = "Bug_10528_InnerWorkFlow";
 
@@ -188,17 +205,11 @@ namespace Dev2.Studio.UI.Tests
                 ExplorerUIMap.ClearExplorerSearchText();
                 ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
 
-                ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES",
-                                                     resourceToUse);
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", resourceToUse);
                 UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
-                //try scroll resize thumb into view
-                var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
-                if (scrollBar != null)
-                {
-                    Mouse.StartDragging(scrollBar);
-                    Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
-                }
+            //Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
+            //Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
 
                 UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, innerResource);
                 Mouse.Move(controlOnWorkflow, new Point(5, 5));
@@ -250,12 +261,7 @@ namespace Dev2.Studio.UI.Tests
                 {
                     Assert.Fail("The control was not resized properly.");
                 }
-            }
-            finally
-            {
-            // Test complete - Delete itself
-                TabManagerUIMap.CloseAllTabs();
-            }
+
         }
 
 
@@ -265,8 +271,7 @@ namespace Dev2.Studio.UI.Tests
         [Owner("Travis Frisinger")]
         public void ResizeAdornerMappingsOnDrop_Expected_AdornerMappingIsResized()
         {
-            try
-            {
+
                 const string resourceToUse = "CalculateTaxReturns";
                 RibbonUIMap.CreateNewWorkflow();
 
@@ -338,19 +343,12 @@ namespace Dev2.Studio.UI.Tests
                     Assert.Fail("The control was not resized properly.");
                 }
             }
-            finally
-            {
-                // Test complete - Delete itself
-                TabManagerUIMap.CloseAllTabs();
-            }
-        }
 
         // PBI 8601 (Task 8855)
         [TestMethod]
         public void QuickVariableInputFromListTest()
         {
-            try
-            {
+
                 Clipboard.Clear();
                 // Create the workflow
                 RibbonUIMap.CreateNewWorkflow();
@@ -396,11 +394,7 @@ namespace Dev2.Studio.UI.Tests
                 // Check the data
                 string varName = WorkflowDesignerUIMap.AssignControl_GetVariableName(theTab, "Assign", 0);
                 StringAssert.Contains(varName, "[[pre_varOne_suf]]");
-            }
-            finally
-            {
-                TabManagerUIMap.CloseAllTabs();
-            }
+
         }
     }
 }

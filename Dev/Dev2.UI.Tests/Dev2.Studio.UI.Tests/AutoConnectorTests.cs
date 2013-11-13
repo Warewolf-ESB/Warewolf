@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-
 using System;
 using System.Drawing;
-using Dev2.Studio.UI.Tests.UIMaps;
+using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -14,15 +14,33 @@ namespace Dev2.Studio.UI.Tests
     [CodedUITest]
     public class AutoConnectorTests : UIMapBase
     {
-        #region Tests
 
-        [TestCleanup]
-        public void TestCleanup()
+        #region Cleanup
+
+        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
+
+        [ClassInitialize]
+        public static void ClassInit(TestContext tctx)
         {
-            TabManagerUIMap.CloseAllTabs();
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
+            Playback.Initialize();
+            Playback.PlaybackSettings.ContinueOnError = true;
+            Playback.PlaybackSettings.ShouldSearchFailFast = true;
+            Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+            Playback.PlaybackSettings.MatchExactHierarchy = true;
+
+            // make the mouse quick ;)
+            Mouse.MouseMoveSpeed = 10000;
         }
+
+        //[ClassCleanup]
+        //public static void MyTestCleanup()
+        //{
+        //    _tabManager.CloseAllTabs();
+        //}
+
+        #endregion
+        
+        #region Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -73,7 +91,7 @@ namespace Dev2.Studio.UI.Tests
             if (control != null)
             {
                 var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
+                ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
             }
             else
             {
@@ -81,7 +99,7 @@ namespace Dev2.Studio.UI.Tests
             }
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert that the line was split
-            Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
+            Assert.IsTrue(connectors.Count > 2, "Connector line wasn't split");
         }
 
         [TestMethod]
@@ -103,7 +121,7 @@ namespace Dev2.Studio.UI.Tests
             if (control != null)
             {
                 var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", point);
+                ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", point);
             }
             else
             {
@@ -111,7 +129,7 @@ namespace Dev2.Studio.UI.Tests
             }
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
-            Assert.AreEqual(2, connectors.Count, "Connector line wasn't split");
+            Assert.IsTrue(connectors.Count > 2, "Connector line wasn't split");
         }
 
         [TestMethod]
@@ -137,7 +155,6 @@ namespace Dev2.Studio.UI.Tests
                 throw new Exception("MultiAssignDesigner not found on active tab");
             }
 
-            WizardsUIMap.WaitForWizard();
             Playback.Wait(2000);
             DecisionWizardUIMap.ClickCancel();
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();

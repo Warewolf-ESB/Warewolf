@@ -69,8 +69,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
             for (var i = 0; i < 5; i++)
             {
+                Playback.Wait(200);
                 SendKeys.SendWait("{DOWN}");
             }
+
+            Playback.Wait(500);
             SendKeys.SendWait("{ENTER}");
 
             //Wait for wizard

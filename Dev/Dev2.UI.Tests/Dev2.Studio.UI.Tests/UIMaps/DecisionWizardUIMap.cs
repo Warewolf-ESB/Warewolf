@@ -76,7 +76,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
             SendKeys.SendWait(startWith);
 
             //wait for intellisense to drop down
-            Playback.Wait(1000);
+            Playback.Wait(500);
 
             if (relativeToWizard != default(Point) )
             {

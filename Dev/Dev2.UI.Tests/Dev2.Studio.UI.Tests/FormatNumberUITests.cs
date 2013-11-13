@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
@@ -9,13 +11,28 @@ namespace Dev2.Studio.UI.Tests
     public class FormatNumberUITests : UIMapBase
     {
 
-        #region Context Init
+        #region Cleanup
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
+        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
+
+        [ClassInitialize]
+        public static void ClassInit(TestContext tctx)
+        {
+            Playback.Initialize();
+            Playback.PlaybackSettings.ContinueOnError = true;
+            Playback.PlaybackSettings.ShouldSearchFailFast = true;
+            Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+            Playback.PlaybackSettings.MatchExactHierarchy = true;
+
+            // make the mouse quick ;)
+            Mouse.MouseMoveSpeed = 10000;
+        }
+
+        //[ClassCleanup]
+        //public static void MyTestCleanup()
+        //{
+        //    _tabManager.CloseAllTabs();
+        //}
 
         #endregion
 
@@ -41,7 +58,6 @@ namespace Dev2.Studio.UI.Tests
             FormatNumberUIMap.InputAllFormatNumberValues(ctrl, "1234.56", "Normal", "1", "3", "[[Result]]");
             Assert.IsTrue(FormatNumberUIMap.IsRoundingInputEnabled());
 
-            TabManagerUIMap.CloseAllTabs();
         }
 
         // BUG 8876 : This test ensure that the input box is empty when selecting none in the Format Tool
@@ -65,7 +81,6 @@ namespace Dev2.Studio.UI.Tests
             FormatNumberUIMap.InputAllFormatNumberValues(ctrl, "1234.56", "None", "1", "3", "[[Result]]");
             Assert.IsFalse(FormatNumberUIMap.IsRoundingInputEnabled());
 
-            TabManagerUIMap.CloseAllTabs();
         }
 
         // BUG 8876 : This test ensure that the input box is disabled and cleared when changing the rounding type to none.
@@ -95,20 +110,5 @@ namespace Dev2.Studio.UI.Tests
         }
 
         #endregion Format Number Inputs Tests
-
-        #region Private Test Methods
-
-        //private void CreateWorkflow(string workflowName)
-        //{
-        //    RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
-        //    while (!WorkflowWizardUIMap.IsWindowOpen())
-        //        Thread.Sleep(500);
-        //    Thread.Sleep(1000);
-        //    WorkflowWizardUIMap.EnterWorkflowName(workflowName);
-        //    WorkflowWizardUIMap.EnterWorkflowCategory("CodedUITestCategory");
-        //    WorkflowWizardUIMap.DoneButtonClick();
-        //}
-
-        #endregion Private Test Methods
     }
 }

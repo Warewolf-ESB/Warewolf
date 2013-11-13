@@ -911,7 +911,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             const string Yellow = "ffffe8a6";
             var pixelGrabber = new Bitmap(workflow.CaptureImage());
             var thePixel = pixelGrabber.GetPixel(25, 10).Name;
-            return thePixel == Yellow && thePixel != Grey;
+            return thePixel != Yellow && thePixel == Grey;
         }
 
         public bool IsStepSelected(UITestControl step)
@@ -1129,7 +1129,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         public UITestControl GetSqlBulkInsertLargeViewFirstInputTextbox(UITestControl sqlBulkInsertToolOnWorkflow)
         {
-            return VisualTreeWalker.GetChildByAutomationIDPath(sqlBulkInsertToolOnWorkflow, "LargeViewContent", "LargeDataGrid", "Uia.DataGridRow", "Item: Dev2.TO.DataColumnMapping, Column Display In...", "UI_Row0_InputColumn_AutoID");
+            return VisualTreeWalker.GetChildByAutomationIDPath(sqlBulkInsertToolOnWorkflow, "LargeViewContent", "LargeDataGrid", "Uia.DataGridRow", "Item: Dev2.TO.DataColumnMapping, Column Display In...", "UI__Row0_InputColumn_AutoID");
+
         }
     }
 }

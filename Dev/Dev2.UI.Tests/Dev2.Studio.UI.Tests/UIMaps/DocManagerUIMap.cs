@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
 using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -16,13 +18,27 @@ namespace Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses
         {
             _dockManager = VisualTreeWalker.GetControl("UI_DocManager_AutoID");
         }
+
+        /// <summary>
+        /// Speed up the locating tabs ;)
+        /// </summary>
+        private static IDictionary<string, WpfTabPage> _tabCache = new Dictionary<string, WpfTabPage>();
+
         /// <summary>
         /// Clicks open one of the DocManager tabs
         /// </summary>
         /// <param name="tabName">The name of the tab (EG: Explorer, Toolbox, Variables, Output, etc)</param>
         public void ClickOpenTabPage(string tabName)
         {
-            WpfTabPage theTab = FindTabPage(tabName);
+            WpfTabPage theTab;
+
+            //if (!_tabCache.TryGetValue(tabName, out theTab))
+            //{
+                theTab = FindTabPage(tabName);
+                _tabCache[tabName] = theTab;
+            //}
+
+            Mouse.MouseMoveSpeed = 10000;
             Mouse.Click(theTab, new Point(10, 10));
         }
 

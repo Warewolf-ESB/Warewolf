@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
-using Dev2.Studio.UI.Tests.UIMaps;
+using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -9,6 +10,32 @@ namespace Dev2.Studio.UI.Tests
     [CodedUITest]
     public class MenuUITests : UIMapBase
     {
+
+        #region Cleanup
+
+        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
+
+        [ClassInitialize]
+        public static void ClassInit(TestContext tctx)
+        {
+            Playback.Initialize();
+            Playback.PlaybackSettings.ContinueOnError = true;
+            Playback.PlaybackSettings.ShouldSearchFailFast = true;
+            Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+            Playback.PlaybackSettings.MatchExactHierarchy = true;
+
+            // make the mouse quick ;)
+            Mouse.MouseMoveSpeed = 10000;
+        }
+
+        //[ClassCleanup]
+        //public static void MyTestCleanup()
+        //{
+        //    _tabManager.CloseAllTabs();
+        //}
+
+        #endregion
+
         [TestMethod]
         public void DebugAWorkFlow_EnsureSaveIsEnabledAfterCompletion()
         {
@@ -31,9 +58,8 @@ namespace Dev2.Studio.UI.Tests
             {
                 count++;
             }
-            Assert.IsTrue(uiControl.Enabled);
 
-            TabManagerUIMap.CloseAllTabs();
+            Assert.IsTrue(uiControl.Enabled);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Windows.Forms;
-using Dev2.Studio.UI.Tests.UIMaps;
-using Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses;
+using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -19,22 +18,27 @@ namespace Dev2.Studio.UI.Tests
 
         #region Cleanup
 
-        [TestCleanup]
-        public void TestCleanup()
+
+        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
+
+        [ClassInitialize]
+        public static void ClassInit(TestContext tctx)
         {
-            //close any open dialogs
-            var tryFindDialog = StudioWindow.GetChildren()[0];
-            if(tryFindDialog.GetType() == typeof(WpfWindow))
-            {
-                Mouse.Click(tryFindDialog);
-                SendKeys.SendWait("{ESCAPE}");
-                Assert.Fail("Resource changed dialog hanging after test, might not have rendered properly");
-            }
-            //close any open tabs
-            TabManagerUIMap.CloseAllTabs();
-            DockManagerUIMap.ClickOpenTabPage(ExplorerTab);
-            ExplorerUIMap.ClearExplorerSearchText();
+            Playback.Initialize();
+            Playback.PlaybackSettings.ContinueOnError = true;
+            Playback.PlaybackSettings.ShouldSearchFailFast = true;
+            Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+            Playback.PlaybackSettings.MatchExactHierarchy = true;
+
+            // make the mouse quick ;)
+            Mouse.MouseMoveSpeed = 10000;
         }
+
+        //[ClassCleanup]
+        //public static void MyTestCleanup()
+        //{
+        //    _tabManager.CloseAllTabs();
+        //}
         
         #endregion
 

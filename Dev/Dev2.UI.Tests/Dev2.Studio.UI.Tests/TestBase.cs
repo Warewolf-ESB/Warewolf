@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
 using System.Windows.Forms;
+using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.Studio.UI.Tests;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,6 +20,31 @@ namespace Dev2.CodedUI.Tests
         {
             return "Warewolf";
         }
+
+        #region Cleanup
+
+        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
+
+        [ClassInitialize]
+        public static void ClassInit(TestContext tctx)
+        {
+            Playback.Initialize();
+            Playback.PlaybackSettings.ContinueOnError = true;
+            Playback.PlaybackSettings.ShouldSearchFailFast = true;
+            Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+            Playback.PlaybackSettings.MatchExactHierarchy = true;
+
+            // make the mouse quick ;)
+            Mouse.MouseMoveSpeed = 10000;
+        }
+
+        //[ClassCleanup]
+        //public static void MyTestCleanup()
+        //{
+        //    _tabManager.CloseAllTabs();
+        //}
+
+        #endregion
 
         #region New PBI Tests
 
@@ -108,9 +135,11 @@ namespace Dev2.CodedUI.Tests
             //Click the show affected button
             ResourceChangedPopUpUIMap.ClickViewDependancies();
 
-            Playback.Wait(5000);
+            Playback.Wait(2000);
 
-            Assert.IsTrue(TabManagerUIMap.GetActiveTabName().Contains("ForEachUpgradeTest"), "Affected workflow not shown after show affected workflow button pressed.");
+            var result = TabManagerUIMap.GetActiveTabName().Contains("ForEachUpgradeTest");
+
+            Assert.IsTrue(result, "Affected workflow not shown after show affected workflow button pressed.");
         }
 
         [TestMethod]
@@ -429,16 +458,6 @@ namespace Dev2.CodedUI.Tests
         }
 
         #endregion Tests Requiring Designer access
-
-        #region Additional test methods
-
-        [TestCleanup]
-        public void DoCleanup()
-        {
-            TabManagerUIMap.CloseAllTabs();
-        }
-
-        #endregion
 
         #region Groomed Test
 

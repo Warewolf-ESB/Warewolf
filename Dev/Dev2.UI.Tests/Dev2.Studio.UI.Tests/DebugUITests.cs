@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
-using Dev2.Studio.UI.Tests.UIMaps;
+using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,13 +10,38 @@ namespace Dev2.Studio.UI.Tests
     [CodedUITest]
     public class DebugUITests : UIMapBase
     {
+
+        #region Cleanup
+
+        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
+
+        [ClassInitialize]
+        public static void ClassInit(TestContext tctx)
+        {
+            Playback.Initialize();
+            Playback.PlaybackSettings.ContinueOnError = true;
+            Playback.PlaybackSettings.ShouldSearchFailFast = true;
+            Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+            Playback.PlaybackSettings.MatchExactHierarchy = true;
+
+            // make the mouse quick ;)
+            Mouse.MouseMoveSpeed = 10000;
+        }
+
+        //[ClassCleanup]
+        //public static void MyTestCleanup()
+        //{
+        //    _tabManager.CloseAllTabs();
+        //}
+
+        #endregion
+
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DebugInput_whenRun10Time")]
         public void DebugInput_WhenRun10Times_ExpectInputsPersistAndXMLRemainsLinked_InputsAndXMLRemainPersisted()
         {
-            try
-            {
                 //------------Setup for test--------------------------
                 DockManagerUIMap.ClickOpenTabPage("Explorer");
                 //Open the correct workflow
@@ -42,12 +68,10 @@ namespace Dev2.Studio.UI.Tests
                     PopupDialogUIMap.WaitForDialog();
 
                     var getInput = DebugUIMap.GetRow(0).Cells[1].GetChildren()[0] as WpfEdit;
-                    Assert.AreEqual("1", getInput.Text,
-                                    "After executing " + i + " times the debug input dialog did not persist");
+                    Assert.AreEqual("1", getInput.Text,"After executing " + i + " times the debug input dialog did not persist");
 
                     getInput = DebugUIMap.GetRow(1).Cells[1].GetChildren()[0] as WpfEdit;
-                    Assert.AreEqual("2", getInput.Text,
-                                    "After executing " + i + " times the debug input dialog did not persist");
+                    Assert.AreEqual("2", getInput.Text, "After executing " + i + " times the debug input dialog did not persist");
 
                     DebugUIMap.ClickExecute();
                     OutputUIMap.WaitForExecution();
@@ -85,18 +109,7 @@ namespace Dev2.Studio.UI.Tests
 </DataList>";
 
                 Assert.AreEqual(expectedXML, actualXML);
-            }
-            finally
-            {
-                Playback.Wait(500);
-                if(StudioWindow.GetChildren()[0].ControlType == "Window")
-                {
-                    DebugUIMap.CloseDebugWindow_ByCancel();
-                }
-                TabManagerUIMap.CloseAllTabs();
-                DockManagerUIMap.ClickOpenTabPage("Explorer");
-                ExplorerUIMap.ClearExplorerSearchText();
-            }
+
         }
     }
 }

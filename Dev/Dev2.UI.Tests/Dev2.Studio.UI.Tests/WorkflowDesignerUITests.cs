@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
@@ -17,19 +16,32 @@ namespace Dev2.Studio.UI.Tests
     /// Summary description for CodedUITest1
     /// </summary>
     [CodedUITest, System.Runtime.InteropServices.GuidAttribute("7E6836ED-8C14-4BFD-ADD0-3C5C6F0CB815")]
-    // ReSharper disable InconsistentNaming
     public class WorkflowDesignerUITests : UIMapBase
-        // ReSharper restore InconsistentNaming
     {
         private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
 
         #region Cleanup
 
-        [TestCleanup]
-        public void MyTestCleanup()
+        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
+
+        [ClassInitialize]
+        public static void ClassInit(TestContext tctx)
         {
-            TabManagerUIMap.CloseAllTabs();
+            Playback.Initialize();
+            Playback.PlaybackSettings.ContinueOnError = true;
+            Playback.PlaybackSettings.ShouldSearchFailFast = true;
+            Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+            Playback.PlaybackSettings.MatchExactHierarchy = true;
+
+            // make the mouse quick ;)
+            Mouse.MouseMoveSpeed = 10000;
         }
+
+        //[ClassCleanup]
+        //public static void MyTestCleanup()
+        //{
+        //    _tabManager.CloseAllTabs();
+        //}
 
         #endregion
 
@@ -107,7 +119,6 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait("^V");
             Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab,
                                                                                     "Unsaved 1(FlowchartDesigner)"));
-            TabManagerUIMap.CloseAllTabs();
         }
 
         //2013.06.06: Ashley Lewis for 9448 - Dsf Activity Title - shows up as "DSFActivity" After a service has been dragged onto a workflow.
@@ -144,32 +155,39 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("Toolbox_Icons")]
         [Description("Toolbox icons display")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
         public void Toolbox_UITest_OpenToolbox_IconsAreDisplayed()
-            // ReSharper restore InconsistentNaming
         {
             RibbonUIMap.CreateNewWorkflow();
             DockManagerUIMap.ClickOpenTabPage("Toolbox");
             foreach (var tool in ToolboxUIMap.GetAllTools())
             {
-                Assert.IsTrue(ToolboxUIMap.IsIconVisible(tool),
-                              tool.FriendlyName + " is missing its icon in the toolbox");
+
+                var kids = tool.GetChildren();
+
+                if (kids.Count == 3)
+                {
+                    var icon = kids[1];
+
+                    var wValue = icon.BoundingRectangle.Width;
+                    var hValue = icon.BoundingRectangle.Height;
+
+                    Assert.AreEqual(18, wValue);
+                    Assert.AreEqual(18, hValue);
+
+                }
+                else
+                {
+                    Assert.Fail(tool.FriendlyName + " is missing its icon in the toolbox");
+                }
             }
         }
 
-        /// <summary>
-        /// Debugs the output_ click step_ activity is highlighted.
-        /// </summary>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/08/13</date>
         [TestMethod]
         [TestCategory("UITest")]
         [Description("Clicking a debug output step should highlight that activity on the design surface")]
         [Owner("Ashley")]
         // 05/11 - Failure is Intermittent ;)
-        // ReSharper disable InconsistentNaming
         public void DebugOutput_ClickStep_ActivityIsHighlighted()
-            // ReSharper restore InconsistentNaming
         {
             //Create testing workflow
             RibbonUIMap.CreateNewWorkflow();
@@ -201,39 +219,29 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(100);
             Mouse.Click(step[2]);
             Playback.Wait(100);
-            Mouse.Click(step[1]);
-            Playback.Wait(100);
 
             //Assert the design surface activity is highlighted
             var workflow = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
             Assert.IsTrue(WorkflowDesignerUIMap.IsControlSelected(workflow),
                           "Selecting a step in the debug output does not select the activity on the design surface");
 
-            TabManagerUIMap.CloseAllTabs();
         }
 
         [TestMethod]
         [TestCategory("UnsavedWorkflows_UITest")]
         [Description("For bug 10086 - Switching tabs does not flicker unsaved status")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
         public void Tabs_UnsavedStar_SwitchingTabs_DoesNotChangeUnsavedStatus()
-            // ReSharper restore InconsistentNaming
         {
             var firstName = "Test" + Guid.NewGuid().ToString().Substring(24);
             var secondName = "Test" + Guid.NewGuid().ToString().Substring(24);
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClickServerInServerDDL("localhost");
             // Create first workflow
             RibbonUIMap.CreateNewWorkflow();
             var theTab = TabManagerUIMap.GetActiveTab();
             var theStartNode = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "StartSymbol");
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("PBI_9957_UITEST");
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "BUGS", "PBI_9957_UITEST",
-                                                        new Point(theStartNode.BoundingRectangle.X + 20,
-                                                                  theStartNode.BoundingRectangle.Y + 100));
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolboxUIMap.FindToolboxItemByAutomationId("MultiAssign"),
+                                                      new Point(theStartNode.BoundingRectangle.X + 20,
+                                                                theStartNode.BoundingRectangle.Y + 100));
             RibbonUIMap.ClickRibbonMenuItem("Save");
             WizardsUIMap.WaitForWizard();
             SaveDialogUIMap.ClickAndTypeInNameTextbox(firstName);
@@ -276,14 +284,15 @@ namespace Dev2.Studio.UI.Tests
 
         // Bug 6617
         [TestMethod]
+        // 13/11 - Needs grooming. Bad test conditions ;)
         public void OpeningDependancyWindowTwiceKeepsItOpen()
         {
             // The workflow so we have a second tab
             DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("Base64ToString");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
+            //ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
+            //DockManagerUIMap.ClickOpenTabPage("Explorer");
 
             // Open the Dependancy Window twice
             for (int openCount = 0; openCount < 2; openCount++)
@@ -359,7 +368,7 @@ namespace Dev2.Studio.UI.Tests
             var point = new Point(assign.BoundingRectangle.X + 150, assign.BoundingRectangle.Y + 50);
             //Hover over the multi assign for 5 seconds
             Mouse.Move(point);
-            Playback.Wait(5000);
+            Playback.Wait(2000);
 
             // ensure the start btn is visible, hence no drill down
             theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");

@@ -26,13 +26,21 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
     [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public partial class TabManagerUIMap : UIMapBase
     {
+
+        private UITestControl mainPane;
+
         public UITestControl GetManager()
         {
-            var mainPane = DockManagerUIMap.GetMainPane();
+            if (mainPane == null)
+            {
+                mainPane = DockManagerUIMap.GetMainPane();
+            }
+
             if (mainPane != null)
             {
                 return mainPane.GetChildren()[0].GetChildren()[0];
             }
+
             return null;
         }
 

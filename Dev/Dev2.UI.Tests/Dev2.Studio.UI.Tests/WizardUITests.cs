@@ -2,9 +2,11 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -39,23 +41,26 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         #region Cleanup
 
-        [TestCleanup]
-        public void TestCleanup()
+        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
+
+        [ClassInitialize]
+        public static void ClassInit(TestContext tctx)
         {
-            Playback.Wait(500);
-            //close any open wizards
-            var tryFindDialog = StudioWindow.GetChildren()[0].GetChildren()[0];
-            if(tryFindDialog.GetType() == typeof(WpfImage))
-            {
-                Mouse.Click(tryFindDialog);
-                SendKeys.SendWait("{ESCAPE}");
-                Assert.Fail("Wizard hanging after test, might not have rendered properly");
-            }
-            //close any open tabs
-            TabManagerUIMap.CloseAllTabs();
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
+            Playback.Initialize();
+            Playback.PlaybackSettings.ContinueOnError = true;
+            Playback.PlaybackSettings.ShouldSearchFailFast = true;
+            Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+            Playback.PlaybackSettings.MatchExactHierarchy = true;
+
+            // make the mouse quick ;)
+            Mouse.MouseMoveSpeed = 10000;
         }
+
+        //[ClassCleanup]
+        //public static void MyTestCleanup()
+        //{
+        //    _tabManager.CloseAllTabs();
+        //}
 
         #endregion
 
@@ -92,11 +97,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(serviceName);
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SERVICES", "Unassigned", serviceName));
-            ExplorerUIMap.RightClickDeleteProject("localhost", "SERVICES", "Unassigned", serviceName);
+
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(sourceName);
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", "Unassigned", sourceName));
-            ExplorerUIMap.RightClickDeleteProject("localhost", "SOURCES", "Unassigned", sourceName);
+
         }
 
         //2013.03.14: Ashley Lewis - Bug 9217
@@ -370,16 +376,18 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Clipboard.SetText(" ");
             RibbonUIMap.CreateNewWorkflow();
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-            UITestControl startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
             DockManagerUIMap.ClickOpenTabPage("Toolbox");
             var decision = ToolboxUIMap.FindControl("Decision");
             //Drag on two decisions
             ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
             WizardsUIMap.WaitForWizard();
-            Playback.Wait(2000);
+            Playback.Wait(500);
             _decisionWizardUiMap.HitDoneWithKeyboard();
             var newPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             newPoint.Y = newPoint.Y + 200;
+
+            var clickPoint = new Point(newPoint.X, newPoint.Y);
+
             ToolboxUIMap.DragControlToWorkflowDesigner(decision, newPoint);
             WizardsUIMap.WaitForWizard();
             Playback.Wait(2000);
@@ -395,14 +403,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Mouse.StopDragging(newPoint);
             startDragPoint.X = startDragPoint.X + 150;
             startDragPoint.Y = startDragPoint.Y + 150;
-            Mouse.Click(MouseButtons.Right, ModifierKeys.None, startDragPoint);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, clickPoint);
             var designSurface = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
             SendKeys.SendWait("{DOWN}{DOWN}{ENTER}");
             Mouse.Click(designSurface);
             SendKeys.SendWait("^v");
             UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             Assert.AreEqual("System Menu Bar", uIItemImage.FriendlyName);
-            TabManagerUIMap.CloseAllTabs();
         }
 
         #endregion

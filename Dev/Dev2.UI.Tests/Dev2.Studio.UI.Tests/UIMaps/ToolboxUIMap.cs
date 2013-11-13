@@ -51,6 +51,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
             return theControl;
         }
 
+        /// <summary>
+        /// Determines whether [is icon visible] [the specified tool].
+        /// NOTE : Crap method. If icon has a lot of white in it it will fail ;)
+        /// </summary>
+        /// <param name="tool">The tool.</param>
+        /// <returns></returns>
         public bool IsIconVisible(UITestControl tool)
         {
             const string White = "ffffffff";
@@ -70,7 +76,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
             result = result || thePixel != White;
 
             //third pass
-            Mouse.Move(tool, new Point(26, 11));
+            Mouse.Move(tool, new Point(26, 21));
             thePixel = pixelGrabber.GetPixel(24, 11).Name;
             result = result || thePixel != White;
 
