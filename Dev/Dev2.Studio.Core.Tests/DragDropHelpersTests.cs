@@ -93,6 +93,21 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Massimo.Guerrera")]
+        [TestCategory("DragDropHelpers_PreventDrop")]
+        public void DragDropHelpers_PreventDrop_PreventDropWhereGetDataReturnsContextualResourceModelSource_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var dragDropHelpers = new DragDropHelpers(GetMockWorkflowDesignerView());
+            var data = new Mock<IContextualResourceModel>();
+            data.Setup(model => model.ResourceType).Returns(ResourceType.Source);
+            //------------Execute Test---------------------------
+            bool canDoDrop = dragDropHelpers.PreventDrop(GetMockDataObjectWithFormatData(new[] { "ResourceTreeViewModel" }, data.Object));
+            //------------Assert Results-------------------------
+            Assert.IsTrue(canDoDrop);
+        }
+
+        [TestMethod]
         public void DragDropHelpers_UnitTest_PreventDropWhereGetDataReturnsContextualResourceModelServerResourceTypeWorkflowService_ReturnsFalse()
         {
             //------------Setup for test--------------------------

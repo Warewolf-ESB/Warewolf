@@ -424,11 +424,13 @@ namespace Dev2.Core.Tests.DataList
         public void DataListValidator_ValidateChildren_HasCharError_DontRemoveCharError()
         {
             //------------Setup for test--------------------------            
-            IDataListItemModel dataListItemModel = new DataListItemModel("Test@",enDev2ColumnArgumentDirection.None,string.Empty);
-            dataListItemModel.HasError = true;
-            dataListItemModel.ErrorMessage = StringResources.ErrorMessageInvalidChar;
+            IDataListItemModel dataListItemModel = new DataListItemModel("recset()",enDev2ColumnArgumentDirection.None,string.Empty);
+            IDataListItemModel childDataListItemModel = new DataListItemModel("test@", enDev2ColumnArgumentDirection.None, string.Empty) { Parent = dataListItemModel };
+            dataListItemModel.Children.Add(childDataListItemModel);
+            childDataListItemModel.HasError = true;
+            childDataListItemModel.ErrorMessage = StringResources.ErrorMessageInvalidChar;
             //------------Execute Test---------------------------
-            Validator.ValidateChildren(dataListItemModel);
+            Validator.ValidateChildren(childDataListItemModel);
             //------------Assert Results-------------------------
             Assert.AreEqual(StringResources.ErrorMessageInvalidChar,dataListItemModel.ErrorMessage);
         }
