@@ -13,7 +13,7 @@
     <DeploymentItem filename="Dev2.PluginTester\bin\Debug\Dev2.PluginTester.dll" />
     <DeploymentItem filename="Binaries\IronRuby.dll" />
   </Deployment>
-  <NamingScheme baseName="TestResults" appendTimeStamp="false" useDefault="false" />
+  <NamingScheme baseName="TestResults" appendTimeStamp="false" />
   <Execution>
     <Timeouts runTimeout="1800000" testTimeout="120000" />
     <TestTypeSpecific>
