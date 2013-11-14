@@ -37,12 +37,6 @@ namespace Dev2.Core.Tests
 
         #region Initialization
 
-        [TestInitialize]
-        public void TestInit()
-        {
-            //Setup();
-        }
-
         void Setup()
         {
             _importContext = CompositionInitializer.DeployViewModelOkayTest();
