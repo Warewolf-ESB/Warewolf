@@ -424,23 +424,20 @@ namespace Dev2.Core.Tests
                 Setup();
                 ImportService.CurrentContext = _importContext;
 
-                Mock<IContextualResourceModel> resourceModel =
-                    Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
+                    Mock<IContextualResourceModel> resourceModel =
+                        Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
 
                 _resourceVm.IsChecked = true;
                 ResourceTreeViewModel vm = _resourceVm as ResourceTreeViewModel;
 
                 vm.DataContext = resourceModel.Object;
 
-                IEnvironmentModel environmentModel =
-                    Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>(),
-                                                          new List<IResourceModel>()).Object;
+                    IEnvironmentModel environmentModel =
+                        Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>(),
+                                                              new List<IResourceModel>()).Object;
 
                 bool expected = false;
                 bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
-
-                Assert.AreEqual(expected, actual);
-                throw new ReflectionTypeLoadException(new Type[1]{typeof(Exception)}, new Exception[1]{new Exception("test exception")});
             }
             catch(ReflectionTypeLoadException e)
             {
