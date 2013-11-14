@@ -318,8 +318,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         DisplayAndWriteError("DsfActivity", allErrors);
                         compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                         // add to datalist in variable specified
-                        var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
-                        compiler.Upsert(dataObject.DataListID, upsertVariable, allErrors.MakeDataListReady(), out errors);
+                        if(!String.IsNullOrEmpty(OnErrorVariable))
+                        {
+                            var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
+                            compiler.Upsert(dataObject.DataListID, upsertVariable, allErrors.MakeDataListReady(), out errors);
+                        }
                     }
                 }
 
@@ -335,7 +338,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 //                dataObject.RemoteInvokerID = string.Empty;
 //                dataObject.RemoteServiceType = string.Empty;
 
-                compiler.ClearErrors(dataObject.DataListID);
+                //compiler.ClearErrors(dataObject.DataListID);
             }
         }
 
