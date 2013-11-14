@@ -47,7 +47,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
         [TestCategory("CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword")]
         public void CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword_UserNameIsBlankAndPasswordIsNotBlank_HasErrors()
         {
-            Verify_ValidateUserNameAndPassword(userName: "", password: "xxx", isPasswordError: false, expectedMessageFormat: "User Name must have a value");
+            Verify_ValidateUserNameAndPassword(userName: "", password: "xxx", isPasswordError: false, expectedMessageFormat: "Username must have a value");
         }
 
         [TestMethod]
