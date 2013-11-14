@@ -84,7 +84,7 @@
         <Label Grid.Column="0"
                Grid.Row="1"
                Style="{StaticResource ActivityLabelStyle}"
-               Content="User Name" />
+               Content="Username" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="1"
                                 DefaultText="[[UserName]]"

@@ -13,8 +13,8 @@ namespace Dev2.Activities.Designers2.Core
         public static readonly DependencyProperty IsPasswordFocusedProperty =
             DependencyProperty.Register("IsPasswordFocused", typeof(bool), typeof(CredentialsActivityDesignerViewModel), new PropertyMetadata(false));
 
-        public static readonly DependencyProperty IsDestinationUserNameFocusedProperty =
-           DependencyProperty.Register("IsDestinationUserNameFocused", typeof(bool), typeof(CredentialsActivityDesignerViewModel), new PropertyMetadata(false));
+        public static readonly DependencyProperty IsDestinationUsernameFocusedProperty =
+           DependencyProperty.Register("IsDestinationUsernameFocused", typeof(bool), typeof(CredentialsActivityDesignerViewModel), new PropertyMetadata(false));
         public static readonly DependencyProperty IsDestinationPasswordFocusedProperty =
             DependencyProperty.Register("IsDestinationPasswordFocused", typeof(bool), typeof(CredentialsActivityDesignerViewModel), new PropertyMetadata(false));
 
@@ -35,10 +35,10 @@ namespace Dev2.Activities.Designers2.Core
             set { SetValue(IsPasswordFocusedProperty, value); }
         }
 
-        public bool IsDestinationUserNameFocused
+        public bool IsDestinationUsernameFocused
         {
-            get { return (bool)GetValue(IsDestinationUserNameFocusedProperty); }
-            set { SetValue(IsDestinationUserNameFocusedProperty, value); }
+            get { return (bool)GetValue(IsDestinationUsernameFocusedProperty); }
+            set { SetValue(IsDestinationUsernameFocusedProperty, value); }
         }
 
         public bool IsDestinationPasswordFocused
@@ -49,17 +49,17 @@ namespace Dev2.Activities.Designers2.Core
 
         string Username { get { return GetProperty<string>(); } }
         string Password { get { return GetProperty<string>(); } }
-        string DestinationUserName { get { return GetProperty<string>(); } }
+        string DestinationUsername { get { return GetProperty<string>(); } }
         string DestinationPassword { get { return GetProperty<string>(); } }
 
         protected virtual void ValidateUserNameAndPassword()
         {
-            ValidateUserNameAndPassword(Username, "User Name", () => IsUserNameFocused = true, Password, "Password", () => IsPasswordFocused = true);
+            ValidateUserNameAndPassword(Username, "Username", () => IsUserNameFocused = true, Password, "Password", () => IsPasswordFocused = true);
         }
 
-        protected virtual void ValidateDestinationUserNameAndPassword()
+        protected virtual void ValidateDestinationUsernameAndPassword()
         {
-            ValidateUserNameAndPassword(DestinationUserName, "Destination User Name", () => IsDestinationUserNameFocused = true, DestinationPassword, "Destination Password", () => IsDestinationPasswordFocused = true);
+            ValidateUserNameAndPassword(DestinationUsername, "Destination Username", () => IsDestinationUsernameFocused = true, DestinationPassword, "Destination Password", () => IsDestinationPasswordFocused = true);
         }
 
         protected void UpdateErrors(List<IActionableErrorInfo> errors)

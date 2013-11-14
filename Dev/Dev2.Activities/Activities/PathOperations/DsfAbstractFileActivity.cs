@@ -285,7 +285,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             AddDebugInputItemPassword("Password", Password);
         }
 
-        protected void AddDebugInputItemDestinationUserNamePassword(Guid executionId, IBinaryDataListEntry destUsernameEntry, string destinationPassword, string userName)
+        protected void AddDebugInputItemDestinationUsernamePassword(Guid executionId, IBinaryDataListEntry destUsernameEntry, string destinationPassword, string userName)
         {
             AddDebugInputItem(userName, "Username", destUsernameEntry, executionId);
             AddDebugInputItemPassword("Password", destinationPassword);

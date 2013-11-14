@@ -55,7 +55,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Couldnt find DsfZip.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 6);
+            Assert.IsTrue(properties.Count() == 8);
         }
 
         [TestMethod]
@@ -67,7 +67,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Couldnt find DsfUnZip.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 4);
+            Assert.IsTrue(properties.Count() == 6);
         }
 
         [TestMethod]
@@ -79,7 +79,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Couldnt find DsfPathRename.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 3);
+            Assert.IsTrue(properties.Count() == 5);
         }
 
         [TestMethod]
@@ -91,7 +91,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Couldnt find DsfPathMove.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 3);
+            Assert.IsTrue(properties.Count() == 5);
         }
 
         [TestMethod]
@@ -128,7 +128,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Couldnt find DsfPathCopy.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 3);
+            Assert.IsTrue(properties.Count() == 5);
         }
 
         [TestMethod]

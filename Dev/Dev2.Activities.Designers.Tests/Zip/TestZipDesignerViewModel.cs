@@ -38,11 +38,11 @@ namespace Dev2.Activities.Designers.Tests.Zip
             base.ValidateUserNameAndPassword();
         }
 
-        public int ValidateDestinationUserNameAndPasswordHitCount { get; private set; }
-        protected override void ValidateDestinationUserNameAndPassword()
+        public int ValidateDestinationUsernameAndPasswordHitCount { get; private set; }
+        protected override void ValidateDestinationUsernameAndPassword()
         {
-            ValidateDestinationUserNameAndPasswordHitCount++;
-            base.ValidateDestinationUserNameAndPassword();
+            ValidateDestinationUsernameAndPasswordHitCount++;
+            base.ValidateDestinationUsernameAndPassword();
         }
 
         public string CompressionRatio { set { SetProperty(value); } get { return GetProperty<string>(); } }

@@ -2,9 +2,11 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using ActivityUnitTests;
+using Dev2.Data.PathOperations.Interfaces;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
+using Dev2.Tests.Activities.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -88,7 +90,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(inputs.UID);
 
-            Assert.AreEqual(6,res);
+            Assert.AreEqual(8,res);
         }
 
         [TestMethod]
@@ -148,11 +150,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(5, inRes.Count);
+            Assert.AreEqual(7, inRes.Count);
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(4, inRes[1].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[1].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[3].FetchResultsList().Count);            
+            Assert.AreEqual(4, inRes[3].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[5].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[6].FetchResultsList().Count);      
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
@@ -200,11 +205,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(5, inRes.Count);
+            Assert.AreEqual(7, inRes.Count);
             Assert.AreEqual(7, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[1].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[1].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[3].FetchResultsList().Count);            
+            Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[5].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[6].FetchResultsList().Count);  
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
@@ -360,5 +368,62 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(result, dsfForEachItems[0].Value);
         }
 
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DsfPathMove_Execute")]
+        public void Move_Execute_Workflow_SourceFile_And_DestinationFile_Has_Separate_Passwords_Both_Passwords_Are_Sent_To_OperationBroker()
+        {
+            List<string> fileNames = new List<string>
+            {
+                Path.Combine(TestContext.TestRunDirectory, "NewFileFolder\\Dev2.txt")
+            };
+
+            List<string> directoryNames = new List<string>();
+            directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder"));
+            directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder2"));
+
+            foreach (string directoryName in directoryNames)
+            {
+                Directory.CreateDirectory(directoryName);
+            }
+
+            foreach (string fileName in fileNames)
+            {
+                File.WriteAllText(fileName, @"TestData");
+            }
+
+            var activityOperationBrokerMock = new ActivityOperationBrokerMock();
+
+            DsfPathMove act = new DsfPathMove {
+                InputPath = "OldFile.txt",
+                OutputPath = Path.Combine(TestContext.TestRunDirectory, "NewName.txt"),
+                Result = "[[res]]",
+                DestinationUsername = "destUName",
+                DestinationPassword = "destPWord",
+                Username = "uName",
+                Password = "pWord",
+                GetOperationBroker = () => activityOperationBrokerMock
+            };
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+
+            var result = CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Password, "destPWord");
+            Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Username, "destUName");
+            Assert.AreEqual(activityOperationBrokerMock.Source.IOPath.Password, "pWord");
+            Assert.AreEqual(activityOperationBrokerMock.Source.IOPath.Username, "uName");
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DsfPathMove_Construct")]
+        public void Move_Construct_Object_Must_Be_OfType_IDestinationUsernamePassword()
+        {
+            var pathMove = new DsfPathMove();
+            Assert.IsTrue(pathMove is IDestinationUsernamePassword);
+        }
     }
 }

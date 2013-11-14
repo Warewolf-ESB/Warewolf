@@ -21,7 +21,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Purpose : To provide an activity that can un-zip the contents of a zip archive from FTP, FTPS and file system
     /// </summary>
     public class DsfUnZip : DsfAbstractFileActivity, IUnZip, IPathOverwrite, IPathOutput, IPathInput,
-                            IDestinationUserNamePassword
+                            IDestinationUsernamePassword
     {
         public DsfUnZip()
             : base("Unzip")
@@ -31,7 +31,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             OutputPath = string.Empty;
             Overwrite = false;
             DestinationPassword = string.Empty;
-            DestinationUserName = string.Empty;
+            DestinationUsername = string.Empty;
         }
 
         protected override IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context,
@@ -78,10 +78,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDev2DataListEvaluateIterator archPassItr = Dev2ValueObjectFactory.CreateEvaluateIterator(archPassEntry);
             colItr.AddIterator(archPassItr);
 
-            IBinaryDataListEntry destinationUserNameEntry = compiler.Evaluate(executionId, enActionType.User, DestinationUserName, false,
+            IBinaryDataListEntry DestinationUsernameEntry = compiler.Evaluate(executionId, enActionType.User, DestinationUsername, false,
                                                                   out errors);
             allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator desunameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(destinationUserNameEntry);
+            IDev2DataListEvaluateIterator desunameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(DestinationUsernameEntry);
             colItr.AddIterator(desunameItr);
 
             IBinaryDataListEntry destinationPasswordEntry = compiler.Evaluate(executionId, enActionType.User, DestinationPassword, false,
@@ -97,7 +97,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugInputItem(InputPath, "Zip Name", inputPathEntry, executionId);  
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
                 AddDebugInputItem(OutputPath, "Destination", outputPathEntry, executionId);
-                AddDebugInputItemDestinationUserNamePassword(executionId, destinationUserNameEntry, DestinationPassword, DestinationUserName);
+                AddDebugInputItemDestinationUsernamePassword(executionId, DestinationUsernameEntry, DestinationPassword, DestinationUsername);
                 AddDebugInputItemOverwrite(executionId, Overwrite);
                 AddDebugInputItemPassword("Archive Password", ArchivePassword);
                
@@ -107,7 +107,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
                 string error = string.Empty;
-                IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
+                IActivityOperationsBroker broker = GetOperationBroker();
 
                 try
                 {
@@ -143,6 +143,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         }
 
+        public Func<IActivityOperationsBroker> GetOperationBroker = () => ActivityIOFactory.CreateOperationsBroker();
+
         #region Properties
 
         /// <summary>
@@ -176,7 +178,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the destination file/folder user name
         /// </summary>
         [Inputs("Destination Username"), FindMissing]
-        public string DestinationUserName { get; set; }
+        public string DestinationUsername { get; set; }
 
         /// <summary>
         /// Gets or sets the destination file/folder password

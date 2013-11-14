@@ -92,7 +92,7 @@
                Grid.Row="1"
                Margin="20,2,2,2"
                Style="{StaticResource ActivityLabelStyle}"
-               Content="User Name" />
+               Content="Username" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="1"
                                 Margin="20,2,1,2"
@@ -171,23 +171,23 @@
                Grid.Row="4"
                Margin="20,2,2,2"
                Style="{StaticResource ActivityLabelStyle}"
-               Content="User Name" />
+               Content="Username" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="4"
                                 Margin="20,2,1,2"
                                 DefaultText="[[UserName]]"
                                 WrapInBrackets="False"
-                                Text="{Binding Path=ModelItem.DestinationUserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding Path=ModelItem.DestinationUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static help:HelpTextResources.ZipToolTipUsername}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                attachedProperties:FocusSetter.IsFocused="{Binding IsDestinationUserNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_DestinationUserNametxt_AutoID}">
+                                attachedProperties:FocusSetter.IsFocused="{Binding IsDestinationUsernameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_DestinationUsernametxt_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpDestinationUsername}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.DestinationUserName"
-                                     SourcePropertyValue="{Binding  ModelItem.DestinationUserName, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.DestinationUsername"
+                                     SourcePropertyValue="{Binding  ModelItem.DestinationUsername, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>

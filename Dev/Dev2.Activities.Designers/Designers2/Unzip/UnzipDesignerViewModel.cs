@@ -16,7 +16,7 @@ namespace Dev2.Activities.Designers2.Unzip
         {
             Errors = null;
             ValidateUserNameAndPassword();
-            ValidateDestinationUserNameAndPassword();
+            ValidateDestinationUsernameAndPassword();
             ValidateInputAndOutputPaths();
         }
     }

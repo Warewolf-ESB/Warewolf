@@ -2,10 +2,12 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using Dev2.Data.PathOperations.Interfaces;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
 using Dev2.Tests.Activities;
+using Dev2.Tests.Activities.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -101,7 +103,7 @@ namespace ActivityUnitTests.ActivityTests
 
             IBinaryDataList inputs = testAct.GetInputs();
 
-            Assert.IsTrue(inputs.FetchAllEntries().Count == 9);
+            Assert.IsTrue(inputs.FetchAllEntries().Count == 11);
         }
 
         [TestMethod]
@@ -147,15 +149,17 @@ namespace ActivityUnitTests.ActivityTests
             CheckPathOperationActivityDebugInputOutput(preact, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
 
-            Assert.AreEqual(7, inRes.Count);
+            Assert.AreEqual(9, inRes.Count);
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(4, inRes[1].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[1].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[3].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[4].FetchResultsList().Count);
+            Assert.AreEqual(4, inRes[3].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[5].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[6].FetchResultsList().Count);            
-
+            Assert.AreEqual(2, inRes[6].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[7].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[8].FetchResultsList().Count);
+            
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
         }
@@ -203,7 +207,7 @@ namespace ActivityUnitTests.ActivityTests
                                                                 dataListWithData, out inRes, out outRes);
 
 
-            Assert.AreEqual(7, inRes.Count);
+            Assert.AreEqual(9, inRes.Count);
             Assert.AreEqual(7, inRes[0].FetchResultsList().Count);
             Assert.AreEqual("File or Folder", inRes[0].ResultsList[0].Value);
             Assert.AreEqual("[[FileNames(1).Name]]", inRes[0].ResultsList[1].Value);
@@ -211,25 +215,26 @@ namespace ActivityUnitTests.ActivityTests
             Assert.IsFalse(string.IsNullOrEmpty(inRes[0].ResultsList[3].Value));
             Assert.AreEqual("[[FileNames(2).Name]]", inRes[0].ResultsList[4].Value);
             Assert.AreEqual("=", inRes[0].ResultsList[5].Value);
-            Assert.IsFalse(string.IsNullOrEmpty(inRes[0].ResultsList[6].Value));            
-            Assert.AreEqual(7, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual("Destination", inRes[1].ResultsList[0].Value);
-            Assert.AreEqual("[[ZipNames(1).Zips]]", inRes[1].ResultsList[1].Value);
-            Assert.AreEqual("=", inRes[1].ResultsList[2].Value);
-            Assert.IsFalse(string.IsNullOrEmpty(inRes[1].ResultsList[3].Value));
-            Assert.AreEqual("[[ZipNames(2).Zips]]", inRes[1].ResultsList[4].Value);
-            Assert.AreEqual("=", inRes[1].ResultsList[5].Value);
-            Assert.IsFalse(string.IsNullOrEmpty(inRes[1].ResultsList[6].Value));            
+            Assert.IsFalse(string.IsNullOrEmpty(inRes[0].ResultsList[6].Value));
+            Assert.AreEqual(1, inRes[1].FetchResultsList().Count);
+            Assert.AreEqual("Username", inRes[1].ResultsList[0].Value);
             Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
-            Assert.AreEqual("Overwrite", inRes[2].ResultsList[0].Value);
-            Assert.AreEqual(1, inRes[3].FetchResultsList().Count);
-            Assert.AreEqual("Username", inRes[3].ResultsList[0].Value);
-            Assert.AreEqual(2, inRes[4].FetchResultsList().Count);
-            Assert.AreEqual("Password", inRes[4].ResultsList[0].Value);
+            Assert.AreEqual("Password", inRes[2].ResultsList[0].Value);
+            Assert.AreEqual(7, inRes[3].FetchResultsList().Count);
+            Assert.AreEqual("Destination", inRes[3].ResultsList[0].Value);
+            Assert.AreEqual("[[ZipNames(1).Zips]]", inRes[3].ResultsList[1].Value);
+            Assert.AreEqual("=", inRes[3].ResultsList[2].Value);
+            Assert.IsFalse(string.IsNullOrEmpty(inRes[3].ResultsList[3].Value));
+            Assert.AreEqual("[[ZipNames(2).Zips]]", inRes[3].ResultsList[4].Value);
+            Assert.AreEqual("=", inRes[3].ResultsList[5].Value);
+            Assert.IsFalse(string.IsNullOrEmpty(inRes[3].ResultsList[6].Value)); 
+            Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
+            Assert.AreEqual("Username", inRes[4].ResultsList[0].Value);
             Assert.AreEqual(2, inRes[5].FetchResultsList().Count);
-            Assert.AreEqual("Archive Password", inRes[5].ResultsList[0].Value);
-            Assert.AreEqual(1, inRes[6].FetchResultsList().Count);            
-
+            Assert.AreEqual("Password", inRes[5].ResultsList[0].Value);
+            Assert.AreEqual(2, inRes[6].FetchResultsList().Count);
+            Assert.AreEqual("Overwrite", inRes[6].ResultsList[0].Value);
+            Assert.AreEqual(2, inRes[6].FetchResultsList().Count);
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
             Assert.AreEqual("[[res]]", outRes[0].ResultsList[0].Value);
@@ -328,7 +333,57 @@ namespace ActivityUnitTests.ActivityTests
             //------------Assert Results-------------------------
             Assert.IsTrue(File.Exists(Path.GetTempPath() + NewFileName + ".zip"));
         }
-        
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Zip_Execute")]
+        public void Zip_Execute_Workflow_SourceFile_And_DestinationFile_Has_Separate_Passwords_Both_Passwords_Are_Sent_To_OperationBroker()
+        {
+            var fileNames = new List<string>();
+            Guid randomFileName = Guid.NewGuid();
+            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, randomFileName.ToString() + "Dev2.txt"));
+
+            var zipfileNames = new List<string>();
+            zipfileNames.Add(Path.Combine(myTestContext.TestRunDirectory, randomFileName.ToString() + "Dev2Zip.zip"));
+
+            foreach (string fileName in fileNames)
+            {
+                File.WriteAllText(fileName, "TestData");
+            }
+
+            var activityOperationBrokerMock = new ActivityOperationBrokerMock();
+
+            DsfZip preact = new DsfZip {
+                InputPath = "OldFile.txt",
+                OutputPath = Path.Combine(TestContext.TestRunDirectory, "NewName.txt"),
+                Result = "[[res]]",
+                DestinationUsername = "destUName",
+                DestinationPassword = "destPWord",
+                Username = "uName",
+                Password = "pWord",
+                GetOperationBroker = () => activityOperationBrokerMock
+            };
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+
+            CheckPathOperationActivityDebugInputOutput(preact, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Password, "destPWord");
+            Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Username, "destUName");
+            Assert.AreEqual(activityOperationBrokerMock.Source.IOPath.Password, "pWord");
+            Assert.AreEqual(activityOperationBrokerMock.Source.IOPath.Username, "uName");
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dsfzip_Construct")]
+        public void Zip_Construct_Object_Must_Be_OfType_IDestinationUsernamePassword()
+        {
+            var zip = new DsfZip();
+            Assert.IsTrue(zip is IDestinationUsernamePassword);
+        }
 
         #endregion
     }

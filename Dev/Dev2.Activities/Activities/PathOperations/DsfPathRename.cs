@@ -19,7 +19,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Status : New
     /// Prupose : To provide an activity that can rename a file/folder via FTP, FTPS and file system
     /// </summary>
-    public class DsfPathRename : DsfAbstractFileActivity, IPathInput, IPathOutput, IPathOverwrite, IDestinationUserNamePassword
+    public class DsfPathRename : DsfAbstractFileActivity, IPathInput, IPathOutput, IPathOverwrite, IDestinationUsernamePassword
     {
         public DsfPathRename()
             : base("Rename")
@@ -27,7 +27,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InputPath = string.Empty;
             OutputPath = string.Empty;
             DestinationPassword = string.Empty;
-            DestinationUserName = string.Empty;
+            DestinationUsername = string.Empty;
         }
 
         protected override IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context, out ErrorResultTO allErrors)
@@ -64,9 +64,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDev2DataListEvaluateIterator passItr = Dev2ValueObjectFactory.CreateEvaluateIterator(passwordEntry);
             colItr.AddIterator(passItr);
 
-            IBinaryDataListEntry destinationUserNameEntry = compiler.Evaluate(executionId, enActionType.User, DestinationUserName, false, out errors);
+            IBinaryDataListEntry DestinationUsernameEntry = compiler.Evaluate(executionId, enActionType.User, DestinationUsername, false, out errors);
             allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator desunameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(destinationUserNameEntry);
+            IDev2DataListEvaluateIterator desunameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(DestinationUsernameEntry);
             colItr.AddIterator(desunameItr);
 
             IBinaryDataListEntry destinationPasswordEntry = compiler.Evaluate(executionId, enActionType.User, DestinationPassword, false,
@@ -82,7 +82,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId); 
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
                 AddDebugInputItem(OutputPath, "Output Path", outputPathEntry, executionId);
-                AddDebugInputItemDestinationUserNamePassword(executionId, destinationUserNameEntry, DestinationPassword, DestinationUserName);
+                AddDebugInputItemDestinationUsernamePassword(executionId, DestinationUsernameEntry, DestinationPassword, DestinationUsername);
                 AddDebugInputItemOverwrite(executionId, Overwrite);
             }
 
@@ -162,7 +162,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the destination file/folder user name
         /// </summary>
         [Inputs("Destination Username"), FindMissing]
-        public string DestinationUserName { get; set; }
+        public string DestinationUsername { get; set; }
 
         /// <summary>
         /// Gets or sets the destination file/folder password

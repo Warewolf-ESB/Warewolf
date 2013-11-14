@@ -23,7 +23,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Prupose : To provide an activity that can copy a file/folder via FTP, FTPS and file system
     /// </summary>
     public class DsfPathCopy : DsfAbstractFileActivity, IPathOverwrite, IPathInput, IPathOutput,
-                               IDestinationUserNamePassword
+                               IDestinationUsernamePassword
     {
         public DsfPathCopy()
             : base("Copy")
@@ -31,13 +31,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InputPath = string.Empty;
             OutputPath = string.Empty;
             DestinationPassword = string.Empty;
-            DestinationUserName = string.Empty;
+            DestinationUsername = string.Empty;
         }
 
         protected override IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context,
                                                                  out ErrorResultTO allErrors)
         {
-
             IList<OutputTO> outputs = new List<OutputTO>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -71,10 +70,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDev2DataListEvaluateIterator passItr = Dev2ValueObjectFactory.CreateEvaluateIterator(passwordEntry);
             colItr.AddIterator(passItr);
 
-            IBinaryDataListEntry destinationUserNameEntry = compiler.Evaluate(executionId, enActionType.User, DestinationUserName, false,
+            IBinaryDataListEntry DestinationUsernameEntry = compiler.Evaluate(executionId, enActionType.User, DestinationUsername, false,
                                                                   out errors);
             allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator desunameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(destinationUserNameEntry);
+            IDev2DataListEvaluateIterator desunameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(DestinationUsernameEntry);
             colItr.AddIterator(desunameItr);
 
             IBinaryDataListEntry destinationPasswordEntry = compiler.Evaluate(executionId, enActionType.User, DestinationPassword, false,
@@ -90,13 +89,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId); 
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
                 AddDebugInputItem(OutputPath, "Output Path", outputPathEntry, executionId);
-                AddDebugInputItemDestinationUserNamePassword(executionId, destinationUserNameEntry, DestinationPassword, DestinationUserName);
+                AddDebugInputItemDestinationUsernamePassword(executionId, DestinationUsernameEntry, DestinationPassword, DestinationUsername);
                 AddDebugInputItemOverwrite(executionId, Overwrite);
             }
 
             while (colItr.HasMoreData())
             {
-                IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
+                IActivityOperationsBroker broker = GetOperationBroker();
+
                 Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(Overwrite);
 
                 try
@@ -126,6 +126,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         }
 
+        public Func<IActivityOperationsBroker> GetOperationBroker = () => ActivityIOFactory.CreateOperationsBroker();
+
         #region Properties
 
         /// <summary>
@@ -152,7 +154,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the destination file/folder user name
         /// </summary>
         [Inputs("Destination Username"), FindMissing]
-        public string DestinationUserName { get; set; }
+        public string DestinationUsername { get; set; }
 
         /// <summary>
         /// Gets or sets the destination file/folder password

@@ -4,14 +4,11 @@ using Dev2.Data.PathOperations.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
-using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.PathOperations;
 using System;
 using System.Activities;
 using System.Collections.Generic;
 using Dev2.Util;
-using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -23,7 +20,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Purpose : To provide an activity that can move a file/folder via FTP, FTPS and file system
     /// </summary>
     public class DsfPathMove : DsfAbstractFileActivity, IPathInput, IPathOutput, IPathOverwrite,
-                               IDestinationUserNamePassword
+                               IDestinationUsernamePassword
     {
         public DsfPathMove()
             : base("Move")
@@ -31,7 +28,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InputPath = string.Empty;
             OutputPath = string.Empty;
             DestinationPassword = string.Empty;
-            DestinationUserName = string.Empty;
+            DestinationUsername = string.Empty;
         }
 
         protected override IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context,
@@ -71,10 +68,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDev2DataListEvaluateIterator passItr = Dev2ValueObjectFactory.CreateEvaluateIterator(passwordEntry);
             colItr.AddIterator(passItr);
 
-            IBinaryDataListEntry destinationUserNameEntry = compiler.Evaluate(executionId, enActionType.User, DestinationUserName, false,
+            IBinaryDataListEntry DestinationUsernameEntry = compiler.Evaluate(executionId, enActionType.User, DestinationUsername, false,
                                                                   out errors);
             allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator desunameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(destinationUserNameEntry);
+            IDev2DataListEvaluateIterator desunameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(DestinationUsernameEntry);
             colItr.AddIterator(desunameItr);
 
             IBinaryDataListEntry destinationPasswordEntry = compiler.Evaluate(executionId, enActionType.User, DestinationPassword, false,
@@ -90,7 +87,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId); 
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
                 AddDebugInputItem(OutputPath, "Output Path", outputPathEntry, executionId);
-                AddDebugInputItemDestinationUserNamePassword(executionId, destinationUserNameEntry, DestinationPassword, DestinationUserName);
+                AddDebugInputItemDestinationUsernamePassword(executionId, DestinationUsernameEntry, DestinationPassword, DestinationUsername);
                 AddDebugInputItemOverwrite(executionId, Overwrite);
             }
 
@@ -98,7 +95,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
                 string error = string.Empty;
-                IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
+                IActivityOperationsBroker broker = GetOperationBroker();
                 Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(Overwrite);
 
                 try
@@ -127,6 +124,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return outputs;
         }
 
+        public Func<IActivityOperationsBroker> GetOperationBroker = () => ActivityIOFactory.CreateOperationsBroker();
         #region Properties
 
         /// <summary>
@@ -153,7 +151,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets the destination file/folder user name
         /// </summary>
         [Inputs("Destination Username"), FindMissing]
-        public string DestinationUserName { get; set; }
+        public string DestinationUsername { get; set; }
 
         /// <summary>
         /// Gets or sets the destination file/folder password

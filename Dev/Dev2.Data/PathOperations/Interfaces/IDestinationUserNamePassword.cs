@@ -1,8 +1,8 @@
 ﻿namespace Dev2.Data.PathOperations.Interfaces
 {
-    public interface IDestinationUserNamePassword
+    public interface IDestinationUsernamePassword
     {
-        string DestinationUserName { get; set; }
+        string DestinationUsername { get; set; }
         string DestinationPassword { get; set; }
     }
 }

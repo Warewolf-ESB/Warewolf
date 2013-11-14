@@ -38,11 +38,11 @@ namespace Dev2.Activities.Designers.Tests.Unzip
             base.ValidateUserNameAndPassword();
         }
 
-        public int ValidateDestinationUserNameAndPasswordHitCount { get; private set; }
-        protected override void ValidateDestinationUserNameAndPassword()
+        public int ValidateDestinationUsernameAndPasswordHitCount { get; private set; }
+        protected override void ValidateDestinationUsernameAndPassword()
         {
-            ValidateDestinationUserNameAndPasswordHitCount++;
-            base.ValidateDestinationUserNameAndPassword();
+            ValidateDestinationUsernameAndPasswordHitCount++;
+            base.ValidateDestinationUsernameAndPassword();
         }
 
 
