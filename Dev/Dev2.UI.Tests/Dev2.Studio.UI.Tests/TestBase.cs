@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.Studio.UI.Tests;
+using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -74,12 +75,12 @@ namespace Dev2.CodedUI.Tests
             Assert.IsTrue(activeTabName.Contains("Unsaved"), "Active workflow is not an unsaved workflow");
         }
 
-        #endregion New PBI Tests
+        #endregion New PBI Tests        
 
         [TestMethod]
         [Owner("Massimo Guerrera")]
-        [TestCategory("DataGridLargeView_AssignLargeView")]
-        public void DataGridLargeView_AssignLargeView_EnteringMultipleRows_IndexingWorksFine()
+        [TestCategory("ToolDesigners_AssignLargeView")]
+        public void ToolDesigners_AssignLargeView_EnteringMultipleRows_IndexingWorksFine()
         {
             // Create the workflow
             RibbonUIMap.CreateNewWorkflow();

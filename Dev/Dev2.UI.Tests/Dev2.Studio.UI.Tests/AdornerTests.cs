@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
@@ -39,6 +41,114 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
+
+        #region Large View Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("ToolDesigners_MoveLargeView")]
+        public void ToolDesigners_MoveLargeView_TabOrderAndDestinationUserNameAndPassword_UiRepondingFine()
+        {
+            // Create the workflow
+            RibbonUIMap.CreateNewWorkflow();
+
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+
+            #region Test entering text into the textboxes
+
+            //Enter test data into all the textboxes in the large view
+            LargeViewUtilMethods.LargeViewTextboxesEnterTestData("Move", theTab);
+
+            //Get all the textboxes off the large view
+            List<UITestControl> allTextBoxesFromLargeView = LargeViewUtilMethods.GetAllTextBoxesFromLargeView("Move", theTab);
+
+            //Check each textbox contains the right text
+            int counter = 0;
+            foreach(var uiTestControl in allTextBoxesFromLargeView)
+            {
+                WpfEdit textbox = uiTestControl as WpfEdit;
+                if(textbox != null && !textbox.IsPassword)
+                {
+                    Assert.AreEqual("[[theVar" + counter.ToString(CultureInfo.InvariantCulture) + "]]", textbox.Text);
+                }
+
+                counter++;
+            }
+
+            #endregion
+
+            #region Test tabbing
+
+            //Set the focus into the first textbox
+            allTextBoxesFromLargeView[0].SetFocus();
+
+            //Tab through the controlls
+            int numberOfTabsToLastTextbox = 7;
+            for(int i = 0; i < numberOfTabsToLastTextbox; i++)
+            {
+                SendKeys.SendWait("{TAB}");
+                Playback.Wait(50);
+            }
+            //Assert that the focus is in the last textbox
+            Assert.IsTrue(allTextBoxesFromLargeView[allTextBoxesFromLargeView.Count - 1].HasFocus);
+
+            #endregion
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("ToolDesigners_ZipLargeView")]
+        public void ToolDesigners_ZipLargeView_TabOrderAndDestinationUserNameAndPassword_UiRepondingFine()
+        {
+            // Create the workflow
+            RibbonUIMap.CreateNewWorkflow();
+
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+
+            #region Test entering text into the textboxes
+
+            //Enter test data into all the textboxes in the large view
+            LargeViewUtilMethods.LargeViewTextboxesEnterTestData("DsfZip", theTab);
+
+            //Get all the textboxes off the large view
+            List<UITestControl> allTextBoxesFromLargeView = LargeViewUtilMethods.GetAllTextBoxesFromLargeView("DsfZip", theTab);
+
+            //Check each textbox contains the right text
+            int counter = 0;
+            foreach(var uiTestControl in allTextBoxesFromLargeView)
+            {
+                WpfEdit textbox = uiTestControl as WpfEdit;
+                if(textbox != null && !textbox.IsPassword)
+                {
+                    Assert.AreEqual("[[theVar" + counter.ToString(CultureInfo.InvariantCulture) + "]]", textbox.Text);
+                }
+
+                counter++;
+            }
+
+            #endregion
+
+            #region Test tabbing
+
+            //Set the focus into the first textbox
+            allTextBoxesFromLargeView[0].SetFocus();
+
+            //Tab through the controlls
+            int numberOfTabsToLastTextbox = 9;
+            for(int i = 0; i < numberOfTabsToLastTextbox; i++)
+            {
+                SendKeys.SendWait("{TAB}");
+                Playback.Wait(50);
+            }
+            //Assert that the focus is in the last textbox
+            Assert.IsTrue(allTextBoxesFromLargeView[allTextBoxesFromLargeView.Count - 1].HasFocus);
+
+            #endregion
+        }
+
+        #endregion
 
         [TestMethod]
         [Owner("Travis Frisinger")]

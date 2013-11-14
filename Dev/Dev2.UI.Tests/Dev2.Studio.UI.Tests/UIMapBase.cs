@@ -28,6 +28,7 @@ using Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServiceDetailsUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.SwitchUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses;
+using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
@@ -609,7 +610,7 @@ namespace Dev2.Studio.UI.Tests
 
         private WorkflowDesignerUIMap _workflowDesignerUIMap;
 
-        #endregion Workflow Designer UI Map
+        #endregion Workflow Designer UI Map        
 
         #region Workflow Wizard UI Map
 
@@ -628,5 +629,21 @@ namespace Dev2.Studio.UI.Tests
         #endregion Workflow Wizard UI Map
 
         #endregion All UI Maps
+
+        #region CodedUiUtilMethods
+
+        public LargeViewUtilMethods LargeViewUtilMethods
+        {
+            get
+            {
+                if(_largeViewUtilMethods == null)
+                    _largeViewUtilMethods = new LargeViewUtilMethods();
+                return _largeViewUtilMethods;
+            }
+        }
+
+        private LargeViewUtilMethods _largeViewUtilMethods;        
+
+        #endregion
     }
 }
