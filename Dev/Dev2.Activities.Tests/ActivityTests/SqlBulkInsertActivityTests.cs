@@ -478,19 +478,76 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(3,returnedDataTable.Rows.Count);
 
             Assert.AreEqual("Bob", returnedDataTable.Rows[0]["field1"]);
-            Assert.AreEqual("2", returnedDataTable.Rows[0]["field2"]);
-            Assert.AreEqual("C", returnedDataTable.Rows[0]["field3"]);
-            Assert.AreEqual("21.2", returnedDataTable.Rows[0]["field4"]);
+            Assert.AreEqual(2, returnedDataTable.Rows[0]["field2"]);
+            Assert.AreEqual('C', returnedDataTable.Rows[0]["field3"]);
+            Assert.AreEqual(21.2m, returnedDataTable.Rows[0]["field4"]);
 
             Assert.AreEqual("Jane", returnedDataTable.Rows[1]["field1"]);
-            Assert.AreEqual("3", returnedDataTable.Rows[1]["field2"]);
-            Assert.AreEqual("G", returnedDataTable.Rows[1]["field3"]);
-            Assert.AreEqual("26.4", returnedDataTable.Rows[1]["field4"]);
+            Assert.AreEqual(3, returnedDataTable.Rows[1]["field2"]);
+            Assert.AreEqual('G', returnedDataTable.Rows[1]["field3"]);
+            Assert.AreEqual(26.4m, returnedDataTable.Rows[1]["field4"]);
 
             Assert.AreEqual("Jill", returnedDataTable.Rows[2]["field1"]);
-            Assert.AreEqual("1999", returnedDataTable.Rows[2]["field2"]);
-            Assert.AreEqual("Z", returnedDataTable.Rows[2]["field3"]);
-            Assert.AreEqual("60", returnedDataTable.Rows[2]["field4"]);
+            Assert.AreEqual(1999, returnedDataTable.Rows[2]["field2"]);
+            Assert.AreEqual('Z', returnedDataTable.Rows[2]["field3"]);
+            Assert.AreEqual(60m, returnedDataTable.Rows[2]["field4"]);
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSqlBulkInsertActivity_Execute")]
+        public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsAndDataFromDataListStar_HasDataTableWithDataColumnHaveCorrectDataTypes()
+        {
+            //------------Setup for test--------------------------
+            DataTable returnedDataTable = null;
+            var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
+            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()))
+                .Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedDataTable = dataTable);
+            var dataColumnMappings = new List<DataColumnMapping>
+            {
+                new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field1]]",
+                    OutputColumn = new DbColumn {ColumnName = "TestCol",
+                    DataType = typeof(String),
+                    MaxLength = 100},
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field2]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol2",
+                    DataType = typeof(Int32),
+                    MaxLength = 100 }
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field3]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol3",
+                    DataType = typeof(char),
+                    MaxLength = 100 }
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field4]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol4",
+                    DataType = typeof(decimal),
+                    MaxLength = 100 }
+                }
+            };
+            SetupArguments("<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1>Jane</field1><field2>3</field2><field3>G</field3><field4>26.4</field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1></root>", "<root><recset1><field1/><field2/><field3/><field4/></recset1></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
+            //------------Execute Test---------------------------
+            ExecuteProcess();
+            //------------Assert Results-------------------------
+            mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
+            Assert.IsNotNull(returnedDataTable);
+            Assert.AreEqual(4, returnedDataTable.Columns.Count);
+            Assert.AreEqual(typeof(String),returnedDataTable.Columns[0].DataType);
+            Assert.AreEqual(typeof(Int32),returnedDataTable.Columns[1].DataType);
+            Assert.AreEqual(typeof(char),returnedDataTable.Columns[2].DataType);
+            Assert.AreEqual(typeof(decimal),returnedDataTable.Columns[3].DataType);
+            Assert.AreEqual(3,returnedDataTable.Rows.Count);
+
+            Assert.AreEqual("Bob", returnedDataTable.Rows[0]["field1"]);
+            Assert.AreEqual(2, returnedDataTable.Rows[0]["field2"]);
+            Assert.AreEqual('C', returnedDataTable.Rows[0]["field3"]);
+            Assert.AreEqual(21.2m, returnedDataTable.Rows[0]["field4"]);
         }
 
         [TestMethod]

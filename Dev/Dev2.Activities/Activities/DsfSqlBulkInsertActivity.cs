@@ -176,6 +176,7 @@ namespace Dev2.Activities
 
         bool BuiltUsingSingleRecset(SqlBulkCopy sqlBulkCopy, IDataListCompiler compiler, Guid executionID, IDSFDataObject dataObject, out DataTable dataTableToInsert)
         {
+            var actualDataTable = new DataTable();
             if(InputMappings!=null && InputMappings.All(mapping => DataListUtil.IsValueRecordset(mapping.InputColumn) || String.IsNullOrEmpty(mapping.InputColumn)))
             {
                 var currentRecSetName = "";
@@ -195,15 +196,26 @@ namespace Dev2.Activities
                             hasMultiple = true;
                             break;
                         }
+                        var inputFieldName = DataListUtil.ExtractFieldNameFromValue(dataColumnMapping.InputColumn);
+                        if(!actualDataTable.Columns.Contains(inputFieldName))
+                        {
+                            actualDataTable.Columns.Add(inputFieldName, dataColumnMapping.OutputColumn.DataType);
+                        }
                     }
                 }
                 if(!hasMultiple)
                 {
                     var binaryDataList = compiler.FetchBinaryDataList(executionID, out errors);
                     dataTableToInsert = compiler.ConvertToDataTable(binaryDataList, currentRecSetName, out errors);
+                    foreach(DataRow dataRow in dataTableToInsert.Rows)
+                    {
+                        actualDataTable.ImportRow(dataRow);
+                    }
+                    dataTableToInsert = actualDataTable;
                     var indexCounter = 1;
                     foreach(var dataColumnMapping in InputMappings)
                     {
+                        var inputFieldName = DataListUtil.ExtractFieldNameFromValue(dataColumnMapping.InputColumn);
                         if(!String.IsNullOrEmpty(dataColumnMapping.InputColumn))
                         {
                             if(dataObject.IsDebugMode())
@@ -212,12 +224,13 @@ namespace Dev2.Activities
                                 AddDebugInputItem(dataColumnMapping.InputColumn, dataColumnMapping.OutputColumn.ColumnName, expressionsEntry, dataColumnMapping.OutputColumn.DataTypeName, executionID, indexCounter);
                                 indexCounter++;
                             }
-                            sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(DataListUtil.ExtractFieldNameFromValue(dataColumnMapping.InputColumn), dataColumnMapping.OutputColumn.ColumnName));
+                            sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(inputFieldName, dataColumnMapping.OutputColumn.ColumnName));
                         }
                     }
                     return true;
                 }
             }
+            actualDataTable = null;
             dataTableToInsert = null;
             return false;
         }
