@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
@@ -46,9 +47,10 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [Owner("Massimo Guerrera")]
-        [TestCategory("ToolDesigners_MoveLargeView")]
-        public void ToolDesigners_MoveLargeView_TabOrderAndDestinationUserNameAndPassword_UiRepondingFine()
+        [TestCategory("ToolDesigners_RenameLargeView")]
+        public void ToolDesigners_RenameLargeView_TabOrderAndDestinationUserNameAndPassword_UiRepondingFine()
         {
+            const string ToolName = "Rename";
             // Create the workflow
             RibbonUIMap.CreateNewWorkflow();
 
@@ -58,10 +60,49 @@ namespace Dev2.Studio.UI.Tests
             #region Test entering text into the textboxes
 
             //Enter test data into all the textboxes in the large view
-            LargeViewUtilMethods.LargeViewTextboxesEnterTestData("Move", theTab);
+            LargeViewUtilMethods.LargeViewTextboxesEnterTestData(ToolName, theTab);
 
             //Get all the textboxes off the large view
-            List<UITestControl> allTextBoxesFromLargeView = LargeViewUtilMethods.GetAllTextBoxesFromLargeView("Move", theTab);
+            List<UITestControl> allTextBoxesFromLargeView = LargeViewUtilMethods.GetAllTextBoxesFromLargeView(ToolName, theTab);
+
+            //Click the done button
+            LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);            
+
+            //Get the first error control
+            var errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Password must have a value");
+
+            //Get the second error control
+            var desErrorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Destination Password must have a value");
+
+            //Make sure that the error controls arnt null
+            Assert.IsNotNull(errorControl,"The error didnt show up");
+            Assert.IsNotNull(desErrorControl, "The error didnt show up");
+
+            //Enter data into the password boxes
+            LargeViewUtilMethods.EnterDataIntoPasswordBoxes(allTextBoxesFromLargeView);
+
+            //Click the done button
+            LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);
+
+            //Get Large View button
+            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, ToolName,
+                                                                           "Open Large View");
+            // Click it
+            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
+            Mouse.Click();
+
+            //Try get the error controls
+            errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Password must have a value");
+            desErrorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Destination Password must have a value");
+
+            //Make sure that the error controls are null
+            Assert.IsNull(errorControl,"The error showed up");
+            Assert.IsNull(desErrorControl,"The error didnt showed up");
+
 
             //Check each textbox contains the right text
             int counter = 0;
@@ -70,7 +111,7 @@ namespace Dev2.Studio.UI.Tests
                 WpfEdit textbox = uiTestControl as WpfEdit;
                 if(textbox != null && !textbox.IsPassword)
                 {
-                    Assert.AreEqual("[[theVar" + counter.ToString(CultureInfo.InvariantCulture) + "]]", textbox.Text);
+                    Assert.AreEqual("[[theVar" + counter.ToString(CultureInfo.InvariantCulture) + "]]", textbox.Text,"the wrong text was in the textbox");
                 }
 
                 counter++;
@@ -91,16 +132,17 @@ namespace Dev2.Studio.UI.Tests
                 Playback.Wait(50);
             }
             //Assert that the focus is in the last textbox
-            Assert.IsTrue(allTextBoxesFromLargeView[allTextBoxesFromLargeView.Count - 1].HasFocus);
+            Assert.IsTrue(allTextBoxesFromLargeView[allTextBoxesFromLargeView.Count - 1].HasFocus,"The tabbing is out of order");
 
             #endregion
         }
 
         [TestMethod]
         [Owner("Massimo Guerrera")]
-        [TestCategory("ToolDesigners_ZipLargeView")]
-        public void ToolDesigners_ZipLargeView_TabOrderAndDestinationUserNameAndPassword_UiRepondingFine()
+        [TestCategory("ToolDesigners_CopyLargeView")]
+        public void ToolDesigners_CopyLargeView_TabOrderAndDestinationUserNameAndPassword_UiRepondingFine()
         {
+            const string ToolName = "Copy";
             // Create the workflow
             RibbonUIMap.CreateNewWorkflow();
 
@@ -110,10 +152,49 @@ namespace Dev2.Studio.UI.Tests
             #region Test entering text into the textboxes
 
             //Enter test data into all the textboxes in the large view
-            LargeViewUtilMethods.LargeViewTextboxesEnterTestData("DsfZip", theTab);
+            LargeViewUtilMethods.LargeViewTextboxesEnterTestData(ToolName, theTab);
 
             //Get all the textboxes off the large view
-            List<UITestControl> allTextBoxesFromLargeView = LargeViewUtilMethods.GetAllTextBoxesFromLargeView("DsfZip", theTab);
+            List<UITestControl> allTextBoxesFromLargeView = LargeViewUtilMethods.GetAllTextBoxesFromLargeView(ToolName, theTab);
+
+            //Click the done button
+            LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);
+
+            //Get the first error control
+            var errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Password must have a value");
+
+            //Get the second error control
+            var desErrorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Destination Password must have a value");
+
+            //Make sure that the error controls arnt null
+            Assert.IsNotNull(errorControl, "The error didnt show up");
+            Assert.IsNotNull(desErrorControl, "The error didnt show up");
+
+            //Enter data into the password boxes
+            LargeViewUtilMethods.EnterDataIntoPasswordBoxes(allTextBoxesFromLargeView);
+
+            //Click the done button
+            LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);
+
+            //Get Large View button
+            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, ToolName,
+                                                                           "Open Large View");
+            // Click it
+            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
+            Mouse.Click();
+
+            //Try get the error controls
+            errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Password must have a value");
+            desErrorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Destination Password must have a value");
+
+            //Make sure that the error controls are null
+            Assert.IsNull(errorControl, "The error showed up");
+            Assert.IsNull(desErrorControl, "The error didnt showed up");
+
 
             //Check each textbox contains the right text
             int counter = 0;
@@ -122,7 +203,7 @@ namespace Dev2.Studio.UI.Tests
                 WpfEdit textbox = uiTestControl as WpfEdit;
                 if(textbox != null && !textbox.IsPassword)
                 {
-                    Assert.AreEqual("[[theVar" + counter.ToString(CultureInfo.InvariantCulture) + "]]", textbox.Text);
+                    Assert.AreEqual("[[theVar" + counter.ToString(CultureInfo.InvariantCulture) + "]]", textbox.Text, "the wrong text was in the textbox");
                 }
 
                 counter++;
@@ -136,14 +217,290 @@ namespace Dev2.Studio.UI.Tests
             allTextBoxesFromLargeView[0].SetFocus();
 
             //Tab through the controlls
-            int numberOfTabsToLastTextbox = 9;
+            int numberOfTabsToLastTextbox = 7;
             for(int i = 0; i < numberOfTabsToLastTextbox; i++)
             {
                 SendKeys.SendWait("{TAB}");
                 Playback.Wait(50);
             }
             //Assert that the focus is in the last textbox
-            Assert.IsTrue(allTextBoxesFromLargeView[allTextBoxesFromLargeView.Count - 1].HasFocus);
+            Assert.IsTrue(allTextBoxesFromLargeView[allTextBoxesFromLargeView.Count - 1].HasFocus, "The tabbing is out of order");
+
+            #endregion
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("ToolDesigners_UnzipLargeView")]
+        public void ToolDesigners_UnzipLargeView_TabOrderAndDestinationUserNameAndPassword_UiRepondingFine()
+        {
+            const string ToolName = "UnZip";
+            // Create the workflow
+            RibbonUIMap.CreateNewWorkflow();
+
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+
+            #region Test entering text into the textboxes
+
+            //Enter test data into all the textboxes in the large view
+            LargeViewUtilMethods.LargeViewTextboxesEnterTestData(ToolName, theTab);
+
+            //Get all the textboxes off the large view
+            List<UITestControl> allTextBoxesFromLargeView = LargeViewUtilMethods.GetAllTextBoxesFromLargeView(ToolName, theTab);
+
+            //Click the done button
+            LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);
+
+            //Get the first error control
+            var errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Password must have a value");
+
+            //Get the second error control
+            var desErrorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Destination Password must have a value");
+
+            //Make sure that the error controls arnt null
+            Assert.IsNotNull(errorControl, "The error didnt show up");
+            Assert.IsNotNull(desErrorControl, "The error didnt show up");
+
+            //Enter data into the password boxes
+            LargeViewUtilMethods.EnterDataIntoPasswordBoxes(allTextBoxesFromLargeView);
+
+            //Click the done button
+            LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);
+
+            //Get Large View button
+            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, ToolName,
+                                                                           "Open Large View");
+            // Click it
+            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
+            Mouse.Click();
+
+            //Try get the error controls
+            errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Password must have a value");
+            desErrorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Destination Password must have a value");
+
+            //Make sure that the error controls are null
+            Assert.IsNull(errorControl, "The error showed up");
+            Assert.IsNull(desErrorControl, "The error didnt showed up");
+
+
+            //Check each textbox contains the right text
+            int counter = 0;
+            foreach(var uiTestControl in allTextBoxesFromLargeView)
+            {
+                WpfEdit textbox = uiTestControl as WpfEdit;
+                if(textbox != null && !textbox.IsPassword)
+                {
+                    Assert.AreEqual("[[theVar" + counter.ToString(CultureInfo.InvariantCulture) + "]]", textbox.Text, "the wrong text was in the textbox");
+                }
+
+                counter++;
+            }
+
+            #endregion
+
+            #region Test tabbing
+
+            //Set the focus into the first textbox
+            allTextBoxesFromLargeView[0].SetFocus();
+
+            //Tab through the controlls
+            int numberOfTabsToLastTextbox = 8;
+            for(int i = 0; i < numberOfTabsToLastTextbox; i++)
+            {
+                SendKeys.SendWait("{TAB}");
+                Playback.Wait(50);
+            }
+            //Assert that the focus is in the last textbox
+            Assert.IsTrue(allTextBoxesFromLargeView[allTextBoxesFromLargeView.Count - 1].HasFocus, "The tabbing is out of order");
+
+            #endregion
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("ToolDesigners_MoveLargeView")]
+        public void ToolDesigners_MoveLargeView_TabOrderAndDestinationUserNameAndPassword_UiRepondingFine()
+        {
+            const string ToolName = "Move";
+            // Create the workflow
+            RibbonUIMap.CreateNewWorkflow();
+
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+
+            #region Test entering text into the textboxes
+
+            //Enter test data into all the textboxes in the large view
+            LargeViewUtilMethods.LargeViewTextboxesEnterTestData(ToolName, theTab);
+
+            //Get all the textboxes off the large view
+            List<UITestControl> allTextBoxesFromLargeView = LargeViewUtilMethods.GetAllTextBoxesFromLargeView(ToolName, theTab);
+
+            //Click the done button
+            LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);
+
+            //Get the first error control
+            var errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Password must have a value");
+
+            //Get the second error control
+            var desErrorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Destination Password must have a value");
+
+            //Make sure that the error controls arnt null
+            Assert.IsNotNull(errorControl, "The error didnt show up");
+            Assert.IsNotNull(desErrorControl, "The error didnt show up");
+
+            //Enter data into the password boxes
+            LargeViewUtilMethods.EnterDataIntoPasswordBoxes(allTextBoxesFromLargeView);
+
+            //Click the done button
+            LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);
+
+            //Get Large View button
+            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, ToolName,
+                                                                           "Open Large View");
+            // Click it
+            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
+            Mouse.Click();
+
+            //Try get the error controls
+            errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Password must have a value");
+            desErrorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Destination Password must have a value");
+
+            //Make sure that the error controls are null
+            Assert.IsNull(errorControl, "The error showed up");
+            Assert.IsNull(desErrorControl, "The error didnt showed up");
+
+
+            //Check each textbox contains the right text
+            int counter = 0;
+            foreach(var uiTestControl in allTextBoxesFromLargeView)
+            {
+                WpfEdit textbox = uiTestControl as WpfEdit;
+                if(textbox != null && !textbox.IsPassword)
+                {
+                    Assert.AreEqual("[[theVar" + counter.ToString(CultureInfo.InvariantCulture) + "]]", textbox.Text, "the wrong text was in the textbox");
+                }
+
+                counter++;
+            }
+
+            #endregion
+
+            #region Test tabbing
+
+            //Set the focus into the first textbox
+            allTextBoxesFromLargeView[0].SetFocus();
+
+            //Tab through the controlls
+            int numberOfTabsToLastTextbox = 7;
+            for(int i = 0; i < numberOfTabsToLastTextbox; i++)
+            {
+                SendKeys.SendWait("{TAB}");
+                Playback.Wait(50);
+            }
+            //Assert that the focus is in the last textbox
+            Assert.IsTrue(allTextBoxesFromLargeView[allTextBoxesFromLargeView.Count - 1].HasFocus, "The tabbing is out of order");
+
+            #endregion
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("ToolDesigners_ZipLargeView")]
+        public void ToolDesigners_ZipLargeView_TabOrderAndDestinationUserNameAndPassword_UiRepondingFine()
+        {
+            const string ToolName = "Zip";
+            // Create the workflow
+            RibbonUIMap.CreateNewWorkflow();
+
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+
+            #region Test entering text into the textboxes
+
+            //Enter test data into all the textboxes in the large view
+            LargeViewUtilMethods.LargeViewTextboxesEnterTestData(ToolName, theTab);
+
+            //Get all the textboxes off the large view
+            List<UITestControl> allTextBoxesFromLargeView = LargeViewUtilMethods.GetAllTextBoxesFromLargeView(ToolName, theTab);
+
+            //Click the done button
+            LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);
+
+            //Get the first error control
+            var errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Password must have a value");
+
+            //Get the second error control
+            var desErrorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Destination Password must have a value");
+
+            //Make sure that the error controls arnt null
+            Assert.IsNotNull(errorControl, "The error didnt show up");
+            Assert.IsNotNull(desErrorControl, "The error didnt show up");
+
+            //Enter data into the password boxes
+            LargeViewUtilMethods.EnterDataIntoPasswordBoxes(allTextBoxesFromLargeView);
+
+            //Click the done button
+            LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);
+
+            //Get Large View button
+            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, ToolName,
+                                                                           "Open Large View");
+            // Click it
+            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
+            Mouse.Click();
+
+            //Try get the error controls
+            errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Password must have a value");
+            desErrorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                  "Destination Password must have a value");
+
+            //Make sure that the error controls are null
+            Assert.IsNull(errorControl, "The error showed up");
+            Assert.IsNull(desErrorControl, "The error didnt showed up");
+
+
+            //Check each textbox contains the right text
+            int counter = 0;
+            foreach(var uiTestControl in allTextBoxesFromLargeView)
+            {
+                WpfEdit textbox = uiTestControl as WpfEdit;
+                if(textbox != null && !textbox.IsPassword)
+                {
+                    Assert.AreEqual("[[theVar" + counter.ToString(CultureInfo.InvariantCulture) + "]]", textbox.Text, "the wrong text was in the textbox");
+                }
+
+                counter++;
+            }
+
+            #endregion
+
+            #region Test tabbing
+
+            //Set the focus into the first textbox
+            allTextBoxesFromLargeView[0].SetFocus();
+
+            //Tab through the controlls
+            int numberOfTabsToLastTextbox = 8;
+            for(int i = 0; i < numberOfTabsToLastTextbox; i++)
+            {
+                SendKeys.SendWait("{TAB}");
+                Playback.Wait(50);
+            }
+            //Assert that the focus is in the last textbox
+            Assert.IsTrue(allTextBoxesFromLargeView[allTextBoxesFromLargeView.Count - 1].HasFocus, "The tabbing is out of order");
 
             #endregion
         }

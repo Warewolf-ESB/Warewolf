@@ -43,10 +43,29 @@ namespace Dev2.Studio.UI.Tests.Utils
             int counter = 0;
             foreach(var textbox in listOfTextboxes)
             {
-                textbox.SetFocus();               
-                SendKeys.SendWait("[[theVar" + counter.ToString(CultureInfo.InvariantCulture) + "]]");   
+                WpfEdit tb = textbox as WpfEdit;
+                if(tb!= null && !tb.IsPassword)
+                {                    
+                    tb.SetFocus();
+                    SendKeys.SendWait("[[theVar" + counter.ToString(CultureInfo.InvariantCulture) + "]]");   
+                }
+                
                 counter++;
             }                        
+        }
+
+        public void EnterDataIntoPasswordBoxes(List<UITestControl> allTextboxes)
+        {
+            List<UITestControl> passwordboxes = allTextboxes.Where(c => (c as WpfEdit).IsPassword).ToList();
+
+            int passCounter = 0;
+
+            foreach(var passwordbox in passwordboxes)
+            {
+                passwordbox.SetFocus();
+                SendKeys.SendWait("pass" + passCounter);
+                passCounter++;
+            }
         }
 
         public List<UITestControl> GetAllTextBoxesFromLargeView(string toolName, UITestControl theTab)
@@ -70,6 +89,22 @@ namespace Dev2.Studio.UI.Tests.Utils
             }
 
             return results;
+        }
+
+        public void ClickDoneButton(UITestControl theTab, string toolName)
+        {
+            UITestControl assignControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, toolName);
+            UITestControlCollection assignControlCollection = assignControl.GetChildren();
+
+            UITestControl addBtn = new UITestControl();
+            foreach(UITestControl controlChild in assignControlCollection)
+            {
+                if(controlChild.FriendlyName == "Done")
+                {
+                    addBtn = controlChild;
+                }
+            }
+            Mouse.Click(addBtn, new Point(5, 5));
         }
 
         #region Dock Manager UI Map
