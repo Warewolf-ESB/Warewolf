@@ -690,7 +690,7 @@
               <InArgument x:TypeArguments="x:String">[TestResultsDirectory]</InArgument>
               <InArgument x:TypeArguments="x:String">*.trx</InArgument>
             </InvokeMethod>
-            <ForEach x:TypeArguments="x:String" DisplayName="ForEach&lt;String&gt;" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[ResultFileNames]">
+            <ForEach x:TypeArguments="x:String" DisplayName="ForEachTestResultFile" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[ResultFileNames]">
               <ActivityAction x:TypeArguments="x:String">
                 <ActivityAction.Argument>
                   <DelegateInArgument x:TypeArguments="x:String" Name="fileName" />
