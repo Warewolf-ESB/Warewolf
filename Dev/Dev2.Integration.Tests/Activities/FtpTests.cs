@@ -694,12 +694,40 @@ namespace Dev2.Integration.Tests.Activities
         public void Dev2FTPProvider_ListFoldersInDirectory_WithValidSFTPDirectory_ReturnsListOfFoldersOnly()
         {
             //------------Setup for test--------------------------
-            var path = ActivityIOFactory.CreatePathFromString("sftp://sftp.theunlimited.co.za", "", "");
+            var path = ActivityIOFactory.CreatePathFromString("sftp://sftp.theunlimited.co.za", "dev2testing", "Q/ulw&]");
             var FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             //------------Execute Test---------------------------
             var folderList = FTPPro.ListFoldersInDirectory(path);
             //------------Assert Results-------------------------
-            Assert.AreEqual(7,folderList.Count);            
+            Assert.AreEqual(8,folderList.Count);            
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Dev2FTPProvider_ListFilesInDirectory")]
+        public void Dev2FTPProvider_ListFilesInDirectory_WithValidFTPDirectory_ReturnsListOfFoldersOnly()
+        {
+            //------------Setup for test--------------------------
+            var path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth, "", "");
+            var FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
+            //------------Execute Test---------------------------
+            var folderList = FTPPro.ListFilesInDirectory(path);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,folderList.Count);            
+        } 
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Dev2FTPProvider_ListFilesInDirectory")]
+        public void Dev2FTPProvider_ListFilesInDirectory_WithValidSFTPDirectory_ReturnsListOfFoldersOnly()
+        {
+            //------------Setup for test--------------------------
+            var path = ActivityIOFactory.CreatePathFromString("sftp://sftp.theunlimited.co.za", "dev2testing", "Q/ulw&]");
+            var FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
+            //------------Execute Test---------------------------
+            var folderList = FTPPro.ListFilesInDirectory(path);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(11,folderList.Count);            
         }
 
         [TestMethod]

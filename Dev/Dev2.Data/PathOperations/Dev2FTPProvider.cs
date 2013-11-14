@@ -577,7 +577,9 @@ namespace Dev2.PathOperations {
         /// <returns></returns>
         public IList<IActivityIOPath> ListFilesInDirectory(IActivityIOPath src)
         {
-            return null;
+            var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSSL(src), src.IsNotCertVerifiable);
+            var dirs = ExtractFileList(src.Path, tmpDirData);
+            return dirs.Select(dir => BuildValidPathForFTP(src, dir)).Select(uri => ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password)).ToList();
         }
 
         #region Private Methods
@@ -752,15 +754,7 @@ namespace Dev2.PathOperations {
         {
             List<string> result = new List<string>();
 
-            char token = '\n';
-
-            string[] parts = payload.Split(token);
-
-            if (parts.Length == 1)
-            {
-                token = '\r';
-                parts = payload.Split(token);
-            }
+            var parts = GetParts(payload);
 
             if (parts.Length > 1)
             {
@@ -770,7 +764,7 @@ namespace Dev2.PathOperations {
                     if (idx > 0)
                     {
                         string part = p.Substring((idx + 1)).Trim();
-                        if (p.ToLower().StartsWith("d"))
+                        if (IsDirectory(p))
                         {
                             // directory -- add it
                             if (!basePath.EndsWith("/"))
@@ -785,6 +779,59 @@ namespace Dev2.PathOperations {
             return result;
         }
 
+        /// <summary>
+        /// Extract files from dir list
+        /// </summary>
+        /// <param name="basePath"></param>
+        /// <param name="payload"></param>
+        /// <returns></returns>
+        private List<string> ExtractFileList(string basePath, string payload)
+            {
+            List<string> result = new List<string>();
+
+            var parts = GetParts(payload);
+
+            if (parts.Length > 1)
+            {
+                foreach (string p in parts)
+                {
+                    int idx = p.LastIndexOf(" ");
+                    if (idx > 0)
+                    {
+                        string part = p.Substring((idx + 1)).Trim();
+                        if (!IsDirectory(p))
+                        {
+                            // directory -- add it
+                            if (!basePath.EndsWith("/"))
+                            {
+                                basePath += "/";
+                            }
+                            result.Add(basePath + part);
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+        static bool IsDirectory(string part)
+        {
+            return part.ToLower().StartsWith("d") || part.ToLower().Contains("<dir>");
+        }
+
+        static string[] GetParts(string payload)
+        {
+            char token = '\n';
+
+            string[] parts = payload.Split(token);
+
+            if(parts.Length == 1)
+            {
+                token = '\r';
+                parts = payload.Split(token);
+            }
+            return parts;
+        }
 
         bool DeleteOp(IActivityIOPath src)
         {
