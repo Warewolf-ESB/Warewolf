@@ -1,5 +1,6 @@
 ﻿using Dev2;
 using Dev2.Activities;
+using Dev2.Data.PathOperations.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
@@ -21,19 +22,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Status : New
     /// Prupose : To provide an activity that can copy a file/folder via FTP, FTPS and file system
     /// </summary>
-    public class DsfPathCopy : DsfAbstractFileActivity, IPathOverwrite, IPathInput, IPathOutput
+    public class DsfPathCopy : DsfAbstractFileActivity, IPathOverwrite, IPathInput, IPathOutput,
+                               IDestinationUserNamePassword
     {
-
         public DsfPathCopy()
             : base("Copy")
         {
             InputPath = string.Empty;
             OutputPath = string.Empty;
+            DestinationPassword = string.Empty;
+            DestinationUserName = string.Empty;
         }
 
-        protected override IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context, out ErrorResultTO allErrors)
+        protected override IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context,
+                                                                 out ErrorResultTO allErrors)
         {
-            
+
             IList<OutputTO> outputs = new List<OutputTO>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -43,34 +47,51 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
             //get all the possible paths for all the string variables
-            IBinaryDataListEntry inputPathEntry = compiler.Evaluate(executionId, enActionType.User, InputPath, false, out errors);
+            IBinaryDataListEntry inputPathEntry = compiler.Evaluate(executionId, enActionType.User, InputPath, false,
+                                                                    out errors);
             allErrors.MergeErrors(errors);
             IDev2DataListEvaluateIterator inputItr = Dev2ValueObjectFactory.CreateEvaluateIterator(inputPathEntry);
             colItr.AddIterator(inputItr);
 
-            IBinaryDataListEntry outputPathEntry = compiler.Evaluate(executionId, enActionType.User, OutputPath, false, out errors);
+            IBinaryDataListEntry outputPathEntry = compiler.Evaluate(executionId, enActionType.User, OutputPath, false,
+                                                                     out errors);
             allErrors.MergeErrors(errors);
             IDev2DataListEvaluateIterator outputItr = Dev2ValueObjectFactory.CreateEvaluateIterator(outputPathEntry);
             colItr.AddIterator(outputItr);
 
-            IBinaryDataListEntry usernameEntry = compiler.Evaluate(executionId, enActionType.User, Username, false, out errors);
+            IBinaryDataListEntry usernameEntry = compiler.Evaluate(executionId, enActionType.User, Username, false,
+                                                                   out errors);
             allErrors.MergeErrors(errors);
             IDev2DataListEvaluateIterator unameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(usernameEntry);
             colItr.AddIterator(unameItr);
 
-            IBinaryDataListEntry passwordEntry = compiler.Evaluate(executionId, enActionType.User, Password, false, out errors);
+            IBinaryDataListEntry passwordEntry = compiler.Evaluate(executionId, enActionType.User, Password, false,
+                                                                   out errors);
             allErrors.MergeErrors(errors);
             IDev2DataListEvaluateIterator passItr = Dev2ValueObjectFactory.CreateEvaluateIterator(passwordEntry);
             colItr.AddIterator(passItr);
+
+            IBinaryDataListEntry destinationUserNameEntry = compiler.Evaluate(executionId, enActionType.User, DestinationUserName, false,
+                                                                  out errors);
+            allErrors.MergeErrors(errors);
+            IDev2DataListEvaluateIterator desunameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(destinationUserNameEntry);
+            colItr.AddIterator(desunameItr);
+
+            IBinaryDataListEntry destinationPasswordEntry = compiler.Evaluate(executionId, enActionType.User, DestinationPassword, false,
+                                                                   out errors);
+            allErrors.MergeErrors(errors);
+            IDev2DataListEvaluateIterator despassItr = Dev2ValueObjectFactory.CreateEvaluateIterator(destinationPasswordEntry);
+            colItr.AddIterator(despassItr);
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
             if (dataObject.IsDebug || dataObject.RemoteInvoke)
             {
-                AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);
-                AddDebugInputItem(OutputPath, "Output Path", outputPathEntry, executionId);
-                AddDebugInputItemOverwrite(executionId, Overwrite);
+                AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId); 
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
+                AddDebugInputItem(OutputPath, "Output Path", outputPathEntry, executionId);
+                AddDebugInputItemDestinationUserNamePassword(executionId, destinationUserNameEntry, DestinationPassword, DestinationUserName);
+                AddDebugInputItemOverwrite(executionId, Overwrite);
             }
 
             while (colItr.HasMoreData())
@@ -81,14 +102,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 try
                 {
                     IActivityIOPath src = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(inputItr).TheValue,
-                                                                                colItr.FetchNextRow(unameItr).TheValue,
-                                                                                colItr.FetchNextRow(passItr).TheValue,
-                                                                                IsNotCertVerifiable);
+                                                                                 colItr.FetchNextRow(unameItr).TheValue,
+                                                                                 colItr.FetchNextRow(passItr).TheValue,
+                                                                                 IsNotCertVerifiable);
 
                     IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(outputItr).TheValue,
-                                                                                    colItr.FetchNextRow(unameItr).TheValue,
-                                                                                    colItr.FetchNextRow(passItr).TheValue,
-                                                                                    IsNotCertVerifiable);
+                                                                                     colItr.FetchNextRow(desunameItr).TheValue,
+                                                                                     colItr.FetchNextRow(despassItr).TheValue,
+                                                                                     IsNotCertVerifiable);
+
                     IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
                     IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
                     string result = broker.Copy(scrEndPoint, dstEndPoint, opTO);
@@ -110,39 +132,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Gets or sets a value indicating whether this <see cref="DsfPathCopy" /> is overwrite.
         /// </summary>
         [Inputs("Overwrite")]
-        public bool Overwrite
-        {
-            get;
-            set;
-        }
+        public bool Overwrite { get; set; }
 
         /// <summary>
         /// Gets or sets the input path.
         /// </summary>
         [Inputs("Input Path")]
         [FindMissing]
-        public string InputPath
-        {
-            get;
-            set;
-        }
+        public string InputPath { get; set; }
 
         /// <summary>
         /// Gets or sets the output path.
         /// </summary>
         [Inputs("Output Path")]
         [FindMissing]
-        public string OutputPath
-        {
-            get;
-            set;
-        }
+        public string OutputPath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the destination file/folder user name
+        /// </summary>
+        [Inputs("Destination Username"), FindMissing]
+        public string DestinationUserName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the destination file/folder password
+        /// </summary>
+        [Inputs("Destination Password"), FindMissing]
+        public string DestinationPassword { get; set; }
 
         #endregion Properties
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if(updates != null)
+            if (updates != null)
             {
                 foreach (Tuple<string, string> t in updates)
                 {
@@ -183,4 +205,4 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
     }
-}
+}   

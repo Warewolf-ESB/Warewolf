@@ -1,16 +1,14 @@
 ﻿using Dev2;
 using Dev2.Activities;
+using Dev2.Data.PathOperations.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
-using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.PathOperations;
 using System;
 using System.Activities;
 using System.Collections.Generic;
 using Dev2.Util;
-using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -21,14 +19,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Status : New
     /// Prupose : To provide an activity that can rename a file/folder via FTP, FTPS and file system
     /// </summary>
-    public class DsfPathRename : DsfAbstractFileActivity, IPathInput, IPathOutput, IPathOverwrite
+    public class DsfPathRename : DsfAbstractFileActivity, IPathInput, IPathOutput, IPathOverwrite, IDestinationUserNamePassword
     {
-
         public DsfPathRename()
             : base("Rename")
         {
             InputPath = string.Empty;
             OutputPath = string.Empty;
+            DestinationPassword = string.Empty;
+            DestinationUserName = string.Empty;
         }
 
         protected override IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context, out ErrorResultTO allErrors)
@@ -65,21 +64,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDev2DataListEvaluateIterator passItr = Dev2ValueObjectFactory.CreateEvaluateIterator(passwordEntry);
             colItr.AddIterator(passItr);
 
+            IBinaryDataListEntry destinationUserNameEntry = compiler.Evaluate(executionId, enActionType.User, DestinationUserName, false, out errors);
+            allErrors.MergeErrors(errors);
+            IDev2DataListEvaluateIterator desunameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(destinationUserNameEntry);
+            colItr.AddIterator(desunameItr);
+
+            IBinaryDataListEntry destinationPasswordEntry = compiler.Evaluate(executionId, enActionType.User, DestinationPassword, false,
+                                                                   out errors);
+            allErrors.MergeErrors(errors);
+            IDev2DataListEvaluateIterator despassItr = Dev2ValueObjectFactory.CreateEvaluateIterator(destinationPasswordEntry);
+            colItr.AddIterator(despassItr);
+
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
             if (dataObject.IsDebug || dataObject.RemoteInvoke)
             {
-                AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);
-                AddDebugInputItem(OutputPath, "Output Path", outputPathEntry, executionId);
-                AddDebugInputItemOverwrite(executionId, Overwrite);
+                AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId); 
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
+                AddDebugInputItem(OutputPath, "Output Path", outputPathEntry, executionId);
+                AddDebugInputItemDestinationUserNamePassword(executionId, destinationUserNameEntry, DestinationPassword, DestinationUserName);
+                AddDebugInputItemOverwrite(executionId, Overwrite);
             }
 
             while (colItr.HasMoreData())
             {
 
                 string error = string.Empty;
-                IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
+                IActivityOperationsBroker broker = GetOperationBroker();
+
                 Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(Overwrite);
 
                 try
@@ -90,9 +102,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                                                 IsNotCertVerifiable);
 
                     IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(outputItr).TheValue,
-                                                                                    colItr.FetchNextRow(unameItr).TheValue,
-                                                                                    colItr.FetchNextRow(passItr).TheValue,
+                                                                                    colItr.FetchNextRow(desunameItr).TheValue,
+                                                                                    colItr.FetchNextRow(despassItr).TheValue,
                                                                                     IsNotCertVerifiable);
+
                     IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
                     IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
@@ -108,6 +121,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             return outputs;
         }
+
+        public Func<IActivityOperationsBroker> GetOperationBroker = () => ActivityIOFactory.CreateOperationsBroker();
 
         #region Properties
 
@@ -142,6 +157,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets or sets the destination file/folder user name
+        /// </summary>
+        [Inputs("Destination Username"), FindMissing]
+        public string DestinationUserName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the destination file/folder password
+        /// </summary>
+        [Inputs("Destination Password"), FindMissing]
+        public string DestinationPassword { get; set; }
 
         #endregion Properties
 
