@@ -471,8 +471,8 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
 To copy a file or folder, put the full path and file or folder name here.
 You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
-  <data name="CopyHelpPassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  <data name="CopyHelpSourcePassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="CopyHelpResult" xml:space="preserve">
     <value>Only variables go in here.
@@ -480,8 +480,8 @@ Returns Success or will be blank depending on the success of the Copy action.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
-  <data name="CopyHelpUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  <data name="CopyHelpSourceUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="CopyToolHelpForceOverwrite" xml:space="preserve">
     <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
@@ -933,8 +933,8 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="MoveHelpForceoverwrite" xml:space="preserve">
     <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
   </data>
-  <data name="MoveHelpPassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  <data name="MoveHelpSourcePassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="MoveHelpResult" xml:space="preserve">
     <value>Only variables go in here.
@@ -942,8 +942,8 @@ Returns Success or will be blank depending on the success of the Move action.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
-  <data name="MoveHelpUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  <data name="MoveHelpSourceUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="MoveToolTipDestination" xml:space="preserve">
     <value>Data   
@@ -1198,8 +1198,8 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
 Put the full path and new name of the resource here.
 You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
-  <data name="RenameHelpPassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  <data name="RenameHelpSourcePassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="RenameHelpResult" xml:space="preserve">
     <value>Only variables go in here.
@@ -1207,8 +1207,8 @@ Returns Success or will be blank depending on the success of the Rename action.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
-  <data name="RenameHelpUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  <data name="RenameHelpSourceUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="RenameToolTipFileFolder" xml:space="preserve">
     <value>Data   
@@ -1255,8 +1255,8 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="UnzipHelpForceoverwrite" xml:space="preserve">
     <value>If a file or folder already exists, you can force a new one to overwrite the old one.</value>
   </data>
-  <data name="UnzipHelpPassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  <data name="UnzipHelpSourcePassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="UnzipHelpResult" xml:space="preserve">
     <value>Only variables go in here.
@@ -1264,8 +1264,8 @@ Returns Success or will be blank depending on the success of the Unzip action.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
-  <data name="UnzipHelpUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  <data name="UnzipHelpSourceUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="UnzipHelpZipname" xml:space="preserve">
     <value>Any variable and/or data goes in here.
@@ -1324,8 +1324,8 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
 To zip a file or folder, put the full path of what you want zipped in here.
 You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
-  <data name="ZipHelpPassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  <data name="ZipHelpSourcePassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="ZipHelpResult" xml:space="preserve">
     <value>Only variables go in here.
@@ -1333,8 +1333,8 @@ Returns Success or will be blank depending on the success of the Zip action.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
-  <data name="ZipHelpUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+  <data name="ZipHelpSourceUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="ZipToolTipDestination" xml:space="preserve">
     <value>Data   
@@ -1717,5 +1717,35 @@ Leaving the Archive Password blank will result in no password being required to 
   </data>
   <data name="ZipToolTipForceoverwrite" xml:space="preserve">
     <value>If it exists already, force an overwrite</value>
+  </data>
+  <data name="MoveHelpDestinationPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="MoveHelpDestinationUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="ZipHelpDestinationPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="ZipHelpDestinationUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="CopyHelpDestinationPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="CopyHelpDestinationUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="RenameHelpDestinationPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="RenameHelpDestinationUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="UnzipHelpDestinationPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="UnzipHelpDestinationUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
 </root>

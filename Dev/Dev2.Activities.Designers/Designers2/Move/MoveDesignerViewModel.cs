@@ -16,6 +16,7 @@ namespace Dev2.Activities.Designers2.Move
         {
             Errors = null;
             ValidateUserNameAndPassword();
+            ValidateDestinationUserNameAndPassword();
             ValidateInputAndOutputPaths();
         }
     }

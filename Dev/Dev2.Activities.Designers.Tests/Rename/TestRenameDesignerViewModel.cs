@@ -38,6 +38,13 @@ namespace Dev2.Activities.Designers.Tests.Rename
             base.ValidateUserNameAndPassword();
         }
 
+        public int ValidateDestinationUserNameAndPasswordHitCount { get; private set; }
+        protected override void ValidateDestinationUserNameAndPassword()
+        {
+            ValidateDestinationUserNameAndPasswordHitCount++;
+            base.ValidateDestinationUserNameAndPassword();
+        }
+
 
     }
 

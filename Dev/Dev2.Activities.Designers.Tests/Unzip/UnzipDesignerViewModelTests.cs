@@ -44,6 +44,7 @@ namespace Dev2.Activities.Designers.Tests.Unzip
             Assert.AreEqual(1, viewModel.ValidateInputPathHitCount);
             Assert.AreEqual(1, viewModel.ValidateOutputPathHitCount);
             Assert.AreEqual(1, viewModel.ValidateUserNameAndPasswordHitCount);
+            Assert.AreEqual(1, viewModel.ValidateDestinationUserNameAndPasswordHitCount);
         }
 
         static TestUnzipDesignerViewModel UnzipViewModel()

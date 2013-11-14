@@ -12,12 +12,12 @@
                                xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Zip"
-                               MinWidth="270"
-                               Width="270"
+                               MinWidth="290"
+                               Width="290"
                                MaxWidth="600"
-                               MinHeight="375"
-                               Height="375"
-                               MaxHeight="375"
+                               MinHeight="429"
+                               Height="429"
+                               MaxHeight="429"
                                Padding="7"
                                mc:Ignorable="d"
                                d:DataContext="{d:DesignInstance local:ZipDesignerViewModel}">
@@ -44,11 +44,13 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />            
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-       </Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -88,11 +90,59 @@
 
         <Label Grid.Column="0"
                Grid.Row="1"
+               Margin="20,2,2,2"
+               Style="{StaticResource ActivityLabelStyle}"
+               Content="User Name" />
+        <ui:IntellisenseTextBox Grid.Column="1"
+                                Grid.Row="1"
+                                Margin="20,2,1,2"
+                                DefaultText="[[UserName]]"
+                                WrapInBrackets="False"
+                                Text="{Binding Path=ModelItem.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static help:HelpTextResources.ZipToolTipUsername}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                attachedProperties:FocusSetter.IsFocused="{Binding IsUserNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_UserNametxt_AutoID}">
+            <i:Interaction.Behaviors>
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpSourceUsername}"
+                                 DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.Username"
+                                     SourcePropertyValue="{Binding  ModelItem.Username, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+
+        <Label Grid.Column="0"
+               Grid.Row="2"
+               Margin="20,2,2,2"
+               Style="{StaticResource ActivityLabelStyle}"
+               Content="Password" />
+        <PasswordBox Grid.Column="1"
+                     Grid.Row="2"
+                     Margin="20,2,1,2"
+                     ToolTip="{x:Static help:HelpTextResources.ZipToolTipPassword}"
+                     attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     attachedProperties:PasswordBoxAssistant.BindPassword="true"
+                     attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Passwordtxt_AutoID}">
+            <i:Interaction.Behaviors>
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpSourcePassword}"
+                                 DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.Password"
+                                     SourcePropertyValue="{Binding  ModelItem.Password, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </PasswordBox>
+
+        <Label Grid.Column="0"
+               Grid.Row="3"
                Style="{StaticResource ActivityLabelStyle}"
                Content="{Binding OutputPathLabel, Mode=OneWay}" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="1"
-                                AllowUserInsertLine="False" 
+                                Grid.Row="3"
+                                AllowUserInsertLine="False"
                                 FilterType="All"
                                 DefaultText="[[ZipFileName]]"
                                 WrapInBrackets="False"
@@ -116,13 +166,61 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-        
+
         <Label Grid.Column="0"
-               Grid.Row="2"
+               Grid.Row="4"
+               Margin="20,2,2,2"
+               Style="{StaticResource ActivityLabelStyle}"
+               Content="User Name" />
+        <ui:IntellisenseTextBox Grid.Column="1"
+                                Grid.Row="4"
+                                Margin="20,2,1,2"
+                                DefaultText="[[UserName]]"
+                                WrapInBrackets="False"
+                                Text="{Binding Path=ModelItem.DestinationUserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static help:HelpTextResources.ZipToolTipUsername}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                attachedProperties:FocusSetter.IsFocused="{Binding IsDestinationUserNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_DestinationUserNametxt_AutoID}">
+            <i:Interaction.Behaviors>
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpDestinationUsername}"
+                                 DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.DestinationUserName"
+                                     SourcePropertyValue="{Binding  ModelItem.DestinationUserName, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+
+        <Label Grid.Column="0"
+               Grid.Row="5"
+               Margin="20,2,2,2"
+               Style="{StaticResource ActivityLabelStyle}"
+               Content="Password" />
+        <PasswordBox Grid.Column="1"
+                     Grid.Row="5"
+                     Margin="20,2,1,2"
+                     ToolTip="{x:Static help:HelpTextResources.ZipToolTipPassword}"
+                     attachedProperties:FocusSetter.IsFocused="{Binding IsDestinationPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     attachedProperties:PasswordBoxAssistant.BindPassword="true"
+                     attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.DestinationPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_DestinationPasswordtxt_AutoID}">
+            <i:Interaction.Behaviors>
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpDestinationPassword}"
+                                 DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.DestinationPassword"
+                                     SourcePropertyValue="{Binding  ModelItem.DestinationPassword, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </PasswordBox>
+
+        <Label Grid.Column="0"
+               Grid.Row="6"
                Style="{StaticResource ActivityLabelStyle}"
                Content="If it exists" />
         <CheckBox Grid.Column="1"
-                  Grid.Row="2"
+                  Grid.Row="6"
                   Margin="-4,0,0,0"
                   Content="Overwrite"
                   IsChecked="{Binding Path=ModelItem.Overwrite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -136,61 +234,17 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </CheckBox>
-        
-        <Label Grid.Column="0"
-               Grid.Row="3"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="User Name" />
-        <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="3"
-                                DefaultText="[[UserName]]"
-                                WrapInBrackets="False"
-                                Text="{Binding Path=ModelItem.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.ZipToolTipUsername}"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                attachedProperties:FocusSetter.IsFocused="{Binding IsUserNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_UserNametxt_AutoID}">
-            <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpUsername}"
-                                 DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.Username"
-                                     SourcePropertyValue="{Binding  ModelItem.Username, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
-            </i:Interaction.Behaviors>
-        </ui:IntellisenseTextBox>
 
         <Label Grid.Column="0"
-               Grid.Row="4"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="Password" />
-        <PasswordBox Grid.Column="1"
-                                Grid.Row="4"                                                               
-                                ToolTip="{x:Static help:HelpTextResources.ZipToolTipPassword}"                                
-                                attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                attachedProperties:PasswordBoxAssistant.BindPassword="true"
-                                attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Passwordtxt_AutoID}">
-            <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpPassword}"
-                                 DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.Password"
-                                     SourcePropertyValue="{Binding  ModelItem.Password, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
-            </i:Interaction.Behaviors>
-        </PasswordBox>                
-
-        <Label Grid.Column="0"
-               Grid.Row="5"
+               Grid.Row="7"
                Style="{StaticResource ActivityLabelStyle}"
                Content="Archive Password" />
         <PasswordBox Grid.Column="1"
-                                Grid.Row="5"                                                               
-                                ToolTip="{x:Static help:HelpTextResources.ZipToolTipArchivePassword}"                                                                
-                                attachedProperties:PasswordBoxAssistant.BindPassword="true"
-                                attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.ArchivePassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ArchivePasswordtxt_AutoID}">
+                     Grid.Row="7"
+                     ToolTip="{x:Static help:HelpTextResources.ZipToolTipArchivePassword}"
+                     attachedProperties:PasswordBoxAssistant.BindPassword="true"
+                     attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.ArchivePassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ArchivePasswordtxt_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpArchivePassword}"
                                  DataContext="{Binding}" />
@@ -202,12 +256,12 @@
         </PasswordBox>
 
         <Label Grid.Column="0"
-               Grid.Row="6"
+               Grid.Row="8"
                Style="{StaticResource ActivityLabelStyle}"
                Content="Compression" />
-        <ComboBox Grid.Column="1" 
-                  Grid.Row="6"
-                  Style="{StaticResource ActivityComboBoxStyle}"                  
+        <ComboBox Grid.Column="1"
+                  Grid.Row="8"
+                  Style="{StaticResource ActivityComboBoxStyle}"
                   ItemsSource="{Binding CompressionRatioList}"
                   SelectedValue="{Binding SelectedCompressionRatioDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SelectedCompressionType_AutoID}">
@@ -220,13 +274,13 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ComboBox>
-        
+
         <Label Grid.Column="0"
-               Grid.Row="7"
+               Grid.Row="9"
                Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="7"
+                                Grid.Row="9"
                                 DefaultText="[[Success]]"
                                 FilterType="All"
                                 WrapInBrackets="True"
@@ -245,7 +299,7 @@
         </ui:IntellisenseTextBox>
 
         <errors:OnError Grid.Column="0"
-                        Grid.Row="8"
+                        Grid.Row="10"
                         Grid.ColumnSpan="2"
                         Margin="2" />
 

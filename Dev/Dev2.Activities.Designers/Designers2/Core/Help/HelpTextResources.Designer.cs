@@ -359,6 +359,24 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string CopyHelpDestinationPassword {
+            get {
+                return ResourceManager.GetString("CopyHelpDestinationPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string CopyHelpDestinationUsername {
+            get {
+                return ResourceManager.GetString("CopyHelpDestinationUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To copy a file or folder, put the full path and file or folder name here.
         ///You can use File System, URI, SFTP, FTP or FTPS format..
@@ -366,15 +384,6 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string CopyHelpFileFolder {
             get {
                 return ResourceManager.GetString("CopyHelpFileFolder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
-        /// </summary>
-        public static string CopyHelpPassword {
-            get {
-                return ResourceManager.GetString("CopyHelpPassword", resourceCulture);
             }
         }
         
@@ -391,11 +400,20 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
         /// </summary>
-        public static string CopyHelpUsername {
+        public static string CopyHelpSourcePassword {
             get {
-                return ResourceManager.GetString("CopyHelpUsername", resourceCulture);
+                return ResourceManager.GetString("CopyHelpSourcePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string CopyHelpSourceUsername {
+            get {
+                return ResourceManager.GetString("CopyHelpSourceUsername", resourceCulture);
             }
         }
         
@@ -1772,6 +1790,24 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string MoveHelpDestinationPassword {
+            get {
+                return ResourceManager.GetString("MoveHelpDestinationPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string MoveHelpDestinationUsername {
+            get {
+                return ResourceManager.GetString("MoveHelpDestinationUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To Move a file or folder, put the full path and file or folder name to move in here.
         ///You can use File System, URI, SFTP, FTP or FTPS format..
@@ -1792,15 +1828,6 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
-        /// </summary>
-        public static string MoveHelpPassword {
-            get {
-                return ResourceManager.GetString("MoveHelpPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Only variables go in here.
         ///Returns Success or will be blank depending on the success of the Move action.
         ///You can use [[Scalar]] as well as [[Recordset().Fields]].
@@ -1813,11 +1840,20 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
         /// </summary>
-        public static string MoveHelpUsername {
+        public static string MoveHelpSourcePassword {
             get {
-                return ResourceManager.GetString("MoveHelpUsername", resourceCulture);
+                return ResourceManager.GetString("MoveHelpSourcePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string MoveHelpSourceUsername {
+            get {
+                return ResourceManager.GetString("MoveHelpSourceUsername", resourceCulture);
             }
         }
         
@@ -2375,6 +2411,24 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string RenameHelpDestinationPassword {
+            get {
+                return ResourceManager.GetString("RenameHelpDestinationPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string RenameHelpDestinationUsername {
+            get {
+                return ResourceManager.GetString("RenameHelpDestinationUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To rename a file or folder, put the full path and file or folder name in here.
         ///You can use File System, URI, SFTP, FTP or FTPS format..
@@ -2406,15 +2460,6 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
-        /// </summary>
-        public static string RenameHelpPassword {
-            get {
-                return ResourceManager.GetString("RenameHelpPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Only variables go in here.
         ///Returns Success or will be blank depending on the success of the Rename action.
         ///You can use [[Scalar]] as well as [[Recordset().Fields]].
@@ -2427,11 +2472,20 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
         /// </summary>
-        public static string RenameHelpUsername {
+        public static string RenameHelpSourcePassword {
             get {
-                return ResourceManager.GetString("RenameHelpUsername", resourceCulture);
+                return ResourceManager.GetString("RenameHelpSourcePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string RenameHelpSourceUsername {
+            get {
+                return ResourceManager.GetString("RenameHelpSourceUsername", resourceCulture);
             }
         }
         
@@ -3062,20 +3116,29 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string UnzipHelpDestinationPassword {
+            get {
+                return ResourceManager.GetString("UnzipHelpDestinationPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string UnzipHelpDestinationUsername {
+            get {
+                return ResourceManager.GetString("UnzipHelpDestinationUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If a file or folder already exists, you can force a new one to overwrite the old one..
         /// </summary>
         public static string UnzipHelpForceoverwrite {
             get {
                 return ResourceManager.GetString("UnzipHelpForceoverwrite", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
-        /// </summary>
-        public static string UnzipHelpPassword {
-            get {
-                return ResourceManager.GetString("UnzipHelpPassword", resourceCulture);
             }
         }
         
@@ -3092,11 +3155,20 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
         /// </summary>
-        public static string UnzipHelpUsername {
+        public static string UnzipHelpSourcePassword {
             get {
-                return ResourceManager.GetString("UnzipHelpUsername", resourceCulture);
+                return ResourceManager.GetString("UnzipHelpSourcePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string UnzipHelpSourceUsername {
+            get {
+                return ResourceManager.GetString("UnzipHelpSourceUsername", resourceCulture);
             }
         }
         
@@ -3464,6 +3536,24 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string ZipHelpDestinationPassword {
+            get {
+                return ResourceManager.GetString("ZipHelpDestinationPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string ZipHelpDestinationUsername {
+            get {
+                return ResourceManager.GetString("ZipHelpDestinationUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To zip a file or folder, put the full path of what you want zipped in here.
         ///You can use File System, URI, SFTP, FTP or FTPS format..
@@ -3484,15 +3574,6 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
-        /// </summary>
-        public static string ZipHelpPassword {
-            get {
-                return ResourceManager.GetString("ZipHelpPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Only variables go in here.
         ///Returns Success or will be blank depending on the success of the Zip action.
         ///You can use [[Scalar]] as well as [[Recordset().Fields]].
@@ -3505,11 +3586,20 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
         /// </summary>
-        public static string ZipHelpUsername {
+        public static string ZipHelpSourcePassword {
             get {
-                return ResourceManager.GetString("ZipHelpUsername", resourceCulture);
+                return ResourceManager.GetString("ZipHelpSourcePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string ZipHelpSourceUsername {
+            get {
+                return ResourceManager.GetString("ZipHelpSourceUsername", resourceCulture);
             }
         }
         
