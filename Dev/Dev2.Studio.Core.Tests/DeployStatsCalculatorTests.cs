@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Reflection;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Providers.Events;
@@ -417,22 +419,36 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeploySummaryPredicateExisting_EnvironmentDoesntContainResource_Expected_False()
         {
-            Setup();
-            ImportService.CurrentContext = _importContext;
+            try
+            {
+                Setup();
+                ImportService.CurrentContext = _importContext;
 
-            Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
+                Mock<IContextualResourceModel> resourceModel =
+                    Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
 
-            _resourceVm.IsChecked = true;
-            ResourceTreeViewModel vm = _resourceVm as ResourceTreeViewModel;
+                _resourceVm.IsChecked = true;
+                ResourceTreeViewModel vm = _resourceVm as ResourceTreeViewModel;
 
-            vm.DataContext = resourceModel.Object;
+                vm.DataContext = resourceModel.Object;
 
-            IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>(), new List<IResourceModel>()).Object;
+                IEnvironmentModel environmentModel =
+                    Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>(),
+                                                          new List<IResourceModel>()).Object;
 
-            bool expected = false;
-            bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
+                bool expected = false;
+                bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
 
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+                throw new ReflectionTypeLoadException(new Type[1]{typeof(Exception)}, new Exception[1]{new Exception("test exception")});
+            }
+            catch(ReflectionTypeLoadException e)
+            {
+                foreach (var exe in e.LoaderExceptions)
+                {
+                    File.AppendAllText("\\\\RSAKLFSVRTFSBLD\\DevelopmentDropOff\\Demo\\Ashley\\TypeLoadExceptionThrown.txt", exe.Message + "\n");
+                }
+            }
         }
 
         #endregion DeploySummaryPredicateExisting
