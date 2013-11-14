@@ -673,6 +673,35 @@ namespace Dev2.Integration.Tests.Activities
             Assert.IsTrue(tmp.Count == 3);
         }
 
+        // ReSharper disable InconsistentNaming
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Dev2FTPProvider_ListFoldersInDirectory")]
+        public void Dev2FTPProvider_ListFoldersInDirectory_WithValidFTPDirectory_ReturnsListOfFoldersOnly()
+        {
+            //------------Setup for test--------------------------
+            var path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth, "", "");
+            var FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
+            //------------Execute Test---------------------------
+            var folderList = FTPPro.ListFoldersInDirectory(path);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(7,folderList.Count);            
+        } 
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Dev2FTPProvider_ListFoldersInDirectory")]
+        public void Dev2FTPProvider_ListFoldersInDirectory_WithValidSFTPDirectory_ReturnsListOfFoldersOnly()
+        {
+            //------------Setup for test--------------------------
+            var path = ActivityIOFactory.CreatePathFromString("sftp://sftp.theunlimited.co.za", "", "");
+            var FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
+            //------------Execute Test---------------------------
+            var folderList = FTPPro.ListFoldersInDirectory(path);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(7,folderList.Count);            
+        }
+
         [TestMethod]
         public void ListDirectoryWithValidUsername_InValidPath_Expected_Error()
         {

@@ -85,5 +85,16 @@ namespace Dev2.PathOperations {
         /// <returns></returns>
         string PathSeperator();
 
+        /// <summary>
+        /// Get folder listing for source
+        /// </summary>
+        /// <returns></returns>
+        IList<IActivityIOPath> ListFoldersInDirectory(IActivityIOPath src);
+
+        /// <summary>
+        /// Get folder listing for source
+        /// </summary>
+        /// <returns></returns>
+        IList<IActivityIOPath> ListFilesInDirectory(IActivityIOPath src);
     }
 }

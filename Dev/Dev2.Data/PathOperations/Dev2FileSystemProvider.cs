@@ -460,6 +460,11 @@ namespace Dev2.PathOperations
             return result;
         }
 
+        public string ExtendedDirList(string path, string user, string pass, bool ssl, bool IsNotCertVerifiable)
+        {
+            return "";
+        }
+
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public bool PathExist(IActivityIOPath dst)
         {
@@ -697,6 +702,24 @@ namespace Dev2.PathOperations
         public string PathSeperator()
         {
             return "\\";
+        }
+
+        /// <summary>
+        /// Get folder listing for source
+        /// </summary>
+        /// <returns></returns>
+        public IList<IActivityIOPath> ListFoldersInDirectory(IActivityIOPath src)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Get folder listing for source
+        /// </summary>
+        /// <returns></returns>
+        public IList<IActivityIOPath> ListFilesInDirectory(IActivityIOPath src)
+        {
+            return null;
         }
 
         #region Private Methods

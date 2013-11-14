@@ -560,6 +560,26 @@ namespace Dev2.PathOperations {
             return "/";
         }
 
+        /// <summary>
+        /// Get folder listing for source
+        /// </summary>
+        /// <returns></returns>
+        public IList<IActivityIOPath> ListFoldersInDirectory(IActivityIOPath src)
+        {
+            var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSSL(src), src.IsNotCertVerifiable);
+            var dirs = ExtractDirectoryList(src.Path, tmpDirData);
+            return dirs.Select(dir => BuildValidPathForFTP(src, dir)).Select(uri => ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password)).ToList();
+        }
+
+        /// <summary>
+        /// Get folder listing for source
+        /// </summary>
+        /// <returns></returns>
+        public IList<IActivityIOPath> ListFilesInDirectory(IActivityIOPath src)
+        {
+            return null;
+        }
+
         #region Private Methods
 
         public IActivityIOPath IOPath
