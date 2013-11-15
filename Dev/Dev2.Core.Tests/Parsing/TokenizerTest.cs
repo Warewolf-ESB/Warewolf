@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using System.Data;
-using System.Collections.Generic;
 using System.Parsing.Tokenization;
 using System.Parsing.Intellisense;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Unlimited.UnitTest.Framework.Parsing
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class TokenizerTest
     {
         #region RequiredDefinitions Tests
