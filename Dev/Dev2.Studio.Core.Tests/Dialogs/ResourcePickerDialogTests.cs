@@ -130,7 +130,7 @@ namespace Dev2.Core.Tests.Dialogs
             //var envRepo = EnvironmentRepository.Create(new Mock<IEnvironmentModel>().Object);
 
             //------------Execute Test---------------------------
-            var dialog = new TestResourcePickerDialog(ActivityType, envRepo, new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, IsFromActivityDrop)
+            var dialog = new TestResourcePickerDialog(ActivityType, envRepo, new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, IsFromActivityDrop)
             {
                 CreateDialogResult = dialogWindow.Object
             };
