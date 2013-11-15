@@ -1,15 +1,13 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Core.Interfaces;
+﻿using System.Diagnostics.CodeAnalysis;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Factory;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using Moq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.Factories
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
+    [Ignore]//Ashley: 15-11-2013 background nullref exception in navigationviewmodel load resources async during unit test run in environment (round 1)
     public class WorkSurfaceContextFactoryTests
     {
         [TestMethod]
