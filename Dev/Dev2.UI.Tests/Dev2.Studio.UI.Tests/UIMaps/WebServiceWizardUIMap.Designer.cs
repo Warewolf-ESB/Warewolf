@@ -12,9 +12,6 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using Dev2.CodedUI.Tests;
-using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
 {

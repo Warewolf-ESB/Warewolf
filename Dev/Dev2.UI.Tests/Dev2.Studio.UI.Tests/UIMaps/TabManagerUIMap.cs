@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Dev2.Studio.UI.Tests;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using System.Drawing;

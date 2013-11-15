@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Windows.Forms;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;

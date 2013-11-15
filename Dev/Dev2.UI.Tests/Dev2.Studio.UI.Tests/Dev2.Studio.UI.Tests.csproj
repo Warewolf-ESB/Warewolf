@@ -74,7 +74,6 @@
   <!--  Linked Configs -->
   <ItemGroup>
     <Compile Include="AdornerTests.cs" />
-    <Compile Include="Bootstrap\UIBootstrap.cs" />
     <Compile Include="AutoConnectorTests.cs" />
     <Compile Include="AllToolsUITests.cs" />
     <Compile Include="DebugUITests.cs" />
@@ -275,9 +274,7 @@
     <None Include="UIMaps\WorkflowDesignerUIMap.uitest" />
     <None Include="UIMaps\WorkflowWizardUIMap.uitest" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Binaries\" />
-  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

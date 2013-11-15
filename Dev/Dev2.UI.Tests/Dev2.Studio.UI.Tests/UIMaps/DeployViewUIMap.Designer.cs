@@ -9,16 +9,12 @@
 // ------------------------------------------------------------------------------
 
 using Dev2.Studio.UI.Tests.Utils;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using System.CodeDom.Compiler;
 
-namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
+namespace Dev2.Studio.UI.Tests.UIMaps
 {
-    using Dev2.Studio.UI.Tests;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
-    using Microsoft.VisualStudio.TestTools.UITesting;
-    using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-    using System.CodeDom.Compiler;
-
-
     [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public partial class DeployViewUIMap
     {

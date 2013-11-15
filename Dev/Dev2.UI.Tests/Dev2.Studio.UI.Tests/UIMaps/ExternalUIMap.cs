@@ -1,22 +1,12 @@
-﻿namespace Dev2.CodedUI.Tests.UIMaps.ExternalUIMapClasses
+﻿using System;
+using System.Drawing;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using System.Diagnostics;
+using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
+using System.Windows.Forms;
+
+namespace Dev2.Studio.UI.Tests.UIMaps
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.Windows.Input;
-    using System.CodeDom.Compiler;
-    using System.Text.RegularExpressions;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
-    using Microsoft.VisualStudio.TestTools.UITesting;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
-    using System.Diagnostics;
-    using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
-    using System.Windows.Forms;
-
-
     public partial class ExternalUIMap
     {
         public bool NotepadTextContains(string text)

@@ -1,23 +1,12 @@
 ﻿using System.Windows.Forms;
-using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
+using System;
+using System.Drawing;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
-namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
+namespace Dev2.Studio.UI.Tests.UIMaps
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.Windows.Input;
-    using System.CodeDom.Compiler;
-    using System.Text.RegularExpressions;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
-    using Microsoft.VisualStudio.TestTools.UITesting;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
-    using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-    
-    
     public partial class PluginServiceWizardUIMap
     {
         public string GetWorkflowWizardName()
@@ -63,13 +52,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
         }
 
         #region Properties
-        public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
+        public DatabaseServiceWizardUIMapClasses.UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
         {
             get
             {
                 if ((this.mUIBusinessDesignStudioWindow == null))
                 {
-                    this.mUIBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
+                    this.mUIBusinessDesignStudioWindow = new DatabaseServiceWizardUIMapClasses.UIBusinessDesignStudioWindow();
                 }
                 return this.mUIBusinessDesignStudioWindow;
             }
@@ -77,7 +66,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
         #endregion
 
         #region Fields
-        private UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
+        private DatabaseServiceWizardUIMapClasses.UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
         #endregion
     }
 }

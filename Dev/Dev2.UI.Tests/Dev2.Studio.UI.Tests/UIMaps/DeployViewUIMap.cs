@@ -1,16 +1,11 @@
 ﻿using System.Windows.Forms;
-using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.Utils;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
+using System.Drawing;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
-namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
+namespace Dev2.Studio.UI.Tests.UIMaps
 {
-    using System.Drawing;
-    using Microsoft.VisualStudio.TestTools.UITesting;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-
-
     public partial class DeployViewUIMap : UIMapBase
     {
         public void SelectServers(UITestControl theTab, string sourceServer, string destinationServer)

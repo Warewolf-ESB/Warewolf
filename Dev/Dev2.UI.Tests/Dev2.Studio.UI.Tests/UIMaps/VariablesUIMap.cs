@@ -2,11 +2,10 @@
 using System.Drawing;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting;
-using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
-namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
+namespace Dev2.Studio.UI.Tests.UIMaps
 {
     public partial class VariablesUIMap
     {

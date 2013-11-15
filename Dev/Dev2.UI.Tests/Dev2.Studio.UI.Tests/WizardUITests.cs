@@ -10,8 +10,7 @@ using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
-
-namespace Dev2.Studio.UI.Tests.UIMaps
+namespace Dev2.Studio.UI.Tests
 {
     [CodedUITest]
     public class WizardUITests : UIMapBase

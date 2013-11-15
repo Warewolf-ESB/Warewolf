@@ -1,13 +1,4 @@
 ﻿using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ExternalUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.WebpageServiceWizardUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;

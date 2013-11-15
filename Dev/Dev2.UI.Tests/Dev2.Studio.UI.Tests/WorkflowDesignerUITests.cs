@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -20,8 +19,6 @@ namespace Dev2.Studio.UI.Tests
     [CodedUITest]
     public class WorkflowDesignerUITests : UIMapBase
     {
-        private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
-
         #region Cleanup
 
         [ClassInitialize]

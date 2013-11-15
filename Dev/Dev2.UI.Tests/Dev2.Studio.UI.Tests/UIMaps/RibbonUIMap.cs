@@ -1,12 +1,10 @@
 ﻿using System.Drawing;
 using System.Linq;
-using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
-using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
-namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
+namespace Dev2.Studio.UI.Tests.UIMaps
 {
     public partial class RibbonUIMap : UIMapBase
     {
@@ -83,7 +81,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
         public void ClickRibbonMenuItem(string itemName)
         {
             var ribbonButtons = UIBusinessDesignStudioWindow.GetChildren();
-            var control = ribbonButtons.FirstOrDefault(c => c.FriendlyName == itemName || c.GetChildren().Any(child => child.FriendlyName == itemName));
+            var control = Enumerable.FirstOrDefault<UITestControl>(ribbonButtons, c => c.FriendlyName == itemName || Enumerable.Any<UITestControl>(c.GetChildren(), child => child.FriendlyName == itemName));
             var p = new Point(control.BoundingRectangle.X + 5, control.BoundingRectangle.Y + 5);
             Mouse.Click(p);
             Playback.Wait(2000);
@@ -92,7 +90,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
         public void CreateNewWorkflow()
         {
             var uiTestControlCollection = UIBusinessDesignStudioWindow.GetChildren();
-            var control = uiTestControlCollection.FirstOrDefault(c => c.FriendlyName == "UI_RibbonHomeTabWorkflowBtn_AutoID");
+            var control = Enumerable.FirstOrDefault<UITestControl>(uiTestControlCollection, c => c.FriendlyName == "UI_RibbonHomeTabWorkflowBtn_AutoID");
             var p = new Point(control.BoundingRectangle.Left + 5, control.BoundingRectangle.Top + 5);
             Mouse.Click(p);
             Playback.Wait(500);
@@ -102,7 +100,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
         public UITestControl GetControlByName(string name)
         {
             var children = UIBusinessDesignStudioWindow.GetChildren();
-            var control = children.FirstOrDefault(c => c.FriendlyName == name || c.GetChildren().Any(child => child.FriendlyName == name));
+            var control = Enumerable.FirstOrDefault<UITestControl>(children, c => c.FriendlyName == name || Enumerable.Any<UITestControl>(c.GetChildren(), child => child.FriendlyName == name));
 
             return control;
         }
