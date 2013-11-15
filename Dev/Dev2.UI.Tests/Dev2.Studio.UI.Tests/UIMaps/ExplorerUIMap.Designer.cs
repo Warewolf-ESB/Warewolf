@@ -35,7 +35,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             // Find the explorer main window
             UITestControl anItem = this.UIBusinessDesignStudioWindow.UIExplorerCustom;
             anItem.Find();
-            UITestControlCollection subItems = anItem.GetChildren();
+            anItem.GetChildren();
 
             // Find the explorer sub window
             UITestControl explorerMenu = new UITestControl(anItem);
@@ -61,25 +61,21 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             // Find the explorer main window
             UITestControl anItem = this.UIBusinessDesignStudioWindow;
             anItem.Find();
-            anItem.DrawHighlight();
 
             // Find the explorer sub window
             UITestControl DocManager = new UITestControl(anItem);
             DocManager.SearchProperties["AutomationId"] = "UI_DocManager_AutoID";
             DocManager.Find();
-            DocManager.DrawHighlight();
 
             // Find the left pane window
             UITestControl DockLeft = new UITestControl(DocManager);
             DockLeft.SearchProperties["AutomationId"] = "DockLeft";
             DockLeft.Find();
-            DockLeft.DrawHighlight();
 
             // Find the tab page window
             UITestControlCollection dockLeftChildren = DockLeft.GetChildren()[0].GetChildren();
             //var TabPage = dockLeftChildren.FirstOrDefault(c => c.FriendlyName == "Explorer");
             var TabPage = dockLeftChildren[0];
-            TabPage.DrawHighlight();
 
             // Find the explorer sub window
             UITestControl ExplorerPane = new UITestControl(TabPage);
@@ -93,28 +89,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Mouse.Click(unpinControl);
         }
 
-        public void OpenDebugOutput()
-        {
-            UITestControl anItem = this.UIBusinessDesignStudioWindow.UIExplorerCustom;
-            anItem.Find();
-        }
-
         public UITestControl GetServerDDL()
         {
-            // Find the explorer main window
-            UITestControl anItem = this.UIBusinessDesignStudioWindow.UIExplorerCustom;
-            anItem.Find();
-            UITestControlCollection subItems = anItem.GetChildren();
+            VisualTreeWalker vsw = new VisualTreeWalker();
 
-            // Find the explorer sub window
-            UITestControl explorerMenu = new UITestControl(anItem);
-            explorerMenu.SearchProperties["AutomationId"] = "Explorer";
-            explorerMenu.Find();
-
-            UITestControl serverDDL = new UITestControl(explorerMenu);
-            serverDDL.SearchProperties["AutomationId"] = "UI_ExplorerServerCbx_AutoID";
-            serverDDL.Find();
-            return serverDDL;
+            return vsw.GetChildByAutomationIDPath(_explorerNewConnectionControl, "UI_ExplorerServerCbx_AutoID");
         }
 
         public UITestControl GetExplorerEditBtn()
@@ -184,7 +163,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public WpfTree GetExplorerTree()
         {
-            return VisualTreeWalker.GetControl("UI_DocManager_AutoID", "UI_ExplorerPane_AutoID", "Uia.ExplorerView", "TheNavigationView", "Navigation") as WpfTree;
+            var vstw = new VisualTreeWalker();
+
+            return vstw.GetControl("UI_DocManager_AutoID", "UI_ExplorerPane_AutoID", "Uia.ExplorerView", "TheNavigationView", "Navigation") as WpfTree;
         }
         /// <summary>
         /// ClickExplorer
@@ -197,168 +178,54 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// <returns></returns>
         private UITestControl GetServiceItem(string serverName, string serviceType, string folderName, string projectName,bool overrideDblClickBehavior = false)
         {
-            Point p;
+            Playback.Wait(500);
 
-            Thread.Sleep(100);
-            SendKeys.SendWait("{HOME}");
-            Thread.Sleep(100);
+            var args = new string[] {serverName, serviceType, folderName, projectName};
 
-            WpfTree uITvExplorerTree = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UINavigationViewUserCoCustom.UITvExplorerTree;
-            // Uncomment these 3 lines if things start going slowly again (They help to locate the problem)
+            var parent = _explorerTree;
 
-            //UITestControl theStudioWindow = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UINavigationViewUserCoCustom;
-            //theStudioWindow.Find();
-            //uITvExplorerTree.Find();
-
-            //UITestControl serverListItem = new UITestControl(uITvExplorerTree);
-            uITvExplorerTree.SearchProperties.Add("AutomationId", serverName, PropertyExpressionOperator.Contains);
-            uITvExplorerTree.SearchProperties.Add("ControlType", "TreeItem");
-
-            uITvExplorerTree.Find();
-
-            //// Can we see the type list? (AKA: Is the server list maximized?)
-            UITestControl serviceTypeListItem = new UITestControl(uITvExplorerTree);       
-            serviceTypeListItem.SearchProperties.Add("AutomationId", "UI_" + serviceType + "_AutoID");
-            serviceTypeListItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-
-            if (serviceTypeListItem.TryFind())
+            foreach (var arg in args)
             {
-                if (!serviceTypeListItem.TryGetClickablePoint(out p) && !overrideDblClickBehavior)
+                if (parent != null)
                 {
-                    // This is causing the window to shrink
-                    Mouse.DoubleClick(new Point(serviceTypeListItem.BoundingRectangle.X + 50,
-                                                serviceTypeListItem.BoundingRectangle.Y + 5));
-                }
-                else
-                {
-                    Mouse.Click(new Point(serviceTypeListItem.BoundingRectangle.X + 50,
-                                          serviceTypeListItem.BoundingRectangle.Y + 5));
-                }
+                    var kids = parent.GetChildren();
 
-                Thread.Sleep(300);
+                    UITestControl canidate = null;
+                    foreach (var kid in kids)
+                    {
+                        if (kid.Exists)
+                        {
+                            var id = kid.GetProperty("AutomationID").ToString();
 
-                // Can we see the folder? (AKA: Is the type list maximised?)
-                UITestControl folderNameListItem = new UITestControl(serviceTypeListItem);
-                folderNameListItem.SearchProperties.Add("AutomationId",
-                                                        "UI_" +
-                                                        ((folderName != "Unassigned")
-                                                             ? folderName.ToUpper()
-                                                             : folderName) + "_AutoID");
-                folderNameListItem.Find();
-                if (!folderNameListItem.TryGetClickablePoint(out p) && !overrideDblClickBehavior)
-                {
-                    Mouse.DoubleClick(new Point(folderNameListItem.BoundingRectangle.X + 50,
-                                                folderNameListItem.BoundingRectangle.Y + 5));
-                }
-                else
-                {
-                    Mouse.Click(new Point(folderNameListItem.BoundingRectangle.X + 50,
-                                          folderNameListItem.BoundingRectangle.Y + 5));
-                }
+                            if (id.Contains(arg) ||
+                                kid.FriendlyName.Contains(arg) ||
+                                kid.ControlType.Name.Contains(arg) ||
+                                kid.ClassName.Contains(arg))
+                            {
+                                canidate = kid;
+                            }
+                        }
+                    }
 
-                Thread.Sleep(300);
-
-                // Can we see the file? (AKA: Is the folder maximised?)
-                UITestControl projectNameListItem = new UITestControl(folderNameListItem);
-                projectNameListItem.SearchProperties.Add("AutomationId", "UI_" + projectName + "_AutoID");
-                projectNameListItem.TryFind();
-                if (!projectNameListItem.TryGetClickablePoint(out p) && !overrideDblClickBehavior)
-                {
-                    Mouse.DoubleClick(new Point(projectNameListItem.BoundingRectangle.X + 50,
-                                                projectNameListItem.BoundingRectangle.Y + 5));
+                    parent = canidate;
                 }
-                return projectNameListItem;
             }
-            return null;
+
+            return parent;
+
         }
 
-        private UITestControl GetCategory(string serverName, string serviceType, string categoryName)
-        {
-            Point p;
-            UITestControl returnControl = null;
-
-            Thread.Sleep(500);
-            SendKeys.SendWait("{HOME}");
-            SendKeys.SendWait("^{LEFT}");
-            SendKeys.SendWait("^{LEFT}");
-            SendKeys.SendWait("^{LEFT}");
-            SendKeys.SendWait("^{LEFT}");
-            SendKeys.SendWait("^{LEFT}");
-            Thread.Sleep(500);
-
-            WpfTree uITvExplorerTree = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UINavigationViewUserCoCustom.UITvExplorerTree;
-            // Uncomment these 3 lines if things start going slowly again (They help to locate the problem)
-
-            //UITestControl theStudioWindow = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UINavigationViewUserCoCustom;
-            //theStudioWindow.Find();
-            //uITvExplorerTree.Find();
-
-            UITestControl serverListItem = new UITestControl(uITvExplorerTree);
-            serverListItem.SearchProperties.Add("AutomationId", serverName, PropertyExpressionOperator.Contains);
-            serverListItem.SearchProperties.Add("ControlType", "TreeItem");
-
-            serverListItem.Find();
-
-            Point clickablePoint = new Point();
-            if (!serverListItem.TryGetClickablePoint(out clickablePoint))
-            {
-                // Click in it, and fix the alignment
-                Mouse.Click(serverListItem, new Point(100, 100));
-
-                // Re-allign the Explorer
-                SendKeys.SendWait("{PAGEUP}");
-                SendKeys.SendWait("{PAGEUP}");
-                SendKeys.SendWait("{PAGEUP}");
-
-                SendKeys.SendWait("^{LEFT}");
-                SendKeys.SendWait("^{LEFT}");
-                SendKeys.SendWait("^{LEFT}");
-                SendKeys.SendWait("^{LEFT}");
-                SendKeys.SendWait("^{LEFT}");
-            }
-
-            Thread.Sleep(500);
-            SendKeys.SendWait("{HOME}");
-            Thread.Sleep(500);
-
-            // Can we see the type list? (AKA: Is the server list maximized?)
-            UITestControl serviceTypeListItem = new UITestControl(serverListItem);
-            serviceTypeListItem.SearchProperties.Add("AutomationId", "UI_" + serviceType + "_AutoID");
-            serviceTypeListItem.Find();
-
-            if (!serviceTypeListItem.TryGetClickablePoint(out p))
-            {
-                Mouse.DoubleClick(new Point(serverListItem.BoundingRectangle.X + 50, serverListItem.BoundingRectangle.Y + 5));
-            }
-            else
-            {
-                Mouse.Click(new Point(serverListItem.BoundingRectangle.X + 50, serverListItem.BoundingRectangle.Y + 5));
-            }
-
-            // Can we see the folder? (AKA: Is the type list maximised?)
-            UITestControl folderNameListItem = new UITestControl(serviceTypeListItem);
-            folderNameListItem.SearchProperties.Add("AutomationId", "UI_" + categoryName + "_AutoID");
-            folderNameListItem.Find();
-            if (!folderNameListItem.TryGetClickablePoint(out p))
-            {
-                Mouse.DoubleClick(new Point(serviceTypeListItem.BoundingRectangle.X + 50, serviceTypeListItem.BoundingRectangle.Y + 5));
-            }
-            else
-            {
-                Mouse.Click(new Point(serviceTypeListItem.BoundingRectangle.X + 50, serviceTypeListItem.BoundingRectangle.Y + 5));
-            }
-            return folderNameListItem;
-        }
-
-
+        /// <summary>
+        /// Enters the explorer search text.
+        /// </summary>
+        /// <param name="textToSearchWith">The text automatic search with.</param>
         public void EnterExplorerSearchText(string textToSearchWith)
         {
-            var studioWindow = new UIWarewolfWindow();
-            WpfEdit uIUI_DataListSearchtxtEdit = studioWindow.UITheNavigationViewCustom.UIFilterTextBoxEdit.UIUI_DataListSearchtxtEdit;
+            // clear before we search ;)
+            ClearExplorerSearchText();
 
-            // Click 'UI_DataListSearchtxt_AutoID' text box
-            Mouse.Click(uIUI_DataListSearchtxtEdit, new Point(12, 8));
-
+            Mouse.Click(_explorerSearch, new Point(12, 8));
+            Playback.Wait(50);
             SendKeys.SendWait(textToSearchWith);
         }
 
@@ -469,11 +336,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public void ClearExplorerSearchText()
         {
-            var studioWindow = new UIWarewolfWindow();
-            WpfEdit searchTextbox = studioWindow.UITheNavigationViewCustom.UIFilterTextBoxEdit.UIUI_DataListSearchtxtEdit;
-            Mouse.Click(searchTextbox, new Point(5, 5));
+            Mouse.Click(_explorerSearch,new Point(5,5));
             SendKeys.SendWait("{HOME}");
+            Playback.Wait(50);
             SendKeys.SendWait("+{END}");
+            Playback.Wait(50);
             SendKeys.SendWait("{DELETE}");
         }
 
@@ -490,49 +357,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             }
         }
 
-        public UITestControlCollection GetCategoryItems()
-        {
-            UITestControlCollection workflows = GetNavigationItemCategories();
-
-
-            return workflows;
-        }
-
-        public UITestControlCollection GetNavigationItemCategories()
-        {
-            WpfTree uITvExplorerTree = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UINavigationViewUserCoCustom.UITvExplorerTree;
-
-
-            uITvExplorerTree.SearchProperties.Add("AutomationId", "localhost", PropertyExpressionOperator.Contains);
-            uITvExplorerTree.SearchProperties.Add("ControlType", "TreeItem");
-
-            uITvExplorerTree.Find();
-
-            //// Can we see the type list? (AKA: Is the server list maximized?)
-            UITestControl serviceTypeListItem = new UITestControl(uITvExplorerTree);
-            serviceTypeListItem.SearchProperties.Add("AutomationId", "UI_WORKFLOWS_AutoID");
-            serviceTypeListItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-
-            serviceTypeListItem.Find();
-
-            //WpfTree tree = GetExplorerTree();
-
-            //UITestControl serverNode = tree.GetChildren()[0];
-
-            UITestControlCollection categories = serviceTypeListItem.GetChildren();
-
-            UITestControlCollection categoryCollection = new UITestControlCollection();
-
-            foreach (UITestControl category in categories)
-            {
-                if (category.ControlType.ToString() == "TreeItem")
-                {
-                    categoryCollection.Add(category);
-                }
-            }
-
-            return categoryCollection;
-        }
+       
 
         private UITestControl GetConnectedServer(string serverName)
         {

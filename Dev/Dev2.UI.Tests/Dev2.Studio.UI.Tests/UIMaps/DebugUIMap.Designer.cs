@@ -38,8 +38,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
 
         public WpfRow GetRow(int row)
         {
+            var vstw = new VisualTreeWalker();
+
             var debugWindow = GetDebugWindow();
-            var inputGrid = VisualTreeWalker.GetChildByAutomationIDPath(debugWindow, "TabItems", "UI_InputDataTab_AutoID", "DataListInputs");
+            var inputGrid = vstw.GetChildByAutomationIDPath(debugWindow, "TabItems", "UI_InputDataTab_AutoID", "DataListInputs");
             return inputGrid.GetChildren()[row] as WpfRow;
         }
 

@@ -8,6 +8,8 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+using Dev2.Studio.UI.Tests.Utils;
+
 namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
 {
     using System;
@@ -28,8 +30,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public partial class VariablesUIMap
     {
+        private UITestControl _variableExplorer;
 
-        private UITestControl getUpdateButton()
+        VisualTreeWalker vtw = new VisualTreeWalker();
+
+        public VariablesUIMap()
+        {
+            _variableExplorer = vtw.GetControlFromRoot(1, true, "Uia.DataListView");
+        }
+
+        private UITestControl GetUpdateButton()
         {
             UITestControl theControl = this.UIBusinessDesignStudioWindow.UIItemCustom;
             theControl.Find();
@@ -38,38 +48,40 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
             updateButton.Find();
             return updateButton;
         }
-        private UITestControl getScalarExplorer()
-        {
-            UITestControl theControl = this.UIBusinessDesignStudioWindow.UIItemCustom.UIScalarExplorerTree;
-            return theControl;
-        }
 
-        private UITestControl getVariables()
+        private UITestControl GetScalarVariables()
         {
-            UITestControl theControl = getScalarExplorer();
-            return theControl.GetChildren()[0];
+            return vtw.GetChildByAutomationIDPath(_variableExplorer, "ScalarExplorer");
         }
 
         private UITestControl GetRecordSetList()
         {
-            UITestControl theControl = getScalarExplorer();
+            UITestControl theControl = _variableExplorer;
             return theControl.GetChildren()[1];
         }
 
-        public UITestControlCollection getVariableList()
+        public UITestControlCollection GetScalarVariableList()
         {
-            UITestControl variableMenu = getVariables();
-            UITestControlCollection variableList = variableMenu.GetChildren();
-            UITestControlCollection returnList = new UITestControlCollection();
-            foreach (UITestControl theItem in variableList)
+            UITestControl variableMenu = GetScalarVariables();
+
+            var kids = variableMenu.GetChildren();
+
+            if (kids != null)
             {
-                if (theItem.ControlType.Name == "TreeItem")
+                UITestControlCollection variableList = kids[0].GetChildren();
+                UITestControlCollection returnList = new UITestControlCollection();
+                foreach (UITestControl theItem in variableList)
                 {
-                    returnList.Add(theItem);
+                    if (theItem.ControlType.Name == "TreeItem")
+                    {
+                        returnList.Add(theItem);
+                    }
                 }
+
+                return returnList;
             }
-            return returnList;
-            // TreeItem
+
+            return null;
         }
         
         #region Properties

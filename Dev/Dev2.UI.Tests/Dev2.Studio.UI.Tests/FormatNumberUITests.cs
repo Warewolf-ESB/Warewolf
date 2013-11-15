@@ -13,8 +13,6 @@ namespace Dev2.Studio.UI.Tests
 
         #region Cleanup
 
-        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
-
         [ClassInitialize]
         public static void ClassInit(TestContext tctx)
         {
@@ -29,12 +27,11 @@ namespace Dev2.Studio.UI.Tests
             Mouse.MouseDragSpeed = 10000;
         }
 
-        //[ClassCleanup]
-        //public static void MyTestCleanup()
-        //{
-        //    _tabManager.CloseAllTabs();
-        //}
-
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            TabManagerUIMap.CloseAllTabs();
+        }
         #endregion
 
         #region Format Number Inputs Tests
@@ -51,9 +48,7 @@ namespace Dev2.Studio.UI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("NumberFormat");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner("NumberFormat", workflowPoint1, "Format Number");
 
             UITestControl ctrl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "NumberFormat");
             FormatNumberUIMap.InputAllFormatNumberValues(ctrl, "1234.56", "Normal", "1", "3", "[[Result]]");
@@ -69,14 +64,12 @@ namespace Dev2.Studio.UI.Tests
 
             RibbonUIMap.CreateNewWorkflow();
 
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("NumberFormat");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner("NumberFormat", workflowPoint1, "Format Number");
 
             UITestControl ctrl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "NumberFormat");
             FormatNumberUIMap.InputAllFormatNumberValues(ctrl, "1234.56", "None", "1", "3", "[[Result]]");
@@ -96,9 +89,7 @@ namespace Dev2.Studio.UI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("NumberFormat");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner("NumberFormat", workflowPoint1, "Format Number");
 
             UITestControl ctrl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "NumberFormat");
             FormatNumberUIMap.InputAllFormatNumberValues(ctrl, "1234.56", "Normal", "1", "3", "[[Result]]");

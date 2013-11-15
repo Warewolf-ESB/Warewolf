@@ -24,7 +24,6 @@ namespace Dev2.CodedUI.Tests
 
         #region Cleanup
 
-        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
 
         [ClassInitialize]
         public static void ClassInit(TestContext tctx)
@@ -40,11 +39,11 @@ namespace Dev2.CodedUI.Tests
             Mouse.MouseDragSpeed = 10000;
         }
 
-        //[ClassCleanup]
-        //public static void MyTestCleanup()
-        //{
-        //    _tabManager.CloseAllTabs();
-        //}
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            TabManagerUIMap.CloseAllTabs();
+        }
 
         #endregion
 
@@ -55,7 +54,6 @@ namespace Dev2.CodedUI.Tests
         // 05/11 - Failure is Correct - Broken Functionality ;)
         public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
         {
-            StudioWindow.SetFocus();
             var preCount = TabManagerUIMap.GetTabCount();
             SendKeys.SendWait("^w");
             string activeTabName = TabManagerUIMap.GetActiveTabName();
@@ -75,7 +73,7 @@ namespace Dev2.CodedUI.Tests
             Assert.IsTrue(activeTabName.Contains("Unsaved"), "Active workflow is not an unsaved workflow");
         }
 
-        #endregion New PBI Tests        
+        #endregion New PBI Tests
 
         [TestMethod]
         [Owner("Massimo Guerrera")]
@@ -91,9 +89,7 @@ namespace Dev2.CodedUI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", workflowPoint1);
 
             //Get Large View button
             UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign",
@@ -141,9 +137,7 @@ namespace Dev2.CodedUI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", workflowPoint1);
 
             // Add the data!
             WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
@@ -172,12 +166,11 @@ namespace Dev2.CodedUI.Tests
         public void ChangingResourceExpectedPopUpWarningWithShowAffected()
         {
             // Open the workflow
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
+
             ExplorerUIMap.EnterExplorerSearchText("NewForeachUpgrade");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", "NewForeachUpgradeDifferentExecutionTests");
             //Edit the inputs and outputs
-            DockManagerUIMap.ClickOpenTabPage("Variables");
+
             VariablesUIMap.CheckScalarInputAndOuput(0);
             VariablesUIMap.CheckScalarInput(0);
 
@@ -208,9 +201,7 @@ namespace Dev2.CodedUI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag a Multi Assign on
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl asssignControlInToolbox = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
-            ToolboxUIMap.DragControlToWorkflowDesigner(asssignControlInToolbox, workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", workflowPoint1);
 
             // Click away
             Mouse.Click(new Point(workflowPoint1.X + 50, workflowPoint1.Y + 50));
@@ -229,14 +220,12 @@ namespace Dev2.CodedUI.Tests
             RibbonUIMap.CreateNewWorkflow();
 
             // For later
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag a Calculate control on
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl calculateControl = ToolboxUIMap.FindToolboxItemByAutomationId("Calculate");
-            ToolboxUIMap.DragControlToWorkflowDesigner(calculateControl, workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner("Calculate", workflowPoint1);
 
             Playback.Wait(500);
             Mouse.Click();
@@ -277,8 +266,7 @@ namespace Dev2.CodedUI.Tests
         public void CheckAddMissingIsWorkingWhenManuallyAddingVariableExpectedToShowVariablesAsUnUsed()
         {
             //Open the correct workflow
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
+
             ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
 
             // flakey bit of code, we need to wait ;)
@@ -286,10 +274,9 @@ namespace Dev2.CodedUI.Tests
 
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
 
-            DockManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.ClickVariableName(5);
+            VariablesUIMap.ClickScalarVariableName(5);
             SendKeys.SendWait("codedUITestVar");
-            VariablesUIMap.ClickVariableName(4);
+            VariablesUIMap.ClickScalarVariableName(4);
 
             Assert.IsFalse(VariablesUIMap.CheckIfVariableIsUsed(5));
             Assert.IsTrue(VariablesUIMap.CheckIfVariableIsUsed(1));
@@ -307,12 +294,11 @@ namespace Dev2.CodedUI.Tests
             RibbonUIMap.CreateNewWorkflow();
 
             // Open the Variables tab, and enter the invalid value
-            DockManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.ClickVariableName(0);
+            VariablesUIMap.ClickScalarVariableName(0);
             SendKeys.SendWait("test@");
 
             // Click below to fire the validity check
-            VariablesUIMap.ClickVariableName(1);
+            VariablesUIMap.ClickScalarVariableName(1);
 
             // The box should be invalid, and have the tooltext saying as much.
             bool isValid = VariablesUIMap.CheckVariableIsValid(0);
@@ -339,17 +325,14 @@ namespace Dev2.CodedUI.Tests
             requiredPoint.Offset(20, 50);
 
             // Drag a ForEach onto the Workflow
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
-            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner("ForEach", workflowPoint1, "For Each");
 
 
             // Get a sample workflow, and drag it onto the "Drop Activity Here" part of the ForEach box
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
+
             ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
-            UITestControl testFlow = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
-            ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25));
+            var targetPoint = new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25);
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns", targetPoint);
 
             // Now - Onto Part 2!
 
@@ -386,16 +369,9 @@ namespace Dev2.CodedUI.Tests
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
-            // Open the Toolbox
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-
             // Get a sample workflow
-            ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("TestFlow");
-            UITestControl testFlow = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "TEST", "TestFlow");
-
-            // Drag it on
-            ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "TEST", "TestFlow", workflowPoint1);
 
             // Click it
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "TestFlow");
@@ -406,7 +382,6 @@ namespace Dev2.CodedUI.Tests
 
         // vi - Can I drop a tool onto the designer?
         [TestMethod]
-        // 05/11 - Failure is Intermittent ;)
         public void DropAWorkflowOrServiceOnFromTheToolBoxAndTestTheWindowThatPopsUp()
         {
             // Create the Workflow
@@ -421,14 +396,10 @@ namespace Dev2.CodedUI.Tests
             // Get a point underneath the start button
             Point p = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
-            // Open the Toolbox
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-
             // Get the comment box
-            UITestControl workflowControl = ToolboxUIMap.FindToolboxItemByAutomationId("Workflow");
 
             // And drag it onto the point
-            ToolboxUIMap.DragControlToWorkflowDesigner(workflowControl, p);
+            ToolboxUIMap.DragControlToWorkflowDesigner("Workflow", p);
 
             // Wait for dialog
             PopupDialogUIMap.WaitForDialog();
@@ -480,14 +451,8 @@ namespace Dev2.CodedUI.Tests
 
             #region Checking the click of the Cacnel button doesnt Adds the resource to the design surface
 
-            // Open the Toolbox
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-
-            // Get the comment box
-            workflowControl = ToolboxUIMap.FindToolboxItemByAutomationId("Workflow");
-
             // And drag it onto the point
-            ToolboxUIMap.DragControlToWorkflowDesigner(workflowControl, p);
+            ToolboxUIMap.DragControlToWorkflowDesigner("Workflow", p);
 
             // Wait for the window to show up
             PopupDialogUIMap.WaitForDialog();
@@ -516,72 +481,31 @@ namespace Dev2.CodedUI.Tests
         #region Groomed Test
 
         [TestMethod]
-        public void CheckIfDebugProcessingBarIsShowingDurningExecutionExpectedToShowDuringExecutionOnly()
-        {
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            //Open the correct workflow
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("LargeFileTesting");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTS", "LargeFileTesting");
-
-            RibbonUIMap.ClickRibbonMenuItem("Debug");
-            if(DebugUIMap.WaitForDebugWindow(5000))
-            {
-                SendKeys.SendWait("{F5}");
-                Playback.Wait(1000);
-            }
-            DockManagerUIMap.ClickOpenTabPage("Output");
-            var status = OutputUIMap.GetStatusBarStatus();
-            var spinning = OutputUIMap.IsSpinnerSpinning();
-            Assert.AreEqual("Executing", status, "Debug output status text does not say executing when executing");
-            Assert.IsTrue(spinning, "Debug output spinner not spinning during execution");
-        }
-
-        [TestMethod]
         public void ClickHelpFeedback_Expected_FeedbackWindowOpens()
         {
             RibbonUIMap.ClickRibbonMenuItem("Feedback");
             Playback.Wait(500);
             var dialogPrompt = DockManagerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            if(dialogPrompt.GetType() != typeof(WpfWindow))
+            if (dialogPrompt.GetType() != typeof (WpfWindow))
             {
                 Assert.Fail("Error - Clicking the Feedback button does not create the Feedback Window");
             }
+
             SendKeys.SendWait("{ENTER}");
             SendKeys.SendWait("{ENTER}");
 
             // Wait for the init, then click around a bit
-            Playback.Wait(2500);
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            Playback.Wait(500);
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            Playback.Wait(500);
 
             // Click stop, then make sure the Feedback window has appeared.
             FeedbackUIMap.ClickStartStopRecordingButton();
             Playback.Wait(500);
-            if(!FeedbackUIMap.DoesFeedbackWindowExist())
+            if (!FeedbackUIMap.DoesFeedbackWindowExist())
             {
                 Assert.Fail("The Feedback window did not appear after the recording has been stopped.");
             }
 
-            Playback.Wait(1000);
+            Playback.Wait(500);
             FeedbackUIMap.FeedbackWindow_ClickCancel();
-
-            // TODO: FIX THIS ON TEST SERVER!!
-            // Click Open default email
-            //FeedbackUIMap.FeedbackWindow_ClickOpenDefaultEmail();
-
-            //Playback.Wait(2500);
-            //bool hasOutlookOpened = ExternalUIMap.Outlook_HasOpened();
-            //if (!hasOutlookOpened)
-            //{
-            //    Assert.Fail("Outlook did not open when ClickOpenDefaultEmail was clicked!");
-            //}
-            //else
-            //{
-            //    ExternalUIMap.CloseAllInstancesOfOutlook();
-            //}
         }
 
         // Bug 8747
@@ -589,23 +513,21 @@ namespace Dev2.CodedUI.Tests
         // 05/11 - Failure is Intermittent ;)
         public void DebugBuriedErrors_Expected_OnlyErrorStepIsInError()
         {
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
+
             //Open the correct workflow
-            ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("Bug8372");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "Bugs", "Bug8372");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug8372");
 
             // Run debug
             SendKeys.SendWait("{F5}");
-            PopupDialogUIMap.WaitForDialog();
+            DebugUIMap.WaitForDebugWindow(3000);
             SendKeys.SendWait("{F5}");
             OutputUIMap.WaitForExecution();
 
-            // Open the Output
-            DockManagerUIMap.ClickOpenTabPage("Output");
+            var result = OutputUIMap.IsAnyStepsInError();
 
             // Get nested steps
-            Assert.IsTrue(OutputUIMap.IsAnyStepsInError(), "Cannot see nested error steps in the debug output.");
+            Assert.IsTrue(result, "Cannot see nested error steps in the debug output.");
         }
 
         #endregion Deprecated Test

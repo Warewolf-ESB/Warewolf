@@ -1,18 +1,16 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests
 {
-    [CodedUITest, System.Runtime.InteropServices.GuidAttribute("DAA88B10-98C4-488E-ACB2-1256C95CE8F0")]
+    [CodedUITest]
     public class ExplorerUITests : UIMapBase
     {
         #region Cleanup
-
-        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
 
         [ClassInitialize]
         public static void ClassInit(TestContext tctx)
@@ -28,33 +26,28 @@ namespace Dev2.Studio.UI.Tests
             Mouse.MouseDragSpeed = 10000;
         }
 
-        //[ClassCleanup]
-        //public static void MyTestCleanup()
-        //{
-        //    _tabManager.CloseAllTabs();
-        //}
-
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            TabManagerUIMap.CloseAllTabs();
+        }
         #endregion
 
         [TestMethod]
         public void SearchAndRefresh_AttemptToSearch_ExpectedSearchFilteredByAllItems()
         {
 
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-
             // Now count
             ExplorerUIMap.ClearExplorerSearchText();
-            var items = ExplorerUIMap.GetCategoryItems();
+            var items = ExplorerUIMap.GetServiceItems();
             var itemCount = items.Count;
             Assert.IsTrue(itemCount > 1, "Cannot find any items in the explorer tree, cannot test explorer filter without any explorer items");
-            ExplorerUIMap.ClearExplorerSearchText();
+
             ExplorerUIMap.EnterExplorerSearchText("Integration");
 
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
-            items[0].WaitForControlReady();
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+            Playback.Wait(2000);
 
-            items = ExplorerUIMap.GetCategoryItems();
+            items = ExplorerUIMap.GetServiceItems();
             int allResourcesAfterSearch = items.Count;
             Assert.IsTrue(itemCount > allResourcesAfterSearch, "Cannot filter explorer tree");
 
@@ -66,23 +59,23 @@ namespace Dev2.Studio.UI.Tests
         public void RenameResource_WithDashes_ResourceRenamed()
         {
 
-            const string newTestResourceWithDashes = "New-Test-Resource-With-Dashes";
-            const string oldResourceName = "OldResourceName";
-            RibbonUIMap.CreateNewWorkflow();
-            SendKeys.SendWait("^s");
-            WizardsUIMap.WaitForWizard();
-            SaveDialogUIMap.ClickAndTypeInNameTextbox(oldResourceName);
-            //wait for save tab switch
-            Playback.Wait(2000);
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText(oldResourceName);
-            ExplorerUIMap.RightClickRenameProject("Localhost", "WORKFLOWS", "Unassigned", oldResourceName);
-            SendKeys.SendWait("New-Test-Resource-With-Dashes{ENTER}");
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
-            ExplorerUIMap.DoubleClickOpenProject("Localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes);
+            Assert.Fail("Poor test construction. Your assert does not validate the workflow existence. this test is currently passing, yet should fail!");
+
+            //string newTestResourceWithDashes = "New-Test-Resource-With-Dashes" + Guid.NewGuid().ToString().Substring(0, 5);
+            //string oldResourceName = "OldResourceName"+Guid.NewGuid().ToString().Substring(0,5);
+            //RibbonUIMap.CreateNewWorkflow();
+            //SendKeys.SendWait("^s");
+            //WizardsUIMap.WaitForWizard();
+            //SaveDialogUIMap.ClickAndTypeInNameTextbox(oldResourceName);
+            ////wait for save tab switch
+            //Playback.Wait(2000);
+
+            //ExplorerUIMap.EnterExplorerSearchText(oldResourceName);
+            //ExplorerUIMap.RightClickRenameProject("localhost", "WORKFLOWS", "Unassigned", oldResourceName);
+            //SendKeys.SendWait("New-Test-Resource-With-Dashes{ENTER}");
+
+            //ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
+            //ExplorerUIMap.DoubleClickOpenProject("Localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes);
             
         }
 

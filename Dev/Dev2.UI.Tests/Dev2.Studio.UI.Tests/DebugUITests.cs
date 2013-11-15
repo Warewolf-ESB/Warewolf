@@ -13,8 +13,6 @@ namespace Dev2.Studio.UI.Tests
 
         #region Cleanup
 
-        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
-
         [ClassInitialize]
         public static void ClassInit(TestContext tctx)
         {
@@ -29,14 +27,35 @@ namespace Dev2.Studio.UI.Tests
             Mouse.MouseDragSpeed = 10000;
         }
 
-        //[ClassCleanup]
-        //public static void MyTestCleanup()
-        //{
-        //    _tabManager.CloseAllTabs();
-        //}
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            TabManagerUIMap.CloseAllTabs();
+        }
 
         #endregion
 
+
+        [TestMethod]
+        public void CheckIfDebugProcessingBarIsShowingDurningExecutionExpectedToShowDuringExecutionOnly()
+        {
+
+            //Open the correct workflow
+            ExplorerUIMap.EnterExplorerSearchText("LargeFileTesting");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTS", "LargeFileTesting");
+
+            RibbonUIMap.ClickRibbonMenuItem("Debug");
+            if(DebugUIMap.WaitForDebugWindow(5000))
+            {
+                SendKeys.SendWait("{F5}");
+                Playback.Wait(1000);
+            }
+
+            var status = OutputUIMap.GetStatusBarStatus();
+            var spinning = OutputUIMap.IsSpinnerSpinning();
+            Assert.AreEqual("Executing", status, "Debug output status text does not say executing when executing");
+            Assert.IsTrue(spinning, "Debug output spinner not spinning during execution");
+        }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -44,27 +63,15 @@ namespace Dev2.Studio.UI.Tests
         public void DebugInput_WhenRun10Times_ExpectInputsPersistAndXMLRemainsLinked_InputsAndXMLRemainPersisted()
         {
                 //------------Setup for test--------------------------
-                DockManagerUIMap.ClickOpenTabPage("Explorer");
                 //Open the correct workflow
-                ExplorerUIMap.ClearExplorerSearchText();
                 ExplorerUIMap.EnterExplorerSearchText("Bug9394");
-                ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "Bugs", "Bug9394");
-
-                //------------Execute Test---------------------------
-                // Run debug
-                RibbonUIMap.ClickRibbonMenuItem("Debug");
-                PopupDialogUIMap.WaitForDialog();
-                SendKeys.SendWait("{TAB}1{TAB}2");
-                DebugUIMap.ClickExecute();
-                OutputUIMap.WaitForExecution();
+                ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug9394");
 
                 //------------Assert Results-------------------------
 
                 // Check for valid input in the input boxes ;)
                 for (int i = 0; i < 10; i++)
                 {
-                    Playback.Wait(500);
-
                     RibbonUIMap.ClickRibbonMenuItem("Debug");
                     PopupDialogUIMap.WaitForDialog();
 
@@ -81,20 +88,20 @@ namespace Dev2.Studio.UI.Tests
                 // Now check the XML tab works ;)
                 OutputUIMap.WaitForExecution();
                 SendKeys.SendWait(KeyboardCommands.Debug);
-                Playback.Wait(500);
+                Playback.Wait(200);
                 DebugUIMap.ClickXMLTab();
-                Playback.Wait(500);
+                Playback.Wait(200);
 
                 // flip back and forth to check persistence ;)
                 DebugUIMap.ClickInputDataTab();
-                Playback.Wait(500);
+                Playback.Wait(200);
                 DebugUIMap.ClickXMLTab();
-                Playback.Wait(500);
+                Playback.Wait(200);
 
                 SendKeys.SendWait(KeyboardCommands.TabCommand);
-                Playback.Wait(500);
+                Playback.Wait(200);
                 SendKeys.SendWait(KeyboardCommands.SelectAllCommand);
-                Playback.Wait(500);
+                Playback.Wait(200);
                 Clipboard.Clear();
                 SendKeys.SendWait(KeyboardCommands.CopyCommand);
                 var actualXML = Clipboard.GetData(DataFormats.Text);

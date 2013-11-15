@@ -90,6 +90,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             
             return saveDialogButtons;
         }
+
         public class UIUI_TabManager_AutoIDTabList1 : WpfTabList
         {
 

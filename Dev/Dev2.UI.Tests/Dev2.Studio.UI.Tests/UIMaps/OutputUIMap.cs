@@ -3,63 +3,30 @@ using System.Linq;
 using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
+namespace Dev2.Studio.UI.Tests.UIMaps
 {
     public partial class OutputUIMap
     {
         UITestControl _outputPane;
+        private UITestControl _outputSearch;
+        private UITestControl _outputStatus;
+
         public OutputUIMap()
         {
-            _outputPane = VisualTreeWalker.GetControl("UI_DocManager_AutoID", "OutputPane");
-        }
+            var vstw = new VisualTreeWalker();
 
-        /// <summary>
-        /// Finds a control on the Output Pane
-        /// </summary>
-        /// <param name="controlAutomationId">The automation ID of the control you are looking for</param>
-        /// <returns>Returns the control as a UITestControl object</returns>
-        public UITestControl FindControlByAutomationId(string controlAutomationId)
-        {
-            // Unless the UI drastically changes (In which case most Automation tests will fail),
-            // the order will remain constant
+            _outputPane = vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9","OutputPane", "DebugOutput");
+            _outputSearch = vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "OutputPane", "DebugOutput", "Edit");
+            _outputStatus = vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "OutputPane", "DebugOutput", "Dev2StatusBarAutomationID", "StatusBar");
 
-            // Cake names are used until they are replaced by the real names
-            UITestControlCollection theCollection = new UITestControlCollection();
-            try
-            {
-                theCollection = GetOutputWindow();
-            }
-            catch
-            {
-                Assert.Fail("Error - Could not find '" + controlAutomationId + "' on the workflow designer!");
-            }
-            UITestControl splurtControl = theCollection[4];
-            UITestControlCollection splurtChildChildren = splurtControl.GetChildren()[0].GetChildren();
-            UITestControl cake2 = splurtChildChildren[0];
-            UITestControlCollection cake2Children = cake2.GetChildren();
-            UITestControl cake38 = cake2Children[3];
-            UITestControlCollection cake38Children = cake38.GetChildren();
-            // Cake38 -> ActivityTypeDesigner -> Cake53 -> FlowchartDesigner -> *Control Here*
-            UITestControl cake53 = cake38Children[0].GetChildren()[0];
-            UITestControlCollection cake53Children = cake53.GetChildren();
-            UITestControl flowchartDesigner = cake53Children[0];
-            UITestControlCollection flowchartDesignerChildren = flowchartDesigner.GetChildren();
-            foreach (UITestControl theControl in flowchartDesignerChildren)
-            {
-                string automationId = theControl.GetProperty("AutomationId").ToString();
-                if (automationId.Contains(controlAutomationId))
-                {
-                    return theControl;
-                }
-            }
-            return null;
         }
 
         private WpfTree GetOutputTree()
         {
-            var debugOutputTree = VisualTreeWalker.GetChildByAutomationIDPath(_outputPane, "DebugOutput", "Uia.TreeView");
+            var vstw = new VisualTreeWalker();
+
+            var debugOutputTree = vstw.GetChildByAutomationIDPath(_outputPane, "Uia.TreeView");
             return debugOutputTree as WpfTree;
         }
 
@@ -69,28 +36,44 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             return debugOutputControlTree.Nodes;
         }
 
-        private UITestControl GetStatusBar()
-        {
-            return VisualTreeWalker.GetChildByAutomationIDPath(_outputPane, "DebugOutput", "Dev2StatusBarAutomationID", "StatusBar");
-        }
-
+        /// <summary>
+        /// Gets the status bar status.
+        /// </summary>
+        /// <returns></returns>
         public string GetStatusBarStatus()
         {
-            var statusBarChildren = GetStatusBar().GetChildren();
-            var statusBar = statusBarChildren.FirstOrDefault(child => child.ClassName == "Uia.Text") as WpfText;
-            return statusBar.DisplayText;
+            var statusBarChildren = _outputStatus.GetChildren();
+            if (statusBarChildren != null)
+            {
+                var statusBar = statusBarChildren.FirstOrDefault(child => child.ClassName == "Uia.Text") as WpfText;
+                if (statusBar != null)
+                {
+                    return statusBar.DisplayText;
+                }
+            }
+
+            return string.Empty;
         }
 
+        /// <summary>
+        /// Determines whether [is spinner spinning].
+        /// </summary>
+        /// <returns></returns>
         public bool IsSpinnerSpinning()
         {
-            var spinner =
-                GetStatusBar().GetChildren().FirstOrDefault(child => child.ClassName == "Uia.CircularProgressBar");
-            return spinner.Height != -1;
+            var kids = _outputStatus.GetChildren();
+
+            if (kids != null)
+            {
+                var spinner = kids.FirstOrDefault(child => child.ClassName == "Uia.CircularProgressBar");
+                return spinner != null && spinner.Height != -1;    
+            }
+
+            return false;
         }
 
         public UITestControlCollection GetStepInOutputWindow(UITestControl outputWindow, string stepToFind)
         {
-            UITestControl workflowSearcher = new UITestControl(outputWindow);
             UITestControlCollection coll = outputWindow.GetChildren();
             UITestControlCollection results = new UITestControlCollection();
             foreach (var child in coll)
@@ -119,9 +102,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
 
         public UITestControl GetStepDetails(UITestControl outputWindow, string stepInformationToFind)
         {
-            UITestControl workflowSearcher = new UITestControl(outputWindow);
             UITestControlCollection coll = outputWindow.GetChildren();
-            UITestControlCollection results = new UITestControlCollection();
             for (int i = 0; i <= coll.Count; i++)
             {
                 if (coll[i].Name.Equals(stepInformationToFind + " : "))
@@ -227,7 +208,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
 
         public bool IsAnyStepsInError()
         {
+
             var debugOutput = GetOutputWindow().ToList();
+
             return debugOutput.Any(IsStepInError);
         }
 

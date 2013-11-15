@@ -20,8 +20,6 @@ namespace Dev2.Studio.UI.Tests
 
         #region Cleanup
 
-        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
-
         [ClassInitialize]
         public static void ClassInit(TestContext tctx)
         {
@@ -36,12 +34,11 @@ namespace Dev2.Studio.UI.Tests
             Mouse.MouseDragSpeed = 10000;
         }
 
-        //[ClassCleanup]
-        //public static void MyTestCleanup()
-        //{
-        //    _tabManager.CloseAllTabs();
-        //}
-
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            TabManagerUIMap.CloseAllTabs();
+        }
         #endregion
 
         [TestMethod]
@@ -53,14 +50,11 @@ namespace Dev2.Studio.UI.Tests
         // ReSharper restore InconsistentNaming
         {
 
-            // Open the Explorer
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("AllTools");
 
             // Open the Workflow
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             // Assert all the icons are visible
             var designer = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
@@ -137,13 +131,11 @@ namespace Dev2.Studio.UI.Tests
                 };
 
             // Open the Explorer
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("AllTools");
 
             // Open the Workflow
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             var designer = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
 
@@ -190,9 +182,7 @@ namespace Dev2.Studio.UI.Tests
 
                 Mouse.Click(toggleButton);
 
-                toggleButton =
-                    WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Close Large View") as
-                    WpfToggleButton;
+                toggleButton =  WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Close Large View") as WpfToggleButton;
                 if (toggleButton == null)
                 {
                     Assert.Fail("Could not find close large view button");
@@ -221,13 +211,11 @@ namespace Dev2.Studio.UI.Tests
                 };
 
             // Open the Explorer
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("AllTools");
 
             // Open the Workflow
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             var designer = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
 

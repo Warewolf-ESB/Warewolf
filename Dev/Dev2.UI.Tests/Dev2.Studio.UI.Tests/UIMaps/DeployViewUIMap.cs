@@ -133,7 +133,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
         {
             var activeTab = TabManagerUIMap.GetActiveTab();
             var deployUserControl = GetDeployUserControl(activeTab);
-            return VisualTreeWalker.GetChildByAutomationIDPath(deployUserControl, "SourceNavigationView", "Navigation") as WpfTree;
+            var vstw = new VisualTreeWalker();
+
+            return vstw.GetChildByAutomationIDPath(deployUserControl, "SourceNavigationView", "Navigation") as WpfTree;
         }
     }
 }

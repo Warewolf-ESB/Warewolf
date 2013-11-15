@@ -1,19 +1,21 @@
-﻿using Dev2.Studio.UI.Tests.Utils;
+﻿using System.Windows.Forms;
+using Dev2.Studio.UI.Tests.Utils;
+using System.Drawing;
+using Microsoft.VisualStudio.TestTools.UITesting;
 
-namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
+namespace Dev2.Studio.UI.Tests.UIMaps
 {
-    using System.Drawing;
-    using Microsoft.VisualStudio.TestTools.UITesting;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
-    
-    
-    public partial class ToolboxUIMap
+    public partial class ToolboxUIMap 
     {
         UITestControl _toolTree;
+        UITestControl _toolSearch;
+
         public ToolboxUIMap()
         {
-            _toolTree = VisualTreeWalker.GetControl("UI_DocManager_AutoID", "UI_ToolboxPane_AutoID", "Uia.ToolboxUserControl", "PART_Tools");
+            var vstw = new VisualTreeWalker();
+
+            _toolTree = vstw.GetControlFromRoot(1, true,"Uia.ToolboxUserControl", "PART_Tools");
+            _toolSearch = vstw.GetControlFromRoot(1,true, "Uia.ToolboxUserControl","PART_Search");
         }
 
         public void clickToolboxItem(string automationID)
@@ -26,27 +28,26 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
         /// <summary>
         /// Drags a control from the Toolbox to the Workflow
         /// </summary>
-        /// <param name="theControl">The control to drag - UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("controlNameHere");</param>
+        /// <param name="controlId">The name of the control you to drag - Eg: Assign, Calculate, Etc</param>
         /// <param name="p">The point you wish to drop the control - Point p = WorkflowDesignerUIMap.GetPointUnderStartNode("someWorkflow"); is a good palce to start</param>
-        public void DragControlToWorkflowDesigner(UITestControl theControl, Point p)
+        /// <param name="searchID">The search unique identifier.</param>
+        public void DragControlToWorkflowDesigner(string controlId, Point p, string searchID = "")
         {
+            UITestControl theControl = FindToolboxItemByAutomationId(controlId, searchID);
             Mouse.StartDragging(theControl, MouseButtons.Left);
             Mouse.StopDragging(p);
         }
 
-        /// <summary>
-        /// Drags a control from the Toolbox to the Workflow
-        /// </summary>
-        /// <param name="controlId">The name of the control you to drag - Eg: Assign, Calculate, Etc</param>
-        /// <param name="p">The point you wish to drop the control - Point p = WorkflowDesignerUIMap.GetPointUnderStartNode("someWorkflow"); is a good palce to start</param>
-        public void DragControlToWorkflowDesigner(string controlId, Point p)
+        public UITestControl FindToolboxItemByAutomationId(string automationId, string properSearchTerm = "")
         {
-            UITestControl theControl = FindToolboxItemByAutomationId(controlId);
-            DragControlToWorkflowDesigner(theControl, p);
-        }
+            var theTerm = automationId;
+            if (!string.IsNullOrEmpty(properSearchTerm))
+            {
+                theTerm = properSearchTerm;
+            }
+            
+            SearchForControl(theTerm);
 
-        public UITestControl FindToolboxItemByAutomationId(string automationId)
-        {
             UITestControl theControl = FindControl(automationId);
             return theControl;
         }
@@ -81,6 +82,37 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
             result = result || thePixel != White;
 
             return result;
+        }
+
+        /// <summary>
+        /// Searches for control.
+        /// </summary>
+        public void ClearSearch()
+        {
+            Mouse.Click(_toolSearch, new Point(5, 5));
+            SendKeys.SendWait("{HOME}");
+            SendKeys.SendWait("+{END}");
+            SendKeys.SendWait("{DELETE}");
+
+            Playback.Wait(100);
+            SendKeys.SendWait("");
+
+        }
+
+        /// <summary>
+        /// Searches for control.
+        /// </summary>
+        /// <param name="controlName">Name of the control.</param>
+        public void SearchForControl(string controlName)
+        {
+            Mouse.Click(_toolSearch, new Point(5, 5));
+            SendKeys.SendWait("{HOME}");
+            SendKeys.SendWait("+{END}");
+            SendKeys.SendWait("{DELETE}");
+
+            Playback.Wait(100);
+            SendKeys.SendWait(controlName);
+
         }
 
         public UITestControl FindControl(string itemAutomationID)

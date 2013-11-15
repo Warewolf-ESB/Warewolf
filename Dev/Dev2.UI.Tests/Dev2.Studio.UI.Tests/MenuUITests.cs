@@ -13,8 +13,7 @@ namespace Dev2.Studio.UI.Tests
 
         #region Cleanup
 
-        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
-
+        
         [ClassInitialize]
         public static void ClassInit(TestContext tctx)
         {
@@ -29,24 +28,22 @@ namespace Dev2.Studio.UI.Tests
             Mouse.MouseDragSpeed = 10000;
         }
 
-        //[ClassCleanup]
-        //public static void MyTestCleanup()
-        //{
-        //    _tabManager.CloseAllTabs();
-        //}
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            TabManagerUIMap.CloseAllTabs();
+        }
 
         #endregion
 
         [TestMethod]
         public void DebugAWorkFlow_EnsureSaveIsEnabledAfterCompletion()
         {
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
             
-            ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("ServiceExecutionTest");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "ServiceExecutionTest");
             
-            Playback.Wait(3000);
+            Playback.Wait(2000);
             SendKeys.SendWait("{F5}");
             PopupDialogUIMap.WaitForDialog();
             SendKeys.SendWait("{F5}");
@@ -54,11 +51,7 @@ namespace Dev2.Studio.UI.Tests
 
             var uiControl = RibbonUIMap.GetControlByName("Save");
 
-            var count = 0;
-            while(count < 10 && !uiControl.Enabled)
-            {
-                count++;
-            }
+            Playback.Wait(500);
 
             Assert.IsTrue(uiControl.Enabled);
         }

@@ -8,15 +8,14 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
+using Dev2.CodedUI.Tests;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using System.CodeDom.Compiler;
+
+namespace Dev2.Studio.UI.Tests.UIMaps
 {
-    using Dev2.CodedUI.Tests;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
-    using Microsoft.VisualStudio.TestTools.UITesting;
-    using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-    using System.CodeDom.Compiler;
-
-
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public partial class OutputUIMap
     {

@@ -11,8 +11,6 @@ namespace Dev2.Studio.UI.Tests
     {
         #region Cleanup
 
-        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
-
         [ClassInitialize]
         public static void ClassInit(TestContext tctx)
         {
@@ -27,12 +25,11 @@ namespace Dev2.Studio.UI.Tests
             Mouse.MouseDragSpeed = 10000;
         }
 
-        //[ClassCleanup]
-        //public static void MyTestCleanup()
-        //{
-        //    _tabManager.CloseAllTabs();
-        //}
-
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            TabManagerUIMap.CloseAllTabs();
+        }
         #endregion
 
         // Bug 8816
@@ -53,7 +50,7 @@ namespace Dev2.Studio.UI.Tests
 
             var result = DeployUIMap.IsDeployButtonEnabled(deployTab);
 
-            _tabManager.CloseTab("Deploy");
+            TabManagerUIMap.CloseTab("Deploy");
 
             // Make sure its still disabled, as nothing has been chosen to deploy
             Assert.IsFalse(result, "As we have not chosen anything to deploy, the Deploy button should still be disabled!");
@@ -63,9 +60,6 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         public void EnterFilterOnDestinationServer_Expected_DeployedItemsStillVisible()
         {
-            // Choose to deploy one of our own items
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
             ExplorerUIMap.RightClickDeployProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
 
@@ -81,7 +75,7 @@ namespace Dev2.Studio.UI.Tests
 
             var result = DeployUIMap.DoesDestinationServerHaveItems(deployTab);
 
-            _tabManager.CloseTab("Deploy");
+            TabManagerUIMap.CloseTab("Deploy");
             // And make sure it still has items
             Assert.IsTrue(result, "After a filter was applied, the destination Server lost all its items!");
         }
@@ -91,8 +85,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("Deploy_ResourceTree")]
         public void Deploy_ResourceTree_DeployFromExplorer_AllServiceTypesVisibleAndDeployedItemNotFiltered()
         {
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
+
             ExplorerUIMap.EnterExplorerSearchText("PluginsReturningXMLFromComplexType");
             //------------Execute Test---------------------------
             ExplorerUIMap.RightClickDeployProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", "PluginsReturningXMLFromComplexType");
@@ -116,7 +109,7 @@ namespace Dev2.Studio.UI.Tests
 
             var result = DeployUIMap.DoesSourceServerHaveDeployItems(theTab);
 
-            _tabManager.CloseTab("Deploy");
+            TabManagerUIMap.CloseTab("Deploy");
 
             if(!result)
             {

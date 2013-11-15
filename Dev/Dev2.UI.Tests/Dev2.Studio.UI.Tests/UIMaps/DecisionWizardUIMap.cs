@@ -38,7 +38,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
             // Click middle of the image to set focus
             Mouse.Click(decisionDialog, new Point(decisionDialog.BoundingRectangle.X + decisionDialog.Width / 2, decisionDialog.BoundingRectangle.Y + decisionDialog.Height / 2));
             SendKeys.SendWait("{TAB}");
-            Playback.Wait(700);
+            Playback.Wait(200);
             SendKeys.SendWait("{ENTER}");
         }
 
@@ -93,9 +93,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
             if (deleteText)
             {
                 SendKeys.SendWait("^a");
-                Playback.Wait(250);
+                Playback.Wait(150);
                 SendKeys.SendWait("^x");
-                Playback.Wait(250);
+                Playback.Wait(150);
             }
         }
     }

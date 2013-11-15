@@ -5,6 +5,7 @@ using Dev2.Studio.UI.Tests;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using System.Drawing;
 using System.Windows.Forms;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 
@@ -80,24 +81,18 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public bool CloseTab(UITestControl theTab)
         {
-            foreach (var child in theTab.GetChildren().Where(child => child.GetProperty("AutomationID").ToString() == "closeBtn"))
+            // Trav Changes ;)
+            var closeBtn = theTab.GetChildren().FirstOrDefault(child => child.GetProperty("AutomationID").ToString() == "closeBtn");
+
+            if (closeBtn != null)
             {
-                var point = new Point();
-                if (!child.TryGetClickablePoint(out point))
-                {
-                    ExplorerUIMap.ClosePane(theTab);
-                }
-                if(!child.TryGetClickablePoint(out point))
-                {
-                    Mouse.MouseMoveSpeed = 9000;
-                    Mouse.Move(new Point(theTab.BoundingRectangle.Left + 100, theTab.BoundingRectangle.Top + 500));
-                    ExplorerUIMap.ClosePane(theTab);
-                }
-                Playback.Wait(500);
-                Mouse.Click(child);
+                Playback.Wait(50);
+                Mouse.Click(closeBtn);
                 return true;
             }
+
             return false;
+
         }
 
         public bool CloseTab(string tabName)
@@ -150,13 +145,18 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public void CloseAllTabs()
         {
-            int openTabs = GetTabCount();
-            var canCloseTab = true;
-            while(openTabs != 0 && canCloseTab)
+
+            // fetch the darn thing once ;)
+            var tabManager = GetManager();
+            var tabCnt = 0;
+
+            if(tabManager != null)
             {
-                var activeTab = GetActiveTab();
-                canCloseTab = CloseTab_Click_No(activeTab);
-                openTabs = GetTabCount();
+                var tabs = tabManager.GetChildren();
+                foreach (var theTab in tabs)
+                {
+                    CloseTab_Click_No(theTab);    
+                }
             }
         }
 
@@ -167,35 +167,60 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             UITestControlCollection saveDialogButtons = GetWorkflowNotSavedButtons();
             UITestControl cancelButton = saveDialogButtons[0];
             Point p = new Point(cancelButton.Left + 25, cancelButton.Top + 15);
-            Mouse.MouseMoveSpeed = 1000;
             Mouse.Move(p);
-            Mouse.MouseMoveSpeed = 450;
             Mouse.Click();
         }
 
         public bool CloseTab_Click_No(UITestControl theTab)
         {
+            bool willHaveDialog = WillTabHaveSaveDialog(theTab);
+
             if (CloseTab(theTab))
             {
-                try
+                // Only if we expect a save dialog should we search for it ;)
+                if (willHaveDialog)
                 {
-                    UITestControlCollection saveDialogButtons = GetWorkflowNotSavedButtons();
-                    if(saveDialogButtons.Count > 0)
+                    try
                     {
-                        UITestControl cancelButton = saveDialogButtons[1];
-                        Point p = new Point(cancelButton.Left + 25, cancelButton.Top + 15);
-                        Mouse.MouseMoveSpeed = 9000;
-                        Mouse.Move(p);
-                        Mouse.Click();
+                        UITestControlCollection saveDialogButtons = GetWorkflowNotSavedButtons();
+                        if (saveDialogButtons.Count > 0)
+                        {
+                            UITestControl theBtn = saveDialogButtons[1];
+                            Point p = new Point(theBtn.Left + 25, theBtn.Top + 15);
+                            Mouse.MouseMoveSpeed = 10000;
+                            Mouse.Move(p);
+                            Mouse.Click();
+                            return true;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
                         return true;
+                        //This is empty because if the pop cant be found then the tab must just close;)
                     }
                 }
-                catch(Exception ex)
-                {
-                    return true;
-                    //This is empty because if the pop cant be found then the tab must just close;)
-                }
+
+                return true;
             }
+
+            return false;
+        }
+
+
+        /// <summary>
+        /// Wills the tab have save dialog.
+        /// </summary>
+        /// <param name="theTab">The tab.</param>
+        /// <returns></returns>
+        public bool WillTabHaveSaveDialog(UITestControl theTab)
+        {
+            var tabNameControl = theTab.GetChildren().FirstOrDefault(c=>c.ClassName == "Uia.TextBlock");
+
+            if (tabNameControl != null && tabNameControl.FriendlyName.EndsWith("*"))
+            {
+                return true;
+            }
+
             return false;
         }
 
@@ -206,28 +231,30 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             UITestControlCollection saveDialogButtons = GetWorkflowNotSavedButtons();
             UITestControl cancelButton = saveDialogButtons[2];
             Point p = new Point(cancelButton.Left + 25, cancelButton.Top + 15);
-            Mouse.MouseMoveSpeed = 1000;
             Mouse.Move(p);
-            Mouse.MouseMoveSpeed = 450;
             Mouse.Click();
         }
 
         public UITestControl GetActiveTab()
         {
-            var tab = _tabManager.Tabs[_tabManager.SelectedIndex];
-            var tabChildren = tab.GetChildren();
-            var selectedTabName = string.Empty;
-            foreach (var tabChild in tabChildren)
-            {
-                if (tabChild.ClassName == "Uia.TextBlock")
-                {
-                    selectedTabName = tabChild.FriendlyName;
-                    break;
-                }
-            }
-            var control = _tabManager.GetTab(selectedTabName);
+            //var tab = _tabManager.Tabs[_tabManager.SelectedIndex];
+            //var tabChildren = tab.GetChildren();
+            //var selectedTabName = string.Empty;
+            //foreach (var tabChild in tabChildren)
+            //{
+            //    if (tabChild.ClassName == "Uia.TextBlock")
+            //    {
+            //        selectedTabName = tabChild.FriendlyName;
+            //        break;
+            //    }
+            //}
+            //var control = _tabManager.GetTab(selectedTabName);
 
-            return control;
+            //return control;
+
+
+            return _tabManager.Tabs[_tabManager.SelectedIndex];
+
         }
     }
 }

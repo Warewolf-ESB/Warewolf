@@ -17,6 +17,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 {
     public partial class WorkflowDesignerUIMap : UIMapBase
     {
+         VisualTreeWalker vstw = new VisualTreeWalker();
+
+
         /// <summary>
         /// Finds a control on the Workflow Designer
         /// </summary>
@@ -896,11 +899,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// Finds a control on the Workflow Designer
         /// </summary>
         /// <param name="theTab">A tab from TabManagerUIMap.FindTabByName</param>
-        /// <param name="controlAutomationId">The automation ID of the control you are looking for</param>
-        /// <returns>Returns the control as a UITestControl object</returns>
+        /// <returns>
+        /// Returns the control as a UITestControl object
+        /// </returns>
         public UITestControl GetFlowchartDesigner(UITestControl theTab)
         {
-            var flowchartDesigner = VisualTreeWalker.GetChildByAutomationIDPath(theTab,
+            var flowchartDesigner = vstw.GetChildByAutomationIDPath(theTab,
                 "WorkSurfaceContextViewModel",
                 "Uia.WorkflowDesignerView",
                 "UserControl_1",
@@ -908,12 +912,18 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                 "ActivityTypeDesigner",
                 "WorkflowItemPresenter",
                 "FlowchartDesigner");
+
             return flowchartDesigner;
         }
 
-      
 
 
+
+        /// <summary>
+        /// Adorner_s the get all text boxes.
+        /// </summary>
+        /// <param name="theTab">The tab.</param>
+        /// <returns></returns>
         public List<UITestControl> Adorner_GetAllTextBoxes(UITestControl theTab)
         {
             UITestControl aControl = FindControlByAutomationId(theTab, "AdornerScrollViewer");
@@ -931,6 +941,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return null;
         }
 
+        /// <summary>
+        /// Tool_s the get all text boxes.
+        /// </summary>
+        /// <param name="theTab">The tab.</param>
+        /// <param name="toolAutomationId">The tool automation unique identifier.</param>
+        /// <param name="toolDesignerTemplate">The tool designer template.</param>
+        /// <returns></returns>
         public List<UITestControl> Tool_GetAllTextBoxes(UITestControl theTab, string toolAutomationId, string toolDesignerTemplate)
         {
             UITestControl aControl = FindControlByAutomationId(theTab, toolAutomationId);
@@ -948,6 +965,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return null;
         }
 
+        /// <summary>
+        /// Determines whether [is control selected] [the specified workflow].
+        /// </summary>
+        /// <param name="workflow">The workflow.</param>
+        /// <returns></returns>
         public bool IsControlSelected(UITestControl workflow)
         {
             const string Grey = "ffe9ecee";
@@ -957,6 +979,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return thePixel != Yellow && thePixel == Grey;
         }
 
+        /// <summary>
+        /// Determines whether [is step selected] [the specified step].
+        /// </summary>
+        /// <param name="step">The step.</param>
+        /// <returns></returns>
         public bool IsStepSelected(UITestControl step)
         {
             const string Blue = "ff3399ff";
@@ -966,6 +993,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return thePixel == Blue && thePixel != White;
         }
 
+        /// <summary>
+        /// Runs the workflow and wait until output step count attribute least.
+        /// </summary>
+        /// <param name="expectedStepCount">The expected step count.</param>
+        /// <param name="timeout">The timeout.</param>
+        /// <exception cref="Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotFoundException">Debug input dialog not shown within the given timeout</exception>
         public void RunWorkflowAndWaitUntilOutputStepCountAtLeast(int expectedStepCount, int timeout = 5000)
         {
             SendKeys.SendWait("{F5}");
@@ -988,6 +1021,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             }
         }
 
+        /// <summary>
+        /// Gets the qvi control.
+        /// </summary>
+        /// <param name="assignControlCollection">The assign control collection.</param>
+        /// <returns></returns>
         static UITestControl GetQVIControl(UITestControlCollection assignControlCollection)
         {
             UITestControl qviControl = null;
@@ -1007,18 +1045,36 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return qviControl;
         }
 
+        /// <summary>
+        /// Gets the collapse help button.
+        /// </summary>
+        /// <param name="theTab">The tab.</param>
+        /// <param name="activityAutomationID">The activity automation unique identifier.</param>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
         public UITestControl GetCollapseHelpButton(UITestControl theTab, string activityAutomationID, int index = 0)
         {
             var activity = GetAllControlsOnDesignSurface(theTab, activityAutomationID)[index];
             return activity.GetChildren().FirstOrDefault(ui => ui.FriendlyName == "Close Help");
         }
 
+        /// <summary>
+        /// Gets the open help button.
+        /// </summary>
+        /// <param name="theTab">The tab.</param>
+        /// <param name="activityAutomationID">The activity automation unique identifier.</param>
+        /// <returns></returns>
         public UITestControl GetOpenHelpButton(UITestControl theTab, string activityAutomationID)
         {
             var activity = FindControlByAutomationId(theTab, activityAutomationID);
             return activity.GetChildren().FirstOrDefault(ui => ui.FriendlyName == "Open Help");
         }
 
+        /// <summary>
+        /// Determines whether [is activity icon visible] [the specified activity].
+        /// </summary>
+        /// <param name="activity">The activity.</param>
+        /// <returns></returns>
         public bool IsActivityIconVisible(UITestControl activity)
         {
             const string ActivityDefaultGrey = "ffe9ecee";
@@ -1027,6 +1083,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return thePixel != ActivityDefaultGrey;
         }
 
+        /// <summary>
+        /// Gets the scroll viewer.
+        /// </summary>
+        /// <param name="theTab">The tab.</param>
+        /// <returns></returns>
         public UITestControl GetScrollViewer(UITestControl theTab)
         {
             foreach(var control in theTab.GetChildren())
@@ -1057,6 +1118,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return null;
         }
 
+        /// <summary>
+        /// Scrolls the viewer_ click scroll down.
+        /// </summary>
+        /// <param name="theTab">The tab.</param>
+        /// <param name="count">The count.</param>
         public void ScrollViewer_ClickScrollDown(UITestControl theTab, int count)
         {
             for(int i = 0; i < count; i++)
@@ -1065,9 +1131,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             }
         }
 
+        /// <summary>
+        /// Scrolls the viewer_ get scroll bar.
+        /// </summary>
+        /// <param name="theTab">The tab.</param>
+        /// <returns></returns>
         public UITestControl ScrollViewer_GetScrollBar(UITestControl theTab)
         {
-            var scrollViewer = GetScrollViewer(theTab);
             var scrollViewerChildren = GetScrollViewer(theTab).GetChildren();
             foreach(var scrollViewerChild in scrollViewerChildren)
             {
@@ -1086,6 +1156,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return null;
         }
 
+        /// <summary>
+        /// Scrolls the viewer_ get scroll down.
+        /// </summary>
+        /// <param name="theTab">The tab.</param>
+        /// <returns></returns>
         public UITestControl ScrollViewer_GetScrollDown(UITestControl theTab)
         {
             foreach(var control in GetScrollViewer(theTab).GetChildren())
@@ -1104,6 +1179,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return null;
         }
 
+        /// <summary>
+        /// Scrolls the viewer_ get scroll up.
+        /// </summary>
+        /// <param name="theTab">The tab.</param>
+        /// <returns></returns>
         public UITestControl ScrollViewer_GetScrollUp(UITestControl theTab)
         {
             foreach(var control in GetScrollViewer(theTab).GetChildren())
@@ -1122,6 +1202,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return null;
         }
 
+        /// <summary>
+        /// Assigns the control_ is left text box highlighted red.
+        /// </summary>
+        /// <param name="leftTextBox">The left text box.</param>
+        /// <returns></returns>
         public bool AssignControl_IsLeftTextBoxHighlightedRed(UITestControl leftTextBox)
         {
             var pixelGrabber = new Bitmap(leftTextBox.CaptureImage());
@@ -1136,24 +1221,33 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return GetPointUnderControl(startNode, 85, 25);
         }
 
+        /// <summary>
+        /// Gets all connectors.
+        /// </summary>
+        /// <returns></returns>
         public List<UITestControl> GetAllConnectors()
         {
             UITestControlCollection uiTestControlCollection = GetFlowchartDesigner(TabManagerUIMap.GetActiveTab()).GetChildren();
             return uiTestControlCollection.Where(c => c.ClassName == "Uia.ConnectorWithoutStartDot").ToList();
         }
 
-        public void CreateWorkflow()
-        {
-            var middle = new Point(StudioWindow.Left + StudioWindow.Width / 2, StudioWindow.Top + StudioWindow.Height / 4);
-            Mouse.Click(middle);
-            Keyboard.SendKeys("^w");
-        }
-
+        /// <summary>
+        /// Gets the help pane.
+        /// </summary>
+        /// <param name="theTab">The tab.</param>
+        /// <param name="controlAutomationId">The control automation unique identifier.</param>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
         public UITestControl GetHelpPane(UITestControl theTab, string controlAutomationId, int index = 0)
         {
             return GetAllControlsOnDesignSurface(theTab, controlAutomationId)[index];
         }
 
+        /// <summary>
+        /// Gets the SQL bulk insert children.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <returns></returns>
         public IEnumerable<WpfControl> GetSqlBulkInsertChildren(UITestControl control)
         {
             var uiTestControls = control
@@ -1170,9 +1264,14 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return uiTestControls;
         }
 
+        /// <summary>
+        /// Gets the SQL bulk insert large view first input textbox.
+        /// </summary>
+        /// <param name="sqlBulkInsertToolOnWorkflow">The SQL bulk insert tool configuration workflow.</param>
+        /// <returns></returns>
         public UITestControl GetSqlBulkInsertLargeViewFirstInputTextbox(UITestControl sqlBulkInsertToolOnWorkflow)
         {
-            return VisualTreeWalker.GetChildByAutomationIDPath(sqlBulkInsertToolOnWorkflow, "LargeViewContent", "LargeDataGrid", "Uia.DataGridRow", "Item: Dev2.TO.DataColumnMapping, Column Display In...", "UI__Row0_InputColumn_AutoID");
+            return vstw.GetChildByAutomationIDPath(sqlBulkInsertToolOnWorkflow, "LargeViewContent", "LargeDataGrid", "Uia.DataGridRow", "Item: Dev2.TO.DataColumnMapping, Column Display In...", "UI__Row0_InputColumn_AutoID");
 
         }
     }

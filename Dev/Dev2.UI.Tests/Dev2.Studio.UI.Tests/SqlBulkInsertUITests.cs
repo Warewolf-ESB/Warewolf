@@ -3,7 +3,6 @@ using System.Linq;
 using System.Windows.Forms;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -29,8 +28,6 @@ namespace Dev2.Studio.UI.Tests
 
         #region Cleanup
 
-        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
-
         [ClassInitialize]
         public static void ClassInit(TestContext tctx)
         {
@@ -45,11 +42,11 @@ namespace Dev2.Studio.UI.Tests
             Mouse.MouseDragSpeed = 10000;
         }
 
-        //[ClassCleanup]
-        //public static void MyTestCleanup()
-        //{
-        //    _tabManager.CloseAllTabs();
-        //}
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            TabManagerUIMap.CloseAllTabs();
+        }
 
         #endregion
 
@@ -71,9 +68,7 @@ namespace Dev2.Studio.UI.Tests
             var point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            var theControl = ToolboxUIMap.FindControl("DsfSqlBulkInsertActivity");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, point);
+            ToolboxUIMap.DragControlToWorkflowDesigner("DsfSqlBulkInsertActivity", point, "Sql Bulk");
 
             var smallDataGrid = GetControlById("SmallDataGrid", theTab);
             Assert.IsTrue(smallDataGrid.GetChildren().Count == 0);
@@ -94,9 +89,7 @@ namespace Dev2.Studio.UI.Tests
             var point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            var theControl = ToolboxUIMap.FindControl("DsfSqlBulkInsertActivity");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, point);
+            ToolboxUIMap.DragControlToWorkflowDesigner("DsfSqlBulkInsertActivity", point, "Sql Bulk");
 
             //Select a database
             var dbDropDown = GetControlById("UI__Database_AutoID", theTab) as WpfComboBox;
@@ -184,9 +177,7 @@ namespace Dev2.Studio.UI.Tests
             var point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            var theControl = ToolboxUIMap.FindControl("DsfSqlBulkInsertActivity");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, point);
+            ToolboxUIMap.DragControlToWorkflowDesigner("DsfSqlBulkInsertActivity", point, "Sql Bulk");
 
             //Open the quick variable input view
             var toggleButton = GetControlByFriendlyName("Open Quick Variable Input");
@@ -219,9 +210,7 @@ namespace Dev2.Studio.UI.Tests
             var point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            var theControl = ToolboxUIMap.FindControl("DsfSqlBulkInsertActivity");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, point);
+            ToolboxUIMap.DragControlToWorkflowDesigner("DsfSqlBulkInsertActivity", point, "Sql Bulk");
 
             //Select a database
             var dbDropDown = GetControlById("UI__Database_AutoID", theTab) as WpfComboBox;

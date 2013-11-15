@@ -15,14 +15,12 @@ namespace Dev2.Studio.UI.Tests
     /// <summary>
     /// Summary description for CodedUITest1
     /// </summary>
-    [CodedUITest, System.Runtime.InteropServices.GuidAttribute("7E6836ED-8C14-4BFD-ADD0-3C5C6F0CB815")]
+    [CodedUITest]
     public class WorkflowDesignerUITests : UIMapBase
     {
         private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
 
         #region Cleanup
-
-        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
 
         [ClassInitialize]
         public static void ClassInit(TestContext tctx)
@@ -38,17 +36,15 @@ namespace Dev2.Studio.UI.Tests
             Mouse.MouseDragSpeed = 10000;
         }
 
-        //[ClassCleanup]
-        //public static void MyTestCleanup()
-        //{
-        //    _tabManager.CloseAllTabs();
-        //}
-
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            TabManagerUIMap.CloseAllTabs();
+        }
         #endregion
 
         // Bug 6501
         [TestMethod]
-        // 05/11 - Failure is Correct - Broken Functionality ;)
         public void DeleteFirstDatagridRow_Expected_RowIsNotDeleted()
         {
             // Create the workflow
@@ -57,15 +53,13 @@ namespace Dev2.Studio.UI.Tests
             RibbonUIMap.CreateNewWorkflow();
 
             // Get some design surface
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X,
                                              theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("BaseConvert");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner("BaseConvert", workflowPoint1, "Base Conv");
 
             // Enter some data
             UITestControl baseConversion = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "BaseConvert");
@@ -109,12 +103,12 @@ namespace Dev2.Studio.UI.Tests
             Clipboard.SetText(" ");
 
             RibbonUIMap.CreateNewWorkflow();
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
             WorkflowDesignerUIMap.CopyWorkflowXamlWithContextMenu(theTab);
             Assert.IsTrue(string.IsNullOrWhiteSpace(Clipboard.GetText()),
                           "Able to copy workflow Xaml using context menu");
             RibbonUIMap.CreateNewWorkflow();
-            theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            theTab = TabManagerUIMap.GetActiveTab();
             var startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
             Mouse.Click(new Point(startButton.BoundingRectangle.X - 5, startButton.BoundingRectangle.Y - 5));
             SendKeys.SendWait("^V");
@@ -127,29 +121,20 @@ namespace Dev2.Studio.UI.Tests
         public void AddSecondServiceToWorkFlowExpectedDisplayTitleNotDsfActivity()
         {
             RibbonUIMap.CreateNewWorkflow();
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
 
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
 
-            ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("email service");
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service",
                                                         new Point(startButton.BoundingRectangle.X + 50,
                                                                   startButton.BoundingRectangle.Y + 150));
 
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service",
                                                         new Point(startButton.BoundingRectangle.X + 50,
                                                                   startButton.BoundingRectangle.Y + 300));
 
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-
-            Assert.IsFalse(
-                WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "DsfActivity(ServiceDesigner)"),
-                "Dropped services display title was 'DsfActivity' rather than the name of the service");
+            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "DsfActivity(ServiceDesigner)"), "Dropped services display title was 'DsfActivity' rather than the name of the service");
         }
 
         [TestMethod]
@@ -159,7 +144,7 @@ namespace Dev2.Studio.UI.Tests
         public void Toolbox_UITest_OpenToolbox_IconsAreDisplayed()
         {
             RibbonUIMap.CreateNewWorkflow();
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.ClearSearch();
             foreach (var tool in ToolboxUIMap.GetAllTools())
             {
 
@@ -187,7 +172,6 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Clicking a debug output step should highlight that activity on the design surface")]
         [Owner("Ashley")]
-        // 05/11 - Failure is Intermittent ;)
         public void DebugOutput_ClickStep_ActivityIsHighlighted()
         {
             //Create testing workflow
@@ -195,12 +179,11 @@ namespace Dev2.Studio.UI.Tests
             var theTab = TabManagerUIMap.GetActiveTab();
 
             //Drag on multiassign
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             var thePoint = new Point(theStartButton.BoundingRectangle.X + 30, theStartButton.BoundingRectangle.Y + 100);
-            ToolboxUIMap.DragControlToWorkflowDesigner("MultiAssign", thePoint);
+            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", thePoint);
 
-            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "MultiAssign", 0);
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
 
             //Set up multi assign
             SendKeys.SendWait("[[AssignThis]]{TAB}Some Data");
@@ -212,7 +195,6 @@ namespace Dev2.Studio.UI.Tests
             OutputUIMap.WaitForExecution();
 
             //Click step
-            DockManagerUIMap.ClickOpenTabPage("Output");
             var step = OutputUIMap.GetOutputWindow();
             Mouse.Click(step[2]);
             Playback.Wait(100);
@@ -240,7 +222,7 @@ namespace Dev2.Studio.UI.Tests
             RibbonUIMap.CreateNewWorkflow();
             var theTab = TabManagerUIMap.GetActiveTab();
             var theStartNode = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "StartSymbol");
-            ToolboxUIMap.DragControlToWorkflowDesigner(ToolboxUIMap.FindToolboxItemByAutomationId("MultiAssign"),
+            ToolboxUIMap.DragControlToWorkflowDesigner("Assign",
                                                       new Point(theStartNode.BoundingRectangle.X + 20,
                                                                 theStartNode.BoundingRectangle.Y + 100));
             RibbonUIMap.ClickRibbonMenuItem("Save");
@@ -253,8 +235,7 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(1000);
             theTab = TabManagerUIMap.GetActiveTab();
             theStartNode = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "StartSymbol");
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            ToolboxUIMap.DragControlToWorkflowDesigner(ToolboxUIMap.FindToolboxItemByAutomationId("MultiAssign"),
+            ToolboxUIMap.DragControlToWorkflowDesigner("Assign",
                                                        new Point(theStartNode.BoundingRectangle.X + 20,
                                                                  theStartNode.BoundingRectangle.Y + 100));
             RibbonUIMap.ClickRibbonMenuItem("Save");
@@ -289,16 +270,11 @@ namespace Dev2.Studio.UI.Tests
         public void OpeningDependancyWindowTwiceKeepsItOpen()
         {
             // The workflow so we have a second tab
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("Base64ToString");
-            //ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
-            //DockManagerUIMap.ClickOpenTabPage("Explorer");
 
             // Open the Dependancy Window twice
             for (int openCount = 0; openCount < 2; openCount++)
             {
-                DockManagerUIMap.ClickOpenTabPage("Explorer");
                 ExplorerUIMap.RightClickShowProjectDependancies("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
             }
 
@@ -312,7 +288,6 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [TestCategory("UITest")]
         [Owner("Tshepo Ntlhokoa")]
-        // 05/11 - Failure is Intermittent ;)
         public void DragAMultiAssignIntoAndOutOfAForEach_NoDrillDown()
         {
             // Create the workflow
@@ -328,18 +303,14 @@ namespace Dev2.Studio.UI.Tests
             requiredPoint.Offset(20, 50);
 
             // Drag a ForEach onto the Workflow
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach"); // ForEach
-            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner("ForEach", workflowPoint1, "For Each");
 
             // Get a multiassign, and drag it onto the "Drop Activity Here" part of the ForEach box
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl,
+            ToolboxUIMap.DragControlToWorkflowDesigner("Assign",
                                                        new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25));
 
             // pause for drill down...
-            Playback.Wait(5000);
+            Playback.Wait(2000);
 
             // after pause check if start node is visible
             theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
@@ -354,14 +325,12 @@ namespace Dev2.Studio.UI.Tests
             // Create the workflow
             RibbonUIMap.CreateNewWorkflow();
             // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             var workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag an assign onto the Workflow
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
-            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", workflowPoint1);
 
             //Drag Start Node
             Mouse.StartDragging(theStartButton, MouseButtons.Left);
@@ -370,6 +339,7 @@ namespace Dev2.Studio.UI.Tests
             //Hover over the multi assign for 5 seconds
             Mouse.Move(point);
             Playback.Wait(2000);
+            Mouse.Click();
 
             // ensure the start btn is visible, hence no drill down
             theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");

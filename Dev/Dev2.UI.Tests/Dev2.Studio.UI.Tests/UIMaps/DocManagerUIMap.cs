@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using Dev2.Studio.UI.Tests.Utils;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -16,7 +13,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses
 
         public DocManagerUIMap()
         {
-            _dockManager = VisualTreeWalker.GetControl("UI_DocManager_AutoID");
+            var vstw = new VisualTreeWalker();
+
+            _dockManager = vstw.GetControl("UI_DocManager_AutoID");
         }
 
         /// <summary>
@@ -26,9 +25,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses
         public void ClickOpenTabPage(string tabName)
         {
             WpfTabPage theTab= FindTabPage(tabName);
-
-            //var tabX = theTab.BoundingRectangle.X;
-            //var tabY = theTab.BoundingRectangle.Y;
 
             Mouse.Click(theTab, new Point(10, 10));
         }

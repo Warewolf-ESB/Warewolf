@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -17,9 +16,6 @@ namespace Dev2.Studio.UI.Tests
     {
 
         #region Cleanup
-
-        private static TabManagerUIMap _tabManager = new TabManagerUIMap();
-
         [ClassInitialize]
         public static void ClassInit(TestContext tctx)
         {
@@ -34,11 +30,11 @@ namespace Dev2.Studio.UI.Tests
             Mouse.MouseDragSpeed = 10000;
         }
 
-        //[ClassCleanup]
-        //public static void MyTestCleanup()
-        //{
-        //    _tabManager.CloseAllTabs();
-        //}
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            TabManagerUIMap.CloseAllTabs();
+        }
 
         #endregion
 
@@ -209,7 +205,7 @@ namespace Dev2.Studio.UI.Tests
                 counter++;
             }
 
-            #endregion
+        #endregion
 
             #region Test tabbing
 
@@ -514,14 +510,10 @@ namespace Dev2.Studio.UI.Tests
         {
 
                 //------------Setup for test--------------------------
-                // Open the workflow
-                DockManagerUIMap.ClickOpenTabPage("Explorer");
-                ExplorerUIMap.ClearExplorerSearchText();
                 ExplorerUIMap.EnterExplorerSearchText("Edit Service Workflow");
-                ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "UI TEST", "Edit Service Workflow");
-                Playback.Wait(5000);
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "UI TEST", "Edit Service Workflow");;
 
-                var newMapping = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6);
+            var newMapping = "ZZZ"+Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6);
 
                 //------------Execute Test---------------------------
 
@@ -568,12 +560,9 @@ namespace Dev2.Studio.UI.Tests
                 SendKeys.SendWait(newMapping);
                 // -- wizard closed, account for darn dialog ;(
                 SendKeys.SendWait("{TAB}{TAB}{TAB}{ENTER}{TAB}{ENTER}");
-                Playback.Wait(1000);
+            Playback.Wait(3000);
 
-                if (ResourceChangedPopUpUIMap.WaitForDialog(5000))
-                {
                     ResourceChangedPopUpUIMap.ClickCancel();
-                }
 
                 // -- DO Plugin Services --
 
@@ -634,8 +623,6 @@ namespace Dev2.Studio.UI.Tests
                 UITestControl theTab = TabManagerUIMap.GetActiveTab();
                 //Get a point
                 Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
-                //Open toolbox tab
-                DockManagerUIMap.ClickOpenTabPage("Toolbox");
                 //Drag a control to the design surface
                 ToolboxUIMap.DragControlToWorkflowDesigner("Assign", requiredPoint);
                 //Get Adorner buttons
@@ -669,15 +656,10 @@ namespace Dev2.Studio.UI.Tests
                 const string innerResource = "Bug_10528_InnerWorkFlow";
 
                 // Open the Explorer
-                DockManagerUIMap.ClickOpenTabPage("Explorer");
-                ExplorerUIMap.ClearExplorerSearchText();
                 ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
 
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", resourceToUse);
                 UITestControl theTab = TabManagerUIMap.GetActiveTab();
-
-            //Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
-            //Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
 
                 UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, innerResource);
                 Mouse.Move(controlOnWorkflow, new Point(5, 5));
@@ -750,16 +732,10 @@ namespace Dev2.Studio.UI.Tests
                 Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X,
                                                  theStartButton.BoundingRectangle.Y + 100);
 
-                // Open the Explorer
-                DockManagerUIMap.ClickOpenTabPage("Explorer");
-
                 // Get a sample workflow
-                ExplorerUIMap.ClearExplorerSearchText();
                 ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
-                UITestControl testFlow = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "MO", resourceToUse);
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", resourceToUse, workflowPoint1);
 
-                // Drag it on
-                ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
 
                 // Scroll down (for if the screen resolution is low)
                 var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
@@ -827,9 +803,7 @@ namespace Dev2.Studio.UI.Tests
                 Point point = new Point(startPoint.X, startPoint.Y + 200);
 
                 // Drag the tool onto the workflow
-                DockManagerUIMap.ClickOpenTabPage("Toolbox");
-                UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
-                ToolboxUIMap.DragControlToWorkflowDesigner(theControl, point);
+            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
 
                 //Get Mappings button
                 UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign",

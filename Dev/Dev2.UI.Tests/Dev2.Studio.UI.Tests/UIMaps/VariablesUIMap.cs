@@ -10,17 +10,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
 {
     public partial class VariablesUIMap
     {
-        public void ClickVariableName(int position)
+        public void ClickScalarVariableName(int position)
         {
             // The actual box is item [1];
-            UITestControlCollection variableList = getVariableList();
+            UITestControlCollection variableList = GetScalarVariableList();
             UITestControl theBox = variableList[position].GetChildren()[1];
             Mouse.Click(theBox, new Point(5, 5));
         }
 
         public bool CheckVariableIsValid(int position)
         {
-            UITestControlCollection variableList = getVariableList();
+            UITestControlCollection variableList = GetScalarVariableList();
             UITestControl theBox = variableList[position].GetChildren()[1];
 
             string helpText = theBox.GetProperty("HelpText").ToString();
@@ -37,7 +37,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
 
         public string GetVariableName(int position)
         {
-            UITestControlCollection variableList = getVariableList();
+            UITestControlCollection variableList = GetScalarVariableList();
             UITestControl theBox = variableList[position].GetChildren()[1];
 
             string boxText = theBox.GetProperty("Text").ToString();
@@ -46,7 +46,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
 
         public void UpdateDataList()
         {
-            UITestControl refreshButton = getUpdateButton();
+            UITestControl refreshButton = GetUpdateButton();
             Mouse.Click(refreshButton, new Point(5, 5));
             System.Threading.Thread.Sleep(500);
             SendKeys.SendWait("{ENTER}");
@@ -77,7 +77,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
 
         public void CheckScalarInputAndOuput(int position)
         {
-            UITestControlCollection variableList = getVariableList();
+            UITestControlCollection variableList = GetScalarVariableList();
             UITestControlCollection collection = variableList[position].GetChildren();
             List<UITestControl> theBoxs = collection.Where(c=>c.ControlType.Name == "CheckBox").ToList();
             foreach(UITestControl box in theBoxs)
@@ -88,7 +88,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
 
         public void CheckScalarInput(int position)
         {
-            UITestControlCollection variableList = getVariableList();
+            UITestControlCollection variableList = GetScalarVariableList();
             UITestControlCollection collection = variableList[position].GetChildren();
             List<UITestControl> theBoxs = collection.Where(c => c.ControlType.Name == "CheckBox").ToList();
             Mouse.Click(theBoxs[0]);
@@ -113,7 +113,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
         {
             bool result = false;
 
-            UITestControlCollection variableList = getVariableList();
+            UITestControlCollection variableList = GetScalarVariableList();
             var item = variableList[position];
             if (item != null)
             {

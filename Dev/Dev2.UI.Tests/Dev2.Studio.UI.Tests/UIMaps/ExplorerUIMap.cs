@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Dev2.Studio.UI.Tests;
-using Dev2.Studio.UI.Tests.UIMaps;
+using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 
 namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
@@ -18,27 +16,94 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
     using MouseButtons = System.Windows.Forms.MouseButtons;
 
 
-    public partial class ExplorerUIMap : UIMapBase
+    public partial class ExplorerUIMap
     {
-        public UITestControl GetConnectControl(string controlType)
+        private UITestControl _explorerTree;
+        private UITestControl _explorerSearch;
+        private UITestControl _explorerNewConnectionControl;
+        public ExplorerUIMap()
         {
-            var uiControl = UIBusinessDesignStudioWindow.GetChildren()
-                                                        .First(c => c.FriendlyName == "UI_DocManager_AutoID" && c.ControlType.Name == "Custom")
-                                                        .GetChildren()
-                                                        .First(c => c.FriendlyName == "Explorer")
-                                                        .GetChildren()
-                                                        .SelectMany(c => c.GetChildren())
-                                                        .SelectMany(c => c.GetChildren())
-                                                        .FirstOrDefault(c => c.ControlType.Name == controlType);
+            var vstw = new VisualTreeWalker();
 
-            if(uiControl == null)
+            _explorerTree = vstw.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "Navigation");
+            _explorerSearch = vstw.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "FilterTextBox", "UI_DataListSearchtxt_AutoID");
+            _explorerNewConnectionControl = vstw.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "ConnectUserControl");
+        }
+
+        public UITestControlCollection GetCategoryItems()
+        {
+            return GetNavigationItemCategories();
+        }
+
+        /// <summary>
+        /// Gets the navigation item categories.
+        /// </summary>
+        /// <returns></returns>
+        public UITestControlCollection GetNavigationItemCategories()
+        {
+            UITestControlCollection categories = _explorerTree.GetChildren();
+
+            UITestControlCollection categoryCollection = new UITestControlCollection();
+
+            foreach(UITestControl category in categories)
             {
-                string message = string.Format("control with type name  {0} was not found on the connect control", controlType);
-                throw new Exception(message);
+                if(category.ControlType.ToString() == "TreeItem")
+                {
+                    categoryCollection.Add(category);
+                }
             }
 
-            return uiControl;
+            return categoryCollection;
         }
+
+        /// <summary>
+        /// Gets the navigation items.
+        /// </summary>
+        /// <returns></returns>
+        public UITestControlCollection GetServiceItems()
+        {
+            UITestControlCollection categories = _explorerTree.GetChildren();
+
+            UITestControlCollection categoryCollection = new UITestControlCollection();
+
+            foreach(UITestControl category in categories)
+            {
+                if(category.ControlType.ToString() == "TreeItem")
+                {
+                    var kids = category.GetChildren();
+                    foreach (var kid in kids)
+                    {
+                        if (kid.ControlType.ToString() == "TreeItem")
+                        {
+                            categoryCollection.Add(kid);
+                        }
+                    }
+                    
+                }
+            }
+
+            return categoryCollection;
+        }
+
+
+        public UITestControl GetConnectControl(string controlType)
+        {
+            var kids = _explorerNewConnectionControl.GetChildren();
+
+            if (kids != null)
+            {
+                return kids.FirstOrDefault(c => c.ControlType.Name == controlType);
+            }
+
+            return null;
+        }
+
+        public UITestControl GetLocalServer()
+        {
+            var firstTreeChild = _explorerTree.GetChildren()[0];
+            return firstTreeChild.GetChildren()[3];
+        }
+
 
         public void ClickRefreshButton()
         {
@@ -78,7 +143,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                 Mouse.Click(p);
                 Playback.Wait(100);
                 Mouse.DoubleClick(p);
-                Playback.Wait(1500);
+                Playback.Wait(1000);
             }
         }
 
@@ -104,9 +169,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Thread.Sleep(2500);
+            Thread.Sleep(1500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Thread.Sleep(2500);
+            Thread.Sleep(1500);
             SendKeys.SendWait("{DOWN}");
             Thread.Sleep(100);
             SendKeys.SendWait("{DOWN}");
@@ -119,36 +184,35 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Thread.Sleep(2500);
         }
 
+        /// <summary>
+        /// Clicks the server information server DDL.
+        /// </summary>
+        /// <param name="serverName">Name of the server.</param>
         public void ClickServerInServerDDL(string serverName)
         {
             // Get the base control
             UITestControl ddlBase = GetServerDDL();
 
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
-            ddlBase.WaitForControlReady();
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
-
             // Click it to expand it
             Mouse.Click(ddlBase, new Point(10, 10));
+            Playback.Wait(200);
 
-            // And get the item :D
-            WpfComboBox theDDL = new WpfComboBox(ddlBase);
-            UITestControlCollection ddlItems = theDDL.Items;
-            foreach (WpfListItem item in ddlItems)
-            {
-                if (item.AutomationId.ToString() == "U_UI_ExplorerServerCbx_AutoID_" + serverName)
-                {
-                    Mouse.Click(item, new Point(5, 5));
-                    break;
-                }
-            }
+            VisualTreeWalker vsw = new VisualTreeWalker();
+            var item = vsw.GetChildByAutomationIDPath(ddlBase, "U_UI_ExplorerServerCbx_AutoID_" + serverName);
+
+            Mouse.Click(item, new Point(5, 5));
         }
 
-        public string SelectedSeverName()
+        /// <summary>
+        /// Selecteds the name of the sever.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="System.Exception"></exception>
+        public string GetSelectedSeverName()
         {
             UITestControl ddlBase = GetServerDDL();
-          
-            var theDdl = new WpfComboBox(ddlBase);
+
+            var theDdl = ddlBase as WpfComboBox;
             var firstItemInDdl = theDdl.Items[theDdl.SelectedIndex] as WpfListItem;
 
             if(firstItemInDdl == null)
@@ -160,6 +224,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             return firstItemInDdl.AutomationId.Replace("U_UI_ExplorerServerCbx_AutoID_", "");
         }
 
+        /// <summary>
+        /// Counts the servers.
+        /// </summary>
+        /// <returns></returns>
         public int CountServers()
         {
             WpfTree uITvExplorerTree = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UINavigationViewUserCoCustom.UITvExplorerTree;
@@ -210,9 +278,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Mouse.Move(p);
             Playback.Wait(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Playback.Wait(2500);
+            Playback.Wait(1500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Playback.Wait(2500);
+            Playback.Wait(1500);
             SendKeys.SendWait("{UP}");
             Playback.Wait(100);
             SendKeys.SendWait("{ENTER}");
@@ -240,9 +308,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Playback.Wait(500);
             Mouse.Move(theServer, new Point(50, 5));
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Playback.Wait(2500);
+            Playback.Wait(1500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Playback.Wait(2500);
+            Playback.Wait(1500);
             Keyboard.SendKeys("{Down}");
             Playback.Wait(500);
             Keyboard.SendKeys("{Enter}");
@@ -257,9 +325,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Playback.Wait(500);
             Mouse.Move(theServer, new Point(50, 5));
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Playback.Wait(2500);
+            Playback.Wait(1500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Playback.Wait(2500);
+            Playback.Wait(1500);
             Keyboard.SendKeys("{Down}");
             Playback.Wait(500);
             Keyboard.SendKeys("{Right}");
@@ -274,9 +342,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Playback.Wait(500);
             Mouse.Move(theServer, new Point(50, 5));
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Playback.Wait(2500);
+            Playback.Wait(1500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Playback.Wait(2500);
+            Playback.Wait(1500);
             Keyboard.SendKeys("{Down}");
             Playback.Wait(500);
             Keyboard.SendKeys("{Right}");
@@ -296,9 +364,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Playback.Wait(500);
             Mouse.Move(theServer, new Point(50, 5));
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Playback.Wait(2500);
+            Playback.Wait(1500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Playback.Wait(2500);
+            Playback.Wait(1500);
             Keyboard.SendKeys("{Down}");
             Playback.Wait(500);
             Keyboard.SendKeys("{Right}");
@@ -319,9 +387,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Mouse.Move(p);
             Playback.Wait(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Playback.Wait(2500);
+            Playback.Wait(1500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Playback.Wait(2500);
+            Playback.Wait(1500);
             Keyboard.SendKeys("{Down}");
             Playback.Wait(500);
             Keyboard.SendKeys("{Down}");
@@ -390,27 +458,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Keyboard.SendKeys("{Enter}");
         }
 
-        public UITestControl GetLocalServer()
-        {
-            var explorerTree = GetExplorerTree();
-            var firstTreeChild = explorerTree.GetChildren()[0];
-            return firstTreeChild.GetChildren()[3];
-        }
-
-        /// <summary>
-        /// Gets the Service as a UITestControl object
-        /// </summary>
-        /// <param name="serverName">The name of the server (EG: localhost)</param>
-        /// <param name="serviceType">The name of the service (EG: WORKFLOWS)</param>
-        /// <param name="folderName">The name of the folder (AKA: Category - EG: BARNEY (Or CODEDUITESTCATEGORY for the CodedUI Test Default))</param>
-        /// <param name="projectName">The name of the project (EG: MyWorkflow)</param>
-        /// <returns>A UITestControl object</returns>
-        public UITestControl GetService(string serverName, string serviceType, string folderName, string serviceName)
-        {
-            UITestControl service = GetServiceItem(serverName, serviceType, folderName, serviceName);
-            return service;
-        }
-
         public UITestControl GetServer(string serverName)
         {
             return GetConnectedServer(serverName);
@@ -421,12 +468,15 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             return GetServiceTypeControl(serverName, serviceType);
         }
 
-        public void DragControlToWorkflowDesigner(UITestControl theControl, Point p)
-        {
-            Mouse.StartDragging(theControl, MouseButtons.Left);
-            Mouse.StopDragging(p);
-        }
-
+        /// <summary>
+        /// Drags the control automatic workflow designer.
+        /// </summary>
+        /// <param name="serverName">Name of the server.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="folderName">Name of the folder.</param>
+        /// <param name="projectName">Name of the project.</param>
+        /// <param name="p">The application.</param>
+        /// <param name="overrideDblClickBehavior">if set to <c>true</c> [override double click behavior].</param>
         public void DragControlToWorkflowDesigner(string serverName, string serviceType, string folderName, string projectName, Point p, bool overrideDblClickBehavior = false)
         {
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName,overrideDblClickBehavior);
@@ -434,27 +484,30 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Mouse.StopDragging(p);
         }
 
-        public UITestControl ReturnCategory(string serverName, string serviceType, string categoryName)
-        {
-            return GetCategory(serverName, serviceType, categoryName);
-        }
-
+        /// <summary>
+        /// Rights the click rename project.
+        /// </summary>
+        /// <param name="serverName">Name of the server.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="folderName">Name of the folder.</param>
+        /// <param name="projectName">Name of the project.</param>
         public void RightClickRenameProject(string serverName, string serviceType, string folderName, string projectName)
         {
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Thread.Sleep(2500);
+            Playback.Wait(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Thread.Sleep(2500);
+            Playback.Wait(500);
             SendKeys.SendWait("{DOWN}");
-            Thread.Sleep(100);
+            Playback.Wait(100);
             SendKeys.SendWait("{DOWN}");
-            Thread.Sleep(100);
+            Playback.Wait(100);
             SendKeys.SendWait("{DOWN}");
-            Thread.Sleep(100);
+            Playback.Wait(100);
             SendKeys.SendWait("{ENTER}");
+            Playback.Wait(500);
         }
 
         public void ClosePane(UITestControl theTab)

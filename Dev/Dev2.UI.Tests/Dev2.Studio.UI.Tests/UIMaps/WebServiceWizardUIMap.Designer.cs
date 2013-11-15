@@ -37,15 +37,21 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
         public void InitializeFullTestServiceAndSource(string serviceName, string sourceName)
         {
             //init
-            var _docManager = new DocManagerUIMap();
-            var _explorer = new ExplorerUIMap();
+            var explorer = new ExplorerUIMap();
 
             //Open Web Source Wizard
-            _docManager.ClickOpenTabPage("Explorer");
-            _explorer.ClearExplorerSearchText();
-            _explorer.EnterExplorerSearchText("$");
-            var getLocalServer = _explorer.GetLocalServer();
-            Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
+            explorer.ClearExplorerSearchText();
+            explorer.EnterExplorerSearchText("$");
+            var getLocalServer = explorer.GetLocalServer();
+            var menuPt = new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, menuPt);
+
+            Playback.Wait(300);
+
+            menuPt.Offset(5, 5);
+            Mouse.Move(menuPt);
+            Playback.Wait(300);
+
             for (var i = 0; i < 9; i++)
             {
                 Keyboard.SendKeys("{DOWN}");
@@ -64,8 +70,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
             SendKeys.SendWait("{TAB}{TAB}{TAB}" + sourceName + "{TAB}{ENTER}");
 
             //Open Web Service Wizard
-            _docManager.ClickOpenTabPage("Explorer");
-            getLocalServer = _explorer.GetLocalServer();
+            getLocalServer = explorer.GetLocalServer();
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
             for (var i = 0; i < 5; i++)
             {

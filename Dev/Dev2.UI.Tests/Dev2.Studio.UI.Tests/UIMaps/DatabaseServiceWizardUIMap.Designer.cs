@@ -84,7 +84,19 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         /// </summary>
         public void KeyboardOK()
         {
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+
+            SendKeys.SendWait("{TAB}");
+            Playback.Wait(20);
+            SendKeys.SendWait("{TAB}");
+            Playback.Wait(20);
+            SendKeys.SendWait("{TAB}");
+            Playback.Wait(20);
+            SendKeys.SendWait("{TAB}");
+            Playback.Wait(20);
+            SendKeys.SendWait("{TAB}");
+            Playback.Wait(20);
+            SendKeys.SendWait("{ENTER}");
+            Playback.Wait(20);
         }
 
         /// <summary>
@@ -157,9 +169,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             TabToMappingsTab();
             Playback.Wait(500);
             var wizard = StudioWindow.GetChildren()[0];
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             Keyboard.SendKeys(wizard, "{TAB}{TAB}{TAB}{TAB}");
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+            Playback.Wait(200);
         }
 
         public void TabToInputMappings()
@@ -193,8 +204,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             // Click image
             Mouse.Click(uIItemImage, new Point(774, 520));
 
-            // Click image
-            //Mouse.Click(uIItemImage, new Point(608, 471));
         }
         
         #region Properties

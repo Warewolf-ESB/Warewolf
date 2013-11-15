@@ -8,6 +8,8 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+using Dev2.Studio.UI.Tests.Utils;
+
 namespace Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses
 {
     using System;
@@ -43,7 +45,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses
             return uIGenericTabPage;
             #endregion
         }
-        
+
         #region Properties
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
         {
