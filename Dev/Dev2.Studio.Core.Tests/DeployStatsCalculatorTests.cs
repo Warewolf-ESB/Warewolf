@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Reflection;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Providers.Events;
@@ -14,7 +12,7 @@ using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Deploy;
 using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Navigation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Core.Tests
@@ -419,34 +417,22 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeploySummaryPredicateExisting_EnvironmentDoesntContainResource_Expected_False()
         {
-            try
-            {
-                Setup();
-                ImportService.CurrentContext = _importContext;
+            Setup();
+            ImportService.CurrentContext = _importContext;
 
-                    Mock<IContextualResourceModel> resourceModel =
-                        Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
+            Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
 
-                _resourceVm.IsChecked = true;
-                ResourceTreeViewModel vm = _resourceVm as ResourceTreeViewModel;
+            _resourceVm.IsChecked = true;
+            ResourceTreeViewModel vm = _resourceVm as ResourceTreeViewModel;
 
-                vm.DataContext = resourceModel.Object;
+            vm.DataContext = resourceModel.Object;
 
-                    IEnvironmentModel environmentModel =
-                        Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>(),
-                                                              new List<IResourceModel>()).Object;
+            IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>(), new List<IResourceModel>()).Object;
 
-                bool expected = false;
-                bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
-                Assert.AreEqual(expected, actual);
-            }
-            catch(ReflectionTypeLoadException e)
-            {
-                foreach (var exe in e.LoaderExceptions)
-                {
-                    File.AppendAllText("\\\\RSAKLFSVRTFSBLD\\DevelopmentDropOff\\Demo\\Ashley\\TypeLoadExceptionThrown.txt", exe.Message + "\n");
-                }
-            }
+            bool expected = false;
+            bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
+
+            Assert.AreEqual(expected, actual);
         }
 
         #endregion DeploySummaryPredicateExisting
