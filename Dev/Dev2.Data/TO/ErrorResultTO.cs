@@ -169,14 +169,21 @@ namespace Dev2.DataList.Contract
         public static ErrorResultTO MakeErrorResultFromDataListString(string errorsString)
         {
             ErrorResultTO result = new ErrorResultTO();
-            if(!string.IsNullOrEmpty(errorsString))
+            try
             {
-                errorsString = string.Concat("<Error>", errorsString, "</Error>");
-                XElement errorNode = XElement.Parse(errorsString);
-                foreach(XElement element in errorNode.Elements("InnerError"))
+                if(!string.IsNullOrEmpty(errorsString))
                 {
-                    result.AddError(element.Value);
+                    errorsString = string.Concat("<Error>", errorsString, "</Error>");
+                    XElement errorNode = XElement.Parse(errorsString);
+                    foreach(XElement element in errorNode.Elements("InnerError"))
+                    {
+                        result.AddError(element.Value);
+                    }
                 }
+            }
+            catch(Exception e)
+            {
+                result.AddError(errorsString);
             }
             return result;
         }

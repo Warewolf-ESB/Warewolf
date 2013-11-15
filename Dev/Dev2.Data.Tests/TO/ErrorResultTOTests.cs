@@ -65,9 +65,22 @@ namespace Dev2.Data.Tests.TO
         {
             ErrorResultTO makeErrorResultFromDataListString = ErrorResultTO.MakeErrorResultFromDataListString("<InnerError>First Error</InnerError><InnerError>Second Error</InnerError>");
             Assert.IsTrue(makeErrorResultFromDataListString.HasErrors());
-            Assert.IsTrue(makeErrorResultFromDataListString.FetchErrors().Count == 2);
-            Assert.IsTrue(makeErrorResultFromDataListString.FetchErrors()[0] == "First Error");
-            Assert.IsTrue(makeErrorResultFromDataListString.FetchErrors()[1] == "Second Error");
+            Assert.AreEqual(2,makeErrorResultFromDataListString.FetchErrors().Count);
+            Assert.AreEqual("First Error",makeErrorResultFromDataListString.FetchErrors()[0]);
+            Assert.AreEqual("Second Error",makeErrorResultFromDataListString.FetchErrors()[1]);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ErrorResultTO_MakeErrorResultFromDataListString")]
+        public void ErrorResultTO_MakeErrorResultFromDataListString_WhenErrorStringNotValidXML_ShouldJustAddTheError()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            ErrorResultTO makeErrorResultFromDataListString = ErrorResultTO.MakeErrorResultFromDataListString("<InnerError>Could not insert <> into a field</InnerError>");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,makeErrorResultFromDataListString.FetchErrors().Count);
+            Assert.AreEqual("<Error><InnerError>Could not insert <> into a field</InnerError></Error>", makeErrorResultFromDataListString.FetchErrors()[0]);
         }
     }
 }
