@@ -25,7 +25,6 @@ namespace Dev2.Core.Tests
 
     [TestClass]
     [ExcludeFromCodeCoverage]
-    [Ignore]//Ashley: 15-11-2013 background nullref exception in navigationviewmodel load resources async during unit test run in environment (round 1)
     public class ConnectCallbackHandlerTests
     {
         const string ConnectionID = "1478649D-CF54-4D0D-8E26-CA9B81454B66";
