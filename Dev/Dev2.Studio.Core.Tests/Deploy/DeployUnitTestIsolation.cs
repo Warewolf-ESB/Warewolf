@@ -25,7 +25,9 @@ namespace Dev2.Core.Tests.Deploy
     /// THIS test is in here because is always fails when included in the DeployViewModelTest
     /// even after using Trevor's work around of ImportService.CurrentContext = _okayContext;
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
+    [Ignore]//Ashley: This test contructs a new deploy view model which contructs new navigation view models for source and destination with load resources using the regular async work rather than the synchronous async worker ussually used for unit testing
     public class DeployUnitTestIsolation
     {
         /// <summary>
