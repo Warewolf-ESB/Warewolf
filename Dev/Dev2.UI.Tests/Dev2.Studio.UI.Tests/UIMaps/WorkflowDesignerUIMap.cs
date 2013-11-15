@@ -46,7 +46,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// <param name="theTab"></param>
         /// <param name="controlAutomationId"></param>
         /// <returns></returns>
-        public UITestControlCollection GetAllControlsOnDesignSurface(UITestControl theTab, string controlAutomationId)
+        public UITestControlCollection GetAllControlsOnDesignSurface(UITestControl theTab)
         {
             var flowchartDesigner = GetFlowchartDesigner(theTab);
             return flowchartDesigner.GetChildren();
@@ -916,7 +916,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return flowchartDesigner;
         }
 
-
+      
 
 
         /// <summary>
@@ -1054,7 +1054,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// <returns></returns>
         public UITestControl GetCollapseHelpButton(UITestControl theTab, string activityAutomationID, int index = 0)
         {
-            var activity = GetAllControlsOnDesignSurface(theTab, activityAutomationID)[index];
+            var activity = GetAllControlsOnDesignSurface(theTab)[index];
             return activity.GetChildren().FirstOrDefault(ui => ui.FriendlyName == "Close Help");
         }
 
@@ -1240,7 +1240,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// <returns></returns>
         public UITestControl GetHelpPane(UITestControl theTab, string controlAutomationId, int index = 0)
         {
-            return GetAllControlsOnDesignSurface(theTab, controlAutomationId)[index];
+            return GetAllControlsOnDesignSurface(theTab)[index];
         }
 
         /// <summary>

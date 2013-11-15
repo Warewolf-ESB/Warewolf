@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -22,10 +21,8 @@ namespace Dev2.Studio.UI.Tests.Utils
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
-            // Drag the tool onto the workflow
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId(toolName);
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
+            // Drag the tool onto the workflow               
+            ToolboxUIMap.DragControlToWorkflowDesigner(toolName, workflowPoint1);
 
             //Get Large View button
             UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, toolName,

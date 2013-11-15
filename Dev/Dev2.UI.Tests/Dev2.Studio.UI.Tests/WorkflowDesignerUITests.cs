@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -42,6 +44,53 @@ namespace Dev2.Studio.UI.Tests
             TabManagerUIMap.CloseAllTabs();
         }
         #endregion
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("WorkflowDesigner_CodedUI")]
+        public void WorkflowDesigner_CodedUI_CopyAndPastingAndDeleteingActivity_CopyPasteAndDeleteWork()
+        {
+            //------------Setup for test--------------------------
+            RibbonUIMap.CreateNewWorkflow();
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+            //Find the start point
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+                       
+            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", workflowPoint1);
+
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab,"Assign",0);
+            
+            SendKeys.SendWait("Hello");
+
+            //Get Large View button
+            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign",
+                                                                           "Open Large View");
+
+            // Click it
+            Mouse.Move(new Point(button.BoundingRectangle.X - 15, button.BoundingRectangle.Y));
+            Mouse.Click();                                   
+
+            //------------Execute Test---------------------------
+
+            SendKeys.SendWait("^c");
+            SendKeys.SendWait("^v");
+
+            //------------Assert Results-------------------------
+            UITestControlCollection allControlsOnDesignSurface = WorkflowDesignerUIMap.GetAllControlsOnDesignSurface(theTab);
+
+            IEnumerable<UITestControl> uiTestControls = allControlsOnDesignSurface.Where(c => c.Name == "DsfMultiAssignActivity");
+
+            Assert.IsTrue(uiTestControls.Count() == 2);
+
+            SendKeys.SendWait("{DELETE}");
+
+            allControlsOnDesignSurface = WorkflowDesignerUIMap.GetAllControlsOnDesignSurface(theTab);
+
+            uiTestControls = allControlsOnDesignSurface.Where(c => c.Name == "DsfMultiAssignActivity");
+
+            Assert.IsTrue(uiTestControls.Count() == 1);
+        }
 
         // Bug 6501
         [TestMethod]
