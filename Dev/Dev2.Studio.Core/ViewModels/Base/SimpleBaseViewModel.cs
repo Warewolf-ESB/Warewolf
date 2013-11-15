@@ -48,7 +48,10 @@ namespace Dev2.Studio.Core.ViewModels.Base
         /// </summary>
         protected virtual void OnDispose()
         {
-
+            if (_validationController != null)
+            {
+                _validationController.Dispose();
+            }
         }
 
 
@@ -66,12 +69,6 @@ namespace Dev2.Studio.Core.ViewModels.Base
         {
             Dispose(true);
 
-            // This object will be cleaned up by the Dispose method.
-            // Therefore, you should call GC.SupressFinalize to
-            // take this object off the finalization queue
-            // and prevent finalization code for this object
-            // from executing a second time.
-            GC.SuppressFinalize(this);
         }
 
         // Dispose(bool disposing) executes in two distinct scenarios.
