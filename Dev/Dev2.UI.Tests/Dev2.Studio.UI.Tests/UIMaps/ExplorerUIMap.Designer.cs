@@ -9,18 +9,21 @@
 // ------------------------------------------------------------------------------
 
 using System.Linq;
-using Dev2.CodedUI.Tests;
+using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.Utils;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
-using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-using System.CodeDom.Compiler;
-using System.Drawing;
-using System.Threading;
-using System.Windows.Forms;
 
-namespace Dev2.Studio.UI.Tests.UIMaps
+namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 {
+    using Microsoft.VisualStudio.TestTools.UITest.Extension;
+    using Microsoft.VisualStudio.TestTools.UITesting;
+    using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+    using System.CodeDom.Compiler;
+    using System.Drawing;
+    using System.Threading;
+    using System.Windows.Forms;
+    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
+
+
     [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public partial class ExplorerUIMap : UIMapBase
     {

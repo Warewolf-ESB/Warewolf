@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -508,106 +509,106 @@ namespace Dev2.Studio.UI.Tests
         public void ExternalService_EditService_EditWithNoSecondSaveDialog_ExpectOneDialog()
         {
 
-            //------------Setup for test--------------------------
-            ExplorerUIMap.EnterExplorerSearchText("Edit Service Workflow");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "UI TEST", "Edit Service Workflow");
+                //------------Setup for test--------------------------
+                ExplorerUIMap.EnterExplorerSearchText("Edit Service Workflow");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "UI TEST", "Edit Service Workflow");;
 
             var newMapping = "ZZZ"+Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6);
 
-            //------------Execute Test---------------------------
+                //------------Execute Test---------------------------
 
-            // Get some design surface
-            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+                // Get some design surface
+                UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
-            //Get Adorner buttons
-            var button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TravsTestService", "Edit");
+                //Get Adorner buttons
+                var button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TravsTestService", "Edit");
 
-            // -- DO DB Services --
+                // -- DO DB Services --
 
-            WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
+                WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
 
-            Playback.Wait(500);
-            Mouse.Click(button);
-            WizardsUIMap.WaitForWizard();
+                Playback.Wait(500);
+                Mouse.Click(button);
+                WizardsUIMap.WaitForWizard();
 
-            DatabaseServiceWizardUIMap.ClickMappingTab();
-            SendKeys.SendWait("{TAB}");
-            Playback.Wait(500);
-            SendKeys.SendWait(newMapping);
-            // -- wizard closed
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
+                DatabaseServiceWizardUIMap.ClickMappingTab();
+                SendKeys.SendWait("{TAB}");
+                Playback.Wait(500);
+                SendKeys.SendWait(newMapping);
+                // -- wizard closed
+                SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
 
 
-            // -- DO Web Services --
+                // -- DO Web Services --
 
-            //Get Adorner buttons
-            button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "FetchCities", "Edit");
+                //Get Adorner buttons
+                button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "FetchCities", "Edit");
 
-            // move to show adorner buttons ;)
-            WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
+                // move to show adorner buttons ;)
+                WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
 
-            Playback.Wait(500);
-            Mouse.Click(button);
-            Playback.Wait(1000);
+                Playback.Wait(500);
+                Mouse.Click(button);
+                Playback.Wait(1000);
 
-            WizardsUIMap.WaitForWizard();
+                WizardsUIMap.WaitForWizard();
 
-            DatabaseServiceWizardUIMap.ClickMappingTab();
+                DatabaseServiceWizardUIMap.ClickMappingTab();
 
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");
-            Playback.Wait(500);
-            SendKeys.SendWait(newMapping);
-            // -- wizard closed, account for darn dialog ;(
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{ENTER}{TAB}{ENTER}");
+                SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");
+                Playback.Wait(500);
+                SendKeys.SendWait(newMapping);
+                // -- wizard closed, account for darn dialog ;(
+                SendKeys.SendWait("{TAB}{TAB}{TAB}{ENTER}{TAB}{ENTER}");
             Playback.Wait(3000);
 
-                ResourceChangedPopUpUIMap.ClickCancel();
+                    ResourceChangedPopUpUIMap.ClickCancel();
 
-            // -- DO Plugin Services --
+                // -- DO Plugin Services --
 
-            //Get Adorner buttons
-            button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "DummyService", "Edit");
+                //Get Adorner buttons
+                button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "DummyService", "Edit");
 
-            // move to show adorner buttons ;)
-            WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
+                // move to show adorner buttons ;)
+                WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
 
-            Playback.Wait(500);
-            Mouse.Click(button);
-            Playback.Wait(1000);
+                Playback.Wait(500);
+                Mouse.Click(button);
+                Playback.Wait(1000);
 
-            WizardsUIMap.WaitForWizard();
+                WizardsUIMap.WaitForWizard();
 
-            DatabaseServiceWizardUIMap.ClickMappingTab(); // click on the second tab ;)
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");
-            Playback.Wait(500);
-            SendKeys.SendWait(newMapping);
-            Playback.Wait(500);
-            // -- wizard closed, account for darn dialog ;(
-            SendKeys.SendWait("{TAB}{TAB}");
-            Playback.Wait(500);
-            SendKeys.SendWait("{ENTER}");
+                DatabaseServiceWizardUIMap.ClickMappingTab(); // click on the second tab ;)
+                SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");
+                Playback.Wait(500);
+                SendKeys.SendWait(newMapping);
+                Playback.Wait(500);
+                // -- wizard closed, account for darn dialog ;(
+                SendKeys.SendWait("{TAB}{TAB}");
+                Playback.Wait(500);
+                SendKeys.SendWait("{ENTER}");
 
 
-            //------------Assert Results-------------------------
+                //------------Assert Results-------------------------
 
-            // check services for warning icon to incidate mappings out of date ;)
+                // check services for warning icon to incidate mappings out of date ;)
 
-            if (!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "TravsTestService"))
-            {
-                Assert.Fail("'Fix Errors' button not visible");
+                if (!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "TravsTestService"))
+                {
+                    Assert.Fail("'Fix Errors' button not visible");
+                }
+
+                if (!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "FetchCities"))
+                {
+                    Assert.Fail("'Fix Errors' button not visible");
+                }
+
+                if (!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "DummyService"))
+                {
+                    Assert.Fail("'Fix Errors' button not visible");
+                }
+
             }
-
-            if (!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "FetchCities"))
-            {
-                Assert.Fail("'Fix Errors' button not visible");
-            }
-
-            if (!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "DummyService"))
-            {
-                Assert.Fail("'Fix Errors' button not visible");
-            }
-
-        }
 
 
         [TestMethod]

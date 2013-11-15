@@ -1,10 +1,11 @@
 ﻿using System.Drawing;
 using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITesting;
+using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using System.Windows.Forms;
 
-namespace Dev2.Studio.UI.Tests.UIMaps
+namespace Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses
 {
     public partial class DocManagerUIMap
     {

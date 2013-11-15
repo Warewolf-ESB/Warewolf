@@ -1,4 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UITest.Extension;
+﻿using System;
+using System.Windows.Forms;
+using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

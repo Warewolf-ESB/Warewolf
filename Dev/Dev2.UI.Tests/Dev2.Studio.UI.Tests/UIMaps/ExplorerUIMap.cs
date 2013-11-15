@@ -2,16 +2,20 @@
 using System.Linq;
 using System.Threading;
 using Dev2.Studio.UI.Tests.Utils;
-using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Windows.Input;
-using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 
-namespace Dev2.Studio.UI.Tests.UIMaps
+namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 {
+    using Microsoft.VisualStudio.TestTools.UITesting;
+    using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+    using System.Drawing;
+    using System.Windows.Forms;
+    using System.Windows.Input;
+    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
+    using MouseButtons = System.Windows.Forms.MouseButtons;
+
+
     public partial class ExplorerUIMap
     {
         private UITestControl _explorerTree;
@@ -250,7 +254,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             PopupDialogUIMap.WaitForDialog();
             Playback.Wait(100);
             var confirmationDialog = UIBusinessDesignStudioWindow.GetChildren()[0];
-            var yesButton = Enumerable.FirstOrDefault<UITestControl>(confirmationDialog.GetChildren(), c => c.FriendlyName == "Yes");
+            var yesButton = confirmationDialog.GetChildren().FirstOrDefault(c => c.FriendlyName == "Yes");
             Mouse.Click(yesButton, new Point(10, 10));
         }
 

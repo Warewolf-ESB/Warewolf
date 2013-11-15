@@ -8,6 +8,8 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Dev2.Studio.UI.Tests;
 
 namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses

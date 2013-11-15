@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Forms;
-using Dev2.Studio.UI.Tests.UIMaps;
+using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
+using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
