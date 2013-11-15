@@ -267,7 +267,7 @@ namespace Dev2.PathOperations {
                         {
                             var path = ExtractFileNameFromPath(dst.Path);
                             sftp.Put(tempFileName, path);
-                            result = 0;
+                            result = payload.Length;
                             sftp.Close();
                         }
                         catch(Exception)

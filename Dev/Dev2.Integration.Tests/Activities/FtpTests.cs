@@ -7,6 +7,7 @@ using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.UnitTest.Framework.PathOperationTests;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Activities
 {
     /// <summary>
@@ -248,6 +249,20 @@ namespace Dev2.Integration.Tests.Activities
             }
 
         }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Dev2FTPProvider_Get")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2FTPProvider_Get_SFTPWrongFile_Exception()
+        {
+            //------------Setup for test--------------------------
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_SFTP_Path + "/testing/ThisIsATest.txt", ParserStrings.PathOperations_SFTP_Username, ParserStrings.PathOperations_SFTP_Password);
+            IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
+            //------------Execute Test---------------------------
+            FTPPro.Get(path);
+            //------------Assert Results-------------------------
+        }
 
         [TestMethod]
         public void GetWithCorrectUserName_WrongFile_Expected_Error()
@@ -294,29 +309,59 @@ namespace Dev2.Integration.Tests.Activities
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Dev2FTPProvider_Put")]
+        public void Dev2FTPProvider_Put_SFTP_OverwriteFalse_FileNotExist_ExpectedStream()
+        {
+            //------------Setup for test--------------------------
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_SFTP_Path + string.Format("/testing/{0}.txt", Guid.NewGuid()), ParserStrings.PathOperations_SFTP_Username, ParserStrings.PathOperations_SFTP_Password);
+            IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
+            Dev2CRUDOperationTO args = new Dev2CRUDOperationTO(false);
+            const string data = "this is my test data";
+            byte[] byteArray = Encoding.UTF8.GetBytes(data);
+            Stream dataStream = new MemoryStream(byteArray);
+            //------------Execute Test---------------------------
+            var lengthOfWrittenBytes = FTPPro.Put(dataStream, path, args, null);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(lengthOfWrittenBytes>0);
+            Assert.AreEqual(byteArray.Length,lengthOfWrittenBytes);
+        }
+
+
+        [TestMethod]
         public void PutWithOverwriteFalse_NoUserPassword_FileExist_Expected_NoStream()
         {
-            Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
+            //------------Setup for test--------------------------
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/file1.txt", "", "");
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             byte[] data = File.ReadAllBytes(tmpfile2);
             Stream s = new MemoryStream(data);
-
-
-            try
-            {
-                Dev2CRUDOperationTO args = new Dev2CRUDOperationTO(false);
-
-                int len = FTPPro.Put(s, dst, args, null);
-
-                Assert.Fail("Overwrote a file when overwrite set to false?!");
-            }
-            catch (Exception)
-            {
-                Assert.IsTrue(1 == 1);
-            }
-
+            Dev2CRUDOperationTO args = new Dev2CRUDOperationTO(false);
+            //------------Execute Test---------------------------
+            int len = FTPPro.Put(s, dst, args, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(-1,len);
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Dev2FTPProvider_Put")]
+        public void Dev2FTPProvider_Put_SFTP_OverwriteFalse_FileExist_ExpectNothingReturned()
+        {
+            //------------Setup for test--------------------------
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_SFTP_Path + string.Format("/testing/{0}.txt", "ThisIsATestFile"), ParserStrings.PathOperations_SFTP_Username, ParserStrings.PathOperations_SFTP_Password);
+            IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
+            Dev2CRUDOperationTO args = new Dev2CRUDOperationTO(false);
+            const string data = "this is my test data";
+            byte[] byteArray = Encoding.UTF8.GetBytes(data);
+            Stream dataStream = new MemoryStream(byteArray);
+            //------------Execute Test---------------------------
+            var lengthOfWrittenBytes = FTPPro.Put(dataStream, path, args, null);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(lengthOfWrittenBytes > 0);
+            Assert.AreEqual(-1, lengthOfWrittenBytes);
+        }
+
 
         [TestMethod]
         public void PutWithOverwriteTrue_NoUserPassword_FileNotExist_Expected_Stream()
@@ -673,7 +718,6 @@ namespace Dev2.Integration.Tests.Activities
             Assert.IsTrue(tmp.Count == 3);
         }
 
-        // ReSharper disable InconsistentNaming
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Dev2FTPProvider_ListFoldersInDirectory")]
@@ -694,7 +738,7 @@ namespace Dev2.Integration.Tests.Activities
         public void Dev2FTPProvider_ListFoldersInDirectory_WithValidSFTPDirectory_ReturnsListOfFoldersOnly()
         {
             //------------Setup for test--------------------------
-            var path = ActivityIOFactory.CreatePathFromString("sftp://sftp.theunlimited.co.za", "dev2testing", "Q/ulw&]");
+            var path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_SFTP_Path, ParserStrings.PathOperations_SFTP_Username, ParserStrings.PathOperations_SFTP_Password);
             var FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             //------------Execute Test---------------------------
             var folderList = FTPPro.ListFoldersInDirectory(path);
@@ -722,7 +766,7 @@ namespace Dev2.Integration.Tests.Activities
         public void Dev2FTPProvider_ListFilesInDirectory_WithValidSFTPDirectory_ReturnsListOfFoldersOnly()
         {
             //------------Setup for test--------------------------
-            var path = ActivityIOFactory.CreatePathFromString("sftp://sftp.theunlimited.co.za", "dev2testing", "Q/ulw&]");
+            var path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_SFTP_Path, ParserStrings.PathOperations_SFTP_Username, ParserStrings.PathOperations_SFTP_Password);
             var FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             //------------Execute Test---------------------------
             var folderList = FTPPro.ListFilesInDirectory(path);

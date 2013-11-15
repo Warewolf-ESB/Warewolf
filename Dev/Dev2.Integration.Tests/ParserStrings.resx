@@ -1077,4 +1077,13 @@
 			&lt;Input Name="number" Source="" DefaultValue=""/&gt;
 		&lt;/Inputs&gt;</value>
   </data>
+  <data name="PathOperations_SFTP_Password" xml:space="preserve">
+    <value>Q/ulw&amp;]</value>
+  </data>
+  <data name="PathOperations_SFTP_Path" xml:space="preserve">
+    <value>sftp://sftp.theunlimited.co.za</value>
+  </data>
+  <data name="PathOperations_SFTP_Username" xml:space="preserve">
+    <value>dev2testing</value>
+  </data>
 </root>
