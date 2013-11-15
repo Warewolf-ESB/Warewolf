@@ -266,7 +266,7 @@ namespace Dev2.Session
 
                 if (!_debugOptsEndPoint.PathExist(_debugPath))
                 {
-                    Dev2PutRawOperationTO args = new Dev2PutRawOperationTO(false, "", true);
+                    Dev2PutRawOperationTO args = new Dev2PutRawOperationTO(WriteType.Overwrite, "");
                     ActivityIOFactory.CreateOperationsBroker().PutRaw(_debugOptsEndPoint, args);
                 }
                 else

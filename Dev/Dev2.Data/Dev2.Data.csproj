@@ -116,6 +116,7 @@
     <Compile Include="Interfaces\IInputOutputViewModel.cs" />
     <Compile Include="Network\DataListMessage.cs" />
     <Compile Include="Parsers\XPathParser.cs" />
+    <Compile Include="PathOperations\Enums\WriteType.cs" />
     <Compile Include="PathOperations\Enums\ReadTypes.cs" />
     <Compile Include="PathOperations\Interfaces\IDestinationUserNamePassword.cs" />
     <Compile Include="ServiceModel\AuthenticationType.cs" />

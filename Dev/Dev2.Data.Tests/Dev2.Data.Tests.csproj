@@ -107,6 +107,7 @@
     <Compile Include="Operations\Dev2NumberFormatterTests.cs" />
     <Compile Include="Operations\Dev2ReplaceOperationTests.cs" />
     <Compile Include="PathOperations\Dev2FileSystemProviderTests.cs" />
+    <Compile Include="PathOperations\Dev2PutRawOperationTOTests.cs" />
     <Compile Include="Persistence\Dev2BinaryStorageTest.cs" />
     <Compile Include="Persistence\StorageSettingsManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

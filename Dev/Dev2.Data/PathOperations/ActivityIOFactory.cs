@@ -119,9 +119,9 @@ namespace Dev2.PathOperations
         /// Create an PutRawOperationTo object
         /// </summary>
         /// <returns></returns>
-        public static Dev2PutRawOperationTO CreatePutRawOperationTO(bool append, string contents, bool overwrite)
+        public static Dev2PutRawOperationTO CreatePutRawOperationTO(WriteType writeType, string contents)
         {
-            return new Dev2PutRawOperationTO(append, contents, overwrite);
+            return new Dev2PutRawOperationTO(writeType, contents);
         }
 
         /// <summary>

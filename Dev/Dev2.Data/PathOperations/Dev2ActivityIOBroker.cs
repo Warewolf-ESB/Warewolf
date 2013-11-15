@@ -69,50 +69,58 @@ namespace Dev2.PathOperations
 
             if(dst.RequiresLocalTmpStorage())
             {
-                if(args.Append)
+                switch(args.WriteType)
                 {
-                    using(s = dst.Get(dst.IOPath))
-                    {
-                        File.WriteAllBytes(tmp, s.ToByteArray());
-                        File.AppendAllText(tmp, args.FileContents);
-                        s.Close();
-                        s.Dispose();
-                    }
-                }
-                else
-                {
-                    // Handle base64 String
-                    if(IsBase64(args.FileContents))
-                    {
-                        byte[] data = Convert.FromBase64String(args.FileContents.Replace("Content-Type:BASE64", ""));
-                        File.WriteAllBytes(tmp, data);
-                    }
-                    else
-                    {
+                    case WriteType.AppendBottom:
+                        using(s = dst.Get(dst.IOPath))
+                        {
+                            File.WriteAllBytes(tmp, s.ToByteArray());
+                            File.AppendAllText(tmp, args.FileContents);
+                            s.Close();
+                            s.Dispose();
+                        }
+                        break;
+                    case WriteType.AppendTop:
                         File.WriteAllText(tmp, args.FileContents);
-                    }
+                        AppendToTemp(dst.Get(dst.IOPath),tmp);
+                        break;
+                    default:
+                        if(IsBase64(args.FileContents))
+                        {
+                            byte[] data = Convert.FromBase64String(args.FileContents.Replace("Content-Type:BASE64", ""));
+                            File.WriteAllBytes(tmp, data);
+                        }
+                        else
+                        {
+                            File.WriteAllText(tmp, args.FileContents);
+                        }
+                        break;
                 }
             }
             else
             {
                 // we can write directly to the file
-                if(args.Append)
+                switch(args.WriteType)
                 {
-                    File.WriteAllText(tmp, File.ReadAllText(dst.IOPath.Path));
-                    File.WriteAllText(tmp, args.FileContents);
-                }
-                else
-                {
-                    // Handle base64 String
-                    if(IsBase64(args.FileContents))
-                    {
-                        byte[] data = Convert.FromBase64String(args.FileContents.Replace("Content-Type:BASE64", ""));
-                        File.WriteAllBytes(tmp, data);
-                    }
-                    else
-                    {
+                    case WriteType.AppendBottom:
+                        File.WriteAllText(tmp, File.ReadAllText(dst.IOPath.Path));
                         File.WriteAllText(tmp, args.FileContents);
-                    }
+                        break;
+                    case WriteType.AppendTop:
+                        File.WriteAllText(tmp, args.FileContents);
+                        AppendToTemp(dst.Get(dst.IOPath),tmp);
+                        break;
+                    default:
+                        if(IsBase64(args.FileContents))
+                        {
+                            byte[] data = Convert.FromBase64String(args.FileContents.Replace("Content-Type:BASE64", ""));
+                            File.WriteAllBytes(tmp, data);
+                        }
+                        else
+                        {
+                            File.WriteAllText(tmp, args.FileContents);
+                        }
+                        break;
                 }
             }
 
@@ -139,6 +147,24 @@ namespace Dev2.PathOperations
 
             return result;
 
+        }
+
+        static void AppendToTemp(Stream originalFileStream, string temp)
+        {
+            const int BufferSize = 1024 * 1024;
+            var buffer = new char[BufferSize];
+
+            using(var writer = new StreamWriter(temp, true))
+            {
+                using(var reader = new StreamReader(originalFileStream))
+                {
+                    int bytesRead;
+                    while((bytesRead = reader.ReadBlock(buffer, 0, BufferSize)) != 0)
+                    {
+                        writer.Write(buffer, 0, bytesRead);
+                    }
+                }
+            }
         }
 
         public string Delete(IActivityIOOperationsEndPoint src)

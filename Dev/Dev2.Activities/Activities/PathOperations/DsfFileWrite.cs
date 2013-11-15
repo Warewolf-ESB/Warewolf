@@ -1,5 +1,6 @@
 ﻿using Dev2;
 using Dev2.Activities;
+using Dev2.Common.ExtMethods;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
@@ -82,7 +83,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             while (colItr.HasMoreData())
             {
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-                Dev2PutRawOperationTO putTO = ActivityIOFactory.CreatePutRawOperationTO(Append, colItr.FetchNextRow(contentItr).TheValue, Overwrite);
+                var writeType = GetCorrectWriteType();
+                Dev2PutRawOperationTO putTO = ActivityIOFactory.CreatePutRawOperationTO(writeType, colItr.FetchNextRow(contentItr).TheValue);
                 IActivityIOPath IOpath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(inputItr).TheValue,
                                                                                 colItr.FetchNextRow(unameItr).TheValue,
                                                                                 colItr.FetchNextRow(passItr).TheValue,
@@ -102,6 +104,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             return outputs;
 
+        }
+
+        WriteType GetCorrectWriteType()
+        {
+            if(AppendBottom)
+            {
+                return WriteType.AppendBottom;
+            }
+            if(AppendTop)
+            {
+                return WriteType.AppendTop;
+            }
+            if(Overwrite)
+            {
+                return WriteType.Overwrite;
+            }
+            return WriteType.AppendBottom;
         }
 
         #region Properties
@@ -175,19 +194,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private string GetMethod()
         {
-            if(Overwrite)
-            {
-                return "Overwrite";
-            }
-            else if(AppendBottom)
-            {
-                return "Append Bottom";
-            }
-            else if(AppendTop)
-            {
-                return "Append Top";
-            }
-            return "No Method selected";
+            return GetCorrectWriteType().GetDescription();
         }
 
         #endregion

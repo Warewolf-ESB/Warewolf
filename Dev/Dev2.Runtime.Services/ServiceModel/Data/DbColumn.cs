@@ -133,7 +133,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 case SqlDbType.Date:
                     return typeof(DateTime);
                 case SqlDbType.Time:
-                    return typeof(DateTime);
+                    return typeof(TimeSpan);
                 case SqlDbType.DateTime2:
                     return typeof(DateTime);
                 case SqlDbType.DateTimeOffset:

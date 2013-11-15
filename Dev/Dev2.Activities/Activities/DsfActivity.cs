@@ -338,7 +338,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 //                dataObject.RemoteInvokerID = string.Empty;
 //                dataObject.RemoteServiceType = string.Empty;
 
-                //compiler.ClearErrors(dataObject.DataListID);
+                compiler.ClearErrors(dataObject.DataListID);
             }
         }
 

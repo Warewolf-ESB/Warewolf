@@ -78,7 +78,7 @@ namespace Dev2.Integration.Tests.Activities
             try
             {
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-                Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(true, "XYZ", false);
+                Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.AppendBottom, "XYZ");
                 IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile1, TestResource.PathOperations_Incorrect_Username, TestResource.PathOperations_Correct_Password);
                 IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
@@ -152,7 +152,7 @@ namespace Dev2.Integration.Tests.Activities
             try
             {
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-                Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(false, "XYZ", true);
+                Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, "XYZ");
                 IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile2, TestResource.PathOperations_Incorrect_Username, TestResource.PathOperations_Correct_Password);
                 IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
@@ -409,7 +409,7 @@ namespace Dev2.Integration.Tests.Activities
         public void WriteFile_AppendFalse_OverWriteTrue_FileSystem_Expected_FileOverwritten()
         {
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(false, "XYZ", true);
+            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, "XYZ");
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile1, "", "");
             IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
@@ -418,6 +418,32 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(@"Success", result);
         }
 
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Dev2ActivityOperationsBroker_WriteFile")]
+        public void Dev2ActivityOperationsBroker_WriteFile_WithAppendTop_ShouldKeepExistingFileContentsAppendNewContentsAtTop()
+        {
+            //------------Setup for test--------------------------
+            IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
+            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, "XYZ");
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile1, "", "");
+            IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
+            string result = broker.PutRaw(endPoint, opTO);
+            //------------Assert Preconditions-------------------
+            Assert.AreEqual(@"Success", result);
+            var fileContents = File.ReadAllText(path.Path);
+            Assert.AreEqual("XYZ",fileContents);
+            //------------Execute Test---------------------------
+            opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.AppendTop, "ABC");
+            result = broker.PutRaw(endPoint, opTO);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(@"Success", result);
+            fileContents = File.ReadAllText(path.Path);
+            Assert.AreEqual("ABCXYZ", fileContents);
+        }
+
+
         /// <summary>
         /// WriteFile append true overwrite false system credentials file system.
         /// </summary>
@@ -425,7 +451,7 @@ namespace Dev2.Integration.Tests.Activities
         public void WriteFile_AppendTrue_OverWriteFalse_SystemCredentials_FileSystem_Expected_FileAppended()
         {
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(true, "XYZ", false);
+            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.AppendBottom, "XYZ");
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile1, "", "");
             IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
@@ -441,7 +467,7 @@ namespace Dev2.Integration.Tests.Activities
         public void WriteFile_AppendTrue_OverWriteTrue_SystemCredentials_FileSystem_Expected_FileOverwritten()
         {
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(true, "XYZ", true);
+            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, "XYZ");
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile1, "", "");
             IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
@@ -480,7 +506,7 @@ namespace Dev2.Integration.Tests.Activities
         public void WriteFile_FileSystem_SystemCredentials_Overwrite_Expected_FileOverwritten()
         {
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(false, "XYZ", true);
+            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, "XYZ");
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile1, "", "");
             IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
@@ -496,7 +522,7 @@ namespace Dev2.Integration.Tests.Activities
         public void WriteFile_FileSystem_SystemCredentials_Overwrite_NoFile_Expected_FileCreated()
         {
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(false, "XYZ", true);
+            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, "XYZ");
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
             IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
@@ -535,12 +561,12 @@ namespace Dev2.Integration.Tests.Activities
         public void WriteFile_FTP_ValidCredentials_Overwrite_Expected_FileOverwritten()
         {
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(false, "XYZ", false);
+            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.AppendBottom, "XYZ");
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_AuthPath, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             string result = broker.PutRaw(endPoint, opTO);
-            opTO = ActivityIOFactory.CreatePutRawOperationTO(false, "abc", false);
+            opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.AppendBottom, "abc");
             result = broker.PutRaw(endPoint, opTO);
 
             Assert.AreEqual(@"Success", result);
@@ -554,12 +580,12 @@ namespace Dev2.Integration.Tests.Activities
         public void WriteFile_FTP_ValidCredentials_NoOverwrite_FilePresent_FileAppended()
         {
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(false, "XYZ", false);
+            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.AppendBottom, "XYZ");
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_AuthPath, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             string result = broker.PutRaw(endPoint, opTO);
-            opTO = ActivityIOFactory.CreatePutRawOperationTO(false, "abc", false);
+            opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.AppendBottom, "abc");
             result = broker.PutRaw(endPoint, opTO);
 
             Assert.AreEqual(@"Success", result);
@@ -574,7 +600,7 @@ namespace Dev2.Integration.Tests.Activities
             try
             {
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-                Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(false, "XYZ", true);
+                Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, "XYZ");
                 IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_AuthPath, ParserStrings.PathOperations_Incorrect_Username, ParserStrings.PathOperations_Correct_Password);
                 IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
@@ -599,7 +625,7 @@ namespace Dev2.Integration.Tests.Activities
             string ftpPath = PathIOTestingUtils.CreateFileFTP(ParserStrings.PathOperations_FTP_AuthPath, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, false);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(false, "abc", true);
+            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, "abc");
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ftpPath, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
@@ -620,7 +646,7 @@ namespace Dev2.Integration.Tests.Activities
             string ftpPath = PathIOTestingUtils.CreateFileFTP(ParserStrings.PathOperations_FTP_AuthPath, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, false);
 
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(false, "abc", true);
+            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, "abc");
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ftpPath, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
@@ -631,6 +657,58 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(@"Success", result);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Dev2ActivityOperationsBroker_WriteFile")]
+        public void Dev2ActivityOperationsBroker_WriteFileFTP_WithAppendTop_ShouldKeepExistingFileContentsAppendNewContentsAtTop()
+        {
+            //------------Setup for test--------------------------
+            string ftpPath = PathIOTestingUtils.CreateFileFTP(ParserStrings.PathOperations_FTP_AuthPath, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, false);
+
+            IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
+            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, "abc");
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ftpPath, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password);
+            IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
+            string result = broker.PutRaw(endPoint, opTO);
+            //------------Assert Preconditions-------------------
+            Assert.AreEqual(@"Success", result);
+            var fileContents = broker.Get(endPoint);
+            Assert.AreEqual("abc", fileContents);
+            //------------Execute Test---------------------------
+            opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.AppendTop, "xyz");
+            result = broker.PutRaw(endPoint, opTO);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(@"Success", result);
+            fileContents = broker.Get(endPoint);
+            Assert.AreEqual("xyzabc", fileContents);
+            PathIOTestingUtils.DeleteFTP(ftpPath, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, false);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Dev2ActivityOperationsBroker_WriteFile")]
+        public void Dev2ActivityOperationsBroker_WriteFileSFTP_WithAppendTop_ShouldKeepExistingFileContentsAppendNewContentsAtTop()
+        {
+            //------------Setup for test--------------------------
+            IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
+            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, "abc");
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_SFTP_Path + string.Format("/testing/{0}.txt", "ThisIsATestFile"), ParserStrings.PathOperations_SFTP_Username, ParserStrings.PathOperations_SFTP_Password);
+            IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
+            string result = broker.PutRaw(endPoint, opTO);
+            //------------Assert Preconditions-------------------
+            Assert.AreEqual(@"Success", result);
+            var fileContents = broker.Get(endPoint);
+            Assert.AreEqual("abc", fileContents);
+            //------------Execute Test---------------------------
+            opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.AppendTop, "xyz");
+            result = broker.PutRaw(endPoint, opTO);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(@"Success", result);
+            fileContents = broker.Get(endPoint);
+            Assert.AreEqual("xyzabc", fileContents);
+            endPoint.Delete(path);
+        }
+
         /// <summary>
         /// WriteFile FTP wrong user no overwrite expected exception thrown by broker.
         /// </summary>
@@ -639,7 +717,7 @@ namespace Dev2.Integration.Tests.Activities
         public void WriteFile_FTP_WrongUser_NoOverwrite_Expected_ExceptionThrownByBroker()
         {
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(false, "XYZ", false);
+            Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.AppendBottom, "XYZ");
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_AuthPath, ParserStrings.PathOperations_Incorrect_Username, ParserStrings.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
