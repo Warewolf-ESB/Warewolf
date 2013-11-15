@@ -1,6 +1,8 @@
-﻿using System.Windows.Documents;
+﻿using System.ComponentModel;
+using System.Windows.Documents;
 using Dev2;
 using Dev2.Activities;
+using Dev2.Common.ExtMethods;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
@@ -65,7 +67,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);
                 DebugItem itemToAdd = new DebugItem();
                 itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Read" });                
-                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetReadType() });
+                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetReadType().GetDescription() });
                 _debugInputs.Add(itemToAdd);
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
             }
@@ -83,7 +85,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 try
                 {
-                    IList<IActivityIOPath> ListOfDir = broker.ListDirectory(endPoint);
+                    IList<IActivityIOPath> ListOfDir = broker.ListDirectory(endPoint,GetReadType());
                     if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
                     {
                         if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
@@ -187,28 +189,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private string GetReadType()
+        private ReadTypes GetReadType()
         {
             if(IsFoldersSelected)
             {
-                return "Folders";
+                return ReadTypes.Folders;
             }
-            else if(IsFilesSelected)
+
+            if(IsFilesSelected)
             {
-                return "Files";
+                return ReadTypes.Files;
             }
-            else if(IsFilesAndFoldersSelected)
-            {
-                return "Files & Folders";
-            }
-            return "No option selected";
+            return ReadTypes.FilesAndFolders;
         }
 
         #endregion
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates != null && updates.Count == 1)
+            if(updates != null && updates.Count == 1)
             {
                 InputPath = updates[0].Item2;
             }
@@ -216,7 +215,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates != null && updates.Count == 1)
+            if(updates != null && updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }
@@ -235,5 +234,5 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
-    }
+    }    
 }

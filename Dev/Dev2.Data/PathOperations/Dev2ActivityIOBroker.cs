@@ -23,7 +23,7 @@ namespace Dev2.PathOperations
         private static string resultBad = "Failure";
 
         // See interfaces summary's for more detail
-        
+
         public string Get(IActivityIOOperationsEndPoint path, bool deferredRead = false)
         {
 
@@ -45,7 +45,7 @@ namespace Dev2.PathOperations
             {
                 // Travis.Frisinger - 01.02.2013 : Bug 8579
                 // If we want to deferr the read of data, just return the file name ;)
-                
+
                 // Serialize to binary and return 
                 BinaryDataListUtil bdlUtil = new BinaryDataListUtil();
                 return bdlUtil.SerializeDeferredItem(path);
@@ -67,9 +67,9 @@ namespace Dev2.PathOperations
             // directory put?
             // wild char put?
 
-            if (dst.RequiresLocalTmpStorage())
+            if(dst.RequiresLocalTmpStorage())
             {
-                if (args.Append)
+                if(args.Append)
                 {
                     using(s = dst.Get(dst.IOPath))
                     {
@@ -82,7 +82,7 @@ namespace Dev2.PathOperations
                 else
                 {
                     // Handle base64 String
-                    if (IsBase64(args.FileContents))
+                    if(IsBase64(args.FileContents))
                     {
                         byte[] data = Convert.FromBase64String(args.FileContents.Replace("Content-Type:BASE64", ""));
                         File.WriteAllBytes(tmp, data);
@@ -96,7 +96,7 @@ namespace Dev2.PathOperations
             else
             {
                 // we can write directly to the file
-                if (args.Append)
+                if(args.Append)
                 {
                     File.WriteAllText(tmp, File.ReadAllText(dst.IOPath.Path));
                     File.WriteAllText(tmp, args.FileContents);
@@ -104,7 +104,7 @@ namespace Dev2.PathOperations
                 else
                 {
                     // Handle base64 String
-                    if (IsBase64(args.FileContents))
+                    if(IsBase64(args.FileContents))
                     {
                         byte[] data = Convert.FromBase64String(args.FileContents.Replace("Content-Type:BASE64", ""));
                         File.WriteAllBytes(tmp, data);
@@ -127,7 +127,7 @@ namespace Dev2.PathOperations
                 {
                     CreateEndPoint(dst, newArgs, true);
                 }
-                if (dst.Put(s, dst.IOPath, newArgs, null) < 0)
+                if(dst.Put(s, dst.IOPath, newArgs, null) < 0)
                 {
                     result = resultBad;
                 }
@@ -145,7 +145,7 @@ namespace Dev2.PathOperations
         {
             string result = resultOk;
 
-            if (!src.Delete(src.IOPath))
+            if(!src.Delete(src.IOPath))
             {
                 result = resultBad;
             }
@@ -153,23 +153,31 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        public IList<IActivityIOPath> ListDirectory(IActivityIOOperationsEndPoint src)
+        public IList<IActivityIOPath> ListDirectory(IActivityIOOperationsEndPoint src, ReadTypes readTypes)
         {
-            return src.ListDirectory(src.IOPath);
+            if(readTypes == ReadTypes.FilesAndFolders)
+            {
+                return src.ListDirectory(src.IOPath);
+            }
+            if(readTypes == ReadTypes.Files)
+            {
+                return src.ListFilesInDirectory(src.IOPath);
+            }
+            return src.ListFoldersInDirectory(src.IOPath);
         }
 
-       public string CreateChildrenDirectoriesAtDestination(IActivityIOOperationsEndPoint dst,IActivityIOOperationsEndPoint src, Dev2CRUDOperationTO args)
-       {
-           IEnumerable<string> activityIOPaths = src.ListDirectory(src.IOPath).Where(path => src.PathIs(path) == enPathType.Directory).Select(path => path.Path.Replace(src.IOPath.Path,""));
-           string origDstPath = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(dst.IOPath.Path);
-           foreach(var activityIOPath in activityIOPaths)
-           {
-               IActivityIOPath pathFromString = ActivityIOFactory.CreatePathFromString(origDstPath + activityIOPath,dst.IOPath.Username,dst.IOPath.Password);
-               dst.CreateDirectory(pathFromString, args);
-           }
+        public string CreateChildrenDirectoriesAtDestination(IActivityIOOperationsEndPoint dst, IActivityIOOperationsEndPoint src, Dev2CRUDOperationTO args)
+        {
+            IEnumerable<string> activityIOPaths = src.ListDirectory(src.IOPath).Where(path => src.PathIs(path) == enPathType.Directory).Select(path => path.Path.Replace(src.IOPath.Path, ""));
+            string origDstPath = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(dst.IOPath.Path);
+            foreach(var activityIOPath in activityIOPaths)
+            {
+                IActivityIOPath pathFromString = ActivityIOFactory.CreatePathFromString(origDstPath + activityIOPath, dst.IOPath.Username, dst.IOPath.Password);
+                dst.CreateDirectory(pathFromString, args);
+            }
 
-           return "";
-       }
+            return "";
+        }
 
         public string CreateEndPoint(IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args, bool createToFile)
         {
@@ -186,17 +194,17 @@ namespace Dev2.PathOperations
 
             int pos = startDepth;
 
-            while (pos >= 0 && deepestIndex == -1)
+            while(pos >= 0 && deepestIndex == -1)
             {
-                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(dirParts[pos],activityIOPath.Username,activityIOPath.Password);
+                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(dirParts[pos], activityIOPath.Username, activityIOPath.Password);
                 try
                 {
-                    if (dst.ListDirectory(tmpPath) != null)
+                    if(dst.ListDirectory(tmpPath) != null)
                     {
                         deepestIndex = pos;
                     }
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     ServerLogger.LogError(ex);
                     // nothing to do, we swallow to keep going and find the deepest index a directory does exist at
@@ -210,9 +218,9 @@ namespace Dev2.PathOperations
 
             IActivityIOPath origPath = dst.IOPath;
 
-            while (pos <= startDepth && ok)
+            while(pos <= startDepth && ok)
             {
-                IActivityIOPath toCreate = ActivityIOFactory.CreatePathFromString(dirParts[pos],dst.IOPath.Username,dst.IOPath.Password);
+                IActivityIOPath toCreate = ActivityIOFactory.CreatePathFromString(dirParts[pos], dst.IOPath.Username, dst.IOPath.Password);
                 dst.IOPath = toCreate;
                 ok = CreateDirectory(dst, args);
                 pos++;
@@ -221,13 +229,13 @@ namespace Dev2.PathOperations
             dst.IOPath = origPath;
 
             // dir create failed
-            if (!ok)
+            if(!ok)
             {
                 result = resultBad;
             }
-            else if (dst.PathIs(dst.IOPath) == enPathType.File && createToFile && ok)
+            else if(dst.PathIs(dst.IOPath) == enPathType.File && createToFile && ok)
             {
-                if (!CreateFile(dst, args))
+                if(!CreateFile(dst, args))
                 {
                     result = resultBad;
                 }
@@ -243,28 +251,28 @@ namespace Dev2.PathOperations
 
             // create any missing directories on the endpoint
             string opStatus = CreateEndPoint(dst, args, false);
-            if (!opStatus.Equals("Success"))
+            if(!opStatus.Equals("Success"))
             {
                 throw new Exception("Recursive Directory Create Failed For [ " + dst.IOPath.Path + " ]");
             }
 
-            if (src.RequiresLocalTmpStorage() && dst.RequiresLocalTmpStorage())
+            if(src.RequiresLocalTmpStorage() && dst.RequiresLocalTmpStorage())
             {
-                if (src.PathIs(src.IOPath) == enPathType.File)
+                if(src.PathIs(src.IOPath) == enPathType.File)
                 {
-                    if (!Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
+                    if(!Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
                     {
                         // single file fetch
                         var tmp = CreateTmpFile();
                         using(var s = src.Get(src.IOPath))
                         {
                             File.WriteAllBytes(tmp, s.ToByteArray());
-                            using (var tempFileStream = new FileStream(tmp, FileMode.Open)) // NOTE: Not sure why we need to do a second stream using the temp file?!?!?!
+                            using(var tempFileStream = new FileStream(tmp, FileMode.Open)) // NOTE: Not sure why we need to do a second stream using the temp file?!?!?!
                             {
-                                if (!src.IOPath.Path.StartsWith("ftp://") && !src.IOPath.Path.StartsWith("ftps://"))
+                                if(!src.IOPath.Path.StartsWith("ftp://") && !src.IOPath.Path.StartsWith("ftps://"))
                                 {
                                     var fileInfo = new FileInfo(src.IOPath.Path);
-                                    if (fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))
+                                    if(fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))
                                     {
                                         if(dst.Put(tempFileStream, dst.IOPath, args, fileInfo.Directory) < 0)
                                         {
@@ -297,7 +305,7 @@ namespace Dev2.PathOperations
                     else
                     {
                         // we have star wild cards to deal with
-                        if (!TransferDirectoryContents(src, dst, args, false))
+                        if(!TransferDirectoryContents(src, dst, args, false))
                         {
                             result = resultBad;
                         }
@@ -307,7 +315,7 @@ namespace Dev2.PathOperations
                 {
                     // we have a directory to fetch
                     // we have star wild cards to deal with
-                    if (!TransferDirectoryContents(src, dst, args, false))
+                    if(!TransferDirectoryContents(src, dst, args, false))
                     {
                         result = resultBad;
                     }
@@ -315,9 +323,9 @@ namespace Dev2.PathOperations
             }
             else
             {
-                if (src.PathIs(src.IOPath) == enPathType.File)
+                if(src.PathIs(src.IOPath) == enPathType.File)
                 {
-                    if (!Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
+                    if(!Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
                     {
                         // single file
                         using(Stream s = src.Get(src.IOPath))
@@ -332,19 +340,19 @@ namespace Dev2.PathOperations
 
                             IActivityIOPath tmpDst = ActivityIOFactory.CreatePathFromString(dstPath, dst.IOPath.Username, dst.IOPath.Password);
 
-                            if (IsNotFTPTypePath(src))
+                            if(IsNotFTPTypePath(src))
                             {
                                 var fileInfo = new FileInfo(src.IOPath.Path);
-                                if (fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))
+                                if(fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))
                                 {
-                                    if (dst.Put(s, tmpDst, args, fileInfo.Directory) < 0)
+                                    if(dst.Put(s, tmpDst, args, fileInfo.Directory) < 0)
                                     {
                                         result = resultBad;
                                     }
                                 }
                                 else
                                 {
-                                    if (dst.Put(s, tmpDst, args, null) < 0)
+                                    if(dst.Put(s, tmpDst, args, null) < 0)
                                     {
                                         result = resultBad;
                                     }
@@ -352,7 +360,7 @@ namespace Dev2.PathOperations
                             }
                             else
                             {
-                                if (dst.Put(s, tmpDst, args, null) < 0)
+                                if(dst.Put(s, tmpDst, args, null) < 0)
                                 {
                                     result = resultBad;
                                 }
@@ -365,7 +373,7 @@ namespace Dev2.PathOperations
                     {
                         // we have star wild cards
                         // we have star wild cards to deal with
-                        if (!TransferDirectoryContents(src, dst, args, false))
+                        if(!TransferDirectoryContents(src, dst, args, false))
                         {
                             result = resultBad;
                         }
@@ -375,7 +383,7 @@ namespace Dev2.PathOperations
                 {
                     // we have a dir
                     // we have star wild cards to deal with
-                    if (!TransferDirectoryContents(src, dst, args, false))
+                    if(!TransferDirectoryContents(src, dst, args, false))
                     {
                         result = resultBad;
                     }
@@ -390,16 +398,16 @@ namespace Dev2.PathOperations
 
             string result = resultOk;
 
-            if (src.RequiresLocalTmpStorage() && dst.RequiresLocalTmpStorage())
+            if(src.RequiresLocalTmpStorage() && dst.RequiresLocalTmpStorage())
             {
-                if (src.PathIs(src.IOPath) == enPathType.File)
+                if(src.PathIs(src.IOPath) == enPathType.File)
                 {
-                    if (!Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
+                    if(!Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
                     {
                         // single file fetch
 
                         // If file not present
-                        if (args.Overwrite || !dst.PathExist(dst.IOPath))
+                        if(args.Overwrite || !dst.PathExist(dst.IOPath))
                         {
                             using(Stream s = src.Get(src.IOPath))
                             {
@@ -425,7 +433,7 @@ namespace Dev2.PathOperations
                     else
                     {
                         // we have star wild cards to deal with
-                        if (!TransferDirectoryContents(src, dst, args, true))
+                        if(!TransferDirectoryContents(src, dst, args, true))
                         {
                             result = resultBad;
                         }
@@ -434,7 +442,7 @@ namespace Dev2.PathOperations
                 else
                 {
                     // we have star wild cards to deal with
-                    if (!TransferDirectoryContents(src, dst, args, true))
+                    if(!TransferDirectoryContents(src, dst, args, true))
                     {
                         result = resultBad;
                     }
@@ -442,9 +450,9 @@ namespace Dev2.PathOperations
             }
             else
             {
-                if (src.PathIs(src.IOPath) == enPathType.File)
+                if(src.PathIs(src.IOPath) == enPathType.File)
                 {
-                    if (!Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
+                    if(!Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
                     {
                         // single file
                         if(args.Overwrite || !dst.PathExist(dst.IOPath))
@@ -461,7 +469,7 @@ namespace Dev2.PathOperations
                     else
                     {
                         // we have star wild cards to deal with
-                        if (!TransferDirectoryContents(src, dst, args, true))
+                        if(!TransferDirectoryContents(src, dst, args, true))
                         {
                             result = resultBad;
                         }
@@ -470,7 +478,7 @@ namespace Dev2.PathOperations
                 else
                 {
                     // we have star wild cards to deal with
-                    if (!TransferDirectoryContents(src, dst, args, true))
+                    if(!TransferDirectoryContents(src, dst, args, true))
                     {
                         result = resultBad;
                     }
@@ -485,24 +493,24 @@ namespace Dev2.PathOperations
             // tmp zip file location
             string tmpZip = CreateTmpFile();
 
-            if (src.PathIs(src.IOPath) == enPathType.Directory || Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
+            if(src.PathIs(src.IOPath) == enPathType.Directory || Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
             {
 
                 // tmp dir for files required
                 string tmpDir = CreateTmpDirectory();
-                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(tmpDir,src.IOPath.Username,src.IOPath.Password);
+                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(tmpDir, src.IOPath.Username, src.IOPath.Password);
                 IActivityIOOperationsEndPoint tmpEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
                 Dev2CRUDOperationTO myArgs = new Dev2CRUDOperationTO(true);
                 // stage contents to local folder
                 TransferDirectoryContents(src, tmpEndPoint, myArgs, false);
 
                 // get directory contents
-                IList<IActivityIOPath> toAdd = ListDirectory(tmpEndPoint);
+                IList<IActivityIOPath> toAdd = ListDirectory(tmpEndPoint, ReadTypes.FilesAndFolders);
 
-                using (ZipFile zip = new ZipFile())
+                using(ZipFile zip = new ZipFile())
                 {
                     // set password if exist
-                    if (args.ArchivePassword != string.Empty)
+                    if(args.ArchivePassword != string.Empty)
                     {
                         zip.Password = args.ArchivePassword;
                     }
@@ -511,7 +519,7 @@ namespace Dev2.PathOperations
                     zip.CompressionLevel = ExtractZipCompressionLevel(args.CompressionRatio);
 
                     // add all files to archive
-                    foreach (IActivityIOPath p in toAdd)
+                    foreach(IActivityIOPath p in toAdd)
                     {
                         zip.AddFile(p.Path, ".");
                     }
@@ -526,7 +534,7 @@ namespace Dev2.PathOperations
                 // normal not wild char file && not directory
                 string packFile = src.IOPath.Path;
 
-                if (src.RequiresLocalTmpStorage())
+                if(src.RequiresLocalTmpStorage())
                 {
                     string tmpFile = CreateTmpFile();
                     packFile = tmpFile;
@@ -535,10 +543,10 @@ namespace Dev2.PathOperations
                     s.Close();
                 }
 
-                using (ZipFile zip = new ZipFile())
+                using(ZipFile zip = new ZipFile())
                 {
                     // set password if exist
-                    if (args.ArchivePassword != string.Empty)
+                    if(args.ArchivePassword != string.Empty)
                     {
                         zip.Password = args.ArchivePassword;
                     }
@@ -589,19 +597,19 @@ namespace Dev2.PathOperations
 
                 result = resultOk;
 
-                if (IsNotFTPTypePath(src))
+                if(IsNotFTPTypePath(src))
                 {
                     var fileInfo = new FileInfo(src.IOPath.Path);
-                    if (fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))
+                    if(fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))
                     {
-                        if (dst.Put(s2, dst.IOPath, zipTransferArgs, fileInfo.Directory) < 0)
+                        if(dst.Put(s2, dst.IOPath, zipTransferArgs, fileInfo.Directory) < 0)
                         {
                             result = resultBad;
                         }
                     }
                     else
                     {
-                        if (dst.Put(s2, dst.IOPath, zipTransferArgs, null) < 0)
+                        if(dst.Put(s2, dst.IOPath, zipTransferArgs, null) < 0)
                         {
                             result = resultBad;
                         }
@@ -609,7 +617,7 @@ namespace Dev2.PathOperations
                 }
                 else
                 {
-                    if (dst.Put(s2, dst.IOPath, zipTransferArgs, null) < 0)
+                    if(dst.Put(s2, dst.IOPath, zipTransferArgs, null) < 0)
                     {
                         result = resultBad;
                     }
@@ -626,7 +634,7 @@ namespace Dev2.PathOperations
         {
             return IsNotFTPTypePath(src.IOPath);
         }
-        
+
         static bool IsNotFTPTypePath(IActivityIOPath src)
         {
             return !src.Path.StartsWith("ftp://") && !src.Path.StartsWith("ftps://") && !src.Path.StartsWith("sftp://");
@@ -636,11 +644,11 @@ namespace Dev2.PathOperations
         {
             string zipFile = src.IOPath.Path;
             ZipFile zip = null;
-            if (src.RequiresLocalTmpStorage())
+            if(src.RequiresLocalTmpStorage())
             {
 
                 string tmpZip = CreateTmpFile();
-                using (Stream s = src.Get(src.IOPath))
+                using(Stream s = src.Get(src.IOPath))
                 {
 
                     File.WriteAllBytes(tmpZip, s.ToByteArray());
@@ -658,36 +666,36 @@ namespace Dev2.PathOperations
 
             string unzipDirectory = dst.IOPath.Path;
 
-            if (dst.RequiresLocalTmpStorage())
+            if(dst.RequiresLocalTmpStorage())
             {
                 // unzip locally then Put the contents of the archive to the dst end-point
                 unzipDirectory = CreateTmpDirectory();
             }
 
             // var stream = src.Get(src.IOPath);
-            if (zip != null)
+            if(zip != null)
             {
-                using (zip)
+                using(zip)
                 {
 
-                    if (!string.IsNullOrEmpty(args.ArchivePassword))
+                    if(!string.IsNullOrEmpty(args.ArchivePassword))
                     {
                         zip.Password = args.ArchivePassword;
                     }
 
-                    foreach (ZipEntry ze in zip)
+                    foreach(ZipEntry ze in zip)
                     {
                         ze.Extract(unzipDirectory,
-                            args.Overwrite ? 
+                            args.Overwrite ?
                             ExtractExistingFileAction.OverwriteSilently :
                             ExtractExistingFileAction.DoNotOverwrite);
                     }
                 }
 
             }
-            if (dst.RequiresLocalTmpStorage())
+            if(dst.RequiresLocalTmpStorage())
             {
-                IActivityIOPath newSrc = ActivityIOFactory.CreatePathFromString(unzipDirectory,dst.IOPath.Username,dst.IOPath.Password);
+                IActivityIOPath newSrc = ActivityIOFactory.CreatePathFromString(unzipDirectory, dst.IOPath.Username, dst.IOPath.Password);
                 IActivityIOOperationsEndPoint newSrcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(newSrc);
                 Dev2CRUDOperationTO newArgs = new Dev2CRUDOperationTO(false);
                 Move(newSrcEP, dst, newArgs);
@@ -695,9 +703,9 @@ namespace Dev2.PathOperations
             }
 
             // clean up local tmp
-            if (src.RequiresLocalTmpStorage())
+            if(src.RequiresLocalTmpStorage())
             {
-                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(zipFile,src.IOPath.Username,src.IOPath.Password);
+                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(zipFile, src.IOPath.Username, src.IOPath.Password);
                 IActivityIOOperationsEndPoint tmpEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
                 Delete(tmpEP);
             }
@@ -723,7 +731,7 @@ namespace Dev2.PathOperations
             if(IsNotFTPTypePath(path))
             {
                 tmp = path.Path.Split(splitOn);
-                
+
             }
             else
             {
@@ -736,20 +744,20 @@ namespace Dev2.PathOperations
             // remove trailing file entry if exist
             string candiate = tmp[tmp.Length - 1];
             int len = tmp.Length;
-            if (candiate.Contains("*.") || candiate.Contains("."))
+            if(candiate.Contains("*.") || candiate.Contains("."))
             {
                 len = (tmp.Length - 1);
             }
 
             string builderPath = "";
             // build up URI parts from root down
-            for (int i = 0; i < len; i++)
+            for(int i = 0; i < len; i++)
             {
                 builderPath += tmp[i] + splitter;
                 if(!IsNotFTPTypePath(path) && !builderPath.Contains("://"))
                 {
                     var splitValues = path.Path.Split(new[] { "://" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                    builderPath = splitValues[0]+"://" + builderPath;
+                    builderPath = splitValues[0] + "://" + builderPath;
                 }
                 result.Add(builderPath);
             }
@@ -761,7 +769,7 @@ namespace Dev2.PathOperations
         {
             bool result = true;
 
-            if (!dst.CreateDirectory(dst.IOPath, args))
+            if(!dst.CreateDirectory(dst.IOPath, args))
             {
                 result = false;
             }
@@ -778,7 +786,7 @@ namespace Dev2.PathOperations
             using(Stream s = new MemoryStream(File.ReadAllBytes(tmp)))
             {
 
-                if (dst.Put(s, dst.IOPath, args, null) < 0)
+                if(dst.Put(s, dst.IOPath, args, null) < 0)
                 {
                     result = false;
                 }
@@ -797,12 +805,12 @@ namespace Dev2.PathOperations
             //19.09.2012: massimo.guerrera - Changed to default instead of none
             Ionic.Zlib.CompressionLevel clvl = Ionic.Zlib.CompressionLevel.Default;
 
-            while (pos < lvls.Length && lvls.GetValue(pos).ToString() != lvl)
+            while(pos < lvls.Length && lvls.GetValue(pos).ToString() != lvl)
             {
                 pos++;
             }
 
-            if (pos < lvls.Length)
+            if(pos < lvls.Length)
             {
                 clvl = (Ionic.Zlib.CompressionLevel)lvls.GetValue(pos);
             }
@@ -828,13 +836,13 @@ namespace Dev2.PathOperations
             // as it stands, we will create a new folder 
             // check if the directory we want to copy into exists
 
-            if (!dst.PathExist(dst.IOPath))
+            if(!dst.PathExist(dst.IOPath))
             {
                 CreateDirectory(dst, args);
             }
 
             // get each file, then put it to the correct location
-            foreach (IActivityIOPath p in dirContents)
+            foreach(IActivityIOPath p in dirContents)
             {
                 Stream s = null;
                 try
@@ -843,11 +851,11 @@ namespace Dev2.PathOperations
                     // Sashen : 22-08-2012 - This used to check if the directory was present, but instead should check
                     // if the files exists in a directory, the name of the directory does imply that only the contents
                     // should be moved
-                    if (dst.PathIs(dst.IOPath) == enPathType.Directory)
+                    if(dst.PathIs(dst.IOPath) == enPathType.Directory)
                     {
-                        
-                        IActivityIOPath cpPath = ActivityIOFactory.CreatePathFromString(string.Format("{0}{1}{2}", origDstPath, dst.PathSeperator(), (Dev2ActivityIOPathUtils.ExtractFileName(p.Path))),dst.IOPath.Username,dst.IOPath.Password);
-                        if (args.Overwrite || !dst.PathExist(cpPath))
+
+                        IActivityIOPath cpPath = ActivityIOFactory.CreatePathFromString(string.Format("{0}{1}{2}", origDstPath, dst.PathSeperator(), (Dev2ActivityIOPathUtils.ExtractFileName(p.Path))), dst.IOPath.Username, dst.IOPath.Password);
+                        if(args.Overwrite || !dst.PathExist(cpPath))
                         {
                             if(!IsNotFTPTypePath(p))
                             {
@@ -875,7 +883,7 @@ namespace Dev2.PathOperations
                                 IActivityIOOperationsEndPoint tmpEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
                                 var whereToPut = GetWhereToPut(src, dst);
 
-                                if (tmpEP.Put(s, tmpEP.IOPath, args, whereToPut) < 0)
+                                if(tmpEP.Put(s, tmpEP.IOPath, args, whereToPut) < 0)
                                 {
                                     result = false;
                                 }
@@ -883,13 +891,13 @@ namespace Dev2.PathOperations
                                 s.Dispose();
                             }
                             // if move op, delete orig
-                            if (removeSrc)
+                            if(removeSrc)
                             {
                                 src.Delete(p);
                             }
                         }
                     }
-                    else if (args.Overwrite || !dst.PathExist(dst.IOPath))
+                    else if(args.Overwrite || !dst.PathExist(dst.IOPath))
                     {
                         using(s = src.Get(p))
                         {
@@ -911,15 +919,15 @@ namespace Dev2.PathOperations
                         }
 
                         // if move op, delete orig
-                        if (removeSrc)
+                        if(removeSrc)
                         {
                             src.Delete(p);
                         }
                     }
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
-                    if (s != null)
+                    if(s != null)
                     {
                         s.Close();
                     }
@@ -927,7 +935,7 @@ namespace Dev2.PathOperations
                 }
             }
             // if move op, delete orig
-            if (removeSrc)
+            if(removeSrc)
             {
                 src.Delete(src.IOPath);
             }

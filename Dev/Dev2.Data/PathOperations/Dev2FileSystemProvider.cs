@@ -337,127 +337,7 @@ namespace Dev2.PathOperations
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public IList<IActivityIOPath> ListDirectory(IActivityIOPath src)
         {
-            IList<IActivityIOPath> result = new List<IActivityIOPath>();
-
-            string path = src.Path;
-
-            if(!path.EndsWith("\\") && PathIs(src) == enPathType.Directory)
-            {
-                path += "\\";
-            }
-
-            if(!RequiresAuth(src))
-            {
-                try
-                {
-
-                    IEnumerable<string> dirs = null;
-
-                    if(!Dev2ActivityIOPathUtils.IsStarWildCard(path))
-                    {
-                        if(Directory.Exists(path))
-                        {
-                            dirs = Directory.EnumerateFileSystemEntries(path);
-                        }
-                        else
-                        {
-                            throw new Exception("The Directory does not exist.");
-                        }
-                    }
-                    else
-                    {
-                        // we have a wildchar path ;)
-                        string baseDir = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(path);
-                        string pattern = Dev2ActivityIOPathUtils.ExtractFileName(path);
-
-                        dirs = Directory.EnumerateFileSystemEntries(baseDir, pattern);
-                    }
-
-                    if(dirs != null)
-                    {
-                        foreach(string d in dirs)
-                        {
-                            result.Add(ActivityIOFactory.CreatePathFromString(d, src.Username, src.Password));
-                        }
-                    }
-                }
-                catch(Exception)
-                {
-                    throw new Exception("Directory not found [ " + src.Path + " ] ");
-                }
-            }
-            else
-            {
-                // handle UNC path
-                SafeTokenHandle safeTokenHandle;
-
-                try
-                {
-                    bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
-
-                    if(loginOk)
-                    {
-                        using(safeTokenHandle)
-                        {
-
-                            WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                            using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
-                            {
-                                // Do the operation here
-
-                                try
-                                {
-
-                                    IEnumerable<string> dirs = null;
-
-                                    if(!Dev2ActivityIOPathUtils.IsStarWildCard(path))
-                                    {
-                                        dirs = Directory.EnumerateFileSystemEntries(path);
-                                    }
-                                    else
-                                    {
-                                        // we have a wildchar path ;)
-                                        string baseDir = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(path);
-                                        string pattern = Dev2ActivityIOPathUtils.ExtractFileName(path);
-
-                                        dirs = Directory.EnumerateFileSystemEntries(baseDir, pattern);
-                                    }
-
-                                    if(dirs != null)
-                                    {
-                                        foreach(string d in dirs)
-                                        {
-                                            result.Add(ActivityIOFactory.CreatePathFromString(d, src.Username, src.Password));
-                                        }
-                                    }
-
-                                }
-                                catch(Exception)
-                                {
-                                    throw new Exception("Directory not found [ " + src.Path + " ] ");
-                                }
-
-                                // remove impersonation now
-                                impersonatedUser.Undo();
-                                newID.Dispose();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // login failed
-                        throw new Exception("Failed to authenticate with user [ " + src.Username + " ] for resource [ " + src.Path + " ] ");
-                    }
-                }
-                catch(Exception ex)
-                {
-                    ServerLogger.LogError(ex);
-                    throw;
-                }
-
-            }
-
-            return result;
+            return ListDirectoriesAccordingToType(src, ReadTypes.FilesAndFolders); 
         }
 
         public string ExtendedDirList(string path, string user, string pass, bool ssl, bool IsNotCertVerifiable)
@@ -710,7 +590,7 @@ namespace Dev2.PathOperations
         /// <returns></returns>
         public IList<IActivityIOPath> ListFoldersInDirectory(IActivityIOPath src)
         {
-            return null;
+            return ListDirectoriesAccordingToType(src, ReadTypes.Folders);    
         }
 
         /// <summary>
@@ -719,7 +599,7 @@ namespace Dev2.PathOperations
         /// <returns></returns>
         public IList<IActivityIOPath> ListFilesInDirectory(IActivityIOPath src)
         {
-            return null;
+            return ListDirectoriesAccordingToType(src,ReadTypes.Files);            
         }
 
         #region Private Methods
@@ -785,6 +665,157 @@ namespace Dev2.PathOperations
             }
 
             return result;
+        }
+
+        private IList<IActivityIOPath> ListDirectoriesAccordingToType(IActivityIOPath src,ReadTypes type)
+        {
+            IList<IActivityIOPath> result = new List<IActivityIOPath>();
+
+            string path = src.Path;
+
+            if(!path.EndsWith("\\") && PathIs(src) == enPathType.Directory)
+            {
+                path += "\\";
+            }
+
+            if(!RequiresAuth(src))
+            {
+                try
+                {
+
+                    IEnumerable<string> dirs = null;
+
+                    if(!Dev2ActivityIOPathUtils.IsStarWildCard(path))
+                    {
+                        if(Directory.Exists(path))
+                        {
+                            dirs = GetDirectoriesForType(path,string.Empty,type);
+                        }
+                        else
+                        {
+                            throw new Exception("The Directory does not exist.");
+                        }
+                    }
+                    else
+                    {
+                        // we have a wildchar path ;)
+                        string baseDir = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(path);
+                        string pattern = Dev2ActivityIOPathUtils.ExtractFileName(path);
+
+                        dirs = GetDirectoriesForType(baseDir, pattern,type);
+                    }
+
+                    if(dirs != null)
+                    {
+                        foreach(string d in dirs)
+                        {
+                            result.Add(ActivityIOFactory.CreatePathFromString(d, src.Username, src.Password));
+                        }
+                    }
+                }
+                catch(Exception)
+                {
+                    throw new Exception("Directory not found [ " + src.Path + " ] ");
+                }
+            }
+            else
+            {
+                // handle UNC path
+                SafeTokenHandle safeTokenHandle;
+
+                try
+                {
+                    bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+
+                    if(loginOk)
+                    {
+                        using(safeTokenHandle)
+                        {
+
+                            WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                            using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                            {
+                                // Do the operation here
+
+                                try
+                                {
+
+                                    IEnumerable<string> dirs = null;
+
+                                    if(!Dev2ActivityIOPathUtils.IsStarWildCard(path))
+                                    {
+                                        dirs = GetDirectoriesForType(path,string.Empty,type);
+                                    }
+                                    else
+                                    {
+                                        // we have a wildchar path ;)
+                                        string baseDir = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(path);
+                                        string pattern = Dev2ActivityIOPathUtils.ExtractFileName(path);
+
+                                        dirs = GetDirectoriesForType(baseDir, pattern,type);
+                                    }
+
+                                    if(dirs != null)
+                                    {
+                                        foreach(string d in dirs)
+                                        {
+                                            result.Add(ActivityIOFactory.CreatePathFromString(d, src.Username, src.Password));
+                                        }
+                                    }
+
+                                }
+                                catch(Exception)
+                                {
+                                    throw new Exception("Directory not found [ " + src.Path + " ] ");
+                                }
+
+                                // remove impersonation now
+                                impersonatedUser.Undo();
+                                newID.Dispose();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // login failed
+                        throw new Exception("Failed to authenticate with user [ " + src.Username + " ] for resource [ " + src.Path + " ] ");
+                    }
+                }
+                catch(Exception ex)
+                {
+                    ServerLogger.LogError(ex);
+                    throw;
+                }
+
+            }
+
+            return result;   
+        }
+
+        private IEnumerable<string> GetDirectoriesForType(string path, string pattern, ReadTypes type)
+        {            
+            if(type == ReadTypes.Files)
+            {
+                if(string.IsNullOrEmpty(pattern))
+                {
+                    return Directory.EnumerateFiles(path);    
+                }
+                return Directory.EnumerateFiles(path, pattern);
+            }
+            if(type == ReadTypes.Folders)
+            {
+                if(string.IsNullOrEmpty(pattern))
+                {
+                    return Directory.EnumerateDirectories(path);
+                }
+                return Directory.EnumerateDirectories(path, pattern);
+            }
+
+            if(string.IsNullOrEmpty(pattern))
+            {
+                return Directory.EnumerateFileSystemEntries(path);
+            }
+            return Directory.EnumerateFileSystemEntries(path, pattern);            
         }
 
         #endregion

@@ -39,7 +39,7 @@ namespace Dev2.Tests.Activities.Mocks
             return "Successful";
         }
 
-        public IList<IActivityIOPath> ListDirectory(IActivityIOOperationsEndPoint src)
+        public IList<IActivityIOPath> ListDirectory(IActivityIOOperationsEndPoint src,ReadTypes readTypes)
         {
             throw new NotImplementedException();
         }

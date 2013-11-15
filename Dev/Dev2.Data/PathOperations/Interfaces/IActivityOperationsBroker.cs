@@ -44,8 +44,9 @@ namespace Dev2.PathOperations
         /// List the contents of a folder
         /// </summary>
         /// <param name="src"></param>
+        /// <param name="readTypes"></param>
         /// <returns></returns>
-        IList<IActivityIOPath> ListDirectory(IActivityIOOperationsEndPoint src);
+        IList<IActivityIOPath> ListDirectory(IActivityIOOperationsEndPoint src,ReadTypes readTypes);
 
         /// <summary>
         /// Create a directory or file per the value of args

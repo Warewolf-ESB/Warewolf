@@ -108,7 +108,15 @@ namespace Dev2.Integration.Tests.Activities
             File.Delete(path);
         }
 
+        private void CreateDirectory(string path)
+        {
+            Directory.CreateDirectory(path);
+        }
 
+        private void DeleteDirectory(string path)
+        {
+            Directory.Delete(path, true);
+        }
 
         [TestCleanup]
         public void RemoveFiles()
@@ -622,6 +630,70 @@ namespace Dev2.Integration.Tests.Activities
         #endregion Delete Tests
 
         #region ListDirectory Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("Dev2FileSystemProvider_ListFoldersInDirectory")]
+        public void Dev2FileSystemProvider_ListFoldersInDirectory_Normal_AllFoldersInDirectoryReturned()
+        {
+            //------------Setup for test--------------------------
+            var dev2FileSystemProvider = new Dev2FileSystemProvider();
+            //string baseFolderDirectory = Path.GetTempPath() + @"\ListDirectoryTestFolder";
+            string tmpFolderLocal = Path.GetTempPath() + @"\ListDirectoryTestFolder\Folder1";
+            string tmpFolderLocal2 = Path.GetTempPath() + @"\ListDirectoryTestFolder\Folder2";
+            string tmpFileLocal1 = Path.GetTempPath() + @"\ListDirectoryTestFolder\File1.txt";
+            string tmpFileLocal2 = Path.GetTempPath() + @"\ListDirectoryTestFolder\File2.txt";
+            CreateDirectory(tmpFolderLocal);
+            CreateDirectory(tmpFolderLocal2);
+            CreateLocalPath(tmpFileLocal1);
+            CreateLocalPath(tmpFileLocal2);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(Path.GetTempPath() + @"\ListDirectoryTestFolder", "", "");            
+            
+            //------------Execute Test---------------------------
+
+            IList<IActivityIOPath> folderList = dev2FileSystemProvider.ListFoldersInDirectory(path);
+
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual(2,folderList.Count);
+            Assert.IsTrue(folderList[0].Path.EndsWith("Folder1"));
+            Assert.IsTrue(folderList[1].Path.EndsWith("Folder2"));
+
+            DeleteDirectory(Path.GetTempPath() + @"\ListDirectoryTestFolder");
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("Dev2FileSystemProvider_ListFilesInDirectory")]
+        public void Dev2FileSystemProvider_ListFilesInDirectory_Normal_AllFilesInDirectoryReturned()
+        {
+            //------------Setup for test--------------------------
+            var dev2FileSystemProvider = new Dev2FileSystemProvider();
+            //string baseFolderDirectory = Path.GetTempPath() + @"\ListDirectoryTestFolder";
+            string tmpFolderLocal = Path.GetTempPath() + @"\ListDirectoryTestFolder\Folder1";
+            string tmpFolderLocal2 = Path.GetTempPath() + @"\ListDirectoryTestFolder\Folder2";
+            string tmpFileLocal1 = Path.GetTempPath() + @"\ListDirectoryTestFolder\File1.txt";
+            string tmpFileLocal2 = Path.GetTempPath() + @"\ListDirectoryTestFolder\File2.txt";
+            CreateDirectory(tmpFolderLocal);
+            CreateDirectory(tmpFolderLocal2);
+            CreateLocalPath(tmpFileLocal1);
+            CreateLocalPath(tmpFileLocal2);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(Path.GetTempPath() + @"\ListDirectoryTestFolder", "", "");
+
+            //------------Execute Test---------------------------
+
+            IList<IActivityIOPath> fileList = dev2FileSystemProvider.ListFilesInDirectory(path);
+
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual(2, fileList.Count);
+            Assert.IsTrue(fileList[0].Path.EndsWith("File1.txt"));
+            Assert.IsTrue(fileList[1].Path.EndsWith("File2.txt"));
+
+            DeleteDirectory(Path.GetTempPath() + @"\ListDirectoryTestFolder");
+        }
 
         [TestMethod]
         public void ListDirectory_With_Contents_Expected_ListAllFiles()
