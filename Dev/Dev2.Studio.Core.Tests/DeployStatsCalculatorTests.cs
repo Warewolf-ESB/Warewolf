@@ -438,6 +438,7 @@ namespace Dev2.Core.Tests
 
                 bool expected = false;
                 bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
+                Assert.AreEqual(expected, actual);
             }
             catch(ReflectionTypeLoadException e)
             {
