@@ -22,7 +22,6 @@ namespace Dev2.Core.Tests.Dialogs
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
-    [Ignore]//Ashley: 15-11-2013 background nullref exception in navigationviewmodel load resources async during unit test run in environment (round 1)
     public class ResourcePickerDialogTests
     {
 
