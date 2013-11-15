@@ -30,7 +30,6 @@ namespace Dev2.Core.Tests
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
-    [Ignore]//Ashley: These tests contruct new deploy view models which contruct new navigation view models for source and destination with load resources using the regular async work rather than the synchronous async worker ussually used for unit testing
     public class DeployViewModelTest
     {
         #region Class Members
