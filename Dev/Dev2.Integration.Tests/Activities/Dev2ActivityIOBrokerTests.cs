@@ -692,7 +692,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Setup for test--------------------------
             IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
             Dev2PutRawOperationTO opTO = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, "abc");
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_SFTP_Path + string.Format("/testing/{0}.txt", "ThisIsATestFile"), ParserStrings.PathOperations_SFTP_Username, ParserStrings.PathOperations_SFTP_Password);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_SFTP_Path + string.Format("/testing/{0}.txt", Guid.NewGuid()), ParserStrings.PathOperations_SFTP_Username, ParserStrings.PathOperations_SFTP_Password);
             IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             string result = broker.PutRaw(endPoint, opTO);
             //------------Assert Preconditions-------------------

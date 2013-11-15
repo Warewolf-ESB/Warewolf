@@ -262,6 +262,20 @@ namespace Dev2.Integration.Tests.Activities
             //------------Execute Test---------------------------
             FTPPro.Get(path);
             //------------Assert Results-------------------------
+        } 
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Dev2FTPProvider_Get")]
+        public void Dev2FTPProvider_Get_SFTPCorrectFile_DataReturned()
+        {
+            //------------Setup for test--------------------------
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_SFTP_Path + "/testing/ThisIsATestFile.txt", ParserStrings.PathOperations_SFTP_Username, ParserStrings.PathOperations_SFTP_Password);
+            IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
+            //------------Execute Test---------------------------
+            var textReader = new StreamReader(FTPPro.Get(path));
+            //------------Assert Results-------------------------
+            Assert.AreEqual("this is my test data", textReader.ReadToEnd());
         }
 
         [TestMethod]
@@ -325,6 +339,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             Assert.IsTrue(lengthOfWrittenBytes>0);
             Assert.AreEqual(byteArray.Length,lengthOfWrittenBytes);
+            FTPPro.Delete(path);
         }
 
 
