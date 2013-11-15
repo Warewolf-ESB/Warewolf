@@ -8,12 +8,13 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Explorer;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ExplorerViewModelTests
     {
         [TestMethod]

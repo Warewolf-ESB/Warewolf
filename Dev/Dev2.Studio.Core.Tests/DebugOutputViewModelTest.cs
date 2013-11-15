@@ -7,31 +7,28 @@ using System.Linq.Expressions;
 using System.Security.Principal;
 using Caliburn.Micro;
 using Dev2.Composition;
-using Dev2.Core.Tests.Utils;
 using Dev2.Diagnostics;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Diagnostics;
-using Dev2.Studio.Factory;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.Webs;
-using Dev2.Threading;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public partial class DebugOutputViewModelTest
     {
         static Mock<IResourceRepository> _resourceRepo = new Mock<IResourceRepository>();

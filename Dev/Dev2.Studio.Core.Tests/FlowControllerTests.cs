@@ -2,21 +2,20 @@
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Windows.Markup;
-using Caliburn.Micro;
 using Dev2.Core.Tests.Environments;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FlowControllerTests
     {
         [TestMethod]
