@@ -17,7 +17,8 @@ using Moq;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DeployStatsCalculatorTests
     {
         Mock<IEnvironmentModel> _mockEnvironmentModel;
