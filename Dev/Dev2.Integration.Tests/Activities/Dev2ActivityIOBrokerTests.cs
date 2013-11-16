@@ -169,27 +169,6 @@ namespace Dev2.Integration.Tests.Activities
         }
 
         /// <summary>
-        /// Movefile file system to file system no overwrite expected_ file copied.
-        /// </summary>
-        [TestMethod]
-        public void MoveFile_FileSystemToFileSystem_NoOverwrite_Expected_FileCopied()
-        {
-            Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
-            string tmp = System.IO.Path.GetTempFileName();
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-            IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-
-            string result = broker.Move(scrEndPoint, dstEndPoint, opTO);
-
-            File.Delete(tmp);
-
-            Assert.AreEqual("Success", result);
-        }
-
-        /// <summary>
         /// Movefile file system to file system overwrite expected file copied and overwritten in new location.
         /// </summary>
         [TestMethod]
@@ -2044,6 +2023,324 @@ namespace Dev2.Integration.Tests.Activities
 
             Assert.AreEqual("Success", result);
         }
+
+        #endregion
+
+        #region Move Unit Tests
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_Move")]
+        public void Dev2ActivityIOBroker_Move_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        {
+            const bool overWrite = false;
+            const string sourceData = "some source string data";
+            const string destinationData = "some destination string data";
+            const string sourceFileName = "source.txt";
+            dynamic source = CreateEndPoint(sourceFileName, sourceData, false, true);
+            dynamic destination = CreateEndPoint("", destinationData, false, false, true);
+            var moveTO = new Dev2CRUDOperationTO(overWrite);
+            //------------Execute Test---------------------------
+            var result = ActivityIOFactory.CreateOperationsBroker().Move(source.EndPoint, destination.EndPoint, moveTO);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Success", result);
+            Assert.IsTrue(Directory.Exists(destination.FilePath));
+            string destinationFilePath = Path.Combine(destination.FilePath, sourceFileName);
+            Assert.IsTrue(File.Exists(destinationFilePath));
+            var contents = File.ReadAllText(destinationFilePath);
+            Assert.IsTrue(contents.Contains(sourceData));
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_Move")]
+        public void Dev2ActivityIOBroker_Move_LocalToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+            const bool isRemoteSource = false;
+            const bool isRemoteDestination = false;
+            const bool createSourceDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool createDestinationDirectory = false;
+            const bool isDestinationADirectory = false;
+
+            RunTestCase(isRemoteSource, isRemoteDestination, sourceFileName, destinationFile, overWrite, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_Move")]
+        public void Dev2ActivityIOBroker_Move_RemoteToRemote_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+            const bool isRemoteSource = true;
+            const bool isRemoteDestination = true;
+            const bool createSourceDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool createDestinationDirectory = false;
+            const bool isDestinationADirectory = false;
+
+            RunTestCase(isRemoteSource, isRemoteDestination, sourceFileName, destinationFile, overWrite, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_Move")]
+        public void Dev2ActivityIOBroker_Move_LocalToRemote_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+            const bool isRemoteSource = false;
+            const bool isRemoteDestination = true;
+            const bool createSourceDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool createDestinationDirectory = false;
+            const bool isDestinationADirectory = false;
+
+            RunTestCase(isRemoteSource, isRemoteDestination, sourceFileName, destinationFile, overWrite, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_Move")]
+        public void Dev2ActivityIOBroker_Move_RemoteToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+            const bool isRemoteSource = true;
+            const bool isRemoteDestination = false;
+            const bool createSourceDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool createDestinationDirectory = false;
+            const bool isDestinationADirectory = false;
+
+            RunTestCase(isRemoteSource, isRemoteDestination, sourceFileName, destinationFile, overWrite, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory);
+        }
+
+        private void RunTestCase(bool isRemoteSource, bool isRemoteDestination, string sourceFileName,
+                                 string destinationFile, bool overWrite, bool createSourceDirectory,
+                                 bool isSourceADirectory, bool createDestinationDirectory, bool isDestinationADirectory)
+        {
+            const string sourceData = "some source string data";
+            const string destinationData = "some destination string data";
+            dynamic source = CreateEndPoint(sourceFileName, sourceData, isRemoteSource, createSourceDirectory,isSourceADirectory);
+            dynamic destination = CreateEndPoint(destinationFile, destinationData, isRemoteDestination, createDestinationDirectory, isDestinationADirectory);
+            var moveTo = new Dev2CRUDOperationTO(overWrite);
+            //------------Execute Test---------------------------
+            var result = ActivityIOFactory.CreateOperationsBroker().Move(source.EndPoint, destination.EndPoint, moveTo);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Success", result);
+
+            if (isRemoteDestination)
+            {
+                string response = PathIOTestingUtils.ReadFileFTP(destination.FilePath, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password);
+                Assert.IsTrue(response.Contains(sourceData));
+               PathIOTestingUtils.DeleteFTP(destination.FilePath, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, false);
+            }
+            else
+            {
+                Assert.IsTrue(File.Exists(destination.FilePath));
+                var contents = File.ReadAllText(destination.FilePath);
+                Assert.IsTrue(contents.Contains(sourceData));
+            }
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_Move")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_Move_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceData = "some source string data";
+            const string destinationData = "some destination string data";
+            const string sourceFileName = "source.txt";
+            dynamic source = CreateEndPoint(sourceFileName, sourceData, false, true ,true);
+            dynamic destination = CreateEndPoint(sourceFileName, destinationData, false, true, true);
+            var moveTO = new Dev2CRUDOperationTO(overWrite);
+            //------------Execute Test---------------------------
+            ActivityIOFactory.CreateOperationsBroker().Move(source.EndPoint, destination.EndPoint, moveTO);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_Move")]
+        public void Dev2ActivityIOBroker_Move_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = true;
+            const string sourceData = "some source string data";
+            const string destinationData = "some destination string data";
+            const string sourceFileName = "source.txt";
+            dynamic source = CreateEndPoint(sourceFileName, sourceData, false, true ,true);
+            dynamic destination = CreateEndPoint(sourceFileName, destinationData, false, true, true);
+            var moveTO = new Dev2CRUDOperationTO(overWrite);
+            //------------Execute Test---------------------------
+            var result = ActivityIOFactory.CreateOperationsBroker().Move(source.EndPoint, destination.EndPoint, moveTO);
+            //
+            Assert.AreEqual("Success", result);
+            Assert.IsTrue(File.Exists(destination.FilePath));
+            var contents = File.ReadAllText(destination.FilePath);
+            Assert.IsTrue(contents.Contains(sourceData)); ;
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_Move")]
+        public void Dev2ActivityIOBroker_Move_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        {
+            const bool overWrite = false;
+            const string sourceData = "some source string data";
+            const string destinationData = "some destination string data";
+            const string sourceFileName = "source.txt";
+            dynamic source = CreateEndPoint(sourceFileName, sourceData, false, true ,true);
+            dynamic destination = CreateEndPoint("", destinationData, false, false,true);
+            var moveTO = new Dev2CRUDOperationTO(overWrite);
+            //------------Execute Test---------------------------
+            var result = ActivityIOFactory.CreateOperationsBroker().Move(source.EndPoint, destination.EndPoint, moveTO);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Success", result);
+            Assert.IsTrue(Directory.Exists(destination.FilePath));
+            string destinationFilePath = Path.Combine(destination.FilePath, sourceFileName);
+            Assert.IsTrue(File.Exists(destinationFilePath));
+            var contents = File.ReadAllText(destinationFilePath);
+            Assert.IsTrue(contents.Contains(sourceData));
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_Move")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_Move_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceData = "some source string data";
+            const string destinationData = "some destination string data";
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+            dynamic source = CreateEndPoint(sourceFileName, sourceData, false, true);
+            dynamic destination = CreateEndPoint(destinationFile, destinationData, false, true);
+            var moveTO = new Dev2CRUDOperationTO(overWrite);
+            //------------Execute Test---------------------------
+            var result = ActivityIOFactory.CreateOperationsBroker().Move(source.EndPoint, destination.EndPoint, moveTO);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_Move")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_Move_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceData = "some source string data";
+            const string destinationData = "some destination string data";
+            const string sourceFileName = "source.txt";
+            dynamic source = CreateEndPoint(sourceFileName, sourceData, false, true);
+            dynamic destination = CreateEndPoint(sourceFileName, destinationData, false, true);
+            var moveTO = new Dev2CRUDOperationTO(overWrite);
+            //------------Execute Test---------------------------
+            ActivityIOFactory.CreateOperationsBroker().Move(source.EndPoint, destination.EndPoint, moveTO);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_Move")]
+        public void Dev2ActivityIOBroker_Move_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        {
+            //------------Setup for test--------------------------
+            const bool overWrite = true;
+            const string sourceData = "some source string data";
+            const string destinationData = "some destination string data";
+            const string sourceFileName = "source.txt";
+            dynamic source = CreateEndPoint(sourceFileName, sourceData, false, true);
+            dynamic destination = CreateEndPoint("", destinationData, false, false,true);
+            var moveTO = new Dev2CRUDOperationTO(overWrite);
+            //------------Execute Test---------------------------
+            var result = ActivityIOFactory.CreateOperationsBroker().Move(source.EndPoint, destination.EndPoint, moveTO);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Success", result);
+            Assert.IsTrue(Directory.Exists(destination.FilePath));
+            string destinationFilePath = Path.Combine(destination.FilePath, sourceFileName);
+            Assert.IsTrue(File.Exists(destinationFilePath));
+            var contents = File.ReadAllText(destinationFilePath);
+            Assert.IsTrue(contents.Contains(sourceData));
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_Move")]
+        public void Dev2ActivityIOBroker_Move_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
+        {
+            const bool overWrite = true;
+            const string sourceData = "some source string data";
+            const string destinationData = "some destination string data";
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+            dynamic source = CreateEndPoint(sourceFileName, sourceData, false, true);
+            dynamic destination = CreateEndPoint(destinationFile, destinationData, false, true);
+            var moveTO = new Dev2CRUDOperationTO(overWrite);
+            //------------Execute Test---------------------------
+            var result = ActivityIOFactory.CreateOperationsBroker().Move(source.EndPoint, destination.EndPoint, moveTO);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Success", result);
+            Assert.IsTrue(File.Exists(destination.FilePath));
+            var contents = File.ReadAllText(destination.FilePath);
+            Assert.IsTrue(contents.Contains(sourceData));
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_CreateEndPoint")]
+        public void Dev2ActivityIOBroker_CreateEndPoint_DestinationIsDirectoryEndsWithASlash_ReturnStatusIsSuccessful()
+        {
+            //------------Setup for test--------------------------
+            string destinationDirectory = Path.GetTempPath() + Guid.NewGuid();
+            destinationDirectory = destinationDirectory + "\\";
+            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(destinationDirectory, string.Empty, null, true));
+            var crudOps = new Dev2CRUDOperationTO(false);
+            //------------Execute Test---------------------------
+            var result = ActivityIOFactory.CreateOperationsBroker().CreateEndPoint(dstEndPoint, crudOps, false);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Success", result);
+            Assert.IsTrue(Directory.Exists(destinationDirectory));
+        }
+
+        private dynamic CreateEndPoint(string file, string data, bool isRemote, bool createDirectory, bool isDirectory = false)
+        {
+            IActivityIOOperationsEndPoint dstEndPoint = null;
+            string fileWithPath = string.Empty;
+
+            if (isRemote)
+            {
+                string ftpSite = ParserStrings.PathOperations_FTP_Auth + "PUT_DATA/";
+                fileWithPath = PathIOTestingUtils.CreateFileFTP(ftpSite, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, false, file, data, createDirectory);
+                dstEndPoint =
+                    ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(
+                    fileWithPath, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password));
+            }
+            else
+            {
+                string directory = Path.GetTempPath() + Guid.NewGuid();
+                fileWithPath = Path.Combine(directory, file);
+
+                if (createDirectory)
+                {
+                    Directory.CreateDirectory(directory);
+                    File.WriteAllText(fileWithPath, data);
+                }
+
+                dstEndPoint =
+                    ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(
+                        isDirectory ? directory : fileWithPath, string.Empty, null,
+                        true));
+            }
+            return new { EndPoint = dstEndPoint, FilePath = fileWithPath };
+        }
+
 
         #endregion
     }

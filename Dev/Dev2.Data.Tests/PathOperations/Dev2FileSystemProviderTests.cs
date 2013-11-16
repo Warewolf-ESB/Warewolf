@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -13,7 +14,7 @@ namespace Dev2.Data.Tests.PathOperations
         public void Dev2FileSystemProvider_GetOperation_NonExistingPath_FriendlyError()
         {
             bool pass = false;
-            Dev2FileSystemProvider testProvider = new Dev2FileSystemProvider();
+            var testProvider = new Dev2FileSystemProvider();
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString("C:/dadsdascasxxxacvaawqf",false);
             try
             {

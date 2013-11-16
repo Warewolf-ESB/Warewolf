@@ -168,6 +168,95 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
             return path;
         }
 
+        public static string CreateFileFTP(string basePath, string userName, string password, bool ftps, string fileName, string dataString, bool createDirectory)
+        {
+
+            FtpWebRequest request = null;
+            FtpWebResponse response = null;
+            string remoteDirectoy = basePath + Guid.NewGuid();
+            string path = remoteDirectoy + "/" + fileName;
+
+            try
+            {
+                if (createDirectory)
+                {
+                    request = (FtpWebRequest) FtpWebRequest.Create(remoteDirectoy);
+                    request.UseBinary = true;
+                    request.KeepAlive = false;
+                    request.EnableSsl = ftps;
+                    if (userName != string.Empty)
+                    {
+                        request.Credentials = new NetworkCredential(userName, password);
+                    }
+                    request.Method = WebRequestMethods.Ftp.MakeDirectory;
+                    request.GetResponse();
+
+
+                    request = (FtpWebRequest) FtpWebRequest.Create(path);
+                    request.UseBinary = true;
+                    request.KeepAlive = false;
+                    request.EnableSsl = ftps;
+                    if (userName != string.Empty)
+                    {
+                        request.Credentials = new NetworkCredential(userName, password);
+                    }
+
+                    request.Method = WebRequestMethods.Ftp.UploadFile;
+
+                    byte[] data = System.Text.Encoding.UTF8.GetBytes(dataString);
+                    request.ContentLength = data.Length;
+
+                    Stream requestStream = request.GetRequestStream();
+                    requestStream.Write(data, 0, Convert.ToInt32(data.Length));
+                    requestStream.Close();
+
+                    response = (FtpWebResponse) request.GetResponse();
+                    if (response.StatusCode != FtpStatusCode.FileActionOK &&
+                        response.StatusCode != FtpStatusCode.ClosingData)
+                    {
+                        throw new Exception("File was not created");
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                var ex = exception;
+                throw;
+            }
+            finally
+            {
+                if (response != null)
+                {
+                    response.Close();
+                }
+            }
+
+            return path;
+        }
+
+        public static string ReadFileFTP(string path, string userName, string password)
+        {
+            string data = string.Empty;
+
+            try
+            {
+                using (var request = new WebClient())
+                {
+                    if (userName != string.Empty)
+                    {
+                        request.Credentials = new NetworkCredential(userName, password);
+                    }
+                    data = System.Text.Encoding.Default.GetString(request.DownloadData(path));
+                }
+            }
+            catch
+            {
+
+            }
+
+            return data;
+        }
+
         public static void DeleteFTP(string path, string userName, string password, bool ftps) {
             FtpWebRequest request = null;
             FtpWebResponse response = null;

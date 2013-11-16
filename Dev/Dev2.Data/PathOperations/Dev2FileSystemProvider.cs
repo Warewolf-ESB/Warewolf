@@ -136,7 +136,7 @@ namespace Dev2.PathOperations
                     dst = ActivityIOFactory.CreatePathFromString(WhereToPut + "\\" + dst.Path, dst.Username, dst.Password);
                 }
             }
-
+            
             int result = -1;
 
             if((args.Overwrite) || (!args.Overwrite && !FileExist(dst)))

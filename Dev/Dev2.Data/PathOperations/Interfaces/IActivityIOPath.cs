@@ -17,7 +17,7 @@
         /// <summary>
         /// The string version of the path
         /// </summary>
-        string Path { get; }
+        string Path { get; set; }
 
         /// <summary>
         /// Convert this object into XML

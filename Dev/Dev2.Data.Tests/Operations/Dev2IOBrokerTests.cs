@@ -6,7 +6,8 @@ using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
 using Dev2.PathOperations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Unlimited.UnitTest.Framework.PathOperationTests;
 
 namespace Dev2.Data.Tests.Operations
 {
@@ -63,19 +64,6 @@ namespace Dev2.Data.Tests.Operations
         #endregion
 
         [TestMethod]
-        public void MoveFileWithBlankOutputPathExpectedDefaultstoInputPath()
-        {
-            const string NewFileName = "MovedTempFile";
-            var tempFile = Path.GetTempFileName();
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true));
-            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(NewFileName, string.Empty, null, true));
-
-            var moveTO = new Dev2CRUDOperationTO(true);
-            ActivityIOFactory.CreateOperationsBroker().Move(scrEndPoint, dstEndPoint, moveTO);
-            Assert.IsTrue(File.Exists(Path.GetTempPath() + NewFileName));
-        }
-
-        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityIOFactory_CreateOperationEndPointFromIOPath")]
         public void ActivityIOFactory_CreateOperationEndPointFromIOPath_WithSftp_ShouldSetTypeTpSFtp()
@@ -87,78 +75,29 @@ namespace Dev2.Data.Tests.Operations
             //------------Assert Results-------------------------
             Assert.AreEqual(enActivityIOPathType.SFTP,scrEndPoint.IOPath.PathType);
         }
-
-        [TestMethod]
-        public void MoveFileWithPathsExpectedRecursiveMove()
-        {
-            const string NewFileName = "MovedTempFile";
-            string innerDir = Guid.NewGuid().ToString();
-            string tempPath = Path.GetTempPath();
-            string tempFileName = Path.GetFileName(Path.GetTempFileName());
-            string tempData = "some string data";
-            var tempFile = Path.Combine(tempPath,innerDir,tempFileName);
-            Directory.CreateDirectory(Path.GetDirectoryName(tempFile));
-            File.WriteAllText(tempFile,tempData);
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true));
-            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(NewFileName, string.Empty, null, true));
-
-            var moveTO = new Dev2CRUDOperationTO(true);
-            ActivityIOFactory.CreateOperationsBroker().Move(scrEndPoint, dstEndPoint, moveTO);
-            string newFilePath = tempPath + NewFileName;
-            Assert.IsTrue(File.Exists(newFilePath));
-            Assert.IsFalse(File.Exists(tempFileName));
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("Dev2ActivityIOBroker_Move")]
-        public void Dev2ActivityIOBroker_Move_WhenOverwriteFalseAndDestinationExists_ShouldNotRemoveSourceFile()
-        {
-            //------------Setup for test--------------------------
-            const string NewFileName = "MovedTempFile.tmp";
-            string tempPath = Path.GetTempPath();
-            string tempFileName = Path.GetFileName(Path.GetTempFileName());
-            string tempData = "some string data";
-            var tempFile = Path.Combine(tempPath,tempFileName);
-            Directory.CreateDirectory(Path.GetDirectoryName(tempFile));
-            File.WriteAllText(tempFile,tempData);
-            string newFilePath = Path.Combine(tempPath, NewFileName);
-            tempData = "some other data";
-            File.WriteAllText(newFilePath,tempData);
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true));
-            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(newFilePath, string.Empty, null, true));
-
-            var moveTO = new Dev2CRUDOperationTO(false);
-            //------------Execute Test---------------------------
-            ActivityIOFactory.CreateOperationsBroker().Move(scrEndPoint, dstEndPoint, moveTO);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(File.Exists(newFilePath));
-            Assert.IsTrue(File.Exists(tempFile));
-            StringAssert.Contains(File.ReadAllText(newFilePath), "some other data");
-            StringAssert.Contains(File.ReadAllText(tempFile), "some string data");
-        } 
         
-        [TestMethod]
-        public void CopyFileWithPathsExpectedRecursiveCopy()
-        {
-            string innerDir = Guid.NewGuid().ToString();
-            string tempPath = Path.GetTempPath();
-            string tempFileName = Path.GetFileName(Path.GetTempFileName());
-            string tempData = "some string data";
-            var tempFile = Path.Combine(tempPath, innerDir,innerDir, tempFileName);
-            string directoryName = Path.GetDirectoryName(tempFile);
-            Directory.CreateDirectory(directoryName);
-            var upperLevelDir = Path.Combine(tempPath, innerDir);
-            File.WriteAllText(tempFile,tempData);
-            string dst = Path.Combine(tempPath, Guid.NewGuid().ToString());
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(upperLevelDir, string.Empty, null, true));
-            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(dst, string.Empty, null, true));
+        //[TestMethod]
+        //public void CopyFileWithPathsExpectedRecursiveCopy()
+        //{
+        //    string innerDir = Guid.NewGuid().ToString();
+        //    string tempPath = Path.GetTempPath();
+        //    string tempFileName = Path.GetFileName(Path.GetTempFileName());
+        //    string tempData = "some string data";
+        //    var tempFile = Path.Combine(tempPath, innerDir,innerDir, tempFileName);
+        //    string directoryName = Path.GetDirectoryName(tempFile);
+        //    Directory.CreateDirectory(directoryName);
+        //    var upperLevelDir = Path.Combine(tempPath, innerDir);
+        //    File.WriteAllText(tempFile,tempData);
+        //    string dst = Path.Combine(tempPath, Guid.NewGuid().ToString());
+        //    IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(upperLevelDir, string.Empty, null, true));
+        //    IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(dst, string.Empty, null, true));
 
-            var moveTO = new Dev2CRUDOperationTO(true);
-            ActivityIOFactory.CreateOperationsBroker().Copy(scrEndPoint, dstEndPoint, moveTO);
-            string newFilePath = Path.Combine(dst,innerDir,tempFileName);
-            Assert.IsTrue(File.Exists(newFilePath));
-            Assert.IsTrue(File.Exists(tempFile));
-        }
+        //    var moveTO = new Dev2CRUDOperationTO(true);
+        //    ActivityIOFactory.CreateOperationsBroker().Copy(scrEndPoint, dstEndPoint, moveTO);
+        //    string newFilePath = Path.Combine(dst,innerDir,tempFileName);
+        //    Assert.IsTrue(File.Exists(newFilePath));
+        //    Assert.IsTrue(File.Exists(tempFile));
+        //}
+       
     }
 }
