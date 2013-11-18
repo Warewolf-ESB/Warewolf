@@ -1145,7 +1145,6 @@ namespace Dev2.Integration.Tests.Activities
             PathIOTestingUtils.DeleteTmpDir(srcDir);
 
             Assert.IsTrue(unzippedFileExists);
-            Assert.AreEqual("Success",unZipRes1);
             Assert.AreEqual("Failed", unZipRes1);
         }
 
