@@ -32,7 +32,7 @@ namespace Dev2.Studio.Views.ResourceManagement
             }
             else
             {
-                tbDisplay.Text = String.Format("{0} is used by {1} other workflows. Those instances need to be updated.",model.ResourceName,numOfDependances.ToString());
+                tbDisplay.Text = String.Format("{0} is used in {1} instances. Those instances need to be updated.",model.ResourceName,numOfDependances.ToString());
                 button3.Content = "Show Affected Workflows";
             }            
         }        

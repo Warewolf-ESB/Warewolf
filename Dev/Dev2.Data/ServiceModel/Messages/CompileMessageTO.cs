@@ -37,6 +37,8 @@ namespace Dev2.Data.ServiceModel.Messages
             return new CompileMessageTO
             {
                 UniqueID = UniqueID,
+                WorkspaceID = WorkspaceID,
+                ServiceName = ServiceName,
                 ErrorType = ErrorType,
                 MessageID = MessageID,
                 ServiceID = ServiceID,

@@ -1850,6 +1850,50 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        public void UpdateResourceWhereResourceIsDependedOnExpectNonEmptyListForResource()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            var resource = result.FirstOrDefault(r => r.ResourceName == "Bug6619Dep");
+            var depresource = result.FirstOrDefault(r => r.ResourceName == "Bug6619");
+            var beforeService = rc.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();
+            ServiceAction beforeAction = beforeService.Actions.FirstOrDefault();
+            var xElement = XElement.Load(new StringReader(rc.GetResourceContents(resource)));
+            var element = xElement.Element("DataList");
+            element.Add(new XElement("a"));
+            element.Add(new XElement("b"));
+            var s = xElement.ToString();
+
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            //------------Execute Test---------------------------
+            rc.CompileTheResourceAfterSave(workspaceID, resource, s, beforeAction);
+            //------------Assert Results-------------------------
+            xElement = XElement.Load(new StringReader(rc.GetResourceContents(depresource)));
+            var errorElement = xElement.Element("ErrorMessages").Element("ErrorMessage");
+            var isValid = xElement.AttributeSafe("IsValid");
+            var messageType = Enum.Parse(typeof(CompileMessageType), errorElement.AttributeSafe("MessageType"), true);
+            Assert.AreEqual("false", isValid);
+            Assert.AreEqual(CompileMessageType.MappingChange, messageType);
+
+            var messages = CompileMessageRepo.Instance.FetchMessages(workspaceID, depresource.ResourceID, new List<string>());
+            var message = messages.MessageList[0];
+            Assert.AreEqual(workspaceID, message.WorkspaceID);
+            Assert.AreEqual(depresource.ResourceID, message.ServiceID);
+            Assert.AreEqual(depresource.ResourceName, message.ServiceName);
+            Assert.AreNotEqual(depresource.ResourceID, message.UniqueID);
+            Assert.AreNotEqual(resource.ResourceID, message.UniqueID);
+        }
+
+        [TestMethod]
         public void GetDependantsWhereResourceIsDependedOnExpectNonEmptyListForWorkerService()
         {
             //------------Setup for test--------------------------

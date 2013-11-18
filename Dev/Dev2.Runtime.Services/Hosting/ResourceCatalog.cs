@@ -1043,7 +1043,7 @@ namespace Dev2.Runtime.Hosting
         }
 
         public void CompileTheResourceAfterSave(Guid workspaceID, IResource resource, string contents, ServiceAction beforeAction)
-            {
+        {
             if(beforeAction != null)
             {
                 // Compile the service 
@@ -1088,20 +1088,22 @@ namespace Dev2.Runtime.Hosting
         void UpdateDependantResourceWithCompileMessages(Guid workspaceID, IResource resource, IList<CompileMessageTO> messages)
         {
             var dependants = Instance.GetDependentsAsResourceForTrees(workspaceID, resource.ResourceName);
+            var dependsMessageList = new List<CompileMessageTO>();
             foreach(var dependant in dependants)
             {
                 var affectedResource = GetResource(workspaceID, dependant.ResourceName);
                 foreach(var compileMessageTO in messages)
                 {
                     compileMessageTO.WorkspaceID = workspaceID;
+                    compileMessageTO.UniqueID = dependant.UniqueID;
                     compileMessageTO.ServiceName = affectedResource.ResourceName;
                     compileMessageTO.ServiceID = affectedResource.ResourceID;
-                    compileMessageTO.UniqueID = dependant.UniqueID;
+                    dependsMessageList.Add(compileMessageTO.Clone());
                 }
                 UpdateResourceXML(workspaceID, affectedResource, messages);
-                    CompileMessageRepo.Instance.AddMessage(workspaceID, messages);
-                }
             }
+            CompileMessageRepo.Instance.AddMessage(workspaceID, dependsMessageList);
+        }
 
         void UpdateResourceXML(Guid workspaceID, IResource effectedResource, IList<CompileMessageTO> compileMessagesTO)
         {
