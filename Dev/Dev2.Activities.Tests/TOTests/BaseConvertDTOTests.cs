@@ -14,7 +14,7 @@ namespace Dev2.Tests.Activities.TOTests
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("BaseConvertDTO_Constructor")]
-        public void DataSplitDTO_Constructor_FullConstructor_DefaultValues()
+        public void BaseConvertDTO_Constructor_FullConstructor_DefaultValues()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
@@ -26,5 +26,61 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.AreEqual(1, baseConvertDTO.IndexNumber);
             Assert.IsNull(baseConvertDTO.Errors);
         }
+
+        #region CanAdd Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("BaseConvertTO_CanAdd")]
+        public void BaseConvertTO_CanAdd_FromExpressionEmpty_ReturnFalse()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var baseConvertTO = new BaseConvertTO() { FromExpression = string.Empty };
+            //------------Assert Results-------------------------
+            Assert.IsFalse(baseConvertTO.CanAdd());
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("BaseConvertTO_CanAdd")]
+        public void BaseConvertTO_CanAdd_FromExpressionHasData_ReturnTrue()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var baseConvertTO = new BaseConvertTO() { FromExpression = "Value" };
+            //------------Assert Results-------------------------
+            Assert.IsTrue(baseConvertTO.CanAdd());
+        }
+
+        #endregion
+
+        #region CanRemove Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("BaseConvertTO_CanRemove")]
+        public void BaseConvertTO_CanRemove_FromExpressionEmpty_ReturnTrue()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var baseConvertTO = new BaseConvertTO(){FromExpression = string.Empty};
+            //------------Assert Results-------------------------
+            Assert.IsTrue(baseConvertTO.CanRemove());
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("BaseConvertTO_CanRemove")]
+        public void BaseConvertTO_CanRemove_FromExpressionWithData_ReturnFalse()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var baseConvertTO = new BaseConvertTO(){FromExpression = "Value"};
+            //------------Assert Results-------------------------
+            Assert.IsFalse(baseConvertTO.CanRemove());
+        }
+
+        #endregion
     }
 }

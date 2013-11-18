@@ -124,6 +124,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     _splitType = value;
                     OnPropertyChanged("SplitType");
+                    RaiseCanAddRemoveChanged();
                 }
             }
         }
@@ -154,27 +155,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanRemove()
         {
-            if(string.IsNullOrEmpty(SplitType))
+            if(SplitType == "Index" || SplitType == "Chars")
             {
-                return true;
-            }
-
-            if (SplitType == "Index" || SplitType == "Chars")
-            {
-                if (string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(At))
+                if(string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(At))
                 {
                     return true;
                 }
+                return false;
             }
+
             return false;
         }
 
         public bool CanAdd()
         {
             bool result = true;
-            if (SplitType == "Index" || SplitType == "Chars")
+            if(SplitType == "Index" || SplitType == "Chars")
             {
-                if (string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(At))
+                if(string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(At))
                 {
                     result = false;
                 }

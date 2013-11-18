@@ -123,22 +123,12 @@ namespace Dev2
 
         public bool CanRemove()
         {
-            bool result = false;
-            if (string.IsNullOrEmpty(StringToConvert))
-            {
-                result = true;
-            }
-            return result;
+            return string.IsNullOrWhiteSpace(StringToConvert);
         }
 
         public bool CanAdd()
         {
-            bool result = true;
-            if (string.IsNullOrEmpty(StringToConvert))
-            {
-                result = false;
-            }
-            return result;
+            return !string.IsNullOrWhiteSpace(StringToConvert);
         }
 
         public void ClearRow()

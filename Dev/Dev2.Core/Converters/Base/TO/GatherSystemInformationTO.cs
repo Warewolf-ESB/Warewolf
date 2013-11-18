@@ -89,18 +89,16 @@ namespace Dev2
 
         public bool CanRemove()
         {
-            var canRemove = string.IsNullOrWhiteSpace(Result);
-            return canRemove;
+            return string.IsNullOrWhiteSpace(Result);            
         }
 
         public bool CanAdd()
         {
-            var canAdd = !string.IsNullOrWhiteSpace(Result);
-            return canAdd;
+            return !string.IsNullOrWhiteSpace(Result);            
         }
 
         public void ClearRow()
-        {
+        {            
             Result = "";
         }        
 

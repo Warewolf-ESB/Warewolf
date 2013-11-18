@@ -117,8 +117,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanAdd()
         {
-            var result = !string.IsNullOrEmpty(SearchType);
-            return result;
+            return !string.IsNullOrEmpty(SearchType);            
         }
 
         public void ClearRow()

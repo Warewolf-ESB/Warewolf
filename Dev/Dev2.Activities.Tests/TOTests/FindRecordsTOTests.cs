@@ -1,9 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.TOTests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FindRecordsTOTests
     {
         [TestMethod]
@@ -103,5 +105,73 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.AreEqual(isSearchCriteriaEnabled, findRecordsTO.IsSearchCriteriaEnabled);
             Assert.IsTrue(notifyPropertyChanged);
         }
+
+        #region CanAdd Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("FindRecordsTO_CanAdd")]
+        public void FindRecordsTO_CanAdd_SearchTypeEmpty_ReturnFalse()
+        {
+            //------------Setup for test--------------------------
+            var findRecordsTO = new FindRecordsTO() {SearchType = string.Empty};            
+            //------------Execute Test---------------------------
+            Assert.IsFalse(findRecordsTO.CanAdd());
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("FindRecordsTO_CanAdd")]
+        public void FindRecordsTO_CanAdd_SearchTypeWithData_ReturnTrue()
+        {
+            //------------Setup for test--------------------------
+            var findRecordsTO = new FindRecordsTO() { SearchType = "Contains" };
+            //------------Execute Test---------------------------
+            Assert.IsTrue(findRecordsTO.CanAdd());
+            //------------Assert Results-------------------------
+        }
+
+        #endregion
+
+        #region CanRemove Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("FindRecordsTO_CanRemove")]
+        public void FindRecordsTO_CanRemove_SearchTypeEmptyAndSearchTypeEmpty_ReturnTrue()
+        {
+            //------------Setup for test--------------------------
+            var findRecordsTO = new FindRecordsTO() { SearchType = string.Empty,SearchCriteria = string.Empty};
+            //------------Execute Test---------------------------
+            Assert.IsTrue(findRecordsTO.CanRemove());
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("FindRecordsTO_CanRemove")]
+        public void FindRecordsTO_CanRemove_SearchTypeWithDataAndSearchTypeEmpty_ReturnFalse()
+        {
+            //------------Setup for test--------------------------
+            var findRecordsTO = new FindRecordsTO() { SearchType = "Contains", SearchCriteria = string.Empty };
+            //------------Execute Test---------------------------
+            Assert.IsFalse(findRecordsTO.CanRemove());
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("FindRecordsTO_CanRemove")]
+        public void FindRecordsTO_CanRemove_SearchTypeEmptyAndSearchTypeWithData_ReturnFalse()
+        {
+            //------------Setup for test--------------------------
+            var findRecordsTO = new FindRecordsTO() { SearchType = string.Empty, SearchCriteria = "Data" };
+            //------------Execute Test---------------------------
+            Assert.IsFalse(findRecordsTO.CanRemove());
+            //------------Assert Results-------------------------
+        }
+
+        #endregion
     }
 }

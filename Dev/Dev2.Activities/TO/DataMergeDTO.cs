@@ -100,6 +100,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     _mergeType = value;
                     OnPropertyChanged("MergeType");
+                    RaiseCanAddRemoveChanged();
                 }
             }
         }
@@ -135,30 +136,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region CanAdd, CanRemove and ClearRow
 
         public bool CanRemove()
-        {
-            if (string.IsNullOrEmpty(MergeType))
-            {
-                return true;
-            }
-
+        {         
             if (MergeType == "Index" || MergeType == "Chars")
             {
                 if (string.IsNullOrEmpty(InputVariable) && string.IsNullOrEmpty(At))
                 {
                     return true;
                 }
-            }
-            if (string.IsNullOrEmpty(InputVariable))
-            {
-                return true;
-            }
+                return false;
+            }           
 
             return false;
         }
 
         public bool CanAdd()
         {
-            bool result = !string.IsNullOrEmpty(InputVariable);
+            bool result = true;
+            if(MergeType == "Index" || MergeType == "Chars")
+            {
+                if(string.IsNullOrEmpty(InputVariable) && string.IsNullOrEmpty(At))
+                {
+                    result = false;
+                }
+            }
             return result;
         }
 
