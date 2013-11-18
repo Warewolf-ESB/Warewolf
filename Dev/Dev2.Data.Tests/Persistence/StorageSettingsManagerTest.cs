@@ -2,14 +2,15 @@
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Data.Storage;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Data.Tests.Persistence
 {
     /// <summary>
     /// Summary description for StorageSettingsManagerTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class StorageSettingsManagerTest
     {
         /// <summary>
