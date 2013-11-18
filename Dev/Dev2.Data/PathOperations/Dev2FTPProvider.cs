@@ -579,7 +579,7 @@ namespace Dev2.PathOperations {
         {
             var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSSL(src), src.IsNotCertVerifiable);
             var dirs = ExtractFileList(src.Path, tmpDirData);
-            return dirs.Select(dir => BuildValidPathForFTP(src, dir)).Select(uri => ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password)).ToList();
+            return dirs.Select(uri => ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password)).ToList();
         }
 
         #region Private Methods

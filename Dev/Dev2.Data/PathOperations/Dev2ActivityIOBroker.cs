@@ -420,6 +420,53 @@ namespace Dev2.PathOperations
         public string Move(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
                            Dev2CRUDOperationTO args)
         {
+            return ValidateFileOperation(src, dst, args, () =>
+                {
+                    if (src.RequiresLocalTmpStorage())
+                    {
+                        if (dst.PathIs(dst.IOPath) == enPathType.Directory)
+                        {
+                            dst.IOPath.Path = Path.Combine(dst.IOPath.Path, GetFileNameFromEndPoint(src));
+                        }
+
+                        using (Stream s = src.Get(src.IOPath))
+                        {
+                            if (Path.IsPathRooted(src.IOPath.Path))
+                            {
+                                dst.Put(s, dst.IOPath, args, new FileInfo(src.IOPath.Path).Directory);
+                            }
+                            else
+                            {
+                                dst.Put(s, dst.IOPath, args, null);
+                            }
+                            s.Close();
+                            s.Dispose();
+                        }
+                    }
+                    else
+                    {
+                        var sourceFile = new FileInfo(src.IOPath.Path);
+                        if (dst.PathIs(dst.IOPath) == enPathType.Directory)
+                        {
+                            dst.IOPath.Path = Path.Combine(dst.IOPath.Path, sourceFile.Name);
+                        }
+
+                        using (Stream s = src.Get(src.IOPath))
+                        {
+                            dst.Put(s, dst.IOPath, args, sourceFile.Directory);
+                            s.Close();
+                            s.Dispose();
+                        }
+
+                        src.Delete(src.IOPath);
+                    }
+                    return resultOk;
+                });
+        }
+
+        private string ValidateFileOperation(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
+                                        Dev2CRUDOperationTO args, Func<string> action)
+        {
             string result = resultOk;
 
             string opStatus = CreateEndPoint(dst, args, dst.PathIs(dst.IOPath) == enPathType.Directory);
@@ -428,6 +475,7 @@ namespace Dev2.PathOperations
                 throw new Exception("Recursive Directory Create Failed For [ " + dst.IOPath.Path + " ]");
             }
 
+            //source is directory then destination must also be a directory 
             if (src.PathIs(src.IOPath) == enPathType.Directory)
             {
                 if (!TransferDirectoryContents(src, dst, args, true))
@@ -437,70 +485,61 @@ namespace Dev2.PathOperations
                 return result;
             }
 
-            if (src.PathIs(src.IOPath) == enPathType.File)
-                {
-                    if(!Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
-                    {
-                    if (args.Overwrite || !(dst.PathExist(dst.IOPath) && dst.PathIs(dst.IOPath) == enPathType.File))
-                        {
-                        if (src.RequiresLocalTmpStorage())
-                            {
-                            if (dst.PathIs(dst.IOPath) == enPathType.Directory)
-                                {
-                                var target = new Uri(src.IOPath.Path);
-                                dst.IOPath.Path = dst.IOPath.Path + target.Segments.Last();
-                            }
+            //source is a file
 
-                            using (Stream s = src.Get(src.IOPath))
-                            {
-                                if (Path.IsPathRooted(src.IOPath.Path))
-                                {
-                                    dst.Put(s, dst.IOPath, args, new FileInfo(src.IOPath.Path).Directory);
-                                }
-                                else
-                                {
-                                    dst.Put(s, dst.IOPath, args, null);
-                                }
-                                s.Close();
-                                s.Dispose();
-                            }
-                        }
-                        else
-                        {
-                            var sourceFile = new FileInfo(src.IOPath.Path);
-                            if (dst.PathIs(dst.IOPath) == enPathType.Directory)
-                    {
-                                dst.IOPath.Path = Path.Combine(dst.IOPath.Path, sourceFile.Name);
-                        }
+            ValidateOverwiteIndicator(src, dst, args.Overwrite);
 
-                            using (Stream s = src.Get(src.IOPath))
-                            {
-                                dst.Put(s, dst.IOPath, args, sourceFile.Directory);
-                                s.Close();
-                                s.Dispose();
-                            }
+            if (!Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
+            {
+                return action();
+            }
 
-                            src.Delete(src.IOPath);
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception("A file with the same name exists on the destination and overwrite is set to false");
-                    }
-                }
-                else
-                {
-                    // we have star wild cards to deal with
-                    if(!TransferDirectoryContents(src, dst, args, true))
-                    {
-                        result = resultBad;
-                    }
-                }
+            // we have star wild cards to deal with
+            if (!TransferDirectoryContents(src, dst, args, true))
+            {
+                result = resultBad;
             }
 
             return result;
         }
 
+        private static void ValidateOverwiteIndicator(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, bool overWrite)
+        {
+            if (!overWrite)
+            {
+                if (dst.PathExist(dst.IOPath))
+                {
+                    // destination is a file
+                    if (dst.PathIs(dst.IOPath) == enPathType.File)
+                    {
+                        throw new Exception(
+                            "A file with the same name exists on the destination and overwrite is set to false");
+                    }
+
+                    //destination is a folder
+                    IList<IActivityIOPath> dstContents = dst.ListDirectory(dst.IOPath);
+                    var destinationFileNames = dstContents.Select(dstFile => GetFileNameFromEndPoint(dst, dstFile));
+                    var sourceFile = GetFileNameFromEndPoint(src);
+
+                    if (destinationFileNames.Contains(sourceFile))
+                    {
+                        throw new Exception("The following file(s) exist in the destination folder :- " + sourceFile);
+                    }
+                }
+            }
+        }
+
+        private static string GetFileNameFromEndPoint(IActivityIOOperationsEndPoint endPoint)
+        {
+            string pathSeperator = endPoint.PathSeperator();
+            return endPoint.IOPath.Path.Split(pathSeperator.ToCharArray()).Last();
+        }
+
+        private static string GetFileNameFromEndPoint(IActivityIOOperationsEndPoint endPoint, IActivityIOPath path)
+        {
+            string pathSeperator = endPoint.PathSeperator();
+            return path.Path.Split(pathSeperator.ToCharArray()).Last();
+        }
 
         public string Zip(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2ZipOperationTO args)
         {
@@ -845,24 +884,28 @@ namespace Dev2.PathOperations
                                                Dev2CRUDOperationTO args, bool removeSrc)
         {
             // List directory contents
-            IList<IActivityIOPath> srcContents = src.ListDirectory(src.IOPath);
-            IList<IActivityIOPath> dstContents = src.ListDirectory(dst.IOPath);
+            IList<IActivityIOPath> srcContents = src.ListFilesInDirectory(src.IOPath);
+            IList<IActivityIOPath> dstContents = dst.ListFilesInDirectory(dst.IOPath);
+
 
             if (!args.Overwrite)
             {
-                var commonFiles = srcContents
-                    .Select(a => new FileInfo(a.Path).Name)
-                    .Where(a => dstContents
-                                    .Select(h => new FileInfo(h.Path).Name)
-                                    .Contains(a)).ToList();
+                var sourceFileNames = srcContents.Select(srcFile => GetFileNameFromEndPoint(src, srcFile)).ToList();
+                var destinationFileNames = dstContents.Select(dstFile => GetFileNameFromEndPoint(dst, dstFile)).ToList();
 
-                if (commonFiles.Count > 0)
+                if (destinationFileNames.Count > 0)
                 {
-                    string fileNames = commonFiles.Aggregate("", (current, commonFile) => current + ("\r\n" + commonFile));
-                    throw new Exception("The following file(s) exist in the destination folder :- " + fileNames);
+                    var commonFiles = sourceFileNames.Where(destinationFileNames.Contains).ToList();
+
+                    if (commonFiles.Count > 0)
+                    {
+                        string fileNames = commonFiles.Aggregate("",
+                                                                 (current, commonFile) =>
+                                                                 current + ("\r\n" + commonFile));
+                        throw new Exception("The following file(s) exist in the destination folder :- " + fileNames);
+                    }
                 }
             }
-
 
             bool result = true;
 

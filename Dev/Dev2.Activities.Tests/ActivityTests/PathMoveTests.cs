@@ -222,18 +222,18 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Blank Output Test
 
-        //2013.05.29: Ashley Lewis for bug 9507 - null output defaults to input
-        [TestMethod]
-        public void MoveFileWithBlankOutputPathExpectedDefaultstoInputPath()
-        {
-            _tempFile = Path.GetTempFileName();
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(_tempFile, string.Empty, null, true));
-            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(_newFileName, string.Empty, null, true));
+        ////2013.05.29: Ashley Lewis for bug 9507 - null output defaults to input
+        //[TestMethod]
+        //public void MoveFileWithBlankOutputPathExpectedDefaultstoInputPath()
+        //{
+        //    _tempFile = Path.GetTempFileName();
+        //    IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(_tempFile, string.Empty, null, true));
+        //    IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(_newFileName, string.Empty, null, true));
 
-            var moveTO = new Dev2CRUDOperationTO(Overwrite);
-            ActivityIOFactory.CreateOperationsBroker().Move(scrEndPoint, dstEndPoint, moveTO);
-            Assert.IsTrue(File.Exists(Path.GetTempPath() + _newFileName));
-        }
+        //    var moveTO = new Dev2CRUDOperationTO(Overwrite);
+        //    ActivityIOFactory.CreateOperationsBroker().Move(scrEndPoint, dstEndPoint, moveTO);
+        //    Assert.IsTrue(File.Exists(Path.GetTempPath() + _newFileName));
+        //}
 
         #endregion
 
