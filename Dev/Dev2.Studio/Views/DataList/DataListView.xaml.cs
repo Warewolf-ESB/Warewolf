@@ -52,7 +52,7 @@ namespace Dev2.Studio.Views.DataList
                     if(itemThatChanged != null)
                     {
                         vm.AddBlankRow(itemThatChanged);
-                        vm.ValidateNames(itemThatChanged,false);
+                        vm.ValidateNames(itemThatChanged);
                     }
                 }
             }
@@ -74,7 +74,7 @@ namespace Dev2.Studio.Views.DataList
                     IDataListItemModel itemThatChanged = txtbox.DataContext as IDataListItemModel;
                     vm.RemoveBlankRows(itemThatChanged);
                     vm.AddRecordsetNamesIfMissing();
-                    vm.ValidateNames(itemThatChanged, true);
+                    vm.ValidateNames(itemThatChanged);
                 }
             }
         }

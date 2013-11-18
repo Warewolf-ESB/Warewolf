@@ -9,7 +9,7 @@ namespace Dev2.Studio.Core.Interfaces.DataList
 
         bool IsUsed { get; set; }
 
-        IDataListValidator Validator { get; set; }
+        //IDataListValidator Validator { get; set; }
 
         string LastIndexedName { get; set; }
 

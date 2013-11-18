@@ -2,7 +2,6 @@
 using System.Linq;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
-using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Interfaces.DataList;
 using System.Xml;
 using Dev2.Studio.Core.Messages;
@@ -33,7 +32,6 @@ namespace Dev2.Studio.Core.Models.DataList
          */
         public DataListItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", IDataListItemModel parent = null, OptomizedObservableCollection<IDataListItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false, bool isExpanded = true)
         {
-            Validator = new DataListValidator();
             Description = description;
             Parent = parent;
             Children = children;
@@ -54,8 +52,6 @@ namespace Dev2.Studio.Core.Models.DataList
         #region Properties
 
         public bool UpdatingChildren { get; private set; }
-
-        public IDataListValidator Validator { get; set; }
 
         public bool IsUsed
         {
@@ -289,6 +285,11 @@ namespace Dev2.Studio.Core.Models.DataList
                 {
                     if(!string.IsNullOrEmpty(name))
                     {
+                        if(name.Contains("."))
+                        {
+                            SetError(StringResources.ErrorMessageInvalidChar);
+                            return name;
+                        }
                     XmlConvert.VerifyName(name);
                     if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) && 
                         !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) && 

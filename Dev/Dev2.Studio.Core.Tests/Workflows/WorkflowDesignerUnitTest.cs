@@ -25,7 +25,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -87,9 +86,6 @@ namespace Dev2.Core.Tests
             IDataListItemModel dataListItem = new DataListItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
             IDataListItemModel secondDataListItem = new DataListItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
 
-            dataListItem.Validator = new DataListValidator();
-            secondDataListItem.Validator = new DataListValidator();
-
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);
 
@@ -150,9 +146,6 @@ namespace Dev2.Core.Tests
             var dataListItems = new OptomizedObservableCollection<IDataListItemModel>();
             IDataListItemModel dataListItem = new DataListItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
             IDataListItemModel secondDataListItem = new DataListItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
-
-            dataListItem.Validator = new DataListValidator();
-            secondDataListItem.Validator = new DataListValidator();
 
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);
@@ -228,9 +221,6 @@ namespace Dev2.Core.Tests
             var dataListItems = new OptomizedObservableCollection<IDataListItemModel>();
             IDataListItemModel dataListItem = new DataListItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
             IDataListItemModel secondDataListItem = new DataListItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
-
-            dataListItem.Validator = new DataListValidator();
-            secondDataListItem.Validator = new DataListValidator();
 
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);

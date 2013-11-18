@@ -245,7 +245,6 @@
     <Compile Include="DataList\Actions\AutoMappingInputAction.cs" />
     <Compile Include="DataList\Actions\AutoMappingOutputAction.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilder.cs" />
-    <Compile Include="DataList\DataListValidator.cs" />
     <Compile Include="DataList\DataListViewModel.cs" />
     <Compile Include="DataList\InputOutputViewModelEqualityComparer.cs" />
     <Compile Include="DataList\DataMappingViewModel.cs" />
