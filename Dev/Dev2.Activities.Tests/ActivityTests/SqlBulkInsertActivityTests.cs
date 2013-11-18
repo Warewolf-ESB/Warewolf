@@ -543,21 +543,29 @@ namespace Dev2.Tests.Activities.ActivityTests
                     OutputColumn = new DbColumn { ColumnName = "TestCol6",
                     SqlDataType = SqlDbType.Time,
                     MaxLength = 100 }
+                },
+                new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field7]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol7",
+                    SqlDataType = SqlDbType.UniqueIdentifier,
+                    MaxLength = 100 }
                 }
             };
-            SetupArguments("<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4><field5>2013/11/15 10:10:02 AM</field5><field6>13:10:02</field6></recset1></root>", "<root><recset1><field1/><field2/><field3/><field4/><field5/><field6/></recset1></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
+            SetupArguments("<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4><field5>2013/11/15 10:10:02 AM</field5><field6>13:10:02</field6><field7>52ed8fe2-80c3-42e1-8a9f-f52715988efb</field7></recset1></root>", "<root><recset1><field1/><field2/><field3/><field4/><field5/><field6/><field7/></recset1></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
             //------------Execute Test---------------------------
             ExecuteProcess();
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
             Assert.IsNotNull(returnedDataTable);
-            Assert.AreEqual(6, returnedDataTable.Columns.Count);
+            Assert.AreEqual(7, returnedDataTable.Columns.Count);
             Assert.AreEqual(typeof(String),returnedDataTable.Columns[0].DataType);
             Assert.AreEqual(typeof(Int32),returnedDataTable.Columns[1].DataType);
             Assert.AreEqual(typeof(char),returnedDataTable.Columns[2].DataType);
             Assert.AreEqual(typeof(decimal),returnedDataTable.Columns[3].DataType);
             Assert.AreEqual(typeof(DateTime),returnedDataTable.Columns[4].DataType);
             Assert.AreEqual(typeof(TimeSpan),returnedDataTable.Columns[5].DataType);
+            Assert.AreEqual(typeof(Guid), returnedDataTable.Columns[6].DataType);
             Assert.AreEqual(1,returnedDataTable.Rows.Count);
 
             Assert.AreEqual("Bob", returnedDataTable.Rows[0]["field1"]);
@@ -566,6 +574,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(21.2m, returnedDataTable.Rows[0]["field4"]);
             Assert.AreEqual(DateTime.Parse("2013/11/15 10:10:02 AM"), returnedDataTable.Rows[0]["field5"]);
             Assert.AreEqual(TimeSpan.Parse("13:10:02"), returnedDataTable.Rows[0]["field6"]);
+            Assert.AreEqual(Guid.Parse("52ed8fe2-80c3-42e1-8a9f-f52715988efb"), returnedDataTable.Rows[0]["field7"]);
         }
 
         [TestMethod]
