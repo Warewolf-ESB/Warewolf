@@ -89,51 +89,6 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
 
         #endregion Environment Connection Tests
 
-        #region TCPDispatchedClient Tests
-
-        // Sashe.Naidoo: 13-02-2012 : Bug 8801 -This test ensures that the asynchronous connection operations on the server,
-        //                            happen synchronously on the Studio, if it fails, either the server is unavailable
-        //                            or the Studio did not perform a TCP login synchronously (as can be seen no waits are 
-        //                            performed in the test)
-        [TestMethod]
-        public void TcpDispatchedClientLoginExpectedLoginResponseFromServer()
-        {
-            //TCPDispatchedClient dispatchClient = new TCPDispatchedClient("TestConnection");
-            //Uri hostname = new Uri(ServerSettings.DsfAddress);
-            //dispatchClient.Connect(hostname.Host, hostname.Port); 
-            //dispatchClient.Login("myTestuser", "pwd");
-            Assert.Inconclusive("This test is redundant as it is tested else where");
-            //Assert.IsTrue(dispatchClient.LoggedIn, "The TCPDispatchedClient was unable to login to the server");
-        }
-
-        // Sashen.Naidoo : 13-02-2012 : Bug 8791 : This test ensures that the TCPDispatchedClient can still make a valid 
-        //                                         a valid connection to the Server as it previously did, it just checks 
-        //                                         that the TCPDispatchedClient only creates a connection
-        [TestMethod]
-        public void TcpDispatchedClientConnectExpectedConnectionEstablishedToServer() {
-            //TCPDispatchedClient dispatchClient = new TCPDispatchedClient("TestConnection");
-            //Uri hostname = new Uri(ServerSettings.DsfAddress);
-            //dispatchClient.Connect(hostname.Host, hostname.Port);
-            Assert.Inconclusive("This test is redundant as it is tested else where");
-            //Assert.IsTrue(dispatchClient.Connections[0].Alive, "An error occured during the connect call on the TCPDispatchClient");
-        }
-
-        // Sashen.Naidoo : 13-02-2012 : Bug 8791 : Test to check that invalid URI's throws an exception in the TCPDispatchedClient
-        //                                         this is to check that the correct exception is thrown.
-        [TestMethod]
-        //[ExpectedException(typeof(InvalidOperationException))]
-        public void TcpDispatchedClientLoginUnavailableServerExpected()
-        {
-            //TCPDispatchedClient dispatchClient = new TCPDispatchedClient("TestConnection");
-            //Uri hostname = new Uri("http://somewhereOutThere:99/ddd");
-            //dispatchClient.Connect(hostname.Host, hostname.Port);
-            //dispatchClient.Login("myTestuser", "pwd");
-
-            Assert.Inconclusive("This test is redundant as it is tested else where");
-        }
-
-        #endregion TCPDispatchedClient Tests
-
         #region LoginAsync
 
         [TestMethod]
