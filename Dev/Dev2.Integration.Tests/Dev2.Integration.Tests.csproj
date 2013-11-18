@@ -203,7 +203,6 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\ActivityHelperTest.cs" />
     <Compile Include="Activities\Dev2ActivityIOBrokerTests.cs" />
     <Compile Include="Activities\FileSystemTests.cs" />
     <Compile Include="Activities\FtpTests.cs" />
