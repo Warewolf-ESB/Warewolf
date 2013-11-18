@@ -349,10 +349,11 @@ namespace Dev2.Studio.UI.Tests
 
         void ProcessAWorkflow(string serverName, string serviceType, string folderName)
         {
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClickServerInServerDDL(serverName);
+            
             //CREATE A WORKFLOW
             RibbonUIMap.CreateNewWorkflow();
-            
-            ExplorerUIMap.ClickServerInServerDDL(serverName);
             
             var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
