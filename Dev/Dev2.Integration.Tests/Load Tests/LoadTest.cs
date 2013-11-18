@@ -117,42 +117,5 @@ namespace Dev2.Integration.Tests.Load_Tests
                 Assert.Fail("The process took too long to run! " + duration);
             }
         }
-
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ForEachDelete_IntegrationTest")]
-        public void ForEachDelete_IntegrationTest_RunsQuickly_InUnder7SecondsForEntireWorkflow()
-        {
-
-            //------------Setup for test--------------------------
-            string path = ServerSettings.WebserverURI + "DeleteSpeed";
-
-            //------------Execute Test---------------------------
-            DateTime start = DateTime.Now;
-            string result = TestHelper.PostDataToWebserver(path);
-            DateTime end = DateTime.Now;
-
-            double duration = (end.Ticks - start.Ticks) / _ticksPerSec;
-
-            //------------Assert Results-------------------------
-
-            // ensure we have valid data ;)
-            StringAssert.Contains(result, "<TestResult>");
-
-            // check duration ;)
-            if (duration <= 7.0)
-            {
-                Assert.AreEqual(1, 1);
-            }
-            else if (duration <= 65.0) // silly nightly enviroments take for every to do this?!
-            {
-                Assert.Inconclusive("Your PC passed the test, although it was a bit slow - It meant to take less than 7 seconds, but it took " + duration);
-            }
-            else
-            {
-                Assert.Fail("The process took too long to run! " + duration);
-            }  
-        }
     }
 }

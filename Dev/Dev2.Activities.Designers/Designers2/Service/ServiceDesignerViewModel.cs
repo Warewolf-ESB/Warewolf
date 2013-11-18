@@ -229,12 +229,18 @@ namespace Dev2.Activities.Designers2.Service
 
         void SetInputs()
         {
-            InputMapping = DataMappingViewModel.GetInputString(DataMappingViewModel.Inputs);
+            if (DataMappingViewModel != null)
+            {
+                InputMapping = DataMappingViewModel.GetInputString(DataMappingViewModel.Inputs);
+            }
         }
 
         void SetOuputs()
         {
-            OutputMapping = DataMappingViewModel.GetOutputString(DataMappingViewModel.Outputs);
+            if (DataMappingViewModel != null)
+            {
+                OutputMapping = DataMappingViewModel.GetOutputString(DataMappingViewModel.Outputs);
+            }
         }
 
         void InitializeMappings()
