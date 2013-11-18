@@ -77,18 +77,27 @@ namespace Dev2.Data.Tests.Persistence
         [TestCategory("StorageSettingManager_GetSegmentCount")]
         public void StorageSettingManager_GetSegmentCount_WhenNoConfigurationFilePresent_ExpectConfigurationValue()
         {
-            //------------Setup for test--------------------------
+            var restoreSegmentCount = StorageSettingManager.StorageLayerSegments;
+            var restoreSegmentSize = StorageSettingManager.StorageLayerSegmentSize;
+            try
+            {
+                //------------Setup for test--------------------------
+                StorageSettingManager.StorageLayerSegments = () => { return null; };
+                StorageSettingManager.StorageLayerSegmentSize = () => { return null; };
 
-            StorageSettingManager.StorageLayerSegments = () => { return null; };
-            StorageSettingManager.StorageLayerSegmentSize = () => { return null; };
+                //------------Execute Test---------------------------
+                var segmentCount = StorageSettingManager.GetSegmentCount();
+                var segmentSize = StorageSettingManager.GetSegmentSize();
 
-            //------------Execute Test---------------------------
-            var segmentCount = StorageSettingManager.GetSegmentCount();
-            var segmentSize = StorageSettingManager.GetSegmentSize();
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(GlobalConstants.DefaultStorageSegmentSize, segmentSize);
-            Assert.AreEqual(GlobalConstants.DefaultStorageSegments, segmentCount);
+                //------------Assert Results-------------------------
+                Assert.AreEqual(GlobalConstants.DefaultStorageSegmentSize, segmentSize);
+                Assert.AreEqual(GlobalConstants.DefaultStorageSegments, segmentCount);
+            }
+            finally
+            {
+                StorageSettingManager.StorageLayerSegments = restoreSegmentCount;
+                StorageSettingManager.StorageLayerSegmentSize = restoreSegmentSize;
+            }
         }
 
 
