@@ -501,7 +501,7 @@ namespace Dev2.PathOperations
                             s.Dispose();
                         }
 
-                        src.Delete(src.IOPath);
+                       // src.Delete(src.IOPath);
                     }
                     return resultOk;
                 });
@@ -983,6 +983,24 @@ namespace Dev2.PathOperations
             IList<IActivityIOPath> srcContents = src.ListFilesInDirectory(src.IOPath);
             IList<IActivityIOPath> dstContents = dst.ListFilesInDirectory(dst.IOPath);
 
+            IList<IActivityIOPath> srcContentsFolders = src.ListFoldersInDirectory(src.IOPath);
+
+            foreach (var sourcePath in srcContentsFolders)
+            {
+                IActivityIOOperationsEndPoint sourceEndPoint  = ActivityIOFactory.CreateOperationEndPointFromIOPath(sourcePath);
+                //if (!dst.PathExist(sourceFolder.IOPath))
+                //{
+                IList<string> dirParts = sourceEndPoint.IOPath.Path.Split(sourceEndPoint.PathSeperator().ToCharArray());
+                    var directory = dirParts.Last();
+                   IActivityIOPath destinationPath = ActivityIOFactory.CreatePathFromString(Path.Combine(dst.IOPath.Path, directory), dst.IOPath.Username,
+                                                       dst.IOPath.Password);
+
+                   IActivityIOOperationsEndPoint destinationEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(destinationPath);
+                   dst.CreateDirectory(destinationPath, args);
+                //}
+                   Move(sourceEndPoint, destinationEndPoint, args);
+            }
+
 
             if(!args.Overwrite)
             {
@@ -1068,7 +1086,7 @@ namespace Dev2.PathOperations
                             // if move op, delete orig
                             if(removeSrc)
                             {
-                                src.Delete(p);
+                                //src.Delete(p);
                             }
                         }
                     }
@@ -1096,7 +1114,7 @@ namespace Dev2.PathOperations
                         // if move op, delete orig
                         if(removeSrc)
                         {
-                            src.Delete(p);
+                           // src.Delete(p);
                         }
                     }
                 }
@@ -1112,7 +1130,7 @@ namespace Dev2.PathOperations
             // if move op, delete orig
             if(removeSrc)
             {
-                src.Delete(src.IOPath);
+               // src.Delete(src.IOPath);
             }
 
             return result;
