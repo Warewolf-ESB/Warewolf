@@ -16,7 +16,6 @@ using Dev2.Activities.Designers2.Foreach;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.ViewModelTests;
-using Dev2.Core.Tests.Workflows;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -34,15 +33,17 @@ using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+
 // ReSharper disable InconsistentNaming
 // ReSharper disable once CheckNamespace
-namespace Dev2.Core.Tests
+namespace Dev2.Core.Tests.Workflows
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class WorkflowDesignerUnitTest
     {
 
@@ -1397,7 +1398,7 @@ namespace Dev2.Core.Tests
             var crm = new Mock<IContextualResourceModel>();
             crm.Setup(r => r.Environment).Returns(env.Object);
             crm.Setup(r => r.ResourceName).Returns("Test");
-            crm.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+            crm.Setup(res => res.WorkflowXaml).Returns(StringResourcesTest.xmlServiceDefinition);
             //, new Mock<IWizardEngine>().Object
             var treeVM = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, crm.Object);
 
@@ -1458,7 +1459,7 @@ namespace Dev2.Core.Tests
             var crm = new Mock<IContextualResourceModel>();
             crm.Setup(r => r.Environment).Returns(env.Object);
             crm.Setup(r => r.ResourceName).Returns("Test");
-            crm.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+            crm.Setup(res => res.WorkflowXaml).Returns(StringResourcesTest.xmlServiceDefinition);
 
             var wh = new Mock<IWorkflowHelper>();
 
@@ -1506,7 +1507,7 @@ namespace Dev2.Core.Tests
             var eventAggregator = new Mock<IEventAggregator>();
             ImportService.AddExportedValueToContainer(eventAggregator.Object);
             
-            var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object,eventAggregator.Object, false);
+            var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, eventAggregator.Object, false);
             var expectedMessage = new ConfigureDecisionExpressionMessage()
             {
                 ModelItem = source.Object,
@@ -1541,7 +1542,7 @@ namespace Dev2.Core.Tests
             var crm = new Mock<IContextualResourceModel>();
             crm.Setup(r => r.Environment).Returns(env.Object);
             crm.Setup(r => r.ResourceName).Returns("Test");
-            crm.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+            crm.Setup(res => res.WorkflowXaml).Returns(StringResourcesTest.xmlServiceDefinition);
 
             var wh = new Mock<IWorkflowHelper>();
 
@@ -1633,7 +1634,7 @@ namespace Dev2.Core.Tests
             var crm = new Mock<IContextualResourceModel>();
             crm.Setup(r => r.Environment).Returns(env.Object);
             crm.Setup(r => r.ResourceName).Returns("Test");
-            crm.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+            crm.Setup(res => res.WorkflowXaml).Returns(StringResourcesTest.xmlServiceDefinition);
 
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(new ActivityBuilder());
@@ -1748,7 +1749,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(r => r.ResourceName).Returns("Test");
             resourceModel.Setup(r => r.WorkflowXaml).Returns("TestXaml");
-            resourceModel.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
+            resourceModel.Setup(res => res.WorkflowXaml).Returns(StringResources.xmlServiceDefinition);
 
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
@@ -1809,7 +1810,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(r => r.ResourceName).Returns("Test");
             resourceModel.Setup(r => r.WorkflowXaml).Returns("TestXaml");
             resourceModel.SetupProperty(model => model.IsWorkflowSaved);
-            resourceModel.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
+            resourceModel.Setup(res => res.WorkflowXaml).Returns(StringResources.xmlServiceDefinition);
 
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
@@ -1871,7 +1872,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(r => r.ResourceName).Returns("Test");
             resourceModel.Setup(r => r.WorkflowXaml).Returns("TestXaml");
             resourceModel.SetupProperty(model => model.IsWorkflowSaved);
-            resourceModel.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
+            resourceModel.Setup(res => res.WorkflowXaml).Returns(StringResources.xmlServiceDefinition);
 
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
@@ -2395,7 +2396,7 @@ namespace Dev2.Core.Tests
             var crm = new Mock<IContextualResourceModel>();
             crm.Setup(r => r.Environment).Returns(env.Object);
             crm.Setup(r => r.ResourceName).Returns("Test");
-            crm.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+            crm.Setup(res => res.WorkflowXaml).Returns(StringResourcesTest.xmlServiceDefinition);
 
             var wh = new Mock<IWorkflowHelper>();
 
@@ -2470,7 +2471,7 @@ namespace Dev2.Core.Tests
             var crm = new Mock<IContextualResourceModel>();
             crm.Setup(r => r.Environment).Returns(env.Object);
             crm.Setup(r => r.ResourceName).Returns("Test");
-            crm.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+            crm.Setup(res => res.WorkflowXaml).Returns(StringResourcesTest.xmlServiceDefinition);
 
             var wh = new Mock<IWorkflowHelper>();
 

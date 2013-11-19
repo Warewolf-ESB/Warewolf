@@ -3,13 +3,14 @@ using System.Diagnostics.CodeAnalysis;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.Factories
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DsfActivityFactoryTests
     {
         [TestMethod]
@@ -30,7 +31,7 @@ namespace Dev2.Core.Tests.Factories
             model.Setup(m => m.ResourceType).Returns(ResourceType.Service);
             model.Setup(m => m.ID).Returns(expectedResourceID);
             model.Setup(m => m.Environment).Returns(environment.Object);
-            model.Setup(m => m.ServiceDefinition).Returns("<root/>");
+            model.Setup(m => m.WorkflowXaml).Returns("<root/>");
 
             DsfActivityFactory.CreateDsfActivity(model.Object, activity, false);
 
@@ -49,7 +50,7 @@ namespace Dev2.Core.Tests.Factories
         {
             var activity = new DsfServiceActivity();
             Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.Service);
-            mockRes.Setup(r => r.ServiceDefinition).Returns(StringResources.xmlNullSourceMethodServiceDef);
+            mockRes.Setup(r => r.WorkflowXaml).Returns(StringResources.xmlNullSourceMethodServiceDef);
             DsfActivity act = DsfActivityFactory.CreateDsfActivity(mockRes.Object, activity, true);
 
             //If no exception - pass

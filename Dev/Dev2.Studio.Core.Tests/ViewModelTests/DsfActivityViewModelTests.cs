@@ -495,7 +495,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
             var instanceID = Guid.NewGuid();
             var worstError = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.IsRequiredChanged, FixData = xml };
-            
+
             var vm = CreateActivityViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, worstError);
 
             vm.FixErrorsCommand.Execute(null);
@@ -770,7 +770,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var model = new Mock<IContextualResourceModel>();
             model.Setup(r => r.ResourceName).Returns("TestResource");
             model.Setup(r => r.ServerID).Returns(Guid.NewGuid());
-            model.Setup(r => r.ServiceDefinition).Returns("<root/>");
+            model.Setup(r => r.WorkflowXaml).Returns("<root/>");
             model.Setup(m => m.Errors).Returns(errors);
             model.Setup(m => m.ID).Returns(resourceID);
             model.Setup(m => m.Environment).Returns(environment.Object);

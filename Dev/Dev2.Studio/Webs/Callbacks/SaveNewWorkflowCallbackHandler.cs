@@ -44,7 +44,7 @@ namespace Dev2.Studio.Webs.Callbacks
             _addToTabManager = addToTabManager;
             _resourceModel = resourceModel;
         }
-   
+
 
         #region Overrides of WebsiteCallbackHandler
 
@@ -55,7 +55,7 @@ namespace Dev2.Studio.Webs.Callbacks
                 string resName = jsonObj.resourceName;
                 string resCat = jsonObj.resourcePath;
 
-                if (_resourceModel != null)
+                if(_resourceModel != null)
                 {
                     _resourceModel.IsNewWorkflow = false;
                     Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
@@ -65,7 +65,7 @@ namespace Dev2.Studio.Webs.Callbacks
                                                                  resName);
                     newResourceModel.Category = resCat;
                     newResourceModel.ResourceName = resName;
-                    newResourceModel.ServiceDefinition = _resourceModel.ServiceDefinition;
+                    
                     newResourceModel.WorkflowXaml = _resourceModel.WorkflowXaml.Replace(_resourceModel.DisplayName,
                                                                                         resName);
                     newResourceModel.DataList = _resourceModel.DataList;
@@ -73,7 +73,7 @@ namespace Dev2.Studio.Webs.Callbacks
 
                     Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
                     _eventPublisher.Publish(new UpdateResourceMessage(newResourceModel));
-                    if (_addToTabManager)
+                    if(_addToTabManager)
                     {
                         Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
                         _eventPublisher.Publish(new AddWorkSurfaceMessage(newResourceModel));
@@ -88,7 +88,7 @@ namespace Dev2.Studio.Webs.Callbacks
 
                 Close();
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Exception e1 = new Exception("There was a problem saving. Please try again.", e);
 

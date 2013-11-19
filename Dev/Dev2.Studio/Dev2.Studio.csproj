@@ -456,7 +456,6 @@
     <Compile Include="Feedback\IFeedbackInvoker.cs" />
     <Compile Include="Feedback\IFeedBackRecorder.cs" />
     <Compile Include="InterfaceImplementors\BlankIntellisenseProvider.cs" />
-    <Compile Include="InterfaceImplementors\FileNameProviderImpl.cs" />
     <Compile Include="InterfaceImplementors\UserMessageProviderImpl.cs" />
     <Compile Include="InterfaceImplementors\WizardResourceKeys\ResourceKeys.cs" />
     <Compile Include="InterfaceImplementors\WizardResourceKeys\StudioToWizardBridge.cs" />

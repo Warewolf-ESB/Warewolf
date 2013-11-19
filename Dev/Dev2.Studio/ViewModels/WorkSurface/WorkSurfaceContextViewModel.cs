@@ -306,12 +306,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
         {
             Logger.TraceInfo(message.GetType().Name);
-            ContextualResourceModel.ServiceDefinition = ContextualResourceModel.ServiceDefinition
-                    .Replace("x:Class=\"" + ContextualResourceModel.ResourceName, "x:Class=\"" + message.NewName)
-                    .Replace("Name=\"" + ContextualResourceModel.ResourceName, "Name=\"" + message.NewName)
-                    .Replace("ToolboxFriendlyName=\"" + ContextualResourceModel.ResourceName, "ToolboxFriendlyName=\"" + message.NewName)
-                    .Replace("<DisplayName>" + ContextualResourceModel.ResourceName + "</DisplayName>", "<DisplayName>" + message.NewName + "</DisplayName>")
-                    .Replace("DisplayName=\"" + ContextualResourceModel.ResourceName, "DisplayName=\"" + message.NewName);
+            //ContextualResourceModel.ServiceDefinition = ContextualResourceModel.ServiceDefinition
+            //        .Replace("x:Class=\"" + ContextualResourceModel.ResourceName, "x:Class=\"" + message.NewName)
+            //        .Replace("Name=\"" + ContextualResourceModel.ResourceName, "Name=\"" + message.NewName)
+            //        .Replace("ToolboxFriendlyName=\"" + ContextualResourceModel.ResourceName, "ToolboxFriendlyName=\"" + message.NewName)
+            //        .Replace("<DisplayName>" + ContextualResourceModel.ResourceName + "</DisplayName>", "<DisplayName>" + message.NewName + "</DisplayName>")
+            //        .Replace("DisplayName=\"" + ContextualResourceModel.ResourceName, "DisplayName=\"" + message.NewName);
             NotifyOfPropertyChange("ContextualResourceModel");
         }
 

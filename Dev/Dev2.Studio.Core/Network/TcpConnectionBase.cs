@@ -168,11 +168,11 @@ namespace Dev2.Studio.Core.Network
             if(!string.IsNullOrEmpty(payload))
             {
                 // Only return Dev2System.ManagmentServicePayload if present ;)
-                var start = payload.IndexOf("<" + GlobalConstants.ManagementServicePayload + ">", StringComparison.Ordinal);
+                var start = payload.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", StringComparison.Ordinal);
 
                 if(start > 0)
                 {
-                    var end = payload.IndexOf("</" + GlobalConstants.ManagementServicePayload + ">", StringComparison.Ordinal);
+                    var end = payload.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", StringComparison.Ordinal);
                     if(start < end && (end - start) > 1)
                     {
                         // we can return the trimed payload instead

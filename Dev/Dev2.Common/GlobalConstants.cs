@@ -194,5 +194,8 @@ namespace Dev2.Common
         // Resource Picker
         public static string ResourcePickerWorkflowString = "DsfWorkflowActivity";
         public static string ResourcePickerServiceString = "DsfServiceActivity";
+
+        public static string SerializableResourceQuote = "__QUOTE__";
+        public static string SerializableResourceSingleQuote = "__SQUOTE__";
     }
 }

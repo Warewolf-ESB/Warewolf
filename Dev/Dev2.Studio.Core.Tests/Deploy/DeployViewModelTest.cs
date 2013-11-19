@@ -206,7 +206,7 @@ namespace Dev2.Core.Tests
                 publishedEnvironmentModel = ((UpdateSelectedServer)updateSelectedServer).EnvironmentModel;
                 publishedIsSource = ((UpdateSelectedServer)updateSelectedServer).IsSourceServer;
             });
-            var envID = SetupVMForMessages(out server, out vm,mockEventAggregator);
+            var envID = SetupVMForMessages(out server, out vm, mockEventAggregator);
 
             var destCtx = vm.DestinationContext;
 
@@ -214,7 +214,7 @@ namespace Dev2.Core.Tests
             vm.Handle(msg);
             Assert.IsTrue(vm.SelectedDestinationServer.ID.Equals(envID.ToString()));
             Assert.IsFalse(publishedIsSource);
-            Assert.AreEqual(server.Environment,publishedEnvironmentModel);
+            Assert.AreEqual(server.Environment, publishedEnvironmentModel);
         }
 
         [TestMethod]
@@ -275,7 +275,7 @@ namespace Dev2.Core.Tests
 
         #region CreateEnvironmentRepositoryMock
 
-        private static Guid SetupVMForMessages(out ServerDTO server, out DeployViewModel vm,Mock<IEventAggregator> mockEventAggregator = null)
+        private static Guid SetupVMForMessages(out ServerDTO server, out DeployViewModel vm, Mock<IEventAggregator> mockEventAggregator = null)
         {
             ImportService.CurrentContext = _okayContext;
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
@@ -393,7 +393,7 @@ namespace Dev2.Core.Tests
             destEnv.Setup(e => e.IsConnected).Returns(false);
             Assert.IsFalse(deployViewModel.CanDeploy, "DeployViewModel CanDeploy is true when server is disconnected.");
         }
-        
+
         [TestMethod]
         [TestCategory("DeployViewModel_CanDeploy")]
         [Owner("Hagashen Naidu")]
@@ -449,8 +449,8 @@ namespace Dev2.Core.Tests
             var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
             //------------Assert Results-------------------------
             Assert.IsTrue(serversAreNotTheSame);
-        } 
-        
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DeployViewModel_ServersAreNotTheSame")]
@@ -467,7 +467,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(serversAreNotTheSame);
         }
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DeployViewModel_ServersAreNotTheSame")]
@@ -485,8 +485,8 @@ namespace Dev2.Core.Tests
             var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
             //------------Assert Results-------------------------
             Assert.IsTrue(serversAreNotTheSame);
-        }  
-   
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DeployViewModel_ServersAreNotTheSame")]
@@ -505,8 +505,8 @@ namespace Dev2.Core.Tests
             var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
             //------------Assert Results-------------------------
             Assert.IsTrue(serversAreNotTheSame);
-        } 
-        
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DeployViewModel_ServersAreNotTheSame")]
@@ -527,7 +527,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(serversAreNotTheSame);
         }
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DeployViewModel_ServersAreNotTheSame")]

@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Utils;
 using Dev2.Composition;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Providers.Logs;
-using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -19,8 +15,6 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.InterfaceImplementors;
-using Dev2.Studio.Utils;
-using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -80,7 +74,7 @@ namespace Dev2.Studio.Webs.Callbacks
             }
             var getWorksurfaceItemRepo = ImportService.GetExportValue<IWorkspaceItemRepository>();
             CheckForServerMessages(environmentModel, resourceID, getWorksurfaceItemRepo);
-            var effectedResources = environmentModel.ResourceRepository.ReloadResource(resourceID, resourceType, ResourceModelEqualityComparer.Current);
+            var effectedResources = environmentModel.ResourceRepository.ReloadResource(resourceID, resourceType, ResourceModelEqualityComparer.Current, true);
             foreach(var resource in effectedResources)
             {
                 var resourceWithContext = new ResourceModel(environmentModel);

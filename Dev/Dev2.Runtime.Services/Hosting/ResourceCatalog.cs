@@ -24,6 +24,7 @@ using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.Hosting
 {
+
     public class ResourceCatalog : IResourceCatalog
     {
         readonly ConcurrentDictionary<Guid, List<IResource>> _workspaceResources = new ConcurrentDictionary<Guid, List<IResource>>();
@@ -77,7 +78,6 @@ namespace Dev2.Runtime.Hosting
 
         #endregion
 
-        
         public static ResourceCatalog Start(IContextManager<IStudioNetworkSession> contextManager)
         {
             if(contextManager == null)
@@ -333,6 +333,59 @@ namespace Dev2.Runtime.Hosting
             return result;
         }
 
+        public IList<IResource> GetResourceList(Guid workspaceID, string guidCsv, string type)
+        {
+            if(type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
+
+            if(guidCsv == null)
+            {
+                guidCsv = string.Empty;
+            }
+
+            var guids = new List<Guid>();
+            foreach(var guidStr in guidCsv.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                Guid guid;
+                if(Guid.TryParse(guidStr, out guid))
+                {
+                    guids.Add(guid);
+                }
+            }
+            var resourceTypes = ResourceTypeConverter.ToResourceTypes(type);
+
+            var workspaceResources = GetResources(workspaceID);
+            var resources = workspaceResources.FindAll(r => guids.Contains(r.ResourceID)
+                                                            && resourceTypes.Contains(r.ResourceType));
+
+            return resources;
+        }
+
+        public IList<IResource> GetResourceList(Guid workspaceID, string resourceName, string type, string userRoles, bool useContains = true)
+        {
+            if(string.IsNullOrEmpty(resourceName) && string.IsNullOrEmpty(type))
+            {
+                throw new InvalidDataContractException("ResourceName and Type are missing from the request");
+            }
+
+            if(string.IsNullOrEmpty(resourceName) || resourceName == "*")
+            {
+                resourceName = string.Empty;
+            }
+
+            var resourceTypes = ResourceTypeConverter.ToResourceTypes(type);
+
+            var workspaceResources = GetResources(workspaceID);
+            var resources = useContains
+                ? workspaceResources.FindAll(r => r.ResourceName.Contains(resourceName) && resourceTypes.Contains(r.ResourceType))
+                : workspaceResources.FindAll(r => r.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase)
+                                                && resourceTypes.Contains(r.ResourceType));
+
+            return resources;
+        }
+
         #endregion
 
         #region LoadWorkspace
@@ -357,17 +410,6 @@ namespace Dev2.Runtime.Hosting
             var folders = ServiceModel.Resources.RootFolders.Values.Distinct();
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             var userServices = LoadWorkspaceViaBuilder(workspacePath, folders.ToArray());
-
-
-
-
-            if(workspaceID != Guid.Empty)
-            {
-                Guid examine = new Guid("48ed5cb8-f226-4a98-8eba-208cb477e422");
-                var wtf = userServices.Where(c => c.ResourceID == examine);
-
-                var foo = wtf.FirstOrDefault();
-            }
 
             var result = userServices.Union(_managementServices.Values);
 
@@ -1043,7 +1085,7 @@ namespace Dev2.Runtime.Hosting
         }
 
         public void CompileTheResourceAfterSave(Guid workspaceID, IResource resource, string contents, ServiceAction beforeAction)
-        {
+            {
             if(beforeAction != null)
             {
                 // Compile the service 
@@ -1101,9 +1143,9 @@ namespace Dev2.Runtime.Hosting
                     dependsMessageList.Add(compileMessageTO.Clone());
                 }
                 UpdateResourceXML(workspaceID, affectedResource, messages);
-            }
+                }
             CompileMessageRepo.Instance.AddMessage(workspaceID, dependsMessageList);
-        }
+            }
 
         void UpdateResourceXML(Guid workspaceID, IResource effectedResource, IList<CompileMessageTO> compileMessagesTO)
         {

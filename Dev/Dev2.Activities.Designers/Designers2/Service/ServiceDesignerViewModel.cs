@@ -327,6 +327,9 @@ namespace Dev2.Activities.Designers2.Service
                 var resourceID = ResourceID;
                 if(resourceID != Guid.Empty)
                 {
+
+                    // TODO : Fetch service data here ;)
+
                     ResourceModel = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceID) as IContextualResourceModel;
                     if(ResourceModel == null)
                     {

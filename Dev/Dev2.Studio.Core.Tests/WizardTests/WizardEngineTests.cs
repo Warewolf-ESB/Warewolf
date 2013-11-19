@@ -10,7 +10,8 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Wizards;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
 using Moq;
 using System;
 using System.Activities.Presentation.Model;
@@ -20,7 +21,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     [Ignore]
     public class WizardEngineTests
     {
@@ -326,8 +328,7 @@ namespace Dev2.Core.Tests
         {
             environment = Dev2MockFactory.SetupEnvironmentModel(mockResource1, new List<IResourceModel>());
             mockResource2.Setup(moq => moq.ResourceType).Returns(ResourceType.Service);
-            mockResource2.Setup(moq => moq.ServiceDefinition).Returns(@"<Service Name=""Email Service"">
-  <Actions>
+            mockResource2.Setup(moq => moq.WorkflowXaml).Returns(@"<
     <Action Name=""EmailService"" Type=""Plugin"" SourceName=""Email Plugin"" SourceMethod=""Send"">
       <Inputs>
         <Input Name=""Host"" Source=""Host"" DefaultValue=""mail.bellevuenet.co.za"">
@@ -359,21 +360,7 @@ namespace Dev2.Core.Tests
         <Output Name=""FailureMessage"" MapsTo=""FailureMessage"" Value=""[[FailureMessage]]"" />
         <Output Name=""Message"" MapsTo=""Message"" Value=""[[Message]]"" />
       </Outputs>
-    </Action>
-  </Actions>
-  <AuthorRoles>Schema Admins,Enterprise Admins,Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Fax Administrators,Windows SBS Virtual Private Network Users,All Users,Windows SBS Administrators,Windows SBS SharePoint_OwnersGroup,Windows SBS Link Users,Windows SBS Admin Tools Group,Company Users,Business Design Studio Developers,</AuthorRoles>
-  <Comment>Service originates Emails</Comment>
-  <Category>Communication</Category>
-  <Tags>communication,email</Tags>
-  <HelpLink>http://d</HelpLink>
-  <UnitTestTargetWorkflowService></UnitTestTargetWorkflowService>
-  <BizRule />
-  <WorkflowActivityDef />
-  <Source />
-  <XamlDefinition />
-  <DisplayName>Service</DisplayName>
-  <DataList />
-</Service>");
+    </Action>");
             IResourceModel wizResource = null;
             GetResourceModelFromAggregator(cake =>
             {
@@ -394,8 +381,7 @@ namespace Dev2.Core.Tests
             environment = Dev2MockFactory.SetupEnvironmentModel(mockResource1, new List<IResourceModel>());
             mockResource2.Setup(moq => moq.ResourceType).Returns(ResourceType.WorkflowService);
             mockResource2.Setup(moq => moq.DataList).Returns("<DataList></DataList>");
-            mockResource2.Setup(moq => moq.ServiceDefinition).Returns(@"<Service Name=""Email Service"">
-  <Actions>
+            mockResource2.Setup(moq => moq.WorkflowXaml).Returns(@"
     <Action Name=""EmailService"" Type=""Plugin"" SourceName=""Email Plugin"" SourceMethod=""Send"">
       <Inputs>
         <Input Name=""Host"" Source=""Host"" DefaultValue=""mail.bellevuenet.co.za"">
@@ -427,21 +413,7 @@ namespace Dev2.Core.Tests
         <Output Name=""FailureMessage"" MapsTo=""FailureMessage"" Value=""[[FailureMessage]]"" />
         <Output Name=""Message"" MapsTo=""Message"" Value=""[[Message]]"" />
       </Outputs>
-    </Action>
-  </Actions>
-  <AuthorRoles>Schema Admins,Enterprise Admins,Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Fax Administrators,Windows SBS Virtual Private Network Users,All Users,Windows SBS Administrators,Windows SBS SharePoint_OwnersGroup,Windows SBS Link Users,Windows SBS Admin Tools Group,Company Users,Business Design Studio Developers,</AuthorRoles>
-  <Comment>Service originates Emails</Comment>
-  <Category>Communication</Category>
-  <Tags>communication,email</Tags>
-  <HelpLink>http://d</HelpLink>
-  <UnitTestTargetWorkflowService></UnitTestTargetWorkflowService>
-  <BizRule />
-  <WorkflowActivityDef />
-  <Source />
-  <XamlDefinition />
-  <DisplayName>Service</DisplayName>
-  <DataList />
-</Service>");
+    </Action>");
             IResourceModel wizResource = null;
             GetResourceModelFromAggregator(o =>
             {
@@ -544,7 +516,7 @@ namespace Dev2.Core.Tests
             DoInitialize();
             environment = Dev2MockFactory.SetupEnvironmentModel(mockResource1, new List<IResourceModel>());
 
-            
+
 
             wizEng.EditWizard(mockResource1.Object, mockResource1.Object);
         }
@@ -567,8 +539,8 @@ namespace Dev2.Core.Tests
 	<FailureMessage IsEditable=""false"" Description="""" ColumnIODirection=""Both""/>
 	<Message IsEditable=""false"" Description="""" ColumnIODirection=""Both""/>
 </ADL>");
-            
-            wizEng.EditWizard(mockResource3.Object, mockResource1.Object);           
+
+            wizEng.EditWizard(mockResource3.Object, mockResource1.Object);
 
             //Assert.IsTrue(wizResource.ResourceName == "TestWorkflow1.wiz" && (wizEng.Popup.Description == popupMessage));
             Assert.Inconclusive("Namespace to  FieldName");
@@ -594,14 +566,14 @@ namespace Dev2.Core.Tests
     <RemoveVar IsEditable=""False"" Description="""" ColumnIODirection=""Both""/>
 	<Message IsEditable=""False"" Description="""" ColumnIODirection=""Both""/>
 </ADL>");
-            
-            wizEng.EditResourceWizard(mockResource1.Object);            
+
+            wizEng.EditResourceWizard(mockResource1.Object);
 
             //Assert.IsTrue(wizResource.ResourceName == "TestWorkflow1.wiz" && (wizEng.Popup.Description == popupMessage));
             Assert.Inconclusive("Namespace to  FieldName");
         }
 
-        #endregion EditWizard Tests        
+        #endregion EditWizard Tests
 
         #region Is Wizard Tests
 

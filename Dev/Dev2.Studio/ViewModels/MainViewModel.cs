@@ -21,6 +21,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Helpers;
@@ -1127,8 +1128,8 @@ namespace Dev2.Studio.ViewModels
                 if(environment == null || environment.ResourceRepository == null)
                 {
                     if(environment != null && item.EnvironmentID == environment.ID)
-                {
-                    workspaceItemsToRemove.Add(item);
+                    {
+                        workspaceItemsToRemove.Add(item);
                     }
                 }
 
@@ -1136,34 +1137,39 @@ namespace Dev2.Studio.ViewModels
                 {
                     if(environment.ResourceRepository != null)
                     {
-                var resource = environment.ResourceRepository.All().FirstOrDefault(rm =>
-                {
-                    var sameEnv = true;
+                        var resource = environment.ResourceRepository.All().FirstOrDefault(rm =>
+                        {
+                            var sameEnv = true;
                             if(item.EnvironmentID != Guid.Empty)
-                    {
-                        sameEnv = item.EnvironmentID == environment.ID;
-                    }
-                    return rm.ResourceName == item.ServiceName && sameEnv;
-                })
-                               as IContextualResourceModel;
+                            {
+                                sameEnv = item.EnvironmentID == environment.ID;
+                            }
+                            return rm.ResourceName == item.ServiceName && sameEnv;
+                        }) as IContextualResourceModel;
+
                         if(resource == null)
-                {
-                    workspaceItemsToRemove.Add(item);
-                    continue;
-                }
+                        {
+                            workspaceItemsToRemove.Add(item);
+                            continue;
+                        }
 
 
                         if(resource.ResourceType == ResourceType.WorkflowService)
-                {
-                    resource.IsWorkflowSaved = item.IsWorkflowSaved;
-                    resource.OnResourceSaved += model => WorkspaceItemRepository.Instance.UpdateWorkspaceItemIsWorkflowSaved(model);
-                    AddWorkSurfaceContext(resource);
-                }
-                else
-                {
-                    workspaceItemsToRemove.Add(item);
-                }
-            }
+                        {
+                            resource.IsWorkflowSaved = item.IsWorkflowSaved;
+                            resource.OnResourceSaved += model => WorkspaceItemRepository.Instance.UpdateWorkspaceItemIsWorkflowSaved(model);
+                            
+                            // We need to load the correct version of the service ;)
+                            var resourceDef = ResourceRepository.FetchResourceDefinition(environment, environment.Connection.WorkspaceID, resource.ID);
+                            resource.WorkflowXaml = resourceDef;
+
+                            AddWorkSurfaceContext(resource);
+                        }
+                        else
+                        {
+                            workspaceItemsToRemove.Add(item);
+                        }
+                    }
                 }
                 else
                 {
@@ -1310,7 +1316,7 @@ namespace Dev2.Studio.ViewModels
             IWorkspaceItem workspaceItem = WorkspaceItemRepository.Instance.WorkspaceItems.FirstOrDefault(c => c.ID == resourceModel.ID);
             if(workspaceItem == null)
             {
-                resourceModel.Environment.ResourceRepository.ReloadResource(resourceModel.ID, resourceModel.ResourceType, ResourceModelEqualityComparer.Current);
+                resourceModel.Environment.ResourceRepository.ReloadResource(resourceModel.ID, resourceModel.ResourceType, ResourceModelEqualityComparer.Current, true);
             }
 
             AddWorkspaceItem(resourceModel);

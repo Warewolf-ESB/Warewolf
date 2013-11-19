@@ -25,7 +25,7 @@ namespace Dev2.Studio.Core.Interfaces
         bool RequiresSignOff { get; set; }
         string ResourceName { get; set; }
         ResourceType ResourceType { get; set; }
-        string ServiceDefinition { get; set; }
+        //string ServiceDefinition { get; set; }
         string WorkflowXaml { get; set; }
         List<string> TagList { get; }
         string Tags { get; set; }
@@ -33,12 +33,14 @@ namespace Dev2.Studio.Core.Interfaces
         string ToServiceDefinition();
         string UnitTestTargetWorkflowService { get; set; }
         string DataList { get; set; }
-        Activity WorkflowActivity { get; }
+        //Activity WorkflowActivity { get; }
         bool IsDatabaseService { get; set; }
         bool IsPluginService { get; set; }
         bool IsResourceService { get; set; }
         bool IsWorkflowSaved { get; set; }
         Version Version { get; set; }
+        string ServerResourceType { get; set; }
+
         void Update(IResourceModel resourceModel);
         string ConnectionString { get; set; }
         bool IsValid { get; set; }

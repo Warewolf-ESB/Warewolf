@@ -8,13 +8,15 @@ using Dev2.Providers.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Unlimited.Framework;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ResourceModelTest
     {
         private IResourceModel _resourceModel;
@@ -29,7 +31,7 @@ namespace Dev2.Core.Tests
 
         void Setup()
         {
-         //   ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
+            //   ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
 
             var environmentModel = CreateMockEnvironment(new Mock<IEventPublisher>().Object);
             environmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
@@ -38,7 +40,7 @@ namespace Dev2.Core.Tests
             {
                 ResourceName = "test",
                 ResourceType = ResourceType.Service,
-                ServiceDefinition = @"
+                WorkflowXaml = @"
 <Service Name=""abc"">
     <Inputs/>
     <Outputs/>
@@ -83,15 +85,13 @@ namespace Dev2.Core.Tests
             resourceModel.ID = id;
             resourceModel.ResourceName = resourceName;
             resourceModel.Tags = tags;
-            resourceModel.ServiceDefinition = "new def";
+            resourceModel.WorkflowXaml = "new def";
             resourceModel.WorkflowXaml = "new xaml";
             //------------Execute Test---------------------------
             var updateResourceModel = new ResourceModel(environmentModel.Object);
-            updateResourceModel.ServiceDefinition = "old def";
             updateResourceModel.WorkflowXaml = "old xaml";
             updateResourceModel.Update(resourceModel);
             //------------Assert Results-------------------------
-            Assert.AreEqual("new def", updateResourceModel.ServiceDefinition);
             Assert.AreEqual("new xaml", updateResourceModel.WorkflowXaml);
         }
 
@@ -138,7 +138,7 @@ namespace Dev2.Core.Tests
             Mock<IEnvironmentModel> _testEnvironmentModel = new Mock<IEnvironmentModel>();
             var resourceModel = new ResourceModel(_testEnvironmentModel.Object);
             var timesFired = 0;
-            resourceModel.PropertyChanged += (sender, args) => 
+            resourceModel.PropertyChanged += (sender, args) =>
             {
                 timesFired++;
             };
@@ -146,7 +146,7 @@ namespace Dev2.Core.Tests
             resourceModel.DataList = "TestDataList";
             resourceModel.DataList = "TestDataList";
             //------------Assert Results-------------------------
-            Assert.AreEqual(1,timesFired);
+            Assert.AreEqual(1, timesFired);
         }
 
         [TestMethod]
@@ -168,7 +168,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(eventFired);
             Assert.IsNotNull(eventResourceModel);
-            Assert.AreSame(resourceModel,eventResourceModel);
+            Assert.AreSame(resourceModel, eventResourceModel);
         }
 
         #region ToServiceDefinition Tests
@@ -193,7 +193,7 @@ namespace Dev2.Core.Tests
             _resourceModel.DataList = newDataList;
 
             string result = _resourceModel.DataList;
-            Assert.AreEqual(new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(_resourceModel.ServiceDefinition).GetValue("DataList"), result);
+            Assert.AreEqual(new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(_resourceModel.WorkflowXaml).GetValue("DataList"), result);
 
         }
 
@@ -250,7 +250,7 @@ namespace Dev2.Core.Tests
 
             eventPublisher.Publish(pubMemo);
         }
-        
+
         [TestMethod]
         [TestCategory("ResourceModel_DesignValidationService")]
         [Description("Design validation memo errors must be added to the errors list.")]
@@ -278,7 +278,7 @@ namespace Dev2.Core.Tests
             model.OnDesignValidationReceived += (sender, memo) =>
             {
                 Assert.AreEqual(memo.Errors.Count, model.Errors.Count, "OnDesignValidationReceived did not update the number of errors correctly.");
-                Assert.AreEqual(2, model.Errors.Count, "OnDesignValidationReceived did not update the number of errors correctly.");                
+                Assert.AreEqual(2, model.Errors.Count, "OnDesignValidationReceived did not update the number of errors correctly.");
             };
 
             eventPublisher.Publish(pubMemo);
@@ -374,7 +374,7 @@ namespace Dev2.Core.Tests
 
             // Publish 2 errors
             var pubMemo = new DesignValidationMemo { InstanceID = instanceID };
-            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error.",InstanceID = instanceID});
+            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error.", InstanceID = instanceID });
             pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Warning, Message = "Warning error.", InstanceID = instanceID });
             eventPublisher.Publish(pubMemo);
 
@@ -398,6 +398,6 @@ namespace Dev2.Core.Tests
             return environmentModel;
         }
 
-        
+
     }
 }

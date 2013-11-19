@@ -13,8 +13,10 @@ using System.Activities.Statements;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -1061,15 +1063,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         /// <summary>
-        /// Binds to model.
+        /// Saves the new XAML ;)
         /// </summary>
         public void BindToModel()
         {
             _resourceModel.WorkflowXaml = ServiceDefinition;
-            if(string.IsNullOrEmpty(_resourceModel.ServiceDefinition))
-            {
-                _resourceModel.ServiceDefinition = _resourceModel.ToServiceDefinition();
-            }
         }
 
         /// <summary>
@@ -1284,7 +1282,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void LoadDesignerXAML()
         {
-            if(string.IsNullOrEmpty(_resourceModel.WorkflowXaml))
+            var xaml = _resourceModel.WorkflowXaml;
+
+            if(string.IsNullOrEmpty(xaml))
             {
                 // BUG 9304 - 2013.05.08 - TWR 
                 _wd.Load(_workflowHelper.CreateWorkflow(_resourceModel.ResourceName));
@@ -1293,7 +1293,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             else
             {
-                _wd.Text = _workflowHelper.SanitizeXaml(_resourceModel.WorkflowXaml);
+                _wd.Text = _workflowHelper.SanitizeXaml(xaml);
                 _wd.Load();
             }
         }

@@ -238,7 +238,7 @@ namespace Dev2.Studio.Core.ViewModels
                     //
                     // Reload resource call
                     //
-                    List<IResourceModel> effectedResources = _resource.Environment.ResourceRepository.ReloadResource(_resource.ID, _resource.ResourceType, ResourceModelEqualityComparer.Current);
+                    List<IResourceModel> effectedResources = _resource.Environment.ResourceRepository.ReloadResource(_resource.ID, _resource.ResourceType, ResourceModelEqualityComparer.Current, true);
                     foreach(IResourceModel resource in effectedResources)
                     {
                         var resourceWithContext = new ResourceModel(_resource.Environment);
@@ -273,7 +273,7 @@ namespace Dev2.Studio.Core.ViewModels
                 //
                 // Reload resource call
                 //
-                List<IResourceModel> effectedResources = _resource.Environment.ResourceRepository.ReloadResource(resourceID, parsedResourceType, ResourceModelEqualityComparer.Current);
+                List<IResourceModel> effectedResources = _resource.Environment.ResourceRepository.ReloadResource(resourceID, parsedResourceType, ResourceModelEqualityComparer.Current, true);
                 foreach(IResourceModel resource in effectedResources)
                 {
                     var resourceWithContext = new ResourceModel(_resource.Environment);

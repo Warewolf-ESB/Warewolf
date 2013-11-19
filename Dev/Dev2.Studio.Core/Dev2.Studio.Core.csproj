@@ -306,7 +306,6 @@
     <Compile Include="Interfaces\IDecisionType.cs" />
     <Compile Include="Interfaces\IDev2StudioView.cs" />
     <Compile Include="Interfaces\IEnvironmentModel.cs" />
-    <Compile Include="Interfaces\IFileNameProvider.cs" />
     <Compile Include="Interfaces\IFilePersistenceProvider.cs" />
     <Compile Include="Interfaces\ILayoutObjectViewModel.cs" />
     <Compile Include="Interfaces\IResourceModel.cs" />

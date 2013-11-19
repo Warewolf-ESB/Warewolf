@@ -1,10 +1,13 @@
 ﻿#region
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media.Imaging;
 using System.Xml;
 using System.Xml.Linq;
@@ -26,6 +29,8 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Workspaces;
+using Infragistics.Shared;
+using Newtonsoft.Json;
 using Unlimited.Framework;
 
 #endregion
@@ -103,7 +108,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             // Inform the repo to reload the deployed resources against the targetEnviroment ;)
             foreach (var resourceToReload in deployableResources)
             {
-                var effectedResources = targetResourceRepo.ReloadResource(resourceToReload.ID, resourceToReload.ResourceType, ResourceModelEqualityComparer.Current);
+                var effectedResources = targetResourceRepo.ReloadResource(resourceToReload.ID, resourceToReload.ResourceType, ResourceModelEqualityComparer.Current, true);
                 if (effectedResources != null)
                 {
                     foreach (IResourceModel resource in effectedResources)
@@ -171,8 +176,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Load();
         }
 
-        public List<IResourceModel> ReloadResource(Guid resourceID, Enums.ResourceType resourceType,
-                                                   IEqualityComparer<IResourceModel> equalityComparer)
+        // TODO : Refactor this ;)
+        public List<IResourceModel> ReloadResource(Guid resourceID, Enums.ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXAML)
         {
             dynamic reloadPayload = new UnlimitedObject();
             reloadPayload.Service = "ReloadResourceService";
@@ -186,30 +191,28 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             findPayload.GuidCsv = resourceID.ToString();
             findPayload.Type = Enum.GetName(typeof(Enums.ResourceType), resourceType);
 
-            var findResultObj = ExecuteCommand(_environmentModel, findPayload, _environmentModel.Connection.WorkspaceID);
+            var findResultObj = ExecuteCommand(_environmentModel, findPayload, _environmentModel.Connection.WorkspaceID, false);
 
+            List<SerializableResource> toReloadResources = JsonConvert.DeserializeObject<List<SerializableResource>>(findResultObj);
             var effectedResources = new List<IResourceModel>();
-            var wfServices = (resourceType == Enums.ResourceType.Source) ? findResultObj.Source : findResultObj.Service;
-            if(wfServices is List<UnlimitedObject>)
-            {
-                foreach(var item in wfServices)
-                {
-                    IResourceModel resource = HydrateResourceModel(resourceType, item, true);
-                    var resourceToUpdate = _resourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
 
-                    if(resourceToUpdate != null)
+            foreach (var serializableResource in toReloadResources)
+            {
+                IResourceModel resource = HydrateResourceModel(resourceType, serializableResource, _environmentModel.Connection.ServerID, true, fetchXAML);
+                var resourceToUpdate = _resourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
+
+                if(resourceToUpdate != null)
+                {
+                    resourceToUpdate.Update(resource);
+                    effectedResources.Add(resourceToUpdate);
+                }
+                else
+                {
+                    effectedResources.Add(resource);
+                    _resourceModels.Add(resource);
+                    if(ItemAdded != null)
                     {
-                        resourceToUpdate.Update(resource);
-                        effectedResources.Add(resourceToUpdate);
-                    }
-                    else
-                    {
-                        effectedResources.Add(resource);
-                        _resourceModels.Add(resource);
-                        if(ItemAdded != null)
-                        {
-                            ItemAdded(resource, null);
-                        }
+                        ItemAdded(resource, null);
                     }
                 }
             }
@@ -255,7 +258,15 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 var func = expression.Compile();
                 if(func.Method != null)
                 {
-                    return _resourceModels.Find(func.Invoke);
+                    var result =  _resourceModels.Find(func.Invoke);
+
+                    // force a payload fetch ;)
+                    if (result.ResourceType == Enums.ResourceType.Service && string.IsNullOrEmpty(result.WorkflowXaml))
+                    {
+                        result.WorkflowXaml = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, result.ID);
+                    }
+
+                    return result;
                 }
             }
             return null;
@@ -412,8 +423,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return data;
         }
 
+       
         public void Add(IResourceModel instanceObj)
-        //Ashley Lewis: 15/01/2013 (for ResourceRepositoryTest.WorkFlowService_OnDelete_Expected_NotInRepository())
         {
             _resourceModels.Insert(_resourceModels.Count, instanceObj);
         }
@@ -461,216 +472,38 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
-
-        // Make public for testing, should be extracted to a util class for testing....
-        public IResourceModel HydrateResourceModel(Enums.ResourceType resourceType, dynamic data, bool forced = false)
+        private string GetIconPath(ResourceType type)
         {
-            Guid id;
+            var iconPath = string.Empty;
 
-            Guid.TryParse(data.GetValue("ID"), out id);
-
-            //2013.05.15: Ashley Lewis - Bug 9348 updates force hydration, initialization doesn't
-            if (!IsInCache(id) || forced)
+            switch(type)
             {
-                // add to cache of services fetched ;)
-                _cachedServices.Add(id);
-
-                var resource = ResourceModelFactory.CreateResourceModel(_environmentModel);
-                resource.ResourceType = resourceType;
-               
-
-                // TODO : make this property use new fetch definition service ;)
-
-                var xamlDefinition = data.XamlDefinition as string;
-                if(!string.IsNullOrEmpty(xamlDefinition))
-                {
-                    resource.WorkflowXaml = xamlDefinition;
-                    resource.ServiceDefinition = data.XmlString;
-                }
-
-                resource.DataList = data.GetValue("DataList");
-             
-                resource.ID = id;
-
-                Guid serverID;
-                Guid.TryParse(data.GetValue("ServerID"), out serverID);
-                resource.ServerID = serverID;
-
-                Version version;
-                Version.TryParse(data.GetValue("Version"), out version);
-                resource.Version = version;
-
-                bool isValid;
-                resource.IsValid = !bool.TryParse(data.GetValue("IsValid"), out isValid) || isValid;
-
-                string errorMessagesXml = data.GetValue("ErrorMessages");
-                if (!string.IsNullOrEmpty(errorMessagesXml))
-                {
-                    var errorMessages = XElement.Parse(errorMessagesXml);
-                    foreach (var message in errorMessages.Descendants())
-                    {
-                        Guid instanceID;
-                        Guid.TryParse(message.AttributeSafe("InstanceID"), out instanceID);
-                        resource.AddError(new ErrorInfo
-                        {
-                            InstanceID = instanceID,
-                            ErrorType = (ErrorType)Enum.Parse(typeof(ErrorType), message.AttributeSafe("ErrorType")),
-                            FixType = (FixType)Enum.Parse(typeof(FixType), message.AttributeSafe("FixType")),
-                            Message = message.AttributeSafe("Message"),
-                            StackTrace = message.AttributeSafe("StackTrace"),
-                            FixData = message.Value
-                        });
-                    }
-                }
-
-                if (string.IsNullOrEmpty(resource.ServiceDefinition))
-                {
-                    resource.ServiceDefinition = data.XmlString;
-                }
-
-                var displayName = data.DisplayName as string;
-                resource.DisplayName = displayName ?? resourceType.ToString();
-
-                resource.IconPath = GetIconPath(data);
-
-                var authorRoles = data.AuthorRoles as string;
-                if(authorRoles != null)
-                {
-                    resource.AuthorRoles = authorRoles;
-                }
-
-                var category = data.Category as string;
-                resource.Category = category ?? string.Empty;
-
-                var tags = data.Tags as string;
-                if(tags != null)
-                {
-                    resource.Tags = tags;
-                }
-
-                var comment = data.Comment as string;
-                if(comment != null)
-                {
-                    resource.Comment = comment;
-                }
-
-                var serverResourceType = data.ResourceType as string;
-                resource.ServerResourceType = serverResourceType ?? string.Empty;
-
-                var connectionString = data.ConnectionString as string;
-                resource.ConnectionString = connectionString ?? string.Empty;
-
-                var unitTestTargetWorkflowService = data.UnitTestTargetWorkflowService as string;
-                if(unitTestTargetWorkflowService != null)
-                {
-                    resource.UnitTestTargetWorkflowService = unitTestTargetWorkflowService;
-                }
-
-                var helpLink = data.HelpLink as string;
-                if(!string.IsNullOrEmpty(helpLink))
-                {
-                    resource.HelpLink = helpLink;
-                }
-
-                var isNewWorkflow = data.IsNewWorkflow as string;
-                if(isNewWorkflow != null)
-                {
-                    resource.IsNewWorkflow = false;
-                    if (string.Equals(isNewWorkflow, "true", StringComparison.InvariantCulture))
-                    {
-                        resource.IsNewWorkflow = true;
-                        NewWorkflowNames.Instance.Add(resource.DisplayName);
-                    }
-                }
-
-                var service = resourceType == Enums.ResourceType.Source ? data.Source : data.Service;
-                if (service is List<UnlimitedObject>)
-                {
-                    foreach (var svc in service)
-                    {
-                        if (svc.Name is string)
-                        {
-                            resource.ResourceName = svc.Name;
-                        }
-                        else
-                        {
-                            // Travis : if we here it means Name is an element in the datalist
-                            var tmpObj = (svc as UnlimitedObject);
-
-                            // ReSharper disable PossibleNullReferenceException
-                            var xDoc = new XmlDocument();
-                            xDoc.LoadXml(tmpObj.XmlString);
-                            var n = xDoc.SelectSingleNode("Service");
-                            resource.ResourceName = n.Attributes["Name"].Value;
-                            // ReSharper restore PossibleNullReferenceException
-                        }
-                    }
-                }
-                return resource;
+                case ResourceType.DbService:
+                case ResourceType.DbSource:
+                    iconPath = StringResources.Pack_Uri_DatabaseService_Image;
+                    break;
+                case ResourceType.EmailSource:
+                    iconPath = StringResources.Pack_Uri_EmailSource_Image;
+                    break;
+                case ResourceType.PluginService:
+                case ResourceType.PluginSource:
+                    iconPath = StringResources.Pack_Uri_PluginService_Image;
+                    break;
+                case ResourceType.WebService:
+                case ResourceType.WebSource:
+                    iconPath = StringResources.Pack_Uri_WebService_Image;
+                    break;
+                case ResourceType.WorkflowService:
+                    iconPath = StringResources.Pack_Uri_WorkflowService_Image;
+                    break;
+                case ResourceType.Server:
+                    iconPath = StringResources.Pack_Uri_Server_Image;
+                    break;
             }
-            return null;
-        }
 
-        private string GetIconPath(dynamic data)
-        {
-            var iconPath = data.IconPath as string;
-            if(string.IsNullOrEmpty(iconPath) || !iconPath.Contains(".png") || !DoesPathExist(data.IconPath, data.GetValue("Name")))
-            {
-                var type = data.GetValue("ResourceType");
-                ResourceType resType;
 
-                var isParsed = Enum.TryParse(type, out resType);
-
-                if(isParsed)
-                {
-                    switch(resType)
-                    {
-                        case ResourceType.DbService:
-                        case ResourceType.DbSource:
-                            iconPath = StringResources.Pack_Uri_DatabaseService_Image;
-                            break;
-                        case ResourceType.EmailSource:
-                            iconPath = StringResources.Pack_Uri_EmailSource_Image;
-                            break;
-                        case ResourceType.PluginService:
-                        case ResourceType.PluginSource:
-                            iconPath = StringResources.Pack_Uri_PluginService_Image;
-                            break;
-                        case ResourceType.WebService:
-                        case ResourceType.WebSource:
-                            iconPath = StringResources.Pack_Uri_WebService_Image;
-                            break;
-                        case ResourceType.WorkflowService:
-                            iconPath = StringResources.Pack_Uri_WorkflowService_Image;
-                            break;
-                        case ResourceType.Server:
-                            iconPath = StringResources.Pack_Uri_Server_Image;
-                            break;
-                    }
-                }
-                else
-                {
-                    var message = string.Format("Resource Name : {0} does not have a valid resource type, type found : {1}", data.GetValue("Name"), type);
-                    Logger.Error(message);
-                }
-            }
             return iconPath;
         }
-
-        private bool DoesPathExist(string path, string name)
-        {
-            try
-            {
-                new BitmapImage(new Uri(path));
-                return true;
-            }
-            catch(Exception)
-            {
-                var message = string.Format("Resource Name : {0} has an invalid path : {1}", name, path);
-                Logger.Error(message);
-                return false;
-            }
-        } 
 
         #endregion Methods
 
@@ -684,12 +517,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dataObj.ResourceType = string.Empty;
             dataObj.Roles = string.Join(",", _securityContext.Roles);
 
-            var resultObj = ExecuteCommand(_environmentModel, dataObj, _environmentModel.Connection.WorkspaceID);
-            HydrateResourceModels(resultObj.Source as List<UnlimitedObject>);
-            HydrateResourceModels(resultObj.Service as List<UnlimitedObject>);
+            var resultObj = ExecuteCommand(_environmentModel, dataObj, _environmentModel.Connection.WorkspaceID, false);
 
-            // Force GC to clear things up a bit ;)
-            GC.Collect(2);
+           IList<SerializableResource> resourceList = JsonConvert.DeserializeObject<List<SerializableResource>>(resultObj);
+
+            HydrateResourceModels(resourceList, _environmentModel.Connection.ServerID);
         }
 
         public void RemoveFromCache(Guid id)
@@ -705,30 +537,23 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return _cachedServices.Contains(id);
         }
 
-        void HydrateResourceModels(IEnumerable<UnlimitedObject> wfServices)
+
+        void HydrateResourceModels(IEnumerable<SerializableResource> wfServices, Guid serverID)
         {
             if(wfServices == null)
             {
                 return;
             }
 
-            foreach(dynamic item in wfServices)
+            foreach(var item in wfServices)
             {
                 try
                 {
-                    // TODO: Get rid of Enums.ResourceType !
-                    //
-                    // DO NOT use dynamic properties as these will auto-create non-existing xml elements on the fly!!!!
-                    //
-                    var resourceTypeStr = item.GetValue("ResourceType");
-                    if(string.IsNullOrEmpty(resourceTypeStr))
-                    {
-                        continue;
-                    }
-                    var resourceType = (ResourceType)Enum.Parse(typeof(ResourceType), resourceTypeStr);
+                    var resourceType = item.ResourceType;
+
                     if(resourceType == ResourceType.ReservedService)
                     {
-                        _reservedServices.Add(item.Name.ToUpper());
+                        _reservedServices.Add(item.ResourceName.ToUpper());
                         continue;
                     }
 
@@ -737,7 +562,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         ? Enums.ResourceType.Unknown
                         : (Enums.ResourceType)Enum.Parse(typeof(Enums.ResourceType), enumsResourceTypeString);
 
-                    IResourceModel resource = HydrateResourceModel(enumsResourceType, item);
+                    IResourceModel resource = HydrateResourceModel(enumsResourceType, item, serverID);
                     if(resource != null)
                     {
                         _resourceModels.Add(resource);
@@ -747,17 +572,72 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         }
                     }
                 }
-                // ReSharper disable EmptyGeneralCatchClause
-                catch(Exception ex)
-                // ReSharper restore EmptyGeneralCatchClause
+                catch(Exception)
                 {
-                    // Ignore malformed resources
-                    // TODO Log this
+                    // Ignore malformed resource
                 }
             }
         }
 
-        
+        // Make public for testing, should be extracted to a util class for testing....
+        IResourceModel HydrateResourceModel(Enums.ResourceType resourceType, SerializableResource data, Guid serverID, bool forced = false, bool fetchXAML = false)
+        {
+            Guid id = data.ResourceID;
+
+            //2013.05.15: Ashley Lewis - Bug 9348 updates force hydration, initialization doesn't
+            if(!IsInCache(id) || forced)
+            {
+                // add to cache of services fetched ;)
+                _cachedServices.Add(id);
+
+                var resource = ResourceModelFactory.CreateResourceModel(_environmentModel);
+                resource.ResourceType = resourceType;
+                resource.ID = id;
+                resource.ServerID = serverID;
+                resource.Version = data.Version;
+                resource.IsValid = data.IsValid;
+                resource.DataList = data.DataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote,"'");
+                resource.ResourceName = data.ResourceName;
+                resource.DisplayName = data.ResourceName;
+                resource.IconPath = GetIconPath(data.ResourceType);
+                resource.AuthorRoles = string.Empty;
+                resource.Category = data.ResourceCategory;
+                resource.Tags = string.Empty;
+                resource.Comment = string.Empty;
+                resource.ServerResourceType = data.ResourceType.ToString();
+                resource.UnitTestTargetWorkflowService = string.Empty;
+                resource.HelpLink = string.Empty;
+
+                // set the errors ;)
+                foreach(var error in data.Errors)
+                {
+                    resource.AddError(error);
+                }
+
+                if (fetchXAML)
+                {
+                    resource.WorkflowXaml = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, id); 
+                }
+
+                // TODO : Not sure about this stuff ?!
+
+                //var isNewWorkflow = data.IsNewWorkflow as string;
+                //if(isNewWorkflow != null)
+                //{
+                //    resource.IsNewWorkflow = false;
+                //    if (string.Equals(isNewWorkflow, "true", StringComparison.InvariantCulture))
+                //    {
+                //        resource.IsNewWorkflow = true;
+                //        NewWorkflowNames.Instance.Add(resource.DisplayName);
+                //    }
+                //}
+
+                return resource;
+            }
+            return null;
+        }
+
+
         #endregion Private Methods
 
         #region Add/RemoveEnvironment
@@ -778,7 +658,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             SaveResource(targetEnvironment, sourceDefinition, securityRoles, targetEnvironment.Connection.WorkspaceID);
         }
 
-        static string SaveResource(IEnvironmentModel targetEnvironment, string resourceDefinition, string[] securityRoles, Guid workspaceID)
+        public static string SaveResource(IEnvironmentModel targetEnvironment, string resourceDefinition, string[] securityRoles, Guid workspaceID)
         {
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = "SaveResourceService";
@@ -864,6 +744,29 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             var result = new List<UnlimitedObject>();
             AddItems(result, resourcesObj.Source);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Fetches the resource definition.
+        /// </summary>
+        /// <param name="targetEnv">The target env.</param>
+        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="resourceModelID">The resource model unique identifier.</param>
+        /// <returns></returns>
+        public static string FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceID, Guid resourceModelID)
+        {
+            dynamic dataObj = new UnlimitedObject();
+            dataObj.Service = "FetchResourceDefinitionService";
+            dataObj.ResourceID = resourceModelID;
+
+            var result = ExecuteCommand(targetEnv, dataObj, workspaceID, false) as string;
+
+            if(!string.IsNullOrEmpty(result))
+            {
+                result = result.Unescape();
+            }
 
             return result;
         }

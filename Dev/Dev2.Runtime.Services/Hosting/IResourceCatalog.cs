@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
@@ -34,7 +32,9 @@ namespace Dev2.Runtime.Hosting
         /// Gets the resource's contents.
         /// </summary>
         /// <param name="resource">The resource to be queried.</param>
-        /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
+        /// <returns>
+        /// The resource's contents or <code>string.Empty</code> if not found.
+        /// </returns>
         string GetResourceContents(IResource resource);
 
         /// <summary>

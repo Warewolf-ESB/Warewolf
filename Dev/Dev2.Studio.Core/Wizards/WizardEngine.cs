@@ -461,7 +461,8 @@ namespace Dev2.Studio.Core.Wizards
                     string parentDl = parent.DataList;
                     if(parent.ResourceType == ResourceType.Service)
                     {
-                        parentDl = _compiler.GetWizardDataListForService(parent.ServiceDefinition);
+                        parentDl = _compiler.GetWizardDataListForService(string.Empty);
+                        //parentDl = _compiler.GetWizardDataListForService(parent.ServiceDefinition);
                     }
                     else if(parent.ResourceType == ResourceType.WorkflowService)
                     {
@@ -613,7 +614,8 @@ namespace Dev2.Studio.Core.Wizards
             }
             else if(parentResource.ResourceType == ResourceType.Service)
             {
-                result = _compiler.GetWizardDataListForService(parentResource.ServiceDefinition);
+                result = _compiler.GetWizardDataListForService(string.Empty);
+                //result = _compiler.GetWizardDataListForService(parentResource.ServiceDefinition);
             }
             result = DataListUtil.MakeDataListFixed(result);
 
@@ -623,7 +625,8 @@ namespace Dev2.Studio.Core.Wizards
         /// <summary>
         /// Gets the parent name for a wizard
         /// </summary>
-        /// <param name="resourceName">Name of the wizard.</param>
+        /// <param name="wizardName">Name of the wizard.</param>
+        /// <returns></returns>
         private string GetWizardParentName(string wizardName)
         {
             string result = wizardName;

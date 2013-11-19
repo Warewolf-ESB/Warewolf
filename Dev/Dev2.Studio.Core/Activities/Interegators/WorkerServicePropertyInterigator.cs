@@ -1,38 +1,41 @@
 ﻿
 using System.Xml;
+using Dev2.Studio.Core.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Studio.Core.Activities.Interegators
 {
     public static class WorkerServicePropertyInterigator
     {
-        public static DsfActivity SetActivityProperties(string xml, DsfActivity activity)
+        // string xml
+
+        public static DsfActivity SetActivityProperties(IContextualResourceModel resource, DsfActivity activity)
         {
 
             XmlDocument document = new XmlDocument();
-            document.LoadXml(xml);
+            document.LoadXml(resource.WorkflowXaml);
 
-            if (document.DocumentElement != null)
+            if(document.DocumentElement != null)
             {
                 XmlNode node = document.SelectSingleNode("//Action");
-                if (node != null)
+                if(node != null)
                 {
-                    if (node.Attributes != null)
+                    if(node.Attributes != null)
                     {
                         var attr = node.Attributes["SourceName"];
-                        if (attr != null)
+                        if(attr != null)
                         {
                             activity.FriendlySourceName = attr.Value;
                         }
 
                         attr = node.Attributes["Type"];
-                        if (attr != null)
+                        if(attr != null)
                         {
                             activity.Type = attr.Value;
                         }
 
                         attr = node.Attributes["SourceMethod"];
-                        if (attr != null)
+                        if(attr != null)
                         {
                             activity.ActionName = attr.Value;
                         }

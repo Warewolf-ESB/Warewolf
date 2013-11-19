@@ -125,6 +125,7 @@
     <Compile Include="ServiceModel\Messages\CompileMessageTO.cs" />
     <Compile Include="ServiceModel\PluginSource.cs" />
     <Compile Include="ServiceModel\ResourceTypeConverter.cs" />
+    <Compile Include="ServiceModel\SerializableResource.cs" />
     <Compile Include="ServiceModel\WebRequestMethod.cs" />
     <Compile Include="ServiceModel\WebSource.cs" />
     <Compile Include="ServiceModel\EmailSource.cs" />

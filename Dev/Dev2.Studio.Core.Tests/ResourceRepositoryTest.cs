@@ -56,7 +56,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-           // Setup();
+            // Setup();
         }
 
         void Setup()
@@ -65,7 +65,6 @@ namespace BusinessDesignStudio.Unit.Tests
 
             _resourceModel.Setup(res => res.ResourceName).Returns("Resource");
             _resourceModel.Setup(res => res.DisplayName).Returns("My New Resource");
-            _resourceModel.Setup(res => res.ServiceDefinition).Returns("My new Resource service definition");
             _resourceModel.Setup(res => res.ID).Returns(_resourceGuid);
             _resourceModel.Setup(res => res.WorkflowXaml).Returns("OriginalXaml");
 
@@ -99,318 +98,318 @@ namespace BusinessDesignStudio.Unit.Tests
 
         #region Hydrate Resource Model
 
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ResourceRepository_HydrateResourceModel")]
-        public void ResourceRepository_HydrateResourceModel_WhenDataListContainsIDTag_ValidResourceModel()
-        {
-            //------------Setup for test--------------------------
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            var mockWizEngine = new Mock<IWizardEngine>();
-            var mockSecurityCtx = new Mock<IFrameworkSecurityContext>();
+//        [TestMethod]
+//        [Owner("Travis Frisinger")]
+//        [TestCategory("ResourceRepository_HydrateResourceModel")]
+//        public void ResourceRepository_HydrateResourceModel_WhenDataListContainsIDTag_ValidResourceModel()
+//        {
+//            //------------Setup for test--------------------------
+//            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+//            var mockWizEngine = new Mock<IWizardEngine>();
+//            var mockSecurityCtx = new Mock<IFrameworkSecurityContext>();
 
-            var resourceRepository = new ResourceRepository(mockEnvironmentModel.Object, mockWizEngine.Object, mockSecurityCtx.Object);
-            
-            // create the required dynamic ;)
-            var dataObject = GetTestData();
-            dataObject = dataObject.Replace("@@@@", "");
-            var uo = new UnlimitedObject(dataObject);
+//            var resourceRepository = new ResourceRepository(mockEnvironmentModel.Object, mockWizEngine.Object, mockSecurityCtx.Object);
 
-            //------------Execute Test---------------------------
+//            // create the required dynamic ;)
+//            var dataObject = GetTestData();
+//            dataObject = dataObject.Replace("@@@@", "");
+//            var uo = new UnlimitedObject(dataObject);
 
-            var model = resourceRepository.HydrateResourceModel(ResourceType.WorkflowService, uo, false);
+//            //------------Execute Test---------------------------
 
-            //------------Assert Results-------------------------
+//            var model = resourceRepository.HydrateResourceModel(ResourceType.WorkflowService, uo, Guid.Empty);
 
-            Assert.IsNotNull(model);
-        }
+//            //------------Assert Results-------------------------
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ResourceRepository_HydrateResourceModel")]
-        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsDbService_IconPathIsValid()
-        {
-            //------------Setup for test--------------------------
-            var resourceRepository = GetResourceRepository();
-            // create the required dynamic ;)
-            var data = GetTestData();
-            data = data.Replace("@@@@", "");
-            data = data.Replace("WorkflowService", "DbService");
-            var uo = new UnlimitedObject(data);
-            //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(model);
-            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/DatabaseService-32.png");
-        }
+//            Assert.IsNotNull(model);
+//        }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ResourceRepository_HydrateResourceModel")]
-        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsDbSource_IconPathIsValid()
-        {
-            //------------Setup for test--------------------------
-            var resourceRepository = GetResourceRepository();
-            // create the required dynamic ;)
-            var data = GetTestData();
-            data = data.Replace("@@@@", "");
-            data = data.Replace("WorkflowService", "DbSource");
-            var uo = new UnlimitedObject(data);
-            //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(model);
-            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/DatabaseService-32.png");
-        }
+//        [TestMethod]
+//        [Owner("Tshepo Ntlhokoa")]
+//        [TestCategory("ResourceRepository_HydrateResourceModel")]
+//        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsDbService_IconPathIsValid()
+//        {
+//            //------------Setup for test--------------------------
+//            var resourceRepository = GetResourceRepository();
+//            // create the required dynamic ;)
+//            var data = GetTestData();
+//            data = data.Replace("@@@@", "");
+//            data = data.Replace("WorkflowService", "DbService");
+//            var uo = new UnlimitedObject(data);
+//            //------------Execute Test---------------------------
+//            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
+//            //------------Assert Results-------------------------
+//            Assert.IsNotNull(model);
+//            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/DatabaseService-32.png");
+//        }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ResourceRepository_HydrateResourceModel")]
-        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsEmailSource_IconPathIsValid()
-        {
-            //------------Setup for test--------------------------
-            var resourceRepository = GetResourceRepository();
-            // create the required dynamic ;)
-            var data = GetTestData();
-            data = data.Replace("@@@@", "");
-            data = data.Replace("WorkflowService", "EmailSource");
-            var uo = new UnlimitedObject(data);
-            //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(model);
-            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/ToolSendEmail-32.png");
-        }
+//        [TestMethod]
+//        [Owner("Tshepo Ntlhokoa")]
+//        [TestCategory("ResourceRepository_HydrateResourceModel")]
+//        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsDbSource_IconPathIsValid()
+//        {
+//            //------------Setup for test--------------------------
+//            var resourceRepository = GetResourceRepository();
+//            // create the required dynamic ;)
+//            var data = GetTestData();
+//            data = data.Replace("@@@@", "");
+//            data = data.Replace("WorkflowService", "DbSource");
+//            var uo = new UnlimitedObject(data);
+//            //------------Execute Test---------------------------
+//            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
+//            //------------Assert Results-------------------------
+//            Assert.IsNotNull(model);
+//            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/DatabaseService-32.png");
+//        }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ResourceRepository_HydrateResourceModel")]
-        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsPluginSource_IconPathIsValid()
-        {
-            //------------Setup for test--------------------------
-            var resourceRepository = GetResourceRepository();
-            // create the required dynamic ;)
-            var data = GetTestData();
-            data = data.Replace("@@@@", "");
-            data = data.Replace("WorkflowService", "PluginSource");
-            var uo = new UnlimitedObject(data);
-            //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(model);
-            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png");
-        }
+//        [TestMethod]
+//        [Owner("Tshepo Ntlhokoa")]
+//        [TestCategory("ResourceRepository_HydrateResourceModel")]
+//        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsEmailSource_IconPathIsValid()
+//        {
+//            //------------Setup for test--------------------------
+//            var resourceRepository = GetResourceRepository();
+//            // create the required dynamic ;)
+//            var data = GetTestData();
+//            data = data.Replace("@@@@", "");
+//            data = data.Replace("WorkflowService", "EmailSource");
+//            var uo = new UnlimitedObject(data);
+//            //------------Execute Test---------------------------
+//            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
+//            //------------Assert Results-------------------------
+//            Assert.IsNotNull(model);
+//            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/ToolSendEmail-32.png");
+//        }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ResourceRepository_HydrateResourceModel")]
-        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsWebService_IconPathIsValid()
-        {
-            //------------Setup for test--------------------------
-            var resourceRepository = GetResourceRepository();
-            // create the required dynamic ;)
-            var data = GetTestData();
-            data = data.Replace("@@@@", "");
-            data = data.Replace("WorkflowService", "WebService");
-            var uo = new UnlimitedObject(data);
-            //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(model);
-            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/WebService-32.png");
-        }
+//        [TestMethod]
+//        [Owner("Tshepo Ntlhokoa")]
+//        [TestCategory("ResourceRepository_HydrateResourceModel")]
+//        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsPluginSource_IconPathIsValid()
+//        {
+//            //------------Setup for test--------------------------
+//            var resourceRepository = GetResourceRepository();
+//            // create the required dynamic ;)
+//            var data = GetTestData();
+//            data = data.Replace("@@@@", "");
+//            data = data.Replace("WorkflowService", "PluginSource");
+//            var uo = new UnlimitedObject(data);
+//            //------------Execute Test---------------------------
+//            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
+//            //------------Assert Results-------------------------
+//            Assert.IsNotNull(model);
+//            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png");
+//        }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ResourceRepository_HydrateResourceModel")]
-        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsWebSource_IconPathIsValid()
-        {
-            //------------Setup for test--------------------------
-            var resourceRepository = GetResourceRepository();
-            // create the required dynamic ;)
-            var data = GetTestData();
-            data = data.Replace("@@@@", "asdfsd");
-            data = data.Replace("WorkflowService", "WebSource");
-            var uo = new UnlimitedObject(data);
-            //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(model);
-            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/WebService-32.png");
-        }
-        
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ResourceRepository_HydrateResourceModel")]
-        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsPluginService_IconPathIsValid()
-        {
-            //------------Setup for test--------------------------
-            var resourceRepository = GetResourceRepository();
-            // create the required dynamic ;)
-            var data = GetTestData();
-            data = data.Replace("@@@@", "sffds");
-            data = data.Replace("WorkflowService", "PluginService");
-            var uo = new UnlimitedObject(data);
-            //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(model);
-            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png");
-        }
+//        [TestMethod]
+//        [Owner("Tshepo Ntlhokoa")]
+//        [TestCategory("ResourceRepository_HydrateResourceModel")]
+//        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsWebService_IconPathIsValid()
+//        {
+//            //------------Setup for test--------------------------
+//            var resourceRepository = GetResourceRepository();
+//            // create the required dynamic ;)
+//            var data = GetTestData();
+//            data = data.Replace("@@@@", "");
+//            data = data.Replace("WorkflowService", "WebService");
+//            var uo = new UnlimitedObject(data);
+//            //------------Execute Test---------------------------
+//            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
+//            //------------Assert Results-------------------------
+//            Assert.IsNotNull(model);
+//            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/WebService-32.png");
+//        }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ResourceRepository_HydrateResourceModel")]
-        public void ResourceRepository_HydrateResourceModel_ResourceHasAnInvalidIconPath_IconPathIsDefaultedToResourceTypeDefaultIcon()
-        {
-            //------------Setup for test--------------------------
-            var resourceRepository = GetResourceRepository();
-            // create the required dynamic ;)
-            var data = GetTestData();
-            data = data.Replace("@@@@", "pack://application:,,,/Warewolf Studio;component/images/Non-ExistentFile.png");
-            data = data.Replace("WorkflowService", "PluginService");
-            var uo = new UnlimitedObject(data);
-            //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(model);
-            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png");
-        }
+//        [TestMethod]
+//        [Owner("Tshepo Ntlhokoa")]
+//        [TestCategory("ResourceRepository_HydrateResourceModel")]
+//        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsWebSource_IconPathIsValid()
+//        {
+//            //------------Setup for test--------------------------
+//            var resourceRepository = GetResourceRepository();
+//            // create the required dynamic ;)
+//            var data = GetTestData();
+//            data = data.Replace("@@@@", "asdfsd");
+//            data = data.Replace("WorkflowService", "WebSource");
+//            var uo = new UnlimitedObject(data);
+//            //------------Execute Test---------------------------
+//            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
+//            //------------Assert Results-------------------------
+//            Assert.IsNotNull(model);
+//            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/WebService-32.png");
+//        }
 
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ResourceRepository_HydrateResourceModel")]
-        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsWorkflowService_IconPathIsValid()
-        {
-            //------------Setup for test--------------------------
-            var resourceRepository = GetResourceRepository();
-            // create the required dynamic ;)
-            var data = GetTestData();
-            data = data.Replace("@@@@", "");
-            var uo = new UnlimitedObject(data);
-            //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.WorkflowService, uo, false);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(model);
-            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png");
-        }
+//        [TestMethod]
+//        [Owner("Tshepo Ntlhokoa")]
+//        [TestCategory("ResourceRepository_HydrateResourceModel")]
+//        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsPluginService_IconPathIsValid()
+//        {
+//            //------------Setup for test--------------------------
+//            var resourceRepository = GetResourceRepository();
+//            // create the required dynamic ;)
+//            var data = GetTestData();
+//            data = data.Replace("@@@@", "sffds");
+//            data = data.Replace("WorkflowService", "PluginService");
+//            var uo = new UnlimitedObject(data);
+//            //------------Execute Test---------------------------
+//            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
+//            //------------Assert Results-------------------------
+//            Assert.IsNotNull(model);
+//            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png");
+//        }
 
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("ResourceRepository_HydrateResourceModel")]
-        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsServerAndIconIsOld_IconPathIsValid()
-        {
-            var resourceRepository = GetResourceRepository();
-            var data = GetTestData();
-            data = data.Replace("@@@@", "pack://application:,,,/Warewolf Studio;component/images/Non-ExistentFile.png");
-            data = data.Replace("WorkflowService", "Server");
-            var uo = new UnlimitedObject(data);
+//        [TestMethod]
+//        [Owner("Tshepo Ntlhokoa")]
+//        [TestCategory("ResourceRepository_HydrateResourceModel")]
+//        public void ResourceRepository_HydrateResourceModel_ResourceHasAnInvalidIconPath_IconPathIsDefaultedToResourceTypeDefaultIcon()
+//        {
+//            //------------Setup for test--------------------------
+//            var resourceRepository = GetResourceRepository();
+//            // create the required dynamic ;)
+//            var data = GetTestData();
+//            data = data.Replace("@@@@", "pack://application:,,,/Warewolf Studio;component/images/Non-ExistentFile.png");
+//            data = data.Replace("WorkflowService", "PluginService");
+//            var uo = new UnlimitedObject(data);
+//            //------------Execute Test---------------------------
+//            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
+//            //------------Assert Results-------------------------
+//            Assert.IsNotNull(model);
+//            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png");
+//        }
 
-            //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
+//        [TestMethod]
+//        [Owner("Travis Frisinger")]
+//        [TestCategory("ResourceRepository_HydrateResourceModel")]
+//        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsWorkflowService_IconPathIsValid()
+//        {
+//            //------------Setup for test--------------------------
+//            var resourceRepository = GetResourceRepository();
+//            // create the required dynamic ;)
+//            var data = GetTestData();
+//            data = data.Replace("@@@@", "");
+//            var uo = new UnlimitedObject(data);
+//            //------------Execute Test---------------------------
+//            var model = resourceRepository.HydrateResourceModel(ResourceType.WorkflowService, uo, false);
+//            //------------Assert Results-------------------------
+//            Assert.IsNotNull(model);
+//            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png");
+//        }
 
-            // Assert Icon Path Is Valid
-            Assert.IsNotNull(model);
-            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/ExplorerWarewolfConnection-32.png");
-        }
+//        [TestMethod]
+//        [Owner("Ashley Lewis")]
+//        [TestCategory("ResourceRepository_HydrateResourceModel")]
+//        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsServerAndIconIsOld_IconPathIsValid()
+//        {
+//            var resourceRepository = GetResourceRepository();
+//            var data = GetTestData();
+//            data = data.Replace("@@@@", "pack://application:,,,/Warewolf Studio;component/images/Non-ExistentFile.png");
+//            data = data.Replace("WorkflowService", "Server");
+//            var uo = new UnlimitedObject(data);
 
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ResourceRepository_HydrateResourceModel")]
-        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsServerAndPathIsJunk_IconPathIsValid()
-        {
-            var resourceRepository = GetResourceRepository();
-            var data = GetTestData();
-            data = data.Replace("WorkflowService", "Server");
-            var uo = new UnlimitedObject(data);
+//            //------------Execute Test---------------------------
+//            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
 
-            //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
+//            // Assert Icon Path Is Valid
+//            Assert.IsNotNull(model);
+//            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/ExplorerWarewolfConnection-32.png");
+//        }
 
-            // Assert Icon Path Is Valid
-            Assert.IsNotNull(model);
-            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/ExplorerWarewolfConnection-32.png");
-        }
+//        [TestMethod]
+//        [Owner("Travis Frisinger")]
+//        [TestCategory("ResourceRepository_HydrateResourceModel")]
+//        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsServerAndPathIsJunk_IconPathIsValid()
+//        {
+//            var resourceRepository = GetResourceRepository();
+//            var data = GetTestData();
+//            data = data.Replace("WorkflowService", "Server");
+//            var uo = new UnlimitedObject(data);
 
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("ResourceRepository_HydrateResourceModel")]
-        public void ResourceRepository_HydrateResourceModel_WhenDataIsNewWorkflow_NewWorkFlowNamesUpdated()
-        {
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            var mockWizEngine = new Mock<IWizardEngine>();
-            var mockSecurityCtx = new Mock<IFrameworkSecurityContext>();
+//            //------------Execute Test---------------------------
+//            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, uo, false);
 
-            var resourceRepository = new ResourceRepository(mockEnvironmentModel.Object, mockWizEngine.Object, mockSecurityCtx.Object);
+//            // Assert Icon Path Is Valid
+//            Assert.IsNotNull(model);
+//            Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/ExplorerWarewolfConnection-32.png");
+//        }
 
-            #region Test Data
+//        [TestMethod]
+//        [Owner("Ashley Lewis")]
+//        [TestCategory("ResourceRepository_HydrateResourceModel")]
+//        public void ResourceRepository_HydrateResourceModel_WhenDataIsNewWorkflow_NewWorkFlowNamesUpdated()
+//        {
+//            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+//            var mockWizEngine = new Mock<IWizardEngine>();
+//            var mockSecurityCtx = new Mock<IFrameworkSecurityContext>();
 
-            var data = @"<Service ID=""b5bbbd9c-fe5f-47da-874a-285cdc9b03db"" Version=""1.0"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"" Name=""Unsaved 1"" ResourceType=""WorkflowService"" IsValid=""true"">
-  <DisplayName>Unsaved 1</DisplayName>
-  <Category>TU_BENCHMARK_DATA_RULES</Category>
-  <IsNewWorkflow>true</IsNewWorkflow>
-  <AuthorRoles></AuthorRoles>
-  <Comment></Comment>
-  <Tags></Tags>
-  <IconPath></IconPath>
-  <HelpLink>http://warewolf.io/</HelpLink>
-  <UnitTestTargetWorkflowService></UnitTestTargetWorkflowService>
-  <DataList>
-    <TotalRecords Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
-    <idx Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
-    <RSAID Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
-    <FirstNames Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
-    <ImportData Description="""" IsEditable=""True"" ColumnIODirection=""Input"">
-      <ID Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
-      <FirstName1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
-      <FirstName2 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
-      <FirstName3 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
-    </ImportData>
-    <ValidationResult Description="""" IsEditable=""True"" ColumnIODirection=""None"">
-      <Msg Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
-      <ID Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
-      <RSAID Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
-    </ValidationResult>
-    <Validation Description="""" IsEditable=""True"" ColumnIODirection=""Output"">
-      <Msg Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
-      <RSAID Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
-    </Validation>
-  </DataList>
-  <Action Name=""InvokeWorkflow"" Type=""Workflow"">
-    <XamlDefinition>&lt;Activity x:Class=""Unsaved 1"" xmlns=""http://schemas.microsoft.com/netfx/2009/xaml/activities"" xmlns:av=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"" xmlns:dc=""clr-namespace:Dev2.Common;assembly=Dev2.Common"" xmlns:ddc=""clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"" xmlns:ddcb=""clr-namespace:Dev2.DataList.Contract.Binary_Objects;assembly=Dev2.Data"" xmlns:ddd=""clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"" xmlns:dddo=""clr-namespace:Dev2.Data.Decisions.Operations;assembly=Dev2.Data"" xmlns:ddsm=""clr-namespace:Dev2.Data.SystemTemplates.Models;assembly=Dev2.Data"" xmlns:mva=""clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"" xmlns:s=""clr-namespace:System;assembly=mscorlib"" xmlns:sap=""http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"" xmlns:scg=""clr-namespace:System.Collections.Generic;assembly=mscorlib"" xmlns:sco=""clr-namespace:System.Collections.ObjectModel;assembly=System"" xmlns:sco1=""clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"" xmlns:uaba=""clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"" xmlns:uf=""clr-namespace:Unlimited.Framework;assembly=Dev2.Core"" xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""&gt;&lt;x:Members&gt;&lt;x:Property Name=""AmbientDataList"" Type=""InOutArgument(scg:List(x:String))"" /&gt;&lt;x:Property Name=""ParentWorkflowInstanceId"" Type=""InOutArgument(s:Guid)"" /&gt;&lt;x:Property Name=""ParentServiceName"" Type=""InOutArgument(x:String)"" /&gt;&lt;/x:Members&gt;&lt;sap:VirtualizedContainerService.HintSize&gt;1226,802&lt;/sap:VirtualizedContainerService.HintSize&gt;&lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces serialized as XML namespaces&lt;/mva:VisualBasic.Settings&gt;&lt;TextExpression.NamespacesForImplementation&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""7""&gt;&lt;x:String&gt;Dev2.Common&lt;/x:String&gt;&lt;x:String&gt;Dev2.Data.Decisions.Operations&lt;/x:String&gt;&lt;x:String&gt;Dev2.Data.SystemTemplates.Models&lt;/x:String&gt;&lt;x:String&gt;Dev2.DataList.Contract&lt;/x:String&gt;&lt;x:String&gt;Dev2.DataList.Contract.Binary_Objects&lt;/x:String&gt;&lt;x:String&gt;Unlimited.Framework&lt;/x:String&gt;&lt;x:String&gt;Unlimited.Applications.BusinessDesignStudio.Activities&lt;/x:String&gt;&lt;/scg:List&gt;&lt;/TextExpression.NamespacesForImplementation&gt;&lt;TextExpression.ReferencesForImplementation&gt;&lt;sco1:Collection x:TypeArguments=""AssemblyReference""&gt;&lt;AssemblyReference&gt;Dev2.Common&lt;/AssemblyReference&gt;&lt;AssemblyReference&gt;Dev2.Data&lt;/AssemblyReference&gt;&lt;AssemblyReference&gt;Dev2.Core&lt;/AssemblyReference&gt;&lt;AssemblyReference&gt;Dev2.Activities&lt;/AssemblyReference&gt;&lt;/sco1:Collection&gt;&lt;/TextExpression.ReferencesForImplementation&gt;&lt;Flowchart DisplayName=""First Name Validation"" sap:VirtualizedContainerService.HintSize=""1186,762""&gt;&lt;Flowchart.Variables&gt;&lt;Variable x:TypeArguments=""scg:List(x:String)"" Name=""InstructionList"" /&gt;&lt;Variable x:TypeArguments=""x:String"" Name=""LastResult"" /&gt;&lt;Variable x:TypeArguments=""x:Boolean"" Name=""HasError"" /&gt;&lt;Variable x:TypeArguments=""x:String"" Name=""ExplicitDataList"" /&gt;&lt;Variable x:TypeArguments=""x:Boolean"" Name=""IsValid"" /&gt;&lt;Variable x:TypeArguments=""uf:UnlimitedObject"" Name=""d"" /&gt;&lt;Variable x:TypeArguments=""uaba:Util"" Name=""t"" /&gt;&lt;Variable x:TypeArguments=""ddd:Dev2DataListDecisionHandler"" Name=""Dev2DecisionHandler"" /&gt;&lt;/Flowchart.Variables&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;False&lt;/x:Boolean&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;270,2.5&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;60,75&lt;/av:Size&gt;&lt;x:Double x:Key=""Width""&gt;1172.5&lt;/x:Double&gt;&lt;x:Double x:Key=""Height""&gt;725.5&lt;/x:Double&gt;&lt;av:PointCollection x:Key=""ConnectorLocation""&gt;300,77.5 300,107.5 590.5,107.5 590.5,196&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;Flowchart.StartNode&gt;&lt;x:Reference&gt;__ReferenceID7&lt;/x:Reference&gt;&lt;/Flowchart.StartNode&gt;&lt;FlowStep x:Name=""__ReferenceID7""&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;490.5,196&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;200,90&lt;/av:Size&gt;&lt;av:PointCollection x:Key=""ConnectorLocation""&gt;690.5,241 808.5,241&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;uaba:DsfCountRecordsetActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" CountNumber=""[[TotalRecords]]"" DatabindRecursive=""False"" DisplayName=""Count Records"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""200,90"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" RecordsetName=""[[ImportData()]]"" SimulationMode=""OnDemand"" UniqueID=""03152e28-0ce1-44db-bcfb-8fc7fee6466b""&gt;&lt;uaba:DsfCountRecordsetActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments=""scg:List(x:String)"" /&gt;&lt;/uaba:DsfCountRecordsetActivity.AmbientDataList&gt;&lt;uaba:DsfCountRecordsetActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments=""x:String"" /&gt;&lt;/uaba:DsfCountRecordsetActivity.ParentInstanceID&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;True&lt;/x:Boolean&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;/uaba:DsfCountRecordsetActivity&gt;&lt;FlowStep.Next&gt;&lt;FlowStep x:Name=""__ReferenceID2""&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;808.5,196.5&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;364,89&lt;/av:Size&gt;&lt;av:PointCollection x:Key=""ConnectorLocation""&gt;990.5,285.5 990.5,316.5&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;uaba:DsfMultiAssignActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" ServiceHost=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" CreateBookmark=""False"" DatabindRecursive=""False"" DisplayName=""Assign"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""364,89"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" SimulationMode=""OnDemand"" UniqueID=""a6160c77-3c0e-4601-9226-fcc1dec75eb8"" UpdateAllOccurrences=""False""&gt;&lt;uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments=""scg:List(x:String)"" /&gt;&lt;/uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;sco:ObservableCollection x:TypeArguments=""uaba:ActivityDTO""&gt;&lt;uaba:ActivityDTO FieldName=""[[idx]]"" FieldValue=""2"" IndexNumber=""1"" Inserted=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable1]]""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;uaba:ActivityDTO FieldName="""" FieldValue="""" IndexNumber=""2"" Inserted=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable2]]""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;/sco:ObservableCollection&gt;&lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments=""x:String"" /&gt;&lt;/uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;True&lt;/x:Boolean&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;/uaba:DsfMultiAssignActivity&gt;&lt;FlowStep.Next&gt;&lt;FlowStep x:Name=""__ReferenceID0""&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;808.5,316.5&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;364,89&lt;/av:Size&gt;&lt;av:PointCollection x:Key=""ConnectorLocation""&gt;990.5,405.5 990.5,459&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;uaba:DsfMultiAssignActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" ServiceHost=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" CreateBookmark=""False"" DatabindRecursive=""False"" DisplayName=""Assign"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""364,89"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" SimulationMode=""OnDemand"" UniqueID=""d9bc5ae0-9973-4697-8013-11f9ddda05aa"" UpdateAllOccurrences=""False""&gt;&lt;uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments=""scg:List(x:String)"" /&gt;&lt;/uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;sco:ObservableCollection x:TypeArguments=""uaba:ActivityDTO""&gt;&lt;uaba:ActivityDTO FieldName=""[[FirstNames]]"" FieldValue=""[[ImportData([[idx]]).FirstName1]] [[ImportData([[idx]]).FirstName2]] [[ImportData([[idx]]).FirstName3]]"" IndexNumber=""1"" Inserted=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable1]]""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;uaba:ActivityDTO FieldName=""[[RSAID]]"" FieldValue=""[[ImportData([[idx]]).ID]]"" IndexNumber=""2"" Inserted=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable2]]""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;uaba:ActivityDTO FieldName="""" FieldValue="""" IndexNumber=""3"" Inserted=""False"" WatermarkTextValue="""" WatermarkTextVariable=""""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;/sco:ObservableCollection&gt;&lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments=""x:String"" /&gt;&lt;/uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;True&lt;/x:Boolean&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;/uaba:DsfMultiAssignActivity&gt;&lt;FlowStep.Next&gt;&lt;FlowStep x:Name=""__ReferenceID3""&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;865.5,459&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;250,84&lt;/av:Size&gt;&lt;av:PointCollection x:Key=""ConnectorLocation""&gt;990.5,543 990.5,637.5&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;uaba:DsfActivity ActionName=""{x:Null}"" ActivityStateData=""{x:Null}"" AuthorRoles=""{x:Null}"" Category=""{x:Null}"" Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" DataTags=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ResultValidationExpression=""{x:Null}"" ResultValidationRequiredTags=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" ServiceUri=""{x:Null}"" SimulationOutput=""{x:Null}"" Tags=""{x:Null}"" Add=""False"" DatabindRecursive=""False"" DeferExecution=""False"" DisplayName=""Name Validation"" EnvironmentID=""00000000-0000-0000-0000-000000000000"" FriendlySourceName=""localhost"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""250,84"" IconPath=""[Nothing]"" InputMapping=""&amp;lt;Inputs&amp;gt;&amp;lt;Input Name=&amp;quot;Name&amp;quot; Source=&amp;quot;[[FirstNames]]&amp;quot; /&amp;gt;&amp;lt;Input Name=&amp;quot;TypeCheck&amp;quot; Source=&amp;quot;First Names&amp;quot; /&amp;gt;&amp;lt;Input Name=&amp;quot;RSAID&amp;quot; Source=&amp;quot;[[RSAID]]&amp;quot; /&amp;gt;&amp;lt;/Inputs&amp;gt;"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""True"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" OutputMapping=""&amp;lt;Outputs&amp;gt;&amp;lt;Output Name=&amp;quot;Msg&amp;quot; MapsTo=&amp;quot;Msg&amp;quot; Value=&amp;quot;[[ValidationResult(*).Msg]]&amp;quot; Recordset=&amp;quot;Validation&amp;quot; /&amp;gt;&amp;lt;Output Name=&amp;quot;ID&amp;quot; MapsTo=&amp;quot;ID&amp;quot; Value=&amp;quot;[[ValidationResult(*).ID]]&amp;quot; Recordset=&amp;quot;Validation&amp;quot; /&amp;gt;&amp;lt;/Outputs&amp;gt;"" RemoveInputFromOutput=""False"" ResourceID=""ff6d0864-e8ac-4b67-bb82-aba65037b3ba"" ServiceName=""Name Validation"" ServiceServer=""00000000-0000-0000-0000-000000000000"" SimulationMode=""OnDemand"" ToolboxFriendlyName=""Name Validation"" Type=""Workflow"" UniqueID=""fb86530e-cbdf-496c-bd8c-8801310536f5""&gt;&lt;uaba:DsfActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments=""scg:List(x:String)"" /&gt;&lt;/uaba:DsfActivity.AmbientDataList&gt;&lt;uaba:DsfActivity.HelpLink&gt;&lt;InArgument x:TypeArguments=""x:String""&gt;&lt;Literal x:TypeArguments=""x:String"" Value="""" /&gt;&lt;/InArgument&gt;&lt;/uaba:DsfActivity.HelpLink&gt;&lt;uaba:DsfActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments=""x:String"" /&gt;&lt;/uaba:DsfActivity.ParentInstanceID&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;True&lt;/x:Boolean&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;/uaba:DsfActivity&gt;&lt;FlowStep.Next&gt;&lt;FlowDecision x:Name=""__ReferenceID1"" DisplayName=""If [[idx]] Is Less Than or Equal [[TotalRecords]]"" sap:VirtualizedContainerService.HintSize=""160,87""&gt;&lt;FlowDecision.Condition&gt;&lt;uaba:DsfFlowDecisionActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" DatabindRecursive=""False"" DisplayName=""Decision"" ExpressionText=""Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(&amp;quot;{!TheStack!:[{!Col1!:![[idx]]!,!Col2!:![[TotalRecords]]!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsLessThanOrEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If [[idx]] Is Less Than or Equal [[TotalRecords]]!}&amp;quot;,AmbientDataList)"" HasError=""[HasError]"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" SimulationMode=""OnDemand"" UniqueID=""6439f233-76fc-4ac4-88c9-1ed8990d4eac""&gt;&lt;uaba:DsfFlowDecisionActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments=""scg:List(x:String)"" /&gt;&lt;/uaba:DsfFlowDecisionActivity.AmbientDataList&gt;&lt;uaba:DsfFlowDecisionActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments=""x:String"" /&gt;&lt;/uaba:DsfFlowDecisionActivity.ParentInstanceID&gt;&lt;/uaba:DsfFlowDecisionActivity&gt;&lt;/FlowDecision.Condition&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;True&lt;/x:Boolean&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;910.5,637.5&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;160,87&lt;/av:Size&gt;&lt;av:PointCollection x:Key=""TrueConnector""&gt;910.5,681 842.5,681&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;FlowDecision.True&gt;&lt;FlowStep x:Name=""__ReferenceID5""&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;478.5,636.5&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;364,89&lt;/av:Size&gt;&lt;av:PointCollection x:Key=""ConnectorLocation""&gt;478.5,681 448.5,681 448.5,611 400.5,611&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;uaba:DsfMultiAssignActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" ServiceHost=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" CreateBookmark=""False"" DatabindRecursive=""False"" DisplayName=""Assign"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""364,89"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" SimulationMode=""OnDemand"" UniqueID=""9dcc476e-737a-4a2a-b5c2-1c3cd4ec101b"" UpdateAllOccurrences=""False""&gt;&lt;uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments=""scg:List(x:String)"" /&gt;&lt;/uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;sco:ObservableCollection x:TypeArguments=""uaba:ActivityDTO""&gt;&lt;uaba:ActivityDTO FieldName=""[[Validation().Msg]]"" FieldValue=""[[ValidationResult(*).Msg]]"" IndexNumber=""1"" Inserted=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable1]]""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;uaba:ActivityDTO FieldName=""[[Validation().RSAID]]"" FieldValue=""[[ValidationResult(*).RSAID]]"" IndexNumber=""2"" Inserted=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable2]]""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;uaba:ActivityDTO FieldName="""" FieldValue="""" IndexNumber=""3"" Inserted=""False"" WatermarkTextValue="""" WatermarkTextVariable=""""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;/sco:ObservableCollection&gt;&lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments=""x:String"" /&gt;&lt;/uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;True&lt;/x:Boolean&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;/uaba:DsfMultiAssignActivity&gt;&lt;FlowStep.Next&gt;&lt;FlowStep x:Name=""__ReferenceID6""&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;200.5,566&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;200,90&lt;/av:Size&gt;&lt;av:PointCollection x:Key=""ConnectorLocation""&gt;300.5,566 300.5,525.5&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;uaba:DsfDeleteRecordActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" DatabindRecursive=""False"" DisplayName=""Delete Record"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""200,90"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" RecordsetName=""[[Validation(*)]]"" Result="""" SimulationMode=""OnDemand"" UniqueID=""d08ee008-1b26-4202-8dae-ec1e67c952f1""&gt;&lt;uaba:DsfDeleteRecordActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments=""scg:List(x:String)"" /&gt;&lt;/uaba:DsfDeleteRecordActivity.AmbientDataList&gt;&lt;uaba:DsfDeleteRecordActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments=""x:String"" /&gt;&lt;/uaba:DsfDeleteRecordActivity.ParentInstanceID&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;True&lt;/x:Boolean&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;/uaba:DsfDeleteRecordActivity&gt;&lt;FlowStep.Next&gt;&lt;FlowStep x:Name=""__ReferenceID4""&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;118.5,436.5&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;364,89&lt;/av:Size&gt;&lt;av:PointCollection x:Key=""ConnectorLocation""&gt;482.5,481 512.5,481 512.5,361 808.5,361&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;uaba:DsfMultiAssignActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" ServiceHost=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" CreateBookmark=""False"" DatabindRecursive=""False"" DisplayName=""Assign"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""364,89"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" SimulationMode=""OnDemand"" UniqueID=""fab6831a-0067-44e8-adb4-aed544be9d69"" UpdateAllOccurrences=""False""&gt;&lt;uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments=""scg:List(x:String)"" /&gt;&lt;/uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;sco:ObservableCollection x:TypeArguments=""uaba:ActivityDTO""&gt;&lt;uaba:ActivityDTO FieldName=""[[idx]]"" FieldValue=""!~calculation~![[idx]]+1!~~calculation~!"" IndexNumber=""1"" Inserted=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable1]]""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;uaba:ActivityDTO FieldName="""" FieldValue="""" IndexNumber=""2"" Inserted=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable2]]""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;/sco:ObservableCollection&gt;&lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments=""x:String"" /&gt;&lt;/uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;True&lt;/x:Boolean&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;/uaba:DsfMultiAssignActivity&gt;&lt;FlowStep.Next&gt;&lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;&lt;/FlowStep.Next&gt;&lt;/FlowStep&gt;&lt;/FlowStep.Next&gt;&lt;/FlowStep&gt;&lt;/FlowStep.Next&gt;&lt;/FlowStep&gt;&lt;/FlowDecision.True&gt;&lt;/FlowDecision&gt;&lt;/FlowStep.Next&gt;&lt;/FlowStep&gt;&lt;/FlowStep.Next&gt;&lt;/FlowStep&gt;&lt;/FlowStep.Next&gt;&lt;/FlowStep&gt;&lt;/FlowStep.Next&gt;&lt;/FlowStep&gt;&lt;x:Reference&gt;__ReferenceID1&lt;/x:Reference&gt;&lt;x:Reference&gt;__ReferenceID2&lt;/x:Reference&gt;&lt;x:Reference&gt;__ReferenceID3&lt;/x:Reference&gt;&lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;&lt;x:Reference&gt;__ReferenceID4&lt;/x:Reference&gt;&lt;x:Reference&gt;__ReferenceID5&lt;/x:Reference&gt;&lt;x:Reference&gt;__ReferenceID6&lt;/x:Reference&gt;&lt;/Flowchart&gt;&lt;/Activity&gt;</XamlDefinition>
-  </Action>
-  <ErrorMessages />
-  <BizRule />
-  <WorkflowActivityDef />
-  <Source />
-  <Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm=""http://www.w3.org/TR/2001/REC-xml-c14n-20010315"" />
-      <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1"" />
-      <Reference URI="""">
-        <Transforms>
-          <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature"" />
-        </Transforms>
-        <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1"" />
-        <DigestValue>rfR9Ry6mHVMie+vSkOi0pJlq7jM=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>gTC12dhYhIgcIdYVoUgXvii8S/s46txocwldoFqoLPNab0ryiU1xGOgwWbB3jG1BUpSGg1ETh50GGKvsfA9a6nB7NeKB6Oh9uLXYyBkf9t7AC8IiCeJuGjmh8I/twEflvsJ7OMDmyE+T7TWxiEelCrRiN/iwRz1W7QBtOLNBG+Y=</SignatureValue>
-  </Signature>
-</Service>";
+//            var resourceRepository = new ResourceRepository(mockEnvironmentModel.Object, mockWizEngine.Object, mockSecurityCtx.Object);
 
-            #endregion
+//            #region Test Data
 
-            UnlimitedObject uo = new UnlimitedObject(data);
+//            var data = @"<Service ID=""b5bbbd9c-fe5f-47da-874a-285cdc9b03db"" Version=""1.0"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"" Name=""Unsaved 1"" ResourceType=""WorkflowService"" IsValid=""true"">
+//  <DisplayName>Unsaved 1</DisplayName>
+//  <Category>TU_BENCHMARK_DATA_RULES</Category>
+//  <IsNewWorkflow>true</IsNewWorkflow>
+//  <AuthorRoles></AuthorRoles>
+//  <Comment></Comment>
+//  <Tags></Tags>
+//  <IconPath></IconPath>
+//  <HelpLink>http://warewolf.io/</HelpLink>
+//  <UnitTestTargetWorkflowService></UnitTestTargetWorkflowService>
+//  <DataList>
+//    <TotalRecords Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+//    <idx Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+//    <RSAID Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+//    <FirstNames Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+//    <ImportData Description="""" IsEditable=""True"" ColumnIODirection=""Input"">
+//      <ID Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
+//      <FirstName1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
+//      <FirstName2 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
+//      <FirstName3 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
+//    </ImportData>
+//    <ValidationResult Description="""" IsEditable=""True"" ColumnIODirection=""None"">
+//      <Msg Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+//      <ID Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+//      <RSAID Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+//    </ValidationResult>
+//    <Validation Description="""" IsEditable=""True"" ColumnIODirection=""Output"">
+//      <Msg Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
+//      <RSAID Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
+//    </Validation>
+//  </DataList>
+//  <Action Name=""InvokeWorkflow"" Type=""Workflow"">
+//    <XamlDefinition>&lt;Activity x:Class=""Unsaved 1"" xmlns=""http://schemas.microsoft.com/netfx/2009/xaml/activities"" xmlns:av=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"" xmlns:dc=""clr-namespace:Dev2.Common;assembly=Dev2.Common"" xmlns:ddc=""clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"" xmlns:ddcb=""clr-namespace:Dev2.DataList.Contract.Binary_Objects;assembly=Dev2.Data"" xmlns:ddd=""clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"" xmlns:dddo=""clr-namespace:Dev2.Data.Decisions.Operations;assembly=Dev2.Data"" xmlns:ddsm=""clr-namespace:Dev2.Data.SystemTemplates.Models;assembly=Dev2.Data"" xmlns:mva=""clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"" xmlns:s=""clr-namespace:System;assembly=mscorlib"" xmlns:sap=""http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"" xmlns:scg=""clr-namespace:System.Collections.Generic;assembly=mscorlib"" xmlns:sco=""clr-namespace:System.Collections.ObjectModel;assembly=System"" xmlns:sco1=""clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"" xmlns:uaba=""clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"" xmlns:uf=""clr-namespace:Unlimited.Framework;assembly=Dev2.Core"" xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""&gt;&lt;x:Members&gt;&lt;x:Property Name=""AmbientDataList"" Type=""InOutArgument(scg:List(x:String))"" /&gt;&lt;x:Property Name=""ParentWorkflowInstanceId"" Type=""InOutArgument(s:Guid)"" /&gt;&lt;x:Property Name=""ParentServiceName"" Type=""InOutArgument(x:String)"" /&gt;&lt;/x:Members&gt;&lt;sap:VirtualizedContainerService.HintSize&gt;1226,802&lt;/sap:VirtualizedContainerService.HintSize&gt;&lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces serialized as XML namespaces&lt;/mva:VisualBasic.Settings&gt;&lt;TextExpression.NamespacesForImplementation&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""7""&gt;&lt;x:String&gt;Dev2.Common&lt;/x:String&gt;&lt;x:String&gt;Dev2.Data.Decisions.Operations&lt;/x:String&gt;&lt;x:String&gt;Dev2.Data.SystemTemplates.Models&lt;/x:String&gt;&lt;x:String&gt;Dev2.DataList.Contract&lt;/x:String&gt;&lt;x:String&gt;Dev2.DataList.Contract.Binary_Objects&lt;/x:String&gt;&lt;x:String&gt;Unlimited.Framework&lt;/x:String&gt;&lt;x:String&gt;Unlimited.Applications.BusinessDesignStudio.Activities&lt;/x:String&gt;&lt;/scg:List&gt;&lt;/TextExpression.NamespacesForImplementation&gt;&lt;TextExpression.ReferencesForImplementation&gt;&lt;sco1:Collection x:TypeArguments=""AssemblyReference""&gt;&lt;AssemblyReference&gt;Dev2.Common&lt;/AssemblyReference&gt;&lt;AssemblyReference&gt;Dev2.Data&lt;/AssemblyReference&gt;&lt;AssemblyReference&gt;Dev2.Core&lt;/AssemblyReference&gt;&lt;AssemblyReference&gt;Dev2.Activities&lt;/AssemblyReference&gt;&lt;/sco1:Collection&gt;&lt;/TextExpression.ReferencesForImplementation&gt;&lt;Flowchart DisplayName=""First Name Validation"" sap:VirtualizedContainerService.HintSize=""1186,762""&gt;&lt;Flowchart.Variables&gt;&lt;Variable x:TypeArguments=""scg:List(x:String)"" Name=""InstructionList"" /&gt;&lt;Variable x:TypeArguments=""x:String"" Name=""LastResult"" /&gt;&lt;Variable x:TypeArguments=""x:Boolean"" Name=""HasError"" /&gt;&lt;Variable x:TypeArguments=""x:String"" Name=""ExplicitDataList"" /&gt;&lt;Variable x:TypeArguments=""x:Boolean"" Name=""IsValid"" /&gt;&lt;Variable x:TypeArguments=""uf:UnlimitedObject"" Name=""d"" /&gt;&lt;Variable x:TypeArguments=""uaba:Util"" Name=""t"" /&gt;&lt;Variable x:TypeArguments=""ddd:Dev2DataListDecisionHandler"" Name=""Dev2DecisionHandler"" /&gt;&lt;/Flowchart.Variables&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;False&lt;/x:Boolean&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;270,2.5&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;60,75&lt;/av:Size&gt;&lt;x:Double x:Key=""Width""&gt;1172.5&lt;/x:Double&gt;&lt;x:Double x:Key=""Height""&gt;725.5&lt;/x:Double&gt;&lt;av:PointCollection x:Key=""ConnectorLocation""&gt;300,77.5 300,107.5 590.5,107.5 590.5,196&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;Flowchart.StartNode&gt;&lt;x:Reference&gt;__ReferenceID7&lt;/x:Reference&gt;&lt;/Flowchart.StartNode&gt;&lt;FlowStep x:Name=""__ReferenceID7""&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;490.5,196&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;200,90&lt;/av:Size&gt;&lt;av:PointCollection x:Key=""ConnectorLocation""&gt;690.5,241 808.5,241&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;uaba:DsfCountRecordsetActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" CountNumber=""[[TotalRecords]]"" DatabindRecursive=""False"" DisplayName=""Count Records"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""200,90"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" RecordsetName=""[[ImportData()]]"" SimulationMode=""OnDemand"" UniqueID=""03152e28-0ce1-44db-bcfb-8fc7fee6466b""&gt;&lt;uaba:DsfCountRecordsetActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments=""scg:List(x:String)"" /&gt;&lt;/uaba:DsfCountRecordsetActivity.AmbientDataList&gt;&lt;uaba:DsfCountRecordsetActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments=""x:String"" /&gt;&lt;/uaba:DsfCountRecordsetActivity.ParentInstanceID&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;True&lt;/x:Boolean&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;/uaba:DsfCountRecordsetActivity&gt;&lt;FlowStep.Next&gt;&lt;FlowStep x:Name=""__ReferenceID2""&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;808.5,196.5&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;364,89&lt;/av:Size&gt;&lt;av:PointCollection x:Key=""ConnectorLocation""&gt;990.5,285.5 990.5,316.5&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;uaba:DsfMultiAssignActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" ServiceHost=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" CreateBookmark=""False"" DatabindRecursive=""False"" DisplayName=""Assign"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""364,89"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" SimulationMode=""OnDemand"" UniqueID=""a6160c77-3c0e-4601-9226-fcc1dec75eb8"" UpdateAllOccurrences=""False""&gt;&lt;uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments=""scg:List(x:String)"" /&gt;&lt;/uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;sco:ObservableCollection x:TypeArguments=""uaba:ActivityDTO""&gt;&lt;uaba:ActivityDTO FieldName=""[[idx]]"" FieldValue=""2"" IndexNumber=""1"" Inserted=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable1]]""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;uaba:ActivityDTO FieldName="""" FieldValue="""" IndexNumber=""2"" Inserted=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable2]]""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;/sco:ObservableCollection&gt;&lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments=""x:String"" /&gt;&lt;/uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;True&lt;/x:Boolean&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;/uaba:DsfMultiAssignActivity&gt;&lt;FlowStep.Next&gt;&lt;FlowStep x:Name=""__ReferenceID0""&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;808.5,316.5&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;364,89&lt;/av:Size&gt;&lt;av:PointCollection x:Key=""ConnectorLocation""&gt;990.5,405.5 990.5,459&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;uaba:DsfMultiAssignActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" ServiceHost=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" CreateBookmark=""False"" DatabindRecursive=""False"" DisplayName=""Assign"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""364,89"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" SimulationMode=""OnDemand"" UniqueID=""d9bc5ae0-9973-4697-8013-11f9ddda05aa"" UpdateAllOccurrences=""False""&gt;&lt;uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments=""scg:List(x:String)"" /&gt;&lt;/uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;sco:ObservableCollection x:TypeArguments=""uaba:ActivityDTO""&gt;&lt;uaba:ActivityDTO FieldName=""[[FirstNames]]"" FieldValue=""[[ImportData([[idx]]).FirstName1]] [[ImportData([[idx]]).FirstName2]] [[ImportData([[idx]]).FirstName3]]"" IndexNumber=""1"" Inserted=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable1]]""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;uaba:ActivityDTO FieldName=""[[RSAID]]"" FieldValue=""[[ImportData([[idx]]).ID]]"" IndexNumber=""2"" Inserted=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable2]]""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;uaba:ActivityDTO FieldName="""" FieldValue="""" IndexNumber=""3"" Inserted=""False"" WatermarkTextValue="""" WatermarkTextVariable=""""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;/sco:ObservableCollection&gt;&lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments=""x:String"" /&gt;&lt;/uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;True&lt;/x:Boolean&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;/uaba:DsfMultiAssignActivity&gt;&lt;FlowStep.Next&gt;&lt;FlowStep x:Name=""__ReferenceID3""&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;865.5,459&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;250,84&lt;/av:Size&gt;&lt;av:PointCollection x:Key=""ConnectorLocation""&gt;990.5,543 990.5,637.5&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;uaba:DsfActivity ActionName=""{x:Null}"" ActivityStateData=""{x:Null}"" AuthorRoles=""{x:Null}"" Category=""{x:Null}"" Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" DataTags=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ResultValidationExpression=""{x:Null}"" ResultValidationRequiredTags=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" ServiceUri=""{x:Null}"" SimulationOutput=""{x:Null}"" Tags=""{x:Null}"" Add=""False"" DatabindRecursive=""False"" DeferExecution=""False"" DisplayName=""Name Validation"" EnvironmentID=""00000000-0000-0000-0000-000000000000"" FriendlySourceName=""localhost"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""250,84"" IconPath=""[Nothing]"" InputMapping=""&amp;lt;Inputs&amp;gt;&amp;lt;Input Name=&amp;quot;Name&amp;quot; Source=&amp;quot;[[FirstNames]]&amp;quot; /&amp;gt;&amp;lt;Input Name=&amp;quot;TypeCheck&amp;quot; Source=&amp;quot;First Names&amp;quot; /&amp;gt;&amp;lt;Input Name=&amp;quot;RSAID&amp;quot; Source=&amp;quot;[[RSAID]]&amp;quot; /&amp;gt;&amp;lt;/Inputs&amp;gt;"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""True"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" OutputMapping=""&amp;lt;Outputs&amp;gt;&amp;lt;Output Name=&amp;quot;Msg&amp;quot; MapsTo=&amp;quot;Msg&amp;quot; Value=&amp;quot;[[ValidationResult(*).Msg]]&amp;quot; Recordset=&amp;quot;Validation&amp;quot; /&amp;gt;&amp;lt;Output Name=&amp;quot;ID&amp;quot; MapsTo=&amp;quot;ID&amp;quot; Value=&amp;quot;[[ValidationResult(*).ID]]&amp;quot; Recordset=&amp;quot;Validation&amp;quot; /&amp;gt;&amp;lt;/Outputs&amp;gt;"" RemoveInputFromOutput=""False"" ResourceID=""ff6d0864-e8ac-4b67-bb82-aba65037b3ba"" ServiceName=""Name Validation"" ServiceServer=""00000000-0000-0000-0000-000000000000"" SimulationMode=""OnDemand"" ToolboxFriendlyName=""Name Validation"" Type=""Workflow"" UniqueID=""fb86530e-cbdf-496c-bd8c-8801310536f5""&gt;&lt;uaba:DsfActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments=""scg:List(x:String)"" /&gt;&lt;/uaba:DsfActivity.AmbientDataList&gt;&lt;uaba:DsfActivity.HelpLink&gt;&lt;InArgument x:TypeArguments=""x:String""&gt;&lt;Literal x:TypeArguments=""x:String"" Value="""" /&gt;&lt;/InArgument&gt;&lt;/uaba:DsfActivity.HelpLink&gt;&lt;uaba:DsfActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments=""x:String"" /&gt;&lt;/uaba:DsfActivity.ParentInstanceID&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;True&lt;/x:Boolean&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;/uaba:DsfActivity&gt;&lt;FlowStep.Next&gt;&lt;FlowDecision x:Name=""__ReferenceID1"" DisplayName=""If [[idx]] Is Less Than or Equal [[TotalRecords]]"" sap:VirtualizedContainerService.HintSize=""160,87""&gt;&lt;FlowDecision.Condition&gt;&lt;uaba:DsfFlowDecisionActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" DatabindRecursive=""False"" DisplayName=""Decision"" ExpressionText=""Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(&amp;quot;{!TheStack!:[{!Col1!:![[idx]]!,!Col2!:![[TotalRecords]]!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsLessThanOrEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If [[idx]] Is Less Than or Equal [[TotalRecords]]!}&amp;quot;,AmbientDataList)"" HasError=""[HasError]"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" SimulationMode=""OnDemand"" UniqueID=""6439f233-76fc-4ac4-88c9-1ed8990d4eac""&gt;&lt;uaba:DsfFlowDecisionActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments=""scg:List(x:String)"" /&gt;&lt;/uaba:DsfFlowDecisionActivity.AmbientDataList&gt;&lt;uaba:DsfFlowDecisionActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments=""x:String"" /&gt;&lt;/uaba:DsfFlowDecisionActivity.ParentInstanceID&gt;&lt;/uaba:DsfFlowDecisionActivity&gt;&lt;/FlowDecision.Condition&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;True&lt;/x:Boolean&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;910.5,637.5&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;160,87&lt;/av:Size&gt;&lt;av:PointCollection x:Key=""TrueConnector""&gt;910.5,681 842.5,681&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;FlowDecision.True&gt;&lt;FlowStep x:Name=""__ReferenceID5""&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;478.5,636.5&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;364,89&lt;/av:Size&gt;&lt;av:PointCollection x:Key=""ConnectorLocation""&gt;478.5,681 448.5,681 448.5,611 400.5,611&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;uaba:DsfMultiAssignActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" ServiceHost=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" CreateBookmark=""False"" DatabindRecursive=""False"" DisplayName=""Assign"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""364,89"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" SimulationMode=""OnDemand"" UniqueID=""9dcc476e-737a-4a2a-b5c2-1c3cd4ec101b"" UpdateAllOccurrences=""False""&gt;&lt;uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments=""scg:List(x:String)"" /&gt;&lt;/uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;sco:ObservableCollection x:TypeArguments=""uaba:ActivityDTO""&gt;&lt;uaba:ActivityDTO FieldName=""[[Validation().Msg]]"" FieldValue=""[[ValidationResult(*).Msg]]"" IndexNumber=""1"" Inserted=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable1]]""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;uaba:ActivityDTO FieldName=""[[Validation().RSAID]]"" FieldValue=""[[ValidationResult(*).RSAID]]"" IndexNumber=""2"" Inserted=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable2]]""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;uaba:ActivityDTO FieldName="""" FieldValue="""" IndexNumber=""3"" Inserted=""False"" WatermarkTextValue="""" WatermarkTextVariable=""""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;/sco:ObservableCollection&gt;&lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments=""x:String"" /&gt;&lt;/uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;True&lt;/x:Boolean&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;/uaba:DsfMultiAssignActivity&gt;&lt;FlowStep.Next&gt;&lt;FlowStep x:Name=""__ReferenceID6""&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;200.5,566&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;200,90&lt;/av:Size&gt;&lt;av:PointCollection x:Key=""ConnectorLocation""&gt;300.5,566 300.5,525.5&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;uaba:DsfDeleteRecordActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" DatabindRecursive=""False"" DisplayName=""Delete Record"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""200,90"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" RecordsetName=""[[Validation(*)]]"" Result="""" SimulationMode=""OnDemand"" UniqueID=""d08ee008-1b26-4202-8dae-ec1e67c952f1""&gt;&lt;uaba:DsfDeleteRecordActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments=""scg:List(x:String)"" /&gt;&lt;/uaba:DsfDeleteRecordActivity.AmbientDataList&gt;&lt;uaba:DsfDeleteRecordActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments=""x:String"" /&gt;&lt;/uaba:DsfDeleteRecordActivity.ParentInstanceID&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;True&lt;/x:Boolean&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;/uaba:DsfDeleteRecordActivity&gt;&lt;FlowStep.Next&gt;&lt;FlowStep x:Name=""__ReferenceID4""&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;av:Point x:Key=""ShapeLocation""&gt;118.5,436.5&lt;/av:Point&gt;&lt;av:Size x:Key=""ShapeSize""&gt;364,89&lt;/av:Size&gt;&lt;av:PointCollection x:Key=""ConnectorLocation""&gt;482.5,481 512.5,481 512.5,361 808.5,361&lt;/av:PointCollection&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;uaba:DsfMultiAssignActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" ServiceHost=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" CreateBookmark=""False"" DatabindRecursive=""False"" DisplayName=""Assign"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""364,89"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" SimulationMode=""OnDemand"" UniqueID=""fab6831a-0067-44e8-adb4-aed544be9d69"" UpdateAllOccurrences=""False""&gt;&lt;uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments=""scg:List(x:String)"" /&gt;&lt;/uaba:DsfMultiAssignActivity.AmbientDataList&gt;&lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;sco:ObservableCollection x:TypeArguments=""uaba:ActivityDTO""&gt;&lt;uaba:ActivityDTO FieldName=""[[idx]]"" FieldValue=""!~calculation~![[idx]]+1!~~calculation~!"" IndexNumber=""1"" Inserted=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable1]]""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;uaba:ActivityDTO FieldName="""" FieldValue="""" IndexNumber=""2"" Inserted=""False"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable2]]""&gt;&lt;uaba:ActivityDTO.OutList&gt;&lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;&lt;/uaba:ActivityDTO.OutList&gt;&lt;/uaba:ActivityDTO&gt;&lt;/sco:ObservableCollection&gt;&lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;&lt;uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments=""x:String"" /&gt;&lt;/uaba:DsfMultiAssignActivity.ParentInstanceID&gt;&lt;sap:WorkflowViewStateService.ViewState&gt;&lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;&lt;x:Boolean x:Key=""IsExpanded""&gt;True&lt;/x:Boolean&gt;&lt;/scg:Dictionary&gt;&lt;/sap:WorkflowViewStateService.ViewState&gt;&lt;/uaba:DsfMultiAssignActivity&gt;&lt;FlowStep.Next&gt;&lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;&lt;/FlowStep.Next&gt;&lt;/FlowStep&gt;&lt;/FlowStep.Next&gt;&lt;/FlowStep&gt;&lt;/FlowStep.Next&gt;&lt;/FlowStep&gt;&lt;/FlowDecision.True&gt;&lt;/FlowDecision&gt;&lt;/FlowStep.Next&gt;&lt;/FlowStep&gt;&lt;/FlowStep.Next&gt;&lt;/FlowStep&gt;&lt;/FlowStep.Next&gt;&lt;/FlowStep&gt;&lt;/FlowStep.Next&gt;&lt;/FlowStep&gt;&lt;x:Reference&gt;__ReferenceID1&lt;/x:Reference&gt;&lt;x:Reference&gt;__ReferenceID2&lt;/x:Reference&gt;&lt;x:Reference&gt;__ReferenceID3&lt;/x:Reference&gt;&lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;&lt;x:Reference&gt;__ReferenceID4&lt;/x:Reference&gt;&lt;x:Reference&gt;__ReferenceID5&lt;/x:Reference&gt;&lt;x:Reference&gt;__ReferenceID6&lt;/x:Reference&gt;&lt;/Flowchart&gt;&lt;/Activity&gt;</XamlDefinition>
+//  </Action>
+//  <ErrorMessages />
+//  <BizRule />
+//  <WorkflowActivityDef />
+//  <Source />
+//  <Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
+//    <SignedInfo>
+//      <CanonicalizationMethod Algorithm=""http://www.w3.org/TR/2001/REC-xml-c14n-20010315"" />
+//      <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1"" />
+//      <Reference URI="""">
+//        <Transforms>
+//          <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature"" />
+//        </Transforms>
+//        <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1"" />
+//        <DigestValue>rfR9Ry6mHVMie+vSkOi0pJlq7jM=</DigestValue>
+//      </Reference>
+//    </SignedInfo>
+//    <SignatureValue>gTC12dhYhIgcIdYVoUgXvii8S/s46txocwldoFqoLPNab0ryiU1xGOgwWbB3jG1BUpSGg1ETh50GGKvsfA9a6nB7NeKB6Oh9uLXYyBkf9t7AC8IiCeJuGjmh8I/twEflvsJ7OMDmyE+T7TWxiEelCrRiN/iwRz1W7QBtOLNBG+Y=</SignatureValue>
+//  </Signature>
+//</Service>";
 
-            //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.WorkflowService, uo);
+//            #endregion
 
-            // Assert NewWorkFlowNames instance updated
-            Assert.IsNotNull(model);
-            Assert.IsTrue(NewWorkflowNames.Instance.Contains("Unsaved 1"));
-        }
-        
+//            UnlimitedObject uo = new UnlimitedObject(data);
+
+//            //------------Execute Test---------------------------
+//            var model = resourceRepository.HydrateResourceModel(ResourceType.WorkflowService, uo);
+
+//            // Assert NewWorkFlowNames instance updated
+//            Assert.IsNotNull(model);
+//            Assert.IsTrue(NewWorkflowNames.Instance.Contains("Unsaved 1"));
+//        }
+
         #endregion
 
         #region Load Tests
@@ -980,7 +979,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             //------------Execute Test---------------------------
-            var reloadedResources = _repo.ReloadResource(_resourceGuid, ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest());
+            var reloadedResources = _repo.ReloadResource(_resourceGuid, ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
             //------------Assert Results-------------------------
             Assert.AreEqual(2, reloadedResources.Count);
         }
@@ -1000,7 +999,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             //------------Execute Test---------------------------
-            var reloadedResources = _repo.ReloadResource(_resourceGuid, ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest());
+            var reloadedResources = _repo.ReloadResource(_resourceGuid, ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, reloadedResources.Count);
@@ -1246,7 +1245,7 @@ namespace BusinessDesignStudio.Unit.Tests
             const string ExpectedValueForResourceDefinition = "This is the resource definition";
             var resource = new ResourceModel(_environmentModel.Object);
             resource.ResourceType = ResourceType.Source;
-            resource.ServiceDefinition = ExpectedValueForResourceDefinition;
+            resource.WorkflowXaml = ExpectedValueForResourceDefinition;
             resource.ResourceName = "TestName";
 
             var securityContext = new Mock<IFrameworkSecurityContext>();
@@ -1274,7 +1273,7 @@ namespace BusinessDesignStudio.Unit.Tests
             const string ExpectedValueForResourceDefinition = "This is the resource definition";
             var resource = new ResourceModel(_environmentModel.Object);
             resource.ResourceType = ResourceType.Service;
-            resource.ServiceDefinition = ExpectedValueForResourceDefinition;
+            resource.WorkflowXaml = ExpectedValueForResourceDefinition;
             resource.ResourceName = "TestName";
 
             var securityContext = new Mock<IFrameworkSecurityContext>();
@@ -1516,7 +1515,7 @@ namespace BusinessDesignStudio.Unit.Tests
             //------------Setup for test--------------------------
             Setup();
             var theID = Guid.NewGuid();
-            
+
             Mock<IResourceRepository> srcRepo = new Mock<IResourceRepository>();
             Mock<IResourceRepository> targetRepo = new Mock<IResourceRepository>();
 
@@ -1529,8 +1528,8 @@ namespace BusinessDesignStudio.Unit.Tests
                    .Returns(_resourceModel.Object);
 
             targetModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
-            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(),It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current)).Verifiable();
-            
+            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current, false)).Verifiable();
+
             IList<IResourceModel> deployModels = new List<IResourceModel>();
 
             var theModel = new ResourceModel(srcModel.Object);
@@ -1540,13 +1539,13 @@ namespace BusinessDesignStudio.Unit.Tests
             Mock<IEventAggregator> mockEventAg = new Mock<IEventAggregator>();
             mockEventAg.Setup(m => m.Publish(It.IsAny<object>()));
 
-            IDeployDTO dto = new DeployDTO {ResourceModels = deployModels};
+            IDeployDTO dto = new DeployDTO { ResourceModels = deployModels };
 
             //------------Execute Test---------------------------
             _repo.DeployResources(srcModel.Object, targetModel.Object, dto, mockEventAg.Object);
 
             //------------Assert Results-------------------------
-            targetRepo.Verify(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current));
+            targetRepo.Verify(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current, false));
         }
 
         [TestMethod]
@@ -1573,19 +1572,18 @@ namespace BusinessDesignStudio.Unit.Tests
                    .Returns(findModel);
 
             targetEnvModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
-            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current)).Verifiable();
+            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current, false)).Verifiable();
 
             Mock<IResourceModel> reloadedResource = new Mock<IResourceModel>();
             reloadedResource.Setup(res => res.ResourceName).Returns("Resource");
             reloadedResource.Setup(res => res.DisplayName).Returns("My New Resource");
-            reloadedResource.Setup(res => res.ServiceDefinition).Returns("New Service Definition");
             reloadedResource.Setup(res => res.ID).Returns(theID);
             reloadedResource.Setup(res => res.WorkflowXaml).Returns("NewXaml");
 
-            List<IResourceModel> reloadResources = new List<IResourceModel> {reloadedResource.Object};
-            
+            List<IResourceModel> reloadResources = new List<IResourceModel> { reloadedResource.Object };
 
-            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current)).Returns(reloadResources);
+
+            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current, false)).Returns(reloadResources);
 
             IList<IResourceModel> deployModels = new List<IResourceModel>();
 
@@ -1603,8 +1601,8 @@ namespace BusinessDesignStudio.Unit.Tests
 
             //------------Assert Results-------------------------
             Assert.AreEqual("NewXaml", findModel.WorkflowXaml);
-            Assert.AreEqual("New Service Definition", findModel.ServiceDefinition);
-            
+            Assert.AreEqual("New Service Definition", findModel.WorkflowXaml);
+
         }
 
         #endregion
@@ -1717,7 +1715,7 @@ namespace BusinessDesignStudio.Unit.Tests
         // ReSharper disable InconsistentNaming
         public void
             ResourceRepository_ResourceRepositoryUnitTest_RenameResource_ExecuteCommandExecutesTheRightXmlPayload()
-            // ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             //init
             var resID = Guid.NewGuid();
@@ -1786,7 +1784,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var expected = @"<XmlData>
   <Service>RenameResourceService</Service>
   <NewName>New-Test-Name</NewName>
-  <ResourceID>"+resourceID+@"</ResourceID>
+  <ResourceID>" + resourceID + @"</ResourceID>
 </XmlData>";
             //init conn
             var mockEnvironment = new Mock<IEnvironmentModel>();

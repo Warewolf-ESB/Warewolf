@@ -2,7 +2,6 @@
 using System.Text;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Base;
 
 namespace Dev2.Studio.Core.ViewModels
@@ -40,18 +39,18 @@ namespace Dev2.Studio.Core.ViewModels
         {
             get
             {
-                if(string.IsNullOrEmpty(_contexttualResourceModel.ServiceDefinition))
+                if(string.IsNullOrEmpty(_contexttualResourceModel.WorkflowXaml))
                 {
-                    _contexttualResourceModel.ServiceDefinition = DefaultDefinition();
+                    _contexttualResourceModel.WorkflowXaml = DefaultDefinition();
                 }
 
-                return _contexttualResourceModel.ServiceDefinition;
+                return _contexttualResourceModel.WorkflowXaml;
             }
             set
             {
-                _contexttualResourceModel.ServiceDefinition = value;
+                _contexttualResourceModel.WorkflowXaml = value;
                 NotifyOfPropertyChange(() => ServiceDefinition);
-                if(ResourceModel != null) ResourceModel.ServiceDefinition = ServiceDefinition;
+                if(ResourceModel != null) ResourceModel.WorkflowXaml = ServiceDefinition;
             }
 
         }

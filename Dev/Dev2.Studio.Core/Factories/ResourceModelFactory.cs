@@ -19,7 +19,6 @@ namespace Dev2.Studio.Core.Factories
             resource.ResourceType = resourceType;
             resource.IconPath = iconPath;
             resource.DisplayName = displayName;
-            resource.ServiceDefinition = string.Empty;
             return resource;
         }
 

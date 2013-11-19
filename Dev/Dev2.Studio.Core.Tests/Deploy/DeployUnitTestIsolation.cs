@@ -3,7 +3,6 @@ using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Collections.Generic;
-using System.Threading;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
@@ -15,7 +14,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Deploy;
 using Dev2.Studio.ViewModels.Navigation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Core.Tests.Deploy

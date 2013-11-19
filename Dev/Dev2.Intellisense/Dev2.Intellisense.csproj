@@ -78,7 +78,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helper\FileNameProviderImpl.cs" />
     <Compile Include="Helper\FileSystemQuery.cs" />
     <Compile Include="Helper\IFileSystemQuery.cs" />
     <Compile Include="Helper\NetworkShareInformation.cs" />

@@ -1,24 +1,13 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using Unlimited.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Studio.Core.Interfaces;
 using Moq;
 using System.Collections.ObjectModel;
-using System.Reflection;
-using Dev2.Studio.Core.Factories;
-using System.ServiceModel;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Composition;
-using Dev2.Studio.Core.Interfaces.DataList;
 
 namespace Dev2.Core.Tests
 {
@@ -28,6 +17,7 @@ namespace Dev2.Core.Tests
     /// Summary description for WebsiteEditorViewModelTest
     /// </summary>
     [TestClass][ExcludeFromCodeCoverage]
+    [Ignore]
     public class WebsiteEditorViewModelTest
     {
 

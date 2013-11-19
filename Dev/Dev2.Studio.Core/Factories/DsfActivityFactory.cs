@@ -34,8 +34,8 @@ namespace Dev2.Studio.Core.Factories
                 {
                     activity.IsWorkflow = true;
                     //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                    activity.FriendlySourceName = resource.Environment.Name;
-                    activity = WorkflowPropertyInterigator.SetActivityProperties(resource.ServiceDefinition, activity);
+                    if (resource.Environment != null) activity.FriendlySourceName = resource.Environment.Name;
+                    activity = WorkflowPropertyInterigator.SetActivityProperties(resource, activity);
                 }
                 //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
                 else if(resource.ResourceType == ResourceType.Service)
@@ -43,7 +43,7 @@ namespace Dev2.Studio.Core.Factories
                     //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
                     activity.IsWorkflow = false;
 
-                    activity = WorkerServicePropertyInterigator.SetActivityProperties(resource.ServiceDefinition, activity);
+                    activity = WorkerServicePropertyInterigator.SetActivityProperties(resource, activity);
                 }
             }
 

@@ -221,7 +221,7 @@ namespace Dev2.Studio.Views.Workflow {
                                              }
                                              catch(Exception ex) {
                     
-                                                 MessageBox.Show(string.Format("Error occurred executing worflow \nPlease check the workflow definition\r\n{0}", new UnlimitedObject(ex).XmlString), "Error in workflow", MessageBoxButton.OK, MessageBoxImage.Error);
+                                                 MessageBox.Show(string.Format("Error occurred executing worflow \nPlease check the workflow definition\r\n{0}", ex), "Error in workflow", MessageBoxButton.OK, MessageBoxImage.Error);
                                                  return;
                                              }
                                              // Emit Debug data 

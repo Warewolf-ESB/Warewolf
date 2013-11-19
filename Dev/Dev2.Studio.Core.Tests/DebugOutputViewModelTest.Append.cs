@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using Dev2.Diagnostics;
 using Dev2.Providers.Events;
 using Dev2.Studio.ViewModels.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.Core.Tests
@@ -73,7 +74,7 @@ namespace Dev2.Core.Tests
             var envRepo = GetEnvironmentRepository();
             var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo) { SearchText = searchText };
 
-            var content = new DebugState { DisplayName = contentText, ID = Guid.NewGuid(), StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID};
+            var content = new DebugState { DisplayName = contentText, ID = Guid.NewGuid(), StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID };
 
             //------------Execute Test---------------------------
             viewModel.Append(content);
@@ -105,7 +106,7 @@ namespace Dev2.Core.Tests
             var envRepo = GetEnvironmentRepository();
             var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo);
 
-            var content = new DebugState { DisplayName = "Content", ID = Guid.NewGuid(), StateType = stateType, ActivityType = ActivityType.Step, Message = "The message", SessionID = viewModel.SessionID};
+            var content = new DebugState { DisplayName = "Content", ID = Guid.NewGuid(), StateType = stateType, ActivityType = ActivityType.Step, Message = "The message", SessionID = viewModel.SessionID };
 
             //------------Execute Test---------------------------
             viewModel.Append(content);
@@ -177,7 +178,7 @@ namespace Dev2.Core.Tests
             var envRepo = GetEnvironmentRepository();
             var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo);
 
-            var content = new DebugState { DisplayName = displayName, ID = contentID, ParentID = contentParentID, StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID};
+            var content = new DebugState { DisplayName = displayName, ID = contentID, ParentID = contentParentID, StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID };
 
             //------------Execute Test---------------------------
             viewModel.Append(content);
@@ -192,7 +193,7 @@ namespace Dev2.Core.Tests
             Assert.IsFalse(child.IsExpanded);
         }
 
-       
+
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -216,7 +217,7 @@ namespace Dev2.Core.Tests
             var envRepo = GetEnvironmentRepository();
             var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo);
 
-            var parentContent = new DebugState { HasError = parentContentHasErrors, DisplayName = "Content", ID = Guid.NewGuid(), ParentID = Guid.Empty, StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID};
+            var parentContent = new DebugState { HasError = parentContentHasErrors, DisplayName = "Content", ID = Guid.NewGuid(), ParentID = Guid.Empty, StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID };
             var childContent = new DebugState { HasError = childContentHasErrors, DisplayName = "Content", ID = Guid.NewGuid(), ParentID = parentContent.ID, StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID };
 
             //------------Execute Test---------------------------

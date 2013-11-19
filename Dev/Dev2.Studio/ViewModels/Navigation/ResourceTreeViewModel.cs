@@ -17,7 +17,6 @@ using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -125,13 +124,13 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
             set
             {
-                
+
                 if(!value.IsValidCategoryName())
                 {
                     throw new ArgumentException(StringResources.InvalidResourceNameExceptionMessage);
                 }
-                
-                if(!string.IsNullOrEmpty(value) &&  value.Trim().Length > 0)
+
+                if(!string.IsNullOrEmpty(value) && value.Trim().Length > 0)
                 {
                     if(!value.Equals(DisplayName, StringComparison.CurrentCultureIgnoreCase))
                     {
@@ -161,13 +160,12 @@ namespace Dev2.Studio.ViewModels.Navigation
                 Logger.TraceInfo("Publish message of type - " + typeof(UpdateWorksurfaceDisplayName));
                 _eventPublisher.Publish(new UpdateWorksurfaceDisplayName(DataContext.ID, DataContext.ResourceName, newName));
                 //update this data context
-                if(DataContext.ServiceDefinition != null)
+                if(DataContext.WorkflowXaml != null)
                 {
-                    DataContext.ServiceDefinition = DataContext.ServiceDefinition
+                    DataContext.WorkflowXaml = DataContext.WorkflowXaml
                             .Replace("x:Class=\"" + DataContext.ResourceName, "x:Class=\"" + newName)
                             .Replace("Name=\"" + DataContext.ResourceName, "Name=\"" + newName)
                             .Replace("ToolboxFriendlyName=\"" + DataContext.ResourceName, "ToolboxFriendlyName=\"" + newName)
-                            .Replace("<DisplayName>" + DataContext.ResourceName + "</DisplayName>", "<DisplayName>" + newName + "</DisplayName>")
                             .Replace("DisplayName=\"" + DataContext.ResourceName, "DisplayName=\"" + newName);
                 }
                 DataContext.ResourceName = newName;

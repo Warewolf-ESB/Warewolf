@@ -75,12 +75,8 @@ namespace Dev2.Studio.Webs
 
             string resourceID;
             var resourceType = ResourceType.Unknown;
-            //2013.06.04: Ashley Lewis for PBI 9458 - placeholder for adding new resources to a context
-            //TODO set this to some folder name (eg: the folder that was right clicked).
-            //The wizard save dialog will pre-select this folder name
-            string resourcePath = null;
 
-            if(string.IsNullOrEmpty(resourceModel.ServiceDefinition))
+            if(resourceModel.Category == null)
             {
                 resourceID = Guid.Empty.ToString();
                 if(resourceModel.IsDatabaseService)
@@ -126,48 +122,11 @@ namespace Dev2.Studio.Webs
             }
             else
             {
-                var resourceXml = XElement.Parse(resourceModel.ServiceDefinition);
-
-                resourceID = resourceXml.AttributeSafe("ID");
-                if(string.IsNullOrEmpty(resourceID))
-                {
-                    resourceID = resourceXml.AttributeSafe("Name");
-                }
-                Enum.TryParse(resourceXml.AttributeSafe("ResourceType"), out resourceType);
-
-                if(resourceType == ResourceType.Unknown)
-                {
-                    #region Try determine resourceType of 'old' resources
-
-                    if(resourceXml.Name.LocalName.Equals("Source", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        if(resourceXml.AttributeSafe("Type").Equals(enSourceType.Dev2Server.ToString(), StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            resourceType = ResourceType.Server;
-                        }
-                        else if(resourceXml.AttributeSafe("Type").Equals(enSourceType.SqlDatabase.ToString(), StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            // Since the resource is outdated we use the name instead                            
-                            resourceID = resourceXml.AttributeSafe("Name");
-                            resourceType = ResourceType.DbSource;
-                        }
-                    }
-                    else if(resourceXml.Name.LocalName.Equals("Service", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        if(resourceXml.ElementSafe("TypeOf").Equals(enActionType.InvokeStoredProc.ToString(), StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            // DynamicServicesHost auto-adds an ID to each service if it doesn't exist in the persisted XML
-                            // Since the resource is read from disk rather than DynamicServicesHost we use the name instead                            
-                            resourceID = resourceXml.AttributeSafe("Name");
-                            resourceType = ResourceType.DbService;
-                        }
-                    }
-
-                    #endregion
-                }
+                resourceID = resourceModel.ID.ToString();
+                Enum.TryParse(resourceModel.ServerResourceType, out resourceType);
             }
 
-            return ShowDialog(resourceModel.Environment, resourceType, resourcePath, resourceID);
+            return ShowDialog(resourceModel.Environment, resourceType, null, resourceID);
         }
 
         #endregion

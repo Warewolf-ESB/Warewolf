@@ -149,20 +149,20 @@ namespace Dev2.Core.Tests
         {
             get
             {
-                if (_mockMainViewModel == null)
+                if(_mockMainViewModel == null)
                 {
                     CompositionInitializer.InitializeForMeflessBaseViewModel();
                     var eventPublisher = new Mock<IEventAggregator>();
                     var environmentRepository = new Mock<IEnvironmentRepository>();
                     var environmentModel = new Mock<IEnvironmentModel>();
                     environmentModel.Setup(c => c.CanStudioExecute).Returns(false);
-                    environmentRepository.Setup(c => c.ReadSession()).Returns(new[] {Guid.NewGuid()});
-                    environmentRepository.Setup(c => c.All()).Returns(new[] {environmentModel.Object});
+                    environmentRepository.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
+                    environmentRepository.Setup(c => c.All()).Returns(new[] { environmentModel.Object });
                     environmentRepository.Setup(c => c.Source).Returns(environmentModel.Object);
                     var versionChecker = new Mock<IVersionChecker>();
                     var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
                     _mockMainViewModel = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object,
-                        versionChecker.Object, false, null,null,null,null,null,null);
+                        versionChecker.Object, false, null, null, null, null, null, null);
                 }
                 return _mockMainViewModel;
             }
@@ -403,7 +403,7 @@ namespace Dev2.Core.Tests
             var mockResourceModel = new Mock<IResourceRepository>();
             mockResourceModel.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(returnResource.Object);
             mockResourceModel.Setup(r => r.Save(It.IsAny<IResourceModel>())).Callback<IResourceModel>(r => resourceRepositoryFakeBacker.Add(r));
-            mockResourceModel.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>())).Returns(new List<IResourceModel>() { returnResource.Object });
+            mockResourceModel.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Returns(new List<IResourceModel>() { returnResource.Object });
             mockResourceModel.Setup(r => r.All()).Returns(new List<IResourceModel>() { returnResource.Object });
 
             return mockResourceModel;
@@ -414,7 +414,7 @@ namespace Dev2.Core.Tests
             var mockResourceModel = new Mock<IResourceRepository>();
             mockResourceModel.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(returnResource.Object);
             mockResourceModel.Setup(r => r.Save(It.IsAny<IResourceModel>())).Callback<IResourceModel>(r => resourceRepositoryFakeBacker.Add(r));
-            mockResourceModel.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>())).Returns(new List<IResourceModel>() { returnResource.Object });
+            mockResourceModel.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Returns(new List<IResourceModel>() { returnResource.Object });
             mockResourceModel.Setup(r => r.All()).Returns(returnResources);
 
             return mockResourceModel;
@@ -424,7 +424,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
+            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(StringResources.xmlServiceDefinition);
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
@@ -440,7 +440,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataListInputOnly);
-            mockResourceModel.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinitionWithInputsOnly);
+            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(StringResourcesTest.xmlServiceDefinitionWithInputsOnly);
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
@@ -456,7 +456,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataListOutputOnly);
-            mockResourceModel.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinitionWithOutputsOnly);
+            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(StringResourcesTest.xmlServiceDefinitionWithOutputsOnly);
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
@@ -472,7 +472,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
+            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(StringResources.xmlServiceDefinition);
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
@@ -488,7 +488,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
+            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(StringResources.xmlServiceDefinition);
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns(resourceName);
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns(resourceName);
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
@@ -512,7 +512,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
+            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(StringResources.xmlServiceDefinition);
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns(resourceName);
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns(resourceName);
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
@@ -528,7 +528,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
+            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(StringResources.xmlServiceDefinition);
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");

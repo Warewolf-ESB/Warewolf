@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Caliburn.Micro;
-using Dev2.Composition;
 
 namespace Dev2.Studio.Core.ViewModels.Base
 {

@@ -130,7 +130,7 @@ namespace Dev2.DataList
                 IsWorkflow = activity.ResourceModel.ResourceType == ResourceType.WorkflowService;
 
                     // extract the IO data too ;)
-                    string serviceDefinition = activity.ResourceModel.ServiceDefinition;
+                    string serviceDefinition = activity.ResourceModel.WorkflowXaml;
                     if (!string.IsNullOrEmpty(serviceDefinition))
                     {
                         string inputs = string.Empty;
@@ -540,21 +540,15 @@ namespace Dev2.DataList
             string result = string.Empty;
 
             XElement xe = XElement.Parse(serviceDefinition);
-            var actions = xe.Element("Actions");
 
-            if(actions != null)
+            var region = xe.Element(regionName);
+
+            if (region != null)
             {
-                var action = actions.Element("Action");
-                if(action != null)
-                {
-                    var region = action.Element(regionName);
-
-                    if (region != null)
-                    {
-                        result = region.ToString(SaveOptions.DisableFormatting);
-                    }
-                }
+                result = region.ToString(SaveOptions.DisableFormatting);
             }
+            
+            
 
             return result;
         }

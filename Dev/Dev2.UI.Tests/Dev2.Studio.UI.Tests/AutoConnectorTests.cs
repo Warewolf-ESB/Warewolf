@@ -164,7 +164,6 @@ namespace Dev2.Studio.UI.Tests
             Point point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
             //Drag a control to the design surface
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
-            WizardsUIMap.WaitForWizard();
             Playback.Wait(2000);
             DecisionWizardUIMap.ClickCancel();
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();

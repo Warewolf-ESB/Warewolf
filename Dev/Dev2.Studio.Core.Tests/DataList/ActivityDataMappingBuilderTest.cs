@@ -2,7 +2,8 @@
 using Dev2.DataList;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -11,7 +12,8 @@ namespace Dev2.Core.Tests.DataList
     /// <summary>
     /// Summary description for ActivityDataMappingBuilderTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ActivityDataMappingBuilderTest
     {
         /// <summary>
@@ -30,8 +32,7 @@ namespace Dev2.Core.Tests.DataList
             //------------Setup for test--------------------------
 
             #region ServiceDef
-            var serviceDefStr = @"<Service ID=""df9e59ed-11f0-4359-bd21-7ad35898b383"" Version=""1.0"" Name=""Get Rows"" ResourceType=""DbService"" IsValid=""false"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
-  <Actions>
+            var serviceDefStr = @"
     <Action Name=""Row"" Type=""InvokeStoredProc"" SourceID=""62505a00-b304-4ac0-a55c-50ce85111f16"" SourceName=""GenDev"" SourceMethod=""dbo.proc_get_Rows"">
       <Inputs>
         <Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" />
@@ -50,37 +51,7 @@ namespace Dev2.Core.Tests.DataList
         <Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" />
       </Outputs>
       
-    </Action>
-  </Actions>
-  <AuthorRoles />
-  <Comment />
-  <Tags />
-  <HelpLink />
-  <UnitTestTargetWorkflowService />
-  <BizRule />
-  <WorkflowActivityDef />
-  <XamlDefinition />
-  <DataList />
-  <TypeOf>InvokeStoredProc</TypeOf>
-  <DisplayName>Get Rows</DisplayName>
-  <Category></Category>
-  <AuthorRoles></AuthorRoles>
-  <ErrorMessages />
-  <Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm=""http://www.w3.org/TR/2001/REC-xml-c14n-20010315"" />
-      <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1"" />
-      <Reference URI="""">
-        <Transforms>
-          <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature"" />
-        </Transforms>
-        <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1"" />
-        <DigestValue>wnGdgUqy2wpUORyoPj+hiHeya6E=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>qRUe2AqKMusy9JrUY3vNdXCI//Z8UCMSQKBSHIDPMMVdVkKCbWKnUZl1XYa9/LZHAtzX21idcKjWwCQmpgBmrQHWj2Mcp7/XNKp4Q7sJZNGhfOz1163pHR/pN2Lb2gPK8hzzqFRGvk1zzav0RHqJjqVaEw63A88P/UqVTsY94t4=</SignatureValue>
-  </Signature>
-</Service>";
+    </Action>";
             #endregion
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
@@ -92,7 +63,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.ServiceDefinition).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
             activity.Setup(c => c.ResourceModel.ResourceType).Returns(ResourceType.Service);
 
             //------------Execute Test---------------------------
@@ -116,8 +87,7 @@ namespace Dev2.Core.Tests.DataList
             //------------Setup for test--------------------------
 
             #region ServiceDef
-            var serviceDefStr = @"<Service ID=""df9e59ed-11f0-4359-bd21-7ad35898b383"" Version=""1.0"" Name=""Get Rows"" ResourceType=""DbService"" IsValid=""false"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
-  <Actions>
+            var serviceDefStr = @"
     <Action Name=""Row"" Type=""InvokeStoredProc"" SourceID=""62505a00-b304-4ac0-a55c-50ce85111f16"" SourceName=""GenDev"" SourceMethod=""dbo.proc_get_Rows"">
       <Inputs>
         <Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" />
@@ -136,37 +106,7 @@ namespace Dev2.Core.Tests.DataList
         <Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" />
       </Outputs>
       
-    </Action>
-  </Actions>
-  <AuthorRoles />
-  <Comment />
-  <Tags />
-  <HelpLink />
-  <UnitTestTargetWorkflowService />
-  <BizRule />
-  <WorkflowActivityDef />
-  <XamlDefinition />
-  <DataList />
-  <TypeOf>InvokeStoredProc</TypeOf>
-  <DisplayName>Get Rows</DisplayName>
-  <Category></Category>
-  <AuthorRoles></AuthorRoles>
-  <ErrorMessages />
-  <Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm=""http://www.w3.org/TR/2001/REC-xml-c14n-20010315"" />
-      <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1"" />
-      <Reference URI="""">
-        <Transforms>
-          <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature"" />
-        </Transforms>
-        <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1"" />
-        <DigestValue>wnGdgUqy2wpUORyoPj+hiHeya6E=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>qRUe2AqKMusy9JrUY3vNdXCI//Z8UCMSQKBSHIDPMMVdVkKCbWKnUZl1XYa9/LZHAtzX21idcKjWwCQmpgBmrQHWj2Mcp7/XNKp4Q7sJZNGhfOz1163pHR/pN2Lb2gPK8hzzqFRGvk1zzav0RHqJjqVaEw63A88P/UqVTsY94t4=</SignatureValue>
-  </Signature>
-</Service>";
+    </Action>";
             #endregion
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
@@ -178,8 +118,8 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.ServiceDefinition).Returns(serviceDefStr);
-            activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof (DsfDatabaseActivity));
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
+            activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfDatabaseActivity));
 
             //------------Execute Test---------------------------
 
@@ -200,8 +140,7 @@ namespace Dev2.Core.Tests.DataList
             //------------Setup for test--------------------------
 
             #region ServiceDef
-            var serviceDefStr = @"<Service ID=""df9e59ed-11f0-4359-bd21-7ad35898b383"" Version=""1.0"" Name=""Get Rows"" ResourceType=""DbService"" IsValid=""false"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
-  <Actions>
+            var serviceDefStr = @"
     <Action Name=""Row"" Type=""InvokeStoredProc"" SourceID=""62505a00-b304-4ac0-a55c-50ce85111f16"" SourceName=""GenDev"" SourceMethod=""dbo.proc_get_Rows"">
       <Inputs>
         <Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" />
@@ -220,37 +159,7 @@ namespace Dev2.Core.Tests.DataList
         <Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" />
       </Outputs>
       
-    </Action>
-  </Actions>
-  <AuthorRoles />
-  <Comment />
-  <Tags />
-  <HelpLink />
-  <UnitTestTargetWorkflowService />
-  <BizRule />
-  <WorkflowActivityDef />
-  <XamlDefinition />
-  <DataList />
-  <TypeOf>InvokeStoredProc</TypeOf>
-  <DisplayName>Get Rows</DisplayName>
-  <Category></Category>
-  <AuthorRoles></AuthorRoles>
-  <ErrorMessages />
-  <Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm=""http://www.w3.org/TR/2001/REC-xml-c14n-20010315"" />
-      <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1"" />
-      <Reference URI="""">
-        <Transforms>
-          <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature"" />
-        </Transforms>
-        <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1"" />
-        <DigestValue>wnGdgUqy2wpUORyoPj+hiHeya6E=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>qRUe2AqKMusy9JrUY3vNdXCI//Z8UCMSQKBSHIDPMMVdVkKCbWKnUZl1XYa9/LZHAtzX21idcKjWwCQmpgBmrQHWj2Mcp7/XNKp4Q7sJZNGhfOz1163pHR/pN2Lb2gPK8hzzqFRGvk1zzav0RHqJjqVaEw63A88P/UqVTsY94t4=</SignatureValue>
-  </Signature>
-</Service>";
+    </Action>";
             #endregion
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
@@ -262,7 +171,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.ServiceDefinition).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfDatabaseActivity));
             activity.Setup(c => c.ResourceModel.ResourceType).Returns(ResourceType.Service);
 
@@ -271,7 +180,7 @@ namespace Dev2.Core.Tests.DataList
             //------------Execute Test---------------------------
 
             var result = activityDataMappingBuilder.Generate();
-            
+
 
             //------------Assert Results-------------------------
 
@@ -309,8 +218,7 @@ namespace Dev2.Core.Tests.DataList
         <Input Name=""Rows"" Source=""[[RowCnt]]""/>
       </Inputs>";
 
-            var serviceDefStr = @"<Service ID=""df9e59ed-11f0-4359-bd21-7ad35898b383"" Version=""1.0"" Name=""Get Rows"" ResourceType=""DbService"" IsValid=""false"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
-  <Actions>
+            var serviceDefStr = @"
     <Action Name=""Row"" Type=""InvokeStoredProc"" SourceID=""62505a00-b304-4ac0-a55c-50ce85111f16"" SourceName=""GenDev"" SourceMethod=""dbo.proc_get_Rows"">
       <Inputs>
         <Input Name=""Rows"" Source=""Rows"" DefaultValue=""5"" EmptyToNull=""true"">
@@ -331,37 +239,7 @@ namespace Dev2.Core.Tests.DataList
         <Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" />
       </Outputs>
       
-    </Action>
-  </Actions>
-  <AuthorRoles />
-  <Comment />
-  <Tags />
-  <HelpLink />
-  <UnitTestTargetWorkflowService />
-  <BizRule />
-  <WorkflowActivityDef />
-  <XamlDefinition />
-  <DataList />
-  <TypeOf>InvokeStoredProc</TypeOf>
-  <DisplayName>Get Rows</DisplayName>
-  <Category></Category>
-  <AuthorRoles></AuthorRoles>
-  <ErrorMessages />
-  <Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm=""http://www.w3.org/TR/2001/REC-xml-c14n-20010315"" />
-      <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1"" />
-      <Reference URI="""">
-        <Transforms>
-          <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature"" />
-        </Transforms>
-        <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1"" />
-        <DigestValue>wnGdgUqy2wpUORyoPj+hiHeya6E=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>qRUe2AqKMusy9JrUY3vNdXCI//Z8UCMSQKBSHIDPMMVdVkKCbWKnUZl1XYa9/LZHAtzX21idcKjWwCQmpgBmrQHWj2Mcp7/XNKp4Q7sJZNGhfOz1163pHR/pN2Lb2gPK8hzzqFRGvk1zzav0RHqJjqVaEw63A88P/UqVTsY94t4=</SignatureValue>
-  </Signature>
-</Service>";
+    </Action>";
             #endregion
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
@@ -373,7 +251,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(inputDefStr);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.ServiceDefinition).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfDatabaseActivity));
             activity.Setup(c => c.ResourceModel.ResourceType).Returns(ResourceType.Service);
 
@@ -424,8 +302,7 @@ namespace Dev2.Core.Tests.DataList
         <Input Name=""Rows"" Source=""[[RowCnt]]""/>
       </Inputs>";
 
-            var serviceDefStr = @"<Service ID=""df9e59ed-11f0-4359-bd21-7ad35898b383"" Version=""1.0"" Name=""Get Rows"" ResourceType=""DbService"" IsValid=""false"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
-  <Actions>
+            var serviceDefStr = @"
     <Action Name=""Row"" Type=""InvokeStoredProc"" SourceID=""62505a00-b304-4ac0-a55c-50ce85111f16"" SourceName=""GenDev"" SourceMethod=""dbo.proc_get_Rows"">
       <Inputs>
         <Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" />
@@ -444,37 +321,7 @@ namespace Dev2.Core.Tests.DataList
         <Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" />
       </Outputs>
       
-    </Action>
-  </Actions>
-  <AuthorRoles />
-  <Comment />
-  <Tags />
-  <HelpLink />
-  <UnitTestTargetWorkflowService />
-  <BizRule />
-  <WorkflowActivityDef />
-  <XamlDefinition />
-  <DataList />
-  <TypeOf>InvokeStoredProc</TypeOf>
-  <DisplayName>Get Rows</DisplayName>
-  <Category></Category>
-  <AuthorRoles></AuthorRoles>
-  <ErrorMessages />
-  <Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm=""http://www.w3.org/TR/2001/REC-xml-c14n-20010315"" />
-      <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1"" />
-      <Reference URI="""">
-        <Transforms>
-          <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature"" />
-        </Transforms>
-        <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1"" />
-        <DigestValue>wnGdgUqy2wpUORyoPj+hiHeya6E=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>qRUe2AqKMusy9JrUY3vNdXCI//Z8UCMSQKBSHIDPMMVdVkKCbWKnUZl1XYa9/LZHAtzX21idcKjWwCQmpgBmrQHWj2Mcp7/XNKp4Q7sJZNGhfOz1163pHR/pN2Lb2gPK8hzzqFRGvk1zzav0RHqJjqVaEw63A88P/UqVTsY94t4=</SignatureValue>
-  </Signature>
-</Service>";
+    </Action>";
             #endregion
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
@@ -486,7 +333,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(inputDefStr);
             activity.Setup(c => c.SavedOutputMapping).Returns(outputDefStr);
-            activity.Setup(c => c.ResourceModel.ServiceDefinition).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfDatabaseActivity));
             activity.Setup(c => c.ResourceModel.ResourceType).Returns(ResourceType.Service);
 
@@ -546,9 +393,7 @@ namespace Dev2.Core.Tests.DataList
         <Input Name=""Rows"" Source=""5""/>
       </Inputs>";
 
-            var serviceDefStr = @"<Service ID=""df9e59ed-11f0-4359-bd21-7ad35898b383"" Version=""1.0"" Name=""Get Rows"" ResourceType=""DbService"" IsValid=""false"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
-  <Actions>
-    <Action Name=""Row"" Type=""InvokeStoredProc"" SourceID=""62505a00-b304-4ac0-a55c-50ce85111f16"" SourceName=""GenDev"" SourceMethod=""dbo.proc_get_Rows"">
+            var serviceDefStr = @"<Action Name=""Row"" Type=""InvokeStoredProc"" SourceID=""62505a00-b304-4ac0-a55c-50ce85111f16"" SourceName=""GenDev"" SourceMethod=""dbo.proc_get_Rows"">
       <Inputs>
         <Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" />
       </Inputs>
@@ -566,37 +411,7 @@ namespace Dev2.Core.Tests.DataList
         <Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" />
       </Outputs>
       
-    </Action>
-  </Actions>
-  <AuthorRoles />
-  <Comment />
-  <Tags />
-  <HelpLink />
-  <UnitTestTargetWorkflowService />
-  <BizRule />
-  <WorkflowActivityDef />
-  <XamlDefinition />
-  <DataList />
-  <TypeOf>InvokeStoredProc</TypeOf>
-  <DisplayName>Get Rows</DisplayName>
-  <Category></Category>
-  <AuthorRoles></AuthorRoles>
-  <ErrorMessages />
-  <Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
-    <SignedInfo>
-      <CanonicalizationMethod Algorithm=""http://www.w3.org/TR/2001/REC-xml-c14n-20010315"" />
-      <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1"" />
-      <Reference URI="""">
-        <Transforms>
-          <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature"" />
-        </Transforms>
-        <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1"" />
-        <DigestValue>wnGdgUqy2wpUORyoPj+hiHeya6E=</DigestValue>
-      </Reference>
-    </SignedInfo>
-    <SignatureValue>qRUe2AqKMusy9JrUY3vNdXCI//Z8UCMSQKBSHIDPMMVdVkKCbWKnUZl1XYa9/LZHAtzX21idcKjWwCQmpgBmrQHWj2Mcp7/XNKp4Q7sJZNGhfOz1163pHR/pN2Lb2gPK8hzzqFRGvk1zzav0RHqJjqVaEw63A88P/UqVTsY94t4=</SignatureValue>
-  </Signature>
-</Service>";
+    </Action>";
             #endregion
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
@@ -608,7 +423,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(inputDefStr);
             activity.Setup(c => c.SavedOutputMapping).Returns(outputDefStr);
-            activity.Setup(c => c.ResourceModel.ServiceDefinition).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfDatabaseActivity));
             activity.Setup(c => c.ResourceModel.ResourceType).Returns(ResourceType.Service);
 
@@ -711,7 +526,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.ServiceDefinition).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
             activity.Setup(c => c.ResourceModel.DataList).Returns(datalistFragment);
 
@@ -802,7 +617,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.ServiceDefinition).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
             activity.Setup(c => c.ResourceModel.DataList).Returns(datalistFragment);
 
@@ -824,7 +639,7 @@ namespace Dev2.Core.Tests.DataList
 
         }
 
-        
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ActivityDataMappingBuilder_Generate")]
@@ -894,7 +709,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.ServiceDefinition).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
             activity.Setup(c => c.ResourceModel.DataList).Returns(datalistFragment);
 
@@ -977,7 +792,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.ServiceDefinition).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
             activity.Setup(c => c.ResourceModel.DataList).Returns(datalistFragment);
 
@@ -1063,7 +878,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(@"<Inputs><Input Name=""f1"" Source=""[[recset1(*).f1a]]"" Recordset=""recset1"" /><Input Name=""f2"" Source=""[[recset2(*).f2a]]"" Recordset=""recset2"" /></Inputs>");
             activity.Setup(c => c.SavedOutputMapping).Returns(@"<Outputs><Output Name=""result"" MapsTo=""[[result]]"" Value=""[[resultValue]]"" /></Outputs>");
-            activity.Setup(c => c.ResourceModel.ServiceDefinition).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
             activity.Setup(c => c.ResourceModel.DataList).Returns(datalistFragment);
 
@@ -1152,7 +967,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.ServiceDefinition).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
             activity.Setup(c => c.ResourceModel.DataList).Returns(datalistFragment);
 
@@ -1236,7 +1051,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.ServiceDefinition).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
             activity.Setup(c => c.ResourceModel.DataList).Returns(datalistFragment);
 

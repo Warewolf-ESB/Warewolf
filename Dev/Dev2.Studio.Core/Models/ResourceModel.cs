@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Activities;
-using System.Activities.XamlIntegration;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Collections;
@@ -47,7 +42,6 @@ namespace Dev2.Studio.Core.Models
         private bool _requiresSignOff;
         private string _resourceName;
         private ResourceType _resourceType;
-        private string _serviceDefinition;
         private string _tags;
         private string _unitTestTargetWorkflowService;
         private string _workflowXaml;
@@ -206,19 +200,6 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public Activity WorkflowActivity
-        {
-            get
-            {
-                if(!string.IsNullOrEmpty(ServiceDefinition))
-                {
-                    byte[] xamlStream = Encoding.UTF8.GetBytes(ServiceDefinition);
-                    return ActivityXamlServices.Load(new MemoryStream(xamlStream));
-                }
-                return null;
-            }
-        }
-
         [Required(ErrorMessage = "Please enter a name for this resource")]
         public string ResourceName
         {
@@ -334,20 +315,13 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public virtual string ServiceDefinition
-        {
-            get { return _serviceDefinition; }
-            set
-            {
-                _serviceDefinition = value;
-                NotifyOfPropertyChange("ServiceDefinition");
-                NotifyOfPropertyChange("WorkflowActivity");
-            }
-        }
-
+        // Problems ;)
         public string WorkflowXaml
         {
-            get { return _workflowXaml; }
+            get
+            {
+                return _workflowXaml;
+            }
             set
             {
                 _workflowXaml = value;
@@ -527,23 +501,24 @@ namespace Dev2.Studio.Core.Models
             ResourceName = resourceModel.ResourceName;
             ResourceType = resourceModel.ResourceType;
             Tags = resourceModel.Tags;
-            ServiceDefinition = resourceModel.ServiceDefinition;
             WorkflowXaml = resourceModel.WorkflowXaml;
             DataList = resourceModel.DataList;
             UpdateIconPath(resourceModel.IconPath);
             Version = resourceModel.Version;
             ConnectionString = resourceModel.ConnectionString;
             ID = resourceModel.ID;
+            ServerResourceType = resourceModel.ServerResourceType;
+
             Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceDesignerMessage));
             _eventPublisher.Publish(new UpdateResourceDesignerMessage(this));
             _errors.Clear();
             if (resourceModel.Errors != null)
             {
                 foreach (var error in resourceModel.Errors)
-            {
-                _errors.Add(error);
+                {
+                    _errors.Add(error);
+                }
             }
-        }
         }
 
         public string ConnectionString { get; set; }
@@ -556,7 +531,7 @@ namespace Dev2.Studio.Core.Models
         public string ToServiceDefinition()
         {
             //TODO this method replicates functionality that is available in the server. There is a serious need to create a common library for resource contracts and resource serialization.
-            string result;
+            string result = string.Empty;
 
             if(ResourceType == ResourceType.WorkflowService)
             {
@@ -590,18 +565,18 @@ namespace Dev2.Studio.Core.Models
             }
             else if(ResourceType == ResourceType.Source || ResourceType == ResourceType.Service)
             {
-                result = ServiceDefinition;
-                //2013.07.05: Ashley Lewis for bug 9487 - category may have changed!
-                var startNode = result.IndexOf("<Category>", StringComparison.Ordinal) + "<Category>".Length;
-                var endNode = result.IndexOf("</Category>", StringComparison.Ordinal);
-                if(endNode > startNode)
-                {
-                    var oldCategory = result.Substring(startNode, endNode - startNode);
-                    if(oldCategory != Category)
-                    {
-                        result = result.Replace(oldCategory, Category);
-                    }
-                }
+                //result = ServiceDefinition;
+                ////2013.07.05: Ashley Lewis for bug 9487 - category may have changed!
+                //var startNode = result.IndexOf("<Category>", StringComparison.Ordinal) + "<Category>".Length;
+                //var endNode = result.IndexOf("</Category>", StringComparison.Ordinal);
+                //if(endNode > startNode)
+                //{
+                //    var oldCategory = result.Substring(startNode, endNode - startNode);
+                //    if(oldCategory != Category)
+                //    {
+                //        result = result.Replace(oldCategory, Category);
+                //    }
+                //}
             }
             else
             {

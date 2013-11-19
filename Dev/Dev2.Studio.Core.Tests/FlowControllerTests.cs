@@ -50,7 +50,7 @@ namespace Dev2.Core.Tests
             var crmDecision = new Mock<IContextualResourceModel>();
             crmDecision.Setup(r => r.Environment).Returns(env.Object);
             crmDecision.Setup(r => r.ResourceName).Returns("Test");
-            crmDecision.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+            crmDecision.Setup(res => res.WorkflowXaml).Returns(StringResourcesTest.xmlServiceDefinition);
 
             var decisionProperties = new Dictionary<string, Mock<ModelProperty>>();
             var decisionPropertyCollection = new Mock<ModelPropertyCollection>();
@@ -79,10 +79,10 @@ namespace Dev2.Core.Tests
 
             var flowController = new Mock<FlowController>(new Mock<IPopupController>().Object);
             flowController.Protected().Setup("StartDecisionWizard", ItExpr.IsAny<IEnvironmentModel>(), ItExpr.IsAny<string>()).Verifiable();
- 
-	        #endregion
 
-            flowController.Object.Handle(new ConfigureDecisionExpressionMessage { ModelItem = source.Object, EnvironmentModel = env.Object, IsNew = false});
+            #endregion
+
+            flowController.Object.Handle(new ConfigureDecisionExpressionMessage { ModelItem = source.Object, EnvironmentModel = env.Object, IsNew = false });
 
             flowController.Protected().Verify("StartDecisionWizard", Times.Once(), ItExpr.IsAny<IEnvironmentModel>(), ItExpr.IsAny<string>());
         }
@@ -102,7 +102,7 @@ namespace Dev2.Core.Tests
             var crm = new Mock<IContextualResourceModel>();
             crm.Setup(r => r.Environment).Returns(env.Object);
             crm.Setup(r => r.ResourceName).Returns("Test");
-            crm.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+            crm.Setup(res => res.WorkflowXaml).Returns(StringResourcesTest.xmlServiceDefinition);
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
@@ -145,7 +145,7 @@ namespace Dev2.Core.Tests
 
             #region setup Start Decision Wizard
 
-            var flowController = new Mock<FlowController>( new Mock<IPopupController>().Object);
+            var flowController = new Mock<FlowController>(new Mock<IPopupController>().Object);
             flowController.Protected().Setup("StartSwitchDropWizard", ItExpr.IsAny<IEnvironmentModel>(), ItExpr.IsAny<string>()).Verifiable();
 
             #endregion
@@ -169,7 +169,7 @@ namespace Dev2.Core.Tests
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
-            var testAct = new DsfFlowDecisionActivity {ExpressionText = "Not Null Test Value"};
+            var testAct = new DsfFlowDecisionActivity { ExpressionText = "Not Null Test Value" };
 
             var prop = new Mock<ModelProperty>();
             prop.Setup(p => p.ComputedValue).Returns(testAct);
@@ -187,7 +187,7 @@ namespace Dev2.Core.Tests
             var crmDecision = new Mock<IContextualResourceModel>();
             crmDecision.Setup(r => r.Environment).Returns(env.Object);
             crmDecision.Setup(r => r.ResourceName).Returns("Test");
-            crmDecision.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+            crmDecision.Setup(res => res.WorkflowXaml).Returns(StringResourcesTest.xmlServiceDefinition);
 
             var decisionProperties = new Dictionary<string, Mock<ModelProperty>>();
             var decisionPropertyCollection = new Mock<ModelPropertyCollection>();

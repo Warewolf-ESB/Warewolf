@@ -63,7 +63,7 @@ namespace Dev2.Core.Tests.Webs
             resourceModel.Setup(r => r.ResourceName).Returns(ResourceName);
 
             var resourceRepo = new Mock<IResourceRepository>();
-            resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>()))
+            resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true))
                         .Returns(new List<IResourceModel> { resourceModel.Object });
 
             var envModel = new Mock<IEnvironmentModel>();

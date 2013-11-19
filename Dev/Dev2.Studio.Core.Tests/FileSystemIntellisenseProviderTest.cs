@@ -8,16 +8,16 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models;
-using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.ViewModels.DataList;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FileSystemIntellisenseProvider = Dev2.Intellisense.Provider.FileSystemIntellisenseProvider;
 using IFileSystemQuery = Dev2.Intellisense.Helper.IFileSystemQuery;
 using Moq;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FileSystemIntellisenseProviderTest
     {
         private IResourceModel _resourceModel;
@@ -35,7 +35,11 @@ namespace Dev2.Core.Tests
 
             testEnvironmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
 
-            _resourceModel = new ResourceModel(testEnvironmentModel.Object) { ResourceName = "test", ResourceType = ResourceType.Service, DataList = @"
+            _resourceModel = new ResourceModel(testEnvironmentModel.Object)
+            {
+                ResourceName = "test",
+                ResourceType = ResourceType.Service,
+                DataList = @"
             <DataList>
                     <Scalar/>
                     <Country/>
@@ -45,7 +49,8 @@ namespace Dev2.Core.Tests
                         <GeoLocation />
                     </City>
              </DataList>
-            " };
+            "
+            };
 
             IDataListViewModel setupDatalist = new DataListViewModel();
             DataListSingleton.SetDataList(setupDatalist);
@@ -60,7 +65,7 @@ namespace Dev2.Core.Tests
 
         #endregion Test Initialization
 
-        
+
         [TestMethod]
         public void GetIntellisenseResultsWhereNothingPassedExpectListOfDrives()
         {
@@ -95,9 +100,9 @@ namespace Dev2.Core.Tests
             var intellisenseProviderResults = intellisenseProvider.GetIntellisenseResults(context);
             //------------Assert Results-------------------------
             Assert.AreEqual(31, intellisenseProviderResults.Count);
-            
-        }       
-        
+
+        }
+
         [TestMethod]
         public void GetIntellisenseResultsWhereDriveAndFolderPassedNoSlashExpectFolder()
         {
@@ -116,7 +121,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.AreEqual(9, intellisenseProviderResults.Count);
         }
-        
+
         [TestMethod]
         public void GetIntellisenseResultsWhereDriveAndFolderWithStartOfFileNamePassedExpectFileName()
         {
@@ -172,8 +177,8 @@ namespace Dev2.Core.Tests
             var intellisenseProviderResults = intellisenseProvider.GetIntellisenseResults(context);
             //------------Assert Results-------------------------
             Assert.AreEqual(40, intellisenseProviderResults.Count);
-        } 
-        
+        }
+
         [TestMethod]
         public void GetIntellisenseResultsWhereNetworkPathExpectFolderNetworkShareInformation()
         {
@@ -210,9 +215,9 @@ namespace Dev2.Core.Tests
             var intellisenseProviderResults = intellisenseProvider.GetIntellisenseResults(context);
             //------------Assert Results-------------------------
             Assert.AreEqual(16, intellisenseProviderResults.Count);
-        }        
-                
-        
+        }
+
+
         [TestMethod]
         public void GetIntellisenseResultsWhereNetworkPathHasFolderExpectFolderInformation()
         {
@@ -230,8 +235,8 @@ namespace Dev2.Core.Tests
             var intellisenseProviderResults = intellisenseProvider.GetIntellisenseResults(context);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, intellisenseProviderResults.Count);
-        }        
-        
+        }
+
         [TestMethod]
         public void GetIntellisenseResultsWhereNetworkPathHasFileExpectFileInformation()
         {
@@ -249,8 +254,8 @@ namespace Dev2.Core.Tests
             var intellisenseProviderResults = intellisenseProvider.GetIntellisenseResults(context);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, intellisenseProviderResults.Count);
-        } 
-        
+        }
+
         [TestMethod]
         public void GetIntellisenseResultsWhereNetworkPathHasMiddleOfFileExpectFileInformation()
         {
@@ -308,7 +313,7 @@ namespace Dev2.Core.Tests
                 case @"\\":
                     AddToList(40);
                     break;
-                case  @"C:\Users\skt":
+                case @"C:\Users\skt":
                     AddToList(1);
                     break;
                 case @"C:\Users\des":

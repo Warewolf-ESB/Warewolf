@@ -80,7 +80,6 @@ namespace Dev2.Studio.Core.ViewModels
             : base(eventPublisher)
         {
             WebCommunication = ImportService.GetExportValue<IWebCommunication>();
-            FileNameProvider = ImportService.GetExportValue<IFileNameProvider>();
             UserMessageProvider = ImportService.GetExportValue<IUserMessageProvider>();
 
             if(webActivity == null)
@@ -104,8 +103,6 @@ namespace Dev2.Studio.Core.ViewModels
         public Window Owner { get; set; }
 
         public IWebCommunication WebCommunication { get; set; }
-
-        public IFileNameProvider FileNameProvider { get; set; }
 
         public IUserMessageProvider UserMessageProvider { get; set; }
 
@@ -840,7 +837,9 @@ namespace Dev2.Studio.Core.ViewModels
         {
             if((SelectedWebResource != null) && !string.IsNullOrEmpty(SelectedWebResource.Uri))
             {
-                dynamic fileData = FileNameProvider.GetFileName();
+                //dynamic fileData = FileNameProvider.GetFileName();
+
+                dynamic fileData = string.Empty;
 
                 if(!fileData.HasError)
                 {

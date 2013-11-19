@@ -144,7 +144,7 @@ namespace Dev2.Core.Tests
             vm.Append(mock1.Object);
             vm.Append(mock2.Object);
 
-            Assert.AreEqual(1,vm.RootItems.Count);
+            Assert.AreEqual(1, vm.RootItems.Count);
             var root = vm.RootItems.First() as DebugStateTreeViewItemViewModel;
             Assert.IsNotNull(root);
             Assert.IsTrue(root.HasError.GetValueOrDefault(false));
@@ -330,7 +330,7 @@ namespace Dev2.Core.Tests
             //*********************Assert*******************
             Assert.AreEqual(vm.DebugStatus, DebugStatus.Finished);
         }
-        
+
         [TestMethod]
         [TestCategory("DebugOutputViewModel_AppendItem")]
         [Description("DebugOutputViewModel appendItem must set Debugstatus to finished when DebugItem is final step.")]
@@ -394,13 +394,13 @@ namespace Dev2.Core.Tests
             _webController = new Mock<IWebController>();
             _windowManager = new Mock<IWindowManager>();
 
-                Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
+            Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
 
             _importServiceContext =
                 CompositionInitializer.InitializeMockedMainViewModel(securityContext: securityContext,
                                                                      environmentRepo: _environmentRepo,
                                                                          workspaceItemRepository: mockWorkspaceItemRepository.Object,
-                                                                     //aggregator: _eventAggregator,
+                //aggregator: _eventAggregator,
                                                                      popupController: _popupController,
                                                                      resourceDepService: _resourceDependencyService,
                                                                      feedbackInvoker: _feedbackInvoker,
@@ -417,7 +417,7 @@ namespace Dev2.Core.Tests
             result.Setup(c => c.ResourceName).Returns(_resourceName);
             result.Setup(c => c.ResourceType).Returns(resourceType);
             result.Setup(c => c.DisplayName).Returns(_displayName);
-            result.Setup(c => c.ServiceDefinition).Returns(_serviceDefinition);
+            result.Setup(c => c.WorkflowXaml).Returns(_serviceDefinition);
             result.Setup(c => c.Category).Returns("Testing");
             result.Setup(c => c.Environment).Returns(_environmentModel.Object);
             result.Setup(c => c.ServerID).Returns(_serverID);
@@ -517,7 +517,7 @@ namespace Dev2.Core.Tests
 
             _secondResource.Setup(c => c.ResourceName).Returns("WhoCares");
             _secondResource.Setup(c => c.ResourceType).Returns(ResourceType.WorkflowService);
-            _secondResource.Setup(c => c.ServiceDefinition).Returns("");
+            _secondResource.Setup(c => c.WorkflowXaml).Returns("");
             _secondResource.Setup(c => c.Category).Returns("Testing2");
             _secondResource.Setup(c => c.Environment).Returns(_environmentModel.Object);
             _secondResource.Setup(c => c.ServerID).Returns(_serverID);
@@ -734,7 +734,7 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             string processingText = debugOutputViewModel.ProcessingText;
             //------------Assert Results-------------------------
-            Assert.AreEqual("Ready",processingText);
+            Assert.AreEqual("Ready", processingText);
         }
 
         static IDebugTreeViewItemViewModel CreateItemViewModel<T>(IEnvironmentRepository envRepository, int n, bool isSelected, IDebugTreeViewItemViewModel parent)

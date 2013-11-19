@@ -1,32 +1,37 @@
 ﻿using System;
 using System.Text;
-using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.DataList.Contract;
 
-namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys {
+namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys
+{
 
-    public static class StudioToWizardBridge {
+    public static class StudioToWizardBridge
+    {
 
         /// <summary>
         /// Returns the correct wizard endpoint depending upon its type
         /// </summary>
         /// <param name="theModel"></param>
         /// <returns></returns>
-        public static string SelectWizard(IResourceModel theModel) {
+        public static string SelectWizard(IResourceModel theModel)
+        {
             string result = "Dev2ServiceDetails"; // defaults to the service wizard
 
             // else figure out which source wizard to open
-            if (theModel.ResourceType == ResourceType.Source) {
-                if ((theModel.ServiceDefinition != null && (theModel.ServiceDefinition.IndexOf("Type=\"Plugin\"") > 0) || theModel.DisplayName == "Plugin"))
-                {
-                    result = "PluginSourceManagement";
-                }else if(theModel.ServiceDefinition.IndexOf("Type=\"SqlDatabase\"") > 0){
-                    result = "DatabaseSourceManagement";
-                }
-            }
+            //if(theModel.ResourceType == ResourceType.Source)
+            //{
+            //    if((theModel.ServiceDefinition != null && (theModel.ServiceDefinition.IndexOf("Type=\"Plugin\"") > 0) || theModel.DisplayName == "Plugin"))
+            //    {
+            //        result = "PluginSourceManagement";
+            //    }
+            //    else if(theModel.ServiceDefinition.IndexOf("Type=\"SqlDatabase\"") > 0)
+            //    {
+            //        result = "DatabaseSourceManagement";
+            //    }
+            //}
 
             return result;
         }
@@ -36,41 +41,48 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys {
         /// </summary>
         /// <param name="resourceType"></param>
         /// <returns></returns>
-        public static string ConvertStudioToWizardType(string resourceType, string serviceDef, string category) {
+        public static string ConvertStudioToWizardType(string resourceType, string serviceDef, string category)
+        {
             string result = resourceType;
 
-            if (resourceType == "DatabaseService")
+            if(resourceType == "DatabaseService")
             {
                 result = "Database";
             }
-            else if (resourceType == "ResourceService")
-            {
-                result = "Plugin";
-            }            
-            else if (resourceType == "ResourceSource")
+            else if(resourceType == "ResourceService")
             {
                 result = "Plugin";
             }
-            else if (resourceType == "Service" && (serviceDef == null || serviceDef.IndexOf("Type=\"Plugin\"") > 0))
+            else if(resourceType == "ResourceSource")
             {
                 result = "Plugin";
             }
-            else if (resourceType == "Service" && serviceDef.IndexOf("Type=\"Plugin\"") < 0) {
+            else if(resourceType == "Service" && (serviceDef == null || serviceDef.IndexOf("Type=\"Plugin\"") > 0))
+            {
+                result = "Plugin";
+            }
+            else if(resourceType == "Service" && serviceDef.IndexOf("Type=\"Plugin\"") < 0)
+            {
                 result = "Database";
             }
-            else if (resourceType == "Source" && (serviceDef == null || serviceDef.IndexOf("AssemblyLocation=") > 0))
+            else if(resourceType == "Source" && (serviceDef == null || serviceDef.IndexOf("AssemblyLocation=") > 0))
             {
                 result = "Plugin";
             }
-            else if (resourceType == "Source" && serviceDef.IndexOf("AssemblyLocation=") < 0) {
+            else if(resourceType == "Source" && serviceDef.IndexOf("AssemblyLocation=") < 0)
+            {
                 result = "Database";
             }
-            else if (resourceType == "HumanInterfaceProcess" || category == "Webpage") {
+            else if(resourceType == "HumanInterfaceProcess" || category == "Webpage")
+            {
                 result = "Webpage";
-            }else if(category == "Website"){
+            }
+            else if(category == "Website")
+            {
                 result = "Website";
             }
-            else if (resourceType == "WorkflowService") {
+            else if(resourceType == "WorkflowService")
+            {
                 result = "Workflow";
             }
 
@@ -82,9 +94,10 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys {
         /// </summary>
         /// <param name="rm"></param>
         /// <returns></returns>
-        public static string BuildStudioEditPayload(string resourceType, IResourceModel rm) {
+        public static string BuildStudioEditPayload(string resourceType, IResourceModel rm)
+        {
             StringBuilder result = new StringBuilder();
-            string resType = ConvertStudioToWizardType(resourceType, rm.ServiceDefinition, rm.Category);
+            string resType = string.Empty; //ConvertStudioToWizardType(resourceType, rm.ServiceDefinition, rm.Category);
 
             // add service type
             result.Append(ResourceKeys.Dev2ServiceType);
@@ -136,9 +149,10 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys {
             // ServiceDefinition
             // <Action Name="EmailService" Type="Plugin" SourceName="Email Plugin" SourceMethod="Send">
 
-            string serviceDef = rm.ServiceDefinition;
+            string serviceDef = string.Empty; //rm.ServiceDefinition;
 
-            if (serviceDef.IndexOf(" SourceName=") > 0) {
+            if(serviceDef.IndexOf(" SourceName=") > 0)
+            {
                 // we have 
                 string sourceName = DataListUtil.ExtractAttribute(serviceDef, "Action", "SourceName");
                 string sourceMethod = DataListUtil.ExtractAttribute(serviceDef, "Action", "SourceMethod");
@@ -160,19 +174,22 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys {
                 result.Append("=");
                 result.Append("yes");
             }
-            else if (serviceDef.IndexOf("<Source") >= 0) {
+            else if(serviceDef.IndexOf("<Source") >= 0)
+            {
                 // we have a source to process 
-                if (resType == "Plugin") {
+                if(resType == "Plugin")
+                {
                     result.Append("&");
                     result.Append(ResourceKeys.Dev2SourceManagementSource);
                     result.Append("=");
                     result.Append(rm.ResourceName.ToString());
                 }
-                else if (resType == "Database") {
+                else if(resType == "Database")
+                {
                     result.Append("&");
                     result.Append(ResourceKeys.Dev2SourceManagementDatabaseSource);
                     result.Append("=");
-                    result.Append(rm.ResourceName.ToString());                    
+                    result.Append(rm.ResourceName.ToString());
                 }
 
                 result.Append("&");
@@ -193,7 +210,7 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys {
         public static string BuildUri(IContextualResourceModel resourceModel, string resName)
         {
             string uriString = "/services/" + SelectWizard(resourceModel);
-            if (resourceModel.ResourceType == ResourceType.WorkflowService ||
+            if(resourceModel.ResourceType == ResourceType.WorkflowService ||
                 resourceModel.ResourceType == ResourceType.Service)
             {
                 uriString += "?" + ResourceKeys.Dev2ServiceType + "=" + resName;
@@ -203,16 +220,18 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys {
 
         public static string GetUriString(IContextualResourceModel resourceModel, bool includeArgs)
         {
-            string resName = ConvertStudioToWizardType(resourceModel.ResourceType.ToString(),
-                                                                            resourceModel.ServiceDefinition,
-                                                                            resourceModel.Category);
+            //string resName = ConvertStudioToWizardType(resourceModel.ResourceType.ToString(),
+            //                                                                resourceModel.ServiceDefinition,
+            //                                                                resourceModel.Category);
+
+            string resName = string.Empty;
 
             var requestUri = new Uri(resourceModel.Environment.Connection.WebServerUri,
                                      BuildUri(resourceModel, resName));
 
             string uriString = requestUri.AbsoluteUri;
 
-            if (includeArgs)
+            if(includeArgs)
             {
                 string args =
                     BuildStudioEditPayload(resourceModel.ResourceType.ToString(), resourceModel);
