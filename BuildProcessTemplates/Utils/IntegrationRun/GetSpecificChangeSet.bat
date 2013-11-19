@@ -1,8 +1,5 @@
-REM == START ENV ==
+REM == Pull specific changeset build ==
 
-taskkill /F /IM "Warewolf Server.exe" /T
 rmdir /S /Q C:\IntegrationRun\Merge
 mkdir C:\IntegrationRun\Merge
-xcopy /Q /E /Y "\\RSAKLFSVRTFSBLD\Automated Builds\DevMergeStaging" "C:\IntegrationRun\Merge"
-start "" /B "C:\IntegrationRun\Merge\Warewolf Server.exe"
-timeout 8
+xcopy /Q /E /Y "\\RSAKLFSVRTFSBLD\Automated Builds\TestRunStaging\%1" "C:\IntegrationRun\Merge"
