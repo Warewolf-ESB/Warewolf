@@ -1,0 +1,1 @@
+start "" /B "C:\IntegrationRun\Merge\Warewolf Server.exe"
