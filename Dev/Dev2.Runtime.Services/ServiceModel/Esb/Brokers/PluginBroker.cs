@@ -205,7 +205,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     {
                         var path = Path.GetDirectoryName(assemblyLocation);
                         var myLoad = Path.Combine(path, toLoad.Name + ".dll");
-                        Assembly.Load(myLoad);
+                        Assembly.UnsafeLoadFrom(myLoad);
                     }
                 }
             }
