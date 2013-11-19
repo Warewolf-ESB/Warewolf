@@ -271,19 +271,9 @@ namespace Dev2
 
         private void MapContextToDirectoryStructure()
         {
-
-            _server.AddHandler("GET", "/", GET_STATIC_HTML);
-
             _server.AddHandler("GET", "/services/{servicename}", GET_POST_CLIENT_SERVICES_Handler);
             _server.AddHandler("POST", "/services/{servicename}?wid={clientid}", POST_CLIENT_SERVICES_Handler);
             _server.AddHandler("POST", "/services/{servicename}", POST_SERVICES_Handler);
-            _server.AddHandler("GET", "/icons/{*path}", GET_ICONS_Handler);
-            _server.AddHandler("POST", "/icons/{*path}", POST_ICONS_Handler);
-            _server.AddHandler("GET", "/list/themes/*", GET_LIST_THEMES_Handler);
-            _server.AddHandler("GET", "/list/icons/*", GET_LIST_ICONS_Handler);
-            _server.AddHandler("GET", "/themes/*", GET_THEMES_Handler);
-            _server.AddHandler("GET", "/css/{*path}", GET_CSS_Handler);
-            _server.AddHandler("GET", "/scripts/{*path}", GET_SCRIPTS_Handler);
             _server.AddHandler("POST", "/services/{servicename}/instances/{instanceid}/bookmarks/{bookmark}", POST_BOOKMARK_Handler);
             _server.AddHandler("GET", "/services/{servicename}/instances/{instanceid}/bookmarks/{bookmark}", POST_BOOKMARK_Handler);
 
