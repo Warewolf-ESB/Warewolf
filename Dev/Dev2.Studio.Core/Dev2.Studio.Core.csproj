@@ -258,7 +258,6 @@
     <Compile Include="InterfaceImplementors\FileSystemQuery.cs" />
     <Compile Include="InterfaceImplementors\IFileSystemQuery.cs" />
     <Compile Include="InterfaceImplementors\NetworkShareInformation.cs" />
-    <Compile Include="Interfaces\DataList\IDataListValidator.cs" />
     <Compile Include="Factories\DataListItemModelFactory.cs" />
     <Compile Include="Factories\Dev2MessageFactory.cs" />
     <Compile Include="DataList\DataListSingleton.cs" />
