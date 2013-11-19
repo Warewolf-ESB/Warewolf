@@ -60,7 +60,7 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
             };
             var viewModel = new DataMergeDesignerViewModel(CreateModelItem(items));
             dynamic mi = viewModel.ModelItem;
-            Assert.AreEqual(4, mi.MergeCollection.Count);
+            Assert.AreEqual(5, mi.MergeCollection.Count);
         }
 
         [TestMethod]
