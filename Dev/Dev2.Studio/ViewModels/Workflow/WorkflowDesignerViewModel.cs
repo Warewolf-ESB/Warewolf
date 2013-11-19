@@ -420,8 +420,10 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                             if(resource != null)
                             {
+                                var theResource = resource.Environment.ResourceRepository.FindSingle(c => c.ID == resource.ID) as IContextualResourceModel;
+
                                 //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                                DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, true);
+                                DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true);
                                 d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.ResourceName;
                                 d.IconPath = resource.IconPath;
                                 CheckIfRemoteWorkflowAndSetProperties(d, resource);

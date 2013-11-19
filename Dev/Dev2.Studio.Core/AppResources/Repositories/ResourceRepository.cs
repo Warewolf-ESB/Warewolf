@@ -199,23 +199,23 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             foreach (var serializableResource in toReloadResources)
             {
                 IResourceModel resource = HydrateResourceModel(resourceType, serializableResource, _environmentModel.Connection.ServerID, true, fetchXAML);
-                var resourceToUpdate = _resourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
+                    var resourceToUpdate = _resourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
 
-                if(resourceToUpdate != null)
-                {
-                    resourceToUpdate.Update(resource);
-                    effectedResources.Add(resourceToUpdate);
-                }
-                else
-                {
-                    effectedResources.Add(resource);
-                    _resourceModels.Add(resource);
-                    if(ItemAdded != null)
+                    if(resourceToUpdate != null)
                     {
-                        ItemAdded(resource, null);
+                        resourceToUpdate.Update(resource);
+                        effectedResources.Add(resourceToUpdate);
+                    }
+                    else
+                    {
+                        effectedResources.Add(resource);
+                        _resourceModels.Add(resource);
+                        if(ItemAdded != null)
+                        {
+                            ItemAdded(resource, null);
+                        }
                     }
                 }
-            }
 
             return effectedResources;
         }
@@ -261,13 +261,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     var result =  _resourceModels.Find(func.Invoke);
 
                     // force a payload fetch ;)
-                    if (result.ResourceType == Enums.ResourceType.Service && string.IsNullOrEmpty(result.WorkflowXaml))
+                    if(result.ResourceType == Enums.ResourceType.Service && string.IsNullOrEmpty(result.WorkflowXaml))
                     {
                         result.WorkflowXaml = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, result.ID);
-                    }
+                }
 
                     return result;
-                }
+            }
             }
             return null;
         }
@@ -477,33 +477,33 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var iconPath = string.Empty;
 
             switch(type)
-            {
-                case ResourceType.DbService:
-                case ResourceType.DbSource:
-                    iconPath = StringResources.Pack_Uri_DatabaseService_Image;
-                    break;
-                case ResourceType.EmailSource:
-                    iconPath = StringResources.Pack_Uri_EmailSource_Image;
-                    break;
-                case ResourceType.PluginService:
-                case ResourceType.PluginSource:
-                    iconPath = StringResources.Pack_Uri_PluginService_Image;
-                    break;
-                case ResourceType.WebService:
-                case ResourceType.WebSource:
-                    iconPath = StringResources.Pack_Uri_WebService_Image;
-                    break;
-                case ResourceType.WorkflowService:
-                    iconPath = StringResources.Pack_Uri_WorkflowService_Image;
-                    break;
-                case ResourceType.Server:
-                    iconPath = StringResources.Pack_Uri_Server_Image;
-                    break;
-            }
+                {
+                        case ResourceType.DbService:
+                        case ResourceType.DbSource:
+                            iconPath = StringResources.Pack_Uri_DatabaseService_Image;
+                            break;
+                        case ResourceType.EmailSource:
+                            iconPath = StringResources.Pack_Uri_EmailSource_Image;
+                            break;
+                        case ResourceType.PluginService:
+                        case ResourceType.PluginSource:
+                            iconPath = StringResources.Pack_Uri_PluginService_Image;
+                            break;
+                        case ResourceType.WebService:
+                        case ResourceType.WebSource:
+                            iconPath = StringResources.Pack_Uri_WebService_Image;
+                            break;
+                        case ResourceType.WorkflowService:
+                            iconPath = StringResources.Pack_Uri_WorkflowService_Image;
+                            break;
+                        case ResourceType.Server:
+                            iconPath = StringResources.Pack_Uri_Server_Image;
+                            break;
+                    }
 
 
             return iconPath;
-        }
+            }
 
         #endregion Methods
 
@@ -575,13 +575,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 catch(Exception)
                 {
                     // Ignore malformed resource
+                    }
                 }
-            }
         }
 
         // Make public for testing, should be extracted to a util class for testing....
         IResourceModel HydrateResourceModel(Enums.ResourceType resourceType, SerializableResource data, Guid serverID, bool forced = false, bool fetchXAML = false)
-        {
+                {
             Guid id = data.ResourceID;
 
             //2013.05.15: Ashley Lewis - Bug 9348 updates force hydration, initialization doesn't
@@ -637,7 +637,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return null;
         }
 
-
+        
         #endregion Private Methods
 
         #region Add/RemoveEnvironment

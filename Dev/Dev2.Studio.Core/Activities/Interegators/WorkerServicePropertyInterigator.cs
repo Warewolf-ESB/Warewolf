@@ -9,9 +9,12 @@ namespace Dev2.Studio.Core.Activities.Interegators
     {
         // string xml
 
-        public static DsfActivity SetActivityProperties(IContextualResourceModel resource, DsfActivity activity)
+        public static void SetActivityProperties(IContextualResourceModel resource, ref DsfActivity activity)
         {
+            activity.IsWorkflow = false;
 
+            if (resource.WorkflowXaml != null)
+            {
             XmlDocument document = new XmlDocument();
             document.LoadXml(resource.WorkflowXaml);
 
@@ -42,7 +45,7 @@ namespace Dev2.Studio.Core.Activities.Interegators
                     }
                 }
             }
-            return activity;
+            }
         }
     }
 }

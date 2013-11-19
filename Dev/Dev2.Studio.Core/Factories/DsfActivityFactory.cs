@@ -32,18 +32,14 @@ namespace Dev2.Studio.Core.Factories
 
                 if(resource.ResourceType == ResourceType.WorkflowService)
                 {
-                    activity.IsWorkflow = true;
                     //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                    if (resource.Environment != null) activity.FriendlySourceName = resource.Environment.Name;
-                    activity = WorkflowPropertyInterigator.SetActivityProperties(resource, activity);
+                    WorkflowPropertyInterigator.SetActivityProperties(resource, ref activity);
                 }
                 //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
                 else if(resource.ResourceType == ResourceType.Service)
                 {
                     //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                    activity.IsWorkflow = false;
-
-                    activity = WorkerServicePropertyInterigator.SetActivityProperties(resource, activity);
+                    WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity);
                 }
             }
 
