@@ -60,6 +60,20 @@ namespace Dev2.Tests.Activities.Mocks
             return "Successful";
         }
 
+        /// <summary>
+        /// Renames a file or folder from src to dst as per the value of args
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="dst"></param>
+        /// <param name="args"></param>
+        public string Rename(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args)
+        {
+            Source = src;
+            Destination = dst;
+            Dev2CRUDOperationTO = args;
+            return "Successful";
+        }
+
         public string Move(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args)
         {
             Source = src;

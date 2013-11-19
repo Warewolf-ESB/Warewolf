@@ -66,6 +66,14 @@ namespace Dev2.PathOperations
         string Copy(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args);
 
         /// <summary>
+        /// Renames a file or folder from src to dst as per the value of args
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="dst"></param>
+        /// <param name="args"></param>
+        string Rename(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,Dev2CRUDOperationTO args);
+
+        /// <summary>
         /// Move a file from src to dst as per the value of args
         /// </summary>
         /// <param name="src"></param>
