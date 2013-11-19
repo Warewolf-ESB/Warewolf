@@ -268,202 +268,17 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        public string Copy(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args)
-        {
-
-            string result = resultOk;
-
-            // create any missing directories on the endpoint
-            string opStatus = CreateEndPoint(dst, args, false);
-            if(!opStatus.Equals("Success"))
-            {
-                throw new Exception("Recursive Directory Create Failed For [ " + dst.IOPath.Path + " ]");
-            }
-
-            if(src.RequiresLocalTmpStorage() && dst.RequiresLocalTmpStorage())
-            {
-                if(src.PathIs(src.IOPath) == enPathType.File)
-                {
-                    if(!Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
-                    {
-                        // single file fetch
-                        var tmp = CreateTmpFile();
-                        using(var s = src.Get(src.IOPath))
-                        {
-                            File.WriteAllBytes(tmp, s.ToByteArray());
-                            using(var tempFileStream = new FileStream(tmp, FileMode.Open)) // NOTE: Not sure why we need to do a second stream using the temp file?!?!?!
-                            {
-                                if(!src.IOPath.Path.StartsWith("ftp://") && !src.IOPath.Path.StartsWith("ftps://"))
-                                {
-                                    var fileInfo = new FileInfo(src.IOPath.Path);
-                                    if(fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))
-                                    {
-                                        if(dst.Put(tempFileStream, dst.IOPath, args, fileInfo.Directory) < 0)
-                                        {
-                                            result = resultBad;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if(dst.Put(tempFileStream, dst.IOPath, args, null) < 0)
-                                        {
-                                            result = resultBad;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    if(dst.Put(tempFileStream, dst.IOPath, args, null) < 0)
-                                    {
-                                        result = resultBad;
-                                    }
-                                }
-                                tempFileStream.Close();
-                                tempFileStream.Dispose();
-                            }
-                            s.Close();
-                            s.Dispose();
-                        }
-                        RemoveTmpFile(tmp);
-                    }
-                    else
-                    {
-                        // we have star wild cards to deal with
-                        if(!TransferDirectoryContents(src, dst, args, false))
-                        {
-                            result = resultBad;
-                        }
-                    }
-                }
-                else
-                {
-                    // we have a directory to fetch
-                    // we have star wild cards to deal with
-                    if(!TransferDirectoryContents(src, dst, args, false))
-                    {
-                        result = resultBad;
-                    }
-                }
-            }
-            else
-            {
-                if(src.PathIs(src.IOPath) == enPathType.File)
-                {
-                    if(!Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
-                    {
-                        // single file
-                        using(Stream s = src.Get(src.IOPath))
-                        {
-                            // If dst is a directory, retain the file name
-                            string dstPath = dst.IOPath.Path;
-
-                            if(dst.PathIs(dst.IOPath) == enPathType.Directory)
-                            {
-                                dstPath += dst.PathSeperator() + Dev2ActivityIOPathUtils.ExtractFileName(src.IOPath.Path);
-                            }
-
-                            IActivityIOPath tmpDst = ActivityIOFactory.CreatePathFromString(dstPath, dst.IOPath.Username, dst.IOPath.Password);
-
-                            if(IsNotFTPTypePath(src))
-                            {
-                                var fileInfo = new FileInfo(src.IOPath.Path);
-                                if(fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))
-                                {
-                                    if(dst.Put(s, tmpDst, args, fileInfo.Directory) < 0)
-                                    {
-                                        result = resultBad;
-                                    }
-                                }
-                                else
-                                {
-                                    if(dst.Put(s, tmpDst, args, null) < 0)
-                                    {
-                                        result = resultBad;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if(dst.Put(s, tmpDst, args, null) < 0)
-                                {
-                                    result = resultBad;
-                                }
-                            }
-                            s.Close();
-                            s.Dispose();
-                        }
-                    }
-                    else
-                    {
-                        // we have star wild cards
-                        // we have star wild cards to deal with
-                        if(!TransferDirectoryContents(src, dst, args, false))
-                        {
-                            result = resultBad;
-                        }
-                    }
-                }
-                else
-                {
-                    // we have a dir
-                    // we have star wild cards to deal with
-                    if(!TransferDirectoryContents(src, dst, args, false))
-                    {
-                        result = resultBad;
-                    }
-                }
-            }
-
-            return result;
-        }
-
         public string Rename(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
                            Dev2CRUDOperationTO args)
         {
-            return ValidateRenameSourceAndDesinationTypes(src, dst, args, () =>
-            {
-                if(src.RequiresLocalTmpStorage())
-                {                                     
-                    using(Stream s = src.Get(src.IOPath))
-                    {
-                        if(Path.IsPathRooted(src.IOPath.Path))
-                        {
-                            dst.Put(s, dst.IOPath, args, new FileInfo(src.IOPath.Path).Directory);
-                        }
-                        else
-                        {
-                            dst.Put(s, dst.IOPath, args, null);
-                        }                        
-                        s.Close();
-                        s.Dispose();
-                    }
-                }
-                else
-                {
-                    var sourceFile = new FileInfo(src.IOPath.Path);
-                    if(dst.PathIs(dst.IOPath) == enPathType.Directory)
-                    {
-                        dst.IOPath.Path = Path.Combine(dst.IOPath.Path, sourceFile.Name);
-                    }
-                  
-                    using(Stream s = src.Get(src.IOPath))
-                    {
-                        dst.Put(s, dst.IOPath, args, sourceFile.Directory);
-                        s.Close();
-                        s.Dispose();
-                    }
-
-                    src.Delete(src.IOPath);
-                }
-                return resultOk;
-            });
+            return ValidateRenameSourceAndDesinationTypes(src, dst, args);
         }
 
 
-        public string Move(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
+        public string Copy(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
                            Dev2CRUDOperationTO args)
         {
-            return ValidateMoveSourceDestinationFileOperation(src, dst, args, () =>
+            return ValidateCopySourceDestinationFileOperation(src, dst, args, () =>
                 {
                     if(src.RequiresLocalTmpStorage())
                     {
@@ -474,14 +289,7 @@ namespace Dev2.PathOperations
 
                         using(Stream s = src.Get(src.IOPath))
                         {
-                            if(Path.IsPathRooted(src.IOPath.Path))
-                            {
-                                dst.Put(s, dst.IOPath, args, new FileInfo(src.IOPath.Path).Directory);
-                            }
-                            else
-                            {
-                                dst.Put(s, dst.IOPath, args, null);
-                            }
+                            dst.Put(s, dst.IOPath, args, Path.IsPathRooted(src.IOPath.Path) ? new FileInfo(src.IOPath.Path).Directory : null);
                             s.Close();
                             s.Dispose();
                         }
@@ -500,66 +308,71 @@ namespace Dev2.PathOperations
                             s.Close();
                             s.Dispose();
                         }
-
-                       // src.Delete(src.IOPath);
                     }
                     return resultOk;
                 });
 
         }
 
-        private string ValidateRenameSourceAndDesinationTypes(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
-                                        Dev2CRUDOperationTO args, Func<string> performAfterValidation)
-        {            
+        public string Move(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
+                           Dev2CRUDOperationTO args)
+        {
+            string result = Copy(src, dst, args);
+
+            if (result.Equals("Success"))
+            {
+                src.Delete(src.IOPath);
+            }
+
+            return result;
+        }
+
+        private string ValidateRenameSourceAndDesinationTypes(IActivityIOOperationsEndPoint src,
+                                                              IActivityIOOperationsEndPoint dst,
+                                                              Dev2CRUDOperationTO args)
+        {
             //ensures that the source and destination locations are of the same type
-            if(src.PathIs(src.IOPath) !=  dst.PathIs(dst.IOPath))
+            if (src.PathIs(src.IOPath) != dst.PathIs(dst.IOPath))
             {
                 throw new Exception("Source and destination need to be both files or directories");
             }
 
             //Rename Tool if the file/folder exists then delete it and put the source there
-            if(dst.PathExist(dst.IOPath))
+            if (dst.PathExist(dst.IOPath))
             {
-                if(args.Overwrite)
+                if (!args.Overwrite)
                 {
-                    //Clear the existing folder
-                    dst.Delete(dst.IOPath);
-
-                    //ensures destination folder structure exists
-                    string opStatus = CreateEndPoint(dst, args, dst.PathIs(dst.IOPath) == enPathType.Directory);
-                    if(!opStatus.Equals("Success"))
-                    {
-                        throw new Exception("Recursive Directory Create Failed For [ " + dst.IOPath.Path + " ]");
-                    }
-                }
-                else
-                {
-                    throw new Exception("[ " + dst.IOPath.Path + " ] directory already exists");
+                    throw new Exception("Destination directory already exists and overwrite is set to false");
                 }
 
-            }
-            else
-            {
-                //ensures destination folder structure exists
-                string opStatus = CreateEndPoint(dst, args, dst.PathIs(dst.IOPath) == enPathType.Directory);
-                if(!opStatus.Equals("Success"))
-                {
-                    throw new Exception("Recursive Directory Create Failed For [ " + dst.IOPath.Path + " ]");
-                }
+                //Clear the existing folder
+                dst.Delete(dst.IOPath);
             }
 
-            if(src.PathIs(src.IOPath) == enPathType.Directory)
+            //ensures destination folder structure exists
+            string opStatus = CreateEndPoint(dst, args, dst.PathIs(dst.IOPath) == enPathType.Directory);
+            if (!opStatus.Equals("Success"))
             {
-               //Do recursive move
+                throw new Exception("Recursive Directory Create Failed For [ " + dst.IOPath.Path + " ]");
             }
 
-            return performAfterValidation();
+            return Move(src, dst, args);
         }
 
-        private string ValidateMoveSourceDestinationFileOperation(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
+        private string ValidateCopySourceDestinationFileOperation(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
                                         Dev2CRUDOperationTO args, Func<string> performAfterValidation)
         {
             string result = resultOk;
+
+            if (src.IOPath.Path.Equals(dst.IOPath.Path))
+            {
+                throw new Exception("Source and destination cannot be same");
+            }
+
+            if (dst.IOPath.Path.ToLower().Trim().Contains(src.IOPath.Path.ToLower().Trim()) && dst.PathIs(dst.IOPath) == enPathType.Directory)
+            {
+                throw new Exception("Destination directory cannot be a child of the source directory");
+            }
 
             //ensures destination folder structure exists
             string opStatus = CreateEndPoint(dst, args, dst.PathIs(dst.IOPath) == enPathType.Directory);
@@ -571,7 +384,7 @@ namespace Dev2.PathOperations
             //transfer contents to destination when the source is a directory
             if(src.PathIs(src.IOPath) == enPathType.Directory)
             {
-                if(!TransferDirectoryContents(src, dst, args, true))
+                if(!TransferDirectoryContents(src, dst, args))
                 {
                     result = resultBad;
                 }
@@ -589,7 +402,7 @@ namespace Dev2.PathOperations
                 }
 
                 // we have star wild cards to deal with
-                if(!TransferDirectoryContents(src, dst, args, true))
+                if(!TransferDirectoryContents(src, dst, args))
                 {
                     result = resultBad;
                 }
@@ -616,7 +429,7 @@ namespace Dev2.PathOperations
 
                 if(destinationFileNames.Contains(sourceFile))
                 {
-                    throw new Exception("The following file(s) exist in the destination folder :- " + sourceFile);
+                    throw new Exception("The following file(s) exist in the destination folder and overwrite is set to false :- " + sourceFile);
                 }
             }
         }
@@ -647,7 +460,7 @@ namespace Dev2.PathOperations
                 IActivityIOOperationsEndPoint tmpEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
                 Dev2CRUDOperationTO myArgs = new Dev2CRUDOperationTO(true);
                 // stage contents to local folder
-                TransferDirectoryContents(src, tmpEndPoint, myArgs, false);
+                TransferDirectoryContents(src, tmpEndPoint, myArgs);
 
                 // get directory contents
                 IList<IActivityIOPath> toAdd = ListDirectory(tmpEndPoint, ReadTypes.FilesAndFolders);
@@ -848,7 +661,7 @@ namespace Dev2.PathOperations
                 IActivityIOPath newSrc = ActivityIOFactory.CreatePathFromString(unzipDirectory, dst.IOPath.Username, dst.IOPath.Password);
                 IActivityIOOperationsEndPoint newSrcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(newSrc);
                 Dev2CRUDOperationTO newArgs = new Dev2CRUDOperationTO(false);
-                Move(newSrcEP, dst, newArgs);
+                Copy(newSrcEP, dst, newArgs);
                 // local delete taken care of for us ;)
             }
 
@@ -976,31 +789,34 @@ namespace Dev2.PathOperations
         /// <param name="src"></param>
         /// <param name="dst"></param>
         /// <param name="args"></param>
-        private bool TransferDirectoryContents(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
-                                               Dev2CRUDOperationTO args, bool removeSrc)
+        private bool TransferDirectoryContents(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args)
         {
             // List directory contents
+            
+            if (args.DoRecursiveCopy)
+            {
+                IList<IActivityIOPath> srcContentsFolders = src.ListFoldersInDirectory(src.IOPath);
+                foreach (var sourcePath in srcContentsFolders)
+                {
+                    IActivityIOOperationsEndPoint sourceEndPoint =
+                        ActivityIOFactory.CreateOperationEndPointFromIOPath(sourcePath);
+                    IList<string> dirParts =
+                        sourceEndPoint.IOPath.Path.Split(sourceEndPoint.PathSeperator().ToCharArray());
+                    var directory = dirParts.Last();
+                    IActivityIOPath destinationPath =
+                        ActivityIOFactory.CreatePathFromString(Path.Combine(dst.IOPath.Path, directory),
+                                                               dst.IOPath.Username,
+                                                               dst.IOPath.Password);
+                    IActivityIOOperationsEndPoint destinationEndPoint =
+                        ActivityIOFactory.CreateOperationEndPointFromIOPath(destinationPath);
+                    dst.CreateDirectory(destinationPath, args);
+                    //}
+                    Copy(sourceEndPoint, destinationEndPoint, args);
+                }
+            }
+            
             IList<IActivityIOPath> srcContents = src.ListFilesInDirectory(src.IOPath);
             IList<IActivityIOPath> dstContents = dst.ListFilesInDirectory(dst.IOPath);
-
-            IList<IActivityIOPath> srcContentsFolders = src.ListFoldersInDirectory(src.IOPath);
-
-            foreach (var sourcePath in srcContentsFolders)
-            {
-                IActivityIOOperationsEndPoint sourceEndPoint  = ActivityIOFactory.CreateOperationEndPointFromIOPath(sourcePath);
-                //if (!dst.PathExist(sourceFolder.IOPath))
-                //{
-                IList<string> dirParts = sourceEndPoint.IOPath.Path.Split(sourceEndPoint.PathSeperator().ToCharArray());
-                    var directory = dirParts.Last();
-                   IActivityIOPath destinationPath = ActivityIOFactory.CreatePathFromString(Path.Combine(dst.IOPath.Path, directory), dst.IOPath.Username,
-                                                       dst.IOPath.Password);
-
-                   IActivityIOOperationsEndPoint destinationEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(destinationPath);
-                   dst.CreateDirectory(destinationPath, args);
-                //}
-                   Move(sourceEndPoint, destinationEndPoint, args);
-            }
-
 
             if(!args.Overwrite)
             {
@@ -1016,7 +832,7 @@ namespace Dev2.PathOperations
                         string fileNames = commonFiles.Aggregate("",
                                                                  (current, commonFile) =>
                                                                  current + ("\r\n" + commonFile));
-                        throw new Exception("The following file(s) exist in the destination folder :- " + fileNames);
+                        throw new Exception("The following file(s) exist in the destination folder and overwrite is set to false:- " + fileNames);
                     }
                 }
             }
@@ -1050,24 +866,6 @@ namespace Dev2.PathOperations
                         IActivityIOPath cpPath = ActivityIOFactory.CreatePathFromString(string.Format("{0}{1}{2}", origDstPath, dst.PathSeperator(), (Dev2ActivityIOPathUtils.ExtractFileName(p.Path))), dst.IOPath.Username, dst.IOPath.Password);
                         if(args.Overwrite || !dst.PathExist(cpPath))
                         {
-                            if(!IsNotFTPTypePath(p))
-                            {
-                                try
-                                {
-                                    src.ListDirectory(p);
-                                    if(CheckIfShouldDoRecursiveFolderCopy(dst, args, removeSrc, cpPath, true, p)) continue;
-                                }
-                                catch(Exception ex)
-                                {
-                                    //Directory does not exist and source
-                                    if(CheckIfShouldDoRecursiveFolderCopy(dst, args, removeSrc, cpPath, false, p)) continue;
-                                }
-                            }
-                            else
-                            {
-                                var directoryExistsAtSource = Directory.Exists(p.Path);
-                                if(CheckIfShouldDoRecursiveFolderCopy(dst, args, removeSrc, cpPath, directoryExistsAtSource, p)) continue;
-                            }
                             using(s = src.Get(p))
                             {
 
@@ -1082,11 +880,6 @@ namespace Dev2.PathOperations
                                 }
                                 s.Close();
                                 s.Dispose();
-                            }
-                            // if move op, delete orig
-                            if(removeSrc)
-                            {
-                                //src.Delete(p);
                             }
                         }
                     }
@@ -1110,12 +903,6 @@ namespace Dev2.PathOperations
                             s.Close();
                             s.Dispose();
                         }
-
-                        // if move op, delete orig
-                        if(removeSrc)
-                        {
-                           // src.Delete(p);
-                        }
                     }
                 }
                 catch(Exception ex)
@@ -1127,12 +914,6 @@ namespace Dev2.PathOperations
                     ServerLogger.LogError(ex);
                 }
             }
-            // if move op, delete orig
-            if(removeSrc)
-            {
-               // src.Delete(src.IOPath);
-            }
-
             return result;
         }
 
@@ -1148,22 +929,6 @@ namespace Dev2.PathOperations
                 return new FileInfo(dst.IOPath.Path).Directory;
             }
             return null; // this means that neither the src or destination where local files
-        }
-
-        bool CheckIfShouldDoRecursiveFolderCopy(IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args, bool removeSrc, IActivityIOPath cpPath, bool directoryExistsAtSource, IActivityIOPath p)
-        {
-            if(dst.PathIs(cpPath) == enPathType.Directory && directoryExistsAtSource && args.DoRecursiveCopy)
-            {
-                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(cpPath.Path, dst.IOPath.Username, dst.IOPath.Password);
-                IActivityIOOperationsEndPoint tmpEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
-                IActivityIOOperationsEndPoint operationEndPointFromIOPath = ActivityIOFactory.CreateOperationEndPointFromIOPath(p);
-                TransferDirectoryContents(operationEndPointFromIOPath, tmpEP, args, removeSrc);
-            }
-            else if(dst.PathIs(cpPath) == enPathType.Directory && directoryExistsAtSource && !args.DoRecursiveCopy)
-            {
-                return true;
-            }
-            return false;
         }
 
         /// <summary>
