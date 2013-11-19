@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.DataList.Contract;
@@ -11,11 +12,11 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         IResourceModel Resource { get; }
         ICommand FindUnusedAndMissingCommand { get; }
 
-        OptomizedObservableCollection<IDataListItemModel> ScalarCollection { get;}
+        ObservableCollection<IDataListItemModel> ScalarCollection { get;}
 
-        OptomizedObservableCollection<IDataListItemModel> RecsetCollection { get;}
+        ObservableCollection<IDataListItemModel> RecsetCollection { get;}
 
-        OptomizedObservableCollection<IDataListItemModel> DataList { get; }
+        ObservableCollection<IDataListItemModel> DataList { get; }
 
         /// <summary>
         /// Removes the data list item.

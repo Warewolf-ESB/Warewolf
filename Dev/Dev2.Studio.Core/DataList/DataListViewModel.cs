@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
@@ -30,10 +31,10 @@ namespace Dev2.Studio.ViewModels.DataList
         #region Fields
 
         private RelayCommand _addRecordsetCommand;
-        private OptomizedObservableCollection<DataListHeaderItemModel> _baseCollection;
+        private ObservableCollection<DataListHeaderItemModel> _baseCollection;
         private RelayCommand _findUnusedAndMissingDataListItems;
-        private OptomizedObservableCollection<IDataListItemModel> _recsetCollection;
-        private OptomizedObservableCollection<IDataListItemModel> _scalarCollection;
+        private ObservableCollection<IDataListItemModel> _recsetCollection;
+        private ObservableCollection<IDataListItemModel> _scalarCollection;
         private string _searchText;
         private RelayCommand _sortCommand;
 
@@ -49,7 +50,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        public OptomizedObservableCollection<DataListHeaderItemModel> BaseCollection
+        public ObservableCollection<DataListHeaderItemModel> BaseCollection
         {
             get { return _baseCollection; }
             set
@@ -72,18 +73,18 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public IResourceModel Resource { get; private set; }
 
-        public OptomizedObservableCollection<IDataListItemModel> DataList
+        public ObservableCollection<IDataListItemModel> DataList
         {
             get { return CreateFullDataList(); }
         }
 
-        public OptomizedObservableCollection<IDataListItemModel> ScalarCollection
+        public ObservableCollection<IDataListItemModel> ScalarCollection
         {
             get
             {
                 if(_scalarCollection == null)
                 {
-                    _scalarCollection = new OptomizedObservableCollection<IDataListItemModel>();
+                    _scalarCollection = new ObservableCollection<IDataListItemModel>();
                     _scalarCollection.CollectionChanged += (o, args) =>
                     {
                         NotifyOfPropertyChange(() => FindUnusedAndMissingCommand);
@@ -94,13 +95,13 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        public OptomizedObservableCollection<IDataListItemModel> RecsetCollection
+        public ObservableCollection<IDataListItemModel> RecsetCollection
         {
             get
             {
                 if(_recsetCollection == null)
                 {
-                    _recsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
+                    _recsetCollection = new ObservableCollection<IDataListItemModel>();
                     _recsetCollection.CollectionChanged += (o, args) =>
                         {
                             NotifyOfPropertyChange(() => FindUnusedAndMissingCommand);
@@ -366,12 +367,11 @@ namespace Dev2.Studio.ViewModels.DataList
             if(Resource == null) return;
 
             string errorString;
-            CreateListsOfIDataListItemModelToBindTo(out errorString);
-            AddRecordsetNamesIfMissing();
+            CreateListsOfIDataListItemModelToBindTo(out errorString);            
             if(!string.IsNullOrEmpty(errorString))
             {
                 throw new Exception(errorString);
-            }
+            }            
         }
         public void InitializeDataListViewModel()
         {
@@ -453,16 +453,19 @@ namespace Dev2.Studio.ViewModels.DataList
             if(!itemToRemove.IsRecordset && !itemToRemove.IsField)
             {
                 ScalarCollection.Remove(itemToRemove);
+                CheckDataListItemsForDuplicates(DataList);
             }
             else if(itemToRemove.IsRecordset)
             {
                 RecsetCollection.Remove(itemToRemove);
+                CheckDataListItemsForDuplicates(DataList);
             }
             else
             {
                 foreach(var recset in RecsetCollection)
                 {
                     recset.Children.Remove(itemToRemove);
+                    CheckDataListItemsForDuplicates(recset.Children);
                 }
             }
         }
@@ -533,6 +536,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
                 recsetCount++;
             }
+            NotifyOfPropertyChange(() => DataList);
         }       
 
         public void ValidateNames(IDataListItemModel item)
@@ -632,7 +636,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        void CheckDataListItemsForDuplicates(OptomizedObservableCollection<IDataListItemModel> itemsToCheck)
+        void CheckDataListItemsForDuplicates(ObservableCollection<IDataListItemModel> itemsToCheck)
         {
             List<IGrouping<string, IDataListItemModel>> duplicates = itemsToCheck.ToLookup(x => x.Name).ToList();
             foreach(var duplicate in duplicates)

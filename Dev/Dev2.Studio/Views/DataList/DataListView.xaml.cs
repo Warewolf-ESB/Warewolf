@@ -31,9 +31,20 @@ namespace Dev2.Studio.Views.DataList
 
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _eventPublisher = eventPublisher;
+            this.DataContextChanged += OnDataContextChanged;
         }
 
+        
         #region Events
+
+        void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            IDataListViewModel vm = this.DataContext as IDataListViewModel;
+            if(vm != null)
+            {
+                vm.AddRecordsetNamesIfMissing();
+            }
+        }
 
         private void Nametxt_TextChanged(object sender, RoutedEventArgs e)
         {
@@ -149,8 +160,9 @@ namespace Dev2.Studio.Views.DataList
                 {
                     model.FindMissing();
                 }
-                
+
             }
         }
+
     }
 }

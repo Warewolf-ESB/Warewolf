@@ -254,7 +254,11 @@ namespace Dev2.Core.Tests
             parts.Add(part1.Object);
             parts.Add(part2.Object);
             var dataListItemModels = CreateDataListItems(_dataListViewModel, parts, true);
-            _dataListViewModel.ScalarCollection.AddRange(dataListItemModels);
+            foreach(var dataListItemModel in dataListItemModels)
+            {
+                _dataListViewModel.ScalarCollection.Add(dataListItemModel);    
+            }
+                        
             //-------------------------Execute Test ------------------------------------------
             _dataListViewModel.SetUnusedDataListItems(parts);
             //-------------------------Assert Resule------------------------------------------

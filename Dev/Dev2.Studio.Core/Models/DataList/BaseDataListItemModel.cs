@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Collections.ObjectModel;
+using Caliburn.Micro;
 using Dev2.Studio.Core.Interfaces.DataList;
 
 namespace Dev2.Studio.Core.Models.DataList
@@ -10,7 +11,7 @@ namespace Dev2.Studio.Core.Models.DataList
         private string _name;
         private string _displayName;
         private bool _isExpanded = true;
-        private OptomizedObservableCollection<IDataListItemModel> _children;
+        private ObservableCollection<IDataListItemModel> _children;
 
         #endregion Fields
 
@@ -56,9 +57,9 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        public OptomizedObservableCollection<IDataListItemModel> Children
+        public ObservableCollection<IDataListItemModel> Children
         {
-            get { return _children ?? (_children = new OptomizedObservableCollection<IDataListItemModel>()); }
+            get { return _children ?? (_children = new ObservableCollection<IDataListItemModel>()); }
             set
             {
                 _children = value;

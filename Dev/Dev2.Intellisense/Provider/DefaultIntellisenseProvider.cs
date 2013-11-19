@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 using Caliburn.Micro;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Logs;
@@ -83,7 +84,7 @@ namespace Dev2.Studio.InterfaceImplementors
         private void CreateDataList()
         {
             StringBuilder result = new StringBuilder("<ADL>");
-            OptomizedObservableCollection<IDataListItemModel> dataList = null;
+            ObservableCollection<IDataListItemModel> dataList = null;
 
             if (DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.DataList != null)
             {

@@ -1,4 +1,5 @@
-﻿using Dev2.Data.Binary_Objects;
+﻿using System.Collections.ObjectModel;
+using Dev2.Data.Binary_Objects;
 
 namespace Dev2.Studio.Core.Interfaces.DataList
 {
@@ -23,7 +24,7 @@ namespace Dev2.Studio.Core.Interfaces.DataList
 
         IDataListItemModel Parent { get; set; }
 
-        OptomizedObservableCollection<IDataListItemModel> Children { get; set; }
+        ObservableCollection<IDataListItemModel> Children { get; set; }
 
         bool HasError { get; set; }
 
