@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Xaml;
 using Microsoft.TeamFoundation.Build.Client;
-using Microsoft.TeamFoundation.Build.Workflow.Activities;
 using Microsoft.TeamFoundation.Client;
 using System;
 using System.Reflection;
-using Microsoft.TeamFoundation.Build.Workflow;
 
 namespace QueueBuild
 {
@@ -96,7 +95,7 @@ namespace QueueBuild
             IDictionary<String, Object> paramValues = new Dictionary<string, object>();
             paramValues.Add("SpecifiedChangeSet", changeSetID);
             paramValues.Add("UseStagedBuild", false);
-            return WorkflowHelpers.SerializeProcessParameters(paramValues);
+            return XamlServices.Save(paramValues);
         }
 
     }
