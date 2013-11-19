@@ -5,12 +5,13 @@ using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.DynamicServices.Test
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ExecutionServerChannelTests
     {
         #region MyTestInitialize
