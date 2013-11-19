@@ -41,16 +41,16 @@ namespace QueueBuild
             string def = args[2].Trim();
             string user = args[3].Trim();
             string shelveSet = args.Length > 4 ? args[4].Trim() : string.Empty;
-            string agentTag = args.Length > 5 ? args[5].Trim() : string.Empty;
+            string changeSetID = args.Length > 5 ? args[5].Trim() : string.Empty;
 
             BuildQueuer qb = new BuildQueuer();
 
             File.WriteAllText(LogFile(), buildTS + " :: Queuing Build With Args { Server : '" + server + "', Project : '" + project +
-                                "', Definition : '" + def + "', for User : '" + user + "', with shelveset : '" + shelveSet + "', and running on agents with tag : '" + agentTag + "'}");
+                                "', Definition : '" + def + "', for User : '" + user + "', with shelveset : '" + shelveSet + "', and running on agents with tag : '" + changeSetID + "'}");
 
             try
             {
-                return qb.Run(server, project, def, shelveSet, user, agentTag);
+                return qb.Run(server, project, def, shelveSet, user, changeSetID);
             }
             catch (Exception e)
             {
@@ -64,17 +64,17 @@ namespace QueueBuild
     public class BuildQueuer
     {
 
-        public int Run(string server, string project, string def, string shelveSet, string user, string agentTag)
+        public int Run(string server, string project, string def, string shelveSet, string user, string changeSetID)
         {
+            var tfs = TeamFoundationServerFactory.GetServer(server);
+            var buildServer = (IBuildServer)tfs.GetService(typeof(IBuildServer));
+            var buildDef = buildServer.GetBuildDefinition(project, def);
+            var req = buildDef.CreateBuildRequest();
 
-            TeamFoundationServer tfs = TeamFoundationServerFactory.GetServer(server);
-            IBuildServer buildServer = (IBuildServer)tfs.GetService(typeof(IBuildServer));
-            IBuildDefinition buildDef = buildServer.GetBuildDefinition(project, def);
-
-            IBuildRequest req = buildDef.CreateBuildRequest();
-            if(!string.IsNullOrEmpty(agentTag))
+            // is there a changeset?
+            if(!string.IsNullOrEmpty(changeSetID))
             {
-                buildDef.ProcessParameters = UpdateAgentTag(buildDef.ProcessParameters, agentTag);
+                req.ProcessParameters = UpdateAgentTag(changeSetID);
             }
             
             // is there a shelveset?
@@ -91,16 +91,11 @@ namespace QueueBuild
 
         }
 
-        private static string UpdateAgentTag(string processParameters, string agentTag)
+        private static string UpdateAgentTag(string changeSetID)
         {
-            IDictionary<String, Object> paramValues = WorkflowHelpers.DeserializeProcessParameters(processParameters);
-            var agentSettings = paramValues[ProcessParameterMetadata.StandardParameterNames.AgentSettings] as AgentSettings;
-            if (agentSettings != null)
-            {
-                agentSettings.Tags.Clear();
-                agentSettings.Tags.Add(agentTag);
-                paramValues[ProcessParameterMetadata.StandardParameterNames.AgentSettings] = agentSettings;
-            }
+            IDictionary<String, Object> paramValues = new Dictionary<string, object>();
+            paramValues.Add("SpecifiedChangeSet", changeSetID);
+            paramValues.Add("UseStagedBuild", false);
             return WorkflowHelpers.SerializeProcessParameters(paramValues);
         }
 
