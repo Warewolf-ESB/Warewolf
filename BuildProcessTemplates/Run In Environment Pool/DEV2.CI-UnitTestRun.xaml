@@ -1,4 +1,4 @@
-﻿<Activity mc:Ignorable="sads sap sap2010" x:Class="TfsBuild.Process" this:Process.BuildSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.BuildSettings()]" this:Process.TestSpecs="[New Microsoft.TeamFoundation.Build.Workflow.Activities.TestSpecList(New Microsoft.TeamFoundation.Build.Workflow.Activities.AgileTestPlatformSpec(&quot;**\*test*.dll&quot;))]" this:Process.BuildNumberFormat="[&quot;$(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.r)&quot;]" this:Process.SolutionSpecificBuildOutputs="[False]" this:Process.CleanWorkspace="[Microsoft.TeamFoundation.Build.Workflow.Activities.CleanWorkspaceOption.All]" this:Process.RunCodeAnalysis="[Microsoft.TeamFoundation.Build.Workflow.Activities.CodeAnalysisOption.AsConfigured]" this:Process.SourceAndSymbolServerSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.SourceAndSymbolServerSettings(True, Nothing)]" this:Process.AgentSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.AgentSettings() With {.MaxWaitTime = New System.TimeSpan(4, 0, 0), .MaxExecutionTime = New System.TimeSpan(0, 0, 0), .TagComparison = Microsoft.TeamFoundation.Build.Workflow.Activities.TagComparison.MatchExactly }]" this:Process.MSBuildPlatform="[Microsoft.TeamFoundation.Build.Workflow.Activities.ToolPlatform.Auto]" this:Process.MSBuildMultiProc="[True]" this:Process.PerformTestImpactAnalysis="[True]" this:Process.Verbosity="[Microsoft.TeamFoundation.Build.Workflow.BuildVerbosity.Normal]" this:Process.SupportedReasons="All" this:Process.BuildProcessVersion="11.0" this:Process.DoCallToWarewolfServer="True" this:Process.WarewolfServerUri="Http://RSAKLFSVRWRWBLD:1234/services/QueueAllTestRunsAsync" this:Process.DeleteWorkSpaceAfterTest="True" this:Process.WorkspaceNameSuffix="DevGate" this:Process.TestResultsStagingDirectory="\\RSAKLFSVRWRWBLD\TestResults" this:Process.RunBatFileName="DownloadBuildToWorkspace.bat" this:Process.BranchID="DEV" this:Process.DoResultDeployment="True"
+﻿<Activity mc:Ignorable="sads sap sap2010" x:Class="TfsBuild.Process" this:Process.BuildSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.BuildSettings()]" this:Process.TestSpecs="[New Microsoft.TeamFoundation.Build.Workflow.Activities.TestSpecList(New Microsoft.TeamFoundation.Build.Workflow.Activities.AgileTestPlatformSpec(&quot;**\*test*.dll&quot;))]" this:Process.BuildNumberFormat="[&quot;$(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.r)&quot;]" this:Process.SolutionSpecificBuildOutputs="[False]" this:Process.CleanWorkspace="[Microsoft.TeamFoundation.Build.Workflow.Activities.CleanWorkspaceOption.All]" this:Process.RunCodeAnalysis="[Microsoft.TeamFoundation.Build.Workflow.Activities.CodeAnalysisOption.AsConfigured]" this:Process.SourceAndSymbolServerSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.SourceAndSymbolServerSettings(True, Nothing)]" this:Process.AgentSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.AgentSettings() With {.MaxWaitTime = New System.TimeSpan(4, 0, 0), .MaxExecutionTime = New System.TimeSpan(0, 0, 0), .TagComparison = Microsoft.TeamFoundation.Build.Workflow.Activities.TagComparison.MatchExactly }]" this:Process.MSBuildPlatform="[Microsoft.TeamFoundation.Build.Workflow.Activities.ToolPlatform.Auto]" this:Process.MSBuildMultiProc="[True]" this:Process.PerformTestImpactAnalysis="[True]" this:Process.Verbosity="[Microsoft.TeamFoundation.Build.Workflow.BuildVerbosity.Normal]" this:Process.SupportedReasons="All" this:Process.BuildProcessVersion="11.0" this:Process.DoCallToWarewolfServer="True" this:Process.WarewolfServerUri="Http://RSAKLFSVRWRWBLD:1234/services/QueueAllTestRunsAsync" this:Process.DeleteWorkSpaceAfterTest="True" this:Process.WorkspaceNameSuffix="DevGate" this:Process.TestResultsStagingDirectory="\\RSAKLFSVRWRWBLD\TestResults" this:Process.RunBatFileName="DownloadBuildToWorkspace.bat" this:Process.BranchID="DEV" this:Process.DoResultDeployment="True" this:Process.UseStagedBuild="True"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
  xmlns:mt="clr-namespace:Microsoft.TeamFoundation;assembly=Microsoft.TeamFoundation.Common"
@@ -60,6 +60,8 @@
     <x:Property Name="RunBatFileName" Type="InArgument(x:String)" />
     <x:Property Name="BranchID" Type="InArgument(x:String)" />
     <x:Property Name="DoResultDeployment" Type="InArgument(x:Boolean)" />
+    <x:Property Name="UseStagedBuild" Type="InArgument(x:Boolean)" />
+    <x:Property Name="SpecifiedChangeSetID" Type="InArgument(x:String)" />
   </x:Members>
   <this:Process.MSBuildArguments>
     <InArgument x:TypeArguments="x:String" />
@@ -175,27 +177,54 @@
           </mtbwa:SyncWorkspace.RequestsFailed>
         </mtbwa:SyncWorkspace>
       </Sequence>
-      <mtbwa:InvokeProcess DisplayName="Download Build" FileName="[SourcesDirectory &amp; &quot;\&quot; &amp; RunBatFileName]" sap2010:WorkflowViewState.IdRef="InvokeProcess_4">
-        <mtbwa:InvokeProcess.ErrorDataReceived>
-          <ActivityAction x:TypeArguments="x:String">
-            <ActivityAction.Argument>
-              <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
-            </ActivityAction.Argument>
-            <Sequence sap2010:WorkflowViewState.IdRef="Sequence_44">
-              <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_10" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[errOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-              <TerminateWorkflow sap2010:WorkflowViewState.IdRef="TerminateWorkflow_3" Reason="Cannot download the build from staging" />
-            </Sequence>
-          </ActivityAction>
-        </mtbwa:InvokeProcess.ErrorDataReceived>
-        <mtbwa:InvokeProcess.OutputDataReceived>
-          <ActivityAction x:TypeArguments="x:String">
-            <ActivityAction.Argument>
-              <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
-            </ActivityAction.Argument>
-            <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_11" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[stdOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-          </ActivityAction>
-        </mtbwa:InvokeProcess.OutputDataReceived>
-      </mtbwa:InvokeProcess>
+      <If Condition="[UseStagedBuild]" sap2010:WorkflowViewState.IdRef="If_52">
+        <If.Then>
+          <mtbwa:InvokeProcess DisplayName="Download Build" FileName="[SourcesDirectory &amp; &quot;\DownloadBuildToWorkspace.bat&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_4">
+            <mtbwa:InvokeProcess.ErrorDataReceived>
+              <ActivityAction x:TypeArguments="x:String">
+                <ActivityAction.Argument>
+                  <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
+                </ActivityAction.Argument>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_44">
+                  <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_10" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[errOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                  <TerminateWorkflow sap2010:WorkflowViewState.IdRef="TerminateWorkflow_3" Reason="Cannot download the build from staging" />
+                </Sequence>
+              </ActivityAction>
+            </mtbwa:InvokeProcess.ErrorDataReceived>
+            <mtbwa:InvokeProcess.OutputDataReceived>
+              <ActivityAction x:TypeArguments="x:String">
+                <ActivityAction.Argument>
+                  <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
+                </ActivityAction.Argument>
+                <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_11" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[stdOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+              </ActivityAction>
+            </mtbwa:InvokeProcess.OutputDataReceived>
+          </mtbwa:InvokeProcess>
+        </If.Then>
+        <If.Else>
+          <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;&quot; &amp; SpecifiedChangeSetID &amp; &quot;&quot;&quot;&quot;]" DisplayName="Download Build" FileName="[SourcesDirectory &amp; &quot;\DownloadSpecificChangesetToWorkspace.bat&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_5">
+            <mtbwa:InvokeProcess.ErrorDataReceived>
+              <ActivityAction x:TypeArguments="x:String">
+                <ActivityAction.Argument>
+                  <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
+                </ActivityAction.Argument>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_50">
+                  <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_12" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[errOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                  <TerminateWorkflow sap2010:WorkflowViewState.IdRef="TerminateWorkflow_4" Reason="Cannot download the build from staging" />
+                </Sequence>
+              </ActivityAction>
+            </mtbwa:InvokeProcess.ErrorDataReceived>
+            <mtbwa:InvokeProcess.OutputDataReceived>
+              <ActivityAction x:TypeArguments="x:String">
+                <ActivityAction.Argument>
+                  <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
+                </ActivityAction.Argument>
+                <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_13" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[stdOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+              </ActivityAction>
+            </mtbwa:InvokeProcess.OutputDataReceived>
+          </mtbwa:InvokeProcess>
+        </If.Else>
+      </If>
       <Sequence DisplayName="Test" sap2010:WorkflowViewState.IdRef="Sequence_13">
         <Sequence.Variables>
           <Variable x:TypeArguments="scg:IList(mtvc:Changeset)" Name="associatedChangesets" />
@@ -411,7 +440,7 @@
           </Sequence>
         </If.Then>
         <If.Else>
-          <mtbwa:WriteBuildWarning Message="[&quot;The call out to the Warewolf server has been disabled, it would have been a call to this url: &quot; &amp; WarewolfServerUri &amp; &quot;?File=&quot; &amp; System.Web.HttpUtility.UrlEncode(TestResultsStagingDirectoryWithNewFileName)]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" sap2010:WorkflowViewState.IdRef="WriteBuildWarning_4" />
+          <mtbwa:WriteBuildWarning sap2010:WorkflowViewState.IdRef="WriteBuildWarning_4" Message="[&quot;The call out to the Warewolf server has been disabled, it would have been a call to this url: &quot; &amp; WarewolfServerUri &amp; &quot;?File=&quot; &amp; System.Web.HttpUtility.UrlEncode(TestResultsStagingDirectoryWithNewFileName)]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
         </If.Else>
       </If>
       <If Condition="[DeleteWorkSpaceAfterTest]" DisplayName="If Delete Workspace After Test" sap2010:WorkflowViewState.IdRef="If_47">
@@ -426,7 +455,7 @@
       </If>
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="------------------- Unit Test Run DONE -------------------" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>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ApAB2AGQAekBAwHPApcBE5cBnwEDAccCowETowGrAgMBvQK9AdgBvQHlAQMBoAK9AYoBvQHPAQMBnwK+AWO+AYsBAwGdAtQB2AHUAeUBAwGPAtQBigHUAc8BAwGOAtUBY9UBiwEDAYwC9QER9QHVBAMB9wH2ARH2AbAFAwHqAfkBEZ4CGwMBrQG0AhG0AqICAwGbAbUCEbUC+gIDAY4BvwIRvwKVAgMBhQHAAhHSAhYCAXvTAhHnAhYCAWaIAxOSAx0CAUSWA2iWA4kBAgFCogMTsQMpAgEytQNotQOiAQIBMJcBdpcBgwEDAcsClwGUAZcBnAEDAcoClwFdlwFuAwHIAqMBOaMBSwMBxQKjAVSjAYMBAwHEAqMB9QGjAYICAwHCAqMBlAKjAagCAwHAAqMB3AGjAe0BAwG+AvUB8gH1AdIEAwH6AfUB2AH1AesBAwH4AfYB4QH2Aa0FAwHtAfYBwwH2AdoBAwHrAfkBzQH5AdoBAwHnAf4BFZwCIAMBrgG0Ar4BtAKJAgMBngG0ApECtAKfAgMBnAG1At4BtQLzAQMBmQG1AogBtQKgAQMBlwG1AvoBtQKJAgMBlQG1AmS1AnIDAZMBtQLqArUC9wIDAZEBtQK7AbUC0AEDAY8BvwK9Ab8C+wEDAYgBvwKDAr8CkgIDAYYBwAIfwAJNAgF8wgIV0AIgAgF+0wIf0wJTAgFn1QIV5QIgAgFpiAORAYgDpAECAUqNAxeQAyYCAUWiAzKiA8kBAgE1ogP5AaIDrwICATOAAhmEAiQDAcABjAIdmAIoAwGvAcQCGcQClQEDAYIBzAIdzAKzAQIBf9cCGdkCNQIBbeECHeECtQECAWqOA0COA0oCAUiPA0CPA2wCAUaBAhuBAsoCAwHiAYICG4ICvQIDAdwBgwIbgwKlBgMBwQGQAh+UAiQDAboBlQIflQKzAgMBuAGWAh+WAvABAwG1AZcCH5cCswIDAbABxAJSxAJhAwGDAcwCmwHMArABAwGAAdcCowLXAtQCAgFw1wL8AdcClQICAW/XAt4B1wLvAQIBbtgCG9gCrgICAXLhAp0B4QKyAQIBa4EC7gGBAscCAwHlAYEC1wGBAucBAwHjAYICygGCAqACAwHfAYICqAKCAroCAwHdAYMCkQODArEDAwHaAYMCxgWDAqIGAwHYAYMCZ4MCjQEDAdYBgwKDBYMClgUDAdQBgwLrA4MCwQQDAdEBgwLkAoMChAMDAc8BgwIygwJRAwHNAYMC2wSDAvMEAwHLAYMCyQODAuEDAwHJAYMCpgWDArgFAwHHAYMCwgGDAqwCAwHEAYMCygSDAtEEAwHCAZACLZAClgEDAbsBkgIjkgK7AQMBvQGVAu8BlQKwAgMBuQGWAtsBlgLtAQMBtgGXAj2XAowBAwG0AZcCngKXArACAwGyAdgCpwHYAssBAgF52ALWAdgChwICAXfYAljYAmcCAXXYApAC2AKrAgIBc5ICnwGSArgBAwG+AQ==</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -509,7 +538,19 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="WriteBuildMessage_11" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="InvokeProcess_4" sap:VirtualizedContainerService.HintSize="1251,464" />
+      <sap2010:ViewStateData Id="InvokeProcess_4" sap:VirtualizedContainerService.HintSize="256,464" />
+      <sap2010:ViewStateData Id="WriteBuildMessage_12" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="TerminateWorkflow_4" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_50" sap:VirtualizedContainerService.HintSize="222,208">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="WriteBuildMessage_13" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="InvokeProcess_5" sap:VirtualizedContainerService.HintSize="256,464" />
+      <sap2010:ViewStateData Id="If_52" sap:VirtualizedContainerService.HintSize="1251,612" />
       <sap2010:ViewStateData Id="Assign`1_7" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="Assign`1_8" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="Sequence_11" sap:VirtualizedContainerService.HintSize="470,208">
@@ -690,15 +731,15 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="If_47" sap:VirtualizedContainerService.HintSize="1251,480" />
       <sap2010:ViewStateData Id="WriteBuildMessage_6" sap:VirtualizedContainerService.HintSize="1251,22" />
-      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="1273,8435" />
-      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="1295,8745">
+      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="1273,8583" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="1295,8893">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="1335,8825" />
+      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="1335,8973" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
