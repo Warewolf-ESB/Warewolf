@@ -184,9 +184,6 @@
             <Component Id="cmp702AE5ECAE50DD6F98847C56EFECB51A" Directory="dirServerRoot" Guid="{FE3E7B31-51AA-4ABE-B4C3-12E8F8BAF7F2}">
                 <File Id="fil9DC4D6FF58BB52FEE8FE9664AC2E5F3C" KeyPath="yes" Source="..\ProductBuild\Server\Warewolf Server.exe.config" />
             </Component>
-            <Component Id="cmp8476953747B21B853DA269DBBB08FC07" Directory="dirServerRoot" Guid="{2118FCB8-06C1-40AE-A39C-60A9393F5ACC}">
-                <File Id="filD7CFB24F6357EC07F7601CE7AABCB3C4" KeyPath="yes" Source="..\ProductBuild\Server\Warewolf Server.vshost.exe.config" />
-            </Component>
             <Component Id="cmpCFFD37E68A3FC416A0A4DAAC72E4347D" Directory="dirServerRoot" Guid="{8A3EF793-FD58-4346-9656-31143D6344D8}">
                 <File Id="filF254CAAA6D4CF81080042A701DB6D9CE" KeyPath="yes" Source="..\ProductBuild\Server\Weave.dll" />
             </Component>
