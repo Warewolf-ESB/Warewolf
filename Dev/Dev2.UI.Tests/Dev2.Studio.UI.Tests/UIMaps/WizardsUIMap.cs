@@ -13,37 +13,41 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// </summary>
         public void WaitForWizard(int timeOut = DefaultTimeOut, bool throwIfNotFound = true)
         {
-            Type type = null;
-            const int interval = 100;
-            var timeNow = 0;
-            UITestControl tryGetDialog = null;
-            while(type != typeof(WpfImage))
-            {
-                Playback.Wait(interval);
-                timeNow = timeNow + interval;
-                if(timeNow > timeOut)
-                {
-                    break;
-                }
-                tryGetDialog = StudioWindow.GetChildren()[0].GetChildren()[0];
-                type = tryGetDialog.GetType();
-            }
-            if(type != typeof(WpfImage) && throwIfNotFound)
-            {
-                throw new UITestControlNotFoundException("Popup dialog not displayed within the given time out period.");
-            }
+            Playback.Wait(1500);
+
+            //Type type = null;
+            //const int interval = 100;
+            //var timeNow = 0;
+            //UITestControl tryGetDialog = null;
+            //while(type != typeof(WpfImage))
+            //{
+            //    Playback.Wait(interval);
+            //    timeNow = timeNow + interval;
+            //    if(timeNow > timeOut)
+            //    {
+            //        break;
+            //    }
+            //    tryGetDialog = StudioWindow.GetChildren()[0].GetChildren()[0];
+            //    type = tryGetDialog.GetType();
+            //}
+            //if(type != typeof(WpfImage) && throwIfNotFound)
+            //{
+            //    throw new UITestControlNotFoundException("Popup dialog not displayed within the given time out period.");
+            //}
             //wait for render
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
-            tryGetDialog.WaitForControlReady();
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+            //Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+            //tryGetDialog.WaitForControlReady();
+            //Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
         }
 
         public bool TryWaitForWizard(int timeOut)
         {
-            WaitForWizard(timeOut, false);
-            var tryGetDialog = StudioWindow.GetChildren()[0].GetChildren()[0];
-            var type = tryGetDialog.GetType();
-            return type == typeof (WpfImage);
+            Playback.Wait(1500);
+            return true;
+            //WaitForWizard(timeOut, false);
+            //var tryGetDialog = StudioWindow.GetChildren()[0].GetChildren()[0];
+            //var type = tryGetDialog.GetType();
+            //return type == typeof (WpfImage);
         }
     }
 }

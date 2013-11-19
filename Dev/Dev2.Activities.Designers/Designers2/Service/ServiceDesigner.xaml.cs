@@ -1,7 +1,4 @@
-﻿
-
-using System.Runtime.Remoting.Contexts;
-using System.Windows;
+﻿using System.Windows;
 using Dev2.Studio.Core.Activities.Services;
 
 namespace Dev2.Activities.Designers2.Service
