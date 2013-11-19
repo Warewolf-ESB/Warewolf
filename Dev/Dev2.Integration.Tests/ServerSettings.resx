@@ -138,4 +138,12 @@
     <value>http://localhost:1234/services/</value>
     <comment>Keep local, dont update ;)</comment>
   </data>
+  <data name="WebsiteServerHttpsUri" xml:space="preserve">
+    <value>https://localhost:1234/wwwroot/</value>
+    <comment>Keep local, dont update ;)</comment>
+  </data>
+  <data name="WebsiteServerUri" xml:space="preserve">
+    <value>http://localhost:1234/wwwroot/</value>
+    <comment>Keep local, dont update ;)</comment>
+  </data>
 </root>

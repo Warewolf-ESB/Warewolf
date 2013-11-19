@@ -113,5 +113,23 @@ namespace Dev2.Integration.Tests {
                 return ResourceManager.GetString("WebserverURI", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://localhost:1234/wwwroot/.
+        /// </summary>
+        internal static string WebsiteServerHttpsUri {
+            get {
+                return ResourceManager.GetString("WebsiteServerHttpsUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://localhost:1234/wwwroot/.
+        /// </summary>
+        internal static string WebsiteServerUri {
+            get {
+                return ResourceManager.GetString("WebsiteServerUri", resourceCulture);
+            }
+        }
     }
 }
