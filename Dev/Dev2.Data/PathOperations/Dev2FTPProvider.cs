@@ -270,7 +270,7 @@ namespace Dev2.PathOperations {
                             result = payload.Length;
                             sftp.Close();
                         }
-                        catch(Exception)
+                        catch(Exception exception)
                         {
                             sftp.Close();
                             throw new Exception("File was not created");

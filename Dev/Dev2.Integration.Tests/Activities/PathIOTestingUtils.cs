@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Runtime.ConstrainedExecution;
+using System.Text;
 using Dev2.PathOperations;
 using Microsoft.Win32.SafeHandles;
 using System.IO;
@@ -55,19 +56,46 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
             data[1] = (byte)'b';
             data[2] = (byte)'c';
 
-            try {
-                bool loginOk = LogonUser(ParserStrings.PathOperations_Correct_Username, "DEV2", ParserStrings.PathOperations_Correct_Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+            CreateUNCFile(path, isDir, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, data);
+        }
 
-                if (loginOk) {
-                    using (safeTokenHandle) {
+        public static void CreateAuthedUNCPath(string path, string dataString, bool isDir = false)
+        {
+            const int LOGON32_PROVIDER_DEFAULT = 0;
+            //This parameter causes LogonUser to create a primary token. 
+            const int LOGON32_LOGON_INTERACTIVE = 2;
 
+            // handle UNC path
+            SafeTokenHandle safeTokenHandle;
+
+            byte[] data = System.Text.Encoding.UTF8.GetBytes(dataString);
+            CreateUNCFile(path, isDir, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, data);
+        }
+
+        private static void CreateUNCFile(string path, bool isDir, int LOGON32_LOGON_INTERACTIVE, int LOGON32_PROVIDER_DEFAULT,
+                                          byte[] data)
+        {
+            SafeTokenHandle safeTokenHandle;
+            try
+            {
+                bool loginOk = LogonUser(ParserStrings.PathOperations_Correct_Username, "DEV2",
+                                         ParserStrings.PathOperations_Correct_Password, LOGON32_LOGON_INTERACTIVE,
+                                         LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+
+                if (loginOk)
+                {
+                    using (safeTokenHandle)
+                    {
                         WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                        using (WindowsImpersonationContext impersonatedUser = newID.Impersonate()) {
-                            if (!isDir) {
+                        using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                        {
+                            if (!isDir)
+                            {
                                 // Do the operation here
                                 File.WriteAllBytes(path, data);
                             }
-                            else {
+                            else
+                            {
                                 Directory.CreateDirectory(path);
                             }
 
@@ -76,14 +104,60 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
                         }
                     }
                 }
-                else {
+                else
+                {
                     // login failed
                     throw new Exception("Failed to authenticate for resource [ " + path + " ] ");
                 }
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 throw e;
             }
+        }
+
+        public static string ReadUNCFile(string path)
+        {
+            const int LOGON32_PROVIDER_DEFAULT = 0;
+            //This parameter causes LogonUser to create a primary token. 
+            const int LOGON32_LOGON_INTERACTIVE = 2;
+
+            // handle UNC path
+            SafeTokenHandle safeTokenHandle;
+
+            string contents;
+
+            try
+            {
+                bool loginOk = LogonUser(ParserStrings.PathOperations_Correct_Username, "DEV2",
+                                         ParserStrings.PathOperations_Correct_Password, LOGON32_LOGON_INTERACTIVE,
+                                         LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+
+                if (loginOk)
+                {
+                    using (safeTokenHandle)
+                    {
+                        var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                        using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                        {
+                            contents = File.ReadAllText(path);
+                            // remove impersonation now
+                            impersonatedUser.Undo();
+                        }
+                    }
+                }
+                else
+                {
+                    // login failed
+                    throw new Exception("Failed to authenticate for resource [ " + path + " ] ");
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return contents;
         }
 
         public static string CreateTmpFile(string dir) {
@@ -233,6 +307,75 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
 
             return path;
         }
+
+        public static string CreateFilesFTP(string basePath, string userName, string password, bool ftps, string fileName, string dataString, bool createDirectory)
+        {
+            string remoteDirectoy = basePath + Guid.NewGuid() + "/";
+            string path = remoteDirectoy  + fileName;
+
+            try
+            {
+                if (createDirectory)
+                {
+                    IActivityIOPath pathFromString = ActivityIOFactory.CreatePathFromString(remoteDirectoy, userName, password);
+                    IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(pathFromString);
+
+                    FTPPro.Put(null, pathFromString, new Dev2CRUDOperationTO(false), null);
+                    
+                    byte[] byteArray = Encoding.UTF8.GetBytes(dataString);
+
+                    Stream dataStream = new MemoryStream(byteArray);
+                    
+                       pathFromString = ActivityIOFactory.CreatePathFromString(path, userName, password);
+                       FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(pathFromString);
+                       FTPPro.Put(dataStream, pathFromString, new Dev2CRUDOperationTO(true), null);
+                    
+
+                    //if (userName != string.Empty)
+                    //{
+                    //    request.Credentials = new NetworkCredential(userName, password);
+                    //}
+                  
+
+
+                    //if (userName != string.Empty)
+                    //{
+                    //    request.Credentials = new NetworkCredential(userName, password);
+                    //}
+
+
+
+                    //byte[] data = System.Text.Encoding.UTF8.GetBytes(dataString);
+                    
+
+                    //Stream requestStream = request.GetRequestStream();
+                    //requestStream.Write(data, 0, Convert.ToInt32(data.Length));
+                    //requestStream.Close();
+
+                    //response = (FtpWebResponse)request.GetResponse();
+                    //if (response.StatusCode != FtpStatusCode.FileActionOK &&
+                    //    response.StatusCode != FtpStatusCode.ClosingData)
+                    //{
+                    //    throw new Exception("File was not created");
+                    //}
+                }
+            }
+            catch (Exception exception)
+            {
+                var ex = exception;
+                throw;
+            }
+            finally
+            {
+                //if (response != null)
+                //{
+                //    response.Close();
+                //}
+            }
+
+            return path;
+        }
+
 
         public static string ReadFileFTP(string path, string userName, string password)
         {
