@@ -150,6 +150,8 @@
     <Compile Include="CommandLineParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerLifecycleManager.cs" />
+    <Compile Include="WebRequestHandler.cs" />
+    <Compile Include="WebResponse.cs" />
     <Compile Include="WindowsServiceManager.cs">
       <SubType>Component</SubType>
     </Compile>
