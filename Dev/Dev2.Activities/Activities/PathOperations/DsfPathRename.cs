@@ -109,7 +109,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
                     IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
-                    string respones = broker.Move(scrEndPoint, dstEndPoint, opTO);
+                    string respones = broker.Rename(scrEndPoint, dstEndPoint, opTO);
                     respones = respones.Replace("Move", "Rename");
                     outputs[0].OutputStrings.Add(respones);
                 }

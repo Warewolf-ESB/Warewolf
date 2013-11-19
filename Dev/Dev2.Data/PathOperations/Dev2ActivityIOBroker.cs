@@ -522,7 +522,15 @@ namespace Dev2.PathOperations
             {
                 if(args.Overwrite)
                 {
+                    //Clear the existing folder
                     dst.Delete(dst.IOPath);
+
+                    //ensures destination folder structure exists
+                    string opStatus = CreateEndPoint(dst, args, dst.PathIs(dst.IOPath) == enPathType.Directory);
+                    if(!opStatus.Equals("Success"))
+                    {
+                        throw new Exception("Recursive Directory Create Failed For [ " + dst.IOPath.Path + " ]");
+                    }
                 }
                 else
                 {
@@ -538,6 +546,11 @@ namespace Dev2.PathOperations
                 {
                     throw new Exception("Recursive Directory Create Failed For [ " + dst.IOPath.Path + " ]");
                 }
+            }
+
+            if(src.PathIs(src.IOPath) == enPathType.Directory)
+            {
+               //Do recursive move
             }
 
             return performAfterValidation();
