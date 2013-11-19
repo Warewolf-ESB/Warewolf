@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Microsoft.TeamFoundation.Build.Client;
+using Microsoft.TeamFoundation.Build.Workflow;
 using Microsoft.TeamFoundation.Client;
 
 namespace QueueBuildPlugin
@@ -18,7 +20,7 @@ namespace QueueBuildPlugin
             return Path.Combine(dir, LogfileName);
         }
 
-        public int QueueBuild(string server, string project, string def, string shelveSet, string user)
+        public int QueueBuild(string server, string project, string def, string shelveSet, string user, string specificChangeSetID = "")
         {
             DateTime buildTS = DateTime.Now;
 
@@ -30,7 +32,7 @@ namespace QueueBuildPlugin
                                   "', Definition : '" + def + "', for user : '" + user + "'}");
                 try
                 {
-                    return qb.Run(server, project, def, string.Empty, user);
+                    return qb.Run(server, project, def, string.Empty, user, specificChangeSetID);
                 }
                 catch(Exception e)
                 {
@@ -47,7 +49,7 @@ namespace QueueBuildPlugin
                                   "', Definition : '" + def + "', for user : '" + user + ", selveset : '" + shelveSet + "'}");
                 try
                 {
-                    return qb.Run(server, project, def, shelveSet, user);
+                    return qb.Run(server, project, def, shelveSet, user, specificChangeSetID);
                 }
                 catch(Exception e)
                 {
@@ -66,15 +68,18 @@ namespace QueueBuildPlugin
 
     public class BuildQueuerImpl
     {
-        public int Run(string server, string project, string def, string shelveSet, string user)
+        public int Run(string server, string project, string def, string shelveSet, string user, string specificChangeSetID)
         {
             var tfs = TeamFoundationServerFactory.GetServer(server);
             var buildServer = (IBuildServer)tfs.GetService(typeof(IBuildServer));
             var buildDef = buildServer.GetBuildDefinition(project, def);
-
-
             var req = buildDef.CreateBuildRequest();
-            req.RequestedFor = user;
+
+            // is there a changeset?
+            if (!string.IsNullOrEmpty(specificChangeSetID))
+            {
+                req.ProcessParameters = AddChangeSetParams(specificChangeSetID);
+            }
 
             // is there a shelveset?
             if(!string.IsNullOrEmpty(shelveSet))
@@ -82,10 +87,19 @@ namespace QueueBuildPlugin
                 req.ShelvesetName = shelveSet;
                 req.Reason = BuildReason.ValidateShelveset;
             }
+            req.RequestedFor = user;
 
             var qReq = req.BuildServer.QueueBuild(req);
 
             return qReq.Id;
+        }
+
+        private static string AddChangeSetParams(string specificChangeSetID)
+        {
+            IDictionary<String, Object> paramValues = new Dictionary<string, object>();
+            paramValues.Add("SpecifiedChangeSet", specificChangeSetID);
+            paramValues.Add("UseStagedBuild", false);
+            return WorkflowHelpers.SerializeProcessParameters(paramValues);
         }
     }
 }
