@@ -308,56 +308,30 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
             return path;
         }
 
-        public static string CreateFilesFTP(string basePath, string userName, string password, bool ftps, string fileName, string dataString, bool createDirectory)
+        public static string CreateFilesFTP(string basePath, string userName, string password, bool ftps,
+                                            string fileName, string dataString, bool createDirectory)
         {
             string remoteDirectoy = basePath + Guid.NewGuid() + "/";
-            string path = remoteDirectoy  + fileName;
+            string path = remoteDirectoy + fileName;
 
             try
             {
                 if (createDirectory)
                 {
-                    IActivityIOPath pathFromString = ActivityIOFactory.CreatePathFromString(remoteDirectoy, userName, password);
-                    IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(pathFromString);
+                    IActivityIOPath pathFromString = ActivityIOFactory.CreatePathFromString(remoteDirectoy, userName,
+                                                                                            password);
+                    IActivityIOOperationsEndPoint FTPPro =
+                        ActivityIOFactory.CreateOperationEndPointFromIOPath(pathFromString);
 
-                    FTPPro.Put(null, pathFromString, new Dev2CRUDOperationTO(false), null);
-                    
+                    FTPPro.CreateDirectory(pathFromString, new Dev2CRUDOperationTO(false));
+
                     byte[] byteArray = Encoding.UTF8.GetBytes(dataString);
 
                     Stream dataStream = new MemoryStream(byteArray);
-                    
-                       pathFromString = ActivityIOFactory.CreatePathFromString(path, userName, password);
-                       FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(pathFromString);
-                       FTPPro.Put(dataStream, pathFromString, new Dev2CRUDOperationTO(true), null);
-                    
 
-                    //if (userName != string.Empty)
-                    //{
-                    //    request.Credentials = new NetworkCredential(userName, password);
-                    //}
-                  
-
-
-                    //if (userName != string.Empty)
-                    //{
-                    //    request.Credentials = new NetworkCredential(userName, password);
-                    //}
-
-
-
-                    //byte[] data = System.Text.Encoding.UTF8.GetBytes(dataString);
-                    
-
-                    //Stream requestStream = request.GetRequestStream();
-                    //requestStream.Write(data, 0, Convert.ToInt32(data.Length));
-                    //requestStream.Close();
-
-                    //response = (FtpWebResponse)request.GetResponse();
-                    //if (response.StatusCode != FtpStatusCode.FileActionOK &&
-                    //    response.StatusCode != FtpStatusCode.ClosingData)
-                    //{
-                    //    throw new Exception("File was not created");
-                    //}
+                    pathFromString = ActivityIOFactory.CreatePathFromString(path, userName, password);
+                    FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(pathFromString);
+                    FTPPro.Put(dataStream, pathFromString, new Dev2CRUDOperationTO(true), null);
                 }
             }
             catch (Exception exception)
@@ -365,15 +339,21 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
                 var ex = exception;
                 throw;
             }
-            finally
-            {
-                //if (response != null)
-                //{
-                //    response.Close();
-                //}
-            }
 
             return path;
+        }
+
+        public static string ReadFilesFTP(string path, string userName, string password)
+        {
+            IActivityIOPath pathFromString = ActivityIOFactory.CreatePathFromString(path, userName, password);
+            IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(pathFromString);
+            var stream = FTPPro.Get(pathFromString);
+
+            stream.Position = 0;
+            using (var reader = new StreamReader(stream, Encoding.UTF8))
+            {
+                return reader.ReadToEnd();
+            }
         }
 
 
