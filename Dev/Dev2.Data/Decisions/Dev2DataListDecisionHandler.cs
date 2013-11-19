@@ -82,7 +82,6 @@ namespace Dev2.Data.Decision
             if (tmp != null)
             {
                 string model = tmp.FetchScalar().TheValue; // Get evalauted data value
-                model = JSONUtils.ReplaceSlashes(model).Replace(@"\""", @"""");                
                 if (dlID != GlobalConstants.NullDataListID)
                 {
                     try
@@ -174,15 +173,16 @@ namespace Dev2.Data.Decision
             if(payload.StartsWith("{\"TheStack\":[{"))
             {
                 //2013.05.06: Ashley Lewis for PBI 9460 - handle recordsets with stars in their index by resolving them
-                payload = JSONUtils.ReplaceSlashes(payload).Replace(@"\""", @"""");
-                //payload = JSONUtils.ReplaceSlashes(payload);
-                Dev2DecisionStack dds = _compiler.ConvertFromJsonToModel<Dev2DecisionStack>(payload);
+                payload = JSONUtils.ReplaceSlashes(payload);
+                payload = payload.Replace(@"\""", @"""");
+                //.Replace(@"\""", @"""");
+                var dds = _compiler.ConvertFromJsonToModel<Dev2DecisionStack>(payload);
 
                 if(dds.TheStack != null)
                 {
                     var effectedCols = new bool[]{false,false,false};
                     //Find decisions that mention record sets with starred indexes
-                    List<Dev2Decision> invalidDecisions = new List<Dev2Decision>();
+                    var invalidDecisions = new List<Dev2Decision>();
                     for(int i = 0; i < dds.TotalDecisions; i++)
                     {
                         Dev2Decision dd = dds.GetModelItem(i);
@@ -191,6 +191,10 @@ namespace Dev2.Data.Decision
                         {
                             invalidDecisions.Add(dd);
                             effectedCols[0] = true;
+                        }
+                        else
+                        {
+                            dd.Col1 = GetValueForDecisionVariable(dlID, dd.Col1);
                         }
 
                         if(dd.Col2 != null && DataListUtil.GetRecordsetIndexType(dd.Col2) == enRecordsetIndexType.Star)
@@ -201,6 +205,10 @@ namespace Dev2.Data.Decision
                             }
                             effectedCols[1] = true;
                         }
+                        else
+                        {
+                            dd.Col2 = GetValueForDecisionVariable(dlID, dd.Col2);
+                        }
 
                         if(dd.Col3 != null && DataListUtil.GetRecordsetIndexType(dd.Col3) == enRecordsetIndexType.Star)
                         {
@@ -209,6 +217,10 @@ namespace Dev2.Data.Decision
                                 invalidDecisions.Add(dd);
                             }
                             effectedCols[2] = true;
+                        }
+                        else
+                        {
+                            dd.Col3 = GetValueForDecisionVariable(dlID, dd.Col3);
                         }
                     }
                     //Remove those record sets and replace them with a new decision for each resolved value
@@ -224,6 +236,41 @@ namespace Dev2.Data.Decision
 
             return tmp;
 
+        }
+
+        static string GetValueForDecisionVariable(Guid dlID, string decisionColumn)
+        {
+            if(!String.IsNullOrEmpty(decisionColumn))
+            {
+                IBinaryDataListItem binaryDataListItem = null;
+                ErrorResultTO errors;
+                IBinaryDataListEntry entry = _compiler.Evaluate(dlID, enActionType.User, decisionColumn, false, out errors);
+                if(entry.IsRecordset)
+                {
+                    string error;
+                    var indexType = DataListUtil.GetRecordsetIndexType(decisionColumn);
+                    if(indexType == enRecordsetIndexType.Numeric)
+                    {
+                        var index = int.Parse(DataListUtil.ExtractIndexRegionFromRecordset(decisionColumn));
+                        var columnName = DataListUtil.ExtractFieldNameFromValue(decisionColumn);
+                        
+                        binaryDataListItem = entry.TryFetchRecordsetColumnAtIndex(columnName, index, out error);
+                    }
+                    else
+                    {
+                        binaryDataListItem = entry.TryFetchLastIndexedRecordsetUpsertPayload(out error);
+                    }
+                }
+                else
+                {
+                    binaryDataListItem = entry.FetchScalar();
+                }
+                if(binaryDataListItem != null)
+                {
+                    return JSONUtils.ReplaceSlashes(binaryDataListItem.TheValue);
+                }
+            }
+            return null;
         }
 
         /// <summary>

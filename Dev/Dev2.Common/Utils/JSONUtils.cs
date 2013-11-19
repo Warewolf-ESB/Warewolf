@@ -1,7 +1,4 @@
-﻿using System;
-using Dev2.Providers.Logs;
-
-namespace Dev2.Common.Utils
+﻿namespace Dev2.Common.Utils
 {
     public static class JSONUtils
     {

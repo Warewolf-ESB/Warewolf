@@ -83,13 +83,121 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [Owner("Ashley Lewis")]
+        [Owner("Hagashen Naidu")]
         [TestCategory("Dev2DataListDecisionHandler_ExecuteDecisionStack")]
-        [Ignore]//pending bug 10733
+        public void Dev2DataListDecisionHandler_ExecuteDecisionStack_WithRecordSetIndexed_EvalutesDecisionCorrectly()
+        {
+
+            Dev2DecisionStack dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.AND };
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            dds.AddModelItem(new Dev2Decision { Col1 = "[[vars(1).var]]", Col2 = "[[vars(2).var]]", EvaluationFn = enDecisionType.IsEqual });
+
+            string modelData = dds.ToVBPersistableModel();
+
+            CurrentDl = "<ADL><vars><var></var></vars></ADL>";
+            TestData = "<root><vars><var>\"something \"data\" \"</var></vars><vars><var>\"somthing \"data\" \"</var></vars></root>";
+            ErrorResultTO errors;
+            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+
+            IList<string> getDatalistID = new List<string> { exeID.ToString() };
+
+            var res = new Dev2DataListDecisionHandler().ExecuteDecisionStack(modelData, getDatalistID);
+
+            // remove test datalist ;)
+            DataListRemoval(exeID);
+
+            Assert.IsFalse(res);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Dev2DataListDecisionHandler_ExecuteDecisionStack")]
+        public void Dev2DataListDecisionHandler_ExecuteDecisionStack_WithRecordSetBlank_EvalutesDecisionCorrectlyFalse()
+        {
+
+            Dev2DecisionStack dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.AND };
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            dds.AddModelItem(new Dev2Decision { Col1 = "[[vars(1).var]]", Col2 = "[[vars().var]]", EvaluationFn = enDecisionType.IsEqual });
+
+            string modelData = dds.ToVBPersistableModel();
+
+            CurrentDl = "<ADL><vars><var></var></vars></ADL>";
+            TestData = "<root><vars><var>\"something \"data\" \"</var></vars><vars><var>\"somthing \"data\" \"</var></vars></root>";
+            ErrorResultTO errors;
+            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+
+            IList<string> getDatalistID = new List<string> { exeID.ToString() };
+
+            var res = new Dev2DataListDecisionHandler().ExecuteDecisionStack(modelData, getDatalistID);
+
+            // remove test datalist ;)
+            DataListRemoval(exeID);
+
+            Assert.IsFalse(res);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Dev2DataListDecisionHandler_ExecuteDecisionStack")]
+        public void Dev2DataListDecisionHandler_ExecuteDecisionStack_WithRecordSetBlank_EvalutesDecisionCorrectlyTrue()
+        {
+
+            Dev2DecisionStack dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.AND };
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            dds.AddModelItem(new Dev2Decision { Col1 = "[[vars(1).var]]", Col2 = "[[vars().var]]", EvaluationFn = enDecisionType.IsEqual });
+
+            string modelData = dds.ToVBPersistableModel();
+
+            CurrentDl = "<ADL><vars><var></var></vars></ADL>";
+            TestData = "<root><vars><var>\"something \"data\" \"</var></vars><vars><var>\"something \"data\" \"</var></vars></root>";
+            ErrorResultTO errors;
+            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+
+            IList<string> getDatalistID = new List<string> { exeID.ToString() };
+
+            var res = new Dev2DataListDecisionHandler().ExecuteDecisionStack(modelData, getDatalistID);
+
+            // remove test datalist ;)
+            DataListRemoval(exeID);
+
+            Assert.IsTrue(res);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Dev2DataListDecisionHandler_ExecuteDecisionStack")]
+        public void Dev2DataListDecisionHandler_ExecuteDecisionStack_WithRecordStar_EvalutesDecisionCorrectly()
+        {
+
+            Dev2DecisionStack dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.AND };
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            dds.AddModelItem(new Dev2Decision { Col1 = "[[vars(*).var]]", Col2 = @"something ""data""", EvaluationFn = enDecisionType.IsEqual });
+
+            string modelData = dds.ToVBPersistableModel();
+
+            CurrentDl = "<ADL><vars><var></var></vars></ADL>";
+            TestData = "<root><vars><var>something \"data\"</var></vars><vars><var>something \"data\"</var></vars></root>";
+            ErrorResultTO errors;
+            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+
+            IList<string> getDatalistID = new List<string> { exeID.ToString() };
+
+            var res = new Dev2DataListDecisionHandler().ExecuteDecisionStack(modelData, getDatalistID);
+
+            // remove test datalist ;)
+            DataListRemoval(exeID);
+
+            Assert.IsTrue(res);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Dev2DataListDecisionHandler_ExecuteDecisionStack")]
+        [Ignore] // This is still an issue as the model data is being changed somewhere before the DecisionHandler.
         public void Dev2DataListDecisionHandler_ExecuteDecisionStack_SlashInVariable_CanDeserialize()
         {
             CurrentDl = "<ADL><resul><t/></resul></ADL>";
-            TestData = "<root><resul><t>1234</t><t>1234</t><t>1/2\\3/4\\</t><t>1\n2\n3\n4\n</t><t>1 2   3   4   5   </t></resul></root>";
+            TestData = @"<root><resul><t>1234</t></resul><resul><t>1234</t></resul><resul><t>1/2\3/4\</t></resul><resul><t>1\n2\n3\n4\n</t></resul><resul><t>1 2   3   4   5   </t></resul></root>";
             ErrorResultTO errors;
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -99,14 +207,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             var dev2DataListDecisionHandler = new Dev2DataListDecisionHandler();
 
             //------------Execute Test---------------------------
-            var res = dev2DataListDecisionHandler.ExecuteDecisionStack("{\"TheStack\":[{\"Col1\":\"[[resul(1).t]]\",\"Col2\":\"1234\",\"Col3\":\"\",\"PopulatedColumnCount\":2,\"EvaluationFn\":\"IsEqual\"},{\"Col1\":\"[[resul(2).t]]\",\"Col2\":\"1234\",\"Col3\":\"\",\"PopulatedColumnCount\":2,\"EvaluationFn\":\"IsEqual\"},{\"Col1\":\"[[resul(3).t]]\",\"Col2\":\"1/2\\3/4\\\",\"Col3\":\"\",\"PopulatedColumnCount\":2,\"EvaluationFn\":\"IsEqual\"},{\"Col1\":\"[[resul(4).t]]\",\"Col2\":\"1\n2\n3\n4\n\",\"Col3\":\"\",\"PopulatedColumnCount\":2,\"EvaluationFn\":\"IsEqual\"},{\"Col1\":\"[[resul(5).t]]\",\"Col2\":\"1  2   3   4   5   \",\"Col3\":\"\",\"PopulatedColumnCount\":2,\"EvaluationFn\":\"IsEqual\"}],\"TotalDecisions\":5,\"ModelName\":\"Dev2DecisionStack\",\"Mode\":\"AND\",\"TrueArmText\":\"True\",\"FalseArmText\":\"False\",\"DisplayText\":\"Decision\"}", getDatalistID);
+            var res = dev2DataListDecisionHandler.ExecuteDecisionStack(@"{""TheStack"":[{""Col1"":""[[resul(1).t]]"",""Col2"":""1234"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""},{""Col1"":""[[resul(2).t]]"",""Col2"":""1234"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""},{""Col1"":""[[resul(3).t]]"",""Col2"":""1/2\\3/4\\"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""},{""Col1"":""[[resul(4).t]]"",""Col2"":""1\n2\n3\n4\n"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""},{""Col1"":""[[resul(5).t]]"",""Col2"":""1  2   3   4   5   "",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":5,""ModelName"":""Dev2DecisionStack"",""Mode"":""AND"",""TrueArmText"":""True"",""FalseArmText"":""False"",""DisplayText"":""Decision""}", getDatalistID);
 
             // Assert Can Deserialize
             Assert.IsTrue(res);
 
             DataListRemoval(exeID);
         }
-
         #endregion Decision Tests
 
         #region GetDebugInputs/Outputs
