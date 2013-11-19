@@ -140,6 +140,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 _at = value;
                 OnPropertyChanged("At");
+                RaiseCanAddRemoveChanged();
             }
         }
 
