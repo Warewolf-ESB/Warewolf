@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Xaml;
 using Microsoft.TeamFoundation.Build.Client;
-using Microsoft.TeamFoundation.Build.Workflow;
 using Microsoft.TeamFoundation.Client;
 
 namespace QueueBuildPlugin
@@ -86,7 +86,7 @@ namespace QueueBuildPlugin
             {
                 req.ShelvesetName = shelveSet;
                 req.Reason = BuildReason.ValidateShelveset;
-            }
+            } 
             req.RequestedFor = user;
 
             var qReq = req.BuildServer.QueueBuild(req);
@@ -99,7 +99,7 @@ namespace QueueBuildPlugin
             IDictionary<String, Object> paramValues = new Dictionary<string, object>();
             paramValues.Add("SpecifiedChangeSet", specificChangeSetID);
             paramValues.Add("UseStagedBuild", false);
-            return WorkflowHelpers.SerializeProcessParameters(paramValues);
+            return XamlServices.Save(paramValues);
         }
     }
 }
