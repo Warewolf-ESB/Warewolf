@@ -87,9 +87,6 @@
   <ItemGroup>
     <Compile Include="BinaryDataList\Converters\FetchStudioDataListXMLTranslatorTest.cs" />
     <Compile Include="BinaryDataList\Converters\DataListXMLTranslatorWithOutSystemTagsTest.cs" />
-    <Compile Include="BinaryDataList\DataListLoadTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="BinaryDataList\IndexIteratorTest.cs" />
     <Compile Include="BinaryDataList\LoopedIndexIteratorTest.cs" />
     <Compile Include="BinaryDataList\RecordsetGroupTest.cs" />

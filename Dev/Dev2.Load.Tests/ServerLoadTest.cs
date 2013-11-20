@@ -8,55 +8,9 @@ namespace Dev2.Integration.Tests.Load_Tests
     /// Summary description for LoadTest
     /// </summary>
     [TestClass]
-    public class LoadTest
+    public class ServerLoadTest
     {
-        public LoadTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
         private double _ticksPerSec = 10000000;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
 
         [TestMethod]
         public void FileWith10kPrimes_Expect10kRecordsetEntries_in_Under_5Seconds()
@@ -73,11 +27,11 @@ namespace Dev2.Integration.Tests.Load_Tests
             Assert.IsTrue(result.IndexOf(exp, StringComparison.Ordinal) > 0);
             // Travis.Frisinger - Bug 8579
             // Was 10.0 Moved to 2.5
-            if (duration <= 2.5)
+            if(duration <= 2.5)
             {
                 Assert.IsTrue(duration <= 2.5, " It Took { " + duration + " }");
             }
-            else if (duration <= 35)
+            else if(duration <= 35)
             {
                 Assert.Inconclusive("It took too long to run this test! { " + duration + " }");
             }
@@ -104,11 +58,11 @@ namespace Dev2.Integration.Tests.Load_Tests
 
             StringAssert.Contains(result, exp);
             Console.WriteLine("Took " + duration);
-            if (duration <= 25.0)
+            if(duration <= 25.0)
             {
-                Assert.AreEqual(1,1);
+                Assert.AreEqual(1, 1);
             }
-            else if (duration <= 60.0)
+            else if(duration <= 60.0)
             {
                 Assert.Inconclusive("Your PC passed the test, although it was a bit slow - It meant to take less than 25 seconds, but it took " + duration);
             }

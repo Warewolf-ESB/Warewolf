@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Web;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Diagnostics;
@@ -14,7 +12,7 @@ using Dev2.Runtime.ESB.Execution;
 
 namespace Dev2.Integration.Tests.Helpers
 {
-    static class TestHelper
+    public static class TestHelper
     {
 
         public static readonly string _tblStart = "<table>";

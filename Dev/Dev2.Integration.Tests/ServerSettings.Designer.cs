@@ -22,7 +22,7 @@ namespace Dev2.Integration.Tests {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ServerSettings {
+    public class ServerSettings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -108,7 +108,7 @@ namespace Dev2.Integration.Tests {
         /// <summary>
         ///   Looks up a localized string similar to http://localhost:1234/services/.
         /// </summary>
-        internal static string WebserverURI {
+        public static string WebserverURI {
             get {
                 return ResourceManager.GetString("WebserverURI", resourceCulture);
             }
