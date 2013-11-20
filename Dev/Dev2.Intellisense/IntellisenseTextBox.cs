@@ -1,5 +1,12 @@
-﻿using System.Linq;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using System.Reactive;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
+using System.Threading;
 using System.Windows.Data;
+using System.Windows.Interactivity;
+using Dev2.CustomControls.Trigger;
 using Dev2.DataList.Contract;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
@@ -14,6 +21,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Studio.InterfaceImplementors;
+using TriggerBase = System.Windows.Interactivity.TriggerBase;
 
 namespace Dev2.UI
 {
@@ -25,7 +33,7 @@ namespace Dev2.UI
     {
         #region Static Constructor
         static IntellisenseTextBox()
-        {
+       {            
             DefaultStyleKeyProperty.OverrideMetadata(typeof(IntellisenseTextBox),
                 new FrameworkPropertyMetadata(typeof(IntellisenseTextBox)));
         }
@@ -561,7 +569,9 @@ namespace Dev2.UI
         #endregion DisplayMemberPath
 
         #region IsOpen
-        public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register("IsOpen", typeof(bool), typeof(IntellisenseTextBox), new UIPropertyMetadata(false, OnIsOpenChanged));
+
+
+        public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register("IsOpen", typeof(bool), typeof(IntellisenseTextBox), new UIPropertyMetadata(false));
 
         public bool IsOpen
         {
@@ -571,7 +581,7 @@ namespace Dev2.UI
             }
             set
             {
-                SetValue(IsOpenProperty, value);
+                SetValue(IsOpenProperty, value);                              
             }
         }
 
@@ -579,7 +589,7 @@ namespace Dev2.UI
         {
             IntellisenseTextBox box = o as IntellisenseTextBox;
 
-            if (box != null)
+            if(box != null)
             {
                 box.OnIsOpenChanged((bool)e.OldValue, (bool)e.NewValue);
             }
@@ -589,6 +599,7 @@ namespace Dev2.UI
         #endregion Dependency Properties
 
         #region Instance Fields
+        private VirtualizingStackPanel _panel; 
         private ListBox _listBox;
         private KeyValuePair<int, int> _lastResultInputKey;
         private bool _lastResultHasError;
@@ -605,20 +616,40 @@ namespace Dev2.UI
         private bool _forcedOpen;
         private bool _fromPopup;
         bool _isDisposed;
+        
 
         #endregion
 
         #region Public Properties
-        public ItemCollection Items { get { return _listBox.Items; } }
+
+        //public ItemCollection Items { get { return _listBox.Items; } }
+        ObservableCollection<IntellisenseProviderResult> _items;
+        public ObservableCollection<IntellisenseProviderResult> Items
+        {
+            get
+            {
+                return _items;
+            }
+            set
+            {
+                _items = value;
+            }
+        }
+
         #endregion
 
         #region Events
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
-
         #region Constructor
         public IntellisenseTextBox()
         {
+            var observable = Observable.FromEventPattern(this, "TextChanged")
+                               .Throttle(TimeSpan.FromMilliseconds(200), Scheduler.ThreadPool)                               
+                               .ObserveOn(SynchronizationContext.Current);
+
+            observable.Subscribe(pattern => TheTextHasChanged());
+            Items = new ObservableCollection<IntellisenseProviderResult>();
             DefaultStyleKey = typeof(IntellisenseTextBox);
             Mouse.AddPreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideCapturedElement);
             Unloaded += OnUnloaded;
@@ -627,18 +658,17 @@ namespace Dev2.UI
 
             //08.04.2013: Ashley Lewis - To test for Bug 9238 Moved this from OnInitialized() to allow for a more contextless initialization
             _toolTip = new ToolTip();
-            _listBox = new ListBox();
+            _listBox = new ListBox();            
         }
 
         #endregion
-
+       
         #region Load Handling
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
             _toolTip.ToolTipOpening += ToolTip_ToolTipOpening;
             ToolTip = _toolTip;
-
             _toolTip.Placement = PlacementMode.Right;
             _toolTip.PlacementTarget = this;
             EnsureIntellisenseProvider();
@@ -712,19 +742,17 @@ namespace Dev2.UI
             }
         }
 
-        protected override void OnTextChanged(TextChangedEventArgs e)
+        protected virtual void TheTextHasChanged()
         {
-            base.OnTextChanged(e);
-
             try
             {
-                if (AllowUserInsertLine && GetLastVisibleLineIndex() + 1 == LineCount)
+                if(AllowUserInsertLine && GetLastVisibleLineIndex() + 1 == LineCount)
                 {
                     double lineHeight = FontSize * FontFamily.LineSpacing;
                     double extentHeight = ExtentHeight;
                     double adjustedHeight = Height;
 
-                    while (adjustedHeight - lineHeight > extentHeight)
+                    while(adjustedHeight - lineHeight > extentHeight)
                     {
                         adjustedHeight -= lineHeight;
                     }
@@ -732,11 +760,11 @@ namespace Dev2.UI
                     Height = adjustedHeight;
                 }
 
-                if (!_suppressChangeOpen)
+                if(!_suppressChangeOpen)
                 {
                     bool wasOpen = IsOpen;
 
-                    if (!wasOpen)
+                    if(!wasOpen)
                     {
                         _caretPositionOnPopup = _possibleCaretPositionOnPopup;
                         _textOnPopup = Text;
@@ -744,13 +772,13 @@ namespace Dev2.UI
 
                     EnsureIntellisenseResults(Text, true, IntellisenseDesiredResultSet.ClosestMatch);
 
-                    if (IsKeyboardFocused && IsKeyboardFocusWithin)
+                    if(IsKeyboardFocused && IsKeyboardFocusWithin)
                     {
-                        if (!wasOpen && _listBox != null && _listBox.HasItems)
+                        if(!wasOpen && _listBox != null && _listBox.HasItems)
                         {
                             _expectOpen = true;
-                            _desiredResultSet = (IntellisenseDesiredResultSet)4;
-                            IsOpen = true;
+                            _desiredResultSet = (IntellisenseDesiredResultSet)4;                           
+                            IsOpen = true;                            
                         }
                     }
                 }
@@ -763,18 +791,18 @@ namespace Dev2.UI
 
                 int maxLines = AllowUserInsertLine ? MaxLines : 1;
 
-                if (LineCount >= maxLines)
+                if(LineCount >= maxLines)
                 {
                     int caretPosition = CaretIndex;
                     string nText = "";
 
-                    for (int i = 0; i < maxLines; i++)
+                    for(int i = 0; i < maxLines; i++)
                     {
                         string lineText = GetLineText(i);
 
-                        if (i + 1 >= maxLines)
+                        if(i + 1 >= maxLines)
                         {
-                            if (lineText.EndsWith(Environment.NewLine))
+                            if(lineText.EndsWith(Environment.NewLine))
                             {
                                 lineText = lineText.Substring(0, lineText.Length - Environment.NewLine.Length);
                             }
@@ -783,12 +811,17 @@ namespace Dev2.UI
                         nText += lineText;
                     }
 
-                    if (caretPosition > nText.Length) caretPosition = nText.Length;
+                    if(caretPosition > nText.Length)
+                    {
+                        caretPosition = nText.Length;
+                    }
                     Text = nText;
                     Select(caretPosition, 0);
                 }
             }
-            catch (InvalidOperationException) { }
+            catch(InvalidOperationException)
+            {
+            }
         }
 
         protected virtual void OnAllowMultilinePasteChanged(bool oldValue, bool newValue)
@@ -993,13 +1026,13 @@ namespace Dev2.UI
                                         cleared = true;
                                         if(_listBox != null)
                                         {
-                                            _listBox.Items.Clear();
+                                            Items.Clear();
                                         }
                                     }
 
                                     if(_listBox != null)
                                     {
-                                        _listBox.Items.Add(currentResult);
+                                        Items.Add(currentResult);
                                     }
                                     ttValueBuilder.AppendLine(currentResult.Name);
                                 }
@@ -1056,7 +1089,7 @@ namespace Dev2.UI
 
                             if(_listBox != null)
                             {
-                                _listBox.Items.Clear();
+                                Items.Clear();
                             }
                         }
                     }
@@ -1070,8 +1103,7 @@ namespace Dev2.UI
                         if(_listBox != null)
                         {
                             foreach(var currentResult in
-                                _listBox.Items.Cast<object>().OfType<IntellisenseProviderResult>()
-                                        .Where(currentResult => currentResult.IsError))
+                                Items.Where(currentResult => currentResult.IsError))
                             {
                                 hasError = true;
 
@@ -1122,12 +1154,16 @@ namespace Dev2.UI
 
                         if(_listBox != null)
                         {
-                            _listBox.Items.Clear();
+                            Items.Clear();
                         }
                     }
 
                     EnsureErrorStatus();
                 }
+            }
+            if(_listBox != null)
+            {
+                _listBox.ItemsSource = Items;
             }
         }
 
@@ -1594,7 +1630,7 @@ namespace Dev2.UI
         {
             if (_listBox != null)
             {
-                int count = _listBox.Items.Count;
+                int count = Items.Count;
                 int index = _listBox.SelectedIndex;
                 bool scrolled = false;
 

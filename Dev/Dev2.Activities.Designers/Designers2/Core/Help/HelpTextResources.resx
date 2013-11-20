@@ -1394,7 +1394,8 @@ To execute a command line action or actions, enter them in here. Acts like a bat
 [[Recordset().Field]]</value>
   </data>
   <data name="CommentHelpComment" xml:space="preserve">
-    <value>NA (there is no help button for comments.)</value>
+    <value>Comments do not execute and are place holders for fututre services or tools or simply to leave commenty inside the workflow.
+You can connect comments into the process flow and they will simply be skipped during execution. However, they will appear in the debug output.</value>
   </data>
   <data name="CommentToolTipComment" xml:space="preserve">
     <value>Notes and comments will not be executed at run time but will show up in the debug output.</value>

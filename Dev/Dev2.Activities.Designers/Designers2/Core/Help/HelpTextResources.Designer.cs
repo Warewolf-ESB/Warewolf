@@ -321,7 +321,8 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NA (there is no help button for comments.).
+        ///   Looks up a localized string similar to Comments do not execute and are place holders for fututre services or tools or simply to leave commenty inside the workflow.
+        ///You can connect comments into the process flow and they will simply be skipped during execution. However, they will appear in the debug output..
         /// </summary>
         public static string CommentHelpComment {
             get {

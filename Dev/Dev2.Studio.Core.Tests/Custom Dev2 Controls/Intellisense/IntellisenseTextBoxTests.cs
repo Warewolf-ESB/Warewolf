@@ -1,4 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Threading;
 using System.Windows.Controls;
 using Dev2.Core.Tests.Utils;
 using Dev2.DataList.Contract;
@@ -199,6 +202,58 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             var toolTipText = ((ToolTip)textBox.ToolTip).Content as string;
             Assert.IsTrue(textBox.HasError);
             Assert.IsTrue(toolTipText.Contains("Recordset is not allowed"));
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("IntellisenseTextBox_TextChanged")]
+        public void IntellisenseTextBox_TextChanged_LessThen200msBetweenTextChanged_TextChangedFiredOnce()
+        {
+            //------------Setup for test--------------------------
+            SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+            var mockIntellisenseTextBox= new MockIntellisenseTextbox();
+
+            var chars = new[] { 'a', 'b','c','d' };
+            mockIntellisenseTextBox.InitTestClass();
+            
+            //------------Execute Test---------------------------
+
+            foreach(var c in chars)
+            {
+                mockIntellisenseTextBox.Text = c.ToString(CultureInfo.InvariantCulture);
+                Thread.Sleep(50);
+            }
+
+            Thread.Sleep(250);
+
+            //------------Assert Results-------------------------
+            Thread.Sleep(100);
+            Assert.AreEqual(1,mockIntellisenseTextBox.TextChangedCounter);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("IntellisenseTextBox_TextChanged")]
+        public void IntellisenseTextBox_TextChanged_GreaterThen200msBetweenTextChanged_TextChangedFiredFourTimes()
+        {
+            //------------Setup for test--------------------------
+            SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+            var mockIntellisenseTextBox = new MockIntellisenseTextbox();
+
+            var chars = new[] { 'a', 'b', 'c', 'd' };
+            mockIntellisenseTextBox.InitTestClass();
+
+            //------------Execute Test---------------------------
+
+            foreach(var c in chars)
+            {
+                mockIntellisenseTextBox.Text = c.ToString(CultureInfo.InvariantCulture);
+                Thread.Sleep(250);
+            }
+
+            //------------Assert Results-------------------------
+            Thread.Sleep(100);
+            Assert.AreEqual(4, mockIntellisenseTextBox.TextChangedCounter);
         }
     }
 }
