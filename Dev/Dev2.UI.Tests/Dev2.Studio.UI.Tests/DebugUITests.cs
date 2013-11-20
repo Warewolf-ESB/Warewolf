@@ -66,10 +66,24 @@ namespace Dev2.Studio.UI.Tests
                 ExplorerUIMap.EnterExplorerSearchText("Bug9394");
                 ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug9394");
 
+                // prime the values ;)
+                RibbonUIMap.ClickRibbonMenuItem("Debug");
+                PopupDialogUIMap.WaitForDialog();
+
+                SendKeys.SendWait("{TAB}");
+                Playback.Wait(100);
+                SendKeys.SendWait("1");
+                SendKeys.SendWait("{TAB}");
+                Playback.Wait(100);
+                SendKeys.SendWait("2");
+
+                DebugUIMap.ClickExecute();
+                OutputUIMap.WaitForExecution();
+                
                 //------------Assert Results-------------------------
 
                 // Check for valid input in the input boxes ;)
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 9; i++)
                 {
                     RibbonUIMap.ClickRibbonMenuItem("Debug");
                     PopupDialogUIMap.WaitForDialog();
@@ -91,31 +105,31 @@ namespace Dev2.Studio.UI.Tests
                 DebugUIMap.ClickXMLTab();
                 Playback.Wait(200);
 
-                //// flip back and forth to check persistence ;)
-                //DebugUIMap.ClickInputDataTab();
-                //Playback.Wait(200);
-                //DebugUIMap.ClickXMLTab();
-                //Playback.Wait(200);
+                // flip back and forth to check persistence ;)
+                DebugUIMap.ClickInputDataTab();
+                Playback.Wait(200);
+                DebugUIMap.ClickXMLTab();
+                Playback.Wait(200);
 
-                //SendKeys.SendWait(KeyboardCommands.TabCommand);
-                //Playback.Wait(200);
-                //SendKeys.SendWait(KeyboardCommands.SelectAllCommand);
-                //Playback.Wait(200);
-                //Clipboard.Clear();
-                //SendKeys.SendWait(KeyboardCommands.CopyCommand);
-                //var actualXML = Clipboard.GetData(DataFormats.Text);
+                SendKeys.SendWait(KeyboardCommands.TabCommand);
+                Playback.Wait(200);
+                SendKeys.SendWait(KeyboardCommands.SelectAllCommand);
+                Playback.Wait(200);
+                Clipboard.Clear();
+                SendKeys.SendWait(KeyboardCommands.CopyCommand);
+                var actualXML = Clipboard.GetData(DataFormats.Text);
 
                 //close the window ;)
                 DebugUIMap.CloseDebugWindow_ByCancel();
 
-//                const string expectedXML = @"<DataList>
-//  <countries>
-//    <CountryID>1</CountryID>
-//    <Description>2</Description>
-//  </countries>
-//</DataList>";
+                const string expectedXML = @"<DataList>
+  <countries>
+    <CountryID>1</CountryID>
+    <Description>2</Description>
+  </countries>
+</DataList>";
 
-//                Assert.AreEqual(expectedXML, actualXML);
+                Assert.AreEqual(expectedXML, actualXML);
 
         }
     }
