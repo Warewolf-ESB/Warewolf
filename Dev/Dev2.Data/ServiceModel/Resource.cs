@@ -140,10 +140,14 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public void SetIsNew(XElement xml)
         {
-            var tmp = xml.Element("IsNewWorkflow").Value;
-            bool isNew;
-            Boolean.TryParse(tmp, out isNew);
-            IsNewResource = isNew;
+            var xElement = xml.Element("IsNewWorkflow");
+            if (xElement != null)
+            {
+                var tmp = xElement.Value;
+                bool isNew;
+                Boolean.TryParse(tmp, out isNew);
+                IsNewResource = isNew;
+            }
         }
 
         public void GetInputsOutputs(XElement xml)
