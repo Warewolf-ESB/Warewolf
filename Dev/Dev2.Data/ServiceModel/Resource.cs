@@ -130,11 +130,20 @@ namespace Dev2.Runtime.ServiceModel.Data
             LoadDependencies(xml);
             ReadDataList(xml);
             GetInputsOutputs(xml);
+            SetIsNew(xml);
         }
 
         public void ReadDataList(XElement xml)
         {
             DataList = xml.ElementStringSafe("DataList");
+        }
+
+        public void SetIsNew(XElement xml)
+        {
+            var tmp = xml.Element("IsNewWorkflow").Value;
+            bool isNew;
+            Boolean.TryParse(tmp, out isNew);
+            IsNewResource = isNew;
         }
 
         public void GetInputsOutputs(XElement xml)
@@ -247,8 +256,12 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         [JsonIgnore]
         public string Inputs { get; set; }
+
         [JsonIgnore]
         public string Outputs { get; set; }
+
+        [JsonIgnore]
+        public bool IsNewResource { get; set; }
 
         #endregion
 

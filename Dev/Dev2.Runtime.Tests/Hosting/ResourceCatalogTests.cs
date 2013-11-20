@@ -270,8 +270,6 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #endregion
 
-        
-
         #region ParallelExecution
 
         [TestMethod]

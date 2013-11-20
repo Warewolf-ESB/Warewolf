@@ -31,7 +31,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
             var resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceName, type, roles);
 
-            IList<SerializableResource> resourceList = resources.Select(StripForShip).ToList();
+            IList<SerializableResource> resourceList = resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
 
             var result = JsonConvert.SerializeObject(resourceList);
 
@@ -52,44 +52,6 @@ namespace Dev2.Runtime.ESB.Management.Services
         public string HandlesType()
         {
             return "FindResourceService";
-        }
-
-
-        /// <summary>
-        /// Strips for ship.
-        /// </summary>
-        /// <param name="resource">The resource.</param>
-        /// TODO : Extract to util method and remove dup in FindResourcesByID
-        /// <returns></returns>
-        private SerializableResource StripForShip(IResource resource)
-        {
-
-            // convert the fliping errors due to json issues in c# ;(
-            List<ErrorInfo> errors = new List<ErrorInfo>();
-            var parseErrors = resource.Errors;
-            if (parseErrors != null)
-            {
-                errors.AddRange(parseErrors.Select(error => (error as ErrorInfo)));
-            }
-
-            var datalist = "<DataList></DataList>";
-
-            if(resource.DataList != null)
-            {
-                datalist = resource.DataList.Replace("\"", GlobalConstants.SerializableResourceQuote).Replace("'", GlobalConstants.SerializableResourceSingleQuote);
-            }
-
-            return new SerializableResource
-            {
-                ResourceCategory = resource.ResourcePath,
-                ResourceID = resource.ResourceID,
-                ResourceName = resource.ResourceName,
-                ResourceType = resource.ResourceType,
-                Version = resource.Version,
-                IsValid = resource.IsValid,
-                DataList = datalist,
-                Errors =  errors
-            };
         }
     }
 }

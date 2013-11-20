@@ -141,7 +141,6 @@ namespace Dev2.Runtime.Hosting
 
                     xml = null;
 
-
                 });
             }
             finally

@@ -56,6 +56,14 @@ namespace Dev2.Runtime.ServiceModel.Data
         bool IsUpgraded { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [is new resource].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [is new resource]; otherwise, <c>false</c>.
+        /// </value>
+        bool IsNewResource { get; set; }
+
+        /// <summary>
         /// Gets the XML representation of this resource.
         /// </summary>
         /// <returns>The XML representation of this resource.</returns>

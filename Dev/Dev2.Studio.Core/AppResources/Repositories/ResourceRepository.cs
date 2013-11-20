@@ -592,6 +592,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 // add to cache of services fetched ;)
                 _cachedServices.Add(id);
 
+                var isNewWorkflow = data.IsNewResource;
+
                 var resource = ResourceModelFactory.CreateResourceModel(_environmentModel);
                 resource.ResourceType = resourceType;
                 resource.ID = id;
@@ -609,6 +611,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.ServerResourceType = data.ResourceType.ToString();
                 resource.UnitTestTargetWorkflowService = string.Empty;
                 resource.HelpLink = string.Empty;
+                resource.IsNewWorkflow = isNewWorkflow;
 
                 // set the errors ;)
                 foreach(var error in data.Errors)
@@ -621,9 +624,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     resource.WorkflowXaml = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, id); 
                 }
 
-                // TODO : Not sure about this stuff ?!
-
-                var isNewWorkflow = data.IsNewResource;
                 if(isNewWorkflow)
                 {
                     NewWorkflowNames.Instance.Add(resource.DisplayName);

@@ -88,6 +88,7 @@
     <Compile Include="Compiler\CompileRules\WebService_IsRequiredChangeRule.cs" />
     <Compile Include="ESB\Management\Services\ClearLog.cs" />
     <Compile Include="ESB\Management\Services\FetchResourceDefintition.cs" />
+    <Compile Include="ESB\Management\Services\FindResourceHelper.cs" />
     <Compile Include="ESB\Management\Services\GetDatabaseColumnsForTable.cs" />
     <Compile Include="ESB\Management\Services\GetDatabaseTables.cs" />
     <Compile Include="ESB\Management\Services\RenameCategoryResource.cs" />
