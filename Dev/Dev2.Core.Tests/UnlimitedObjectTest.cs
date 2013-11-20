@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Dynamic;
-using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using System.Xml;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework;
-using Match = System.Text.RegularExpressions.Match;
 
 namespace Dev2.Tests
 {
@@ -19,7 +11,8 @@ namespace Dev2.Tests
     ///     This is a test class for UnlimitedObjectTest and is intended
     ///     to contain all UnlimitedObjectTest Unit Tests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class UnlimitedObjectTest
     {
         /// <summary>
