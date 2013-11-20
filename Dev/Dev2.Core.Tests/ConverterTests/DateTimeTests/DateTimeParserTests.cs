@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
 using Dev2.Common;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Converters.DateAndTime;
 using Dev2.Converters.DateAndTime.Interfaces;
 using System.Globalization;
@@ -13,7 +10,8 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
     /// <summary>
     /// Summary description for DateTimeParserTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DateTimeParserTests {
         static IDateTimeParser parser;
         private TestContext testContextInstance;
