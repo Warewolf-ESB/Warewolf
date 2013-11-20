@@ -660,14 +660,14 @@
                   </ActivityAction>
                 </mtbwa:InvokeProcess.OutputDataReceived>
               </mtbwa:InvokeProcess>
-              <InvokeMethod DisplayName="Move Zipped Binaries" sap2010:WorkflowViewState.IdRef="InvokeMethod_7" MethodName="Move" TargetType="si:File">
+              <InvokeMethod DisplayName="Common Stage" sap2010:WorkflowViewState.IdRef="InvokeMethod_7" MethodName="Copy" TargetType="si:File">
                 <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\DevMergeStaging.zip"]</InArgument>
                 <InArgument x:TypeArguments="x:String">[StagingDir]</InArgument>
               </InvokeMethod>
               <mtbwa:CopyDirectory Destination="[StagingDir &amp; &quot;\&quot;]" DisplayName="Copy Binaries Directory" sap2010:WorkflowViewState.IdRef="CopyDirectory_3" Source="[BinariesDirectory]" />
             </Sequence>
             <Sequence DisplayName="Stage to Specific ChangeSet Location" sap2010:WorkflowViewState.IdRef="Sequence_54">
-              <InvokeMethod DisplayName="Move Zipped Binaries" sap2010:WorkflowViewState.IdRef="InvokeMethod_8" MethodName="Move" TargetType="si:File">
+              <InvokeMethod DisplayName="ChangeSet Specific Stage" sap2010:WorkflowViewState.IdRef="InvokeMethod_8" MethodName="Copy" TargetType="si:File">
                 <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\" &amp; ChangeSet.ChangesetId.ToString() &amp; ".zip"]</InArgument>
                 <InArgument x:TypeArguments="x:String">["\\rsaklfsvrtfsbld\Automated Builds\TestRunStaging\" &amp; ChangeSet.ChangesetId.ToString &amp; ".zip"]</InArgument>
               </InvokeMethod>
