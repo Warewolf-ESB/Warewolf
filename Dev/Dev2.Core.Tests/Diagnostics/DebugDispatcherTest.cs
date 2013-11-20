@@ -130,7 +130,7 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
             DebugDispatcher.Instance.Write(state.Object);
 
             // Write happens asynchronously on a separate thread
-            Thread.Sleep(300);
+            Thread.Sleep(50);
             state.Verify(s => s.Write(writer.Object), Times.Exactly(1));
          
         }
