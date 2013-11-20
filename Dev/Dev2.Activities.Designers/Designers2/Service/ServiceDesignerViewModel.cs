@@ -648,21 +648,21 @@ namespace Dev2.Activities.Designers2.Service
                     ShowLarge = true;
                     if (WorstDesignError.FixData != null)
                     {
-                        var inputOutputViewModels = DeserializeMappings(true, XElement.Parse(WorstDesignError.FixData));
+                    var inputOutputViewModels = DeserializeMappings(true, XElement.Parse(WorstDesignError.FixData));
                         foreach (var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
-                        {
+                    {
                             var actualViewModel =
                                 DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == inputOutputViewModel.Name);
                             if (actualViewModel != null)
-                            {
+                        {
                                 if (actualViewModel.Value == string.Empty)
-                                {
-                                    actualViewModel.RequiredMissing = true;
-                                }
+                            {
+                                actualViewModel.RequiredMissing = true;
                             }
                         }
                     }
-                break;
+                    }
+                    break;
             }
         }
 
@@ -725,7 +725,10 @@ namespace Dev2.Activities.Designers2.Service
             if(DesignValidationErrors.Count == 0)
             {
                 DesignValidationErrors.Add(NoError);
+                if(!RootModel.HasErrors)
+                {
                 RootModel.IsValid = true;
+            }
             }
 
             IErrorInfo[] worstError = { DesignValidationErrors[0] };

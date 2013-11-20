@@ -2,6 +2,7 @@
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using Caliburn.Micro;
@@ -20,16 +21,14 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.Service
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass][ExcludeFromCodeCoverage]
     public class ServiceDesignerViewModelTests
     {
         #region CTOR
@@ -42,8 +41,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "InvokeStoredProc", expectedImageSource: "DatabaseService-32");
             Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "InvokeWebService", expectedImageSource: "WebService-32");
             Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Plugin", expectedImageSource: "PluginService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Workflow", expectedImageSource: "Workflow-32", serviceUri: "");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Workflow", expectedImageSource: "RemoteWarewolf-32", serviceUri: "x");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Workflow", expectedImageSource: "Workflow-32", serviceUri:"");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Workflow", expectedImageSource: "RemoteWarewolf-32", serviceUri:"x");
             Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "RemoteService", expectedImageSource: "RemoteWarewolf-32");
 
             Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "BizRule", expectedImageSource: "ToolService-32");
@@ -113,7 +112,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
 
             //------------Execute Test---------------------------
-            new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
 
             //------------Assert Results-------------------------
             var actual = modelItem.GetProperty<string>("DisplayName");
@@ -150,7 +149,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
 
             //------------Execute Test---------------------------
-            new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
 
             //------------Assert Results-------------------------
             var actual = modelItem.GetProperty<string>("DisplayName");
@@ -192,8 +191,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.ShowLarge);
             Assert.IsFalse(IsItemDragged.Instance.IsDragged);
-        }
-
+        }     
+        
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServiceDesignerViewModel_Constructor")]
@@ -215,7 +214,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [ExpectedException(typeof(ArgumentNullException))]
         public void ServiceDesignerViewModel_Constructor_NullModelItem_ThrowsArgumentNullException()
         {
-            new ServiceDesignerViewModel(null, null, null, null);
+            var model = new ServiceDesignerViewModel(null, null, null, null);
         }
 
         [TestMethod]
@@ -225,7 +224,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [ExpectedException(typeof(ArgumentNullException))]
         public void ServiceDesignerViewModel_Constructor_NullRootModel_ThrowsArgumentNullException()
         {
-            new ServiceDesignerViewModel(new Mock<ModelItem>().Object, null, null, null);
+            var model = new ServiceDesignerViewModel(new Mock<ModelItem>().Object, null, null, null);
         }
 
         [TestMethod]
@@ -235,7 +234,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [ExpectedException(typeof(ArgumentNullException))]
         public void ServiceDesignerViewModel_Constructor_NullEnvironmentRepository_ThrowsArgumentNullException()
         {
-            new ServiceDesignerViewModel(new Mock<ModelItem>().Object, new Mock<IContextualResourceModel>().Object, null, null);
+            var model = new ServiceDesignerViewModel(new Mock<ModelItem>().Object, new Mock<IContextualResourceModel>().Object, null, null);
         }
 
         [TestMethod]
@@ -244,7 +243,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [ExpectedException(typeof(ArgumentNullException))]
         public void ServiceDesignerViewModel_Constructor_NullEventPublisher_ThrowsArgumentNullException()
         {
-            new ServiceDesignerViewModel(new Mock<ModelItem>().Object, new Mock<IContextualResourceModel>().Object, new Mock<IEnvironmentRepository>().Object, null);
+            var model = new ServiceDesignerViewModel(new Mock<ModelItem>().Object, new Mock<IContextualResourceModel>().Object, new Mock<IEnvironmentRepository>().Object, null);
         }
 
         [TestMethod]
@@ -361,6 +360,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         {
             //-------------------------------------------Setup --------------------------------------------------------------------------
             var instanceID = Guid.NewGuid();
+            // SetupMefStuff();
             Mock<IResourceRepository> resourceRepository;
             var rootModel = CreateResourceModel(Guid.NewGuid(), true, null);
             var resourceModel = CreateResourceModel(Guid.NewGuid(), out resourceRepository, null);
@@ -486,6 +486,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         // ReSharper restore InconsistentNaming
         {
             var eventAggregator = new Mock<IEventAggregator>();
+            //eventAggregator.Setup(e => e.Publish(It.IsAny<EditActivityMessage>())).Verifiable();
 
             var instanceID = Guid.NewGuid();
             var error1 = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.ReloadMapping, FixData = "xxxxx" };
@@ -592,6 +593,48 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         [TestMethod]
         [TestCategory("ServiceDesignerViewModel_FixErrors")]
+        [Owner("Hagashen Naidu")]
+        // ReSharper disable InconsistentNaming
+        public void ServiceDesignerViewModel_FixErrors_DoesNotSetResourceModelValidWhenResourceStillHasErrors()
+        // ReSharper restore InconsistentNaming
+        {
+            //---------------------------------Setup-------------------------------------------------------------------------------------------------------
+            var xml = @"<Args>
+          <Input>[
+          {""Name"":""n1"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false},
+          {""Name"":""n2"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false},
+          {""Name"":""n3"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false}]</Input>
+          <Output>[{""Name"":""result"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false}]</Output>
+        </Args>";
+
+            var inputs = new List<IDev2Definition>();
+            var outputs = new List<IDev2Definition>();
+
+            var inputMapping = CreateModelProperty("InputMapping", DataMappingListFactory.GenerateMapping(inputs, enDev2ArgumentType.Input));
+            var outputMapping = CreateModelProperty("OutputMapping", DataMappingListFactory.GenerateMapping(outputs, enDev2ArgumentType.Output));
+
+            inputMapping.Setup(p => p.SetValue(It.IsAny<object>())).Verifiable();
+            outputMapping.Setup(p => p.SetValue(It.IsAny<object>())).Verifiable();
+
+            var instanceID = Guid.NewGuid();
+            var worstError = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.ReloadMapping, FixData = xml };
+            IErrorInfo[] resourceErrors = { worstError,new ErrorInfo { InstanceID = Guid.NewGuid(), ErrorType = ErrorType.Warning, FixType = FixType.ReloadMapping, FixData = xml }, new ErrorInfo { InstanceID = Guid.NewGuid(), ErrorType = ErrorType.Warning, FixType = FixType.ReloadMapping, FixData = xml } };
+            var vm = CreateServiceDesignerViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, resourceErrors);
+            vm.RootModel.AddError(resourceErrors[0]);
+            vm.RootModel.AddError(resourceErrors[1]);
+            //-----------------------------Assert Preconditions----------------------------------------------------------------------------
+            Assert.AreEqual(3,vm.RootModel.Errors.Count);
+            //-----------------------------Execute-----------------------------------------------------------------------------------------
+            vm.DesignValidationErrors.RemoveAt(2);
+            vm.DesignValidationErrors.RemoveAt(1);
+            vm.FixErrorsCommand.Execute(null);
+            Assert.IsTrue(vm.RootModel.HasErrors);
+            Assert.AreEqual(2, vm.RootModel.Errors.Count);
+            Assert.IsFalse(vm.RootModel.IsValid);
+        }
+
+        [TestMethod]
+        [TestCategory("ServiceDesignerViewModel_FixErrors")]
         [Description("FixErrors when FixType is MappingRequired must get a value for mapping to be fixed.")]
         [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
@@ -687,6 +730,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_DesignValidationService")]
         [Description("Activity must receive memo's that match it's instance ID (unique ID).")]
         [Owner("Trevor Williams-Ros")]
+        //[Ignore] // Not valid for now - ServiceDesignerViewModel is never alive to receive events!
         // ReSharper disable InconsistentNaming
         public void ServiceDesignerViewModel_DesignValidation_ForThisActivity_Received()
         // ReSharper restore InconsistentNaming
@@ -877,11 +921,13 @@ namespace Dev2.Activities.Designers.Tests.Service
             var model = new Mock<IContextualResourceModel>();
             model.Setup(r => r.ResourceName).Returns("TestResource");
             model.Setup(r => r.ServerID).Returns(Guid.NewGuid());
-            model.Setup(r => r.WorkflowXaml).Returns("<root/>");
+            //model.Setup(r => r.ServiceDefinition).Returns("<root/>");
             model.Setup(m => m.Errors).Returns(errors);
             model.Setup(m => m.ID).Returns(resourceID);
             model.Setup(m => m.Environment).Returns(environment.Object);
             model.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
+            model.Setup(m => m.HasErrors).Returns(()=>model.Object.Errors.Count>0);
+            model.SetupProperty(m => m.IsValid);
             model.Setup(m => m.RemoveError(It.IsAny<IErrorInfo>())).Callback((IErrorInfo error) => errors.Remove(error));
 
             resourceRepository = new Mock<IResourceRepository>();

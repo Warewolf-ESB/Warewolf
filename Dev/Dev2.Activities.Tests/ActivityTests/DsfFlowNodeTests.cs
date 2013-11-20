@@ -193,11 +193,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Dev2DataListDecisionHandler_ExecuteDecisionStack")]
-        [Ignore] // This is still an issue as the model data is being changed somewhere before the DecisionHandler.
+        [Ignore] //This test is based of the Data Merge workflow there is a problem with how the Assign handles new lines. Speak to Travis he says there is possibly an issue with the serialization and the new lines being removed.
         public void Dev2DataListDecisionHandler_ExecuteDecisionStack_SlashInVariable_CanDeserialize()
         {
             CurrentDl = "<ADL><resul><t/></resul></ADL>";
-            TestData = @"<root><resul><t>1234</t></resul><resul><t>1234</t></resul><resul><t>1/2\3/4\</t></resul><resul><t>1\n2\n3\n4\n</t></resul><resul><t>1 2   3   4   5   </t></resul></root>";
+            TestData = @"<root><down>1\n2\n3\n4\n</down><resul><t>1234</t></resul><resul><t>1234</t></resul><resul><t>1/2\3/4\</t></resul><resul><t>1\r\n2\r\n3\r\n4\r\n</t></resul><resul><t>1 2   3   4   5   </t></resul></root>";
             ErrorResultTO errors;
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -207,7 +207,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var dev2DataListDecisionHandler = new Dev2DataListDecisionHandler();
 
             //------------Execute Test---------------------------
-            var res = dev2DataListDecisionHandler.ExecuteDecisionStack(@"{""TheStack"":[{""Col1"":""[[resul(1).t]]"",""Col2"":""1234"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""},{""Col1"":""[[resul(2).t]]"",""Col2"":""1234"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""},{""Col1"":""[[resul(3).t]]"",""Col2"":""1/2\\3/4\\"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""},{""Col1"":""[[resul(4).t]]"",""Col2"":""1\n2\n3\n4\n"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""},{""Col1"":""[[resul(5).t]]"",""Col2"":""1  2   3   4   5   "",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":5,""ModelName"":""Dev2DecisionStack"",""Mode"":""AND"",""TrueArmText"":""True"",""FalseArmText"":""False"",""DisplayText"":""Decision""}", getDatalistID);
+            var res = dev2DataListDecisionHandler.ExecuteDecisionStack(@"{""TheStack"":[{""Col1"":""[[resul(1).t]]"",""Col2"":""1234"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""},{""Col1"":""[[resul(2).t]]"",""Col2"":""1234"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""},{""Col1"":""[[resul(3).t]]"",""Col2"":""1/2\\3/4\\"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""},{""Col1"":""[[resul(4).t]]"",""Col2"":""[[down]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""},{""Col1"":""[[resul(5).t]]"",""Col2"":""1  2   3   4   5   "",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":5,""ModelName"":""Dev2DecisionStack"",""Mode"":""AND"",""TrueArmText"":""True"",""FalseArmText"":""False"",""DisplayText"":""Decision""}", getDatalistID);
 
             // Assert Can Deserialize
             Assert.IsTrue(res);

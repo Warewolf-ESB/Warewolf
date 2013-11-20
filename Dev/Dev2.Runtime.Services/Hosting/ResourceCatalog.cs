@@ -1110,6 +1110,24 @@ namespace Dev2.Runtime.Hosting
                     WorkspaceID = workspaceID,
                 }
             };
+//            if(resource.Errors.Count > 0)
+//            {
+//                resource.Errors.ForEach(info =>
+//                {
+//                    var existingError = new CompileMessageTO
+//                    {
+//                        ErrorType = info.ErrorType,
+//                        MessageID = Guid.NewGuid(),
+//                        MessagePayload = info.Message,
+//                        ServiceID = resource.ResourceID,
+//                        ServiceName = resource.ResourceName,
+//                        MessageType = (CompileMessageType)Enum.Parse(typeof(CompileMessageType),info.Message),
+//                        UniqueID = info.InstanceID,
+//                        WorkspaceID = workspaceID,
+//                    };
+//                    savedResourceCompileMessage.Add(existingError);
+//                });
+            //}
             CompileMessageRepo.Instance.AddMessage(workspaceID, savedResourceCompileMessage);
         }
 

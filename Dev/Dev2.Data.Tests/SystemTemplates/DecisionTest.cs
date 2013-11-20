@@ -986,7 +986,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""C:\Temp\PathOperationsTestFolder\OldFolder\OldFolderFirstInnerFolder\TextFile1.txt"",""Col2"":""[[Recset(1).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+            string payload = @"{""TheStack"":[{""Col1"":""C:\\Temp\\PathOperationsTestFolder\\OldFolder\\OldFolderFirstInnerFolder\\TextFile1.txt"",""Col2"":""[[Recset(1).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
 
             //------------Execute Test---------------------------
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });

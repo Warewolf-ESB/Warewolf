@@ -263,7 +263,11 @@ namespace Dev2.Data.Decision
                 }
                 if(binaryDataListItem != null)
                 {
-                    return binaryDataListItem.TheValue;
+                    var value = binaryDataListItem.TheValue;
+//                    string oldValue = @"\";
+//                    string newValue = @"\\";
+//                    var valueForDecisionVariable = value.Replace(oldValue,newValue);
+                    return value;
                 }
             }
             return null;

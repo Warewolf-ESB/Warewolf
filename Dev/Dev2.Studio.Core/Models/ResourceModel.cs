@@ -411,6 +411,10 @@ namespace Dev2.Studio.Core.Models
 
         void ReceiveDesignValidation(DesignValidationMemo memo)
         {
+            if(memo.Errors.TrueForAll(info => info.FixType == FixType.None))
+            {
+                return;
+            }
             IsValid = memo.IsValid;
             foreach(var error in Errors.Where(error => !memo.Errors.Contains(error)))
             {
