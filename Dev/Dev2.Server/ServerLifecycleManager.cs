@@ -1838,8 +1838,16 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 try
                 {
-                    _webserver = new Dev2.WebServer(_endpoints, _networkServer);
-                    _webserver.Start(_uriAddress);
+                    var endpoints = new List<string>
+                    {
+                        WebServerResources.LocalServerAddress,
+                        string.Format(WebServerResources.PublicServerAddressFormat, Environment.MachineName),
+                        _uriAddress,
+                    };
+                    StartNetworkServer(endpoints);
+
+                    _webserver = new Dev2.WebServer(_endpoints);
+                    _webserver.Start();
                     EnvironmentVariables.IsServerOnline = true; // flag server as active
                     WriteLine("\r\nWeb Server Started");
                     new List<string>(_prefixes).ForEach(c => WriteLine(string.Format("Web server listening at {0}", c)));
@@ -1853,6 +1861,74 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
 
             return result;
+        }
+
+
+        void StartNetworkServer(IList<string> endpointAddresses)
+        {
+            if(endpointAddresses == null || endpointAddresses.Count == 0)
+            {
+                throw new ArgumentException("No TCP Addresses configured for application server");
+            }
+
+            var entries = endpointAddresses.Where(s => !string.IsNullOrWhiteSpace(s)).Select(a =>
+            {
+                int port;
+                IPHostEntry entry;
+
+                try
+                {
+                    Uri uri = new Uri(a);
+                    string dns = uri.DnsSafeHost;
+                    port = uri.Port;
+                    entry = Dns.GetHostEntry(dns);
+                }
+                catch(Exception ex)
+                {
+                    ServerLogger.LogError(ex);
+                    port = 0;
+                    entry = null;
+                }
+
+                if(entry == null || entry.AddressList == null || entry.AddressList.Length == 0)
+                {
+                    ServerLifecycleManager.WriteLine(string.Format("'{0}' is an invalid address, listening not started for this entry.", a));
+                    return null;
+                }
+
+                return new Tuple<IPHostEntry, int>(entry, port);
+
+            }).Where(e => e != null).ToList();
+
+
+            if(!entries.Any())
+            {
+                throw new ArgumentException("No vailid TCP Addresses configured for application server");
+            }
+
+            var startedIPAddresses = new List<IPAddress>();
+            foreach(var entry in entries)
+            {
+                for(var i = 0; i < entry.Item1.AddressList.Length; i++)
+                {
+                    IPAddress current = entry.Item1.AddressList[i];
+
+                    if(current.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork && !startedIPAddresses.Contains(current))
+                    {
+                        if(_networkServer.Start(new System.Network.ListenerConfig(current.ToString(), entry.Item2, 10)))
+                        {
+                            WriteLine(string.Format("{0} listening on {1}", _networkServer, current + ":" + entry.Item2.ToString()));
+                            startedIPAddresses.Add(current);
+                        }
+                    }
+                }
+            }
+
+            if(startedIPAddresses.Count == 0)
+            {
+                WriteLine(string.Format("{0} failed to start on {1}", _networkServer, string.Join(" or ", endpointAddresses)));
+            }
+
         }
 
         #endregion

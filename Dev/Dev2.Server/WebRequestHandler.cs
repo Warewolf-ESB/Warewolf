@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Web;
 using System.Xml.Linq;
 using Dev2.Common;
@@ -26,6 +28,14 @@ namespace Dev2
     {
         readonly List<DataListFormat> _publicFormats = new DataListTranslatorFactory().FetchAllFormats().Where(c => c.ContentType != "").ToList();
         readonly ServiceInvoker _serviceInvoker = new ServiceInvoker();
+
+        string _location;
+        public string Location { get { return _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)); } }
+
+        //CommunicationContextCallback GetHandler { get { return Get; } }
+        //CommunicationContextCallback PostHandler { get { return Post; } }
+        //CommunicationContextCallback InvokeServiceHandler { get { return InvokeService; } }
+        //CommunicationContextCallback GetWebResourceHandler { get { return GetWebResource; } }
 
         public void Get(ICommunicationContext ctx)
         {
@@ -126,6 +136,60 @@ namespace Dev2
                 };
             }
             ctx.Send(new StringCommunicationResponseWriter(result.ToString(), "application/json"));
+        }
+
+        public void GetWebResource(ICommunicationContext ctx)
+        {
+            var uriString = ctx.Request.Uri.OriginalString;
+
+
+            if(uriString.IndexOf("wwwroot", StringComparison.InvariantCultureIgnoreCase) < 0)
+            {
+                // http://127.0.0.1:1234/services/"/themes/system/js/json2.js"
+
+                Get(ctx);
+                return;
+            }
+
+            var website = ctx.Request.BoundVariables["website"];
+            var path = ctx.Request.BoundVariables["path"];
+            var extension = Path.GetExtension(uriString);
+
+            if(string.IsNullOrEmpty(extension))
+            {
+                //
+                // REST request e.g. http://localhost:1234/wwwroot/sources/server
+                //
+                const string ContentToken = "getParameterByName(\"content\")";
+
+                var layoutFilePath = string.Format("{0}\\webs\\{1}\\layout.htm", Location, website);
+                var contentPath = string.Format("\"/{0}/views/{1}.htm\"", website, path);
+
+                ctx.Send(new DynamicFileCommunicationResponseWriter(layoutFilePath, ContentToken, contentPath));
+                return;
+            }
+
+            // Should get url's with the following signatures
+            //
+            // http://localhost:1234/wwwroot/sources/Scripts/jquery-1.7.1.js
+            // http://localhost:1234/wwwroot/sources/Content/Site.css
+            // http://localhost:1234/wwwroot/sources/images/error.png
+            // http://localhost:1234/wwwroot/sources/Views/Dialogs/SaveDialog.htm
+            // http://localhost:1234/wwwroot/views/sources/server.htm
+            //
+            // We support only 1 level below the Views folder 
+            // If path is a string without a backslash then we are processing the following request
+            //       http://localhost:1234/wwwroot/views/sources/server.htm
+            // If path is a string with a backslash then we are processing the following request
+            //       http://localhost:1234/wwwroot/sources/Views/Dialogs/SaveDialog.htm
+            //
+            if(!string.IsNullOrEmpty(path) && path.IndexOf('/') == -1)
+            {
+                uriString = uriString.Replace(path, "");
+            }
+            var result = GetFileFromPath(new Uri(uriString));
+
+            ctx.Send(result);
         }
 
         static CommunicationResponseWriter CreateForm(dynamic d, string serviceName, string workspaceID, NameValueCollection headers, List<DataListFormat> publicFormats)
@@ -311,24 +375,20 @@ namespace Dev2
         {
             var formData = new UnlimitedObject();
 
-            bool isXmlData = false;
+            var isXmlData = false;
 
-            string baseStr = HttpUtility.UrlDecode(ctx.Request.Uri.ToString());
+            var baseStr = HttpUtility.UrlDecode(ctx.Request.Uri.ToString());
             if(baseStr != null)
             {
-                int startIdx = baseStr.IndexOf("?", StringComparison.Ordinal);
+                var startIdx = baseStr.IndexOf("?", StringComparison.Ordinal);
                 if(startIdx > 0)
                 {
-
-                    string payload = baseStr.Substring((startIdx + 1));
-
+                    var payload = baseStr.Substring((startIdx + 1));
                     if(payload.IsXml())
                     {
-
                         formData = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(payload);
                         isXmlData = true;
                     }
-
                 }
             }
 
@@ -371,11 +431,11 @@ namespace Dev2
                     if(postDataListID != null && new Guid(postDataListID) != Guid.Empty)
                     {
                         //TrevorCake
-                        Guid dlid = new Guid(postDataListID);
+                        var dlid = new Guid(postDataListID);
                         ErrorResultTO errors;
                         string error;
-                        IDataListServer datalListServer = DataListFactory.CreateDataListServer();
-                        IBinaryDataList dataList = datalListServer.ReadDatalist(dlid, out errors);
+                        var datalListServer = DataListFactory.CreateDataListServer();
+                        var dataList = datalListServer.ReadDatalist(dlid, out errors);
                         datalListServer.DeleteDataList(dlid, false);
                         IBinaryDataListEntry dataListEntry;
                         dataList.TryGetEntry(GlobalConstants.PostData, out dataListEntry, out error);
@@ -411,7 +471,7 @@ namespace Dev2
                         {
                             var keyValuePairs = data.Split(new[] { "&" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-                            foreach(string keyValuePair in keyValuePairs)
+                            foreach(var keyValuePair in keyValuePairs)
                             {
                                 var keyValue = keyValuePair.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
                                 if(keyValue.Length > 1)
@@ -444,12 +504,11 @@ namespace Dev2
                     {
                         ServerLogger.LogError(ex);
                     }
-
                 }
             }
 
             // Still need to remvove the rubish from the string
-            string tmpOut = formData.XmlString.Replace("<XmlData>", GlobalConstants.PostDataStart).Replace("</XmlData>", GlobalConstants.PostDataEnd).Replace("<XmlData />", "");
+            var tmpOut = formData.XmlString.Replace("<XmlData>", GlobalConstants.PostDataStart).Replace("</XmlData>", GlobalConstants.PostDataEnd).Replace("<XmlData />", "");
             // Replace the DataList tag for test... still a hack
             tmpOut = tmpOut.Replace("<DataList>", String.Empty).Replace("</DataList>", String.Empty);
 
@@ -502,5 +561,83 @@ namespace Dev2
         {
             return ctx.Request.BoundVariables["action"];
         }
+
+        CommunicationResponseWriter GetFileFromPath(Uri uri)
+        {
+            var filePath = string.Format("{0}\\Webs{1}\\{2}", Location,
+                Path.GetDirectoryName(uri.LocalPath),
+                Path.GetFileName(uri.LocalPath));
+            return GetFileFromPath(filePath);
+        }
+
+        static CommunicationResponseWriter GetFileFromPath(string filePath)
+        {
+            var supportedFileExtensions = ConfigurationManager.AppSettings["SupportedFileExtensions"];
+            var extension = Path.GetExtension(filePath);
+            var ext = string.IsNullOrEmpty(extension) ? "" : extension;
+            var isSupportedExtensionList = supportedFileExtensions.Split(new[] { ',' })
+                .ToList()
+                .Where(supportedExtension => supportedExtension.Trim().Equals(ext, StringComparison.InvariantCultureIgnoreCase));
+
+            if(string.IsNullOrEmpty(supportedFileExtensions) || !isSupportedExtensionList.Any())
+            {
+                return new NotFoundCommunicationResponseWriter();
+            }
+
+            if(File.Exists(filePath))
+            {
+                string contentType;
+                switch(ext.ToLower())
+                {
+                    case ".js":
+                        contentType = "text/javascript";
+                        break;
+
+                    case ".css":
+                        contentType = "text/css";
+                        break;
+
+                    case ".ico":
+                        contentType = "image/x-icon";
+                        break;
+
+                    case ".bm":
+                    case ".bmp":
+                        contentType = "image/bmp";
+                        break;
+
+                    case ".gif":
+                        contentType = "image/gif";
+                        break;
+
+                    case ".jpeg":
+                    case ".jpg":
+                        contentType = "image/jpg";
+                        break;
+
+                    case ".tiff":
+                        contentType = "image/tiff";
+                        break;
+
+                    case ".png":
+                        contentType = "image/png";
+                        break;
+
+                    case ".htm":
+                    case ".html":
+                        contentType = "text/html";
+                        break;
+
+                    default:
+                        return new NotFoundCommunicationResponseWriter();
+                }
+
+                return new StaticFileCommunicationResponseWriter(filePath, contentType);
+            }
+
+
+            return new NotFoundCommunicationResponseWriter();
+        }
+
     }
 }

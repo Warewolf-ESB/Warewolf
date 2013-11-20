@@ -4,6 +4,7 @@ using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using Dev2;
 using Dev2.Common;
+using Dev2.Runtime.WebServer;
 using HttpFramework;
 using HttpFramework.Sessions;
 
@@ -71,7 +72,7 @@ namespace Unlimited.Applications.WebServer
         private void Process(IHttpRequest request, IHttpResponse response, IHttpSession session, HttpRequestHandler handler, UriTemplateMatch match)
         {
             CommunicationContext context = new CommunicationContext(request, response, session, match);
-            handler.Callback(this, context);
+            handler.Callback(context);
         }
         #endregion
 
@@ -182,6 +183,4 @@ namespace Unlimited.Applications.WebServer
         }
         #endregion
     }
-
-    public delegate void CommunicationContextCallback(HttpServer sender, ICommunicationContext context);
 }
