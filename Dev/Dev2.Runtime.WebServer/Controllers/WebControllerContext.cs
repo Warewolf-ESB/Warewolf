@@ -1,23 +1,27 @@
-using System;
 using System.Collections.Specialized;
+using System.Net;
 using System.Net.Http;
 using Unlimited.Applications.WebServer;
 using Unlimited.Applications.WebServer.Responses;
 
-namespace Dev2.Runtime.WebServer
+namespace Dev2.Runtime.WebServer.Controllers
 {
-    public class WebCommunicationContext : ICommunicationContext
+    public class WebControllerContext : ICommunicationContext
     {
         readonly HttpRequestMessage _request;
 
-        public WebCommunicationContext(HttpRequestMessage request, NameValueCollection boundVariables)
+        public WebControllerContext(HttpRequestMessage request, NameValueCollection requestPaths)
         {
             _request = request;
-            Request = new WebCommunicationRequest(request, boundVariables);
+            ResponseMessage = request.CreateResponse(HttpStatusCode.NotFound);
+            Request = new WebControllerRequest(request, requestPaths);
+            Response = new WebControllerResponse(ResponseMessage);
         }
 
+        public HttpResponseMessage ResponseMessage { get; private set; }
+
         public ICommunicationRequest Request { get; private set; }
-        public ICommunicationResponse Response { get { throw new NotImplementedException(); } }
+        public ICommunicationResponse Response { get; private set; }
 
         public void Send(CommunicationResponseWriter response)
         {

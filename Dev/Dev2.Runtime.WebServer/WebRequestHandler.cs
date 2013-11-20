@@ -31,11 +31,6 @@ namespace Dev2.Runtime.WebServer
         string _location;
         public string Location { get { return _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)); } }
 
-        //CommunicationContextCallback GetHandler { get { return Get; } }
-        //CommunicationContextCallback PostHandler { get { return Post; } }
-        //CommunicationContextCallback InvokeServiceHandler { get { return InvokeService; } }
-        //CommunicationContextCallback GetWebResourceHandler { get { return GetWebResource; } }
-
         public void Get(ICommunicationContext ctx)
         {
             var postDataListID = GetDataListID(ctx);

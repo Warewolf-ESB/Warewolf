@@ -1,19 +1,17 @@
 using System;
 using System.Collections.Specialized;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
-using Dev2.Common;
 using Unlimited.Applications.WebServer;
 
-namespace Dev2.Runtime.WebServer
+namespace Dev2.Runtime.WebServer.Controllers
 {
-    public class WebCommunicationRequest : ICommunicationRequest
+    public class WebControllerRequest : ICommunicationRequest
     {
         readonly HttpRequestMessage _request;
 
-        public WebCommunicationRequest(HttpRequestMessage request, NameValueCollection boundVariables)
+        public WebControllerRequest(HttpRequestMessage request, NameValueCollection boundVariables)
         {
             VerifyArgument.IsNotNull("request", request);
             VerifyArgument.IsNotNull("boundVariables", boundVariables);
@@ -22,10 +20,10 @@ namespace Dev2.Runtime.WebServer
             Method = _request.Method.ToString();
             Uri = _request.RequestUri;
             BoundVariables = boundVariables;
+            ContentEncoding = _request.Content.GetContentEncoding();
 
             InitializeContentLength();
             InitializeContentType();
-            InitializeEncoding();
             InitializeQueryString();
         }
 
@@ -46,27 +44,6 @@ namespace Dev2.Runtime.WebServer
         void InitializeContentType()
         {
             ContentType = _request.Content.Headers.ContentType.MediaType;
-        }
-
-        void InitializeEncoding()
-        {
-            var encoding = _request.Content.Headers.ContentEncoding.FirstOrDefault();
-            if(!string.IsNullOrEmpty(encoding))
-            {
-                try
-                {
-                    ContentEncoding = Encoding.GetEncoding(encoding);
-                }
-                catch(Exception ex)
-                {
-                    ServerLogger.LogError(ex);
-                    encoding = null;
-                }
-            }
-            if(encoding == null)
-            {
-                ContentEncoding = Encoding.UTF8;
-            }
         }
 
         void InitializeQueryString()

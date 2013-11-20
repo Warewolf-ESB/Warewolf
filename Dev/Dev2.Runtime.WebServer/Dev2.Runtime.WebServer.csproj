@@ -123,11 +123,12 @@
     <Compile Include="CommunicationContextCallback.cs" />
     <Compile Include="CommunicationRequest.cs" />
     <Compile Include="CommunicationResponse.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Hubs\EsbHub.cs" />
     <Compile Include="Hubs\ResourcesHub.cs" />
     <Compile Include="Hubs\Server.cs" />
     <Compile Include="Hubs\ServerHub.cs" />
-    <Compile Include="WebCommunicationContext.cs" />
+    <Compile Include="Controllers\WebControllerContext.cs" />
     <Compile Include="Dev2Endpoint.cs" />
     <Compile Include="HttpServer.cs" />
     <Compile Include="Responses\BinaryResponse.cs" />
@@ -140,8 +141,8 @@
     <Compile Include="Responses\XmlResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Responses\Response.cs" />
-    <Compile Include="WebCommunicationRequest.cs" />
-    <Compile Include="WebCommunicationResponse.cs" />
+    <Compile Include="Controllers\WebControllerRequest.cs" />
+    <Compile Include="Controllers\WebControllerResponse.cs" />
     <Compile Include="WebServerStartup.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Controllers\ViewsController.cs" />
