@@ -891,9 +891,6 @@ namespace Dev2.Studio.ViewModels
                 }
                 
             }
-            GC.Collect(2);
-            GC.WaitForPendingFinalizers();
-            GC.Collect(2);
             base.ChangeActiveItem(newItem, closePrevious);
             RefreshActiveEnvironment();
         }
@@ -923,9 +920,6 @@ namespace Dev2.Studio.ViewModels
             {
                 CloseCurrent = false;
             }
-            GC.Collect(2);
-            GC.WaitForFullGCComplete();
-            GC.Collect(2);
         }
 
 

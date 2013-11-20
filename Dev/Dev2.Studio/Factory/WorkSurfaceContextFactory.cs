@@ -1,4 +1,6 @@
-﻿using Dev2.Common.ExtMethods;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Dev2.Common.ExtMethods;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
@@ -12,6 +14,8 @@ namespace Dev2.Studio.Factory
 {
     public static class WorkSurfaceContextFactory
     {
+
+        private static IDictionary<WorkSurfaceKey, WorkSurfaceContextViewModel> _designerCache = new Dictionary<WorkSurfaceKey, WorkSurfaceContextViewModel>();
 
         public static WorkSurfaceContextViewModel CreateResourceViewModel(IContextualResourceModel resourceModel, bool createDesigner = true)
         {

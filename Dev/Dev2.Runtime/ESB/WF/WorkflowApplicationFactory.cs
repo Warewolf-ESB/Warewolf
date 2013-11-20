@@ -351,19 +351,6 @@ namespace Dev2.DynamicServices
                 {
                     ServerLogger.LogError(e);
                 }
-                finally
-                {
-                    try
-                    {
-                       
-                        // flush memory usage ;)
-                        GC.WaitForFullGCComplete(2000);
-                    }
-                    catch
-                    {
-                        // just swallow it ;)
-                    }
-                }
 
                 ExecutableServiceRepository.Instance.Remove(this);
                 AssociatedServices.ForEach(s => s.Terminate());
@@ -386,21 +373,11 @@ namespace Dev2.DynamicServices
                 }
                 finally
                 {
-                    try
-                    {
-                       
-                        // flush memory usage ;)
-                        GC.WaitForFullGCComplete(2000);
-                    }
-                    catch
-                    {
-                        // just swallow it ;)
-                    }
 
-                ExecutableServiceRepository.Instance.Remove(this);
-                AssociatedServices.ForEach(s => s.Terminate());
-                Dispose();
-            }  
+                    ExecutableServiceRepository.Instance.Remove(this);
+                    AssociatedServices.ForEach(s => s.Terminate());
+                    Dispose();
+                }  
 
 
             }  
