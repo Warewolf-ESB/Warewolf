@@ -14,7 +14,6 @@ namespace Dev2.DynamicServices.Test
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
-    [Ignore]
     public class DynamicServicesHostTests
     {
         const int VersionNo = 9999;
