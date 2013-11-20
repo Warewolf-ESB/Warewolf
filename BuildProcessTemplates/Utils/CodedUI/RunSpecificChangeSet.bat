@@ -1,3 +1,3 @@
-start "" /B "C:\CodedUI\Merge\Warewolf Server.exe"
+start "" /B "C:\CodedUI\Merge\Binaries\Warewolf Server.exe"
 timeout 10
-start "" /B "C:\CodedUI\Merge\Warewolf Studio.exe"
+start "" /B "C:\CodedUI\Merge\Binaries\Warewolf Studio.exe"
