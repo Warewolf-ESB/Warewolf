@@ -100,5 +100,6 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         void ReadDataList(XElement xml);
         void GetInputsOutputs(XElement xml);
+        void SetIsNew(XElement xml);
     }
 }
