@@ -644,7 +644,7 @@
               <mtbwa:CopyDirectory Destination="[BinariesDirectory &amp; &quot;\Sources&quot;]" DisplayName="Copy Sources Dir into Binaries" sap2010:WorkflowViewState.IdRef="CopyDirectory_5" Source="[SourcesDirectory &amp; &quot;\BPM Resources\Sources&quot;]" />
               <mtbwa:CopyDirectory Destination="[BinariesDirectory &amp; &quot;\Webs&quot;]" DisplayName="Copy Webs Dir into Binaries" sap2010:WorkflowViewState.IdRef="CopyDirectory_6" Source="[SourcesDirectory &amp; &quot;\Dev2.Server\bin\Debug\Webs&quot;]" />
               <mtbwa:CopyDirectory Destination="[BinariesDirectory &amp; &quot;\Plugins&quot;]" DisplayName="Copy Plugins Dir into Binaries" sap2010:WorkflowViewState.IdRef="CopyDirectory_8" Source="[SourcesDirectory &amp; &quot;\BPM Resources\Plugins&quot;]" />
-              <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot; -r &quot; &amp; BuildDirectory &amp; &quot;\DevMergeStaging&quot; &amp; &quot;&quot;&quot; &quot;&quot;&quot; &amp; BinariesDirectory &amp; &quot;&quot;&quot;&quot;]" DisplayName="Zip Binaries" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\zip.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_12">
+              <mtbwa:InvokeProcess Arguments="[&quot; -r &quot;&quot;&quot; &amp; BuildDirectory &amp; &quot;\DevMergeStaging&quot; &amp; &quot;&quot;&quot; &quot;&quot;&quot; &amp; BinariesDirectory &amp; &quot;&quot;&quot;&quot;]" DisplayName="Zip Binaries" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\zip.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_12">
                 <mtbwa:InvokeProcess.ErrorDataReceived>
                   <ActivityAction x:TypeArguments="x:String">
                     <ActivityAction.Argument>
