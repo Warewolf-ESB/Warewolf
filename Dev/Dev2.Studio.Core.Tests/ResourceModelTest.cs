@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Providers.Errors;
@@ -275,11 +278,7 @@ namespace Dev2.Core.Tests
                 ID = instanceID
             };
 
-            model.OnDesignValidationReceived += (sender, memo) =>
-            {
-                Assert.AreEqual(memo.Errors.Count, model.Errors.Count, "OnDesignValidationReceived did not update the number of errors correctly.");
-                Assert.AreEqual(2, model.Errors.Count, "OnDesignValidationReceived did not update the number of errors correctly.");
-            };
+            model.OnDesignValidationReceived += (sender, memo) => Assert.AreEqual(0, model.Errors.Count, "OnDesignValidationReceived did not update the number of errors correctly.");
 
             eventPublisher.Publish(pubMemo);
         }
@@ -381,6 +380,36 @@ namespace Dev2.Core.Tests
             // Fix 1 error and publish
             pubMemo.Errors.RemoveAt(1);
             eventPublisher.Publish(pubMemo);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ResourceModel_ToServiceDefinition")]
+        public void ResourceModel_ToServiceDefinition_GivenHasMoreThanOneError_ThenThereShouldBeTwoErrorElements()
+        {
+            //------------Setup for test--------------------------
+            Setup();
+            var eventPublisher = new EventPublisher();
+            var environmentModel = CreateMockEnvironment(eventPublisher);
+
+            var instanceID = Guid.NewGuid();
+            var model = new ResourceModel(environmentModel.Object)
+            {
+                ID = instanceID
+            };
+            model.AddError(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error.", InstanceID = Guid.NewGuid(), FixData = "Some fix data" });
+            model.AddError(new ErrorInfo { ErrorType = ErrorType.Warning, Message = "Warning error.", InstanceID = Guid.NewGuid(), FixData = "Some fix data" });
+            //------------Execute Test---------------------------
+            var serviceDefinition = model.ToServiceDefinition();
+            //------------Assert Results-------------------------
+            var serviceElement = XElement.Load(new StringReader(serviceDefinition));
+            Assert.IsNotNull(serviceElement);
+            var errorMessagesElement = serviceElement.Element("ErrorMessages");
+            Assert.IsNotNull(errorMessagesElement);
+            Assert.AreEqual(2,errorMessagesElement.Elements().Count());
+            List<XElement> xElements = errorMessagesElement.Elements().ToList();
+            Assert.AreEqual("Critical error.", xElements[0].Attribute("Message").Value);
+            Assert.AreEqual("Warning error.", xElements[1].Attribute("Message").Value);
         }
 
         public static Mock<IEnvironmentModel> CreateMockEnvironment()

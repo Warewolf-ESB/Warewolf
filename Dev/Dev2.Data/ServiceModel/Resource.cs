@@ -178,6 +178,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                         StackTrace = errorMessageElement.AttributeSafe("StackTrace"),
                         FixType = fixType,
                         ErrorType = errorType,
+                        FixData = errorMessageElement.Value
                     });
                 }
             }

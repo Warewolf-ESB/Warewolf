@@ -921,7 +921,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var model = new Mock<IContextualResourceModel>();
             model.Setup(r => r.ResourceName).Returns("TestResource");
             model.Setup(r => r.ServerID).Returns(Guid.NewGuid());
-            //model.Setup(r => r.ServiceDefinition).Returns("<root/>");
+            model.Setup(r => r.WorkflowXaml).Returns("<root/>");
             model.Setup(m => m.Errors).Returns(errors);
             model.Setup(m => m.ID).Returns(resourceID);
             model.Setup(m => m.Environment).Returns(environment.Object);

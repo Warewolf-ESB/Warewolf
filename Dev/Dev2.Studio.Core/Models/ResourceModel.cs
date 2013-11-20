@@ -411,22 +411,24 @@ namespace Dev2.Studio.Core.Models
 
         void ReceiveDesignValidation(DesignValidationMemo memo)
         {
-            if(memo.Errors.TrueForAll(info => info.FixType == FixType.None))
+            if(memo.Errors.Any(info => info.InstanceID != Guid.Empty))
             {
-                return;
-            }
-            IsValid = memo.IsValid;
-            foreach(var error in Errors.Where(error => !memo.Errors.Contains(error)))
-            {
-                _fixedErrors.Add(error);
-            }
-            if (_errors.Count > 0)
-            {
-                _errors.Clear();
-            }
-            foreach(var error in memo.Errors)
-            {
-                _errors.Add(error);
+                IsValid = memo.IsValid && _errors.Count == 0;
+                if(memo.Errors.Count > 0)
+                {
+                    foreach(var error in Errors.Where(error => !memo.Errors.Contains(error)))
+                    {
+                        _fixedErrors.Add(error);
+                    }
+                    if(_errors.Count > 0)
+                    {
+                        _errors.Clear();
+                    }
+                    foreach(var error in memo.Errors)
+                    {
+                        _errors.Add(error);
+                    }
+                }
             }
             if(OnDesignValidationReceived != null)
             {
@@ -590,20 +592,22 @@ namespace Dev2.Studio.Core.Models
             return result;
         }
 
-        XElement WriteErrors()
+        List<XElement> WriteErrors()
         {
             if(Errors == null || Errors.Count == 0) return null;
-            XElement xElement = null;
+            var errorElements = new List<XElement>();
             foreach(var errorInfo in Errors)
             {
-                xElement = new XElement("ErrorMessage");
+                var xElement = new XElement("ErrorMessage");
                 xElement.Add(new XAttribute("InstanceID", errorInfo.InstanceID));
                 xElement.Add(new XAttribute("Message", errorInfo.Message ?? ""));
                 xElement.Add(new XAttribute("ErrorType", errorInfo.ErrorType));
                 xElement.Add(new XAttribute("FixType", errorInfo.FixType));
                 xElement.Add(new XCData(errorInfo.FixData));
+                errorElements.Add(xElement);
             }
-            return xElement;
+            
+            return errorElements;
         }
         #endregion Methods
 
