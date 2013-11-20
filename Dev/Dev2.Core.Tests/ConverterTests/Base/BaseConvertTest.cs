@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Converters;
 
 namespace Unlimited.UnitTest.Framework.ConverterTests.Base
@@ -8,7 +7,8 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.Base
     /// <summary>
     /// PBI : 1204 - Base Convert Test
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class BaseConvertTest
     {
 
