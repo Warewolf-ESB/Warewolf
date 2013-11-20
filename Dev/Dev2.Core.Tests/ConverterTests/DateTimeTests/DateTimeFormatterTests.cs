@@ -1,5 +1,6 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Converters.DateAndTime;
 using Dev2.Converters.DateAndTime.Interfaces;
 
@@ -8,7 +9,8 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
     /// <summary>
     /// Summary description for DateTimeFormatterTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DateTimeFormatterTests
     {
         static IDateTimeFormatter formatter;
