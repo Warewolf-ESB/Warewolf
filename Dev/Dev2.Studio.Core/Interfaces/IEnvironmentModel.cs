@@ -1,7 +1,6 @@
 ﻿using System;
 using Dev2.DataList.Contract.Network;
 using Dev2.Network.Execution;
-using Dev2.Studio.Core.Wizards.Interfaces;
 
 namespace Dev2.Studio.Core.Interfaces
 {
@@ -20,7 +19,6 @@ namespace Dev2.Studio.Core.Interfaces
         INetworkDataListChannel DataListChannel { get; }
         IEnvironmentConnection Connection { get; }
         IResourceRepository ResourceRepository { get; }
-       // IWizardEngine WizardEngine { get; }
 
         void Connect();
         void Disconnect();

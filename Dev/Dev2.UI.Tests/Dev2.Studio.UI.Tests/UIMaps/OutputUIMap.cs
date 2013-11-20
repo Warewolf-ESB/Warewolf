@@ -236,8 +236,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             //Playback.Wait(1000);
             while (IsSpinnerSpinning())
             {
-                Thread.Sleep(100);
-                //Playback.Wait(500);
+                Playback.Wait(200);
             }
         }
     }

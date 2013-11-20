@@ -504,8 +504,9 @@ namespace Dev2.Studio.ViewModels.Navigation
             //
             // Load the environemnts resources
             //
-            var resources = environment.ResourceRepository.All();
+            var resources = environment.ResourceRepository.All().ToArray();
 
+            // the darn resource keep mutating?!
             var contextualResources = resources.Cast<IContextualResourceModel>().ToList();
 
             //

@@ -3,20 +3,15 @@ using System.Network;
 using System.Windows;
 using System.Xml.Linq;
 using Caliburn.Micro;
-using Dev2.Common;
 using Dev2.DataList.Contract.Network;
-using Dev2.Network;
 using Dev2.Network.Execution;
-using Dev2.Network.Messaging.Messages;
 using Dev2.Providers.Logs;
-using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.Wizards;
-using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Core.Workspaces;
 using Action = System.Action;
 
@@ -106,8 +101,6 @@ namespace Dev2.Studio.Core.Models
         public INetworkExecutionChannel ExecutionChannel { get { return Connection.ExecutionChannel; } }
 
         public INetworkDataListChannel DataListChannel { get { return Connection.DataListChannel; } }
-
-      //  public IWizardEngine WizardEngine { get { return ResourceRepository.WizardEngine; } }
 
         #endregion
 

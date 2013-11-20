@@ -1,5 +1,4 @@
 ﻿using System.Windows.Forms;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -85,12 +84,12 @@ namespace Dev2.Studio.UI.Tests
                     OutputUIMap.WaitForExecution();
                 }
 
-                // Now check the XML tab works ;)
-                //OutputUIMap.WaitForExecution();
-                //SendKeys.SendWait(KeyboardCommands.Debug);
-                //Playback.Wait(200);
-                //DebugUIMap.ClickXMLTab();
-                //Playback.Wait(200);
+                //Now check the XML tab works ;)
+                OutputUIMap.WaitForExecution();
+                SendKeys.SendWait(KeyboardCommands.Debug);
+                Playback.Wait(200);
+                DebugUIMap.ClickXMLTab();
+                Playback.Wait(200);
 
                 //// flip back and forth to check persistence ;)
                 //DebugUIMap.ClickInputDataTab();
@@ -106,8 +105,8 @@ namespace Dev2.Studio.UI.Tests
                 //SendKeys.SendWait(KeyboardCommands.CopyCommand);
                 //var actualXML = Clipboard.GetData(DataFormats.Text);
 
-                // close the window ;)
-                //DebugUIMap.CloseDebugWindow_ByCancel();
+                //close the window ;)
+                DebugUIMap.CloseDebugWindow_ByCancel();
 
 //                const string expectedXML = @"<DataList>
 //  <countries>

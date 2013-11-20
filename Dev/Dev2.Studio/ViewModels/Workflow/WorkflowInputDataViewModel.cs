@@ -227,7 +227,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 SendExecuteRequest(dataList);
             }
-        }
+            }
 
         protected virtual void SendExecuteRequest(XElement payload)
         {

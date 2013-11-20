@@ -74,7 +74,6 @@
   <!--  Linked Configs -->
   <ItemGroup>
     <Compile Include="AdornerTests.cs" />
-    <Compile Include="Bootstrap\UIBootstrap.cs" />
     <Compile Include="AutoConnectorTests.cs" />
     <Compile Include="AllToolsUITests.cs" />
     <Compile Include="DebugUITests.cs" />
