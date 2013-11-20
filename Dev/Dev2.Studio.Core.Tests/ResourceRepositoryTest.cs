@@ -19,12 +19,10 @@ using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Unlimited.Framework;
 
 namespace BusinessDesignStudio.Unit.Tests
 {
@@ -32,6 +30,7 @@ namespace BusinessDesignStudio.Unit.Tests
     /// Summary description for ResourceRepositoryTest
     /// </summary>
     [TestClass]
+    [Ignore]
     [ExcludeFromCodeCoverage]
     public class ResourceRepositoryTest
     {
