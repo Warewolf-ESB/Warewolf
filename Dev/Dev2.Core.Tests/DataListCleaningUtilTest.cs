@@ -1,4 +1,5 @@
-﻿using Dev2.DataList.Contract;
+﻿using System.Diagnostics.CodeAnalysis;
+using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests
@@ -10,6 +11,7 @@ namespace Dev2.Tests
     ///to contain all DataListUtilTest Unit Tests
     ///</summary>
     [TestClass()]
+    [ExcludeFromCodeCoverage]
     public class DataListCleaningUtilTest
     {
  
