@@ -47,6 +47,14 @@ namespace Dev2.Data.ServiceModel
         public bool IsValid { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [is new resource].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [is new resource]; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsNewResource { get; set; }
+
+        /// <summary>
         /// Gets or sets the errors.
         /// </summary>
         /// <value>

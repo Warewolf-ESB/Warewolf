@@ -1714,6 +1714,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _uniqueWorkflowParts.Clear();
                 _uniqueWorkflowParts = null;
             }
+
             _wd = null;
             base.OnDispose();
         }

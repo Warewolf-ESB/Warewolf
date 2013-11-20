@@ -29,7 +29,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
             {
                 category.Add(new ToolboxItemWrapper(typeof(FlowDecision), "/Images/ToolDecision-32.png", "Decision"));
                 category.Add(new ToolboxItemWrapper(typeof(FlowSwitch<string>), "/images/ToolSwitch-32.png", "Switch"));
-                //category.Add(new ToolboxItemWrapper(typeof(Sequence), "/Images/ToolSequence-32.png", "Sequence"));
             }
 
 
@@ -74,10 +73,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 category.Add(new ToolboxItemWrapper(typeof(DsfDateTimeActivity), "/images/ToolDateTime-32.png", "Date and Time"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfDateTimeDifferenceActivity), "/images/ToolDateTimeDifference-32.png", "Date and Time Difference"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfSendEmailActivity), "/images/ToolSendEmail-32.png", "Email"));
-
-                // TODO PBI 8291
-                //category.Add(new ToolboxItemWrapper(typeof(DsfWebPageActivity), "/images/User.png", "Human Interface"));
-                
                 category.Add(new ToolboxItemWrapper(typeof(DsfGatherSystemInformationActivity), "/images/ToolSystemInformation-32.png", "System Information"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfXPathActivity), "/images/ToolUtilityXpath-32.png", "XPath"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfCommentActivity), "/images/ToolComment-32.png", "Comment"));
@@ -104,7 +99,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
             if(category != null)
             {
                 category.Add(new ToolboxItemWrapper(typeof(DsfExecuteCommandLineActivity), "/Images/ToolCMDScript-32.png", "CMD Line"));
-                //category.Add(new ToolboxItemWrapper(typeof(DsfScriptingJavaScriptActivity), "/Images/ToolJavaScript-32.png", "JavaScript"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfScriptingActivity), "/Images/ToolJavaScript-32.png", "Script"));
             }
 

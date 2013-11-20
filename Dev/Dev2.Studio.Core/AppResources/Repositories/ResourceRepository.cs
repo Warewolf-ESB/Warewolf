@@ -519,7 +519,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             var resultObj = ExecuteCommand(_environmentModel, dataObj, _environmentModel.Connection.WorkspaceID, false);
 
-           IList<SerializableResource> resourceList = JsonConvert.DeserializeObject<List<SerializableResource>>(resultObj);
+            IList<SerializableResource> resourceList = JsonConvert.DeserializeObject<List<SerializableResource>>(resultObj);
 
             HydrateResourceModels(resourceList, _environmentModel.Connection.ServerID);
         }
@@ -545,13 +545,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 return;
             }
 
-            foreach(var item in wfServices)
+            foreach (var item in wfServices)
             {
                 try
                 {
                     var resourceType = item.ResourceType;
 
-                    if(resourceType == ResourceType.ReservedService)
+                    if (resourceType == ResourceType.ReservedService)
                     {
                         _reservedServices.Add(item.ResourceName.ToUpper());
                         continue;
@@ -559,29 +559,31 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
                     var enumsResourceTypeString = ResourceTypeConverter.ToTypeString(resourceType);
                     var enumsResourceType = enumsResourceTypeString == ResourceTypeConverter.TypeWildcard
-                        ? Enums.ResourceType.Unknown
-                        : (Enums.ResourceType)Enum.Parse(typeof(Enums.ResourceType), enumsResourceTypeString);
+                                                ? Enums.ResourceType.Unknown
+                                                : (Enums.ResourceType)
+                                                  Enum.Parse(typeof (Enums.ResourceType), enumsResourceTypeString);
 
                     IResourceModel resource = HydrateResourceModel(enumsResourceType, item, serverID);
-                    if(resource != null)
+                    if (resource != null)
                     {
                         _resourceModels.Add(resource);
-                        if(ItemAdded != null)
+                        if (ItemAdded != null)
                         {
                             ItemAdded(resource, null);
                         }
                     }
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     // Ignore malformed resource
-                    }
+
                 }
+            }
         }
 
         // Make public for testing, should be extracted to a util class for testing....
-        IResourceModel HydrateResourceModel(Enums.ResourceType resourceType, SerializableResource data, Guid serverID, bool forced = false, bool fetchXAML = false)
-                {
+        public IResourceModel HydrateResourceModel(Enums.ResourceType resourceType, SerializableResource data, Guid serverID, bool forced = false, bool fetchXAML = false){
+            
             Guid id = data.ResourceID;
 
             //2013.05.15: Ashley Lewis - Bug 9348 updates force hydration, initialization doesn't
@@ -621,16 +623,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
                 // TODO : Not sure about this stuff ?!
 
-                //var isNewWorkflow = data.IsNewWorkflow as string;
-                //if(isNewWorkflow != null)
-                //{
-                //    resource.IsNewWorkflow = false;
-                //    if (string.Equals(isNewWorkflow, "true", StringComparison.InvariantCulture))
-                //    {
-                //        resource.IsNewWorkflow = true;
-                //        NewWorkflowNames.Instance.Add(resource.DisplayName);
-                //    }
-                //}
+                var isNewWorkflow = data.IsNewResource;
+                if(isNewWorkflow)
+                {
+                    NewWorkflowNames.Instance.Add(resource.DisplayName);
+                }
 
                 return resource;
             }

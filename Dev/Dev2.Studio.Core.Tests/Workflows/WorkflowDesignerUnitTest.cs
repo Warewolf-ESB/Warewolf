@@ -10,6 +10,7 @@ using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Foreach;
@@ -46,28 +47,6 @@ namespace Dev2.Core.Tests.Workflows
     [ExcludeFromCodeCoverage]
     public class WorkflowDesignerUnitTest
     {
-
-        #region Test Variables
-
-        #endregion Test Variables
-
-        #region Test Initialize
-
-        [TestInitialize]
-        public void MyTestInitialize()
-        {
-           // Monitor.Enter(_testGuard);
-
-            //ImportService.CurrentContext = CompositionInitializer.PopUpProviderForTestsWithMockMainViewModel();
-        }
-
-        [TestCleanup]
-        public void MyTestCleanUp()
-        {
-            //Monitor.Exit(_testGuard);
-        }
-
-        #endregion Test Initialize
 
         #region Remove Unused Tests
 
@@ -1261,7 +1240,6 @@ namespace Dev2.Core.Tests.Workflows
 
         #region CheckIfRemoteWorkflowTests
 
-
         [TestMethod]
         public void CheckIfRemoteWorkflowAndSetPropertiesExpectedServiceUriToBeNull()
         {
@@ -1309,6 +1287,8 @@ namespace Dev2.Core.Tests.Workflows
             #endregion
 
             viewModel.TestCheckIfRemoteWorkflowAndSetProperties(activity, resourceModel.Object, contextEnvironment.Object);
+
+            viewModel.Dispose();
 
             Assert.IsNull(activity.ServiceUri);
             Assert.AreEqual(Guid.Empty, activity.ServiceServer);
@@ -1362,6 +1342,8 @@ namespace Dev2.Core.Tests.Workflows
             #endregion
 
             viewModel.TestCheckIfRemoteWorkflowAndSetProperties(activity, resourceModel.Object, contextEnvironment.Object);
+
+            viewModel.Dispose();
 
             Assert.AreEqual("http://localhost:1234/", activity.ServiceUri);
             Assert.AreEqual(resourceEnvironmentID, activity.ServiceServer);
@@ -1437,6 +1419,8 @@ namespace Dev2.Core.Tests.Workflows
             var wfd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, false);
             wfd.SetDataObject(treeVM);
             wfd.TestModelServiceModelChanged(args.Object);
+
+            wfd.Dispose();
 
             //Verify
             prop.Verify(p => p.SetValue(It.IsAny<DsfActivity>()), Times.Never());
@@ -1521,6 +1505,8 @@ namespace Dev2.Core.Tests.Workflows
 
             // Execute unit
             wd.TestModelServiceModelChanged(eventArgs.Object);
+
+            wd.Dispose();
 
             eventAggregator.Verify(c => c.Publish(It.IsAny<ConfigureDecisionExpressionMessage>()), Times.Once(), "Dropping a decision onto an auto connect node did not publish configure decision message");
         }
@@ -1612,6 +1598,8 @@ namespace Dev2.Core.Tests.Workflows
             // Execute unit
             wd.TestModelServiceModelChanged(eventArgs.Object);
 
+            wd.Dispose();
+
             eventAggregator.Verify(c => c.Publish(It.IsAny<ConfigureSwitchExpressionMessage>()), Times.Once(), "Dropping a switch onto an auto connect node did not publish configure switch message");
         }
 
@@ -1662,11 +1650,13 @@ namespace Dev2.Core.Tests.Workflows
 
             #endregion
 
-            var wd = new WorkflowDesignerViewModelMock(crm.Object, workflowHelper.Object, new Mock<IEventAggregator>().Object, false);
+            var wd = new WorkflowDesignerViewModelMock(crm.Object, workflowHelper.Object, new Mock<IEventAggregator>().Object);
             wd.InitializeDesigner(new Dictionary<Type, Type>());
 
             // Execute unit
             var actual = wd.TestPerformAddItems(source.Object);
+
+            wd.Dispose();
 
             //Assert Unique ID has changed
             Assert.AreNotEqual(notExpected, (actual.Content.ComputedValue as IDev2Activity).UniqueID, "Activity ID not changed");
@@ -1733,6 +1723,8 @@ namespace Dev2.Core.Tests.Workflows
                     prop.Verify(p => p.ClearValue(), Times.Never());
                 }
             }
+
+            wfd.Dispose();
         }
 
         [TestMethod]
@@ -1789,6 +1781,8 @@ namespace Dev2.Core.Tests.Workflows
 
             //Execute
             viewModel.TestWorkflowDesignerModelChangedWithNullSender();
+
+            viewModel.Dispose();
 
             //Verify
             prop.Verify(p => p.SetValue(It.IsAny<DsfActivity>()), Times.Never());
@@ -1851,6 +1845,8 @@ namespace Dev2.Core.Tests.Workflows
             resourceModel.Setup(r => r.WorkflowXaml).Returns((string)null);
             viewModel.TestWorkflowDesignerModelChanged();
 
+            viewModel.Dispose();
+
             //Verify
             Assert.IsTrue(resourceModel.Object.IsWorkflowSaved);
         }
@@ -1910,7 +1906,7 @@ namespace Dev2.Core.Tests.Workflows
 
             #endregion
 
-            //Execute
+            viewModel.Dispose();
 
             //Verify
             Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
@@ -2142,8 +2138,12 @@ namespace Dev2.Core.Tests.Workflows
             //----------------------- Execute -----------------------//
             EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = null, SelectionType = ActivitySelectionType.Single });
 
+            var result = viewModel.BringIntoViewHitCount;
+
+            viewModel.Dispose();
+
             //----------------------- Assert -----------------------//
-            Assert.AreEqual(0, viewModel.BringIntoViewHitCount);
+            Assert.AreEqual(0, result);
         }
 
 
@@ -2182,8 +2182,12 @@ namespace Dev2.Core.Tests.Workflows
             //----------------------- Execute -----------------------//
             EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = new DebugState(), SelectionType = ActivitySelectionType.Single });
 
+            var result = viewModel.GetSelectedModelItemHitCount;
+
+            viewModel.Dispose();
+
             //----------------------- Assert -----------------------//
-            Assert.AreEqual(0, viewModel.GetSelectedModelItemHitCount);
+            Assert.AreEqual(0, result);
         }
 
         [TestMethod]
@@ -2352,6 +2356,8 @@ namespace Dev2.Core.Tests.Workflows
                     Assert.IsNotNull(actualState);
                 }
             }
+
+            viewModel.Dispose();
         }
 
         static FlowNode CreateFlowNode(Guid id, string displayName, bool selectsModelItem, Type activityType)
@@ -2451,6 +2457,8 @@ namespace Dev2.Core.Tests.Workflows
 
             wd.Object.TestHandleMouseClick(new Mock<DependencyObject>().Object, null);
 
+            wd.Object.Dispose();
+
             eventAggregator.Verify(c => c.Publish(It.IsAny<ConfigureDecisionExpressionMessage>()), Times.Once(), "Dropping a decision onto an auto connect node did not publish configure decision message");
         }
 
@@ -2525,6 +2533,8 @@ namespace Dev2.Core.Tests.Workflows
                              .Verifiable();
 
             wd.Object.TestHandleMouseClick(new Mock<DependencyObject>().Object, null);
+
+            wd.Object.Dispose();
 
             eventAggregator.Verify(c => c.Publish(It.IsAny<ConfigureSwitchExpressionMessage>()), Times.Once(), "Dropping a switch onto an auto connect node did not publish configure switch message");
         }

@@ -415,7 +415,6 @@ namespace Dev2.Studio.Dock
 				}
 
 				tgp.Items.Add(pane);
-
 				RaiseInitializeContentPane(pane);
 			}
 			else

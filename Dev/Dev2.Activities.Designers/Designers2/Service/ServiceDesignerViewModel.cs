@@ -646,19 +646,23 @@ namespace Dev2.Activities.Designers2.Service
 
                 case FixType.IsRequiredChanged:
                     ShowLarge = true;
-                    var inputOutputViewModels = DeserializeMappings(true, XElement.Parse(WorstDesignError.FixData));
-                    foreach(var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
+                    if (WorstDesignError.FixData != null)
                     {
-                        var actualViewModel = DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == inputOutputViewModel.Name);
-                        if(actualViewModel != null)
+                        var inputOutputViewModels = DeserializeMappings(true, XElement.Parse(WorstDesignError.FixData));
+                        foreach (var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
                         {
-                            if(actualViewModel.Value == string.Empty)
+                            var actualViewModel =
+                                DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == inputOutputViewModel.Name);
+                            if (actualViewModel != null)
                             {
-                                actualViewModel.RequiredMissing = true;
+                                if (actualViewModel.Value == string.Empty)
+                                {
+                                    actualViewModel.RequiredMissing = true;
+                                }
                             }
                         }
                     }
-                    break;
+                break;
             }
         }
 
