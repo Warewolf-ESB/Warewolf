@@ -516,18 +516,21 @@ namespace Dev2.Activities.Designers2.Service
             var reqiredMappingChanged = memo.Errors.FirstOrDefault(c => c.FixType == FixType.IsRequiredChanged);
             if(reqiredMappingChanged != null)
             {
-                var xElement = XElement.Parse(reqiredMappingChanged.FixData);
-                var inputOutputViewModels = DeserializeMappings(true, xElement);
-
-                foreach(var input in inputOutputViewModels)
+                if (reqiredMappingChanged.FixData != null)
                 {
-                    var inputOutputViewModel = DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == input.Name);
-                    if(inputOutputViewModel != null)
+                    var xElement = XElement.Parse(reqiredMappingChanged.FixData);
+                    var inputOutputViewModels = DeserializeMappings(true, xElement);
+
+                    foreach (var input in inputOutputViewModels)
                     {
-                        inputOutputViewModel.Required = input.Required;
-                        if(inputOutputViewModel.MapsTo == string.Empty && inputOutputViewModel.Required)
+                        var inputOutputViewModel = DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == input.Name);
+                        if (inputOutputViewModel != null)
                         {
-                            keepError = true;
+                            inputOutputViewModel.Required = input.Required;
+                            if (inputOutputViewModel.MapsTo == string.Empty && inputOutputViewModel.Required)
+                            {
+                                keepError = true;
+                            }
                         }
                     }
                 }
@@ -617,26 +620,29 @@ namespace Dev2.Activities.Designers2.Service
             {
                 case FixType.ReloadMapping:
                     ShowLarge = true;
-                    var xml = XElement.Parse(WorstDesignError.FixData);
-                    var inputs = GetMapping(xml, true, DataMappingViewModel.Inputs);
-                    var outputs = GetMapping(xml, false, DataMappingViewModel.Outputs);
-
-                    DataMappingViewModel.Inputs.Clear();
-                    foreach(var input in inputs)
+                    if (WorstDesignError.FixData != null)
                     {
-                        DataMappingViewModel.Inputs.Add(input);
-                    }
+                        var xml = XElement.Parse(WorstDesignError.FixData);
+                        var inputs = GetMapping(xml, true, DataMappingViewModel.Inputs);
+                        var outputs = GetMapping(xml, false, DataMappingViewModel.Outputs);
 
-                    DataMappingViewModel.Outputs.Clear();
-                    foreach(var output in outputs)
-                    {
-                        DataMappingViewModel.Outputs.Add(output);
+                        DataMappingViewModel.Inputs.Clear();
+                        foreach (var input in inputs)
+                        {
+                            DataMappingViewModel.Inputs.Add(input);
+                        }
+
+                        DataMappingViewModel.Outputs.Clear();
+                        foreach (var output in outputs)
+                        {
+                            DataMappingViewModel.Outputs.Add(output);
+                        }
+                        SetInputs();
+                        SetOuputs();
+                        RemoveWorstError(WorstDesignError);
+                        UpdateWorstError();
                     }
-                    SetInputs();
-                    SetOuputs();
-                    RemoveWorstError(WorstDesignError);
-                    UpdateWorstError();
-                    break;
+                break;
 
                 case FixType.IsRequiredChanged:
                     ShowLarge = true;

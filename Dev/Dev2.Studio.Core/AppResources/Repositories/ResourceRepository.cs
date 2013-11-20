@@ -261,13 +261,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     var result =  _resourceModels.Find(func.Invoke);
 
                     // force a payload fetch ;)
-                    if(result.ResourceType == Enums.ResourceType.Service && string.IsNullOrEmpty(result.WorkflowXaml))
+                    if(result != null && result.ResourceType == Enums.ResourceType.Service && string.IsNullOrEmpty(result.WorkflowXaml))
                     {
                         result.WorkflowXaml = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, result.ID);
-                }
+                    }
 
                     return result;
-            }
+                }
             }
             return null;
         }
