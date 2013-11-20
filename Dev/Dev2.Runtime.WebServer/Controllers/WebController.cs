@@ -1,23 +1,13 @@
-using System;
-using System.Configuration;
-using System.IO;
-using System.Linq;
+using System.Collections.Specialized;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Reflection;
-using System.Text;
 using System.Web.Http;
-using HttpFramework;
-using Unlimited.Applications.WebServer;
 
 namespace Dev2.Runtime.WebServer.Controllers
 {
     public abstract class WebController : ApiController
     {
-        WebRequestHandler _webRequestHandler = new WebRequestHandler();
-
-     
 
         public virtual HttpResponseMessage Get(string website, string path)
         {
@@ -28,12 +18,44 @@ namespace Dev2.Runtime.WebServer.Controllers
                 return response;
             }
 
-         //   ICommunicationContext ctx = new OwinCommunicationContext();
+            var boundVariables = new NameValueCollection
+            {
+                { "website", website }, 
+                { "path", path }
+            };
+
+            //   ICommunicationContext ctx = new OwinCommunicationContext();
 
             //_webRequestHandler.GetWebResource(ctx);
 
             return null;
         }
+
+        //HttpResponseMessage ProcessRequest(NameValueCollection boundVariables)
+        //{
+        //    var user = User;
+        //    if(user == null || !user.Identity.IsAuthenticated)
+        //    {
+        //        return Request.CreateResponse(HttpStatusCode.Unauthorized);
+        //    }
+
+        //    var request = new WebCommunicationRequest(Request, boundVariables);
+        //    //var context = new WebCommunicationContext(request);
+
+        //    var webRequestHandler = new WebRequestHandler();
+        //    webRequestHandler.GetWebResource(context);
+
+        //    if(context.IsNotFound)
+        //    {
+        //        return Request.CreateResponse(HttpStatusCode.NotFound);
+        //    }
+
+        //    //var content = File.ReadAllText(filePath);
+        //    var response = Request.CreateResponse(HttpStatusCode.OK);
+        //    response.Content = new StringContent(context.StaticFileResponse);
+        //    response.Content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+
+        //}
 
     }
 }

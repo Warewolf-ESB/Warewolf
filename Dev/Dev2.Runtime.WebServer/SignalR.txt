@@ -6,3 +6,5 @@
 Install-Package Microsoft.AspNet.SignalR.SelfHost
 Install-Package Microsoft.Owin.Cors
 Install-Package Microsoft.AspNet.WebApi.OwinSelfHost
+
+3. Repeat 2 for the project to Dev2.Server
