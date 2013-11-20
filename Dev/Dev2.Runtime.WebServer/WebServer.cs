@@ -1,6 +1,6 @@
 ﻿using Unlimited.Applications.WebServer;
 
-namespace Dev2
+namespace Dev2.Runtime.WebServer
 {
     public sealed class WebServer : IFrameworkWebServer
     {

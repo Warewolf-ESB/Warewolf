@@ -41,104 +41,106 @@ namespace Unlimited.Applications.DynamicServicesHost
     internal sealed class ServerLifecycleManager : IDisposable
     {
         #region Constants
-        private const string _defaultConfigFileName = "LifecycleConfig.xml";
+
+        const string _defaultConfigFileName = "LifecycleConfig.xml";
 
         #endregion
 
         #region Static Members
 
-        private static ServerLifecycleManager _singleton;
+        static ServerLifecycleManager _singleton;
 
         #endregion
 
         #region Entry Point
+
         /// <summary>
         /// Entry Point for application server.
         /// </summary>
         /// <param name="arguments">Command line arguments passed to executable.</param>
-        private static int Main(string[] arguments)
+        static int Main(string[] arguments)
         {
             int result = 0;
 
             CommandLineParameters options = new CommandLineParameters();
             CommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
-            if (!parser.ParseArguments(arguments, options))
+            if(!parser.ParseArguments(arguments, options))
             {
                 return 80;
             }
 
             bool commandLineParameterProcessed = false;
-            if (options.Install)
+            if(options.Install)
             {
 
                 commandLineParameterProcessed = true;
 
-                if (!EnsureRunningAsAdministrator(arguments))
+                if(!EnsureRunningAsAdministrator(arguments))
                 {
                     return result;
                 }
 
-                if (!WindowsServiceManager.Install())
+                if(!WindowsServiceManager.Install())
                 {
                     result = 81;
                 }
             }
 
-            if (options.StartService)
+            if(options.StartService)
             {
 
                 commandLineParameterProcessed = true;
 
-                if (!EnsureRunningAsAdministrator(arguments))
+                if(!EnsureRunningAsAdministrator(arguments))
                 {
                     return result;
                 }
 
-                if (!WindowsServiceManager.StartService(null))
+                if(!WindowsServiceManager.StartService(null))
                 {
                     result = 83;
                 }
             }
 
-            if (options.StopService)
+            if(options.StopService)
             {
                 commandLineParameterProcessed = true;
 
-                if (!EnsureRunningAsAdministrator(arguments))
+                if(!EnsureRunningAsAdministrator(arguments))
                 {
                     return result;
                 }
 
-                if (!WindowsServiceManager.StopService(null))
+                if(!WindowsServiceManager.StopService(null))
                 {
                     result = 84;
                 }
             }
 
-            if (options.Uninstall)
+            if(options.Uninstall)
             {
                 commandLineParameterProcessed = true;
 
-                if (!EnsureRunningAsAdministrator(arguments))
+                if(!EnsureRunningAsAdministrator(arguments))
                 {
                     return result;
                 }
 
-                if (!WindowsServiceManager.Uninstall())
+                if(!WindowsServiceManager.Uninstall())
                 {
                     result = 82;
                 }
             }
 
-            if (commandLineParameterProcessed)
+            if(commandLineParameterProcessed)
             {
                 return result;
             }
 
-            if (Environment.UserInteractive || options.IntegrationTestMode)
+            if(Environment.UserInteractive || options.IntegrationTestMode)
             {
                 ServerLogger.LogMessage("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
-                using (_singleton = new ServerLifecycleManager(arguments))
+                using(_singleton = new ServerLifecycleManager(arguments))
                 {
                     result = _singleton.Run(true);
                 }
@@ -149,7 +151,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 ServerLogger.LogMessage("** Starting In Service Mode **");
                 // running as service
-                using (var service = new ServerLifecycleManagerService())
+                using(var service = new ServerLifecycleManagerService())
                 {
                     ServiceBase.Run(service);
                 }
@@ -157,6 +159,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             return result;
         }
+
         #endregion
 
         #region Nested classes to support running as service
@@ -187,40 +190,43 @@ namespace Unlimited.Applications.DynamicServicesHost
         #endregion
 
         #region Instance Fields
-        private bool _isDisposed;
-        private bool _isWebServerEnabled;
-        private bool _isWebServerSslEnabled;
-        private bool _preloadAssemblies;
-        private string[] _arguments;
-        private AssemblyReference[] _externalDependencies;
-        private Dictionary<string, WorkflowEntry[]> _workflowGroups;
-        private Dev2Endpoint[] _endpoints;
-        private IFrameworkWebServer _webserver;
-        private EsbServicesEndpoint _esbEndpoint;
 
-        private StudioNetworkServer _networkServer;
-        private ExecutionServerChannel _executionChannel;
-        private DataListServerChannel _dataListChannel;
+        bool _isDisposed;
+        bool _isWebServerEnabled;
+        bool _isWebServerSslEnabled;
+        bool _preloadAssemblies;
+        string[] _arguments;
+        AssemblyReference[] _externalDependencies;
+        Dictionary<string, WorkflowEntry[]> _workflowGroups;
+        Dev2Endpoint[] _endpoints;
+        IFrameworkWebServer _webserver;
+        EsbServicesEndpoint _esbEndpoint;
 
-        private string[] _prefixes;
-        private string _uriAddress;
-        private string _configFile;
+        StudioNetworkServer _networkServer;
+        ExecutionServerChannel _executionChannel;
+        DataListServerChannel _dataListChannel;
+
+        string[] _prefixes;
+        string _uriAddress;
+        string _configFile;
 
         // START OF GC MANAGEMENT
-        private bool _enableGCManager;
-        private long _minimumWorkingSet;
-        private long _maximumWorkingSet;
-        private long _lastKnownWorkingSet;
-        private volatile bool _gcmRunning;
-        private DateTime _nextForcedCollection;
-        private Thread _gcmThread;
-        private ThreadStart _gcmThreadStart;
-		Timer _timer;
+        bool _enableGCManager;
+        long _minimumWorkingSet;
+        long _maximumWorkingSet;
+        long _lastKnownWorkingSet;
+        volatile bool _gcmRunning;
+        DateTime _nextForcedCollection;
+        Thread _gcmThread;
+        ThreadStart _gcmThreadStart;
+        Timer _timer;
 
         // END OF GC MANAGEMENT
+
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// Get a value indicating if the lifecycle manager has been disposed.
         /// </summary>
@@ -233,14 +239,16 @@ namespace Unlimited.Applications.DynamicServicesHost
         /// Gets a Guid that represents the ID of the current server.
         /// </summary>
         public Guid ServerID { get { return HostSecurityProvider.Instance.ServerID; } }
+
         #endregion
 
         #region Constructor
+
         /// <summary>
         /// Constructors an instance of the ServerLifecycleManager class, ServerLifecycleManager is essentially a singleton but implemented as an instance type
         /// to ensure proper finalization occurs.
         /// </summary>
-        private ServerLifecycleManager(string[] arguments)
+        ServerLifecycleManager(string[] arguments)
         {
             _arguments = arguments ?? new string[0];
             _configFile = _defaultConfigFileName;
@@ -249,112 +257,114 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             InitializeCommandLineArguments();
         }
+
         #endregion
 
         #region Run Handling
+
         /// <summary>
         /// Runs the application server, and handles all initialization, execution and cleanup logic required.
         /// </summary>
         /// <returns></returns>
-        private int Run(bool interactiveMode)
+        int Run(bool interactiveMode)
         {
             int result = 0;
             bool didBreak = false;
 
 
-            if (!SetWorkingDirectory())
+            if(!SetWorkingDirectory())
             {
                 result = 95;
                 didBreak = true;
             }
 
             // PBI 5389 - Resources Assigned and Allocated to Server
-            if (!didBreak && !LoadHostSecurityProvider())
+            if(!didBreak && !LoadHostSecurityProvider())
             {
                 result = 1;
                 didBreak = true;
             }
 
-            if (!didBreak && !LoadConfiguration(_configFile))
+            if(!didBreak && !LoadConfiguration(_configFile))
             {
                 result = 1;
                 didBreak = true;
             }
 
-            if (!didBreak && !PreloadReferences())
+            if(!didBreak && !PreloadReferences())
             {
                 result = 2;
                 didBreak = true;
             }
 
-            if (!didBreak && !StartGCManager())
+            if(!didBreak && !StartGCManager())
             {
                 result = 7;
                 didBreak = true;
             }
 
-            if (!didBreak && !InitializeServer())
+            if(!didBreak && !InitializeServer())
             {
                 result = 3;
                 didBreak = true;
             }
 
             // Start DataList Server
-            if (!didBreak && !StartDataListServer())
+            if(!didBreak && !StartDataListServer())
             {
                 result = 99;
                 didBreak = true;
             }
 
             // BUG 7850 - Resource catalog (TWR: 2013.03.13)
-            if (!didBreak && !LoadResourceCatalog())
+            if(!didBreak && !LoadResourceCatalog())
             {
                 result = 94;
                 didBreak = true;
             }
 
             // PBI 5389 - Resources Assigned and Allocated to Server
-            if (!didBreak && !LoadServerWorkspace())
+            if(!didBreak && !LoadServerWorkspace())
             {
                 result = 98; // ????
                 didBreak = true;
             }
 
 
-            if (!didBreak && !OpenNetworkExecutionChannel())
+            if(!didBreak && !OpenNetworkExecutionChannel())
             {
                 result = 97;
                 didBreak = true;
             }
 
-            if (!didBreak && !OpenNetworkDataListChannel())
+            if(!didBreak && !OpenNetworkDataListChannel())
             {
                 result = 96;
                 didBreak = true;
             }
 
 
-            if (!didBreak && !StartWebServer())
+            if(!didBreak && !StartWebServer())
             {
                 result = 4;
                 didBreak = true;
             }
 
             // PBI 1018 - Settings Framework (TWR: 2013.03.07)
-            if (!didBreak && !LoadSettingsProvider())
+            if(!didBreak && !LoadSettingsProvider())
             {
                 result = 93;
                 didBreak = true;
             }
 
-            if (!didBreak && !ConfigureLoggging())
+            if(!didBreak && !ConfigureLoggging())
             {
                 result = 92;
                 didBreak = true;
             }
 
-            
-            if (!didBreak)
+
+            if(!didBreak)
             {
                 // set background timer to query network computer name list every 15 minutes ;)
                 _timer = new Timer(RefreshComputerList, null, 10000, GlobalConstants.NetworkComputerNameQueryFreq);
@@ -368,18 +378,18 @@ namespace Unlimited.Applications.DynamicServicesHost
             return result;
         }
 
-		void RefreshComputerList(object state)
-		{
-			GetComputerNames.GetComputerNamesList();
-		}
+        void RefreshComputerList(object state)
+        {
+            GetComputerNames.GetComputerNamesList();
+        }
 
-        private int Stop(bool didBreak, int result)
+        int Stop(bool didBreak, int result)
         {
 
             // PBI 1018 - Settings Framework (TWR: 2013.03.07)
             UnloadSettingsProvider();
 
-            if (!didBreak)
+            if(!didBreak)
             {
                 Dispose();
             }
@@ -393,13 +403,13 @@ namespace Unlimited.Applications.DynamicServicesHost
             return result;
         }
 
-        private int ServerLoop(bool interactiveMode)
+        int ServerLoop(bool interactiveMode)
         {
 
-            if (interactiveMode)
+            if(interactiveMode)
             {
                 Write("Press <ENTER> to terminate service and/or web server if started");
-                if (EnvironmentVariables.IsServerOnline)
+                if(EnvironmentVariables.IsServerOnline)
                 {
                     Console.ReadLine();
                 }
@@ -414,7 +424,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             return 0;
         }
 
-        private bool SetWorkingDirectory()
+        bool SetWorkingDirectory()
         {
             bool result = true;
 
@@ -427,7 +437,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                 // ReSharper restore AssignNullToNotNullAttribute
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Fail("Unable to set working directory.", e);
                 result = false;
@@ -436,12 +446,12 @@ namespace Unlimited.Applications.DynamicServicesHost
             return result;
         }
 
-        private static bool EnsureRunningAsAdministrator(string[] arguments)
+        static bool EnsureRunningAsAdministrator(string[] arguments)
         {
 
             try
             {
-                if (!IsElevated())
+                if(!IsElevated())
                 {
                     ProcessStartInfo startInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().Location);
                     startInfo.Verb = "runas";
@@ -454,7 +464,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                     {
                         process.Start();
                     }
-                    catch (Exception e)
+                    catch(Exception e)
                     {
                         ServerLogger.LogError(e);
                     }
@@ -462,7 +472,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                     return false;
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 ServerLogger.LogError(e);
             }
@@ -470,7 +480,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             return true;
         }
 
-        private static bool IsElevated()
+        static bool IsElevated()
         {
             WindowsIdentity currentIdentity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(currentIdentity);
@@ -480,36 +490,37 @@ namespace Unlimited.Applications.DynamicServicesHost
         #endregion
 
         #region Configuration Handling
+
         /// <summary>
         /// Reads the configuration file and records the entries in class level fields.
         /// </summary>
         /// <param name="filePath">The relative or fully qualified file path to the configuration file</param>
         /// <returns>true if the configuration file was loaded correctly, false otherwise</returns>
-        private bool LoadConfiguration(string filePath)
+        bool LoadConfiguration(string filePath)
         {
             bool recreate = false;
             bool result = true;
             XmlDocument document = new XmlDocument();
-            if (File.Exists(filePath))
+            if(File.Exists(filePath))
             {
-               
+
 
                 try
                 {
                     document.Load(filePath);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     Fail("Configuration load error", e);
                     result = false;
                 }
 
-                
+
             }
             else
                 recreate = true;
 
-            if (recreate)
+            if(recreate)
             {
                 WriteLine("Configuration file \"" + filePath + "\" does not exist, creating empty configuration file...");
 
@@ -543,60 +554,60 @@ namespace Unlimited.Applications.DynamicServicesHost
                     File.WriteAllText(filePath, builder.ToString());
                     document.Load(filePath);
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     ServerLogger.LogError(ex);
                     result = false;
                 }
             }
-            if (result)
+            if(result)
             {
                 result = LoadConfiguration(document);
             }
             return result;
         }
 
-        private bool LoadConfiguration(XmlDocument document)
+        bool LoadConfiguration(XmlDocument document)
         {
             bool result = true;
 
             XmlNodeList allSections = document.HasChildNodes ? (document.FirstChild.HasChildNodes ? document.FirstChild.ChildNodes : null) : null;
 
-            if (allSections != null)
+            if(allSections != null)
             {
-                foreach (XmlNode section in allSections)
+                foreach(XmlNode section in allSections)
                 {
-                    if (result)
+                    if(result)
                     {
                         ReadBooleanSection(section, "PreloadAssemblies", ref result, ref _preloadAssemblies);
 
 
-                        if (String.Equals(section.Name, "Logging", StringComparison.OrdinalIgnoreCase))
+                        if(String.Equals(section.Name, "Logging", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (!ProcessLoggingConfiguration(section))
+                            if(!ProcessLoggingConfiguration(section))
                             {
                                 result = false;
                             }
                         }
 
-                        if (String.Equals(section.Name, "GCManager", StringComparison.OrdinalIgnoreCase))
+                        if(String.Equals(section.Name, "GCManager", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (!ProcessGCManager(section))
+                            if(!ProcessGCManager(section))
                             {
                                 result = false;
                             }
                         }
 
-                        if (String.Equals(section.Name, "AssemblyReferenceGroup", StringComparison.OrdinalIgnoreCase))
+                        if(String.Equals(section.Name, "AssemblyReferenceGroup", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (!ProcessAssemblyReferenceGroup(section))
+                            if(!ProcessAssemblyReferenceGroup(section))
                             {
                                 result = false;
                             }
                         }
-                        else if (String.Equals(section.Name, "WorkflowGroup", StringComparison.OrdinalIgnoreCase))
+                        else if(String.Equals(section.Name, "WorkflowGroup", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (!ProcessWorkflowGroup(section))
+                            if(!ProcessWorkflowGroup(section))
                             {
                                 result = false;
                             }
@@ -609,21 +620,21 @@ namespace Unlimited.Applications.DynamicServicesHost
             return result;
         }
 
-        private bool ReadBooleanSection(XmlNode section, string sectionName, ref bool result, ref bool setter)
+        bool ReadBooleanSection(XmlNode section, string sectionName, ref bool result, ref bool setter)
         {
             bool output = false;
 
-            if (String.Equals(section.Name, sectionName, StringComparison.OrdinalIgnoreCase))
+            if(String.Equals(section.Name, sectionName, StringComparison.OrdinalIgnoreCase))
             {
                 output = true;
 
-                if (!String.IsNullOrEmpty(section.InnerText))
+                if(!String.IsNullOrEmpty(section.InnerText))
                 {
-                    if (String.Equals(section.InnerText, "true", StringComparison.OrdinalIgnoreCase))
+                    if(String.Equals(section.InnerText, "true", StringComparison.OrdinalIgnoreCase))
                     {
                         setter = true;
                     }
-                    else if (String.Equals(section.InnerText, "false", StringComparison.OrdinalIgnoreCase))
+                    else if(String.Equals(section.InnerText, "false", StringComparison.OrdinalIgnoreCase))
                     {
                         setter = false;
                     }
@@ -644,15 +655,15 @@ namespace Unlimited.Applications.DynamicServicesHost
         }
 
 
-        private bool ProcessGCManager(XmlNode section)
+        bool ProcessGCManager(XmlNode section)
         {
             XmlAttributeCollection sectionAttribs = section.Attributes;
 
-            if (sectionAttribs != null)
+            if(sectionAttribs != null)
             {
-                foreach (XmlAttribute sAttrib in sectionAttribs)
+                foreach(XmlAttribute sAttrib in sectionAttribs)
                 {
-                    if (String.Equals(sAttrib.Name, "Enabled", StringComparison.OrdinalIgnoreCase))
+                    if(String.Equals(sAttrib.Name, "Enabled", StringComparison.OrdinalIgnoreCase))
                     {
                         _enableGCManager = String.Equals(sAttrib.Value, "True", StringComparison.OrdinalIgnoreCase);
                     }
@@ -661,17 +672,17 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             XmlNodeList allReferences = section.HasChildNodes ? section.ChildNodes : null;
 
-            if (allReferences != null)
+            if(allReferences != null)
             {
-                foreach (XmlNode current in allReferences)
+                foreach(XmlNode current in allReferences)
                 {
-                    if (String.Equals(current.Name, "MinWorkingSet", StringComparison.OrdinalIgnoreCase))
+                    if(String.Equals(current.Name, "MinWorkingSet", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (!String.IsNullOrEmpty(current.InnerText))
+                        if(!String.IsNullOrEmpty(current.InnerText))
                         {
                             long tempWorkingSet;
 
-                            if (Int64.TryParse(current.InnerText, out tempWorkingSet))
+                            if(Int64.TryParse(current.InnerText, out tempWorkingSet))
                             {
                                 _minimumWorkingSet = tempWorkingSet;
                             }
@@ -685,13 +696,13 @@ namespace Unlimited.Applications.DynamicServicesHost
                             Fail("Configuration error, MinWorkingSet must be given a value.");
                         }
                     }
-                    else if (String.Equals(current.Name, "MaxWorkingSet", StringComparison.OrdinalIgnoreCase))
+                    else if(String.Equals(current.Name, "MaxWorkingSet", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (!String.IsNullOrEmpty(current.InnerText))
+                        if(!String.IsNullOrEmpty(current.InnerText))
                         {
                             long tempWorkingSet;
 
-                            if (Int64.TryParse(current.InnerText, out tempWorkingSet))
+                            if(Int64.TryParse(current.InnerText, out tempWorkingSet))
                             {
                                 _maximumWorkingSet = tempWorkingSet;
                             }
@@ -711,25 +722,25 @@ namespace Unlimited.Applications.DynamicServicesHost
             return true;
         }
 
-        private bool ProcessLoggingConfiguration(XmlNode section)
+        bool ProcessLoggingConfiguration(XmlNode section)
         {
 
             XmlNodeList allReferences = section.HasChildNodes ? section.ChildNodes : null;
 
-            if (allReferences != null)
+            if(allReferences != null)
             {
-                foreach (XmlNode current in allReferences)
+                foreach(XmlNode current in allReferences)
                 {
                     var attr = current.Attributes;
 
-                    if (String.Equals(current.Name, "Debug", StringComparison.OrdinalIgnoreCase))
+                    if(String.Equals(current.Name, "Debug", StringComparison.OrdinalIgnoreCase))
                     {
 
-                        if (attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
+                        if(attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
                         {
                             bool result;
 
-                            if (Boolean.TryParse(attr["Enabled"].Value, out result))
+                            if(Boolean.TryParse(attr["Enabled"].Value, out result))
                             {
                                 ServerLogger.EnableDebugOutput = result;
                             }
@@ -742,13 +753,14 @@ namespace Unlimited.Applications.DynamicServicesHost
                         {
                             Fail("Configuration error, Debug must be given a value.");
                         }
-                    } else if (String.Equals(current.Name, "Trace", StringComparison.OrdinalIgnoreCase))
+                    }
+                    else if(String.Equals(current.Name, "Trace", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
+                        if(attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
                         {
                             bool result;
 
-                            if (Boolean.TryParse(attr["Enabled"].Value, out result))
+                            if(Boolean.TryParse(attr["Enabled"].Value, out result))
                             {
                                 ServerLogger.EnableTraceOutput = result;
                             }
@@ -762,13 +774,13 @@ namespace Unlimited.Applications.DynamicServicesHost
                             Fail("Configuration error, Trace must be given a value.");
                         }
                     }
-                    else if (String.Equals(current.Name, "Error", StringComparison.OrdinalIgnoreCase))
+                    else if(String.Equals(current.Name, "Error", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
+                        if(attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
                         {
                             bool result;
 
-                            if (Boolean.TryParse(attr["Enabled"].Value, out result))
+                            if(Boolean.TryParse(attr["Enabled"].Value, out result))
                             {
                                 ServerLogger.EnableErrorOutput = result;
                             }
@@ -782,13 +794,13 @@ namespace Unlimited.Applications.DynamicServicesHost
                             Fail("Configuration error, Error must be given a value.");
                         }
                     }
-                    else if (String.Equals(current.Name, "Info", StringComparison.OrdinalIgnoreCase))
+                    else if(String.Equals(current.Name, "Info", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
+                        if(attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
                         {
                             bool result;
 
-                            if (Boolean.TryParse(attr["Enabled"].Value, out result))
+                            if(Boolean.TryParse(attr["Enabled"].Value, out result))
                             {
                                 ServerLogger.EnableInfoOutput = result;
                             }
@@ -811,44 +823,44 @@ namespace Unlimited.Applications.DynamicServicesHost
         /// <summary>
         /// Transforms AssemblyReferenceGroup nodes into AssemblyReference objects.
         /// </summary>
-        private bool ProcessAssemblyReferenceGroup(XmlNode section)
+        bool ProcessAssemblyReferenceGroup(XmlNode section)
         {
             XmlNodeList allReferences = section.HasChildNodes ? section.ChildNodes : null;
 
-            if (allReferences != null)
+            if(allReferences != null)
             {
                 List<AssemblyReference> group = new List<AssemblyReference>();
 
-                foreach (XmlNode current in allReferences)
-                    if (String.Equals(current.Name, "AssemblyReference", StringComparison.OrdinalIgnoreCase))
+                foreach(XmlNode current in allReferences)
+                    if(String.Equals(current.Name, "AssemblyReference", StringComparison.OrdinalIgnoreCase))
                     {
                         XmlAttributeCollection allAttribs = current.Attributes;
                         string path = null, culture = null, version = null, publicKeyToken = null;
 
-                        if (allAttribs != null)
+                        if(allAttribs != null)
                         {
-                            foreach (XmlAttribute currentAttrib in allAttribs)
+                            foreach(XmlAttribute currentAttrib in allAttribs)
                             {
-                                if (String.Equals(currentAttrib.Name, "Path", StringComparison.OrdinalIgnoreCase))
+                                if(String.Equals(currentAttrib.Name, "Path", StringComparison.OrdinalIgnoreCase))
                                 {
                                     path = currentAttrib.Value;
                                 }
-                                else if (String.Equals(currentAttrib.Name, "Culture", StringComparison.OrdinalIgnoreCase))
+                                else if(String.Equals(currentAttrib.Name, "Culture", StringComparison.OrdinalIgnoreCase))
                                 {
                                     culture = currentAttrib.Value;
                                 }
-                                else if (String.Equals(currentAttrib.Name, "Version", StringComparison.OrdinalIgnoreCase))
+                                else if(String.Equals(currentAttrib.Name, "Version", StringComparison.OrdinalIgnoreCase))
                                 {
                                     version = currentAttrib.Value;
                                 }
-                                else if (String.Equals(currentAttrib.Name, "PublicKeyToken", StringComparison.OrdinalIgnoreCase))
+                                else if(String.Equals(currentAttrib.Name, "PublicKeyToken", StringComparison.OrdinalIgnoreCase))
                                 {
                                     publicKeyToken = currentAttrib.Value;
                                 }
                             }
                         }
 
-                        if (path == null)
+                        if(path == null)
                         {
                             group.Add(new AssemblyReference(current.InnerText, version, culture, publicKeyToken));
                         }
@@ -858,9 +870,9 @@ namespace Unlimited.Applications.DynamicServicesHost
                         }
                     }
 
-                if (group.Count > 0)
+                if(group.Count > 0)
                 {
-                    if (_externalDependencies.Length != 0)
+                    if(_externalDependencies.Length != 0)
                     {
                         group.AddRange(_externalDependencies);
                     }
@@ -875,27 +887,27 @@ namespace Unlimited.Applications.DynamicServicesHost
         /// <summary>
         /// Transforms WorkflowGroup nodes into WorkflowEntry objects.
         /// </summary>
-        private bool ProcessWorkflowGroup(XmlNode section)
+        bool ProcessWorkflowGroup(XmlNode section)
         {
             XmlNodeList allWorkflows = section.HasChildNodes ? section.ChildNodes : null;
 
-            if (allWorkflows != null)
+            if(allWorkflows != null)
             {
                 XmlAttributeCollection allAttribs = section.Attributes;
                 string groupName = null;
 
-                if (allAttribs != null)
+                if(allAttribs != null)
                 {
-                    foreach (XmlAttribute currentAttrib in allAttribs)
+                    foreach(XmlAttribute currentAttrib in allAttribs)
                     {
-                        if (String.Equals(currentAttrib.Name, "Name", StringComparison.OrdinalIgnoreCase))
+                        if(String.Equals(currentAttrib.Name, "Name", StringComparison.OrdinalIgnoreCase))
                         {
                             groupName = currentAttrib.Value;
                         }
                     }
                 }
 
-                if (groupName == null)
+                if(groupName == null)
                 {
                     Fail("Configuration error, WorkflowGroup has no Name attribute.");
                     return false;
@@ -903,25 +915,25 @@ namespace Unlimited.Applications.DynamicServicesHost
 
                 List<WorkflowEntry> group = new List<WorkflowEntry>();
 
-                foreach (XmlNode current in allWorkflows)
+                foreach(XmlNode current in allWorkflows)
                 {
-                    if (String.Equals(current.Name, "Workflow", StringComparison.OrdinalIgnoreCase))
+                    if(String.Equals(current.Name, "Workflow", StringComparison.OrdinalIgnoreCase))
                     {
                         allAttribs = current.Attributes;
                         string name = null;
 
-                        if (allAttribs != null)
+                        if(allAttribs != null)
                         {
-                            foreach (XmlAttribute currentAttrib in allAttribs)
+                            foreach(XmlAttribute currentAttrib in allAttribs)
                             {
-                                if (String.Equals(currentAttrib.Name, "Name", StringComparison.OrdinalIgnoreCase))
+                                if(String.Equals(currentAttrib.Name, "Name", StringComparison.OrdinalIgnoreCase))
                                 {
                                     name = currentAttrib.Value;
                                 }
                             }
                         }
 
-                        if (name == null)
+                        if(name == null)
                         {
                             Fail("Configuration error, Workflow has no Name attribute.");
                             return false;
@@ -929,29 +941,29 @@ namespace Unlimited.Applications.DynamicServicesHost
 
                         Dictionary<string, string> arguments = new Dictionary<string, string>(StringComparer.Ordinal);
 
-                        if (current.HasChildNodes)
+                        if(current.HasChildNodes)
                         {
                             XmlNodeList allArguments = current.ChildNodes;
 
-                            foreach (XmlNode currentArg in allArguments)
+                            foreach(XmlNode currentArg in allArguments)
                             {
-                                if (String.Equals(currentArg.Name, "Argument", StringComparison.OrdinalIgnoreCase))
+                                if(String.Equals(currentArg.Name, "Argument", StringComparison.OrdinalIgnoreCase))
                                 {
                                     allAttribs = currentArg.Attributes;
 
-                                    if (allAttribs != null)
+                                    if(allAttribs != null)
                                     {
                                         string key = null, value = null;
 
-                                        foreach (XmlAttribute argAttrib in allAttribs)
+                                        foreach(XmlAttribute argAttrib in allAttribs)
                                         {
-                                            if (String.Equals(argAttrib.Name, "Key", StringComparison.OrdinalIgnoreCase))
+                                            if(String.Equals(argAttrib.Name, "Key", StringComparison.OrdinalIgnoreCase))
                                             {
                                                 key = argAttrib.Value;
                                             }
                                         }
 
-                                        if (key == null)
+                                        if(key == null)
                                         {
                                             Fail("Configuration error, Argument has no Key attribute.");
                                             return false;
@@ -959,7 +971,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
                                         value = currentArg.InnerText ?? "";
 
-                                        if (arguments.ContainsKey(key))
+                                        if(arguments.ContainsKey(key))
                                         {
                                             arguments[key] = value;
                                         }
@@ -976,9 +988,9 @@ namespace Unlimited.Applications.DynamicServicesHost
                     }
                 }
 
-                if (group.Count > 0)
+                if(group.Count > 0)
                 {
-                    if (_workflowGroups.ContainsKey(groupName))
+                    if(_workflowGroups.ContainsKey(groupName))
                     {
                         group.InsertRange(0, _workflowGroups[groupName]);
                         _workflowGroups[groupName] = group.ToArray();
@@ -992,21 +1004,23 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             return true;
         }
+
         #endregion
 
         #region Assembly Handling
+
         /// <summary>
         /// Ensures all external dependencies have been loaded, then loads all referenced assemblies by the 
         /// currently executing assembly, and recursively loads each of the referenced assemblies of the 
         /// initial dependency set until all dependencies have been loaded.
         /// </summary>
-        private bool PreloadReferences()
+        bool PreloadReferences()
         {
-            if (!LoadExternalDependencies())
+            if(!LoadExternalDependencies())
                 return false;
             bool result = true;
 
-            if (_preloadAssemblies)
+            if(_preloadAssemblies)
             {
                 Write("Preloading assemblies...  ");
                 Assembly currentAsm = typeof(ServerLifecycleManager).Assembly;
@@ -1024,13 +1038,13 @@ namespace Unlimited.Applications.DynamicServicesHost
         /// Loads the assemblies that are referenced by the input assembly, but only if that assembly has not
         /// already been inspected.
         /// </summary>
-        private void LoadReferences(Assembly asm, HashSet<string> inspected)
+        void LoadReferences(Assembly asm, HashSet<string> inspected)
         {
             AssemblyName[] allReferences = asm.GetReferencedAssemblies();
 
-            foreach (AssemblyName toLoad in allReferences)
+            foreach(AssemblyName toLoad in allReferences)
             {
-                if (inspected.Add(toLoad.ToString()))
+                if(inspected.Add(toLoad.ToString()))
                 {
                     Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
                     LoadReferences(loaded, inspected);
@@ -1043,31 +1057,34 @@ namespace Unlimited.Applications.DynamicServicesHost
         /// <summary>
         /// Loads any external dependencies specified in the configuration file into the current AppDomain.
         /// </summary>
-        private bool LoadExternalDependencies()
+        bool LoadExternalDependencies()
         {
             bool result = true;
 
-            if (_externalDependencies != null && _externalDependencies.Length > 0)
+            if(_externalDependencies != null && _externalDependencies.Length > 0)
             {
-                foreach (AssemblyReference currentReference in _externalDependencies)
+                foreach(AssemblyReference currentReference in _externalDependencies)
                 {
-                    if (result)
+                    if(result)
                     {
                         Assembly asm = null;
 
-                        if (currentReference.IsGlobalAssemblyCache)
+                        if(currentReference.IsGlobalAssemblyCache)
                         {
                             GAC.RebuildGACAssemblyCache(false);
                             string gacName = GAC.TryResolveGACAssembly(currentReference.Name, currentReference.Culture, currentReference.Version, currentReference.PublicKeyToken);
 
-                            if (gacName == null)
-                                if (GAC.RebuildGACAssemblyCache(true))
+                            if(gacName == null)
+                                if(GAC.RebuildGACAssemblyCache(true))
                                     gacName = GAC.TryResolveGACAssembly(currentReference.Name, currentReference.Culture, currentReference.Version, currentReference.PublicKeyToken);
 
-                            if (gacName != null)
+                            if(gacName != null)
                             {
-                                try { asm = Assembly.Load(gacName); }
-                                catch (Exception e)
+                                try
+                                {
+                                    asm = Assembly.Load(gacName);
+                                }
+                                catch(Exception e)
                                 {
                                     asm = null;
                                     Fail("External assembly \"" + gacName + "\" failed to load from global assembly cache", e);
@@ -1075,7 +1092,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                                 }
                             }
 
-                            if (asm == null && result)
+                            if(asm == null && result)
                             {
                                 asm = null;
                                 Fail("External assembly \"" + gacName + "\" failed to load from global assembly cache");
@@ -1086,10 +1103,13 @@ namespace Unlimited.Applications.DynamicServicesHost
                         {
                             string fullPath = Path.Combine(currentReference.Path, currentReference.Name.EndsWith(".dll") ? currentReference.Name : (currentReference.Name + ".dll"));
 
-                            if (File.Exists(fullPath))
+                            if(File.Exists(fullPath))
                             {
-                                try { asm = Assembly.LoadFrom(fullPath); }
-                                catch (Exception e)
+                                try
+                                {
+                                    asm = Assembly.LoadFrom(fullPath);
+                                }
+                                catch(Exception e)
                                 {
                                     asm = null;
                                     Fail("External assembly failed to load from \"" + fullPath + "\"", e);
@@ -1097,7 +1117,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                                 }
                             }
 
-                            if (asm == null && result)
+                            if(asm == null && result)
                             {
                                 asm = null;
                                 Fail("External assembly failed to load from \"" + fullPath + "\"");
@@ -1105,7 +1125,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                             }
                         }
 
-                        if (result)
+                        if(result)
                             AppDomain.CurrentDomain.Load(asm.GetName());
                     }
                 }
@@ -1113,12 +1133,14 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             return result;
         }
+
         #endregion
 
         #region GC Handling
-        private bool StartGCManager()
+
+        bool StartGCManager()
         {
-            if (_enableGCManager)
+            if(_enableGCManager)
             {
                 WriteLine("SLM garbage collection manager enabled.");
                 _gcmThreadStart = GCM_EntryPoint;
@@ -1137,15 +1159,15 @@ namespace Unlimited.Applications.DynamicServicesHost
             return true;
         }
 
-        private void GCM_EntryPoint()
+        void GCM_EntryPoint()
         {
-            while (_gcmRunning)
+            while(_gcmRunning)
             {
                 DateTime now = DateTime.Now;
 
-                if (now >= _nextForcedCollection)
+                if(now >= _nextForcedCollection)
                 {
-                    if (_lastKnownWorkingSet == -1L)
+                    if(_lastKnownWorkingSet == -1L)
                     {
                         _lastKnownWorkingSet = GC.GetTotalMemory(true);
                     }
@@ -1153,12 +1175,12 @@ namespace Unlimited.Applications.DynamicServicesHost
                     {
                         bool shouldCollect = false;
 
-                        if ((_lastKnownWorkingSet / 1024L / 1024L) > _minimumWorkingSet)
+                        if((_lastKnownWorkingSet / 1024L / 1024L) > _minimumWorkingSet)
                         {
                             shouldCollect = true;
                         }
 
-                        if (shouldCollect)
+                        if(shouldCollect)
                         {
                             WriteLine("Collecting...");
                             _lastKnownWorkingSet = GC.GetTotalMemory(true);
@@ -1177,11 +1199,11 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
         }
 
-        private void TerminateGCManager()
+        void TerminateGCManager()
         {
-            if (_enableGCManager)
+            if(_enableGCManager)
             {
-                if (_gcmThread != null)
+                if(_gcmThread != null)
                 {
                     _gcmRunning = false;
                     _gcmThread.Join();
@@ -1191,29 +1213,31 @@ namespace Unlimited.Applications.DynamicServicesHost
                 _gcmThreadStart = null;
             }
         }
+
         #endregion
 
         #region Initialization Handling
-        private void InitializeCommandLineArguments()
+
+        void InitializeCommandLineArguments()
         {
             Dictionary<string, string> arguments = new Dictionary<string, string>();
 
-            if (_arguments.Any())
+            if(_arguments.Any())
             {
-                for (int i = 0; i < _arguments.Length; i++)
+                for(int i = 0; i < _arguments.Length; i++)
                 {
                     string[] arg = _arguments[i].Split(new[] { '=' });
 
-                    if (arg.Length == 2)
+                    if(arg.Length == 2)
                     {
                         arguments.Add(arg[0].Replace("/", string.Empty), arg[1]);
                     }
                 }
             }
 
-            foreach (KeyValuePair<string, string> argument in arguments)
+            foreach(KeyValuePair<string, string> argument in arguments)
             {
-                if (argument.Key.Equals("lifecycleConfigFile", StringComparison.InvariantCultureIgnoreCase))
+                if(argument.Key.Equals("lifecycleConfigFile", StringComparison.InvariantCultureIgnoreCase))
                 {
                     _configFile = argument.Value;
                     continue;
@@ -1226,7 +1250,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         /// workflow execution.
         /// </summary>
         /// <returns>false if the initialization failed, otherwise true</returns>
-        private bool InitializeServer()
+        bool InitializeServer()
         {
             bool result = true;
 
@@ -1238,39 +1262,39 @@ namespace Unlimited.Applications.DynamicServicesHost
 
                 Dictionary<string, string> arguments = new Dictionary<string, string>();
 
-                if (_arguments.Any())
+                if(_arguments.Any())
                 {
-                    for (int i = 0; i < _arguments.Length; i++)
+                    for(int i = 0; i < _arguments.Length; i++)
                     {
                         string[] arg = _arguments[i].Split(new[] { '=' });
-                        if (arg.Length == 2)
+                        if(arg.Length == 2)
                         {
                             arguments.Add(arg[0].Replace("/", string.Empty), arg[1]);
                         }
                     }
                 }
 
-                foreach (KeyValuePair<string, string> argument in arguments)
+                foreach(KeyValuePair<string, string> argument in arguments)
                 {
-                    if (argument.Key.Equals("endpointAddress", StringComparison.InvariantCultureIgnoreCase))
+                    if(argument.Key.Equals("endpointAddress", StringComparison.InvariantCultureIgnoreCase))
                     {
                         uriAddress = argument.Value;
                         continue;
                     }
 
-                    if (argument.Key.Equals("webServerPort", StringComparison.InvariantCultureIgnoreCase))
+                    if(argument.Key.Equals("webServerPort", StringComparison.InvariantCultureIgnoreCase))
                     {
                         webServerPort = argument.Value;
                         continue;
                     }
 
-                    if (argument.Key.Equals("webServerSslPort", StringComparison.InvariantCultureIgnoreCase))
+                    if(argument.Key.Equals("webServerSslPort", StringComparison.InvariantCultureIgnoreCase))
                     {
                         webServerSslPort = argument.Value;
                         continue;
                     }
 
-                    if (argument.Key.Equals("lifecycleConfigFile", StringComparison.InvariantCultureIgnoreCase))
+                    if(argument.Key.Equals("lifecycleConfigFile", StringComparison.InvariantCultureIgnoreCase))
                     {
                         _configFile = argument.Value;
                         continue;
@@ -1291,9 +1315,9 @@ namespace Unlimited.Applications.DynamicServicesHost
                 Boolean.TryParse(ConfigurationManager.AppSettings["webServerEnabled"], out _isWebServerEnabled);
                 Boolean.TryParse(ConfigurationManager.AppSettings["webServerSslEnabled"], out _isWebServerSslEnabled);
 
-                if (_isWebServerEnabled)
+                if(_isWebServerEnabled)
                 {
-                    if (string.IsNullOrEmpty(webServerPort) && _isWebServerEnabled)
+                    if(string.IsNullOrEmpty(webServerPort) && _isWebServerEnabled)
                     {
                         throw new ArgumentException(
                             "Web server port not set but web server is enabled. Please set the webServerPort value in the configuration file.");
@@ -1301,7 +1325,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
                     int realPort;
 
-                    if (!Int32.TryParse(webServerPort, out realPort))
+                    if(!Int32.TryParse(webServerPort, out realPort))
                     {
                         throw new ArgumentException("Web server port is not valid. Please set the webServerPort value in the configuration file.");
                     }
@@ -1315,7 +1339,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                     endpoints.Add(new Dev2Endpoint(httpEndpoint));
 
                     // start SSL traffic if it is enabled ;)
-                    if (!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
+                    if(!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
                     {
                         int realWebServerSslPort;
                         Int32.TryParse(webServerSslPort, out realWebServerSslPort);
@@ -1323,11 +1347,11 @@ namespace Unlimited.Applications.DynamicServicesHost
                         // TODO : Enable ssl cert generation ;)
                         var sslCertPath = ConfigurationManager.AppSettings["sslCertificateName"];
 
-                        if (!string.IsNullOrEmpty(sslCertPath))
+                        if(!string.IsNullOrEmpty(sslCertPath))
                         {
                             var canEnableSSL = HostSecurityProvider.Instance.EnsureSSL(sslCertPath);
 
-                            if (canEnableSSL)
+                            if(canEnableSSL)
                             {
                                 prefixes.Add(string.Format("https://*:{0}/", webServerSslPort));
 
@@ -1348,7 +1372,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                 }
 
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 result = false;
                 Fail("Server initialization failed", ex);
@@ -1356,15 +1380,17 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             return result;
         }
+
         #endregion
 
         #region Cleanup Handling
+
         /// <summary>
         /// Performs all necessary cleanup such that the server is gracefully moved to a state that does not allow
         /// workflow execution.
         /// </summary>
         /// <returns>false if the cleanup failed, otherwise true</returns>
-        private bool CleanupServer()
+        bool CleanupServer()
         {
             bool result = true;
 
@@ -1372,7 +1398,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 _webserver.Stop();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 ServerLogger.LogError(ex);
                 result = false;
@@ -1383,7 +1409,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                 DebugDispatcher.Instance.Shutdown();
                 BackgroundDispatcher.Instance.Shutdown();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 ServerLogger.LogError(ex);
                 result = false;
@@ -1391,13 +1417,13 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             try
             {
-                if (_networkServer != null)
+                if(_networkServer != null)
                 {
                     _networkServer.Stop();
                     _networkServer.Dispose();
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 ServerLogger.LogError(ex);
                 result = false;
@@ -1405,12 +1431,12 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             try
             {
-                if (_executionChannel != null)
+                if(_executionChannel != null)
                 {
                     _executionChannel.Dispose();
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 ServerLogger.LogError(ex);
                 result = false;
@@ -1418,12 +1444,12 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             try
             {
-                if (_dataListChannel != null)
+                if(_dataListChannel != null)
                 {
                     _dataListChannel.Dispose();
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 ServerLogger.LogError(ex);
                 result = false;
@@ -1434,7 +1460,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 BinaryDataListStorageLayer.Teardown();
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 ServerLogger.LogError(e);
             }
@@ -1443,32 +1469,34 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             return result;
         }
+
         #endregion
 
         #region Workflow Handling
+
         /// <summary>
         /// Executes each workflow contained in the group indicated by <paramref name="groupName"/> in the same order that
         /// they were specified in the configuration file.
         /// </summary>
         /// <param name="groupName">The group of workflows to be executed.</param>
         /// <returns>false if the execution failed, otherwise true</returns>
-        private bool ExecuteWorkflowGroup(string groupName)
+        bool ExecuteWorkflowGroup(string groupName)
         {
             WorkflowEntry[] entries;
 
-            if (_workflowGroups.TryGetValue(groupName, out entries))
+            if(_workflowGroups.TryGetValue(groupName, out entries))
             {
-                for (int i = 0; i < entries.Length; i++)
+                for(int i = 0; i < entries.Length; i++)
                 {
                     WorkflowEntry entry = entries[i];
                     StringBuilder builder = new StringBuilder();
 
-                    if (entry.Arguments.Length > 0)
+                    if(entry.Arguments.Length > 0)
                     {
                         builder.AppendLine("<XmlData>");
                         builder.AppendLine("  <ADL>");
 
-                        for (int k = 0; k < entry.Arguments.Length; k++)
+                        for(int k = 0; k < entry.Arguments.Length; k++)
                         {
                             builder.AppendLine("<" + entry.Arguments[k].Key + ">" + entry.Arguments[k].Value + "</" + entry.Arguments[k].Key + ">");
                         }
@@ -1486,13 +1514,13 @@ namespace Unlimited.Applications.DynamicServicesHost
                         IDSFDataObject dataObj = new DsfDataObject(requestXML, GlobalConstants.NullDataListID);
                         result = _esbEndpoint.ExecuteRequest(dataObj, GlobalConstants.ServerWorkspaceID, out errors);
                     }
-                    catch (Exception e)
+                    catch(Exception e)
                     {
                         Fail("Workflow \"" + entry.Name + "\" execution failed", e);
                         return false;
                     }
 
-                    if (result == Guid.Empty)
+                    if(result == Guid.Empty)
                     {
                         Fail("Workflow \"" + entry.Name + "\" execution failed");
                         return false;
@@ -1507,33 +1535,33 @@ namespace Unlimited.Applications.DynamicServicesHost
         /// Checks if any of the xml nodes in result are named "Error"
         /// </summary>
         /// <returns>true if result contained an xml node named error, otherwise false.</returns>
-        private bool ResultContainsError(string result)
+        bool ResultContainsError(string result)
         {
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(result);
 
-            if (doc.Name == "Error")
+            if(doc.Name == "Error")
             {
                 return true;
             }
 
-            if (doc.HasChildNodes)
+            if(doc.HasChildNodes)
             {
                 Queue<XmlNodeList> pendingLists = new Queue<XmlNodeList>();
                 pendingLists.Enqueue(doc.ChildNodes);
 
-                while (pendingLists.Count > 0)
+                while(pendingLists.Count > 0)
                 {
                     XmlNodeList list = pendingLists.Dequeue();
 
-                    foreach (XmlNode node in list)
+                    foreach(XmlNode node in list)
                     {
-                        if (node.Name == "Error")
+                        if(node.Name == "Error")
                         {
                             return true;
                         }
 
-                        if (node.HasChildNodes)
+                        if(node.HasChildNodes)
                             pendingLists.Enqueue(node.ChildNodes);
                     }
                 }
@@ -1541,19 +1569,21 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             return false;
         }
+
         #endregion
 
         #region Failure Handling
-        private void Fail(string message)
+
+        void Fail(string message)
         {
             Fail(message, "");
         }
 
-        private void Fail(string message, Exception e)
+        void Fail(string message, Exception e)
         {
             WriteLine("Critical Failure: " + message);
-            
-            if (e != null)
+
+            if(e != null)
             {
                 WriteLine("Details");
                 WriteLine("--");
@@ -1564,11 +1594,11 @@ namespace Unlimited.Applications.DynamicServicesHost
             WriteLine("");
         }
 
-        private void Fail(string message, string details)
+        void Fail(string message, string details)
         {
             WriteLine("Critical Failure: " + message);
-            
-            if (!String.IsNullOrEmpty(details))
+
+            if(!String.IsNullOrEmpty(details))
             {
                 WriteLine("Details");
                 WriteLine("--");
@@ -1578,9 +1608,11 @@ namespace Unlimited.Applications.DynamicServicesHost
             WriteLine("");
 
         }
+
         #endregion
 
         #region Disposal Handling
+
         /// <summary>
         /// Finalizer for ServerLifecycleManager called when garbage collected.
         /// </summary>
@@ -1594,7 +1626,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         /// </summary>
         public void Dispose()
         {
-            if (_isDisposed)
+            if(_isDisposed)
                 return;
             _isDisposed = true;
             Dispose(true);
@@ -1605,14 +1637,14 @@ namespace Unlimited.Applications.DynamicServicesHost
         ///  Proper dispose pattern implementation to ensure Application Server is terminated correctly, even from finalizer.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed, otherwise false.</param>
-        private void Dispose(bool disposing)
+        void Dispose(bool disposing)
         {
 
-            if (disposing)
+            if(disposing)
             {
                 CleanupServer();
             }
-            
+
             if(_timer != null)
             {
                 _timer.Dispose();
@@ -1624,18 +1656,20 @@ namespace Unlimited.Applications.DynamicServicesHost
             _executionChannel = null;
 
         }
+
         #endregion
 
         #region AssemblyReference
-        private sealed class AssemblyReference
+
+        sealed class AssemblyReference
         {
             public static readonly AssemblyReference[] EmptyReferences = new AssemblyReference[0];
 
-            private string _name;
-            private string _version;
-            private string _culture;
-            private string _publicKeyToken;
-            private string _path;
+            string _name;
+            string _version;
+            string _culture;
+            string _publicKeyToken;
+            string _path;
 
             public string Name { get { return _name; } }
             public string Version { get { return _version; } }
@@ -1658,13 +1692,15 @@ namespace Unlimited.Applications.DynamicServicesHost
                 _path = path;
             }
         }
+
         #endregion
 
         #region WorkflowEntry
-        private sealed class WorkflowEntry
+
+        sealed class WorkflowEntry
         {
-            private string _name;
-            private KeyValuePair<string, string>[] _arguments;
+            string _name;
+            KeyValuePair<string, string>[] _arguments;
 
             public string Name { get { return _name; } }
             public KeyValuePair<string, string>[] Arguments { get { return _arguments; } }
@@ -1675,6 +1711,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                 _arguments = arguments;
             }
         }
+
         #endregion
 
         #region External Services
@@ -1720,9 +1757,9 @@ namespace Unlimited.Applications.DynamicServicesHost
                 var instance = SettingsProvider.Instance;
                 instance.Stop(StudioMessaging.MessageAggregator);
             }
-            // ReSharper disable EmptyGeneralCatchClause
+                // ReSharper disable EmptyGeneralCatchClause
             catch
-            // ReSharper restore EmptyGeneralCatchClause
+                // ReSharper restore EmptyGeneralCatchClause
             {
                 // Called when exiting so no use in throwing error!
             }
@@ -1742,7 +1779,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                 WriteLine("done.");
                 return true;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Write("fail.");
                 WriteLine(e.Message);
@@ -1774,7 +1811,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             return true;
         }
 
-        private bool StartDataListServer()
+        bool StartDataListServer()
         {
             // PBI : 5376 - Create instance of the Server compiler
             Write("Starting DataList Server...  ");
@@ -1791,7 +1828,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             return true;
         }
 
-        private bool OpenNetworkExecutionChannel()
+        bool OpenNetworkExecutionChannel()
         {
             Write("Opening Execution Channel...  ");
 
@@ -1802,7 +1839,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                 WriteLine("");
                 return true;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Write("fail.");
                 WriteLine(e.Message);
@@ -1810,7 +1847,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
         }
 
-        private bool OpenNetworkDataListChannel()
+        bool OpenNetworkDataListChannel()
         {
             Write("Opening DataList Channel...  ");
 
@@ -1822,7 +1859,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                 WriteLine("");
                 return true;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Write("fail.");
                 WriteLine(e.Message);
@@ -1830,11 +1867,11 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
         }
 
-        private bool StartWebServer()
+        bool StartWebServer()
         {
             bool result = true;
 
-            if (_isWebServerEnabled || _isWebServerSslEnabled)
+            if(_isWebServerEnabled || _isWebServerSslEnabled)
             {
                 try
                 {
@@ -1846,13 +1883,13 @@ namespace Unlimited.Applications.DynamicServicesHost
                     };
                     StartNetworkServer(endpoints);
 
-                    _webserver = new Dev2.WebServer(_endpoints);
+                    _webserver = new Dev2.Runtime.WebServer.WebServer(_endpoints);
                     _webserver.Start();
                     EnvironmentVariables.IsServerOnline = true; // flag server as active
                     WriteLine("\r\nWeb Server Started");
                     new List<string>(_prefixes).ForEach(c => WriteLine(string.Format("Web server listening at {0}", c)));
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     result = false;
                     EnvironmentVariables.IsServerOnline = false; // flag server as inactive
@@ -1937,7 +1974,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
         internal static void WriteLine(string message)
         {
-            if (Environment.UserInteractive)
+            if(Environment.UserInteractive)
             {
                 Console.WriteLine(message);
             }
@@ -1951,7 +1988,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
         internal static void Write(string message)
         {
-            if (Environment.UserInteractive)
+            if(Environment.UserInteractive)
             {
                 Console.Write(message);
             }

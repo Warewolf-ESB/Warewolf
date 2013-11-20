@@ -150,15 +150,9 @@
     <Compile Include="CommandLineParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerLifecycleManager.cs" />
-    <Compile Include="WebRequestHandler.cs" />
+    <Compile Include="WebServerResources.Designer.cs" />
     <Compile Include="WindowsServiceManager.cs">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="WebServer.cs" />
-    <Compile Include="WebServerResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WebServerResources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -240,13 +234,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="WebServerResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>WebServerResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <Content Include="Main.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Main.ico" />
+    <EmbeddedResource Include="WebServerResources.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
