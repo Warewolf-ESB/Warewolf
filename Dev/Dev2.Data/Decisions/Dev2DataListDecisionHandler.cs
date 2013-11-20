@@ -1,18 +1,17 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using Dev2.Common;
 using Dev2.Common.Utils;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using System;
-using System.Collections.Generic;
-using System.Data;
 using Dev2.DataList.Contract.Value_Objects;
 
 namespace Dev2.Data.Decision
 {
-    public class Dev2DataListDecisionHandler 
+    public class Dev2DataListDecisionHandler
     {
         private static readonly IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
         private static Dev2DataListDecisionHandler _inst;
@@ -21,7 +20,7 @@ namespace Dev2.Data.Decision
         {
             get
             {
-                if (_inst == null)
+                if(_inst == null)
                 {
                     _inst = new Dev2DataListDecisionHandler();
                 }
@@ -68,42 +67,42 @@ namespace Dev2.Data.Decision
         /// <exception cref="System.Data.InvalidExpressionException">Could not evaluate decision data - No decision function found for [  + typeOf + ]</exception>
         public bool ExecuteDecisionStack(string decisionDataPayload, IList<string> oldAmbientData)
         {
-           
+
             // Evaluate decisionDataPayload through the EvaluateFunction ;)
-            Guid dlID = FetchDataListID(oldAmbientData);            
-            if (dlID == GlobalConstants.NullDataListID) throw new InvalidExpressionException("Could not evaluate decision data - no DataList ID sent!");
+            Guid dlID = FetchDataListID(oldAmbientData);
+            if(dlID == GlobalConstants.NullDataListID) throw new InvalidExpressionException("Could not evaluate decision data - no DataList ID sent!");
             // Swap out ! with a new internal token to avoid nasty issues with 
             string newDecisionData = Dev2DecisionStack.FromVBPersitableModelToJSON(decisionDataPayload);
 
             IBinaryDataListEntry tmp = EvaluateRegion(newDecisionData, dlID);
 
             ErrorResultTO errors = new ErrorResultTO();
-            
-            if (tmp != null)
+
+            if(tmp != null)
             {
                 string model = tmp.FetchScalar().TheValue; // Get evalauted data value
-                if (dlID != GlobalConstants.NullDataListID)
+                if(dlID != GlobalConstants.NullDataListID)
                 {
                     try
                     {
                         Dev2DecisionStack dds = _compiler.ConvertFromJsonToModel<Dev2DecisionStack>(model);
 
-                        if (dds.TheStack != null)
+                        if(dds.TheStack != null)
                         {
 
-                            for (int i = 0; i < dds.TotalDecisions; i++)
+                            for(int i = 0; i < dds.TotalDecisions; i++)
                             {
                                 Dev2Decision dd = dds.GetModelItem(i);
                                 enDecisionType typeOf = dd.EvaluationFn;
 
                                 // Treat Errors special
-                                if (typeOf == enDecisionType.IsError || typeOf == enDecisionType.IsNotError)
+                                if(typeOf == enDecisionType.IsError || typeOf == enDecisionType.IsNotError)
                                 {
                                     dd.Col1 = _compiler.EvaluateSystemEntry(dlID, enSystemTag.Dev2Error, out errors);
                                 }
 
                                 IDecisionOperation op = Dev2DecisionFactory.Instance().FetchDecisionFunction(typeOf);
-                                if (op != null)
+                                if(op != null)
                                 {
                                     try
                                     {
@@ -132,12 +131,12 @@ namespace Dev2.Data.Decision
                                 }
                                 else
                                 {
-                                    throw new InvalidExpressionException("Could not evaluate decision data - No decision function found for [ " + typeOf +" ]");
+                                    throw new InvalidExpressionException("Could not evaluate decision data - No decision function found for [ " + typeOf + " ]");
                                 }
                             }
 
                             // else we are in AND mode and all have passed ;)
-                            if (dds.Mode == Dev2DecisionMode.AND)
+                            if(dds.Mode == Dev2DecisionMode.AND)
                             {
                                 return true;
                             }
@@ -167,20 +166,17 @@ namespace Dev2.Data.Decision
         /// <param name="payload">The payload.</param>
         /// <param name="dlID">The dl ID.</param>
         /// <returns></returns>
-        private IBinaryDataListEntry EvaluateRegion(string payload, Guid dlID )
+        private IBinaryDataListEntry EvaluateRegion(string payload, Guid dlID)
         {
             ErrorResultTO errors;
             if(payload.StartsWith("{\"TheStack\":[{"))
             {
                 //2013.05.06: Ashley Lewis for PBI 9460 - handle recordsets with stars in their index by resolving them
-                payload = JSONUtils.ReplaceSlashes(payload);
-                payload = payload.Replace(@"\""", @"""");
-                //.Replace(@"\""", @"""");
                 var dds = _compiler.ConvertFromJsonToModel<Dev2DecisionStack>(payload);
 
                 if(dds.TheStack != null)
                 {
-                    var effectedCols = new bool[]{false,false,false};
+                    var effectedCols = new bool[] { false, false, false };
                     //Find decisions that mention record sets with starred indexes
                     var invalidDecisions = new List<Dev2Decision>();
                     for(int i = 0; i < dds.TotalDecisions; i++)
@@ -253,7 +249,7 @@ namespace Dev2.Data.Decision
                     {
                         var index = int.Parse(DataListUtil.ExtractIndexRegionFromRecordset(decisionColumn));
                         var columnName = DataListUtil.ExtractFieldNameFromValue(decisionColumn);
-                        
+
                         binaryDataListItem = entry.TryFetchRecordsetColumnAtIndex(columnName, index, out error);
                     }
                     else
@@ -267,7 +263,7 @@ namespace Dev2.Data.Decision
                 }
                 if(binaryDataListItem != null)
                 {
-                    return JSONUtils.ReplaceSlashes(binaryDataListItem.TheValue);
+                    return binaryDataListItem.TheValue;
                 }
             }
             return null;
@@ -288,10 +284,11 @@ namespace Dev2.Data.Decision
                 return string.Empty;
             }
 
-            if (columnIndex == 1)
+            if(columnIndex == 1)
             {
                 return stack.TheStack[stackIndex].Col1;
-            }else if (columnIndex == 2)
+            }
+            else if(columnIndex == 2)
             {
                 return stack.TheStack[stackIndex].Col2;
             }
@@ -322,7 +319,7 @@ namespace Dev2.Data.Decision
                     stack.TheStack.Insert(reStackIndex++, newDecision);
                 }
             }
-            if (effectedCols[1])
+            if(effectedCols[1])
             {
                 IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
                 IBinaryDataListEntry col2Entry = _compiler.Evaluate(id, enActionType.User, decision.Col2, false, out errors);
@@ -330,7 +327,7 @@ namespace Dev2.Data.Decision
                 colItr.AddIterator(col2Iterator);
                 int reStackIndex = stackIndex;
 
-                while (colItr.HasMoreData())
+                while(colItr.HasMoreData())
                 {
                     var newDecision = new Dev2Decision();
                     newDecision.Col1 = FetchStackValue(stack, reStackIndex, 1);
@@ -340,22 +337,22 @@ namespace Dev2.Data.Decision
                     if(effectedCols[0])
                     {
                         // ensure we have the correct indexing ;)
-                        if (reStackIndex < stack.TheStack.Count)
+                        if(reStackIndex < stack.TheStack.Count)
                         {
-                        stack.TheStack[reStackIndex++] = newDecision;
+                            stack.TheStack[reStackIndex++] = newDecision;
+                        }
+                        else
+                        {
+                            stack.TheStack.Insert(reStackIndex++, newDecision);
+                        }
                     }
-                    else
-                    {
-                        stack.TheStack.Insert(reStackIndex++, newDecision);
-                    }
-                }
                     else
                     {
                         stack.TheStack.Insert(reStackIndex++, newDecision);
                     }
                 }
             }
-            if (effectedCols[2])
+            if(effectedCols[2])
             {
                 IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
                 IBinaryDataListEntry col3Entry = _compiler.Evaluate(id, enActionType.User, decision.Col3, false, out errors);
@@ -363,25 +360,25 @@ namespace Dev2.Data.Decision
                 colItr.AddIterator(col3Iterator);
                 int reStackIndex = stackIndex;
 
-                while (colItr.HasMoreData())
+                while(colItr.HasMoreData())
                 {
                     var newDecision = new Dev2Decision();
                     newDecision.Col1 = FetchStackValue(stack, reStackIndex, 1);
                     newDecision.Col2 = FetchStackValue(stack, reStackIndex, 2);
                     newDecision.Col3 = colItr.FetchNextRow(col3Iterator).TheValue;
                     newDecision.EvaluationFn = decision.EvaluationFn;
-                    if (effectedCols[0] || effectedCols[1])
+                    if(effectedCols[0] || effectedCols[1])
                     {
                         // ensure we have the correct indexing ;)
                         if(reStackIndex < stack.TheStack.Count)
                         {
-                        stack.TheStack[reStackIndex++] = newDecision;
+                            stack.TheStack[reStackIndex++] = newDecision;
+                        }
+                        else
+                        {
+                            stack.TheStack.Insert(reStackIndex++, newDecision);
+                        }
                     }
-                    else
-                    {
-                        stack.TheStack.Insert(reStackIndex++, newDecision);
-                    }
-                }
                     else
                     {
                         stack.TheStack.Insert(reStackIndex++, newDecision);
@@ -399,7 +396,7 @@ namespace Dev2.Data.Decision
         public Guid FetchDataListID(IList<string> oldAmbientData)
         {
             Guid dlID = GlobalConstants.NullDataListID;
-            if (oldAmbientData != null && oldAmbientData.Count == 1)
+            if(oldAmbientData != null && oldAmbientData.Count == 1)
             {
                 Guid.TryParse(oldAmbientData[0], out dlID);
             }
