@@ -27,6 +27,7 @@ using Dev2.DynamicServices.Network.Execution;
 using Dev2.Network.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
+using Dev2.Runtime.WebServer;
 using Dev2.Workspaces;
 using Unlimited.Framework;
 using SettingsProvider = Dev2.Runtime.Configuration.SettingsProvider;
@@ -220,6 +221,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         Thread _gcmThread;
         ThreadStart _gcmThreadStart;
         Timer _timer;
+        IDisposable _owinWebServer;
 
         // END OF GC MANAGEMENT
 
@@ -1651,6 +1653,12 @@ namespace Unlimited.Applications.DynamicServicesHost
                 _timer = null;
             }
 
+            if(_owinWebServer != null)
+            {
+                _owinWebServer.Dispose();
+                _owinWebServer = null;
+            }
+
             _webserver = null;
             _esbEndpoint = null;
             _executionChannel = null;
@@ -1757,9 +1765,9 @@ namespace Unlimited.Applications.DynamicServicesHost
                 var instance = SettingsProvider.Instance;
                 instance.Stop(StudioMessaging.MessageAggregator);
             }
-                // ReSharper disable EmptyGeneralCatchClause
+            // ReSharper disable EmptyGeneralCatchClause
             catch
-                // ReSharper restore EmptyGeneralCatchClause
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 // Called when exiting so no use in throwing error!
             }
@@ -1882,6 +1890,10 @@ namespace Unlimited.Applications.DynamicServicesHost
                         _uriAddress,
                     };
                     StartNetworkServer(endpoints);
+
+                    const string Url = "http://localhost:8080";
+                    _owinWebServer = WebServerStartup.Start(Url);
+                    WriteLine("\r\nSignalR Server running on " + Url);
 
                     _webserver = new Dev2.Runtime.WebServer.WebServer(_endpoints);
                     _webserver.Start();
