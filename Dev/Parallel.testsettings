@@ -13,9 +13,9 @@
     <DeploymentItem filename="Dev2.PluginTester\bin\Debug\Dev2.PluginTester.dll" />
     <DeploymentItem filename="Binaries\IronRuby.dll" />
   </Deployment>
-  <NamingScheme baseName="UT" useDefault="false" />
-  <Execution>
-    <Timeouts runTimeout="1800000" testTimeout="120000" />
+  <NamingScheme baseName="UT" />
+  <Execution hostProcessPlatform="MSIL" parallelTestCount="2">
+    <Timeouts testTimeout="0" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
         <AssemblyResolution>
