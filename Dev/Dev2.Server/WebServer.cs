@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -8,12 +7,9 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using Dev2.Common;
-using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.Runtime;
 using Dev2.Runtime.Diagnostics;
-using Dev2.Server.DataList.Translators;
-using Dev2.Web;
 using Unlimited.Applications.DynamicServicesHost;
 using Unlimited.Applications.WebServer;
 using Unlimited.Applications.WebServer.Responses;
@@ -23,13 +19,6 @@ namespace Dev2
 {
     public sealed class WebServer : IFrameworkWebServer
     {
-
-        #region Translator
-
-        private DataListTranslatorFactory tdf = new DataListTranslatorFactory();
-        private List<DataListFormat> publicFormats;
-
-        #endregion
 
         #region Location
 
@@ -46,22 +35,13 @@ namespace Dev2
                 return _location;
             }
         }
+        public ServiceInvoker ServiceInvoker { get { return _serviceInvoker; } }
 
         #endregion
 
         #region Static Members
 
         #region GetQueryStringValue
-
-        static string GetQueryStringValue(ICommunicationContext ctx, string key)
-        {
-            var item = ctx.Request.QueryString[key];
-            if(item != null)
-            {
-                return item.Value;
-            }
-            return string.Empty;
-        }
 
         #endregion
 
@@ -74,6 +54,7 @@ namespace Dev2
         private StudioNetworkServer _network;
 
         readonly ServiceInvoker _serviceInvoker = new ServiceInvoker();
+        readonly WebRequestHandler _webRequestHandler = new WebRequestHandler();
 
         #endregion
 
@@ -82,7 +63,6 @@ namespace Dev2
         {
             _server = new HttpServer(endPoints);
             _network = server;
-            publicFormats = tdf.FetchAllFormats().Where(c => c.ContentType != "").ToList();
         }
         #endregion
 
@@ -197,7 +177,8 @@ namespace Dev2
 
         void PostServiceSaveHandler(HttpServer sender, ICommunicationContext ctx)
         {
-            InvokeService(ctx, "Save");
+            ctx.Request.BoundVariables["action"] = "Save";
+            _webRequestHandler.InvokeService(ctx);
         }
 
         #endregion
@@ -206,48 +187,12 @@ namespace Dev2
 
         void PostServiceHandler(HttpServer sender, ICommunicationContext ctx)
         {
-            InvokeService(ctx, ctx.Request.BoundVariables["action"]);
+            _webRequestHandler.InvokeService(ctx);
         }
 
         #endregion
 
         #region InvokeService
-
-        void InvokeService(ICommunicationContext ctx, string methodName)
-        {
-            // Read post data which is expected to be JSON
-            string args;
-            using(var reader = new StreamReader(ctx.Request.InputStream, ctx.Request.ContentEncoding))
-            {
-                args = reader.ReadToEnd();
-            }
-
-            var className = ctx.Request.BoundVariables["name"];
-            var dataListID = GetQueryStringValue(ctx, "dlid");
-            var workspaceID = GetQueryStringValue(ctx, "wid");
-            dynamic result;
-            try
-            {
-                Guid workspaceGuid;
-                Guid.TryParse(workspaceID, out workspaceGuid);
-
-                Guid dataListGuid;
-                Guid.TryParse(dataListID, out dataListGuid);
-
-                //
-                // NOTE: result.ToString() MUST return JSON
-                //
-                result = _serviceInvoker.Invoke(className, methodName, args, workspaceGuid, dataListGuid);
-            }
-            catch(Exception ex)
-            {
-                result = new ValidationResult
-                {
-                    ErrorMessage = ex.Message
-                };
-            }
-            ctx.Send(new StringCommunicationResponseWriter(result.ToString(), "application/json"));
-        }
 
         #endregion
 
@@ -258,42 +203,22 @@ namespace Dev2
 
         private void GET_POST_CLIENT_SERVICES_Handler(HttpServer sender, ICommunicationContext ctx)
         {
-            string postdlid = string.Empty;
-            string wid = string.Empty;
-
-            if(ctx.Request.QueryString[GlobalConstants.DLID] != null)
-            {
-                postdlid = ctx.Request.QueryString[GlobalConstants.DLID].Value;
-            }
-
-            if(ctx.Request.QueryString["wid"] != null)
-            {
-                wid = ctx.Request.QueryString["wid"].Value;
-            }
-
-            if(postdlid != null)
-            {
-                ctx.Send(Post(ctx, ctx.Request.BoundVariables["servicename"], string.Empty, string.Empty, wid, postdlid));
-            }
-            else
-            {
-                ctx.Send(Get(ctx, ctx.Request.BoundVariables["servicename"], wid));
-            }
+            _webRequestHandler.Get(ctx);
         }
 
         private void POST_CLIENT_SERVICES_Handler(HttpServer sender, ICommunicationContext ctx)
         {
-            ctx.Send(Post(ctx, ctx.Request.BoundVariables["servicename"], ctx.Request.BoundVariables["clientid"]));
+            _webRequestHandler.Post(ctx);
         }
 
         private void POST_SERVICES_Handler(HttpServer sender, ICommunicationContext ctx)
         {
-            ctx.Send(Post(ctx, ctx.Request.BoundVariables["servicename"]));
+            _webRequestHandler.Post(ctx);
         }
 
         private void POST_BOOKMARK_Handler(HttpServer sender, ICommunicationContext ctx)
         {
-            ctx.Send(Post(ctx, ctx.Request.BoundVariables["servicename"], ctx.Request.BoundVariables["instanceid"], ctx.Request.BoundVariables["bookmark"]));
+           _webRequestHandler.Post(ctx);
         }
 
         #endregion
@@ -380,72 +305,6 @@ namespace Dev2
         }
 
 
-        #endregion
-
-        #region GET Handling
-
-        private CommunicationResponseWriter Get(ICommunicationContext ctx, string serviceName, string clientID)
-        {
-            dynamic d = new UnlimitedObject();
-            d.Service = serviceName;
-
-            d.WebServerUrl = ctx.Request.Uri.ToString();
-            d.Dev2WebServer = string.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority);
-
-            string data = WebRequestHandler.GetPostData(ctx, Guid.Empty.ToString());
-
-            if(!string.IsNullOrEmpty(data))
-            {
-                d.PostData = data;
-                d.Add(new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(data));
-            }
-
-            return WebRequestHandler.CreateForm(d, serviceName, clientID, ctx.FetchHeaders(), publicFormats);
-
-        }
-        #endregion
-
-        #region POST Handling
-        private CommunicationResponseWriter Post(ICommunicationContext ctx, string serviceName)
-        {
-            return Post(ctx, serviceName, string.Empty, string.Empty);
-        }
-
-        private CommunicationResponseWriter Post(ICommunicationContext ctx, string serviceName, string workspaceID)
-        {
-            return Post(ctx, serviceName, string.Empty, string.Empty, workspaceID, Guid.Empty.ToString());
-        }
-
-        private CommunicationResponseWriter Post(ICommunicationContext ctx, string serviceName, string instanceId, string bookmark)
-        {
-            return Post(ctx, serviceName, instanceId, bookmark, null, Guid.Empty.ToString());
-        }
-
-        private CommunicationResponseWriter Post(ICommunicationContext ctx, string serviceName, string instanceId, string bookmark, string workspaceID, string postDataListID)
-        {
-            UnlimitedObject formData = null;
-
-            dynamic d = new UnlimitedObject();
-
-            string xml = WebRequestHandler.GetPostData(ctx, postDataListID);
-
-            if(!string.IsNullOrEmpty(xml))
-            {
-                formData = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(xml);
-            }
-
-            d.Service = serviceName;
-            d.InstanceId = instanceId;
-            d.Bookmark = bookmark;
-            d.WebServerUrl = ctx.Request.Uri.ToString();
-            d.Dev2WebServer = string.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority);
-            if(formData != null)
-            {
-                d.AddResponse(formData);
-            }
-
-            return WebRequestHandler.CreateForm(d, serviceName, workspaceID, ctx.FetchHeaders(), publicFormats);
-        }
         #endregion
 
         #region Directory Handling

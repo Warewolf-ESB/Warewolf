@@ -21,7 +21,7 @@ namespace Unlimited.Applications.WebServer
         Encoding ContentEncoding { get; }
         Stream InputStream { get; }
 
-        HttpInput QueryString { get; }
+        NameValueCollection QueryString { get; }
         NameValueCollection BoundVariables { get; }
     }
 
@@ -33,6 +33,7 @@ namespace Unlimited.Applications.WebServer
         private string _contentType;
         private Encoding _contentEncoding;
         private bool _resetBody;
+        readonly NameValueCollection _queryString;
 
         public string Method { get { return _request.Method; } }
         public Uri Uri { get { return _request.Uri; } }
@@ -40,7 +41,7 @@ namespace Unlimited.Applications.WebServer
         public string ContentType { get { return _contentType; } }
         public Encoding ContentEncoding { get { return _contentEncoding; } }
         public Stream InputStream { get { if (!_resetBody) { _resetBody = true; _request.Body.Position = 0L; } return _request.Body; } }
-        public HttpInput QueryString { get { return _request.QueryString; } }
+        public NameValueCollection QueryString { get { return _queryString; } }
         public NameValueCollection BoundVariables { get { return _boundVariables ?? (_boundVariables = _match.BoundVariables); } }
 
         internal CommunicationRequest(IHttpRequest request, UriTemplateMatch match)
@@ -66,6 +67,15 @@ namespace Unlimited.Applications.WebServer
             }
 
             if (_contentEncoding == null) _contentEncoding = Encoding.UTF8;
+
+            _queryString = new NameValueCollection();
+            if(request.QueryString != HttpInput.Empty)
+            {
+                foreach(HttpInputItem item in request.QueryString)
+                {
+                    _queryString.Add(item.Name, item.Value);
+                }
+            }
         }
     }
 }
