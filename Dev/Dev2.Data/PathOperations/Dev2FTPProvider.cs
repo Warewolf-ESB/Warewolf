@@ -615,12 +615,20 @@ namespace Dev2.PathOperations {
 
                 bool addBack = true;
 
-                string tmpDirData = ExtendedDirList(path, user, pass, ssl, IsNotCertVerifiable);
+                IList<IActivityIOPath> allFiles = ListFilesInDirectory(ActivityIOFactory.CreatePathFromString(path, user, pass));
+                IList<IActivityIOPath> allDirs = ListFoldersInDirectory(ActivityIOFactory.CreatePathFromString(path, user, pass));
 
-                List<string> dirs = ExtractDirectoryList(path, tmpDirData);
-                if(dirs.Count == 0)
+                //string tmpDirData = ExtendedDirList(path, user, pass, ssl, IsNotCertVerifiable);
+
+                //List<string> dirs = ExtractDirectoryList(path, tmpDirData);
+
+                if(allDirs.Count == 0)
                 {
                     // delete path ;)
+                    foreach (var file in allFiles)
+                    {
+                        DeleteOp(file);
+                    }
                     IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(path, user, pass);
                     DeleteOp(tmpPath);
                     addBack = false;
@@ -628,7 +636,7 @@ namespace Dev2.PathOperations {
                 else
                 {
                     // more dirs to process 
-                    pathStack = pathStack.Union(dirs).ToList();
+                    pathStack = pathStack.Union(allDirs.Select(ioPath => ioPath.Path)).ToList();
                 }
 
                 DeleteHandler(pathStack, user, pass, ssl, IsNotCertVerifiable);
@@ -771,7 +779,8 @@ namespace Dev2.PathOperations {
                             {
                                 basePath += "/";
                             }
-                            result.Add(basePath + part);
+                            //result.Add(basePath + part);
+                            result.Add(part);
                         }
                     }
                 }
@@ -881,6 +890,11 @@ namespace Dev2.PathOperations {
                 {
                     throw new Exception("Fail");
                 }
+            }
+            catch (Exception exception)
+            {
+                result = false;
+                throw new Exception(string.Format("Could not delete {0}. Please check the path exists.", src.Path));
             }
             finally
             {

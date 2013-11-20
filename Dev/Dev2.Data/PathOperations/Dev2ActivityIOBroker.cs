@@ -349,13 +349,6 @@ namespace Dev2.PathOperations
                 dst.Delete(dst.IOPath);
             }
 
-            //ensures destination folder structure exists
-            string opStatus = CreateEndPoint(dst, args, dst.PathIs(dst.IOPath) == enPathType.Directory);
-            if (!opStatus.Equals("Success"))
-            {
-                throw new Exception("Recursive Directory Create Failed For [ " + dst.IOPath.Path + " ]");
-            }
-
             return Move(src, dst, args);
         }
 
@@ -363,24 +356,15 @@ namespace Dev2.PathOperations
                                         Dev2CRUDOperationTO args, Func<string> performAfterValidation)
         {
             string result = resultOk;
-
-            if (src.IOPath.Path.Equals(dst.IOPath.Path))
-            {
-                throw new Exception("Source and destination cannot be same");
-            }
-
-            if (dst.IOPath.Path.ToLower().Trim().Contains(src.IOPath.Path.ToLower().Trim()) && dst.PathIs(dst.IOPath) == enPathType.Directory)
-            {
-                throw new Exception("Destination directory cannot be a child of the source directory");
-            }
+            ValidateSourceAndDestinationPaths(src, dst);
 
             //ensures destination folder structure exists
             string opStatus = CreateEndPoint(dst, args, dst.PathIs(dst.IOPath) == enPathType.Directory);
-            if(!opStatus.Equals("Success"))
+            if (!opStatus.Equals("Success"))
             {
                 throw new Exception("Recursive Directory Create Failed For [ " + dst.IOPath.Path + " ]");
             }
-
+            
             //transfer contents to destination when the source is a directory
             if(src.PathIs(src.IOPath) == enPathType.Directory)
             {
@@ -409,6 +393,95 @@ namespace Dev2.PathOperations
             }
 
             return result;
+        }
+
+        private string ValidateUnzipSourceDestinationFileOperation(IActivityIOOperationsEndPoint src,
+                                                                   IActivityIOOperationsEndPoint dst,
+                                                                   Dev2UnZipOperationTO args,
+                                                                   Func<string> performAfterValidation)
+        {
+            ValidateSourceAndDestinationPaths(src, dst);
+            
+            if (dst.PathIs(dst.IOPath) != enPathType.Directory)
+            {
+                throw new Exception("Destination must be a directory");
+            }
+
+            if (src.PathIs(src.IOPath) != enPathType.File)
+            {
+                throw new Exception("Source must be a file");
+            }
+
+            if (!args.Overwrite && dst.PathExist(dst.IOPath))
+            {
+                throw new Exception("Destination directory already exists and overwrite is set to false");
+            }
+            
+            return performAfterValidation();
+        }
+
+        private void ValidateSourceAndDestinationPaths(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst)
+        {
+            if (src.IOPath.Path.Trim().Length == 0)
+            {
+                throw new Exception("Source can not be an empty string");
+            }
+
+            if (dst.IOPath.Path.Trim().Length == 0)
+            {
+                throw new Exception("Destination can not be an empty string");
+            }
+
+
+            if (src.IOPath.Path.ToLower()
+                   .Replace("/", "")
+                   .Replace("\\", "")
+                   .Trim()
+                   .Equals(dst.IOPath.Path.ToLower()
+                              .Replace("/", "")
+                              .Replace("\\", "")
+                              .Trim()))
+            {
+                throw new Exception("Source and destination can not be same");
+            }
+
+            IList<string> srcContents = MakeDirectoryParts(src.IOPath, src.PathSeperator());
+            IList<string> dstContents = MakeDirectoryParts(dst.IOPath, dst.PathSeperator());
+
+
+            if (dstContents.Count > 0 && srcContents.Count > 0)
+            {
+                bool problem = false;
+
+                for (int i = 0; i < srcContents.Count; i++)
+                {
+                    if (i > (dstContents.Count -1))
+                    {
+                        break;
+                    }
+
+                    var destinationPart = dstContents[i];
+                    if (!string.IsNullOrEmpty(destinationPart))
+                    {
+                        if (srcContents[i].Replace("/", "")
+                                          .Replace("\\", "").ToLower().Equals(destinationPart.Replace("/", "")
+                                                                                             .Replace("\\", "")
+                                                                                             .ToLower()))
+                        {
+                            problem = true;
+                        }
+                        else
+                        {
+                            problem = false;
+                        }
+                    }
+                }
+
+                if (problem)
+                {
+                    throw new Exception("Destination directory can not be a child of the source directory");
+                }
+            }
         }
 
         private static void EnsureFilesDontExists(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst)
@@ -465,7 +538,7 @@ namespace Dev2.PathOperations
                 // get directory contents
                 IList<IActivityIOPath> toAdd = ListDirectory(tmpEndPoint, ReadTypes.FilesAndFolders);
 
-                using(ZipFile zip = new ZipFile())
+                using(var zip = new ZipFile())
                 {
                     // set password if exist
                     if(args.ArchivePassword != string.Empty)
@@ -603,77 +676,72 @@ namespace Dev2.PathOperations
             return src.Path.StartsWith(@"\\");
         }
 
-        public string UnZip(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2UnZipOperationTO args)
+        public string UnZip(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
+                            Dev2UnZipOperationTO args)
         {
-            string zipFile = src.IOPath.Path;
-            ZipFile zip = null;
-            if(src.RequiresLocalTmpStorage())
-            {
-
-                string tmpZip = CreateTmpFile();
-                using(Stream s = src.Get(src.IOPath))
+            return ValidateUnzipSourceDestinationFileOperation(src, dst,args , () =>
                 {
+                    ZipFile zip = null;
+                   
+                    if (src.RequiresLocalTmpStorage())
+                    {
 
-                    File.WriteAllBytes(tmpZip, s.ToByteArray());
-                    s.Close();
-                    s.Dispose();
-                }
+                        string tmpZip = CreateTmpFile();
+                        using (Stream s = src.Get(src.IOPath))
+                        {
 
-                zipFile = tmpZip;
-                zip = ZipFile.Read(zipFile);
-            }
-            else
+                            File.WriteAllBytes(tmpZip, s.ToByteArray());
+                            s.Close();
+                            s.Dispose();
+                        }
+
+                        var tempFile = tmpZip;
+                        zip = ZipFile.Read(tempFile);
+                        File.Delete(tempFile);
+                    }
+                    else
+                    {
+                        zip = ZipFile.Read(src.Get(src.IOPath));
+                    }
+
+                    if (dst.RequiresLocalTmpStorage())
+                    {
+                        // unzip locally then Put the contents of the archive to the dst end-point
+                        var tempPath = CreateTmpDirectory();
+                        ExtractFile(args, zip, tempPath);
+                        IActivityIOPath endPointPath = ActivityIOFactory.CreatePathFromString(tempPath, "", "");
+                        IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(endPointPath);
+                        Move(endPoint, dst, new Dev2CRUDOperationTO(args.Overwrite));
+                    }
+                    else
+                    {
+                        ExtractFile(args, zip, dst.IOPath.Path);
+                    }
+                    
+                    return resultOk;
+                });
+        }
+
+        private static void ExtractFile(Dev2UnZipOperationTO args, ZipFile zip, string extractFromPath)
+        {
+            if (zip != null)
             {
-                zip = ZipFile.Read(src.Get(src.IOPath));
-            }
-
-            string unzipDirectory = dst.IOPath.Path;
-
-            if(dst.RequiresLocalTmpStorage())
-            {
-                // unzip locally then Put the contents of the archive to the dst end-point
-                unzipDirectory = CreateTmpDirectory();
-            }
-
-            // var stream = src.Get(src.IOPath);
-            if(zip != null)
-            {
-                using(zip)
+                using (zip)
                 {
-
-                    if(!string.IsNullOrEmpty(args.ArchivePassword))
+                    if (!string.IsNullOrEmpty(args.ArchivePassword))
                     {
                         zip.Password = args.ArchivePassword;
                     }
 
-                    foreach(ZipEntry ze in zip)
+                    foreach (ZipEntry ze in zip)
                     {
-                        ze.Extract(unzipDirectory,
-                            args.Overwrite ?
-                            ExtractExistingFileAction.OverwriteSilently :
-                            ExtractExistingFileAction.DoNotOverwrite);
+                        ze.Extract(extractFromPath,
+                                   args.Overwrite
+                                       ? ExtractExistingFileAction.OverwriteSilently
+                                       : ExtractExistingFileAction.DoNotOverwrite);
                     }
                 }
-
             }
-            if(dst.RequiresLocalTmpStorage())
-            {
-                IActivityIOPath newSrc = ActivityIOFactory.CreatePathFromString(unzipDirectory, dst.IOPath.Username, dst.IOPath.Password);
-                IActivityIOOperationsEndPoint newSrcEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(newSrc);
-                Dev2CRUDOperationTO newArgs = new Dev2CRUDOperationTO(false);
-                Copy(newSrcEP, dst, newArgs);
-                // local delete taken care of for us ;)
-            }
-
-            // clean up local tmp
-            if(src.RequiresLocalTmpStorage())
-            {
-                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(zipFile, src.IOPath.Username, src.IOPath.Password);
-                IActivityIOOperationsEndPoint tmpEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
-                Delete(tmpEP);
-            }
-
-            return resultOk;
         }
 
         #region Private Methods
@@ -792,29 +860,27 @@ namespace Dev2.PathOperations
         private bool TransferDirectoryContents(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args)
         {
             // List directory contents
-            
+
             if (args.DoRecursiveCopy)
             {
                 IList<IActivityIOPath> srcContentsFolders = src.ListFoldersInDirectory(src.IOPath);
                 foreach (var sourcePath in srcContentsFolders)
                 {
-                    IActivityIOOperationsEndPoint sourceEndPoint =
-                        ActivityIOFactory.CreateOperationEndPointFromIOPath(sourcePath);
-                    IList<string> dirParts =
-                        sourceEndPoint.IOPath.Path.Split(sourceEndPoint.PathSeperator().ToCharArray());
+                    IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(sourcePath);
+                    
+                    IList<string> dirParts = sourceEndPoint.IOPath.Path.Split(sourceEndPoint.PathSeperator().ToCharArray());
                     var directory = dirParts.Last();
-                    IActivityIOPath destinationPath =
-                        ActivityIOFactory.CreatePathFromString(Path.Combine(dst.IOPath.Path, directory),
+                    
+                    IActivityIOPath destinationPath = ActivityIOFactory.CreatePathFromString(Path.Combine(dst.IOPath.Path, directory),
                                                                dst.IOPath.Username,
                                                                dst.IOPath.Password);
-                    IActivityIOOperationsEndPoint destinationEndPoint =
-                        ActivityIOFactory.CreateOperationEndPointFromIOPath(destinationPath);
+
+                    IActivityIOOperationsEndPoint destinationEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(destinationPath);
                     dst.CreateDirectory(destinationPath, args);
-                    //}
-                    Copy(sourceEndPoint, destinationEndPoint, args);
+                    TransferDirectoryContents(sourceEndPoint, destinationEndPoint, args);
                 }
             }
-            
+
             IList<IActivityIOPath> srcContents = src.ListFilesInDirectory(src.IOPath);
             IList<IActivityIOPath> dstContents = dst.ListFilesInDirectory(dst.IOPath);
 

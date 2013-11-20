@@ -131,10 +131,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     string result = broker.UnZip(scrEndPoint, dstEndPoint, zipTO);
                     outputs[0].OutputStrings.Add(result);
-
                 }
                 catch (Exception e)
                 {
+                    outputs[0].OutputStrings.Add("Failure");
                     allErrors.AddError(e.Message);
                 }
             }

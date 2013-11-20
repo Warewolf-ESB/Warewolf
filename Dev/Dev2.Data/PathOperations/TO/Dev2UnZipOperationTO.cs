@@ -11,7 +11,7 @@ namespace Dev2.PathOperations {
     /// </summary>
     public class Dev2UnZipOperationTO : IUnZip {
 
-        internal Dev2UnZipOperationTO(string passwd, bool overwrite) {
+        public Dev2UnZipOperationTO(string passwd, bool overwrite) {
             ArchivePassword = passwd;
             Overwrite = overwrite;
         }

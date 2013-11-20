@@ -59,7 +59,8 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
             CreateUNCFile(path, isDir, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, data);
         }
 
-        public static void CreateAuthedUNCPath(string path, string dataString, bool isDir = false)
+        public static void CreateAuthedUNCPath(string path, string dataString, bool isDir = false,
+                                               string testFile = "")
         {
             const int LOGON32_PROVIDER_DEFAULT = 0;
             //This parameter causes LogonUser to create a primary token. 
@@ -68,7 +69,22 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
             // handle UNC path
             SafeTokenHandle safeTokenHandle;
 
-            byte[] data = System.Text.Encoding.UTF8.GetBytes(dataString);
+            byte[] data = null;
+
+            if (string.IsNullOrEmpty(testFile))
+            {
+                data = Encoding.UTF8.GetBytes(dataString);
+            }
+            else
+            {
+                var fs = new FileStream(testFile,
+                                        FileMode.Open,
+                                        FileAccess.Read);
+                var br = new BinaryReader(fs);
+                long numBytes = new FileInfo(testFile).Length;
+                data = br.ReadBytes((int) numBytes);
+            }
+
             CreateUNCFile(path, isDir, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, data);
         }
 
@@ -242,7 +258,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
             return path;
         }
 
-        public static string CreateFileFTP(string basePath, string userName, string password, bool ftps, string fileName, string dataString, bool createDirectory)
+        public static string CreateFileFTP(string basePath, string userName, string password, bool ftps, string fileName, string dataString, bool createDirectory, string testFile = "")
         {
 
             FtpWebRequest request = null;
@@ -277,7 +293,22 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
 
                     request.Method = WebRequestMethods.Ftp.UploadFile;
 
-                    byte[] data = System.Text.Encoding.UTF8.GetBytes(dataString);
+                    byte[] data = null;
+
+                    if (string.IsNullOrEmpty(testFile))
+                    {
+                        data = Encoding.UTF8.GetBytes(dataString);
+                    }
+                    else
+                    {
+                        using (var fs = new FileStream(testFile, FileMode.Open, FileAccess.Read))
+                        {
+                            var br = new BinaryReader(fs);
+                            long numBytes = new FileInfo(testFile).Length;
+                            data = br.ReadBytes((int) numBytes);
+                        }
+                    }
+
                     request.ContentLength = data.Length;
 
                     Stream requestStream = request.GetRequestStream();
@@ -309,7 +340,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
         }
 
         public static string CreateFilesFTP(string basePath, string userName, string password, bool ftps,
-                                            string fileName, string dataString, bool createDirectory)
+                                            string fileName, string dataString, bool createDirectory, string testFile = "")
         {
             string remoteDirectoy = basePath + Guid.NewGuid() + "/";
             string path = remoteDirectoy + fileName;
@@ -325,9 +356,23 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
 
                     FTPPro.CreateDirectory(pathFromString, new Dev2CRUDOperationTO(false));
 
-                    byte[] byteArray = Encoding.UTF8.GetBytes(dataString);
+                    byte[] data = null;
 
-                    Stream dataStream = new MemoryStream(byteArray);
+                    if (string.IsNullOrEmpty(testFile))
+                    {
+                        data = Encoding.UTF8.GetBytes(dataString);
+                    }
+                    else
+                    {
+                        var fs = new FileStream(testFile,
+                                            FileMode.Open,
+                                            FileAccess.Read);
+                        var br = new BinaryReader(fs);
+                        long numBytes = new FileInfo(testFile).Length;
+                        data = br.ReadBytes((int)numBytes);
+                    }
+
+                    Stream dataStream = new MemoryStream(data);
 
                     pathFromString = ActivityIOFactory.CreatePathFromString(path, userName, password);
                     FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(pathFromString);
@@ -343,7 +388,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
             return path;
         }
 
-        public static string ReadFilesFTP(string path, string userName, string password)
+        public static string ReadFileFTP(string path, string userName, string password)
         {
             IActivityIOPath pathFromString = ActivityIOFactory.CreatePathFromString(path, userName, password);
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(pathFromString);
@@ -354,31 +399,19 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
             {
                 return reader.ReadToEnd();
             }
-        }
+        } 
 
-
-        public static string ReadFileFTP(string path, string userName, string password)
+        public static string ReadFileFTP(IActivityIOOperationsEndPoint endpoint)
         {
-            string data = string.Empty;
 
-            try
+            var stream = endpoint.Get(endpoint.IOPath);
+            stream.Position = 0;
+            using (var reader = new StreamReader(stream, Encoding.UTF8))
             {
-                using (var request = new WebClient())
-                {
-                    if (userName != string.Empty)
-                    {
-                        request.Credentials = new NetworkCredential(userName, password);
-                    }
-                    data = System.Text.Encoding.Default.GetString(request.DownloadData(path));
-                }
+                return reader.ReadToEnd();
             }
-            catch
-            {
-
-            }
-
-            return data;
         }
+
 
         public static void DeleteFTP(string path, string userName, string password, bool ftps) {
             FtpWebRequest request = null;
