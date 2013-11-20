@@ -320,11 +320,9 @@
     <Compile Include="Test utils\StopWatch.cs" />
     <Compile Include="Test utils\WebTester\AssemblyReference.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
-    <Compile Include="Test utils\WebTester\Program.cs" />
     <Compile Include="Test utils\WebTester\Utils\AsynchronousRequest.cs" />
     <Compile Include="Test utils\WebTester\Utils\RequestState.cs" />
     <Compile Include="Interfaces\IWorker.cs" />
-    <Compile Include="Test utils\WebTester\Workers\LoadTestWorker.cs" />
     <Compile Include="Test utils\WebTester\Workers\PostWorker.cs" />
     <Compile Include="Test utils\WebTester\Workers\WebserverGetWorker.cs" />
     <Compile Include="AppTests.cs" />
