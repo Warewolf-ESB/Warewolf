@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Dev2.Studio.UI.Tests;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -86,7 +87,8 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
             if (closeBtn != null)
             {
-                Playback.Wait(50);
+                Thread.Sleep(50);
+                //Playback.Wait(50);
                 Mouse.Click(closeBtn);
                 return true;
             }

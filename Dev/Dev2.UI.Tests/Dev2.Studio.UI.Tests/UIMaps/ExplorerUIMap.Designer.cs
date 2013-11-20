@@ -225,7 +225,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             ClearExplorerSearchText();
 
             Mouse.Click(_explorerSearch, new Point(12, 8));
-            Playback.Wait(50);
+            Thread.Sleep(50);
+            //Playback.Wait(50);
             SendKeys.SendWait(textToSearchWith);
         }
 
@@ -338,9 +339,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             Mouse.Click(_explorerSearch,new Point(5,5));
             SendKeys.SendWait("{HOME}");
-            Playback.Wait(50);
+            Thread.Sleep(50);
+            //Playback.Wait(50);
             SendKeys.SendWait("+{END}");
-            Playback.Wait(50);
+            //Playback.Wait(50);
+            Thread.Sleep(50);
             SendKeys.SendWait("{DELETE}");
         }
 

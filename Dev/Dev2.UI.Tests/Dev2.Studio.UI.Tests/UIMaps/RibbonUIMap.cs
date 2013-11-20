@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Linq;
+using System.Threading;
 using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -86,7 +87,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             var control = ribbonButtons.FirstOrDefault(c => c.FriendlyName == itemName || c.GetChildren().Any(child => child.FriendlyName == itemName));
             var p = new Point(control.BoundingRectangle.X + 5, control.BoundingRectangle.Y + 5);
             Mouse.Click(p);
-            Playback.Wait(2000);
+            Thread.Sleep(1000);
+            //Playback.Wait(2000);
         }
 
         public void CreateNewWorkflow()

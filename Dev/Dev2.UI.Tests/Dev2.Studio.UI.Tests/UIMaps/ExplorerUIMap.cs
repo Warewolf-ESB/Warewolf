@@ -139,11 +139,14 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             if (theControl != null)
             {
                 Point p = new Point(theControl.BoundingRectangle.X + 60, theControl.BoundingRectangle.Y + 7);
-                Playback.Wait(200);
+                Thread.Sleep(200);
+                //Playback.Wait(200);
                 Mouse.Click(p);
-                Playback.Wait(100);
+                Thread.Sleep(100);
+                //Playback.Wait(100);
                 Mouse.DoubleClick(p);
-                Playback.Wait(1000);
+                //Playback.Wait(1000);
+                Thread.Sleep(100);
             }
         }
 
