@@ -519,9 +519,9 @@ namespace Dev2.CodedUI.Tests
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug8372");
 
             // Run debug
-            SendKeys.SendWait("{F5}");
-            DebugUIMap.WaitForDebugWindow(3000);
-            SendKeys.SendWait("{F5}");
+            RibbonUIMap.ClickRibbonMenuItem("Debug");
+            PopupDialogUIMap.WaitForDialog();
+            DebugUIMap.ClickExecute();
             OutputUIMap.WaitForExecution();
 
             var result = OutputUIMap.IsAnyStepsInError();
