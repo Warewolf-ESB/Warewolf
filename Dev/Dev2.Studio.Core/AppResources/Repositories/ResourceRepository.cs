@@ -758,6 +758,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dataObj.Service = "FetchResourceDefinitionService";
             dataObj.ResourceID = resourceModelID;
 
+            // log the trace for fetch ;)
+            Logger.TraceInfo(string.Format("Fetched Definition For {0} From Workspace {1}", resourceModelID, workspaceID));
+
             var result = ExecuteCommand(targetEnv, dataObj, workspaceID, false) as string;
 
             if(!string.IsNullOrEmpty(result))

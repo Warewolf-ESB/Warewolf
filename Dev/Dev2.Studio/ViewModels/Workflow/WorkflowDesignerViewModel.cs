@@ -26,6 +26,7 @@ using System.Windows.Media.Imaging;
 using System.Xaml;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
@@ -44,6 +45,7 @@ using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
@@ -1286,18 +1288,54 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             var xaml = _resourceModel.WorkflowXaml;
 
+            // if null, try fetching. It appears there is more than the two routes identified to populating xaml ;(
             if(string.IsNullOrEmpty(xaml))
             {
-                // BUG 9304 - 2013.05.08 - TWR 
-                _wd.Load(_workflowHelper.CreateWorkflow(_resourceModel.ResourceName));
+                var workspace = GlobalConstants.ServerWorkspaceID;
+                if (EnvironmentRepository.Instance.ActiveEnvironment != null)
+                {
+                    if (EnvironmentRepository.Instance.ActiveEnvironment.Connection != null)
+                    {
+                        workspace = EnvironmentRepository.Instance.ActiveEnvironment.Connection.WorkspaceID;
+                    }
+                }
 
-                BindToModel();
+                // log the trace for fetch ;)
+                Logger.TraceInfo(string.Format("Null Definition For {0} :: {1}. Fetching...", _resourceModel.ID, _resourceModel.ResourceName));
+
+                // In the case of null of empty try fetching again ;)
+                ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID);
+
+                xaml = _resourceModel.WorkflowXaml;
+            }
+
+            // if we still cannot find it, create a new one ;)
+            if(string.IsNullOrEmpty(xaml))
+            {
+                
+                if (_resourceModel.ResourceType == ResourceType.WorkflowService)
+                {
+                    // log the trace for fetch ;)
+                    Logger.TraceInfo(string.Format("Could not find {0}. Creating a new workflow", _resourceModel.ResourceName));
+
+                    // BUG 9304 - 2013.05.08 - TWR 
+                    _wd.Load(_workflowHelper.CreateWorkflow(_resourceModel.ResourceName));
+
+                    BindToModel();
+                }
+                else
+                {
+                    // we have big issues ;(
+                    throw new Exception(string.Format("Could not find resource definition for {0}", _resourceModel.ResourceName));
+                }
             }
             else
             {
+                // we got the correct model ;)
                 _wd.Text = _workflowHelper.SanitizeXaml(xaml);
                 _wd.Load();
             }
+
         }
 
         void SelectedItemChanged(Selection item)
