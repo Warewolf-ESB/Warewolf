@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
+using Dev2.Runtime;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -89,6 +90,27 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
             //------------Assert Results-------------------------
             Assert.AreEqual(ExpectedName, actual.Recordset.Name);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DbService_Create")]
+        public void DbService_Create_ReturnsEmpty()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var actual = DbService.Create();
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(Guid.Empty, actual.ResourceID);
+            Assert.AreEqual(ResourceType.DbService, actual.ResourceType);
+
+            Assert.IsNotNull(actual.Source);
+            Assert.IsInstanceOfType(actual.Source, typeof(DbSource));
+            Assert.AreEqual(Guid.Empty, actual.Source.ResourceID);
+            Assert.AreEqual(ResourceType.DbSource, actual.Source.ResourceType);
         }
 
         #endregion
@@ -183,26 +205,5 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
         #endregion
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("DbService_Create")]
-        public void DbService_Create_ReturnsEmpty()
-        {
-            //------------Setup for test--------------------------
-
-            //------------Execute Test---------------------------
-            var actual = DbService.Create();
-
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(actual);
-            Assert.AreEqual(Guid.Empty, actual.ResourceID);
-            Assert.AreEqual(ResourceType.DbService, actual.ResourceType);
-
-            Assert.IsNotNull(actual.Source);
-            Assert.IsInstanceOfType(actual.Source, typeof(DbSource));
-            Assert.AreEqual(Guid.Empty, actual.Source.ResourceID);
-            Assert.AreEqual(ResourceType.DbSource, actual.Source.ResourceType);
-        }
     }
 }
