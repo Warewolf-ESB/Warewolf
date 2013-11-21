@@ -6,6 +6,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Windows.Data;
 using System.Windows.Interactivity;
+using System.Windows.Threading;
 using Dev2.CustomControls.Trigger;
 using Dev2.DataList.Contract;
 using Dev2.Services.Events;
@@ -624,6 +625,8 @@ namespace Dev2.UI
 
         //public ItemCollection Items { get { return _listBox.Items; } }
         ObservableCollection<IntellisenseProviderResult> _items;
+        SynchronizationContext _context;
+
         public ObservableCollection<IntellisenseProviderResult> Items
         {
             get
@@ -644,11 +647,11 @@ namespace Dev2.UI
         #region Constructor
         public IntellisenseTextBox()
         {
-            var observable = Observable.FromEventPattern(this, "TextChanged")
-                               .Throttle(TimeSpan.FromMilliseconds(200), Scheduler.ThreadPool)
-                               .ObserveOn(SynchronizationContext.Current);
-
-            observable.Subscribe(pattern => TheTextHasChanged());
+            Observable.FromEventPattern(this, "TextChanged")
+                .Throttle(TimeSpan.FromMilliseconds(200), Scheduler.ThreadPool)
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(pattern => TheTextHasChanged());
+                
             Items = new ObservableCollection<IntellisenseProviderResult>();
             DefaultStyleKey = typeof(IntellisenseTextBox);
             Mouse.AddPreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideCapturedElement);

@@ -24,39 +24,19 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
     [ExcludeFromCodeCoverage]
     public class IntellisenseTextBoxTests
     {
-        public static void RunInWpfSyncContext(Action function)
-        {
-            if(function == null) throw new ArgumentNullException("function");
-            var prevCtx = SynchronizationContext.Current;
-            try
-            {
-                var syncCtx = new DispatcherSynchronizationContext();
-                SynchronizationContext.SetSynchronizationContext(syncCtx);
 
-                function();
-
-                var frame = new DispatcherFrame();
-                Dispatcher.PushFrame(frame);   // execute all tasks until frame.Continue == false
-
-            }
-            finally
-            {
-                SynchronizationContext.SetSynchronizationContext(prevCtx);
-            }
-        }
-
-        [ClassInitialize()]
-         public static void MyClassInitialize(TestContext testContext)
+        [TestInitialize()]
+        public void MyTestInitialize()
         {
             SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
         }
 
-        [ClassCleanup()]
-        public static void MyClassCleanup()
+        [TestCleanup()]
+        public void MyTestCleanup()
         {
             SynchronizationContext.SetSynchronizationContext(null);
         }
-
+        
         #region Test Initialization
 
         //BUG 9639
@@ -206,12 +186,13 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsRecordsetFieldsButTextIsScalar_ToolTipHasErrorMessage()
         {
-            var textBox = new IntellisenseTextBox();
-            textBox.FilterType = enIntellisensePartType.RecordsetFields;
-            textBox.Text = "[[var]]";
-            var toolTipText = ((ToolTip)textBox.ToolTip).Content as string;
-            Assert.IsTrue(textBox.HasError);
-            Assert.IsTrue(toolTipText.Contains("Scalar is not allowed"));
+            var thread = new Thread(() =>
+            {
+                var textBox = new IntellisenseTextBox();
+                textBox.FilterType = enIntellisensePartType.RecordsetFields;
+                textBox.Text = "[[var]]";
+                Assert.IsTrue(textBox.HasError);
+            });
         }
 
         [TestMethod]
@@ -219,12 +200,14 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsRecordsetFieldsAndTextIsRecordset_ToolTipHasNoErrorMessage()
         {
-            var textBox = new IntellisenseTextBox();            
-            textBox.FilterType = enIntellisensePartType.RecordsetFields;
-            textBox.Text = "[[var()]]";            
-            var toolTipText = ((ToolTip)textBox.ToolTip).Content as string;                
-            Assert.IsFalse(textBox.HasError);
-            Assert.IsTrue(toolTipText.Trim().Length == 0);  
+
+            var thread = new Thread(() =>
+            {
+                var textBox = new IntellisenseTextBox();
+                textBox.FilterType = enIntellisensePartType.RecordsetFields;
+                textBox.Text = "[[var()]]";
+                Assert.IsFalse(textBox.HasError);
+            });
         }
 
         [TestMethod]
@@ -232,13 +215,13 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsScalarsOnlyAndTextIsScalar_ToolTipHasNoErrorMessage()
         {
-            var textBox = new IntellisenseTextBox();            
-            textBox.FilterType = enIntellisensePartType.ScalarsOnly;
-            textBox.Text = "[[var]]";
-            var toolTipText = ((ToolTip)textBox.ToolTip).Content as string;
-            Assert.IsFalse(textBox.HasError);
-            Assert.IsTrue(toolTipText.Trim().Length == 0);
-            
+            var thread = new Thread(() =>
+            {
+                var textBox = new IntellisenseTextBox();
+                textBox.FilterType = enIntellisensePartType.ScalarsOnly;
+                textBox.Text = "[[var]]";
+                Assert.IsFalse(textBox.HasError);
+            });
         }
 
         [TestMethod]
@@ -246,17 +229,15 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsScalarsOnlyButTextIsRecordset_ToolTipHaErrorMessage()
         {
-            //RunInWpfSyncContext(async () =>
-            //{
-            //    var textBox = new IntellisenseTextBox();
-            //    textBox.FilterType = enIntellisensePartType.ScalarsOnly;
-            //    textBox.Text = "[[var()]]";
-            //    Thread.Sleep(250);
-            //    //var toolTipText = ((ToolTip)textBox.ToolTip).Content as string;
-            //    Assert.IsTrue(textBox.HasError);
-            //    //Assert.IsTrue(toolTipText.Contains("Recordset is not allowed"));
-            //});
-
+            var thread = new Thread(() =>
+            {
+                var textBox = new IntellisenseTextBox();
+                textBox.FilterType = enIntellisensePartType.ScalarsOnly;
+                textBox.Text = "[[var()]]";
+                Thread.Sleep(250);
+                //var toolTipText = ((ToolTip)textBox.ToolTip).Content as string;
+                Assert.IsTrue(textBox.HasError);
+            });
            
         }
 
