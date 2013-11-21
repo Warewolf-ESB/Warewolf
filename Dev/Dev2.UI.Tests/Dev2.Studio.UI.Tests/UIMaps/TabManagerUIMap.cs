@@ -242,6 +242,13 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         public UITestControl GetActiveTab()
         {
             Playback.Wait(500);
+            var idx = _tabManager.SelectedIndex;
+
+            if (idx >= _tabManager.Tabs.Count)
+            {
+                Playback.Wait(500);
+            }
+
             return _tabManager.Tabs[_tabManager.SelectedIndex];
         }
     }

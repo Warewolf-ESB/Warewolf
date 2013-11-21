@@ -114,20 +114,13 @@ namespace Dev2.Studio.UI.Tests
 
             // Get wizard window
             WizardsUIMap.WaitForWizard();
-
-            
             DatabaseServiceWizardUIMap.TabToInputMappings();
-            // Set input mapping to required
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
-            var wizard = StudioWindow.GetChildren()[0];
-            wizard.WaitForControlReady();
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+
             SendKeys.SendWait("{TAB}");
+            Playback.Wait(150);
             SendKeys.SendWait(" ");
             // Save
             DatabaseServiceWizardUIMap.ClickOK();
-
-            Assert.IsTrue(ResourceChangedPopUpUIMap.WaitForDialog(5000), "Resource changed dialog did not show");
             ResourceChangedPopUpUIMap.ClickCancel();
 
             // Fix Errors

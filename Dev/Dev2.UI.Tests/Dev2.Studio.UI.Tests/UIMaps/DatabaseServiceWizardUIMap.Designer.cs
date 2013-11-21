@@ -156,12 +156,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 
         public void TabToMappingsTab()
         {
-            var wizard = StudioWindow.GetChildren()[0];
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
-            wizard.WaitForControlReady();
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+            Playback.Wait(50);
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
+            Playback.Wait(50);
             SendKeys.SendWait("{RIGHT}");
+            Playback.Wait(50);
         }
 
         public void TabToOutputMappings()
@@ -177,6 +176,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         {
             TabToMappingsTab();
             SendKeys.SendWait("{TAB}");
+            Playback.Wait(200);
         }
 
         public bool IsControlADbServiceWizard(UITestControl wizardWindow)

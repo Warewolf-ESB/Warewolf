@@ -178,7 +178,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// <returns></returns>
         private UITestControl GetServiceItem(string serverName, string serviceType, string folderName, string projectName,bool overrideDblClickBehavior = false)
         {
-            Playback.Wait(500);
+            Playback.Wait(200);
 
             var args = new string[] {serverName, serviceType, folderName, projectName};
 
