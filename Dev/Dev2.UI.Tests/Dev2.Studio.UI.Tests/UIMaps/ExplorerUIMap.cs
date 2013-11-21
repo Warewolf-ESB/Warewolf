@@ -143,7 +143,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                 Mouse.Click(p);
                 Playback.Wait(100);
                 Mouse.DoubleClick(p);
-                Playback.Wait(1000);
+                Playback.Wait(350);
             }
         }
 

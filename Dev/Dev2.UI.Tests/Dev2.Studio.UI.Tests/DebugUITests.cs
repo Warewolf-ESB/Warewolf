@@ -15,11 +15,12 @@ namespace Dev2.Studio.UI.Tests
         [ClassInitialize]
         public static void ClassInit(TestContext tctx)
         {
-            //Playback.Initialize();
-            //Playback.PlaybackSettings.ContinueOnError = true;
-            //Playback.PlaybackSettings.ShouldSearchFailFast = true;
-            //Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
-            //Playback.PlaybackSettings.MatchExactHierarchy = true;
+            Playback.Initialize();
+            Playback.PlaybackSettings.ContinueOnError = true;
+            Playback.PlaybackSettings.ShouldSearchFailFast = true;
+            Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+            Playback.PlaybackSettings.MatchExactHierarchy = true;
+            Playback.PlaybackSettings.DelayBetweenActions = 1;
 
             // make the mouse quick ;)
             Mouse.MouseMoveSpeed = 10000;

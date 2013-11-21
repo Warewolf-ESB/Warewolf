@@ -87,8 +87,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             var control = ribbonButtons.FirstOrDefault(c => c.FriendlyName == itemName || c.GetChildren().Any(child => child.FriendlyName == itemName));
             var p = new Point(control.BoundingRectangle.X + 5, control.BoundingRectangle.Y + 5);
             Mouse.Click(p);
-            Thread.Sleep(1000);
-            //Playback.Wait(2000);
+            Playback.Wait(1000);
         }
 
         public void CreateNewWorkflow()

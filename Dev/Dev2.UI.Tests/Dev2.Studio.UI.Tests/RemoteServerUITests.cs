@@ -51,7 +51,6 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
-
         #region Test Methods
 
         [TestMethod]

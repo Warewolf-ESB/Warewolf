@@ -1,4 +1,6 @@
-﻿namespace Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses
+﻿using System.Windows.Forms;
+
+namespace Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;
@@ -35,12 +37,17 @@
         /// </summary>
         public void ClickCancel()
         {
-            #region Variable Declarations
-            WpfButton uICancelButton = this.UIInputsOutputsChangedWindow.UICancelButton;
-            #endregion
+            //#region Variable Declarations
+            //WpfButton uICancelButton = this.UIInputsOutputsChangedWindow.UICancelButton;
+            //#endregion
 
-            // Click 'Cancel' button
-            Mouse.Click(uICancelButton);
+            //// Click 'Cancel' button
+            //Mouse.Click(uICancelButton);
+
+            Playback.Wait(150);
+            SendKeys.SendWait("{ESC}");
+            Playback.Wait(50);
+
         }
 
         /// <summary>

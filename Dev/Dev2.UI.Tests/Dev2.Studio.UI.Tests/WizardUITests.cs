@@ -47,6 +47,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Playback.PlaybackSettings.ShouldSearchFailFast = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
             Playback.PlaybackSettings.MatchExactHierarchy = true;
+            Playback.PlaybackSettings.DelayBetweenActions = 1;
 
             // make the mouse quick ;)
             Mouse.MouseMoveSpeed = 10000;
@@ -416,8 +417,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 Assert.Fail("Error - Clicking the remote warewolf button does not create the new server window");
             }
+            Playback.Wait(2500);
             SendKeys.SendWait("{ESC}");
-            Playback.Wait(200);
+            Playback.Wait(100);
         } 
         
         #endregion

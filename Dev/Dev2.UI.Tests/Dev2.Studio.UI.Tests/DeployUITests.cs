@@ -1,5 +1,4 @@
-﻿using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
+﻿using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -7,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Studio.UI.Tests
 {
     [CodedUITest]
+    [Ignore]
     public class DeployUITests : UIMapBase
     {
         #region Cleanup
@@ -93,9 +93,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClosePane(theTab);
 
             //wait for resource tree to load
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
-            theTab.WaitForControlReady();
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+            Playback.Wait(1000);
 
             // Assert All Service Types Visible
             var sourceResources = DeployUIMap.GetSourceNavigationTree();
@@ -115,8 +113,6 @@ namespace Dev2.Studio.UI.Tests
             {
                 Assert.Fail("The deployed item has been removed with the filter - It should not be");
             }
-
-            
         }
     }
 }

@@ -150,14 +150,16 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
             // fetch the darn thing once ;)
             var tabManager = GetManager();
-            var tabCnt = 0;
 
             if(tabManager != null)
             {
                 var tabs = tabManager.GetChildren();
-                foreach (var theTab in tabs)
+
+                var tabCnt = tabs.Count;
+
+                for (int i = (tabCnt - 1); i >= 0; i--)
                 {
-                    CloseTab_Click_No(theTab);    
+                    CloseTab_Click_No(tabs[0]);
                 }
             }
         }
@@ -239,24 +241,8 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public UITestControl GetActiveTab()
         {
-            //var tab = _tabManager.Tabs[_tabManager.SelectedIndex];
-            //var tabChildren = tab.GetChildren();
-            //var selectedTabName = string.Empty;
-            //foreach (var tabChild in tabChildren)
-            //{
-            //    if (tabChild.ClassName == "Uia.TextBlock")
-            //    {
-            //        selectedTabName = tabChild.FriendlyName;
-            //        break;
-            //    }
-            //}
-            //var control = _tabManager.GetTab(selectedTabName);
-
-            //return control;
-
-
+            Playback.Wait(500);
             return _tabManager.Tabs[_tabManager.SelectedIndex];
-
         }
     }
 }
