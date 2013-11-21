@@ -36,8 +36,8 @@ namespace Dev2.Runtime.Hosting
         readonly ConcurrentDictionary<string, List<DynamicServiceObjectBase>> _frequentlyUsedServices = new ConcurrentDictionary<string, List<DynamicServiceObjectBase>>();
         IContextManager<IStudioNetworkSession> _contextManager;
 
-        //readonly object _cacheLock = new object();
-        //readonly IDictionary<string, string> _cachedResources = new Dictionary<string, string>(); 
+        readonly object _cacheLock = new object();
+        readonly IDictionary<string, string> _cachedResources = new Dictionary<string, string>(); 
 
         #region Singleton Instance
 
@@ -231,15 +231,15 @@ namespace Dev2.Runtime.Hosting
 
 
             // Travis - Fetch from cache ;)
-            //lock(_cacheLock)
-            //{
-            //    var key = resource.FilePath;
-            //    string val;
-            //    if (_cachedResources.TryGetValue(key, out val))
-            //    {
-            //        return val;
-            //    }
-            //}
+            lock(_cacheLock)
+            {
+                var key = resource.FilePath;
+                string val;
+                if(_cachedResources.TryGetValue(key, out val))
+                {
+                    return val;
+                }
+            }
 
             // Open the file with the file share option of read. This will ensure that if the file is opened for write while this read operation
             // is happening the wite will fail.
@@ -252,11 +252,11 @@ namespace Dev2.Runtime.Hosting
             }
 
             // Travis - Add to cache ;)
-            //lock(_cacheLock)
-            //{
-            //    var key = resource.FilePath;
-            //    _cachedResources[key] = contents;
-            //}
+            lock(_cacheLock)
+            {
+                var key = resource.FilePath;
+                _cachedResources[key] = contents;
+            }
 
             return contents;
         }
@@ -1064,11 +1064,11 @@ namespace Dev2.Runtime.Hosting
                 File.WriteAllText(resource.FilePath, signedXml, Encoding.UTF8);
 
                 // Travis - Add to cache ;)
-                //lock (_cacheLock)
-                //{
-                //    var key = resource.FilePath;
-                //    _cachedResources[key] = signedXml;
-                //}
+                lock(_cacheLock)
+                {
+                    var key = resource.FilePath;
+                    _cachedResources[key] = signedXml;
+                }
             }
 
             #endregion
