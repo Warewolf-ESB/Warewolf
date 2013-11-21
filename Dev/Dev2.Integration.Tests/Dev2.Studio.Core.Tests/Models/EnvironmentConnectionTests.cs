@@ -116,30 +116,6 @@ namespace Dev2.Studio.Core.Tests
             //Assert.Fail();
         }
 
-
-        /// <summary>
-        /// GetResource Service Test
-        /// </summary>
-        [TestMethod]
-        public void EnvironmentConnection_GetResource_Expected_RetrieveResourceFromServer()
-        {
-            string serviceName = "IntegrationTestWebsite";
-            string xmlString = CreateDataObject("GetResourceService", serviceName);
-            IEnvironmentConnection conn = CreateConnection();
-
-            conn.Connect();
-            if(conn.IsConnected)
-            {
-                string returnData = conn.DataChannel.ExecuteCommand(xmlString, Guid.Empty, Guid.Empty);
-                Assert.IsTrue(returnData.Contains(serviceName));
-            }
-            else
-            {
-                Assert.Fail("Unable to create a connection to the server");
-            }
-            conn.Connect();
-        }
-
         #endregion Studio Request Tests
 
         #region Private Test Methods
