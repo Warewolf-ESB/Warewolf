@@ -1085,7 +1085,10 @@ namespace Dev2.Runtime.Hosting
             resource.GetInputsOutputs(xml);
             resource.ReadDataList(xml);
             resource.SetIsNew(xml);
+            resource.UpdateErrorsBasedOnXML(xml);
+
             resources.Add(resource);
+            
 
             #endregion
 

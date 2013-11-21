@@ -165,7 +165,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        void UpdateErrorsBasedOnXML(XElement xml)
+        public void UpdateErrorsBasedOnXML(XElement xml)
         {
             var errorMessagesElement = xml.Element("ErrorMessages");
             Errors = new List<IErrorInfo>();
