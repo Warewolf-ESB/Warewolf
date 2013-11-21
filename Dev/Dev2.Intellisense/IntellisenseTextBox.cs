@@ -644,7 +644,7 @@ namespace Dev2.UI
         #region Constructor
         public IntellisenseTextBox()
         {
-            var observable = Observable.FromEventPattern(this, "TextChange")
+            var observable = Observable.FromEventPattern(this, "TextChanged")
                                .Throttle(TimeSpan.FromMilliseconds(200), Scheduler.ThreadPool)
                                .ObserveOn(SynchronizationContext.Current);
 
@@ -663,16 +663,7 @@ namespace Dev2.UI
 
         #region Overrides of TextBoxBase
 
-        /// <summary>
-        /// Is called when content in this editing control changes.
-        /// </summary>
-        /// <param name="e">The arguments that are associated with the <see cref="E:System.Windows.Controls.Primitives.TextBoxBase.TextChanged"/> event.</param>
-        protected override void OnTextChanged(TextChangedEventArgs e)
-        {
-            base.OnTextChanged(e);
-            TheTextHasChanged();
-        }
-
+        
         #endregion
 
         #endregion
