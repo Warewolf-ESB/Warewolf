@@ -6,19 +6,37 @@ using Dev2.Runtime.WebServer.Handlers;
 namespace Dev2.Runtime.WebServer.Controllers
 {
     [Authorize]
-    [RoutePrefix("services/{servicename}")]
+    [RoutePrefix("services/{name}")]
     public class WebController : AbstractController
     {
-        [Route("{wid}")]
-        public HttpResponseMessage Get(string serviceName, string wid)
+        [Route("")] 
+        [AcceptVerbs("GET", "POST")]
+        public HttpResponseMessage Execute(string name)
         {
             var requestVariables = new NameValueCollection
             {
-                { "servicename", serviceName }, 
-                { "clientid", wid }
+                { "servicename", name }
             };
 
-            return ProcessRequest<WebsiteResourceHandler>(requestVariables);
+            return Request.Method == HttpMethod.Post 
+                ? ProcessRequest<WebPostRequestHandler>(requestVariables) 
+                : ProcessRequest<WebGetRequestHandler>(requestVariables);
+        }
+
+        [Route("instances/{instanceid}/bookmarks/{bookmark}")]
+        [AcceptVerbs("GET", "POST")]
+        public HttpResponseMessage Bookmark(string name, string instanceid, string bookmark)
+        {
+            var requestVariables = new NameValueCollection
+            {
+                { "servicename", name }, 
+                { "instanceid", instanceid },
+                { "bookmark", bookmark }
+            };
+
+            return Request.Method == HttpMethod.Post
+                ? ProcessRequest<WebPostRequestHandler>(requestVariables)
+                : ProcessRequest<WebGetRequestHandler>(requestVariables);
         }
     }
 }

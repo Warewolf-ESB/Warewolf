@@ -375,7 +375,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         protected static string GetWorkspaceID(ICommunicationContext ctx)
         {
-            return ctx.Request.QueryString["wid"] ?? ctx.Request.BoundVariables["clientid"];
+            return ctx.Request.QueryString["wid"];
         }
 
         protected static string GetDataListID(ICommunicationContext ctx)

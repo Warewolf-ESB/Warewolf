@@ -36,6 +36,7 @@ namespace Dev2.Runtime.WebServer
             // Add web server routing...
             var config = new HttpConfiguration();
             config.MapHttpAttributeRoutes();
+            config.EnsureInitialized();
             app.UseWebApi(config);
         }
     }
