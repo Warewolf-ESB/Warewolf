@@ -1115,18 +1115,19 @@ namespace Dev2.PathOperations {
         bool IsDirectoryAlreadyPresentSFTP(IActivityIOPath path)
         {
             var sftpClient = BuildSftpClient(path);
-            var isAlive = false;
+            var isAlive = true;
             try
             {
                 var ftpPath = ExtractFileNameFromPath(path.Path);
                 var arrayList = sftpClient.GetFileList(ftpPath);
-                if(arrayList != null && arrayList.Count == 0)
+                if(arrayList == null || arrayList.Count < 1)
                 {
-                    isAlive = true;    
+                    isAlive = false;    
                 }
             }
             catch(Exception ex)
             {
+                isAlive = false;
                 ServerLogger.LogError(ex);
             }
             finally

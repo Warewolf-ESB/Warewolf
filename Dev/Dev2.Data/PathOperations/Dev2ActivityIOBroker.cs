@@ -420,6 +420,33 @@ namespace Dev2.PathOperations
             return performAfterValidation();
         }
 
+        private string ValidateZipSourceDestinationFileOperation(IActivityIOOperationsEndPoint src,
+                                                                IActivityIOOperationsEndPoint dst,
+                                                                Dev2ZipOperationTO args,
+                                                                Func<string> performAfterValidation)
+        {
+            ValidateSourceAndDestinationPaths(src, dst);
+
+            if (dst.PathIs(dst.IOPath) != enPathType.File)
+            {
+                throw new Exception("Destination must be a file");
+            }
+            
+            if (!args.Overwrite && dst.PathExist(dst.IOPath))
+            {
+                throw new Exception("Destination file already exists and overwrite is set to false");
+            }
+            
+            //ensures destination folder structure exists
+            string opStatus = CreateEndPoint(dst, new Dev2CRUDOperationTO(args.Overwrite), dst.PathIs(dst.IOPath) == enPathType.Directory);
+            if (!opStatus.Equals("Success"))
+            {
+                throw new Exception("Recursive Directory Create Failed For [ " + dst.IOPath.Path + " ]");
+            }
+
+            return performAfterValidation();
+        }
+
         private void ValidateSourceAndDestinationPaths(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst)
         {
             if (src.IOPath.Path.Trim().Length == 0)
@@ -443,6 +470,11 @@ namespace Dev2.PathOperations
                               .Trim()))
             {
                 throw new Exception("Source and destination can not be same");
+            }
+
+            if (!src.PathExist(src.IOPath))
+            {
+                throw new Exception("Source does not exist");
             }
 
             IList<string> srcContents = MakeDirectoryParts(src.IOPath, src.PathSeperator());
@@ -521,151 +553,152 @@ namespace Dev2.PathOperations
 
         public string Zip(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2ZipOperationTO args)
         {
-            // tmp zip file location
-            string tmpZip = CreateTmpFile();
-
-            if(src.PathIs(src.IOPath) == enPathType.Directory || Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
-            {
-
-                // tmp dir for files required
-                string tmpDir = CreateTmpDirectory();
-                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(tmpDir, src.IOPath.Username, src.IOPath.Password);
-                IActivityIOOperationsEndPoint tmpEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
-                Dev2CRUDOperationTO myArgs = new Dev2CRUDOperationTO(true);
-                // stage contents to local folder
-                TransferDirectoryContents(src, tmpEndPoint, myArgs);
-
-                // get directory contents
-                IList<IActivityIOPath> toAdd = ListDirectory(tmpEndPoint, ReadTypes.FilesAndFolders);
-
-                using(var zip = new ZipFile())
+            return ValidateZipSourceDestinationFileOperation(src, dst, args, () =>
                 {
-                    // set password if exist
-                    if(args.ArchivePassword != string.Empty)
+                    string tempFileName;
+                    if (src.PathIs(src.IOPath) == enPathType.Directory ||
+                        Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
                     {
-                        zip.Password = args.ArchivePassword;
+                        tempFileName = ZipDirectoryToALocalTempFile(src, args);
+                    }
+                    else
+                    {
+                        tempFileName = ZipFileToALocalTempFile(src, args);
                     }
 
-                    // compression ratio                    
-                    zip.CompressionLevel = ExtractZipCompressionLevel(args.CompressionRatio);
+                    return TransferTempZipFileToDestination(src, dst, args, tempFileName);
+                });
+        }
 
-                    // add all files to archive
-                    foreach(IActivityIOPath p in toAdd)
+        private string ZipFileToALocalTempFile(IActivityIOOperationsEndPoint src, Dev2ZipOperationTO args)
+        {
+            // normal not wild char file && not directory
+            string packFile = src.IOPath.Path;
+            string tempFileName = CreateTmpFile();
+
+            if (src.RequiresLocalTmpStorage())
+            {
+                string tmpFile = CreateTmpFile();
+                packFile = tmpFile;
+                Stream s = src.Get(src.IOPath);
+                File.WriteAllBytes(tmpFile, s.ToByteArray());
+                s.Close();
+            }
+
+            using (var zip = new ZipFile())
+            {
+                // set password if exist
+                if (args.ArchivePassword != string.Empty)
+                {
+                    zip.Password = args.ArchivePassword;
+                }
+
+                // compression ratio
+                zip.CompressionLevel = ExtractZipCompressionLevel(args.CompressionRatio);
+
+                // add all files to archive
+                zip.AddFile(packFile, ".");
+
+                zip.Save(tempFileName);
+            }
+
+            return tempFileName;
+        }
+
+        private string ZipDirectoryToALocalTempFile(IActivityIOOperationsEndPoint src, Dev2ZipOperationTO args)
+        {
+                // tmp dir for files required
+            string tmpDir = CreateTmpDirectory();
+            string tempFilename = CreateTmpFile();
+            IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(tmpDir, "", "");
+            IActivityIOOperationsEndPoint tmpEndPoint =
+                ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
+            
+            // stage contents to local folder
+            TransferDirectoryContents(src, tmpEndPoint, new Dev2CRUDOperationTO(true));
+            // get directory contents
+
+            using (var zip = new ZipFile())
+            {
+                // set password if exist
+                if (args.ArchivePassword != string.Empty)
+                {
+                    zip.Password = args.ArchivePassword;
+                }
+
+                // compression ratio                    
+                zip.CompressionLevel = ExtractZipCompressionLevel(args.CompressionRatio);
+
+                IList<IActivityIOPath> toAdd = ListDirectory(tmpEndPoint, ReadTypes.FilesAndFolders);
+                // add all files to archive
+                foreach (IActivityIOPath p in toAdd)
+                {
+                    if (tmpEndPoint.PathIs(p) == enPathType.Directory)
+                    {
+                        zip.AddDirectory(p.Path, ".");
+                    }
+                    else
                     {
                         zip.AddFile(p.Path, ".");
                     }
-                    zip.Save(tmpZip);
                 }
-
-                // remove locally staged files
-                DirectoryHelper.CleanUp(tmpDir);
-            }
-            else
-            {
-                // normal not wild char file && not directory
-                string packFile = src.IOPath.Path;
-
-                if(src.RequiresLocalTmpStorage())
-                {
-                    string tmpFile = CreateTmpFile();
-                    packFile = tmpFile;
-                    Stream s = src.Get(src.IOPath);
-                    File.WriteAllBytes(tmpFile, s.ToByteArray());
-                    s.Close();
-                }
-
-                using(ZipFile zip = new ZipFile())
-                {
-                    // set password if exist
-                    if(args.ArchivePassword != string.Empty)
-                    {
-                        zip.Password = args.ArchivePassword;
-                    }
-
-                    // compression ratio
-                    zip.CompressionLevel = ExtractZipCompressionLevel(args.CompressionRatio);
-
-                    // add all files to archive
-                    zip.AddFile(packFile, ".");
-
-                    zip.Save(tmpZip);
-                }
-
+                zip.Save(tempFilename);
             }
 
-            // now transfer the zip file to the correct location
+            // remove locally staged files
+            DirectoryHelper.CleanUp(tmpDir);
+
+            return tempFilename;
+        }
+
+        private string TransferTempZipFileToDestination(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2ZipOperationTO args, string tmpZip)
+        {
+             // now transfer the zip file to the correct location
             string result;
-            using(Stream s2 = new MemoryStream(File.ReadAllBytes(tmpZip)))
+            using (Stream s2 = new MemoryStream(File.ReadAllBytes(tmpZip)))
             {
-
-                // adjust so it has .zip on the end
-                string zipLoc = dst.IOPath.Path;
-
-                //MO : 22-08-2012 : If the user enters a full file path and no archive name 
-                if(!string.IsNullOrEmpty(args.ArchiveName))
-                {
-                    if(!args.ArchiveName.EndsWith(".zip"))
-                    {
-                        zipLoc += dst.PathSeperator() + args.ArchiveName + ".zip";
-                    }
-                    else
-                    {
-                        zipLoc += dst.PathSeperator() + args.ArchiveName;
-                    }
-                }
-                else
-                {
-                    if(!dst.IOPath.Path.EndsWith(".zip"))
-                    {
-                        zipLoc += ".zip";
-                    }
-                }
-
                 // add archive name to path
-                dst = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipLoc, dst.IOPath.Username, dst.IOPath.Password));
+                dst =
+                    ActivityIOFactory.CreateOperationEndPointFromIOPath(
+                        ActivityIOFactory.CreatePathFromString(dst.IOPath.Path, dst.IOPath.Username,
+                                                               dst.IOPath.Password));
 
-                Dev2CRUDOperationTO zipTransferArgs = new Dev2CRUDOperationTO(args.Overwrite);
+                var zipTransferArgs = new Dev2CRUDOperationTO(args.Overwrite);
 
                 result = resultOk;
 
-                if(IsNotFTPTypePath(src))
+                if (src.RequiresLocalTmpStorage())
+                {
+                    if (dst.Put(s2, dst.IOPath, zipTransferArgs, null) < 0)
+                    {
+                        result = resultBad;
+                    }
+                }
+                else
                 {
                     var fileInfo = new FileInfo(src.IOPath.Path);
-                    if(fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))
+                    if (fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))
                     {
-                        if(dst.Put(s2, dst.IOPath, zipTransferArgs, fileInfo.Directory) < 0)
+                        if (dst.Put(s2, dst.IOPath, zipTransferArgs, fileInfo.Directory) < 0)
                         {
                             result = resultBad;
                         }
                     }
                     else
                     {
-                        if(dst.Put(s2, dst.IOPath, zipTransferArgs, null) < 0)
+                        if (dst.Put(s2, dst.IOPath, zipTransferArgs, null) < 0)
                         {
                             result = resultBad;
                         }
-                    }
-                }
-                else
-                {
-                    if(dst.Put(s2, dst.IOPath, zipTransferArgs, null) < 0)
-                    {
-                        result = resultBad;
                     }
                 }
 
                 // remove tmp directory and tmp zip
                 RemoveTmpFile(tmpZip);
             }
-
             return result;
         }
-
-        static bool IsNotFTPTypePath(IActivityIOOperationsEndPoint src)
-        {
-            return IsNotFTPTypePath(src.IOPath);
-        }
-
+        
         static bool IsNotFTPTypePath(IActivityIOPath src)
         {
             return !src.Path.StartsWith("ftp://") && !src.Path.StartsWith("ftps://") && !src.Path.StartsWith("sftp://");
@@ -682,11 +715,12 @@ namespace Dev2.PathOperations
             return ValidateUnzipSourceDestinationFileOperation(src, dst,args , () =>
                 {
                     ZipFile zip = null;
+                    string tempFile = "";
                    
                     if (src.RequiresLocalTmpStorage())
                     {
 
-                        string tmpZip = CreateTmpFile();
+                        var tmpZip = CreateTmpFile();
                         using (Stream s = src.Get(src.IOPath))
                         {
 
@@ -695,9 +729,8 @@ namespace Dev2.PathOperations
                             s.Dispose();
                         }
 
-                        var tempFile = tmpZip;
+                        tempFile = tmpZip;
                         zip = ZipFile.Read(tempFile);
-                        File.Delete(tempFile);
                     }
                     else
                     {
@@ -718,6 +751,11 @@ namespace Dev2.PathOperations
                         ExtractFile(args, zip, dst.IOPath.Path);
                     }
                     
+                    if (src.RequiresLocalTmpStorage())
+                    {
+                        File.Delete(tempFile);
+                    }
+
                     return resultOk;
                 });
         }
