@@ -824,11 +824,12 @@ namespace Dev2.PathOperations
                 {
                     if (tmpEndPoint.PathIs(p) == enPathType.Directory)
                     {
-                        zip.AddDirectory(p.Path, ".");
+                        string directoryPathInArchive = p.Path.Replace(tmpPath.Path, "");
+                        zip.AddDirectory(p.Path,directoryPathInArchive);
                     }
                     else
                     {
-                        zip.AddFile(p.Path, ".");
+                        zip.AddFile(p.Path,".");
                     }
                 }
                 zip.Save(tempFilename);
@@ -1006,9 +1007,12 @@ namespace Dev2.PathOperations
         {
             AddMissingFileDirectoryParts(src, dst);
 
-            if (dst.PathIs(dst.IOPath) != enPathType.File)
+
+            if (dst.PathIs(dst.IOPath) == enPathType.Directory)
             {
-                string sourcePart = src.IOPath.Path.Split(src.PathSeperator().ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Last();
+                string sourcePart =
+                    src.IOPath.Path.Split(src.PathSeperator().ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+                       .Last();
                 if (src.PathIs(src.IOPath) == enPathType.File)
                 {
                     var fileInfo = new FileInfo(sourcePart);
@@ -1018,6 +1022,14 @@ namespace Dev2.PathOperations
                 {
                     dst.IOPath.Path = dst.IOPath.Path + ".zip";
                 }
+            }
+            else
+            {
+                string sourcePart =
+                    dst.IOPath.Path.Split(dst.PathSeperator().ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+                       .Last();
+                var fileInfo = new FileInfo(sourcePart);
+                dst.IOPath.Path = dst.IOPath.Path.Replace(fileInfo.Extension, ".zip");
             }
 
             if (!args.Overwrite && dst.PathExist(dst.IOPath))
@@ -1037,7 +1049,7 @@ namespace Dev2.PathOperations
         }
 
         private void AddMissingFileDirectoryParts(IActivityIOOperationsEndPoint src,
-                                                       IActivityIOOperationsEndPoint dst)
+                                                  IActivityIOOperationsEndPoint dst)
         {
             if (src.IOPath.Path.Trim().Length == 0)
             {
@@ -1046,7 +1058,7 @@ namespace Dev2.PathOperations
 
 
             var sourceParts = src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
-                                                StringSplitOptions.RemoveEmptyEntries).ToList();
+                                                    StringSplitOptions.RemoveEmptyEntries).ToList();
 
             if (dst.IOPath.Path.Trim().Length == 0)
             {
@@ -1054,7 +1066,7 @@ namespace Dev2.PathOperations
             }
             else
             {
-                if (!Path.IsPathRooted(dst.IOPath.Path) && !dst.IOPath.Path.Contains("ftp") && !dst.IOPath.Path.StartsWith(@"\\"))
+                if (!Path.IsPathRooted(dst.IOPath.Path) && IsNotFTPTypePath(dst.IOPath) && IsUncFileTypePath(dst.IOPath))
                 {
                     string lastPart = sourceParts.Last();
                     dst.IOPath.Path =
@@ -1066,7 +1078,7 @@ namespace Dev2.PathOperations
 
 
             var destinationParts = dst.IOPath.Path.Split(dst.PathSeperator().ToCharArray(),
-                                                      StringSplitOptions.RemoveEmptyEntries).ToList();
+                                                         StringSplitOptions.RemoveEmptyEntries).ToList();
 
             while (destinationParts.Count > sourceParts.Count)
             {
@@ -1074,19 +1086,17 @@ namespace Dev2.PathOperations
             }
 
             if (destinationParts.OrderBy(i => i).SequenceEqual(
-                 sourceParts.OrderBy(i => i)))
+                sourceParts.OrderBy(i => i)))
             {
-                if (src.PathIs(src.IOPath) == enPathType.File)
+                if (dst.PathIs(dst.IOPath) == enPathType.Directory)
                 {
-                    throw new Exception("Source and destination file can not be the same");
+                    string[] strings = src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
+                                                             StringSplitOptions.RemoveEmptyEntries);
+                    string lastPart = strings.Last();
+                    dst.IOPath.Path = src.PathIs(src.IOPath) == enPathType.Directory
+                                          ? Path.Combine(dst.IOPath.Path, lastPart)
+                                          : dst.IOPath.Path.Replace(lastPart, "");
                 }
-
-                string[] strings = src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
-                                                         StringSplitOptions.RemoveEmptyEntries);
-                string lastPart = strings.Last();
-                dst.IOPath.Path = src.PathIs(src.IOPath) == enPathType.Directory
-                                      ? Path.Combine(dst.IOPath.Path, lastPart)
-                                      : dst.IOPath.Path.Replace(lastPart, "");
             }
             else
             {
@@ -1117,7 +1127,7 @@ namespace Dev2.PathOperations
             }
             else
             {
-                if (!Path.IsPathRooted(dst.IOPath.Path) && !dst.IOPath.Path.Contains("ftp") && !dst.IOPath.Path.StartsWith(@"\\"))
+                if (!Path.IsPathRooted(dst.IOPath.Path) && IsNotFTPTypePath(dst.IOPath) && IsUncFileTypePath(dst.IOPath))
                 {
                    
                     string lastPart = sourceParts.Last();
