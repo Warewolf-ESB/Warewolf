@@ -407,20 +407,26 @@ namespace Unlimited.Applications.DynamicServicesHost
 
         int ServerLoop(bool interactiveMode)
         {
-
-            if(interactiveMode)
+            try
             {
-                Write("Press <ENTER> to terminate service and/or web server if started");
-                if(EnvironmentVariables.IsServerOnline)
+                if(interactiveMode)
                 {
-                    Console.ReadLine();
-                }
-                else
-                {
-                    Write("Failed to start Server");
-                }
+                    Write("Press <ENTER> to terminate service and/or web server if started");
+                    if(EnvironmentVariables.IsServerOnline)
+                    {
+                        Console.ReadLine();
+                    }
+                    else
+                    {
+                        Write("Failed to start Server");
+                    }
 
-                return Stop(false, 0);
+                    return Stop(false, 0);
+                }
+            }
+            catch(Exception)
+            {
+                throw new Exception();
             }
 
             return 0;
