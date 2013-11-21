@@ -903,26 +903,6 @@ namespace Dev2.Integration.Tests.Activities
             RemoveCreatedDir(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/DIR_CREATE/" + newDir + "/", "", "", false);
 
             Assert.IsTrue(ok);
-
-        }
-
-        [TestMethod]
-        public void CreateDirectoryWithOverwriteTrue_NoUser_Expected_Error()
-        {
-            Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
-            string newDir = Guid.NewGuid() + "_test";
-
-            CreateDirectory(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/DIR_CREATE/" + newDir, "", "", false);
-
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/DIR_CREATE/" + newDir, "", "");
-            IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
-
-            bool ok = FTPPro.CreateDirectory(path, opTO);
-
-            // clean up
-            RemoveCreatedDir(ParserStrings.PathOperations_FTP_NoAuth + "PUT_DATA/DIR_CREATE/" + newDir + "/", "", "", false);
-
-            Assert.IsTrue(ok);
         }
 
         [TestMethod]
