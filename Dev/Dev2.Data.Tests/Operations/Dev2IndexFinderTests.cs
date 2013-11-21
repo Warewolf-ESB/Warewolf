@@ -2,12 +2,13 @@
 using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
 namespace Dev2.Data.Tests.Operations
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class Dev2IndexFinderTests
     {
         private IDev2IndexFinder _indexFinder;
