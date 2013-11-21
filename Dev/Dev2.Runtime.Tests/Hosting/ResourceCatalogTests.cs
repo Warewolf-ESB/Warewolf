@@ -1827,6 +1827,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             rc.CompileTheResourceAfterSave(workspaceID, resource, s, beforeAction);
             //------------Assert Results-------------------------
+ 
             xElement = XElement.Load(new StringReader(rc.GetResourceContents(depresource)));
             var errorElement = xElement.Element("ErrorMessages").Element("ErrorMessage");
             var isValid = xElement.AttributeSafe("IsValid");

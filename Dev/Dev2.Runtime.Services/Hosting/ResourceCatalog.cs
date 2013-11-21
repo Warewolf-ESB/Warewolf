@@ -687,6 +687,13 @@ namespace Dev2.Runtime.Hosting
                         {
                             lock(GetFileLock(resource.FilePath))
                             {
+
+                                lock(_cacheLock)
+                                {
+                                    var key = resource.FilePath;
+                                    _cachedResources[key] = fileContent;
+                                }
+
                                 File.WriteAllText(resource.FilePath, fileContent);
                             }
                             return true;
@@ -1088,7 +1095,7 @@ namespace Dev2.Runtime.Hosting
             resource.UpdateErrorsBasedOnXML(xml);
 
             resources.Add(resource);
-            
+
 
             #endregion
 
@@ -1226,6 +1233,12 @@ namespace Dev2.Runtime.Hosting
                 }
                 var contents = resourceElement.ToString(SaveOptions.DisableFormatting);
                 File.WriteAllText(resource.FilePath, contents, Encoding.UTF8);
+
+                lock(_cacheLock)
+                {
+                    var key = resource.FilePath;
+                    _cachedResources[key] = contents;
+                }
             }
             
         }
@@ -1624,10 +1637,22 @@ namespace Dev2.Runtime.Hosting
                 {
                     categoryElement.SetValue(newCategory);
                 }
+
                 lock(GetFileLock(resource.FilePath))
                 {
-                    File.WriteAllText(resource.FilePath, resourceElement.ToString(SaveOptions.DisableFormatting), Encoding.UTF8);
+                    // Big problems with properties like this. Cat rename needs to update cache
+                    // AND we need to update the resource model ;)
+
+                    var contents = resourceElement.ToString(SaveOptions.DisableFormatting);
+                    lock(_cacheLock)
+                    {
+                        var key = resource.FilePath;
+                        _cachedResources[key] = contents;
+                    }
+
+                    File.WriteAllText(resource.FilePath, contents, Encoding.UTF8);
                 }
+
                 resource.ResourcePath = newCategory;
             }
 
