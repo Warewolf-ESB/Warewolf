@@ -38,7 +38,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 ResourceID = resource.ResourceID,
                 ResourceName = resource.ResourceName,
                 ResourceType = resource.ResourceType,
-                Version = resource.Version,
                 IsValid = resource.IsValid,
                 DataList = datalist,
                 Errors = errors,

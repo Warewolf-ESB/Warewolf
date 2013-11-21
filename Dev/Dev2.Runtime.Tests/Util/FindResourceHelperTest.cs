@@ -101,7 +101,6 @@ namespace Dev2.Tests.Runtime.Util
             Assert.AreEqual("Category", result.ResourceCategory);
             Assert.AreEqual("Workflow", result.ResourceName);
             Assert.AreEqual(ResourceType.WorkflowService, result.ResourceType);
-            Assert.AreEqual(new Version(1,1,1), result.Version);
             Assert.AreEqual(errorString, resultErrorString);
         }
 

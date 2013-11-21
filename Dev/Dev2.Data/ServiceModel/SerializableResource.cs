@@ -18,11 +18,6 @@ namespace Dev2.Data.ServiceModel
         public Guid ResourceID { get; set; }
 
         /// <summary>
-        /// The version that uniquely identifies the resource.
-        /// </summary>
-        public Version Version { get; set; }
-
-        /// <summary>
         /// The display name of the resource.
         /// </summary>
         public string ResourceName { get; set; }

@@ -598,7 +598,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.ResourceType = resourceType;
                 resource.ID = id;
                 resource.ServerID = serverID;
-                resource.Version = data.Version;
                 resource.IsValid = data.IsValid;
                 resource.DataList = data.DataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote,"'");
                 resource.ResourceName = data.ResourceName;
