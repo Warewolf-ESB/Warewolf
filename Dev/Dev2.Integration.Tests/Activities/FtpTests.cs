@@ -758,7 +758,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Execute Test---------------------------
             var folderList = FTPPro.ListFoldersInDirectory(path);
             //------------Assert Results-------------------------
-            Assert.AreEqual(8,folderList.Count);            
+            Assert.IsTrue(folderList.Count > 10, "Only found " + folderList.Count + " directories on valid sFTP server");            
         }
         
         [TestMethod]
