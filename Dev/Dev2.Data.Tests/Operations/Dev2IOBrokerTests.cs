@@ -1,17 +1,13 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
-using Dev2.Data.Enums;
+﻿using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unlimited.UnitTest.Framework.PathOperationTests;
 
 namespace Dev2.Data.Tests.Operations
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class Dev2IOBrokerTests
     {
         private IDev2IndexFinder _indexFinder;
