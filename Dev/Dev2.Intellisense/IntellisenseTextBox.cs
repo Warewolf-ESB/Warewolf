@@ -645,7 +645,7 @@ namespace Dev2.UI
         public IntellisenseTextBox()
         {
             var observable = Observable.FromEventPattern(this, "TextChanged")
-                               .Throttle(TimeSpan.FromMilliseconds(200), Scheduler.ThreadPool)                               
+                               .Throttle(TimeSpan.FromMilliseconds(200), Scheduler.ThreadPool)
                                .ObserveOn(SynchronizationContext.Current);
 
             observable.Subscribe(pattern => TheTextHasChanged());
@@ -741,6 +741,12 @@ namespace Dev2.UI
                 _possibleCaretPositionOnPopup = CaretIndex;
             }
         }
+
+        #region Overrides of TextBoxBase
+
+
+
+        #endregion
 
         protected virtual void TheTextHasChanged()
         {
