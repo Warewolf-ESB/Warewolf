@@ -120,7 +120,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AbstractController.cs" />
-    <Compile Include="Controllers\WebController.cs" />
     <Compile Include="Handlers\WebGetRequestHandler.cs" />
     <Compile Include="Handlers\WebsiteResourceHandler.cs" />
     <Compile Include="Handlers\WebsiteServiceHandler.cs" />
@@ -150,7 +149,7 @@
     <Compile Include="WebServerRequest.cs" />
     <Compile Include="WebServerResponse.cs" />
     <Compile Include="WebServerStartup.cs" />
-    <Compile Include="Controllers\WebsiteController.cs" />
+    <Compile Include="Controllers\WebServerController.cs" />
     <Compile Include="Handlers\AbstractWebRequestHandler.cs" />
     <Compile Include="WebServer.cs" />
   </ItemGroup>

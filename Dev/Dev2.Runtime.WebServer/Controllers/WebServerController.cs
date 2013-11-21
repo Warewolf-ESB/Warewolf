@@ -9,10 +9,9 @@ using Dev2.Runtime.WebServer.Handlers;
 namespace Dev2.Runtime.WebServer.Controllers
 {
     [Authorize]
-    [RoutePrefix("{website}")]
-    public class WebsiteController : AbstractController
+    public class WebServerController : AbstractController
     {
-        [Route("{type}/{file}")]
+        [Route("{website}/{type}/{file}")]
         public HttpResponseMessage Get(string website, string type, string file)
         {
             var requestVariables = new NameValueCollection
@@ -24,7 +23,7 @@ namespace Dev2.Runtime.WebServer.Controllers
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
         }
 
-        [Route("{path}/{type}/{*file}")]
+        [Route("{website}/{path}/{type}/{*file}")]
         public HttpResponseMessage Get(string website, string path, string type, string file)
         {
             var requestVariables = new NameValueCollection
@@ -36,7 +35,7 @@ namespace Dev2.Runtime.WebServer.Controllers
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
         }
 
-        [Route("views/{*file}")]
+        [Route("{website}/views/{*file}")]
         public HttpResponseMessage Get(string website, string file)
         {
             var requestVariables = new NameValueCollection
@@ -48,9 +47,9 @@ namespace Dev2.Runtime.WebServer.Controllers
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
         }
 
-        [HttpPost]
-        [Route("{path}/Service/{name}/{action}")]
-        public void Post(string website, string path, string name, string action)
+        [Route("{website}/{path}/Service/{name}/{action}")]
+        [AcceptVerbs("POST")]
+        public void InvokeService(string website, string path, string name, string action)
         {
             var requestVariables = new NameValueCollection
             {
@@ -61,6 +60,36 @@ namespace Dev2.Runtime.WebServer.Controllers
             };
 
             ProcessRequest<WebsiteServiceHandler>(requestVariables);
+        }
+
+        [Route("services/{name}")]
+        [AcceptVerbs("GET", "POST")]
+        public HttpResponseMessage Execute(string name)
+        {
+            var requestVariables = new NameValueCollection
+            {
+                { "servicename", name }
+            };
+
+            return Request.Method == HttpMethod.Post
+                ? ProcessRequest<WebPostRequestHandler>(requestVariables)
+                : ProcessRequest<WebGetRequestHandler>(requestVariables);
+        }
+
+        [Route("services/{name}/instances/{instanceid}/bookmarks/{bookmark}")]
+        [AcceptVerbs("GET", "POST")]
+        public HttpResponseMessage Bookmark(string name, string instanceid, string bookmark)
+        {
+            var requestVariables = new NameValueCollection
+            {
+                { "servicename", name }, 
+                { "instanceid", instanceid },
+                { "bookmark", bookmark }
+            };
+
+            return Request.Method == HttpMethod.Post
+                ? ProcessRequest<WebPostRequestHandler>(requestVariables)
+                : ProcessRequest<WebGetRequestHandler>(requestVariables);
         }
     }
 }
