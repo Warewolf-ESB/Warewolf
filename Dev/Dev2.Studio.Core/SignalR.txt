@@ -5,3 +5,4 @@
 
 Install-Package Microsoft.AspNet.SignalR.Client
 
+3. Repeat 2 for the project to Dev2.Studio
