@@ -1,20 +1,19 @@
 using System.Collections.Specialized;
 using System.Net.Http;
 using Dev2.Runtime.WebServer.Responses;
-using Unlimited.Applications.WebServer;
 
-namespace Dev2.Runtime.WebServer.Controllers
+namespace Dev2.Runtime.WebServer
 {
-    public class WebControllerContext : ICommunicationContext
+    public class WebServerContext : ICommunicationContext
     {
         readonly HttpRequestMessage _request;
 
-        public WebControllerContext(HttpRequestMessage request, NameValueCollection requestPaths)
+        public WebServerContext(HttpRequestMessage request, NameValueCollection requestPaths)
         {
             _request = request;
             ResponseMessage = request.CreateResponse();
-            Request = new WebControllerRequest(request, requestPaths);
-            Response = new WebControllerResponse(ResponseMessage);
+            Request = new WebServerRequest(request, requestPaths);
+            Response = new WebServerResponse(ResponseMessage);
         }
 
         public HttpResponseMessage ResponseMessage { get; private set; }

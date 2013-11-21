@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Net;
 using System.IO;
+using System.Net;
+using System.Text;
 using HttpFramework;
-using HttpFramework.Sessions;
 
-namespace Unlimited.Applications.WebServer
+namespace Dev2.Runtime.WebServer
 {
     public interface ICommunicationResponse
     {

@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using Dev2.Runtime.WebServer.Controllers;
-using Unlimited.Applications.WebServer;
 
 namespace Dev2.Runtime.WebServer.Responses
 {
@@ -56,7 +55,7 @@ namespace Dev2.Runtime.WebServer.Responses
             }
         }
 
-        public override void Write(WebControllerContext context)
+        public override void Write(WebServerContext context)
         {
             var stream = new HttpFileStream(_file, _chunkSize);
             context.ResponseMessage.Content = stream.CreatePushStreamContent(_contentType);

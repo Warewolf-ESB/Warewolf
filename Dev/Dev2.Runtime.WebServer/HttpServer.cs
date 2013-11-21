@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
-using Dev2;
 using Dev2.Common;
-using Dev2.Runtime.WebServer;
 using HttpFramework;
 using HttpFramework.Sessions;
 
-namespace Unlimited.Applications.WebServer
+namespace Dev2.Runtime.WebServer
 {
     public sealed class HttpServer : IDisposable
     {

@@ -3,15 +3,14 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net.Http;
 using System.Text;
-using Unlimited.Applications.WebServer;
 
-namespace Dev2.Runtime.WebServer.Controllers
+namespace Dev2.Runtime.WebServer
 {
-    public class WebControllerRequest : ICommunicationRequest
+    public class WebServerRequest : ICommunicationRequest
     {
         readonly HttpRequestMessage _request;
 
-        public WebControllerRequest(HttpRequestMessage request, NameValueCollection boundVariables)
+        public WebServerRequest(HttpRequestMessage request, NameValueCollection boundVariables)
         {
             VerifyArgument.IsNotNull("request", request);
             VerifyArgument.IsNotNull("boundVariables", boundVariables);

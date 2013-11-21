@@ -2,13 +2,12 @@
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using Unlimited.Applications.WebServer;
 
-namespace Dev2.Runtime.WebServer.Controllers
+namespace Dev2.Runtime.WebServer
 {
-    public class WebControllerResponse : ICommunicationResponse
+    public class WebServerResponse : ICommunicationResponse
     {
-        public WebControllerResponse(HttpResponseMessage response)
+        public WebServerResponse(HttpResponseMessage response)
         {
             Response = response;
         }

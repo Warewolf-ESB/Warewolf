@@ -1,5 +1,4 @@
 ﻿using Dev2.Runtime.WebServer.Controllers;
-using Unlimited.Applications.WebServer;
 
 namespace Dev2.Runtime.WebServer.Responses
 {
@@ -9,6 +8,6 @@ namespace Dev2.Runtime.WebServer.Responses
 
         public abstract void Write(ICommunicationContext context);
 
-        public abstract void Write(WebControllerContext context);
+        public abstract void Write(WebServerContext context);
     }
 }

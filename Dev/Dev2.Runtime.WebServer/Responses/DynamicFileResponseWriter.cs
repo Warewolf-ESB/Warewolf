@@ -1,7 +1,6 @@
 using System.IO;
 using System.Text;
 using Dev2.Runtime.WebServer.Controllers;
-using Unlimited.Applications.WebServer;
 
 namespace Dev2.Runtime.WebServer.Responses
 {
@@ -30,7 +29,7 @@ namespace Dev2.Runtime.WebServer.Responses
             context.Response.ContentLength = buffer.Length;
         }
 
-        public override void Write(WebControllerContext context)
+        public override void Write(WebServerContext context)
         {
             var content = GetContent();
             var stream = new HttpTextStream(content);

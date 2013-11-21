@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -12,181 +11,24 @@ using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices;
-using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Server.DataList.Translators;
 using Dev2.Web;
 using Dev2.Workspaces;
 using DEV2.MultiPartFormPasser;
-using Unlimited.Applications.WebServer;
 using Unlimited.Framework;
 
-namespace Dev2.Runtime.WebServer
+namespace Dev2.Runtime.WebServer.Handlers
 {
-    public class WebRequestHandler
+    public abstract class AbstractWebRequestHandler : IRequestHandler
     {
-        readonly List<DataListFormat> _publicFormats = new DataListTranslatorFactory().FetchAllFormats().Where(c => c.ContentType != "").ToList();
-        readonly ServiceInvoker _serviceInvoker = new ServiceInvoker();
-
+        protected readonly List<DataListFormat> PublicFormats = new DataListTranslatorFactory().FetchAllFormats().Where(c => c.ContentType != "").ToList();
         string _location;
         public string Location { get { return _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)); } }
 
-        public void Get(ICommunicationContext ctx)
-        {
-            var postDataListID = GetDataListID(ctx);
-            if(postDataListID != null)
-            {
-                Post(ctx);
-                return;
-            }
+        public abstract void ProcessRequest(ICommunicationContext ctx);
 
-            var serviceName = GetServiceName(ctx);
-            var workspaceID = GetWorkspaceID(ctx);
-
-            dynamic d = new UnlimitedObject();
-            d.Service = serviceName;
-
-            d.WebServerUrl = ctx.Request.Uri.ToString();
-            d.Dev2WebServer = String.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority);
-
-            var data = GetPostData(ctx, Guid.Empty.ToString());
-
-            if(!String.IsNullOrEmpty(data))
-            {
-                d.PostData = data;
-                d.Add(new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(data));
-            }
-
-            ResponseWriter responseWriter = CreateForm(d, serviceName, workspaceID, ctx.FetchHeaders(), _publicFormats);
-            ctx.Send(responseWriter);
-        }
-
-        public void Post(ICommunicationContext ctx)
-        {
-            var serviceName = GetServiceName(ctx);
-            var instanceId = GetInstanceID(ctx);
-            var bookmark = GetBookmark(ctx);
-            var postDataListID = GetDataListID(ctx);
-            var workspaceID = GetWorkspaceID(ctx);
-
-            UnlimitedObject formData = null;
-
-            dynamic d = new UnlimitedObject();
-
-            var xml = GetPostData(ctx, postDataListID);
-
-            if(!String.IsNullOrEmpty(xml))
-            {
-                formData = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(xml);
-            }
-
-            d.Service = serviceName;
-            d.InstanceId = instanceId;
-            d.Bookmark = bookmark;
-            d.WebServerUrl = ctx.Request.Uri.ToString();
-            d.Dev2WebServer = String.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority);
-            if(formData != null)
-            {
-                d.AddResponse(formData);
-            }
-
-            ResponseWriter responseWriter = CreateForm(d, serviceName, workspaceID, ctx.FetchHeaders(), _publicFormats);
-            ctx.Send(responseWriter);
-        }
-
-        public void InvokeService(ICommunicationContext ctx)
-        {
-            var methodName = GetAction(ctx);
-
-            // Read post data which is expected to be JSON
-            string args;
-            using(var reader = new StreamReader(ctx.Request.InputStream, ctx.Request.ContentEncoding))
-            {
-                args = reader.ReadToEnd();
-            }
-
-            var className = ctx.Request.BoundVariables["name"];
-            var dataListID = GetDataListID(ctx);
-            var workspaceID = GetWorkspaceID(ctx);
-            dynamic result;
-            try
-            {
-                Guid workspaceGuid;
-                Guid.TryParse(workspaceID, out workspaceGuid);
-
-                Guid dataListGuid;
-                Guid.TryParse(dataListID, out dataListGuid);
-
-                //
-                // NOTE: result.ToString() MUST return JSON
-                //
-                result = _serviceInvoker.Invoke(className, methodName, args, workspaceGuid, dataListGuid);
-            }
-            catch(Exception ex)
-            {
-                result = new ValidationResult
-                {
-                    ErrorMessage = ex.Message
-                };
-            }
-            ctx.Send(new StringResponseWriter(result.ToString(), "application/json"));
-        }
-
-        public void GetWebResource(ICommunicationContext ctx)
-        {
-            var uriString = ctx.Request.Uri.OriginalString;
-
-
-            if(uriString.IndexOf("wwwroot", StringComparison.InvariantCultureIgnoreCase) < 0)
-            {
-                // http://127.0.0.1:1234/services/"/themes/system/js/json2.js"
-
-                Get(ctx);
-                return;
-            }
-
-            var website = ctx.Request.BoundVariables["website"];
-            var path = ctx.Request.BoundVariables["path"];
-            var extension = Path.GetExtension(uriString);
-
-            if(string.IsNullOrEmpty(extension))
-            {
-                //
-                // REST request e.g. http://localhost:1234/wwwroot/sources/server
-                //
-                const string ContentToken = "getParameterByName(\"content\")";
-
-                var layoutFilePath = string.Format("{0}\\webs\\{1}\\layout.htm", Location, website);
-                var contentPath = string.Format("\"/{0}/views/{1}.htm\"", website, path);
-
-                ctx.Send(new DynamicFileResponseWriter(layoutFilePath, ContentToken, contentPath));
-                return;
-            }
-
-            // Should get url's with the following signatures
-            //
-            // http://localhost:1234/wwwroot/sources/Scripts/jquery-1.7.1.js
-            // http://localhost:1234/wwwroot/sources/Content/Site.css
-            // http://localhost:1234/wwwroot/sources/images/error.png
-            // http://localhost:1234/wwwroot/sources/Views/Dialogs/SaveDialog.htm
-            // http://localhost:1234/wwwroot/views/sources/server.htm
-            //
-            // We support only 1 level below the Views folder 
-            // If path is a string without a backslash then we are processing the following request
-            //       http://localhost:1234/wwwroot/views/sources/server.htm
-            // If path is a string with a backslash then we are processing the following request
-            //       http://localhost:1234/wwwroot/sources/Views/Dialogs/SaveDialog.htm
-            //
-            if(!string.IsNullOrEmpty(path) && path.IndexOf('/') == -1)
-            {
-                uriString = uriString.Replace(path, "");
-            }
-            var result = GetFileFromPath(new Uri(uriString));
-
-            ctx.Send(result);
-        }
-
-        static ResponseWriter CreateForm(dynamic d, string serviceName, string workspaceID, NameValueCollection headers, List<DataListFormat> publicFormats)
+        protected static ResponseWriter CreateForm(dynamic d, string serviceName, string workspaceID, NameValueCollection headers, List<DataListFormat> publicFormats)
         {
             // properly setup xml extraction ;)
             string payload = String.Empty;
@@ -284,7 +126,7 @@ namespace Dev2.Runtime.WebServer
 
             // Fetch return type ;)
             var formatter = publicFormats.FirstOrDefault(c => c.PublicFormatName == dataObject.ReturnType)
-                ?? publicFormats.FirstOrDefault(c => c.PublicFormatName == EmitionTypes.XML);
+                            ?? publicFormats.FirstOrDefault(c => c.PublicFormatName == EmitionTypes.XML);
 
             // force it to XML if need be ;)
 
@@ -365,7 +207,7 @@ namespace Dev2.Runtime.WebServer
 
         }
 
-        static string GetPostData(ICommunicationContext ctx, string postDataListID)
+        protected static string GetPostData(ICommunicationContext ctx, string postDataListID)
         {
             var formData = new UnlimitedObject();
 
@@ -525,109 +367,35 @@ namespace Dev2.Runtime.WebServer
             return html;
         }
 
-        static string GetServiceName(ICommunicationContext ctx)
+        protected static string GetServiceName(ICommunicationContext ctx)
         {
             var serviceName = ctx.Request.BoundVariables["servicename"];
             return serviceName;
         }
 
-        static string GetWorkspaceID(ICommunicationContext ctx)
+        protected static string GetWorkspaceID(ICommunicationContext ctx)
         {
             return ctx.Request.QueryString["wid"] ?? ctx.Request.BoundVariables["clientid"];
         }
 
-        static string GetDataListID(ICommunicationContext ctx)
+        protected static string GetDataListID(ICommunicationContext ctx)
         {
             return ctx.Request.QueryString[GlobalConstants.DLID];
         }
 
-        static string GetBookmark(ICommunicationContext ctx)
+        protected static string GetBookmark(ICommunicationContext ctx)
         {
             return ctx.Request.BoundVariables["bookmark"];
         }
 
-        static string GetInstanceID(ICommunicationContext ctx)
+        protected static string GetInstanceID(ICommunicationContext ctx)
         {
             return ctx.Request.BoundVariables["instanceid"];
         }
 
-        static string GetAction(ICommunicationContext ctx)
+        protected static string GetAction(ICommunicationContext ctx)
         {
             return ctx.Request.BoundVariables["action"];
-        }
-
-        ResponseWriter GetFileFromPath(Uri uri)
-        {
-            var filePath = string.Format("{0}\\Webs{1}\\{2}", Location,
-                Path.GetDirectoryName(uri.LocalPath),
-                Path.GetFileName(uri.LocalPath));
-            return GetFileFromPath(filePath);
-        }
-
-        static ResponseWriter GetFileFromPath(string filePath)
-        {
-            var supportedFileExtensions = ConfigurationManager.AppSettings["SupportedFileExtensions"];
-            var extension = Path.GetExtension(filePath);
-            var ext = string.IsNullOrEmpty(extension) ? "" : extension;
-            var isSupportedExtensionList = supportedFileExtensions.Split(new[] { ',' })
-                .ToList()
-                .Where(supportedExtension => supportedExtension.Trim().Equals(ext, StringComparison.InvariantCultureIgnoreCase));
-
-            if(string.IsNullOrEmpty(supportedFileExtensions) || !isSupportedExtensionList.Any())
-            {
-                return new StatusResponseWriter(HttpStatusCode.NotFound);
-            }
-
-            if(File.Exists(filePath))
-            {
-                string contentType;
-                switch(ext.ToLower())
-                {
-                    case ".js":
-                        contentType = "text/javascript";
-                        break;
-
-                    case ".css":
-                        contentType = "text/css";
-                        break;
-
-                    case ".ico":
-                        contentType = "image/x-icon";
-                        break;
-
-                    case ".bm":
-                    case ".bmp":
-                        contentType = "image/bmp";
-                        break;
-
-                    case ".gif":
-                        contentType = "image/gif";
-                        break;
-
-                    case ".jpeg":
-                    case ".jpg":
-                        contentType = "image/jpg";
-                        break;
-
-                    case ".tiff":
-                        contentType = "image/tiff";
-                        break;
-
-                    case ".png":
-                        contentType = "image/png";
-                        break;
-
-                    case ".htm":
-                    case ".html":
-                        contentType = "text/html";
-                        break;
-
-                    default:
-                        return new StatusResponseWriter(HttpStatusCode.NotFound);
-                }
-                return new StaticFileResponseWriter(filePath, contentType);
-            }
-            return new StatusResponseWriter(HttpStatusCode.NotFound);
         }
     }
 }

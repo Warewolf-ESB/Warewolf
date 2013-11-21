@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Dev2
+namespace Dev2.Runtime.WebServer
 {
     /// <summary>
     /// TO for moving endpoints around between the lifecycle manager and the http server ;)

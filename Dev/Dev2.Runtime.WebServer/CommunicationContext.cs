@@ -4,7 +4,7 @@ using Dev2.Runtime.WebServer.Responses;
 using HttpFramework;
 using HttpFramework.Sessions;
 
-namespace Unlimited.Applications.WebServer
+namespace Dev2.Runtime.WebServer
 {
     public interface ICommunicationContext
     {

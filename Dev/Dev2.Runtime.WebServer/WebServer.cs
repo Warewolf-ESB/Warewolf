@@ -1,11 +1,14 @@
-﻿using Unlimited.Applications.WebServer;
+﻿using Dev2.Runtime.WebServer.Handlers;
 
 namespace Dev2.Runtime.WebServer
 {
     public sealed class WebServer : IFrameworkWebServer
     {
         readonly Dev2Endpoint[] _endPoints;
-        WebRequestHandler _webRequestHandler;
+        IRequestHandler _webGetRequestHandler;
+        IRequestHandler _webPostRequestHandler;
+        IRequestHandler _websiteResourceHandler;
+        IRequestHandler _websiteServiceHandler;
         HttpServer _server;
 
         public WebServer(Dev2Endpoint[] endPoints)
@@ -15,7 +18,11 @@ namespace Dev2.Runtime.WebServer
 
         public void Start()
         {
-            _webRequestHandler = new WebRequestHandler();
+            _webGetRequestHandler = new WebGetRequestHandler();
+            _webPostRequestHandler = new WebPostRequestHandler();
+            _websiteResourceHandler = new WebsiteResourceHandler();
+            _websiteServiceHandler = new WebsiteServiceHandler();
+
             _server = new HttpServer(_endPoints);
             MapContextToDirectoryStructure();
         }
@@ -24,27 +31,30 @@ namespace Dev2.Runtime.WebServer
         {
             _server.Dispose();
             _server = null;
-            _webRequestHandler = null;
+            _webGetRequestHandler = null;
+            _webPostRequestHandler = null;
+            _websiteResourceHandler = null;
+            _websiteServiceHandler = null;
         }
 
         void MapContextToDirectoryStructure()
         {
-            _server.AddHandler("GET", "/services/{servicename}", _webRequestHandler.Get);
-            _server.AddHandler("POST", "/services/{servicename}?wid={clientid}", _webRequestHandler.Post);
-            _server.AddHandler("POST", "/services/{servicename}", _webRequestHandler.Post);
-            _server.AddHandler("POST", "/services/{servicename}/instances/{instanceid}/bookmarks/{bookmark}", _webRequestHandler.Post);
-            _server.AddHandler("GET", "/services/{servicename}/instances/{instanceid}/bookmarks/{bookmark}", _webRequestHandler.Post);
+            _server.AddHandler("GET", "/services/{servicename}", _webGetRequestHandler.ProcessRequest);
+            _server.AddHandler("POST", "/services/{servicename}?wid={clientid}", _webPostRequestHandler.ProcessRequest);
+            _server.AddHandler("POST", "/services/{servicename}", _webPostRequestHandler.ProcessRequest);
+            _server.AddHandler("POST", "/services/{servicename}/instances/{instanceid}/bookmarks/{bookmark}", _webPostRequestHandler.ProcessRequest);
+            _server.AddHandler("GET", "/services/{servicename}/instances/{instanceid}/bookmarks/{bookmark}", _webPostRequestHandler.ProcessRequest);
 
             //
             // TWR: New website handlers - get processed in order
             //
-            _server.AddHandler("GET", "/{website}/{path}/scripts/*", _webRequestHandler.GetWebResource);
-            _server.AddHandler("GET", "/{website}/{path}/content/*", _webRequestHandler.GetWebResource);
-            _server.AddHandler("GET", "/{website}/{path}/images/*", _webRequestHandler.GetWebResource);
-            _server.AddHandler("GET", "/{website}/{path}/views/*", _webRequestHandler.GetWebResource);
-            _server.AddHandler("GET", "/{website}/{*path}", _webRequestHandler.GetWebResource);
+            _server.AddHandler("GET", "/{website}/{path}/scripts/*", _websiteResourceHandler.ProcessRequest);
+            _server.AddHandler("GET", "/{website}/{path}/content/*", _websiteResourceHandler.ProcessRequest);
+            _server.AddHandler("GET", "/{website}/{path}/images/*", _websiteResourceHandler.ProcessRequest);
+            _server.AddHandler("GET", "/{website}/{path}/views/*", _websiteResourceHandler.ProcessRequest);
+            _server.AddHandler("GET", "/{website}/{*path}", _websiteResourceHandler.ProcessRequest);
 
-            _server.AddHandler("POST", "/{website}/{path}/service/{name}/{action}", _webRequestHandler.InvokeService);
+            _server.AddHandler("POST", "/{website}/{path}/service/{name}/{action}", _websiteServiceHandler.ProcessRequest);
         }
     }
 }
