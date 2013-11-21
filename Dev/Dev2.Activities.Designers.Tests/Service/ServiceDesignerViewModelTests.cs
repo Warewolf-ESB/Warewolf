@@ -2,7 +2,6 @@
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using Caliburn.Micro;
@@ -33,6 +32,53 @@ namespace Dev2.Activities.Designers.Tests.Service
     {
         #region CTOR
 
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServiceDesignerViewModel_Constructor")]
+        public void ServiceDesignerViewModel_Constructor_ErrorMemoDataIsNull_NoNullXmlException()
+        {
+            //------------Setup for test--------------------------
+            const string ExpectedName = "TestServiceName";
+
+            var resourceID = Guid.NewGuid();
+
+            var errors = new List<IErrorInfo>();
+            errors.Add(new ErrorInfo()
+                {
+                    FixData = null,
+                    FixType = FixType.None,
+                    ErrorType = ErrorType.None,
+                    InstanceID = Guid.NewGuid(),
+                    Message = "Message Data"
+                });
+
+            var rootModel = new Mock<IContextualResourceModel>();
+            rootModel.Setup(m => m.Errors.Count).Returns(0);
+            rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
+
+            var activity = new DsfActivity();
+            activity.ResourceID = new InArgument<Guid>(resourceID);
+            activity.EnvironmentID = new InArgument<Guid>(Guid.Empty);
+            activity.UniqueID = Guid.NewGuid().ToString();
+            activity.SimulationMode = SimulationMode.OnDemand;
+            activity.ServiceName = ExpectedName;
+
+            var modelItem = CreateModelItem(activity);
+
+            var displayName = modelItem.GetProperty<string>("DisplayName");
+            Assert.IsTrue(displayName.Contains("Dsf"));
+
+            //------------Execute Test---------------------------
+            new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
+
+            //------------Assert Results-------------------------
+            
+            // No exception it passed ;)
+        }
+
+
+        
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServiceDesignerViewModel_Constructor")]
@@ -505,6 +551,53 @@ namespace Dev2.Activities.Designers.Tests.Service
         #endregion
 
         #region Fix Errors
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServiceDesignerViewModel_FixErrorsCommand")]
+        public void ServiceDesignerViewModel_FixErrorsCommand_ErrorMemoDataIsNull_NoNullXmlException()
+        {
+            //------------Setup for test--------------------------
+            const string ExpectedName = "TestServiceName";
+
+            var resourceID = Guid.NewGuid();
+
+            var errors = new List<IErrorInfo>();
+            errors.Add(new ErrorInfo()
+            {
+                FixData = null,
+                FixType = FixType.ReloadMapping,
+                ErrorType = ErrorType.Critical,
+                InstanceID = Guid.NewGuid(),
+                Message = "Message Data"
+            });
+
+            var rootModel = new Mock<IContextualResourceModel>();
+            rootModel.Setup(m => m.Errors.Count).Returns(0);
+            rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
+
+            var activity = new DsfActivity();
+            activity.ResourceID = new InArgument<Guid>(resourceID);
+            activity.EnvironmentID = new InArgument<Guid>(Guid.Empty);
+            activity.UniqueID = Guid.NewGuid().ToString();
+            activity.SimulationMode = SimulationMode.OnDemand;
+            activity.ServiceName = ExpectedName;
+
+            var modelItem = CreateModelItem(activity);
+
+            var displayName = modelItem.GetProperty<string>("DisplayName");
+            Assert.IsTrue(displayName.Contains("Dsf"));
+
+            //------------Execute Test---------------------------
+            var model = new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
+            model.FixErrorsCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+
+            // No exception, all is good ;)
+           
+        }
+
 
         [TestMethod]
         [TestCategory("ServiceDesignerViewModel_FixErrors")]

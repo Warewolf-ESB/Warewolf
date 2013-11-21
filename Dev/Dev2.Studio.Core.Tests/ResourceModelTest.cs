@@ -88,7 +88,6 @@ namespace Dev2.Core.Tests
             resourceModel.ID = id;
             resourceModel.ResourceName = resourceName;
             resourceModel.Tags = tags;
-            resourceModel.WorkflowXaml = "new def";
             resourceModel.WorkflowXaml = "new xaml";
             //------------Execute Test---------------------------
             var updateResourceModel = new ResourceModel(environmentModel.Object);

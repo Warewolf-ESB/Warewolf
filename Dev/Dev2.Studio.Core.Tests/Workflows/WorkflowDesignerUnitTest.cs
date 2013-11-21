@@ -10,7 +10,6 @@ using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Foreach;
@@ -1122,6 +1121,108 @@ namespace Dev2.Core.Tests.Workflows
         #endregion
 
         #region InitializeDesigner
+
+        // - start
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("WorkflowDesigner_Initialize")]
+        public void WorkflowDesigner_Initialize_WhenWorkflowXamlNull_ExpectWorkflowXamlFetch()
+        {
+            
+            //------------Setup for test--------------------------
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+
+            var wh = new Mock<IWorkflowHelper>();
+            wh.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() => new ActivityBuilder { Implementation = new DynamicActivity() }).Verifiable();
+            wh.Setup(h => h.EnsureImplementation(It.IsAny<ModelService>())).Verifiable();
+            wh.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Verifiable();
+
+            //------------Execute Test---------------------------
+            var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh.Object);
+
+            var attr = new Dictionary<Type, Type>();
+
+            wfd.InitializeDesigner(attr);
+
+            //------------Assert Results-------------------------
+            wh.Verify(h => h.CreateWorkflow(It.IsAny<string>()));
+            wh.Verify(h => h.EnsureImplementation(It.IsAny<ModelService>()));
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("WorkflowDesigner_Initialize")]
+        public void WorkflowDesigner_Initialize_WhenWorkflowXamlValid_ExpectWorkflowXamlFetch()
+        {
+            //------------Setup for test--------------------------
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var con = new Mock<IEnvironmentConnection>();
+
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("resource def");
+
+            con.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("resource def");
+
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+
+            var wh = new WorkflowHelper();
+
+            //------------Execute Test---------------------------
+            var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("resource def", wfd.Designer.Text);
+            // error state due to malformed designer text fetched ;)
+            Assert.IsTrue(wfd.Designer.IsInErrorState()); 
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("WorkflowDesigner_Initialize")]
+        public void WorkflowDesigner_Initialize_WhenWorkflowXamlNullAndFetchFails_ExpectNewWorkflow()
+        {
+
+            //------------Setup for test--------------------------
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var con = new Mock<IEnvironmentConnection>();
+
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Empty);
+
+            con.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Empty);
+
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+
+            var wh = new WorkflowHelper();
+
+            //------------Execute Test---------------------------
+            var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh);
+
+            //------------Assert Results-------------------------
+            Assert.IsNull(wfd.Designer.Text);
+            // new valid workflow XAML ;)
+            Assert.IsFalse(wfd.Designer.IsInErrorState()); 
+        }
+
+        // - end
 
         // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
         [TestMethod]
@@ -2243,7 +2344,7 @@ namespace Dev2.Core.Tests.Workflows
             //----------------------- Setup -----------------------//
             var states = new List<DebugState> { new DebugState { DisplayName = "SelectionChangedTest1", ID = Guid.NewGuid() } };
             if(selectionType == ActivitySelectionType.Add || selectionType == ActivitySelectionType.Remove)
-        {
+            {
                 states.Add(new DebugState { DisplayName = "SelectionChangedTest2", ID = Guid.NewGuid() });
             }
 

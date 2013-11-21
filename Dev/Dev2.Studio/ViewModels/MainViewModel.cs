@@ -1154,7 +1154,7 @@ namespace Dev2.Studio.ViewModels
                             resource.OnResourceSaved += model => WorkspaceItemRepository.Instance.UpdateWorkspaceItemIsWorkflowSaved(model);
                             
                             // We need to load the correct version of the service ;)
-                            var resourceDef = ResourceRepository.FetchResourceDefinition(environment, environment.Connection.WorkspaceID, resource.ID);
+                            var resourceDef = environment.ResourceRepository.FetchResourceDefinition(environment, environment.Connection.WorkspaceID, resource.ID);
                             resource.WorkflowXaml = resourceDef;
 
                             AddWorkSurfaceContext(resource);

@@ -56,7 +56,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
         #region Additional result attributes
         //Use TestInitialize to run code before running each result 
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
              Setup();
@@ -416,25 +416,26 @@ namespace BusinessDesignStudio.Unit.Tests
         /// Create resource with human Interface service type
         /// </summary>
         [TestMethod]
-        [Ignore] // Not sure how to test this given we do not fetch XAML?!
         public void UpdateResourcesExpectsWorkspacesLoadedBypassCache()
         {
             //Arrange
             Setup();
+
             new Mock<IResourceModel>().Setup(c => c.ResourceType).Returns(ResourceType.HumanInterfaceProcess);
 
             var conn = SetupConnection();
 
-            var resourceObj = BuildResourceObjectFromGuids(new[] {_resourceGuid, new Guid()});
+            var resourceObj = BuildResourceObjectFromGuids(new[] {_resourceGuid});
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resourceObj);
 
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
             //Act
+            var prevID = _resourceModel.Object.ID;
             _repo.Save(_resourceModel.Object);
             _repo.Load();
             //Assert
-            var resource = _repo.All().First();
+            var resource = _repo.FindSingle(c=>c.ID == prevID);
             Assert.IsTrue(resource.WorkflowXaml.Equals("OriginalXaml"));
 
             var workspaceItemMock = new Mock<IWorkspaceItem>();
@@ -442,8 +443,8 @@ namespace BusinessDesignStudio.Unit.Tests
             workspaceItemMock.Setup(s => s.WorkspaceID).Returns(_workspaceID);
 
             _repo.UpdateWorkspace(new List<IWorkspaceItem> { workspaceItemMock.Object });
-            resource = _repo.All().First();
-            Assert.IsTrue(resource.WorkflowXaml.Equals("ChangedXaml"));
+            resource = _repo.FindSingle(c => c.ID == prevID);
+            Assert.IsNull(resource.WorkflowXaml);
         }
 
         /// <summary>
@@ -857,6 +858,53 @@ namespace BusinessDesignStudio.Unit.Tests
 
         #endregion
 
+        #region FetchResourceDefinition
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ResourceRepository_FetchResourceDefinition")]
+        public void ResourceRepository_FetchResourceDefinition_WhenDefinitionToFetch_ExpectValidXAML()
+        {
+            //------------Setup for test--------------------------
+            Guid modelID = new Guid();
+            Mock<IWizardEngine> wizard = new Mock<IWizardEngine>();
+            Mock<IFrameworkSecurityContext> security = new Mock<IFrameworkSecurityContext>();
+            Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            env.Setup(e => e.Connection).Returns(con.Object);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("model definition");
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object, wizard.Object, security.Object).FetchResourceDefinition(env.Object, Guid.Empty, modelID);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("model definition", result);
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ResourceRepository_FetchResourceDefinition")]
+        public void ResourceRepository_FetchResourceDefinition_WhenNoDefinitionToFetch_ExpectNothing()
+        {
+            //------------Setup for test--------------------------
+            Guid modelID = new Guid();
+            Mock<IWizardEngine> wizard = new Mock<IWizardEngine>();
+            Mock<IFrameworkSecurityContext> security = new Mock<IFrameworkSecurityContext>();
+            Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            env.Setup(e => e.Connection).Returns(con.Object);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Empty);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object, wizard.Object, security.Object).FetchResourceDefinition(env.Object, Guid.Empty, modelID);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(string.Empty, result);
+        }
+
+        #endregion
+
         #region FindSourcesByType
 
         [TestMethod]
@@ -1131,7 +1179,7 @@ namespace BusinessDesignStudio.Unit.Tests
         #region HydrateResourceTest
 
         [TestMethod]
-        [Ignore] // Not sure how to test since we do not need connection string hydration ;)
+        [Ignore]
         public void HydrateResourceHydratesConnectionString()
         {
             //------------Setup for test--------------------------
@@ -1725,7 +1773,7 @@ namespace BusinessDesignStudio.Unit.Tests
                     IsValid = isValid,
                     ResourceID = id,
                     ResourceName = "TestWorkflowService",
-                    ResourceType = theType
+                    ResourceType = theType,
                 };
 
                 theResources.Add(sr);

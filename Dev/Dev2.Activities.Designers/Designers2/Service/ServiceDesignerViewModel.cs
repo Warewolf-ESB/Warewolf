@@ -611,7 +611,7 @@ namespace Dev2.Activities.Designers2.Service
         // PBI 6690 - 2013.07.04 - TWR : added
         void FixErrors()
         {
-            if(WorstDesignError.ErrorType == ErrorType.None)
+            if(WorstDesignError.ErrorType == ErrorType.None || WorstDesignError.FixData == null)
             {
                 return;
             }
@@ -620,49 +620,46 @@ namespace Dev2.Activities.Designers2.Service
             {
                 case FixType.ReloadMapping:
                     ShowLarge = true;
-                    if (WorstDesignError.FixData != null)
+
+                    var xml = XElement.Parse(WorstDesignError.FixData);
+                    var inputs = GetMapping(xml, true, DataMappingViewModel.Inputs);
+                    var outputs = GetMapping(xml, false, DataMappingViewModel.Outputs);
+
+                    DataMappingViewModel.Inputs.Clear();
+                    foreach (var input in inputs)
                     {
-                        var xml = XElement.Parse(WorstDesignError.FixData);
-                        var inputs = GetMapping(xml, true, DataMappingViewModel.Inputs);
-                        var outputs = GetMapping(xml, false, DataMappingViewModel.Outputs);
-
-                        DataMappingViewModel.Inputs.Clear();
-                        foreach (var input in inputs)
-                        {
-                            DataMappingViewModel.Inputs.Add(input);
-                        }
-
-                        DataMappingViewModel.Outputs.Clear();
-                        foreach (var output in outputs)
-                        {
-                            DataMappingViewModel.Outputs.Add(output);
-                        }
-                        SetInputs();
-                        SetOuputs();
-                        RemoveWorstError(WorstDesignError);
-                        UpdateWorstError();
+                        DataMappingViewModel.Inputs.Add(input);
                     }
+
+                    DataMappingViewModel.Outputs.Clear();
+                    foreach (var output in outputs)
+                    {
+                        DataMappingViewModel.Outputs.Add(output);
+                    }
+                    SetInputs();
+                    SetOuputs();
+                    RemoveWorstError(WorstDesignError);
+                    UpdateWorstError();
+                    
                 break;
 
                 case FixType.IsRequiredChanged:
                     ShowLarge = true;
-                    if (WorstDesignError.FixData != null)
-                    {
                     var inputOutputViewModels = DeserializeMappings(true, XElement.Parse(WorstDesignError.FixData));
                         foreach (var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
-                    {
-                            var actualViewModel =
-                                DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == inputOutputViewModel.Name);
-                            if (actualViewModel != null)
                         {
-                                if (actualViewModel.Value == string.Empty)
+                            var actualViewModel =
+                            DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == inputOutputViewModel.Name);
+                            if (actualViewModel != null)
                             {
-                                actualViewModel.RequiredMissing = true;
+                                if (actualViewModel.Value == string.Empty)
+                                {
+                                    actualViewModel.RequiredMissing = true;
+                                }
                             }
                         }
-                    }
-                    }
-                    break;
+                    
+                break;
             }
         }
 

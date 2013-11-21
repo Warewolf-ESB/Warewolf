@@ -10,13 +10,13 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Core.Tests.Activities
 {
     [TestClass]
-    public class WorkflowPropertyInterigatorTest
+    public class WorkerServicePropertyInterigatorTest
     {
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WorkflowPropertyInterigator_SetActivityProperties")]
-        public void WorkflowPropertyInterigator_SetActivityProperties_WhenNullXmlPayload_ExpectSomePropertiesSet()
+        [TestCategory("WorkerServicePropertyInterigator_SetActivityProperties")]
+        public void WorkerServicePropertyInterigator_SetActivityProperties_WhenNullXML_ExpectSomePropertiesSet()
         {
             //------------Setup for test--------------------------
             IEventAggregator evtAg = new EventAggregator();
@@ -25,61 +25,61 @@ namespace Dev2.Core.Tests.Activities
             var resource = new ResourceModel(env.Object, evtAg);
 
             var activity = new DsfActivity("FriendlyName", String.Empty, "ServiceName", string.Empty, string.Empty, string.Empty);
+            
             //------------Execute Test---------------------------
-
-            WorkflowPropertyInterigator.SetActivityProperties(resource, ref activity);
+            WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity);
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(activity.IsWorkflow);
-            Assert.AreEqual("Workflow", activity.Type.Expression.ToString());
-            Assert.AreEqual("My Env", activity.FriendlySourceName.Expression.ToString());
+            Assert.IsFalse(activity.IsWorkflow);
+            Assert.IsNull(activity.Type);
+            Assert.IsNull(activity.FriendlySourceName);
+            Assert.IsNull(activity.ActionName);
         }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WorkflowPropertyInterigator_SetActivityProperties")]
-        public void WorkflowPropertyInterigator_SetActivityProperties_WhenNotNullXmlPayload_ExpectAllPropertiesSet()
+        [TestCategory("WorkerServicePropertyInterigator_SetActivityProperties")]
+        public void WorkerServicePropertyInterigator_SetActivityProperties_WhenNotNullXML_ExpectPropertiesSet()
         {
             //------------Setup for test--------------------------
             IEventAggregator evtAg = new EventAggregator();
             Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.Name).Returns("My Env");
-            var resource = new ResourceModel(env.Object, evtAg) {WorkflowXaml = "<x><HelpLink>a:\\help.txt</HelpLink></x>"};
+            var resource = new ResourceModel(env.Object, evtAg) { WorkflowXaml = "<Action SourceName=\"TheSource\" Type=\"TheType\" SourceMethod=\"SourceMethod\"></Action>" };
 
             var activity = new DsfActivity("FriendlyName", String.Empty, "ServiceName", string.Empty, string.Empty, string.Empty);
-            //------------Execute Test---------------------------
 
-            WorkflowPropertyInterigator.SetActivityProperties(resource, ref activity);
+            //------------Execute Test---------------------------
+            WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity);
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(activity.IsWorkflow);
-            Assert.AreEqual("Workflow", activity.Type.Expression.ToString());
-            Assert.AreEqual("My Env", activity.FriendlySourceName.Expression.ToString());
-            Assert.AreEqual("a:\\help.txt", activity.HelpLink.Expression.ToString());
+            Assert.IsFalse(activity.IsWorkflow);
+            Assert.AreEqual("TheType",activity.Type.Expression.ToString());
+            Assert.AreEqual("TheSource", activity.FriendlySourceName.Expression.ToString());
+            Assert.AreEqual("SourceMethod", activity.ActionName.Expression.ToString());
         }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WorkflowPropertyInterigator_SetActivityProperties")]
-        public void WorkflowPropertyInterigator_SetActivityProperties_WhenNotNullXmlPayloadButNullProperty_ExpectAllPropertiesSet()
+        [TestCategory("WorkerServicePropertyInterigator_SetActivityProperties")]
+        public void WorkerServicePropertyInterigator_SetActivityProperties_WhenXMLWithOutAttributes_ExpectSomePropertiesSet()
         {
             //------------Setup for test--------------------------
             IEventAggregator evtAg = new EventAggregator();
             Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.Name).Returns("My Env");
-            var resource = new ResourceModel(env.Object, evtAg) { WorkflowXaml = "<x><HelpLink2>a:\\help.txt</HelpLink2></x>" };
+            var resource = new ResourceModel(env.Object, evtAg) { WorkflowXaml = "<Action></Action>" };
 
             var activity = new DsfActivity("FriendlyName", String.Empty, "ServiceName", string.Empty, string.Empty, string.Empty);
-            //------------Execute Test---------------------------
 
-            WorkflowPropertyInterigator.SetActivityProperties(resource, ref activity);
+            //------------Execute Test---------------------------
+            WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity);
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(activity.IsWorkflow);
-            Assert.AreEqual("Workflow", activity.Type.Expression.ToString());
-            Assert.AreEqual("My Env", activity.FriendlySourceName.Expression.ToString());
-            Assert.IsNull(activity.HelpLink);
+            Assert.IsFalse(activity.IsWorkflow);
+            Assert.IsNull(activity.Type);
+            Assert.IsNull(activity.FriendlySourceName);
+            Assert.IsNull(activity.ActionName);
         }
-
     }
 }

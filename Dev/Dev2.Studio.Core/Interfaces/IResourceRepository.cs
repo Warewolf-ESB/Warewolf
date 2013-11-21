@@ -32,5 +32,6 @@ namespace Dev2.Studio.Core.Interfaces
         string SaveToServer(IResourceModel instanceObj);
 
         void DeployResources(IEnvironmentModel targetEnviroment, IEnvironmentModel sourceEnviroment, IDeployDTO dto, IEventAggregator eventPublisher);
+        string FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceID, Guid resourceModelID);
     }
 }

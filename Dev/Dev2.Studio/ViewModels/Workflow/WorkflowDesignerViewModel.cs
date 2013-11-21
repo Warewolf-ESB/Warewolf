@@ -1291,22 +1291,14 @@ namespace Dev2.Studio.ViewModels.Workflow
             // if null, try fetching. It appears there is more than the two routes identified to populating xaml ;(
             if(string.IsNullOrEmpty(xaml))
             {
+                // we always want server at this point ;)
                 var workspace = GlobalConstants.ServerWorkspaceID;
-                if (EnvironmentRepository.Instance.ActiveEnvironment != null)
-                {
-                    if (EnvironmentRepository.Instance.ActiveEnvironment.Connection != null)
-                    {
-                        workspace = EnvironmentRepository.Instance.ActiveEnvironment.Connection.WorkspaceID;
-                    }
-                }
 
                 // log the trace for fetch ;)
                 Logger.TraceInfo(string.Format("Null Definition For {0} :: {1}. Fetching...", _resourceModel.ID, _resourceModel.ResourceName));
 
                 // In the case of null of empty try fetching again ;)
-                ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID);
-
-                xaml = _resourceModel.WorkflowXaml;
+                xaml = EnvironmentModel.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID);
             }
 
             // if we still cannot find it, create a new one ;)

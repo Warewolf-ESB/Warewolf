@@ -752,7 +752,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         /// <param name="workspaceID">The workspace unique identifier.</param>
         /// <param name="resourceModelID">The resource model unique identifier.</param>
         /// <returns></returns>
-        public static string FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceID, Guid resourceModelID)
+        public string FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceID, Guid resourceModelID)
         {
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = "FetchResourceDefinitionService";
@@ -791,11 +791,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         #region ExecuteCommand
 
-        private static dynamic ExecuteCommand(IEnvironmentModel targetEnvironment, UnlimitedObject dataObj, Guid workspaceID,
-                                              bool convertResultToUnlimitedObject = true)
+        private static dynamic ExecuteCommand(IEnvironmentModel targetEnvironment, UnlimitedObject dataObj, Guid workspaceID, bool convertResultToUnlimitedObject = true)
         {
-            var result = targetEnvironment.Connection.ExecuteCommand(dataObj.XmlString, workspaceID,
-                                                                     GlobalConstants.NullDataListID);
+            var result = targetEnvironment.Connection.ExecuteCommand(dataObj.XmlString, workspaceID,GlobalConstants.NullDataListID);
 
             if(result == null)
             {

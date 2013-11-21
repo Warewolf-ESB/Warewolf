@@ -147,6 +147,7 @@
   <ItemGroup>
     <Compile Include="Account\UserAccountProviderTests.cs" />
     <Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
+    <Compile Include="Activities\WorkerServicePropertyInterigatorTest.cs" />
     <Compile Include="Activities\WorkflowPropertyInterigatorTest.cs" />
     <Compile Include="AppResources\Browsers\BrowserHandlerTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserPopupControllerTests.cs" />
