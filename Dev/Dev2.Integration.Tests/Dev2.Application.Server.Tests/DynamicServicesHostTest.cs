@@ -33,10 +33,10 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
         [TestMethod]
         [TestCategory("WebURI, DB")]
-        public void TestDBNullLogicNullValue_Expected_ZZZ_10Times()
+        public void TestDBNullLogicNullValue_Expected_ZZZ_3Times()
         {
-            // ensure we get the same result 10 times ;)
-            for (int i = 0; i < 10; i++)
+            // ensure we get the same result 3 times ;)
+            for (int i = 0; i < 3; i++)
             {
                 string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=");
                 string result = TestHelper.PostDataToWebserver(postData);
