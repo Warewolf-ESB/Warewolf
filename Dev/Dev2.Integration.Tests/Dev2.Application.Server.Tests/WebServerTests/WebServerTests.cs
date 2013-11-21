@@ -282,7 +282,7 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {"),
                 new Tuple<string, string>("Switch/DragModel.js", @"function DragViewModel() {"),
             };
 
-            VerifyWebsiteRequests(requests, new[] { "Scripts", "services/Scripts", "sources/Scripts", "dialogs/Scripts" });
+            VerifyWebsiteRequests(requests, new[] { "services/Scripts", "sources/Scripts", "dialogs/Scripts" });
         }
 
         [TestMethod]
@@ -317,15 +317,16 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {"),
         [TestCategory("WebServer_WebsiteGet")]
         public void WebServer_WebsiteGet_Layout_FileContents()
         {
-            var requests = new List<Tuple<string, string>>
-            {
-                new Tuple<string, string>("layout.htm", @"<!DOCTYPE html>
+            const string Expected = @"<!DOCTYPE html>
 <html xmlns=""http://www.w3.org/1999/xhtml"">
 <head>
     <meta charset=""utf-8"" />
     <meta name=""viewport"" content=""width=device-width"" />
-    <title>Warewolf</title>"),
-                new Tuple<string, string>("favicon.ico", AssertNotNull)
+    <title>Warewolf</title>";
+            var requests = new List<Tuple<string, string>>
+            {
+                new Tuple<string, string>("services/webservice", Expected),
+                new Tuple<string, string>("sources/websource", Expected),
             };
 
             VerifyWebsiteRequests(requests, new[] { "" });

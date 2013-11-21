@@ -21,23 +21,30 @@ namespace Dev2.Integration.Tests.MEF.WebTester
 
         public void ScanSite(string url)
         {
-            request = HttpWebRequest.Create(url);
+            request = CreateRequest(url);
             MethodGet(url);
         }
-        
+
         public void ScanResponse(string url)
         {
-            request = HttpWebRequest.Create(url);
+            request = CreateRequest(url);
             MethodGetResponse();
         }
 
         public void ScanSite(string url, string postData)
         {
-            request = HttpWebRequest.Create(url);
+            request = CreateRequest(url);
             state = new RequestState(request);
 
             MethodPost(url, postData);
 
+        }
+
+        static WebRequest CreateRequest(string url)
+        {
+            var result = HttpWebRequest.Create(url);
+            result.Credentials = CredentialCache.DefaultCredentials;
+            return result;
         }
 
         public void MethodPost(string url, string postData)
