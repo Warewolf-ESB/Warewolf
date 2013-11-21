@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Dev2.Development.Languages.Scripting;
 using Dev2.Integration.Tests.Helpers;
 using IronPython.Runtime;
@@ -68,51 +69,5 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
             // CodedUI for rendering?
 
         }
-
-
-        // WHY ARE THESE TEST HERE!!!!!!!! ;)
-        [TestMethod]
-        public void CanInvokePythonScriptWithFunction()
-        {
-            var script = @"
-            def Add(x,y):
-                return x + y;
-            return Add(1,1);";
-
-            Dev2PythonContext dev2PythonContext = new Dev2PythonContext();
-            string val = dev2PythonContext.Execute(script);
-            
-            Assert.AreEqual("2", val, "Valid Python with nested function did not evaluate");
-           
-        }
-
-        [TestMethod]
-        public void CanInvokePythonScriptWithoutFunction()
-        {
-            var script = @"
-            return 1 + 1;";
-
-            Dev2PythonContext dev2PythonContext = new Dev2PythonContext();
-            string val = dev2PythonContext.Execute(script);
-
-            Assert.AreEqual("2", val, "Valid Python with nested function did not evaluate");
-
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(UnboundNameException))]
-        public void CanInvokePythonScriptWithDoggyScriptAndReturnSensableError()
-        {
-            var script = @"
-            return x;";
-
-            Dev2PythonContext dev2PythonContext = new Dev2PythonContext();
-
-            string val = dev2PythonContext.Execute(script);
-
-            Assert.Fail("the python world has issues!");
-
-        }
-
     }
 }   

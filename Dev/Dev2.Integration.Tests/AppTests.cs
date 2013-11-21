@@ -31,6 +31,9 @@ namespace Dev2.Integration.Tests
                 // Start a second studio, this should hit the logic that checks for a duplicate and exit
                 Process secondProcess = Process.Start(studioPath);
 
+                // Wait for Process to start, and stop at the check for a duplicate process
+                Thread.Sleep(7000);
+
                 // Gather actual
                 actual = secondProcess.WaitForExit(15000);
 
