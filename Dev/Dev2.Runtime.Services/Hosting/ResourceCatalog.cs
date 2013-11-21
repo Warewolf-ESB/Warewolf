@@ -1095,7 +1095,7 @@ namespace Dev2.Runtime.Hosting
             resource.UpdateErrorsBasedOnXML(xml);
 
             resources.Add(resource);
-
+            
 
             #endregion
 
@@ -1238,7 +1238,7 @@ namespace Dev2.Runtime.Hosting
                 {
                     var key = resource.FilePath;
                     _cachedResources[key] = contents;
-                }
+            }
             }
             
         }

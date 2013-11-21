@@ -2361,7 +2361,6 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(2, workflow.Count);
             Assert.AreEqual(resourceName, workflow[0].ResourceName);
             Assert.AreEqual("Bug6619", workflow[1].ResourceName);
-
         }
 
         [TestMethod]
