@@ -119,11 +119,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HttpContentStream.cs" />
     <Compile Include="CommunicationContext.cs" />
     <Compile Include="CommunicationContextCallback.cs" />
     <Compile Include="CommunicationRequest.cs" />
     <Compile Include="CommunicationResponse.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="HttpTextStream.cs" />
     <Compile Include="Hubs\EsbHub.cs" />
     <Compile Include="Hubs\ResourcesHub.cs" />
     <Compile Include="Hubs\Server.cs" />
@@ -131,16 +133,13 @@
     <Compile Include="Controllers\WebControllerContext.cs" />
     <Compile Include="Dev2Endpoint.cs" />
     <Compile Include="HttpServer.cs" />
-    <Compile Include="Responses\BinaryResponse.cs" />
-    <Compile Include="Responses\BufferedStringResponse.cs" />
-    <Compile Include="Responses\DynamicFileResponse.cs" />
-    <Compile Include="Responses\EmptyResponse.cs" />
-    <Compile Include="Responses\NotFoundResponse.cs" />
-    <Compile Include="Responses\StaticFileResponse.cs" />
-    <Compile Include="Responses\StringResponse.cs" />
-    <Compile Include="Responses\XmlResponse.cs" />
+    <Compile Include="HttpFileStream.cs" />
+    <Compile Include="Responses\DynamicFileResponseWriter.cs" />
+    <Compile Include="Responses\StatusResponseWriter.cs" />
+    <Compile Include="Responses\StaticFileResponseWriter.cs" />
+    <Compile Include="Responses\StringResponseWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Responses\Response.cs" />
+    <Compile Include="Responses\ResponseWriter.cs" />
     <Compile Include="Controllers\WebControllerRequest.cs" />
     <Compile Include="Controllers\WebControllerResponse.cs" />
     <Compile Include="WebServerStartup.cs" />

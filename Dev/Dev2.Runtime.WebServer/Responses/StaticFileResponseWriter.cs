@@ -1,27 +1,25 @@
 using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Text;
-using Dev2.Common;
+using Dev2.Runtime.WebServer.Controllers;
+using Unlimited.Applications.WebServer;
 
-namespace Unlimited.Applications.WebServer.Responses
+namespace Dev2.Runtime.WebServer.Responses
 {
-    public class BufferedStringResponse : CommunicationResponseWriter
+    public class StaticFileResponseWriter : ResponseWriter
     {
-        private string _contentType;
-        private string _data;
-        private int _chunkSize;
+        readonly string _contentType;
+        readonly string _file;
+        readonly int _chunkSize;
 
-        public BufferedStringResponse(string data, string mimeType, int chunkSize = 10240)
+        public StaticFileResponseWriter(string file, string mimeType, int chunkSize = 1024)
         {
-            _data = data;
+            _file = file;
             _contentType = mimeType;
             _chunkSize = chunkSize;
         }
 
         public override void Write(ICommunicationContext context)
         {
-            base.Write(context);
             context.Response.ContentType = _contentType;
             Stream outputStream = context.Response.OutputStream;
 
@@ -29,7 +27,7 @@ namespace Unlimited.Applications.WebServer.Responses
             {
                 long contentLength = 0;
 
-                using (Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(_data)))
+                using(Stream stream = File.Open(_file, FileMode.Open, FileAccess.Read, FileShare.Inheritable))
                 {
                     byte[] buffer = new byte[_chunkSize];
                     long length = contentLength = stream.Length;
@@ -37,13 +35,13 @@ namespace Unlimited.Applications.WebServer.Responses
 
                     int remainder = (int)(length - ((length / _chunkSize) * _chunkSize));
 
-                    for (start = 0L; start < length; start += _chunkSize)
+                    for(start = 0L; start < length; start += _chunkSize)
                     {
                         int amount = stream.Read(buffer, 0, _chunkSize);
                         outputStream.Write(buffer, 0, amount);
                     }
 
-                    if (remainder != 0)
+                    if(remainder != 0)
                     {
                         int amount = stream.Read(buffer, 0, remainder);
                         outputStream.Write(buffer, 0, amount);
@@ -52,11 +50,16 @@ namespace Unlimited.Applications.WebServer.Responses
 
                 context.Response.ContentLength = contentLength;
             }
-            catch (Exception ex)
+            catch(Exception)
             {
-                ServerLogger.LogError(ex);
                 context.Response.Status = (System.Net.HttpStatusCode)404;
             }
+        }
+
+        public override void Write(WebControllerContext context)
+        {
+            var stream = new HttpFileStream(_file, _chunkSize);
+            context.ResponseMessage.Content = stream.CreatePushStreamContent(_contentType);
         }
     }
 }

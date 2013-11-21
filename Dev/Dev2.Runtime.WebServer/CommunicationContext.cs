@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using Dev2.Runtime.WebServer.Responses;
 using HttpFramework;
 using HttpFramework.Sessions;
 
@@ -10,7 +11,7 @@ namespace Unlimited.Applications.WebServer
         ICommunicationRequest Request { get; }
         ICommunicationResponse Response { get; }
 
-        void Send(Responses.CommunicationResponseWriter response);
+        void Send(ResponseWriter response);
 
         NameValueCollection FetchHeaders();
     }
@@ -56,7 +57,7 @@ namespace Unlimited.Applications.WebServer
         }
 
         #region Send Handling
-        public void Send(Responses.CommunicationResponseWriter response)
+        public void Send(ResponseWriter response)
         {
             response.Write(this);
 

@@ -43,7 +43,7 @@ namespace Dev2.Runtime.WebServer.Controllers
 
         void InitializeContentType()
         {
-            ContentType = _request.Content.Headers.ContentType.MediaType;
+            ContentType = _request.Content.Headers.ContentType == null  ? null : _request.Content.Headers.ContentType.MediaType;
         }
 
         void InitializeQueryString()

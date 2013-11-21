@@ -5,14 +5,40 @@ using System.Web.Http;
 
 namespace Dev2.Runtime.WebServer.Controllers
 {
-    public abstract class WebController : ApiController
+    [RoutePrefix("{website}")]
+    public class WebController : ApiController
     {
-        public virtual HttpResponseMessage Get(string website, string path)
+        [Route("{type}/{file}")]
+        public HttpResponseMessage Get(string website, string type, string file)
+        {
+            var requestVariables = new NameValueCollection
+            {
+                { "website", website }, 
+                { "path", string.Format("{0}/{1}", type, file) }
+            };
+
+            return ProcessRequest(requestVariables);
+        }
+
+        [Route("{path}/{type}/{*file}")]
+        public HttpResponseMessage Get(string website, string path, string type, string file)
         {
             var requestVariables = new NameValueCollection
             {
                 { "website", website }, 
                 { "path", path }
+            };
+
+            return ProcessRequest(requestVariables);
+        }
+
+        [Route("views/{*file}")]
+        public virtual HttpResponseMessage Get(string website, string file)
+        {
+            var requestVariables = new NameValueCollection
+            {
+                { "website", website }, 
+                { "path", string.Format("views/{0}", file) }
             };
 
             return ProcessRequest(requestVariables);

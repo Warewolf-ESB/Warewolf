@@ -12,13 +12,13 @@ using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices;
-using DEV2.MultiPartFormPasser;
 using Dev2.Runtime.Diagnostics;
+using Dev2.Runtime.WebServer.Responses;
 using Dev2.Server.DataList.Translators;
 using Dev2.Web;
 using Dev2.Workspaces;
+using DEV2.MultiPartFormPasser;
 using Unlimited.Applications.WebServer;
-using Unlimited.Applications.WebServer.Responses;
 using Unlimited.Framework;
 
 namespace Dev2.Runtime.WebServer
@@ -57,7 +57,7 @@ namespace Dev2.Runtime.WebServer
                 d.Add(new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(data));
             }
 
-            CommunicationResponseWriter responseWriter = CreateForm(d, serviceName, workspaceID, ctx.FetchHeaders(), _publicFormats);
+            ResponseWriter responseWriter = CreateForm(d, serviceName, workspaceID, ctx.FetchHeaders(), _publicFormats);
             ctx.Send(responseWriter);
         }
 
@@ -90,7 +90,7 @@ namespace Dev2.Runtime.WebServer
                 d.AddResponse(formData);
             }
 
-            CommunicationResponseWriter responseWriter = CreateForm(d, serviceName, workspaceID, ctx.FetchHeaders(), _publicFormats);
+            ResponseWriter responseWriter = CreateForm(d, serviceName, workspaceID, ctx.FetchHeaders(), _publicFormats);
             ctx.Send(responseWriter);
         }
 
@@ -129,7 +129,7 @@ namespace Dev2.Runtime.WebServer
                     ErrorMessage = ex.Message
                 };
             }
-            ctx.Send(new StringCommunicationResponseWriter(result.ToString(), "application/json"));
+            ctx.Send(new StringResponseWriter(result.ToString(), "application/json"));
         }
 
         public void GetWebResource(ICommunicationContext ctx)
@@ -159,7 +159,7 @@ namespace Dev2.Runtime.WebServer
                 var layoutFilePath = string.Format("{0}\\webs\\{1}\\layout.htm", Location, website);
                 var contentPath = string.Format("\"/{0}/views/{1}.htm\"", website, path);
 
-                ctx.Send(new DynamicFileCommunicationResponseWriter(layoutFilePath, ContentToken, contentPath));
+                ctx.Send(new DynamicFileResponseWriter(layoutFilePath, ContentToken, contentPath));
                 return;
             }
 
@@ -186,7 +186,7 @@ namespace Dev2.Runtime.WebServer
             ctx.Send(result);
         }
 
-        static CommunicationResponseWriter CreateForm(dynamic d, string serviceName, string workspaceID, NameValueCollection headers, List<DataListFormat> publicFormats)
+        static ResponseWriter CreateForm(dynamic d, string serviceName, string workspaceID, NameValueCollection headers, List<DataListFormat> publicFormats)
         {
             // properly setup xml extraction ;)
             string payload = String.Empty;
@@ -338,7 +338,7 @@ namespace Dev2.Runtime.WebServer
                         string tmp = executePayload.Substring(start, (end - start));
                         string result = CleanupHtml(tmp);
                         const string DocType = @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">";
-                        return new StringCommunicationResponseWriter(String.Format("{0}\r\n{1}", DocType, result));
+                        return new StringResponseWriter(String.Format("{0}\r\n{1}", DocType, result), ResponseWriter.HtmlContentType);
                     }
                 }
             }
@@ -355,13 +355,13 @@ namespace Dev2.Runtime.WebServer
                     executePayload = CleanupHtml(executePayload.Substring(start, (end - start)));
                     if(!String.IsNullOrEmpty(executePayload))
                     {
-                        return new StringCommunicationResponseWriter(executePayload, "application/json");
+                        return new StringResponseWriter(executePayload, "application/json");
                     }
                 }
             }
 
             // else handle the format requested ;)
-            return new StringCommunicationResponseWriter(executePayload, formatter.ContentType);
+            return new StringResponseWriter(executePayload, formatter.ContentType);
 
         }
 
@@ -556,7 +556,7 @@ namespace Dev2.Runtime.WebServer
             return ctx.Request.BoundVariables["action"];
         }
 
-        CommunicationResponseWriter GetFileFromPath(Uri uri)
+        ResponseWriter GetFileFromPath(Uri uri)
         {
             var filePath = string.Format("{0}\\Webs{1}\\{2}", Location,
                 Path.GetDirectoryName(uri.LocalPath),
@@ -564,7 +564,7 @@ namespace Dev2.Runtime.WebServer
             return GetFileFromPath(filePath);
         }
 
-        static CommunicationResponseWriter GetFileFromPath(string filePath)
+        static ResponseWriter GetFileFromPath(string filePath)
         {
             var supportedFileExtensions = ConfigurationManager.AppSettings["SupportedFileExtensions"];
             var extension = Path.GetExtension(filePath);
@@ -575,7 +575,7 @@ namespace Dev2.Runtime.WebServer
 
             if(string.IsNullOrEmpty(supportedFileExtensions) || !isSupportedExtensionList.Any())
             {
-                return new NotFoundCommunicationResponseWriter();
+                return new StatusResponseWriter(HttpStatusCode.NotFound);
             }
 
             if(File.Exists(filePath))
@@ -623,15 +623,11 @@ namespace Dev2.Runtime.WebServer
                         break;
 
                     default:
-                        return new NotFoundCommunicationResponseWriter();
+                        return new StatusResponseWriter(HttpStatusCode.NotFound);
                 }
-
-                return new StaticFileCommunicationResponseWriter(filePath, contentType);
+                return new StaticFileResponseWriter(filePath, contentType);
             }
-
-
-            return new NotFoundCommunicationResponseWriter();
+            return new StatusResponseWriter(HttpStatusCode.NotFound);
         }
-
     }
 }

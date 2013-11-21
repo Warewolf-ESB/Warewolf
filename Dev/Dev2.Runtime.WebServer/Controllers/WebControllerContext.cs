@@ -1,8 +1,7 @@
 using System.Collections.Specialized;
-using System.Net;
 using System.Net.Http;
+using Dev2.Runtime.WebServer.Responses;
 using Unlimited.Applications.WebServer;
-using Unlimited.Applications.WebServer.Responses;
 
 namespace Dev2.Runtime.WebServer.Controllers
 {
@@ -13,7 +12,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         public WebControllerContext(HttpRequestMessage request, NameValueCollection requestPaths)
         {
             _request = request;
-            ResponseMessage = request.CreateResponse(HttpStatusCode.NotFound);
+            ResponseMessage = request.CreateResponse();
             Request = new WebControllerRequest(request, requestPaths);
             Response = new WebControllerResponse(ResponseMessage);
         }
@@ -23,7 +22,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         public ICommunicationRequest Request { get; private set; }
         public ICommunicationResponse Response { get; private set; }
 
-        public void Send(CommunicationResponseWriter response)
+        public void Send(ResponseWriter response)
         {
             response.Write(this);
         }

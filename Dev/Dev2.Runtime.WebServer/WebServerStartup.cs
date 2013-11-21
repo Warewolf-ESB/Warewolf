@@ -30,22 +30,12 @@ namespace Dev2.Runtime.WebServer
             //
 
             // Add SignalR routing...
-            var hubConfiguration = new HubConfiguration
-            {
-                EnableDetailedErrors = true,
-                EnableJSONP = true
-            };
-
-            // Remove the default route URL which clients 
-            // will use to connect to the Hub: "/signalr"
-            //app.MapSignalR("/services", new HubConfiguration());
+            var hubConfiguration = new HubConfiguration { EnableDetailedErrors = true, EnableJSONP = true };
             app.MapSignalR(hubConfiguration);
 
             // Add web server routing...
             var config = new HttpConfiguration();
-            config.Routes.MapHttpRoute("Services", "{website}/{controller}/{*path}", new { path = RouteParameter.Optional });
-            config.Routes.MapHttpRoute("Views", "{website}/{controller}/{*path}", new { path = RouteParameter.Optional });
-
+            config.MapHttpAttributeRoutes();
             app.UseWebApi(config);
         }
     }

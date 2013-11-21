@@ -7,7 +7,6 @@ using System.Net;
 using System.IO;
 using Dev2.Common;
 using HttpFramework;
-using Unlimited.Applications.WebServer.Responses;
 
 namespace Unlimited.Applications.WebServer
 {
