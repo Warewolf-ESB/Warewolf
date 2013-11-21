@@ -52,10 +52,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
             Mouse.Move(menuPt);
             Playback.Wait(300);
 
-            for (var i = 0; i < 9; i++)
+            for (var i = 0; i < 8; i++)
             {
                 Keyboard.SendKeys("{DOWN}");
             }
+
             SendKeys.SendWait("{ENTER}");
 
             //Wait for wizard
@@ -68,13 +69,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
             SendKeys.SendWait("{ENTER}");
             Playback.Wait(100);
             SendKeys.SendWait("{TAB}{TAB}{TAB}" + sourceName + "{TAB}{ENTER}");
+            Playback.Wait(1000);
 
             //Open Web Service Wizard
             getLocalServer = explorer.GetLocalServer();
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
             for (var i = 0; i < 5; i++)
             {
-                Playback.Wait(200);
                 SendKeys.SendWait("{DOWN}");
             }
 
@@ -90,7 +91,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
             SendKeys.SendWait("{ENTER}");
             Playback.Wait(5000);//wait for test
             SendKeys.SendWait("{TAB}{ENTER}");
-            Playback.Wait(2000);
+            Playback.Wait(1000);
             SendKeys.SendWait("{TAB}{TAB}{TAB}" + serviceName + "{TAB}{ENTER}");
             
         }

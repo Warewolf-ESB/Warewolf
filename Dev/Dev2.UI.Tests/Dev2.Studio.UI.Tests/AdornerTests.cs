@@ -653,65 +653,65 @@ namespace Dev2.Studio.UI.Tests
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
         {
 
-                const string resourceToUse = "Bug_10528";
-                const string innerResource = "Bug_10528_InnerWorkFlow";
+            const string resourceToUse = "Bug_10528";
+            const string innerResource = "Bug_10528_InnerWorkFlow";
 
-                // Open the Explorer
-                ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
+            // Open the Explorer
+            ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
 
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", resourceToUse);
-                UITestControl theTab = TabManagerUIMap.GetActiveTab();
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
-                UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, innerResource);
-                Mouse.Move(controlOnWorkflow, new Point(5, 5));
-                var mappingsBtn =
-                    WorkflowDesignerUIMap.Adorner_GetButton(theTab, innerResource, "Open Mapping") as WpfToggleButton;
+            UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, innerResource);
+            Mouse.Move(controlOnWorkflow, new Point(5, 5));
+            var mappingsBtn =
+                WorkflowDesignerUIMap.Adorner_GetButton(theTab, innerResource, "Open Mapping") as WpfToggleButton;
 
-                if (mappingsBtn == null)
+            if (mappingsBtn == null)
+            {
+                Assert.Fail("Could not find mapping button");
+            }
+
+            Mouse.Click(mappingsBtn);
+
+            UITestControlCollection controlCollection = controlOnWorkflow.GetChildren();
+            Point initialResizerPoint = new Point();
+            // Validate the assumption that the last child is the resizer
+            var resizeThumb = controlCollection[controlCollection.Count - 1];
+            if (resizeThumb.ControlType.ToString() == "Indicator")
+            {
+                if (resizeThumb.BoundingRectangle.X == -1)
                 {
-                    Assert.Fail("Could not find mapping button");
+                    Assert.Fail("Resize indicator is not visible");
                 }
 
-                Mouse.Click(mappingsBtn);
+                initialResizerPoint.X = resizeThumb.BoundingRectangle.X + 5;
+                initialResizerPoint.Y = resizeThumb.BoundingRectangle.Y + 5;
+            }
+            else
+            {
+                Assert.Fail("Cannot find resize indicator");
+            }
 
-                UITestControlCollection controlCollection = controlOnWorkflow.GetChildren();
-                Point initialResizerPoint = new Point();
-                // Validate the assumption that the last child is the resizer
-                var resizeThumb = controlCollection[controlCollection.Count - 1];
-                if (resizeThumb.ControlType.ToString() == "Indicator")
-                {
-                    if (resizeThumb.BoundingRectangle.X == -1)
-                    {
-                        Assert.Fail("Resize indicator is not visible");
-                    }
+            // Drag
+            Mouse.Move(new Point(resizeThumb.Left + 5, resizeThumb.Top + 5));
+            Mouse.StartDragging();
 
-                    initialResizerPoint.X = resizeThumb.BoundingRectangle.X + 5;
-                    initialResizerPoint.Y = resizeThumb.BoundingRectangle.Y + 5;
-                }
-                else
-                {
-                    Assert.Fail("Cannot find resize indicator");
-                }
+            // Y - 50 since it starts at the lowest point
+            Mouse.StopDragging(new Point(initialResizerPoint.X + 50, initialResizerPoint.Y - 50));
 
-                // Drag
-                Mouse.Move(new Point(resizeThumb.Left + 5, resizeThumb.Top + 5));
-                Mouse.StartDragging();
+            // Check position to see it dragged
+            Point newResizerPoint = new Point();
+            if (resizeThumb.ControlType.ToString() == "Indicator")
+            {
+                newResizerPoint.X = resizeThumb.BoundingRectangle.X + 5;
+                newResizerPoint.Y = resizeThumb.BoundingRectangle.Y + 5;
+            }
 
-                // Y - 50 since it starts at the lowest point
-                Mouse.StopDragging(new Point(initialResizerPoint.X + 50, initialResizerPoint.Y - 50));
-
-                // Check position to see it dragged
-                Point newResizerPoint = new Point();
-                if (resizeThumb.ControlType.ToString() == "Indicator")
-                {
-                    newResizerPoint.X = resizeThumb.BoundingRectangle.X + 5;
-                    newResizerPoint.Y = resizeThumb.BoundingRectangle.Y + 5;
-                }
-
-                if (!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y < initialResizerPoint.Y))
-                {
-                    Assert.Fail("The control was not resized properly.");
-                }
+            if (!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y < initialResizerPoint.Y))
+            {
+                Assert.Fail("The control was not resized properly.");
+            }
 
         }
 
@@ -735,16 +735,7 @@ namespace Dev2.Studio.UI.Tests
 
                 // Get a sample workflow
                 ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", resourceToUse, workflowPoint1);
-
-
-                // Scroll down (for if the screen resolution is low)
-                var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
-                if (scrollBar != null)
-                {
-                    Mouse.StartDragging(scrollBar);
-                    Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
-                }
+                ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", resourceToUse, workflowPoint1);
 
                 UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse);
                 Mouse.Click(controlOnWorkflow, new Point(5, 5));

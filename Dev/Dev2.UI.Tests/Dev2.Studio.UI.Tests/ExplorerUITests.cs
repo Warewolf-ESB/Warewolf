@@ -42,7 +42,6 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
             var items = ExplorerUIMap.GetServiceItems();
             var itemCount = items.Count;
-            Assert.IsTrue(itemCount > 1, "Cannot find any items in the explorer tree, cannot test explorer filter without any explorer items");
 
             ExplorerUIMap.EnterExplorerSearchText("Integration");
 

@@ -147,7 +147,6 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public void CloseAllTabs()
         {
-
             // fetch the darn thing once ;)
             var tabManager = GetManager();
 
@@ -155,11 +154,9 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             {
                 var tabs = tabManager.GetChildren();
 
-                var tabCnt = tabs.Count;
-
-                for (int i = (tabCnt - 1); i >= 0; i--)
+                foreach (var tab in tabs)
                 {
-                    CloseTab_Click_No(tabs[0]);
+                    CloseTab_Click_No(tab);
                 }
             }
         }
@@ -218,6 +215,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         /// <returns></returns>
         public bool WillTabHaveSaveDialog(UITestControl theTab)
         {
+            Playback.Wait(200);
             var tabNameControl = theTab.GetChildren().FirstOrDefault(c=>c.ClassName == "Uia.TextBlock");
 
             if (tabNameControl != null && tabNameControl.FriendlyName.EndsWith("*"))
@@ -242,11 +240,12 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         public UITestControl GetActiveTab()
         {
             Playback.Wait(500);
-            var idx = _tabManager.SelectedIndex;
+            var tabMgr = new UIUI_TabManager_AutoIDTabList1(StudioWindow);
+            var idx = tabMgr.SelectedIndex;
 
-            if (idx >= _tabManager.Tabs.Count)
+            if (idx >= tabMgr.Tabs.Count)
             {
-                Playback.Wait(500);
+                Playback.Wait(3000);
             }
 
             return _tabManager.Tabs[_tabManager.SelectedIndex];

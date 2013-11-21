@@ -12,7 +12,6 @@ namespace Dev2.Studio.UI.Tests
     ///     These are UI tests based on using a remote server
     /// </summary>
     [CodedUITest]
-    [Ignore]
     public class RemoteServerUiTests : UIMapBase
     {
         #region Fields
@@ -36,6 +35,7 @@ namespace Dev2.Studio.UI.Tests
             Playback.PlaybackSettings.ShouldSearchFailFast = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
             Playback.PlaybackSettings.MatchExactHierarchy = true;
+            Playback.PlaybackSettings.DelayBetweenActions = 1;
 
             // make the mouse quick ;)
             Mouse.MouseMoveSpeed = 10000;
@@ -102,7 +102,7 @@ namespace Dev2.Studio.UI.Tests
             const string TextToSearchWith = "Find Records";
             OpenWorkFlow(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
             OpenMenuItem("View in Browser");
-            Playback.Wait(3000);
+            Playback.Wait(5000);
             //assert error dialog not showing
             var child = DockManagerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
             if (child != null)
@@ -401,6 +401,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClickServerInServerDDL(serverName);
             ExplorerUIMap.EnterExplorerSearchText(textToSearchWith);
             ExplorerUIMap.DoubleClickOpenProject(serverName, serviceType, foldername, textToSearchWith);
+            Playback.Wait(1500);
         }
 
         #endregion

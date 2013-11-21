@@ -60,7 +60,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         {
             for(int i = 0; i < n; i++)
             {
-                Playback.Wait(700);
+                Playback.Wait(50);
                 SendKeys.SendWait("{TAB}");
             }
         }

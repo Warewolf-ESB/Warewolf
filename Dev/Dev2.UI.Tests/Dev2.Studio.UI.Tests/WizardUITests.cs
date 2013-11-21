@@ -118,6 +118,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Assert.IsTrue(result);
         }
 
+        /// <summary>
+        /// News the database service shortcut key expected database service opens.
+        /// </summary>
         [TestMethod]
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
@@ -156,16 +159,17 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [Owner("Travis Frisinger")]
         public void EmailSourceWizardCreateNewSourceExpectedSourceCreated()
         {
-            //Initialization
-            var sourceName = Guid.NewGuid().ToString().Substring(0, 5);
-            var name = "codeduitest" + sourceName;
+            Assert.Fail("External mail server issues!");
+            ////Initialization
+            //var sourceName = Guid.NewGuid().ToString().Substring(0, 5);
+            //var name = "codeduitest" + sourceName;
 
-            EmailSourceWizardUIMap.InitializeFullTestSource(name);
+            //EmailSourceWizardUIMap.InitializeFullTestSource(name);
 
-            //Assert
-            ExplorerUIMap.EnterExplorerSearchText(name);
+            ////Assert
+            //ExplorerUIMap.EnterExplorerSearchText(name);
 
-            Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", "Unassigned", name));
+            //Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", "Unassigned", name));
         }
 
         #endregion
@@ -316,8 +320,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             // Cancel Decision Wizard
             if(WizardsUIMap.TryWaitForWizard(3000))
             {
-                Playback.Wait(2000);
-
                 SendKeys.SendWait("{TAB}{TAB}{ENTER}");
                 Playback.Wait(100);
 

@@ -45,11 +45,10 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTS", "LargeFileTesting");
 
             RibbonUIMap.ClickRibbonMenuItem("Debug");
-            if(DebugUIMap.WaitForDebugWindow(5000))
-            {
-                SendKeys.SendWait("{F5}");
-                Playback.Wait(1000);
-            }
+            DebugUIMap.WaitForDebugWindow(5000);
+
+            DebugUIMap.ClickExecute();
+
 
             var status = OutputUIMap.GetStatusBarStatus();
             var spinning = OutputUIMap.IsSpinnerSpinning();

@@ -33,6 +33,7 @@ namespace Dev2.CodedUI.Tests
             Playback.PlaybackSettings.ShouldSearchFailFast = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
             Playback.PlaybackSettings.MatchExactHierarchy = true;
+            Playback.PlaybackSettings.DelayBetweenActions = 1;
 
             // make the mouse quick ;)
             Mouse.MouseMoveSpeed = 10000;
@@ -55,7 +56,7 @@ namespace Dev2.CodedUI.Tests
         public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
         {
             var preCount = TabManagerUIMap.GetTabCount();
-            SendKeys.SendWait("^w");
+            RibbonUIMap.CreateNewWorkflow();
             string activeTabName = TabManagerUIMap.GetActiveTabName();
             var postCount = TabManagerUIMap.GetTabCount();
             Assert.IsTrue(postCount == preCount + 1, "Tab quantity has not been increased");

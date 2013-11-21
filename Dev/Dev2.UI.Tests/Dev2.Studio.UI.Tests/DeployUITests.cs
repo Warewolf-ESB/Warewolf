@@ -19,6 +19,7 @@ namespace Dev2.Studio.UI.Tests
             Playback.PlaybackSettings.ShouldSearchFailFast = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
             Playback.PlaybackSettings.MatchExactHierarchy = true;
+            Playback.PlaybackSettings.DelayBetweenActions = 1;
 
             // make the mouse quick ;)
             Mouse.MouseMoveSpeed = 10000;

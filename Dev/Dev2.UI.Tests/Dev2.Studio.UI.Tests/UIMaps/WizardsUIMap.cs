@@ -16,10 +16,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Playback.Wait(1500);
         }
 
+
         public bool TryWaitForWizard(int timeOut)
         {
             Playback.Wait(1500);
-            return true;
+            var tryGetDialog = StudioWindow.GetChildren()[0].GetChildren()[0];
+            var type = tryGetDialog.GetType();
+            return type == typeof(WpfImage);
         }
     }
 }

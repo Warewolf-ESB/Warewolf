@@ -53,27 +53,27 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
             WizardsUIMap.WaitForWizard();
 
             SendKeys.SendWait("{TAB}");
-            Playback.Wait(500);
+            Playback.Wait(50);
             SendKeys.SendWait("smtp.afrihost.co.za{TAB}");
-            Playback.Wait(500);
+            Playback.Wait(50);
             SendKeys.SendWait("dev2test{TAB}");
-            Playback.Wait(500);
+            Playback.Wait(50);
             SendKeys.SendWait("Password{TAB}{TAB}");
-            Playback.Wait(500);
+            Playback.Wait(50);
             SendKeys.SendWait("{TAB}{TAB}");
-            Playback.Wait(500);
+            Playback.Wait(50);
             SendKeys.SendWait("{ENTER}");
             SendKeys.SendWait("^AThorLocal@norsegods.com{TAB}");
             SendKeys.SendWait("dev2warewolf@gmail.com{TAB}");
-            Playback.Wait(500);
+            Playback.Wait(50);
             SendKeys.SendWait("{ENTER}");
             Playback.Wait(30000);//wait for test
             ClickSave();
 
             SendKeys.SendWait("{TAB}{TAB}{TAB}");
-            Playback.Wait(500);
+            Playback.Wait(50);
             SendKeys.SendWait(name);
-            Playback.Wait(500);
+            Playback.Wait(50);
             SendKeys.SendWait("{TAB}{ENTER}");
         }
 

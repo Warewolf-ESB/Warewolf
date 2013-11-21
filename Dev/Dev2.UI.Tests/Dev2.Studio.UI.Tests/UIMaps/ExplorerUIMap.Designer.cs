@@ -225,8 +225,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             ClearExplorerSearchText();
 
             Mouse.Click(_explorerSearch, new Point(12, 8));
-            Thread.Sleep(50);
+            Playback.Wait(100);
             SendKeys.SendWait(textToSearchWith);
+            Playback.Wait(500);
         }
 
         #region filter box mappings

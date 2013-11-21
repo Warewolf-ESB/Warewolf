@@ -85,7 +85,7 @@
         /// </summary>
         public bool WaitForDebugWindow(int timeOut)
         {
-            Playback.Wait(1500);
+            Playback.Wait(2500);
             return true;
         }
     }
