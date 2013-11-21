@@ -31,8 +31,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var result = services.Test(service.ToString(), Guid.Empty, Guid.Empty);
 
             // BUG 9626 - 2013.06.11 - TWR: RecordsetListHelper.ToRecordsetList returns correct number of recordsets now
-            Assert.AreEqual(1, result.Recordsets.Count);
+            Assert.AreEqual(2, result.Recordsets.Count);
             Assert.AreEqual("", result.Recordsets[0].Name);
+            Assert.AreEqual("string_CurrentWeather", result.Recordsets[1].Name);
         }
 
         #region CTOR
