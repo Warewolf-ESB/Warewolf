@@ -55,7 +55,7 @@ namespace Dev2.PathOperations
         /// <param name="args">The args.</param>
         /// <param name="createToFile">if set to <c>true</c> [create to file].</param>
         /// <returns></returns>
-        string CreateEndPoint(IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args, bool createToFile);
+        string Create(IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args, bool createToFile);
 
         /// <summary>
         /// Copy a file from src to dst as per the value of args

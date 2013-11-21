@@ -44,7 +44,7 @@ namespace Dev2.Tests.Activities.Mocks
             throw new NotImplementedException();
         }
 
-        public string CreateEndPoint(IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args, bool createToFile)
+        public string Create(IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args, bool createToFile)
         {
             CreateToFile = createToFile;
             Destination = dst;

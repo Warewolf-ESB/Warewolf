@@ -80,7 +80,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                                                 IsNotCertVerifiable);
 
                     IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-                    string result = broker.CreateEndPoint(dstEndPoint, opTO, true);
+                    string result = broker.Create(dstEndPoint, opTO, true);
                     outputs.Add(DataListFactory.CreateOutputTO(Result, result));
                 }
                 catch (Exception e)

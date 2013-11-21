@@ -1113,7 +1113,7 @@ namespace Dev2.Integration.Tests.Activities
         #region Failing tests for Unzip
 
         [TestMethod]
-        [Owner("Massimo Guerrera")]
+        [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Unzip")]
         public void Dev2ActivityIOBroker_Unzip_WithOverwriteTrueAndFileExists_ReturnFailed()
         {
@@ -1150,7 +1150,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
         [TestMethod]
-        [Owner("Massimo Guerrera")]
+        [Owner("Tshepo Guerrera")]
         [TestCategory("Dev2ActivityIOBroker_Unzip")]
         [ExpectedException(typeof(Exception))]
         public void Dev2ActivityIOBroker_Unzip_WithWrongDesintationUserName_ReturnException()
