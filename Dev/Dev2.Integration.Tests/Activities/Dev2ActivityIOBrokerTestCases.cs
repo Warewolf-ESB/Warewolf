@@ -7,6 +7,7 @@ using Unlimited.UnitTest.Framework.PathOperationTests;
 namespace Dev2.Integration.Tests.Activities
 {
     [TestClass]
+    [Ignore]//Ashley: until Tshepo is done with PBI 10795
     public class Dev2ActivityIOBrokerTestCases
     {
         private string _zipFile = "";
