@@ -3,12 +3,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
-using Dev2.Runtime.Hosting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ResourceTypeConverterTests
     {
         #region ToResourceTypes
