@@ -6,14 +6,15 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices.Test;
 using Dev2.Server.Datalist;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Data.Tests.BinaryDataList
 {
     /// <summary>
     /// Summary description for ServerDataListCompilerTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ServerDataListCompilerTest
     {
         private readonly IServerDataListCompiler _sdlc = DataListFactory.CreateServerDataListCompiler();
