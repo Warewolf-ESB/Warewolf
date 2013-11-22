@@ -45,7 +45,7 @@ namespace Dev2.Studio.UI.Tests
 
             ExplorerUIMap.EnterExplorerSearchText("Integration");
 
-            Playback.Wait(2000);
+            Playback.Wait(5000);
 
             items = ExplorerUIMap.GetServiceItems();
             int allResourcesAfterSearch = items.Count;

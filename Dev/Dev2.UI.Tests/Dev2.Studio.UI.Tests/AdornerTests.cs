@@ -731,7 +731,7 @@ namespace Dev2.Studio.UI.Tests
 
                 // Get a point underneath the start button for the workflow
                 Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X,
-                                                 theStartButton.BoundingRectangle.Y + 100);
+                                                 theStartButton.BoundingRectangle.Y + 200);
 
                 // Get a sample workflow
                 ExplorerUIMap.EnterExplorerSearchText(resourceToUse);

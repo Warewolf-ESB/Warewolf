@@ -482,6 +482,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName,overrideDblClickBehavior);
             Mouse.StartDragging(theControl);
             Mouse.StopDragging(p);
+            Playback.Wait(100);
         }
 
         /// <summary>

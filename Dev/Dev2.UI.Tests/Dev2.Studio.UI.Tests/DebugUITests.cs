@@ -89,7 +89,7 @@ namespace Dev2.Studio.UI.Tests
                     PopupDialogUIMap.WaitForDialog();
 
                     var getInput = DebugUIMap.GetRow(0).Cells[1].GetChildren()[0] as WpfEdit;
-                    Assert.AreEqual("1", getInput.Text,"After executing " + i + " times the debug input dialog did not persist");
+                    Assert.AreEqual("1", getInput.Text, "After executing " + i + " times the debug input dialog did not persist");
 
                     getInput = DebugUIMap.GetRow(1).Cells[1].GetChildren()[0] as WpfEdit;
                     Assert.AreEqual("2", getInput.Text, "After executing " + i + " times the debug input dialog did not persist");

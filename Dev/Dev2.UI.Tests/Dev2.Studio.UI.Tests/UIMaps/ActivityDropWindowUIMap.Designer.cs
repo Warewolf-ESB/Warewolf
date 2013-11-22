@@ -165,6 +165,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses
                     var firstFolder = treeChild.GetChildren()[6];
                     if (firstFolder.ControlType == "TreeItem")
                     {
+                        Mouse.Click(firstFolder, new Point(57,9));
+                        Playback.Wait(100);
                         Mouse.DoubleClick(firstFolder, new Point(57, 9));
                         return;
                     }
@@ -191,6 +193,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses
                         if(firstResource.ControlType == "TreeItem")
                         {
                             Mouse.DoubleClick(firstResource, new Point(73, 9));
+                            Playback.Wait(150);
                             return;
                         }
                     }

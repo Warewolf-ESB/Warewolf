@@ -148,6 +148,8 @@ namespace Dev2.Studio.UI.Tests
             var done = GetControlById("DoneButton", theTab);
             Mouse.Click(done, new Point(5, 5));
 
+            Playback.Wait(500);
+
             var batchErrorMessage = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Batch size must be a number");
             Mouse.Move(new Point(batchErrorMessage.GetChildren()[0].BoundingRectangle.X + 5, batchErrorMessage.GetChildren()[0].BoundingRectangle.Y + 5));
             Mouse.Click();

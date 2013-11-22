@@ -196,6 +196,7 @@ namespace Dev2.CodedUI.Tests
             //------------Setup for test--------------------------
             RibbonUIMap.CreateNewWorkflow();
             // Get some data
+            Playback.Wait(100);
             var tabName = TabManagerUIMap.GetActiveTabName();
             UITestControl theTab = TabManagerUIMap.FindTabByName(tabName);
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
@@ -207,6 +208,7 @@ namespace Dev2.CodedUI.Tests
             // Click away
             Mouse.Click(new Point(workflowPoint1.X + 50, workflowPoint1.Y + 50));
 
+            Playback.Wait(100);
             //------------Execute Test---------------------------
             var theUnsavedTab = TabManagerUIMap.FindTabByName(tabName + " *");
             //------------Assert Results-------------------------
@@ -499,7 +501,7 @@ namespace Dev2.CodedUI.Tests
 
             // Click stop, then make sure the Feedback window has appeared.
             FeedbackUIMap.ClickStartStopRecordingButton();
-            Playback.Wait(500);
+            Playback.Wait(1500);
             if (!FeedbackUIMap.DoesFeedbackWindowExist())
             {
                 Assert.Fail("The Feedback window did not appear after the recording has been stopped.");
