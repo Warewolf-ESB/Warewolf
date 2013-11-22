@@ -74,6 +74,7 @@ namespace QueueBuild
             if(!string.IsNullOrEmpty(changeSetID))
             {
                 req.ProcessParameters = UpdateAgentTag(changeSetID);
+                req.Reason = BuildReason.IndividualCI;
             }
             
             // is there a shelveset?
