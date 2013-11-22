@@ -1,11 +1,9 @@
 ﻿using Dev2.Communication;
-using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
 namespace Dev2.Runtime.WebServer.Hubs
 {
     [HubName("esb")]
-    [Authorize]
     public class EsbHub : ServerHub
     {
         public EsbHub()

@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using Dev2.Runtime.WebServer.Controllers;
 
 namespace Dev2.Runtime.WebServer.Responses
 {
@@ -20,6 +19,6 @@ namespace Dev2.Runtime.WebServer.Responses
         public override void Write(WebServerContext context)
         {
             context.ResponseMessage.StatusCode = _statusCode;
-        }        
+        }
     }
 }

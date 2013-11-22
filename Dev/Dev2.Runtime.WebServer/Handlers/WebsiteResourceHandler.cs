@@ -21,8 +21,8 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return;
             }
 
-            var website = ctx.Request.BoundVariables["website"];
-            var path = ctx.Request.BoundVariables["path"];
+            var website = GetWebsite(ctx);
+            var path = GetPath(ctx);
             var extension = Path.GetExtension(uriString);
 
             if(string.IsNullOrEmpty(extension))

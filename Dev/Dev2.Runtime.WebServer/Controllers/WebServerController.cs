@@ -1,7 +1,4 @@
-using System;
-using System.Activities.Expressions;
 using System.Collections.Specialized;
-using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Dev2.Runtime.WebServer.Handlers;
@@ -11,6 +8,7 @@ namespace Dev2.Runtime.WebServer.Controllers
     [Authorize]
     public class WebServerController : AbstractController
     {
+        [HttpGet]
         [Route("{website}/{type}/{file}")]
         public HttpResponseMessage Get(string website, string type, string file)
         {
@@ -23,6 +21,7 @@ namespace Dev2.Runtime.WebServer.Controllers
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
         }
 
+        [HttpGet]
         [Route("{website}/{path}/{type}/{*file}")]
         public HttpResponseMessage Get(string website, string path, string type, string file)
         {
@@ -35,6 +34,7 @@ namespace Dev2.Runtime.WebServer.Controllers
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
         }
 
+        [HttpGet]
         [Route("{website}/views/{*file}")]
         public HttpResponseMessage Get(string website, string file)
         {
@@ -47,23 +47,25 @@ namespace Dev2.Runtime.WebServer.Controllers
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
         }
 
-        [Route("{website}/{path}/Service/{name}/{action}")]
-        [AcceptVerbs("POST")]
-        public void InvokeService(string website, string path, string name, string action)
+        [HttpPost]
+        [Route("{website}/{path}/Service/{name}/{method}")]
+        public HttpResponseMessage InvokeService(string website, string path, string name, string method)
         {
+            // DO NOT replace {method} with {action} in route mapping --> {action} is a reserved placeholder!
             var requestVariables = new NameValueCollection
             {
                 { "website", website }, 
                 { "path", path },
                 { "name", name },
-                { "action", action },
+                { "action", method },
             };
 
-            ProcessRequest<WebsiteServiceHandler>(requestVariables);
+            return ProcessRequest<WebsiteServiceHandler>(requestVariables);
         }
 
+        [HttpGet]
+        [HttpPost]
         [Route("services/{name}")]
-        [AcceptVerbs("GET", "POST")]
         public HttpResponseMessage Execute(string name)
         {
             var requestVariables = new NameValueCollection
@@ -76,8 +78,9 @@ namespace Dev2.Runtime.WebServer.Controllers
                 : ProcessRequest<WebGetRequestHandler>(requestVariables);
         }
 
+        [HttpGet]
+        [HttpPost]
         [Route("services/{name}/instances/{instanceid}/bookmarks/{bookmark}")]
-        [AcceptVerbs("GET", "POST")]
         public HttpResponseMessage Bookmark(string name, string instanceid, string bookmark)
         {
             var requestVariables = new NameValueCollection

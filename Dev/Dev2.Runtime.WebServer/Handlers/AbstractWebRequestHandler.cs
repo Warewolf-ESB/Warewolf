@@ -393,7 +393,22 @@ namespace Dev2.Runtime.WebServer.Handlers
             return ctx.Request.BoundVariables["instanceid"];
         }
 
-        protected static string GetAction(ICommunicationContext ctx)
+        protected static string GetWebsite(ICommunicationContext ctx)
+        {
+            return ctx.Request.BoundVariables["website"];
+        }
+
+        protected static string GetPath(ICommunicationContext ctx)
+        {
+            return ctx.Request.BoundVariables["path"];
+        }
+
+        protected static string GetClassName(ICommunicationContext ctx)
+        {
+            return ctx.Request.BoundVariables["name"];
+        }
+
+        protected static string GetMethodName(ICommunicationContext ctx)
         {
             return ctx.Request.BoundVariables["action"];
         }

@@ -4,13 +4,11 @@ using System.Threading.Tasks;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Workspaces;
-using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
 namespace Dev2.Runtime.WebServer.Hubs
 {
     [HubName("resources")]
-    [Authorize]
     public class ResourcesHub : ServerHub
     {
         public void Send(string message)

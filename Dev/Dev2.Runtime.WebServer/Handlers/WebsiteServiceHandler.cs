@@ -11,8 +11,6 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         public override void ProcessRequest(ICommunicationContext ctx)
         {
-            var methodName = GetAction(ctx);
-
             // Read post data which is expected to be JSON
             string args;
             using(var reader = new StreamReader(ctx.Request.InputStream, ctx.Request.ContentEncoding))
@@ -20,7 +18,8 @@ namespace Dev2.Runtime.WebServer.Handlers
                 args = reader.ReadToEnd();
             }
 
-            var className = ctx.Request.BoundVariables["name"];
+            var className = GetClassName(ctx);
+            var methodName = GetMethodName(ctx);
             var dataListID = GetDataListID(ctx);
             var workspaceID = GetWorkspaceID(ctx);
             dynamic result;

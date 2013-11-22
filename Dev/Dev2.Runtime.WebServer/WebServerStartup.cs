@@ -32,6 +32,7 @@ namespace Dev2.Runtime.WebServer
             // Add SignalR routing...
             var hubConfiguration = new HubConfiguration { EnableDetailedErrors = true, EnableJSONP = true };
             app.MapSignalR(hubConfiguration);
+            GlobalHost.HubPipeline.RequireAuthentication();
 
             // Add web server routing...
             var config = new HttpConfiguration();
