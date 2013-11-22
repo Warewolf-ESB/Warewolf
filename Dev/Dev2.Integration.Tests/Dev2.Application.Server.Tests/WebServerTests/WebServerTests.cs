@@ -38,6 +38,7 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
         }
 
         [TestMethod]
+        [Ignore]//Ashley 22/11/2013: Hanging integraiton runs in the environment
         [TestCategory("WebServer_ServicesGet")]
         public void WebServer_ServicesGet_DataIsLarge_DownloadHeadersAdded()
         {
