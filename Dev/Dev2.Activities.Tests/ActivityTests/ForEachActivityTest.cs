@@ -1,6 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.Data.Enums;
+using Dev2.Data.Storage;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -26,6 +28,62 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
+
+        #region Load Test
+
+        
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ForEachActivity_Execute")]
+        [Ignore] // Mo move me to the integration test ;)
+        public void ForEachActivity_Execute_WhenExecutingForEach200Times_ExpectNoThrashingOfMemoryOrCPU()
+        {
+            //------------Setup for test--------------------------
+            var preExecuteMemory = BinaryDataListStorageLayer.GetUsedMemoryInMB();
+            var cpuCounter = new PerformanceCounter();
+            var ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+
+            cpuCounter.CategoryName = "Processor";
+            cpuCounter.CounterName = "% Processor Time";
+            cpuCounter.InstanceName = "_Total";
+
+            var preCPU = cpuCounter.NextValue();
+            var preRAM = ramCounter.NextValue();
+
+            SetupArguments(
+                            ActivityStrings.ForEachCurrentDataList
+                          , ActivityStrings.ForEachDataListShape
+                          , enForEachType.NumOfExecution
+                          , false
+                          , null
+                          , null
+                          , null
+                          , null
+                          , "200"
+                          );
+            IDSFDataObject result;
+
+            //------------Execute Test---------------------------
+
+            ExecuteForEachProcessForReal(out result);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            var postExecuteMemory = BinaryDataListStorageLayer.GetUsedMemoryInMB();
+            var postCPU = cpuCounter.NextValue();
+            var postRAM = ramCounter.NextValue();
+
+            //------------Assert Results-------------------------
+
+            var memDif = postExecuteMemory - preExecuteMemory;
+            var ramDif = postRAM - preRAM;
+
+            Assert.IsTrue(memDif < 0.01, "Too much DataList Memory used and not returned [ " + memDif + " ]");
+            Assert.IsTrue(ramDif < 5, "RAM thrashing is happening [ " + ramDif + " ]");
+            Assert.IsTrue(postCPU < 5.0, "Post CPU thrashing [ " + postCPU + " ] vs [ " + preCPU + " ]");
+        }
+
+        #endregion
 
         #region Number Of Execution Tests
 

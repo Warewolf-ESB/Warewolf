@@ -274,12 +274,12 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
             Assert.IsNotNull(result.DataSourceShapes[0]);
             Assert.AreEqual(2, result.DataSourceShapes[0].Paths.Count);
 
-            Assert.AreEqual("DocumentElement().Table.Col1", result.DataSourceShapes[0].Paths[0].ActualPath);
-            Assert.AreEqual("DocumentElement().Table.Col1", result.DataSourceShapes[0].Paths[0].DisplayPath);
+            Assert.AreEqual("TestTableName().Col1", result.DataSourceShapes[0].Paths[0].ActualPath);
+            Assert.AreEqual("TestTableName().Col1", result.DataSourceShapes[0].Paths[0].DisplayPath);
             Assert.AreEqual("1,2,3", result.DataSourceShapes[0].Paths[0].SampleData);
 
-            Assert.AreEqual("DocumentElement().Table.Col2", result.DataSourceShapes[0].Paths[1].ActualPath);
-            Assert.AreEqual("DocumentElement().Table.Col2", result.DataSourceShapes[0].Paths[1].DisplayPath);
+            Assert.AreEqual("TestTableName().Col2", result.DataSourceShapes[0].Paths[1].ActualPath);
+            Assert.AreEqual("TestTableName().Col2", result.DataSourceShapes[0].Paths[1].DisplayPath);
             Assert.AreEqual("row1,row2,", result.DataSourceShapes[0].Paths[1].SampleData);
         }
 

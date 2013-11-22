@@ -244,6 +244,52 @@ namespace ActivityUnitTests
             return mockChannel;
         }
 
+        /// <summary>
+        /// The ForEach Activity requires the data returned from an activity
+        /// We will mock the DSF channel to return something that we expect is shaped.
+        /// </summary>
+        /// <returns></returns>
+        public void ExecuteForEachProcessForReal(out IDSFDataObject dataObject)
+        {
+            var svc = new ServiceAction { Name = "ForEachTestAction", ServiceName = "UnitTestService" };
+            IEsbChannel channel = new EsbServicesEndpoint();
+
+            svc.SetActivity(FlowchartProcess);
+
+            if(CurrentDl == null)
+            {
+                CurrentDl = TestData;
+            }
+
+            Compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            Guid exID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+
+
+            if(errors.HasErrors())
+            {
+                string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
+
+                throw new Exception(errorString);
+            }
+
+            dataObject = new DsfDataObject(CurrentDl, exID)
+            {
+                // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
+                //       if this is NOT provided which will cause the tests to fail!
+                ServerID = Guid.NewGuid(),
+                ParentThreadID = 1
+            };
+
+
+            // we need to set this now ;)
+            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace, channel);
+
+            errors.ClearErrors();
+            dataObject.DataListID = wfec.Execute(out errors);
+
+        }
+
         #endregion ForEach Execution
 
         #region Activity Debug Input/Output Test Methods
