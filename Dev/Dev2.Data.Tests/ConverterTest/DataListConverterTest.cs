@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.Translators;
 using Dev2.DataList.Contract.Binary_Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.DataList.Contract;
 using Dev2.Common;
 using Newtonsoft.Json;
@@ -14,7 +14,8 @@ namespace Dev2.Data.Tests.ConverterTest
     /// <summary>
     /// Summary description for DataListConverterTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DataListConverterTest
     {
         public DataListConverterTest()
