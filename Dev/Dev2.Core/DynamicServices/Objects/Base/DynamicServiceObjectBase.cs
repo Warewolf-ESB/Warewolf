@@ -83,8 +83,8 @@ namespace Dev2.DynamicServices {
                 return true;
             }
 
-            string[] user = userRoles.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            string[] res = resourceRoles.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            string[] user = userRoles.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            string[] res = resourceRoles.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
 
             if (user.Contains("Domain Admins")) {
                 return true;

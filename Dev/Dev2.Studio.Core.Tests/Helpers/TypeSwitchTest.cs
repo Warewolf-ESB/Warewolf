@@ -38,8 +38,6 @@ namespace Dev2.Core.Tests.Helpers
             //------------Execute Test---------------------------
 
             TypeSwitch.Do(null, case1);
-
-            //------------Assert Results-------------------------
         }
 
         [TestMethod]

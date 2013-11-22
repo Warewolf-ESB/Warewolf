@@ -24,9 +24,6 @@ namespace Dev2.Studio.UI.Tests
 
         #region Cleanup
 
-        private ExplorerUIMap _explorerUi = new ExplorerUIMap();
-
-
         [ClassInitialize]
         public static void ClassInit(TestContext tctx)
         {
@@ -46,7 +43,7 @@ namespace Dev2.Studio.UI.Tests
         public void MyTestCleanup()
         {
             TabManagerUIMap.CloseAllTabs();
-            _explorerUi.ClickServerInServerDDL(LocalHostServerName);
+            ExplorerUIMap.ClickServerInServerDDL(LocalHostServerName);
         }
 
         #endregion
@@ -123,62 +120,29 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
-        public void RemoteServerUITests_DragAndDropWorkflowFromRemoteServerOnALocalHostCreatedWorkflow_WorkFlowIsDropped()
+        public void RemoteServerUITests_DragAndDropWorkflowFromRemoteServerOnALocalHostCreatedWorkflow_WorkFlowIsDroppedAndCanExecute()
         {
 
-            Assert.Fail("Poor assert conditions. Not properly testing the issue!");
+            const string TextToSearchWith = "Recursive File Copy";
+            //Ensure that we're in localhost
+            ExplorerUIMap.ClickServerInServerDDL(LocalHostServerName);
+            //Create a workfliow
+            RibbonUIMap.CreateNewWorkflow();
+            var theTab = TabManagerUIMap.GetActiveTab();
+            ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
 
-            //const string TextToSearchWith = "Recursive File Copy";
-            ////Ensure that we're in localhost
-            //ExplorerUIMap.ClickServerInServerDDL(LocalHostServerName);
-            ////Create a workfliow
-            //RibbonUIMap.CreateNewWorkflow();
-            //var theTab = TabManagerUIMap.GetActiveTab();
-            //ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
+            var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
 
-            //var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            ExplorerUIMap.EnterExplorerSearchText(TextToSearchWith);
+            ExplorerUIMap.DragControlToWorkflowDesigner(RemoteServerName, "WORKFLOWS", "UTILITY", TextToSearchWith, point);
 
-            //ExplorerUIMap.EnterExplorerSearchText(TextToSearchWith);
-            //ExplorerUIMap.DragControlToWorkflowDesigner(RemoteServerName, "WORKFLOWS", "UTILITY", TextToSearchWith,
-            //                                            point);
+            OpenMenuItem("Debug");
+            PopupDialogUIMap.WaitForDialog();
+            DebugUIMap.ClickExecute();
+            OutputUIMap.WaitForExecution();
 
-            //OpenMenuItem("Debug");
-            //PopupDialogUIMap.WaitForDialog();
-            //DebugUIMap.ClickExecute();
-            //OutputUIMap.WaitForExecution();
-
-            //Assert.IsFalse(OutputUIMap.IsAnyStepsInError(), "The remote workflow threw errors when executed locally");
-
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RemoteServerUITests")] 
-        public void RemoteServerUITests_DragAndDropWorkflowFromALocalServerOnARemoteServerCreatedWorkflow_WorkFlowIsDropped()
-        {
-
-            Assert.Fail("Poor assert conditions. Not properly testing the issue!");
-
-            //const string TextToSearchWith = "Utility - Assign";
-            //ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
-            ////Create a workfliow
-            //RibbonUIMap.CreateNewWorkflow();
-            //var theTab = TabManagerUIMap.GetActiveTab();
-            ////Connect to local server
-            //ExplorerUIMap.ClickServerInServerDDL(LocalHostServerName);
-
-            //var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
-
-            //ExplorerUIMap.EnterExplorerSearchText(TextToSearchWith);
-            //ExplorerUIMap.DragControlToWorkflowDesigner(LocalHostServerName, "WORKFLOWS", "EXAMPLES",
-            //                                            TextToSearchWith, point);
-
-            //OpenMenuItem("Debug");
-            //PopupDialogUIMap.WaitForDialog();
-            //DebugUIMap.ClickExecute();
-            //OutputUIMap.WaitForExecution();
-
-            //Assert.IsFalse(OutputUIMap.IsAnyStepsInError(), "The local workflow threw errors when executed remotely");
+            Assert.IsFalse(OutputUIMap.IsAnyStepsInError(), "The remote workflow threw errors when executed locally");
+            Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, TextToSearchWith));
         }
 
         [TestMethod]
@@ -205,22 +169,25 @@ namespace Dev2.Studio.UI.Tests
         public void RemoteServerUITests_DebugARemoteWorkflowWhenLocalWorkflowWithSameNameIsOpen_WorkflowIsExecuted()
         {
 
-            Assert.Fail("Poor assert conditions. Not a true reflection of the issue tested for!");
+            const string TextToSearchWith = "Find Records";
 
-            //const string TextToSearchWith = "Find Records";
+            OpenWorkFlow(LocalHostServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
+            var localHostTab = TabManagerUIMap.FindTabByName(TextToSearchWith);
+            Assert.IsNotNull(localHostTab);
 
-            //OpenWorkFlow(LocalHostServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
-            //var localHostTab = TabManagerUIMap.FindTabByName(TextToSearchWith);
-            //Assert.IsNotNull(localHostTab);
+            OpenWorkFlow(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
 
-            //OpenWorkFlow(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
+            OpenMenuItem("Debug");
+            PopupDialogUIMap.WaitForDialog();
+            DebugUIMap.ClickExecute();
+            OutputUIMap.WaitForExecution();
 
-            //OpenMenuItem("Debug");
-            //SendKeys.SendWait("{F5}");
-            //Playback.Wait(1000);
-
-            //var remoteTab = TabManagerUIMap.FindTabByName(TextToSearchWith + " - " + RemoteServerName);
-            //Assert.IsNotNull(remoteTab);
+            var remoteTab = TabManagerUIMap.FindTabByName(TextToSearchWith + " - " + RemoteServerName);
+            var canidateTab = TabManagerUIMap.GetActiveTab();
+            Assert.IsNotNull(remoteTab);
+            // verify the active tab is the remote tab
+            Assert.AreEqual(remoteTab, canidateTab);
+            Assert.IsTrue(OutputUIMap.IsExecutionRemote());
 
         }
 
@@ -229,13 +196,13 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteDbSource_DbSourceIsEdited()
         {
-            Assert.Fail("Poor assert conditions. Not a true reflection of the issue tested for!");
 
-            //const string TextToSearchWith = "DBSource";
-            //OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            //Playback.Wait(2000);
-            //DatabaseSourceUIMap.ClickSaveConnection();
-            //SaveDialogUIMap.ClickSave();
+            const string TextToSearchWith = "DBSource";
+            OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
+            Playback.Wait(3500);
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            Playback.Wait(1000);
+            SaveDialogUIMap.ClickSave();
 
         }
 
@@ -244,14 +211,12 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteWebSource_WebSourceIsEdited()
         {
-
-            Assert.Fail("Poor assert conditions. Not a true reflection of the issue tested for!");
-
-            //const string TextToSearchWith = "WebSource";
-            //OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            //Playback.Wait(2000);
-            //SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
-            //SaveDialogUIMap.ClickSave();
+            const string TextToSearchWith = "WebSource";
+            OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
+            Playback.Wait(3500);
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            Playback.Wait(1000);
+            SaveDialogUIMap.ClickSave();
 
         }
 
@@ -260,13 +225,15 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteWebService_WebServiceIsEdited()
         {
-            Assert.Fail("Poor assert conditions. Not a true reflection of the issue tested for!");
+            Assert.Fail("Bad test! Not indicative that things worked!");
 
             //const string TextToSearchWith = "WebService";
             //OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            //Playback.Wait(2000);
-            //SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            //Playback.Wait(3500);
+            //SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            //Playback.Wait(1000);
             //SaveDialogUIMap.ClickSave();
+
 
         }
 
@@ -275,13 +242,12 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteDbService_DbServiceIsEdited()
         {
-            Assert.Fail("Poor assert conditions. Not properly testing the issue! You need to check window title to ensure RemoteConnection");
-
+            Assert.Fail("Bad test! Not indicative that things worked!");
             //const string TextToSearchWith = "DBService";
             //OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            //Playback.Wait(2000);
-            //DatabaseServiceWizardUIMap.ClickCancel();
-
+            //Playback.Wait(3500);
+            //Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+ 
         }
 
         [TestMethod]
@@ -289,12 +255,15 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteEmailSource_EmailSourceIsEdited()
         {
-            Assert.Fail("Poor assert conditions. Not a true reflection of the issue tested for!");
+
+            Assert.Fail("External mail server issues!");
 
             //const string TextToSearchWith = "EmailSource";
             //OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            //Playback.Wait(2000);
-            //EmailSourceWizardUIMap.ClickCancel();
+            //Playback.Wait(3500);
+
+            ////Playback.Wait(1000);
+            ////SaveDialogUIMap.ClickSave();
 
         }
 
@@ -303,13 +272,12 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemotePluginSource_PluginSourceIsEdited()
         {
-
-            Assert.Fail("Poor assert conditions. Not a true reflection of the issue tested for!");
-
-            //const string TextToSearchWith = "PluginSource";
-            //OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            //Playback.Wait(2000);
-            //PluginSourceMap.ClickSave();
+            const string TextToSearchWith = "PluginSource";
+            OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
+            Playback.Wait(3500);
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{ENTER}");
+            Playback.Wait(1000);
+            SaveDialogUIMap.ClickSave();
 
         }
 
@@ -319,40 +287,29 @@ namespace Dev2.Studio.UI.Tests
         public void RemoteServerUITests_EditRemotePluginService_PluginServiceIsEdited()
         {
 
-            Assert.Fail("Poor assert conditions. Not a true reflection of the issue tested for!");
-
-            //const string TextToSearchWith = "PluginService";
-            //OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            //Playback.Wait(2000);
-            //PluginServiceWizardUIMap.ClickTest();
-            //PluginServiceWizardUIMap.ClickOK();
+            const string TextToSearchWith = "PluginService";
+            OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
+            Playback.Wait(3500);
+            PluginServiceWizardUIMap.ClickTest();
+            Playback.Wait(1000);
+            PluginServiceWizardUIMap.ClickOK();
 
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
-        public void RemoteServerUITests_AddExecuteRenameAndDeleteALocalWorlFlow_ProcessCompletesSuccessfully()
+        public void RemoteServerUITests_AddRenameAndDeleteARemoteWorkFlow_CompletesSuccessfully()
         {
 
-            Assert.Fail("Misleading logic in a single test. Please refactor out!");
+            var serviceType = "WORKFLOWS";
+            var folderName = "Unassigned";
 
-            // 13/11 THIS DOES NOT BELONG HERE ;)
-            //ProcessAWorkflow(LocalHostServerName, "WORKFLOWS", "Unassigned");
+            ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
 
-            // THIS IS FINE
-            ProcessAWorkflow(RemoteServerName, "WORKFLOWS", "Unassigned");
-
-        }
-
-        void ProcessAWorkflow(string serverName, string serviceType, string folderName)
-        {
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClickServerInServerDDL(serverName);
-            
             //CREATE A WORKFLOW
             RibbonUIMap.CreateNewWorkflow();
-            
+
             var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
 
@@ -362,24 +319,20 @@ namespace Dev2.Studio.UI.Tests
             string InitialName = Guid.NewGuid().ToString();
             EnternameAndSave(InitialName);
 
-            //EXECUTE A WORKFLOW
-            OpenMenuItem("Debug");
-            PopupDialogUIMap.WaitForDialog();
-            SendKeys.SendWait("{F5}");
-
             //RENAME A WORKFLOW
-          
             ExplorerUIMap.EnterExplorerSearchText(InitialName);
             Playback.Wait(2000);
-            ExplorerUIMap.RightClickRenameProject(serverName, serviceType, folderName, InitialName);
+            ExplorerUIMap.RightClickRenameProject(RemoteServerName, serviceType, folderName, InitialName);
             string RenameTo = Guid.NewGuid().ToString();
             SendKeys.SendWait(RenameTo + "{ENTER}");
 
             //DELETE A WORKFLOW
             ExplorerUIMap.EnterExplorerSearchText(RenameTo);
-            ExplorerUIMap.RightClickDeleteProject(serverName, serviceType, folderName, RenameTo);
-            Assert.IsFalse(ExplorerUIMap.ServiceExists("localhost", serviceType, folderName, RenameTo), "Resources on " + serverName + " cannot be deleted");
+            ExplorerUIMap.RightClickDeleteProject(RemoteServerName, serviceType, folderName, RenameTo);
+            Assert.IsFalse(ExplorerUIMap.ServiceExists(RemoteServerName, serviceType, folderName, RenameTo));
+
         }
+
         #endregion
 
         #region Utils

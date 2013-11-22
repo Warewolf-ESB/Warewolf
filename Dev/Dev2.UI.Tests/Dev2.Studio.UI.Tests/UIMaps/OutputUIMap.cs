@@ -190,6 +190,24 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return steps;
         }
 
+
+        public static bool IsRemoteExecute(UITestControl theStep)
+        {
+            var errorResults = theStep.GetChildren()
+                                      .ToList()
+                                      .Where(c => c.FriendlyName.Contains("RemoteConnection"))
+                                      .ToList();
+
+            if(errorResults.Count == 0)
+            {
+                return false;
+            }
+
+            // Steps that aren't in errors still have the error text
+            // Due to this, we can use the visibility (AKA: If height is -1, it's hidden (And not just 1 pixel above 0...))
+            return errorResults[0].Height != -1;
+        }
+
         public static bool IsStepInError(UITestControl theStep)
         {
             var errorResults = theStep.GetChildren()
@@ -213,6 +231,17 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var debugOutput = GetOutputWindow().ToList();
 
             return debugOutput.Any(IsStepInError);
+        }
+
+        /// <summary>
+        /// Determines whether [is execution remote].
+        /// </summary>
+        /// <returns></returns>
+        public bool IsExecutionRemote()
+        {
+            var debugOutput = GetOutputWindow().ToList();
+
+            return debugOutput.Any(IsRemoteExecute);
         }
 
         public void WaitForStepCount(int expectedStepCount, int timeOut)
