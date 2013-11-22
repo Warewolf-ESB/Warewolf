@@ -10,14 +10,15 @@ using Dev2.DataList.Contract.TO;
 using Dev2.DynamicServices.Test;
 using Dev2.Server.DataList;
 using Dev2.Server.DataList.Translators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Data.Tests.BinaryDataList
 {
     /// <summary>
     /// Summary description for ServerTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ServerTest
     {
 
