@@ -210,7 +210,7 @@ namespace Dev2.CodedUI.Tests
 
             Playback.Wait(500);
             //------------Execute Test---------------------------
-            var theUnsavedTab = TabManagerUIMap.FindTabByName(tabName + " *");
+            var theUnsavedTab = TabManagerUIMap.GetActiveTab();
             //------------Assert Results-------------------------
             Assert.IsNotNull(theUnsavedTab, "Editted workflow does not have the unsaved * after its name on the tab");
         }

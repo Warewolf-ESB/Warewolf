@@ -91,11 +91,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             
             //Assert
             ExplorerUIMap.EnterExplorerSearchText(serviceName);
-            Playback.Wait(500);
+            Playback.Wait(3500);
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SERVICES", "Unassigned", serviceName));
 
             ExplorerUIMap.EnterExplorerSearchText(sourceName);
-            Playback.Wait(100);
+            Playback.Wait(3500);
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", "Unassigned", sourceName));
 
         }

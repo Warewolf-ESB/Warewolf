@@ -40,6 +40,7 @@ namespace Dev2.Studio.UI.Tests
 
             // Now count
             ExplorerUIMap.ClearExplorerSearchText();
+            Playback.Wait(2000);
             var items = ExplorerUIMap.GetServiceItems();
             var itemCount = items.Count;
 
