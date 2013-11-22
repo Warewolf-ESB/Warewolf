@@ -15,12 +15,12 @@ namespace QueueBuildTest
 
             string server = "http://rsaklfsvrgendev:8080/tfs/";
             string project = "DEV2 SCRUM Project";
-            string def = "Async Integration Run - Dev Merge";
-            string set = "Gated_2013-08-05_01.51.52.5566";
+            string def = "Dev2 Min Test Run";
+            string set = "";
             string user = "Ashley Lewis";
-            string agentTag = "someagenttag";
+            string changeSetID = "18161";
 
-            int id = bq.Run(server, project, def, set, user, agentTag);
+            int id = bq.Run(server, project, def, set, user, changeSetID);
 
             Assert.IsTrue(id > 0, "ID is not valid");
         }

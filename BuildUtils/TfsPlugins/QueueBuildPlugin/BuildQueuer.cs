@@ -79,7 +79,6 @@ namespace QueueBuildPlugin
             if (!string.IsNullOrEmpty(specificChangeSetID))
             {
                 req.ProcessParameters = AddChangeSetParams(specificChangeSetID);
-                req.Reason = BuildReason.IndividualCI;
             }
 
             // is there a shelveset?

@@ -67,6 +67,10 @@
       <Project>{5806e197-dd63-4da5-917a-d200acaf3d06}</Project>
       <Name>DirectoryUtils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\QueueBuildPlugin\QueueBuildPlugin.csproj">
+      <Project>{645bb595-b82f-4622-a94d-07d7372e556b}</Project>
+      <Name>QueueBuildPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\QueueBuild\QueueBuild.csproj">
       <Project>{7d4f3b7a-cf2b-41d5-a144-862ebccda9a3}</Project>
       <Name>QueueBuild</Name>
