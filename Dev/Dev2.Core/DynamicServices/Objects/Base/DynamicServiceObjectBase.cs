@@ -75,6 +75,7 @@ namespace Dev2.DynamicServices {
 
         #region Public Methods
         public bool IsUserInRole(string userRoles, string resourceRoles) {
+
             if (string.IsNullOrEmpty(userRoles)) {
                 return false;
             }

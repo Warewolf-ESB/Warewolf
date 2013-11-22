@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using Dev2.Converters.Graph.DataTable;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 using Unlimited.Framework.Converters.Graph.Poco;
 using Unlimited.Framework.Converters.Graph.String;
@@ -22,6 +24,7 @@ namespace Unlimited.Framework.Converters.Graph
             Interrogators = new Dictionary<Type, IInterrogator>();
 
             Interrogators.Add(typeof(string), new StringInterrogator());
+            Interrogators.Add(typeof(DataTable), new DataTableInterrogator());
 
             DefaultInterrogator = new PocoInterrogator();
         }

@@ -56,7 +56,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
             var serviceMethods = new ServiceMethodList();
 
-
             //
             // Function to handle procedures returned by the data broker
             //
@@ -119,8 +118,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     //
                     var command = CommandFromServiceMethod(server, dbService.Method);
                     var dataTable = server.FetchDataTable(command);
-                    var xmlResult = GetXML(dataTable);
-                    xmlResult = NormalizeXmlPayload(xmlResult);
 
                     //
                     // Map shape of XML
@@ -130,11 +127,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     result.DataSourceShapes.Add(dataSourceShape);
 
                     var dataBrowser = DataBrowserFactory.CreateDataBrowser();
-
-                    if(!string.IsNullOrEmpty(xmlResult))
-                    {
-                        dataSourceShape.Paths.AddRange(dataBrowser.Map(xmlResult));
-                    }
+                    dataSourceShape.Paths.AddRange(dataBrowser.Map(dataTable));
                 }
                 finally
                 {

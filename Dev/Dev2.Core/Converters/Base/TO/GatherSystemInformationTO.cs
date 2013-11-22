@@ -98,7 +98,7 @@ namespace Dev2
         }
 
         public void ClearRow()
-        {            
+        {
             Result = "";
         }        
 

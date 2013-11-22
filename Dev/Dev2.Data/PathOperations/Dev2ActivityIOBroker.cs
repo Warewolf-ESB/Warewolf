@@ -743,20 +743,20 @@ namespace Dev2.PathOperations
         public string Zip(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2ZipOperationTO args)
         {
             return ValidateZipSourceDestinationFileOperation(src, dst, args, () =>
-                {
-                    string tempFileName;
-                    if (src.PathIs(src.IOPath) == enPathType.Directory ||
-                        Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
-                    {
-                        tempFileName = ZipDirectoryToALocalTempFile(src, args);
-                    }
-                    else
-                    {
-                        tempFileName = ZipFileToALocalTempFile(src, args);
-                    }
+            {
+                string tempFileName;
 
-                    return TransferTempZipFileToDestination(src, dst, args, tempFileName);
-                });
+                if (src.PathIs(src.IOPath) == enPathType.Directory || Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
+                {
+                    tempFileName = ZipDirectoryToALocalTempFile(src, args);
+                }
+                else
+                {
+                    tempFileName = ZipFileToALocalTempFile(src, args);
+                }
+
+                return TransferTempZipFileToDestination(src, dst, args, tempFileName);
+            });
         }
 
         private string ZipFileToALocalTempFile(IActivityIOOperationsEndPoint src, Dev2ZipOperationTO args)

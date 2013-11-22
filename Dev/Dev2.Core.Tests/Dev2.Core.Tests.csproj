@@ -148,6 +148,9 @@
     <Compile Include="ConverterTests\DateTimeTests\DateTimeFormatterTests.cs" />
     <Compile Include="ConverterTests\DateTimeTests\DateTimeParserTests.cs" />
     <Compile Include="ConverterTests\GraphTests\DataBrowserTests.cs" />
+    <Compile Include="ConverterTests\GraphTests\DataTable Test\DataTableInterrogatorTest.cs" />
+    <Compile Include="ConverterTests\GraphTests\DataTable Test\DataTableMapperTest.cs" />
+    <Compile Include="ConverterTests\GraphTests\InterrogatorFactoryTest.cs" />
     <Compile Include="ConverterTests\GraphTests\OutputTests\DataSourceShapeTests.cs" />
     <Compile Include="ConverterTests\GraphTests\OutputTests\OutputDescriptionSerializationServiceTests.cs" />
     <Compile Include="ConverterTests\GraphTests\OutputTests\OutputDescriptionTests.cs" />

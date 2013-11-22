@@ -31,6 +31,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
             StringAssert.Contains(responseData.Unescape(), expected);
         }
 
+        // This test is failing because the data does not bind to it ;)
         [TestMethod]
         public void TestPluginReturnsXMLFromXML()
         {
