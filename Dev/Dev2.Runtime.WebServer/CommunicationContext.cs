@@ -18,11 +18,7 @@ namespace Dev2.Runtime.WebServer
 
     internal sealed class CommunicationContext : ICommunicationContext
     {
-        #region Constants
         private const string DefaultContentType = "text/html; charset=";
-        const double SizeCapForDownload = 51200; // 50 KB size limit
-        #endregion
-
         #region Instance Fields
         private ICommunicationRequest _request;
         private ICommunicationResponse _response;
@@ -61,28 +57,28 @@ namespace Dev2.Runtime.WebServer
         {
             response.Write(this);
 
-            if (String.IsNullOrEmpty(_rawResponse.ContentType))
+            if(String.IsNullOrEmpty(_rawResponse.ContentType))
                 _rawResponse.ContentType = DefaultContentType + _rawResponse.Encoding.WebName;
 
-            if (_rawResponse.ContentLength > SizeCapForDownload)
+            if(_rawResponse.ContentLength > WebServerStartup.SizeCapForDownload)
             {
-                
+
                 var typeOf = _rawResponse.ContentType;
 
                 bool canForce = false;
 
-                if (typeOf.Equals("text/xml"))
+                if(typeOf.Equals("text/xml"))
                 {
                     _rawResponse.AddHeader("Content-Disposition", "attachment; filename=Output.xml");
                     canForce = true;
                 }
-                else if (typeOf.Equals("application/json"))
+                else if(typeOf.Equals("application/json"))
                 {
                     _rawResponse.AddHeader("Content-Disposition", "attachment; filename=Output.json");
                     canForce = true;
                 }
 
-                if (canForce)
+                if(canForce)
                 {
                     _rawResponse.AddHeader("Content-Type", "application/force-download");
                 }

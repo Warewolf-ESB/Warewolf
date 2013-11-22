@@ -5,18 +5,33 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using HttpFramework.Exceptions;
 
-namespace Dev2.Runtime.WebServer
+namespace Dev2.Runtime.WebServer.Responses.Streams
 {
-    public abstract class HttpContentStream
+    public abstract class HttpPushContentStream
     {
+        public const int DefaultChunkSize = 65536;
+
+        readonly HttpResponseMessage _response;
+        readonly MediaTypeHeaderValue _contentType;
         readonly int _chunkSize;
 
-        protected HttpContentStream(int chunkSize = 65536)
+        protected HttpPushContentStream(HttpResponseMessage response, MediaTypeHeaderValue contentType, int chunkSize = DefaultChunkSize)
         {
+            VerifyArgument.IsNotNull("response", response);
+            VerifyArgument.IsNotNull("mediaType", contentType);
+            _response = response;
+            _contentType = contentType;
             _chunkSize = chunkSize;
         }
 
-        public async void WriteToStream(Stream outputStream, HttpContent content, TransportContext context)
+        public void Write()
+        {
+            _response.Content = new PushStreamContent((Action<Stream, HttpContent, TransportContext>)WriteToStream, _contentType);
+        }
+
+        protected abstract Stream OpenInputStream();
+
+        async void WriteToStream(Stream outputStream, HttpContent content, TransportContext context)
         {
             try
             {
@@ -44,17 +59,5 @@ namespace Dev2.Runtime.WebServer
             }
         }
 
-        protected abstract Stream OpenInputStream();
-
-        public PushStreamContent CreatePushStreamContent(string contentType)
-        {
-            var mediaType = MediaTypeHeaderValue.Parse(contentType);
-            return CreatePushStreamContent(mediaType);
-        }
-
-        public PushStreamContent CreatePushStreamContent(MediaTypeHeaderValue mediaType)
-        {
-            return new PushStreamContent((Action<Stream, HttpContent, TransportContext>)WriteToStream, mediaType);
-        }
     }
 }

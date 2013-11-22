@@ -43,7 +43,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     ErrorMessage = ex.Message
                 };
             }
-            ctx.Send(new StringResponseWriter(result.ToString(), "application/json"));
+            ctx.Send(new StringResponseWriter(result.ToString(), ContentTypes.Json));
         }
     }
 }

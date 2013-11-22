@@ -125,13 +125,13 @@
     <Compile Include="Handlers\WebsiteServiceHandler.cs" />
     <Compile Include="Handlers\IRequestHandler.cs" />
     <Compile Include="Handlers\WebPostRequestHandler.cs" />
-    <Compile Include="HttpContentStream.cs" />
+    <Compile Include="Responses\ContentTypes.cs" />
+    <Compile Include="Responses\Streams\HttpPushContentStream.cs" />
     <Compile Include="CommunicationContext.cs" />
     <Compile Include="CommunicationContextCallback.cs" />
     <Compile Include="CommunicationRequest.cs" />
     <Compile Include="CommunicationResponse.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="HttpTextStream.cs" />
     <Compile Include="Hubs\EsbHub.cs" />
     <Compile Include="Hubs\ResourcesHub.cs" />
     <Compile Include="Hubs\Server.cs" />
@@ -139,7 +139,7 @@
     <Compile Include="WebServerContext.cs" />
     <Compile Include="Dev2Endpoint.cs" />
     <Compile Include="HttpServer.cs" />
-    <Compile Include="HttpFileStream.cs" />
+    <Compile Include="Responses\Streams\HttpFileStream.cs" />
     <Compile Include="Responses\DynamicFileResponseWriter.cs" />
     <Compile Include="Responses\StatusResponseWriter.cs" />
     <Compile Include="Responses\StaticFileResponseWriter.cs" />

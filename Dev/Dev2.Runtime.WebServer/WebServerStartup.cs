@@ -10,6 +10,8 @@ namespace Dev2.Runtime.WebServer
 {
     public class WebServerStartup
     {
+        public const double SizeCapForDownload = 51200; // 50 KB size limit
+
         public static IDisposable Start(string url)
         {
             return WebApp.Start<WebServerStartup>(url);
@@ -40,5 +42,6 @@ namespace Dev2.Runtime.WebServer
             config.EnsureInitialized();
             app.UseWebApi(config);
         }
+
     }
 }

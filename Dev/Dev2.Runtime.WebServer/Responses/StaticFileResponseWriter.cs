@@ -1,24 +1,28 @@
 using System;
 using System.IO;
+using System.Net.Http.Headers;
+using Dev2.Runtime.WebServer.Responses.Streams;
 
 namespace Dev2.Runtime.WebServer.Responses
 {
     public class StaticFileResponseWriter : ResponseWriter
     {
-        readonly string _contentType;
         readonly string _file;
+        readonly MediaTypeHeaderValue _contentType;
         readonly int _chunkSize;
 
-        public StaticFileResponseWriter(string file, string mimeType, int chunkSize = 1024)
+        public StaticFileResponseWriter(string file, string contentType, int chunkSize = 1024)
         {
+            VerifyArgument.IsNotNull("file", file);
+            VerifyArgument.IsNotNull("contentType", contentType);
             _file = file;
-            _contentType = mimeType;
+            _contentType = MediaTypeHeaderValue.Parse(contentType);
             _chunkSize = chunkSize;
         }
 
         public override void Write(ICommunicationContext context)
         {
-            context.Response.ContentType = _contentType;
+            context.Response.ContentType = _contentType.ToString();
             Stream outputStream = context.Response.OutputStream;
 
             try
@@ -56,8 +60,8 @@ namespace Dev2.Runtime.WebServer.Responses
 
         public override void Write(WebServerContext context)
         {
-            var stream = new HttpFileStream(_file, _chunkSize);
-            context.ResponseMessage.Content = stream.CreatePushStreamContent(_contentType);
+            var stream = new HttpFileStream(_file, context.ResponseMessage, _contentType, _chunkSize);
+            stream.Write();
         }
     }
 }
