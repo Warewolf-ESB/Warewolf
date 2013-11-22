@@ -10,7 +10,8 @@ using Moq;
 
 namespace Dev2.Data.Tests.BinaryDataList
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DataListUtilTest
     {
 
