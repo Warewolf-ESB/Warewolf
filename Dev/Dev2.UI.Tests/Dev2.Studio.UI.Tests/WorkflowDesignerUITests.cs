@@ -246,6 +246,7 @@ namespace Dev2.Studio.UI.Tests
 
             //Click step
             var step = OutputUIMap.GetOutputWindow();
+            Playback.Wait(1500);
             Mouse.Click(step[2]);
             Playback.Wait(100);
             Mouse.Click(step[1]);

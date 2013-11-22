@@ -208,7 +208,7 @@ namespace Dev2.CodedUI.Tests
             // Click away
             Mouse.Click(new Point(workflowPoint1.X + 50, workflowPoint1.Y + 50));
 
-            Playback.Wait(100);
+            Playback.Wait(500);
             //------------Execute Test---------------------------
             var theUnsavedTab = TabManagerUIMap.FindTabByName(tabName + " *");
             //------------Assert Results-------------------------
