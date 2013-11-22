@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using System.Collections.Generic;
 using Dev2.Data.Storage;
 using Dev2.Data.Storage.ProtocolBuffers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Data.Tests.Persistence
 {
     /// <summary>
     /// Summary description for Dev2BinaryStorageTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class Dev2BinaryStorageTest
     {
         /// <summary>
