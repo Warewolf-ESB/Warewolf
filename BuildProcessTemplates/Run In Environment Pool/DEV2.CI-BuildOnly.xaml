@@ -170,8 +170,8 @@
       <Sequence DisplayName="Initialize Workspace" sap2010:WorkflowViewState.IdRef="Sequence_48" mtbwt:BuildTrackingParticipant.Importance="Low">
         <mtbwa:DeleteDirectory Directory="[TestResultsDirectory]" DisplayName="Delete Test Results Directory" sap2010:WorkflowViewState.IdRef="DeleteDirectory_3" mtbwt:BuildTrackingParticipant.Importance="Low" Recursive="[True]" />
         <mtbwa:DeleteDirectory Directory="[BinariesDirectory]" DisplayName="Delete Binaries Directory" sap2010:WorkflowViewState.IdRef="DeleteDirectory_5" mtbwt:BuildTrackingParticipant.Importance="Low" />
-        <mtbwa:DeleteDirectory Directory="[IntegrationBinariesDirectory]" DisplayName="Delete IntegrationBinaries Directory" mtbwt:BuildTrackingParticipant.Importance="Low" sap2010:WorkflowViewState.IdRef="DeleteDirectory_9" />
-        <mtbwa:DeleteDirectory Directory="[CodedUIBinariesDirectory]" DisplayName="Delete CodedUIBinaries Directory" mtbwt:BuildTrackingParticipant.Importance="Low" sap2010:WorkflowViewState.IdRef="DeleteDirectory_10" />
+        <mtbwa:DeleteDirectory Directory="[IntegrationBinariesDirectory]" DisplayName="Delete IntegrationBinaries Directory" sap2010:WorkflowViewState.IdRef="DeleteDirectory_9" mtbwt:BuildTrackingParticipant.Importance="Low" />
+        <mtbwa:DeleteDirectory Directory="[CodedUIBinariesDirectory]" DisplayName="Delete CodedUIBinaries Directory" sap2010:WorkflowViewState.IdRef="DeleteDirectory_10" mtbwt:BuildTrackingParticipant.Importance="Low" />
         <If Condition="[CleanWorkspace = Microsoft.TeamFoundation.Build.Workflow.Activities.CleanWorkspaceOption.All]" DisplayName="If CleanWorkspace = CleanWorkspaceOption.All" sap2010:WorkflowViewState.IdRef="If_53" mtbwt:BuildTrackingParticipant.Importance="Low">
           <If.Then>
             <Sequence DisplayName="Delete Workspace and Sources Directory" sap2010:WorkflowViewState.IdRef="Sequence_46" mtbwt:BuildTrackingParticipant.Importance="Low">
@@ -287,7 +287,7 @@
                           </Sequence>
                           <If Condition="[BuildSettings.HasProjectsToBuild]" DisplayName="If BuildSettings.HasProjectsToBuild" sap2010:WorkflowViewState.IdRef="If_12" mtbwt:BuildTrackingParticipant.Importance="Low">
                             <If.Then>
-                              <Sequence DisplayName="Build Server/Studio and then Integration Tests Solutions" sap2010:WorkflowViewState.IdRef="Sequence_60">
+                              <Sequence DisplayName="Build Server/Studio, Integration and CodedUI Test Solutions" sap2010:WorkflowViewState.IdRef="Sequence_60">
                                 <ForEach x:TypeArguments="x:String" DisplayName="For Each Project in BuildSettings.ProjectsToBuild" sap2010:WorkflowViewState.IdRef="ForEach`1_3" mtbwt:BuildTrackingParticipant.Importance="Low" Values="[BuildSettings.ProjectsToBuild]">
                                   <ActivityAction x:TypeArguments="x:String">
                                     <ActivityAction.Argument>
