@@ -509,30 +509,6 @@ namespace Unlimited.UnitTest.Framework
         }
 
         [TestMethod]
-        [Ignore]
-        // Not relavent anymore
-        public void Error_On_Non_Recordset_Notation_With_Valid_Recordset()
-        {
-            string dl = "<ADL><surname></surname><cars><topspeed></topspeed></cars></ADL>";
-            string payload = "[[cars]]";
-
-            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl);
-            Assert.IsTrue(results.Count == 1 && results[0].Type == enIntellisenseResultType.Error && results[0].ErrorCode == enIntellisenseErrorCode.InvalidRecordsetNotation);
-        }
-
-        [TestMethod]
-        [Ignore]
-        // Not relavent anymore
-        public void Error_On_Non_Recordset_Notation_With_Valid_Recordset_New_Open_Region()
-        {
-            string dl = "<ADL><surname></surname><cars><topspeed></topspeed></cars></ADL>";
-            string payload = "[[cars]][[";
-
-            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl);
-            Assert.IsTrue(results.Count == 4 && results[0].Type == enIntellisenseResultType.Selectable && results[0].Option.DisplayValue == "[[surname]]" && results[3].ErrorCode == enIntellisenseErrorCode.InvalidRecordsetNotation);
-        }
-
-        [TestMethod]
         public void Single_Open_On_Dual_Region_Does_Not_Cause_Results()
         {
             string dl = "<ADL><surname></surname><cars><topspeed></topspeed></cars></ADL>";
@@ -541,8 +517,6 @@ namespace Unlimited.UnitTest.Framework
             IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl);
             Assert.IsTrue(results.Count == 0);
         }
-
-        //
 
         [TestMethod]
         public void Dual_Regions_With_RS_In_Second_Passes_Field_Validation()

@@ -353,8 +353,6 @@
     <Compile Include="ViewModels\Explorer\ExplorerViewModel.cs" />
     <Compile Include="ViewModels\Help\HelpViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
-    <Compile Include="ViewModels\Web\LayoutGridViewModel.cs" />
-    <Compile Include="ViewModels\Web\WebsiteEditorViewModel.cs" />
     <Compile Include="ViewModels\Workflow\WorkflowInputDataViewModel.cs" />
     <Compile Include="ViewModels\Workflow\DsfActivityDropViewModel.cs">
       <SubType>Code</SubType>
@@ -554,24 +552,6 @@
     </Compile>
     <Compile Include="Views\ResourceManagement\ResourceDesignerWindow.xaml.cs">
       <DependentUpon>ResourceDesignerWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UserInterfaceBuilder\AutoLayoutGridWindow.xaml.cs">
-      <DependentUpon>AutoLayoutGridWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UserInterfaceBuilder\LayoutObjectView.xaml.cs">
-      <DependentUpon>LayoutObjectView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UserInterfaceBuilder\WebpartUserControl.xaml.cs">
-      <DependentUpon>WebpartUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UserInterfaceBuilder\WebPropertyEditorWindow.xaml.cs">
-      <DependentUpon>WebPropertyEditorWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UserInterfaceBuilder\WebsiteEditorWindow.xaml.cs">
-      <DependentUpon>WebsiteEditorWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UserInterfaceBuilder\WebsiteLayoutObjectUserControl.xaml.cs">
-      <DependentUpon>WebsiteLayoutObjectUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Wizards\DataListChangeNotificationView.xaml.cs">
       <DependentUpon>DataListChangeNotificationView.xaml</DependentUpon>
@@ -1017,30 +997,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\UserInterfaceBuilder\AutoLayoutGridWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\UserInterfaceBuilder\LayoutObjectView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\UserInterfaceBuilder\WebpartUserControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\UserInterfaceBuilder\WebPropertyEditorWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\UserInterfaceBuilder\WebsiteEditorWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\UserInterfaceBuilder\WebsiteLayoutObjectUserControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\Wizards\DataListChangeNotificationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1351,6 +1307,7 @@
     <Folder Include="ActivityDesigners\Singeltons\" />
     <Folder Include="AppResources\Messages\" />
     <Folder Include="ViewModels\Configuration\" />
+    <Folder Include="ViewModels\Web\" />
     <Folder Include="Views\Configuration\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

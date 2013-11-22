@@ -1067,32 +1067,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Ignore] // DeployAll is not used anywhere
-        public void DeployAllCommandWithCurrentResourceAndOpenDeploytabExpectsSelectItemInDeployMessage()
-        {
-            CreateFullExportsAndVmWithEmptyRepo();
-
-            _eventAggregator.Setup(e => e.Publish(It.IsAny<SelectItemInDeployMessage>()))
-                .Callback<object>((o =>
-                {
-                    var m = (SelectItemInDeployMessage)o;
-                    var r = m.Environment;
-                    Assert.IsTrue(r.ID.Equals(_secondResource.Object.Environment.ID));
-                })).Verifiable();
-
-            _mainViewModel.DeployAllCommand.Execute(null);
-            AddAdditionalContext();
-            var ctx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
-            _mainViewModel.ActivateItem(ctx);
-            _mainViewModel.DeployAllCommand.Execute(null);
-            var activectx = _mainViewModel.ActiveItem;
-            Assert.IsTrue(activectx.WorkSurfaceKey.Equals(
-                WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DeployResources)));
-
-            _eventAggregator.Verify(e => e.Publish(It.IsAny<SelectItemInDeployMessage>()), Times.Once());
-        }
-
-        [TestMethod]
         public void DeployAllCommandWithoutCurrentResourceExpectsDeplouViewModelActive()
         {
             CreateFullExportsAndVmWithEmptyRepo();

@@ -228,7 +228,6 @@
     <Compile Include="Helpers\VersionCheckerTests.cs" />
     <Compile Include="IDataListVerifyPart.cs" />
     <Compile Include="InputOutputViewModelTest.cs" />
-    <Compile Include="LayoutObjectViewModelTest.cs" />
     <Compile Include="MainViewModelPersistenceMock.cs" />
     <Compile Include="MainViewModelTest.cs" />
     <Compile Include="Dev2MockFactory.cs" />
@@ -301,7 +300,6 @@
     <Compile Include="WebActivityTests.cs" />
     <Compile Include="WebCommunicationTest.cs" />
     <Compile Include="WebResourceViewModelTest.cs" />
-    <Compile Include="WebsiteEditorViewModelTest.cs" />
     <Compile Include="Webs\ServiceCallbackHandlerMock.cs" />
     <Compile Include="Webs\ServiceCallbackHandlerTests.cs" />
     <Compile Include="Webs\WebServiceCallbackHandlerMock.cs" />
