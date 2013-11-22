@@ -45,6 +45,12 @@ namespace Dev2.PathOperations
         /// <returns></returns>
         public static IActivityIOPath CreatePathFromString(string path, string user, string pass, bool IsNotCertVerifiable)
         {
+
+            if (!IsNotCertVerifiable)
+            {
+                
+            }
+
             // Fetch path type
             enActivityIOPathType type = Dev2ActivityIOPathUtils.ExtractPathType(path);
             if (type == enActivityIOPathType.Invalid)

@@ -88,7 +88,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IActivityIOPath IOpath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(inputItr).TheValue,
                                                                                 colItr.FetchNextRow(unameItr).TheValue,
                                                                                 colItr.FetchNextRow(passItr).TheValue,
-                                                                                IsNotCertVerifiable);
+                                                                                true);
                 IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(IOpath);
 
                 try
@@ -98,6 +98,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 catch (Exception e)
                 {
+                    outputs[0].OutputStrings.Add("Failure");
                     allErrors.AddError(e.Message);
                 }
             }

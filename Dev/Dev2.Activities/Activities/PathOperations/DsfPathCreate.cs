@@ -77,7 +77,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(outputItr).TheValue,
                                                                                 colItr.FetchNextRow(unameItr).TheValue,
                                                                                 colItr.FetchNextRow(passItr).TheValue,
-                                                                                IsNotCertVerifiable);
+                                                                                true);
 
                     IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
                     string result = broker.Create(dstEndPoint, opTO, true);
@@ -85,6 +85,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 catch (Exception e)
                 {
+                    outputs.Add(DataListFactory.CreateOutputTO(Result, "Failure"));
                     allErrors.AddError(e.Message);
                 }
             }

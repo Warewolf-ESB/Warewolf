@@ -36,6 +36,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context, out ErrorResultTO allErrors)
         {
+            IsNotCertVerifiable = true;
+
             allErrors = new ErrorResultTO();
             IList<OutputTO> outputs = new List<OutputTO>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
@@ -80,7 +82,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IActivityIOPath IOpath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(inputItr).TheValue,
                                                                                 colItr.FetchNextRow(unameItr).TheValue,
                                                                                 colItr.FetchNextRow(passItr).TheValue,
-                                                                                IsNotCertVerifiable);
+                                                                                true);
                 IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(IOpath);
 
                 try

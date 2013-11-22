@@ -2036,1636 +2036,1636 @@ namespace Dev2.Integration.Tests.Activities
 
         //#endregion
 
-        #region Rename Unit Tests
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_LocalToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool createDestinationDirectory = false;
-            const bool isDestinationADirectory = false;
-
-            RunLocalToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory,
-               (sourceEndPoint, destinationEndPoint) =>
-               {
-                   var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                   return ActivityIOFactory.CreateOperationsBroker()
-                                           .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-               });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_SourceAndDesinationFilesAreTheSame_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool createDestinationDirectory = false;
-            const bool isDestinationADirectory = false;
-
-            RunLocalToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory,
-               (sourceEndPoint, destinationEndPoint) =>
-               {
-                   var CopyTo = new Dev2CRUDOperationTO(overWrite);
-                   return ActivityIOFactory.CreateOperationsBroker()
-                                           .Rename(sourceEndPoint, sourceEndPoint, CopyTo);
-               });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_LocalToLocal_DestinationIsAChildOfSource_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = true;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunLocalToLocalTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var CopyTo = new Dev2CRUDOperationTO(overWrite);
-                destinationEndPoint.IOPath.Path = Path.Combine(sourceEndPoint.IOPath.Path,
-                                                               "DeeperFolder\\EvenDeeperFolder");
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, CopyTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_FtpToFtp_DestinationIsAChildOfSource_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = true;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunFtpToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var CopyTo = new Dev2CRUDOperationTO(overWrite);
-                destinationEndPoint.IOPath.Path = Path.Combine(sourceEndPoint.IOPath.Path,
-                                                               "DeeperFolder/EvenDeeperFolder");
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, CopyTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_sFTPTosFTP_DestinationIsAChildOfSource_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = true;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunsFtpTosFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var CopyTo = new Dev2CRUDOperationTO(overWrite);
-                destinationEndPoint.IOPath.Path = Path.Combine(sourceEndPoint.IOPath.Path,
-                                                               "DeeperFolder/EvenDeeperFolder");
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, CopyTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_UncToUnc_DestinationIsAChildOfSource_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = true;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunUncToUncTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var CopyTo = new Dev2CRUDOperationTO(overWrite);
-                destinationEndPoint.IOPath.Path = Path.Combine(sourceEndPoint.IOPath.Path,
-                                                               "DeeperFolder\\EvenDeeperFolder");
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, CopyTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_FtpToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool createDestinationDirectory = false;
-            const bool isDestinationADirectory = false;
-
-            RunFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory,
-               (sourceEndPoint, destinationEndPoint) =>
-               {
-                   var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                   return ActivityIOFactory.CreateOperationsBroker()
-                                           .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-               });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_sFtpToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool createDestinationDirectory = false;
-            const bool isDestinationADirectory = false;
-
-            RunsFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory,
-               (sourceEndPoint, destinationEndPoint) =>
-               {
-                   var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                   return ActivityIOFactory.CreateOperationsBroker()
-                                           .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-               });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_UncToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool createDestinationDirectory = false;
-            const bool isDestinationADirectory = false;
-
-            RunUncToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory,
-               (sourceEndPoint, destinationEndPoint) =>
-               {
-                   var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                   return ActivityIOFactory.CreateOperationsBroker()
-                                           .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-               });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_FtpToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool createDestinationDirectory = false;
-            const bool isDestinationADirectory = false;
-
-            RunFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_sFtpToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool createDestinationDirectory = false;
-            const bool isDestinationADirectory = false;
-
-            RunsFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_UncToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool createDestinationDirectory = false;
-            const bool isDestinationADirectory = false;
-
-            RunUncToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_LocalToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool createDestinationDirectory = false;
-            const bool isDestinationADirectory = false;
-
-            RunLocalToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_LocalTosFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool createDestinationDirectory = false;
-            const bool isDestinationADirectory = false;
-
-            RunLocalTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_LocalToUnc_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool createDestinationDirectory = false;
-            const bool isDestinationADirectory = false;
-
-            RunLocalToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_LocalToLocal_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isDestinationADirectory = true;
-
-            RunLocalToLocalTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_FtpToLocal_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isDestinationADirectory = true;
-
-            RunFtpToLocalTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_sFtpToLocal_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isDestinationADirectory = true;
-
-            RunsFtpToLocalTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_UncToLocal_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isDestinationADirectory = true;
-
-            RunUncToLocalTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_LocalToFtp_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isDestinationADirectory = true;
-
-            RunLocalToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_LocalTosFtp_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isDestinationADirectory = true;
-
-            RunLocalTosFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_LocalToUnc_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isDestinationADirectory = true;
-
-            RunLocalToUncTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_FtpToFtp_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isDestinationADirectory = true;
-
-            RunFtpToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_sFtpToFtp_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isDestinationADirectory = true;
-
-            RunsFtpToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_UncToFtp_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isDestinationADirectory = true;
-
-            RunUncToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_LocalToLocal_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        {
-            const bool overWrite = true;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunLocalToLocalTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_LocalToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        {
-            const bool overWrite = true;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunLocalToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_LocalTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        {
-            const bool overWrite = true;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunLocalTosFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_LocalToUnc_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        {
-            const bool overWrite = true;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunLocalToUncTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_FtpToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        {
-            const bool overWrite = true;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunFtpToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_UncToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        {
-            const bool overWrite = true;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunUncToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_sFtpToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        {
-            const bool overWrite = true;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunsFtpToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_FtpToUnc_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        {
-            const bool overWrite = true;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunFtpToUncTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_FtpTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        {
-            const bool overWrite = true;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunFtpTosFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_FtpToLocal_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        {
-            const bool overWrite = true;
-            const string sourceFileName = "source.txt";
-            const string destinationFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunFtpToLocalTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_LocalToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = false;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunLocalToLocalTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_FtpToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = false;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunFtpToLocalTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_sFtpToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = false;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunsFtpToLocalTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_UncToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = false;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunUncToLocalTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_LocalToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = false;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunLocalToFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_LocalTosFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = false;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunLocalTosFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_LocalToUnc_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = false;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunLocalToUncTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_FtpToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = false;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunFtpToFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_sFtpToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = false;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunsFtpToFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_UncToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = false;
-            const bool isSourceADirectory = true;
-            const bool isDestinationADirectory = true;
-            RunUncToFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_LocalToLocal_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = false;
-            RunLocalToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_LocalToFtp_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = false;
-            RunLocalToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_LocalTosFtp_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = false;
-            RunLocalTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_LocalToUnc_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = false;
-            RunLocalToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_FtpToLocal_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = false;
-            RunFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_sFtpToLocal_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = false;
-            RunsFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_UncToLocal_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = false;
-            RunUncToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_FtpTosFtp_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = false;
-            RunFtpTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_FtpToUnc_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = false;
-            RunFtpToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_FtpToFtp_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = false;
-            RunFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_UncToFtp_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = false;
-            RunUncToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_sFtpToFtp_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = false;
-            RunsFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_LocalToLocal_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = true;
-            RunLocalToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_LocalToFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = true;
-            RunLocalToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_LocalTosFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = true;
-            RunLocalTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_LocalToUnc_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = true;
-            RunLocalToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_FtpToLocal_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = true;
-            RunFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_sFtpToLocal_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = true;
-            RunsFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_UncToLocal_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = true;
-            RunUncToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_FtpToFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = true;
-            RunFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_FtpTosFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = true;
-            RunFtpTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_FtpToUnc_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = true;
-            RunFtpToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_sFtpToFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = true;
-            RunsFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_sFtpTosFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = true;
-            RunsFtpTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_sFtpToUnc_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = true;
-            RunsFtpToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_UncToFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = true;
-            RunUncToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_UncTosFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = true;
-            RunUncTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Rename_UncToUnc_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = true;
-            RunUncToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_sFtpToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
-        {
-            const bool overWrite = true;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = false;
-            RunsFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_LocalToFtp_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
-        {
-            const bool overWrite = true;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = false;
-            RunLocalToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Rename")]
-        public void Dev2ActivityIOBroker_Rename_LocalToUnc_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
-        {
-            const bool overWrite = true;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.txt";
-
-
-            const bool createSourceDirectory = true;
-            const bool createDestinationDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool isDestinationADirectory = false;
-            RunLocalToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-            {
-                var RenameTo = new Dev2CRUDOperationTO(overWrite);
-                return ActivityIOFactory.CreateOperationsBroker()
-                                        .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
-            });
-        }
-
-        #endregion
+        //#region Rename Unit Tests
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_LocalToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isDestinationADirectory = false;
+
+        //    RunLocalToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory,
+        //       (sourceEndPoint, destinationEndPoint) =>
+        //       {
+        //           var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //           return ActivityIOFactory.CreateOperationsBroker()
+        //                                   .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //       });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_SourceAndDesinationFilesAreTheSame_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isDestinationADirectory = false;
+
+        //    RunLocalToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory,
+        //       (sourceEndPoint, destinationEndPoint) =>
+        //       {
+        //           var CopyTo = new Dev2CRUDOperationTO(overWrite);
+        //           return ActivityIOFactory.CreateOperationsBroker()
+        //                                   .Rename(sourceEndPoint, sourceEndPoint, CopyTo);
+        //       });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_LocalToLocal_DestinationIsAChildOfSource_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = true;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunLocalToLocalTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var CopyTo = new Dev2CRUDOperationTO(overWrite);
+        //        destinationEndPoint.IOPath.Path = Path.Combine(sourceEndPoint.IOPath.Path,
+        //                                                       "DeeperFolder\\EvenDeeperFolder");
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, CopyTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_FtpToFtp_DestinationIsAChildOfSource_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = true;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunFtpToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var CopyTo = new Dev2CRUDOperationTO(overWrite);
+        //        destinationEndPoint.IOPath.Path = Path.Combine(sourceEndPoint.IOPath.Path,
+        //                                                       "DeeperFolder/EvenDeeperFolder");
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, CopyTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_sFTPTosFTP_DestinationIsAChildOfSource_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = true;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunsFtpTosFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var CopyTo = new Dev2CRUDOperationTO(overWrite);
+        //        destinationEndPoint.IOPath.Path = Path.Combine(sourceEndPoint.IOPath.Path,
+        //                                                       "DeeperFolder/EvenDeeperFolder");
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, CopyTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_UncToUnc_DestinationIsAChildOfSource_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = true;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunUncToUncTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var CopyTo = new Dev2CRUDOperationTO(overWrite);
+        //        destinationEndPoint.IOPath.Path = Path.Combine(sourceEndPoint.IOPath.Path,
+        //                                                       "DeeperFolder\\EvenDeeperFolder");
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, CopyTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_FtpToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isDestinationADirectory = false;
+
+        //    RunFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory,
+        //       (sourceEndPoint, destinationEndPoint) =>
+        //       {
+        //           var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //           return ActivityIOFactory.CreateOperationsBroker()
+        //                                   .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //       });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_sFtpToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isDestinationADirectory = false;
+
+        //    RunsFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory,
+        //       (sourceEndPoint, destinationEndPoint) =>
+        //       {
+        //           var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //           return ActivityIOFactory.CreateOperationsBroker()
+        //                                   .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //       });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_UncToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isDestinationADirectory = false;
+
+        //    RunUncToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory,
+        //       (sourceEndPoint, destinationEndPoint) =>
+        //       {
+        //           var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //           return ActivityIOFactory.CreateOperationsBroker()
+        //                                   .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //       });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_FtpToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isDestinationADirectory = false;
+
+        //    RunFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_sFtpToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isDestinationADirectory = false;
+
+        //    RunsFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_UncToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isDestinationADirectory = false;
+
+        //    RunUncToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_LocalToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isDestinationADirectory = false;
+
+        //    RunLocalToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_LocalTosFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isDestinationADirectory = false;
+
+        //    RunLocalTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_LocalToUnc_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isDestinationADirectory = false;
+
+        //    RunLocalToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_LocalToLocal_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isDestinationADirectory = true;
+
+        //    RunLocalToLocalTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_FtpToLocal_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isDestinationADirectory = true;
+
+        //    RunFtpToLocalTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_sFtpToLocal_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isDestinationADirectory = true;
+
+        //    RunsFtpToLocalTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_UncToLocal_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isDestinationADirectory = true;
+
+        //    RunUncToLocalTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_LocalToFtp_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isDestinationADirectory = true;
+
+        //    RunLocalToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_LocalTosFtp_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isDestinationADirectory = true;
+
+        //    RunLocalTosFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_LocalToUnc_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isDestinationADirectory = true;
+
+        //    RunLocalToUncTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_FtpToFtp_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isDestinationADirectory = true;
+
+        //    RunFtpToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_sFtpToFtp_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isDestinationADirectory = true;
+
+        //    RunsFtpToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_UncToFtp_DirectoryToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isDestinationADirectory = true;
+
+        //    RunUncToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_LocalToLocal_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunLocalToLocalTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_LocalToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunLocalToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_LocalTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunLocalTosFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_LocalToUnc_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunLocalToUncTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_FtpToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunFtpToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_UncToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunUncToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_sFtpToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunsFtpToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_FtpToUnc_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunFtpToUncTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_FtpTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunFtpTosFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_FtpToLocal_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunFtpToLocalTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_LocalToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunLocalToLocalTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_FtpToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunFtpToLocalTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_sFtpToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunsFtpToLocalTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_UncToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunUncToLocalTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_LocalToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunLocalToFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_LocalTosFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunLocalTosFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_LocalToUnc_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunLocalToUncTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_FtpToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunFtpToFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_sFtpToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunsFtpToFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_UncToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = false;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunUncToFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_LocalToLocal_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = false;
+        //    RunLocalToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_LocalToFtp_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = false;
+        //    RunLocalToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_LocalTosFtp_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = false;
+        //    RunLocalTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_LocalToUnc_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = false;
+        //    RunLocalToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_FtpToLocal_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = false;
+        //    RunFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_sFtpToLocal_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = false;
+        //    RunsFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_UncToLocal_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = false;
+        //    RunUncToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_FtpTosFtp_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = false;
+        //    RunFtpTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_FtpToUnc_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = false;
+        //    RunFtpToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_FtpToFtp_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = false;
+        //    RunFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_UncToFtp_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = false;
+        //    RunUncToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_sFtpToFtp_FileToFile_OverwriteIsFalse_DestinationExists_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = false;
+        //    RunsFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_LocalToLocal_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = true;
+        //    RunLocalToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_LocalToFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = true;
+        //    RunLocalToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_LocalTosFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = true;
+        //    RunLocalTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_LocalToUnc_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = true;
+        //    RunLocalToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_FtpToLocal_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = true;
+        //    RunFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_sFtpToLocal_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = true;
+        //    RunsFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_UncToLocal_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = true;
+        //    RunUncToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_FtpToFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = true;
+        //    RunFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_FtpTosFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = true;
+        //    RunFtpTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_FtpToUnc_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = true;
+        //    RunFtpToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_sFtpToFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = true;
+        //    RunsFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_sFtpTosFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = true;
+        //    RunsFtpTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_sFtpToUnc_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = true;
+        //    RunsFtpToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_UncToFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = true;
+        //    RunUncToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_UncTosFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = true;
+        //    RunUncTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Rename_UncToUnc_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = true;
+        //    RunUncToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_sFtpToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = false;
+        //    RunsFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_LocalToFtp_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = false;
+        //    RunLocalToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Rename")]
+        //public void Dev2ActivityIOBroker_Rename_LocalToUnc_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string sourceFileName = "source.txt";
+        //    const string destinationFile = "source.txt";
+
+
+        //    const bool createSourceDirectory = true;
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    const bool isDestinationADirectory = false;
+        //    RunLocalToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    {
+        //        var RenameTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Rename(sourceEndPoint, destinationEndPoint, RenameTo);
+        //    });
+        //}
+
+        //#endregion
 
         //#region Copy Unit Tests
         //[TestMethod]
@@ -8384,925 +8384,1953 @@ namespace Dev2.Integration.Tests.Activities
 
         //#endregion
 
-        //#region UnZip Unit Tests
+        #region UnZip Unit Tests
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_LocalToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool createDestinationDirectory = false;
+            const bool isDestinationADirectory = true;
+
+            RunLocalToLocalTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory,
+                 (sourceEndPoint, destinationEndPoint) =>
+                 {
+                     var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                     return ActivityIOFactory.CreateOperationsBroker()
+                                             .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+                 }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_LocalToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const bool createSourceDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool createDestinationDirectory = false;
+            const bool isDestinationADirectory = true;
+
+            RunLocalToFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+        
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_LocalToUnc_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+
+            const bool createSourceDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool createDestinationDirectory = false;
+            const bool isDestinationADirectory = true;
+
+            RunLocalToUncTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_FtpToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const bool isRemoteSource = true;
+
+            const bool createSourceDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool createDestinationDirectory = false;
+            const bool isDestinationADirectory = true;
+
+            RunFtpToFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_sFtpToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const bool isRemoteSource = true;
+
+            const bool createSourceDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool createDestinationDirectory = false;
+            const bool isDestinationADirectory = true;
+
+            RunsFtpToFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_UncToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const bool isRemoteSource = true;
+
+            const bool createSourceDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool createDestinationDirectory = false;
+            const bool isDestinationADirectory = true;
+
+            RunUncToFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_FtpToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const bool isRemoteSource = true;
+
+            const bool createSourceDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool createDestinationDirectory = false;
+            const bool isDestinationADirectory = true;
+
+            RunFtpToLocalTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_sFtpToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const bool isRemoteSource = true;
+
+            const bool createSourceDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool createDestinationDirectory = false;
+            const bool isDestinationADirectory = true;
+
+            RunsFtpToLocalTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_UncToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const bool isRemoteSource = true;
+
+            const bool createSourceDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool createDestinationDirectory = false;
+            const bool isDestinationADirectory = true;
+
+            RunUncToLocalTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_UnZip_LocalToLocal_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunLocalToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_UnZip_LocalToFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunLocalToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_UnZip_LocalTosFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunLocalTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_UnZip_LocalToUnc_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunLocalToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_UnZip_FtpToLocal_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_UnZip_sFtpToLocal_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunsFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_UnZip_UncToLocal_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunUncToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_UnZip_FtpToFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_UnZip_FtpTosFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunFtpTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_UnZip_FtpToUnc_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunFtpToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        [ExpectedException(typeof(Exception))]
+        [Ignore]
+        public void Dev2ActivityIOBroker_UnZip_sFtpToFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunsFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_UnZip_sFtpTosFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunsFtpTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_UnZip_sFtpToUnc_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunsFtpToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_UnZip_UncToFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunUncToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_UnZip_UncTosFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunUncTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_UnZip_UncToUnc_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunUncToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_LocalToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        {
+            const bool overWrite = true;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunLocalToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_LocalToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        {
+            const bool overWrite = true;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunLocalToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_LocalTosFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        {
+            const bool overWrite = true;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunLocalTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_LocalToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        {
+            const bool overWrite = true;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunLocalToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_FtpToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        {
+            const bool overWrite = true;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_sFtpToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        {
+            const bool overWrite = true;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunsFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_UncToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        {
+            const bool overWrite = true;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunUncToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_FtpToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        {
+            const bool overWrite = true;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_sFtpToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        {
+            const bool overWrite = true;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunsFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_UncToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        {
+            const bool overWrite = true;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunUncToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_FtpToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        {
+            const bool overWrite = true;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunFtpToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_sFtpToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        {
+            const bool overWrite = true;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunsFtpToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        public void Dev2ActivityIOBroker_UnZip_UncToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        {
+            const bool overWrite = true;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunUncToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_UnZip_SourceIsADirectory_ThrowsException()
+        {
+            const bool overWrite = true;
+            const string sourceFileName = "source.txt";
+            const string destinationFileName = "source.txt";
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = true;
+            const bool isDestinationADirectory = true;
+            RunFtpToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_UnZip")]
+        [ExpectedException(typeof(Exception))]
+        public void Dev2ActivityIOBroker_UnZip_DestinationIsAFile_ThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.txt";
+
+
+            const bool createSourceDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool createDestinationDirectory = false;
+            const bool isDestinationADirectory = false;
+
+            RunLocalTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
+            }, _zipFile);
+        }
+
+        #endregion
+
+        //#region Create Unit Tests
+
         //[TestMethod]
         //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_LocalToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_FileLocally_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
         //{
         //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = false;
         //    const bool isSourceADirectory = false;
-        //    const bool createDestinationDirectory = false;
-        //    const bool isDestinationADirectory = true;
 
-        //    RunLocalToLocalTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory,
-        //         (sourceEndPoint, destinationEndPoint) =>
+        //    RunLocalTestCase(fileName, createSourceDirectory, isSourceADirectory,
+        //         (sourceEndPoint) =>
         //         {
-        //             var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+        //             var CreateTo = new Dev2CRUDOperationTO(overWrite);
         //             return ActivityIOFactory.CreateOperationsBroker()
-        //                                     .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //         }, _zipFile);
+        //                                     .Create(sourceEndPoint, CreateTo, false);
+        //         });
         //}
 
         //[TestMethod]
         //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_LocalToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
         //{
         //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const bool createSourceDirectory = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = false;
         //    const bool isSourceADirectory = false;
-        //    const bool createDestinationDirectory = false;
-        //    const bool isDestinationADirectory = true;
 
-        //    RunLocalToFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    RunFtpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
         //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
         //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
         //}
-
-        ////[TestMethod]
-        ////[Owner("Tshepo Ntlhokoa")]
-        ////[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        ////public void Dev2ActivityIOBroker_UnZip_LocalTosFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        ////{
-        ////    const bool overWrite = false;
-        ////    const string sourceFileName = "source.txt";
-
-
-        ////    const bool createSourceDirectory = true;
-        ////    const bool isSourceADirectory = false;
-        ////    const bool createDestinationDirectory = false;
-        ////    const bool isDestinationADirectory = true;
-
-        ////    RunLocalTosFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        ////    {
-        ////        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        ////        return ActivityIOFactory.CreateOperationsBroker()
-        ////                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        ////    }, _zipFile);
-        ////}
 
         //[TestMethod]
         //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_LocalToUnc_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_FileUnc_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
         //{
         //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-
-        //    const bool createSourceDirectory = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = false;
         //    const bool isSourceADirectory = false;
-        //    const bool createDestinationDirectory = false;
-        //    const bool isDestinationADirectory = true;
 
-        //    RunLocalToUncTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    RunUncTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
         //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
         //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
         //}
 
         //[TestMethod]
         //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_FtpToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnsFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
         //{
         //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const bool isRemoteSource = true;
-
-        //    const bool createSourceDirectory = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = false;
         //    const bool isSourceADirectory = false;
-        //    const bool createDestinationDirectory = false;
-        //    const bool isDestinationADirectory = true;
 
-        //    RunFtpToFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    RunsFftpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
         //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
         //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
         //}
 
         //[TestMethod]
         //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_sFtpToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        //{
-        //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const bool isRemoteSource = true;
-
-        //    const bool createSourceDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool createDestinationDirectory = false;
-        //    const bool isDestinationADirectory = true;
-
-        //    RunsFtpToFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_UncToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        //{
-        //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const bool isRemoteSource = true;
-
-        //    const bool createSourceDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool createDestinationDirectory = false;
-        //    const bool isDestinationADirectory = true;
-
-        //    RunUncToFtpTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_FtpToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        //{
-        //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const bool isRemoteSource = true;
-
-        //    const bool createSourceDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool createDestinationDirectory = false;
-        //    const bool isDestinationADirectory = true;
-
-        //    RunFtpToLocalTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_sFtpToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        //{
-        //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const bool isRemoteSource = true;
-
-        //    const bool createSourceDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool createDestinationDirectory = false;
-        //    const bool isDestinationADirectory = true;
-
-        //    RunsFtpToLocalTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_UncToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
-        //{
-        //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const bool isRemoteSource = true;
-
-        //    const bool createSourceDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool createDestinationDirectory = false;
-        //    const bool isDestinationADirectory = true;
-
-        //    RunUncToLocalTestCase(sourceFileName, "", createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
         //[ExpectedException(typeof(Exception))]
-        //public void Dev2ActivityIOBroker_UnZip_LocalToLocal_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryLocally_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
         //{
         //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
+        //    const string fileName = "source.txt";
         //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunLocalToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    const bool isSourceADirectory = true;
+
+        //    RunLocalTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
         //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
         //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
         //}
 
         //[TestMethod]
         //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
         //[ExpectedException(typeof(Exception))]
-        //public void Dev2ActivityIOBroker_UnZip_LocalToFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryOnFtp_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
         //{
         //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
+        //    const string fileName = "source.txt";
         //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunLocalToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    const bool isSourceADirectory = true;
+
+        //    RunFtpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
         //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
         //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
         //}
+
 
         //[TestMethod]
         //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
         //[ExpectedException(typeof(Exception))]
-        //public void Dev2ActivityIOBroker_UnZip_LocalTosFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryOnsFtp_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
         //{
         //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
+        //    const string fileName = "source.txt";
         //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunLocalTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    const bool isSourceADirectory = true;
+
+        //    RunsFftpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
         //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
         //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
         //}
 
         //[TestMethod]
         //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
         //[ExpectedException(typeof(Exception))]
-        //public void Dev2ActivityIOBroker_UnZip_LocalToUnc_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryOnUnc_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
         //{
         //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
+        //    const string fileName = "source.txt";
         //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunLocalToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    const bool isSourceADirectory = true;
+
+        //    RunUncTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
         //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
         //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
         //}
 
         //[TestMethod]
         //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //[ExpectedException(typeof(Exception))]
-        //public void Dev2ActivityIOBroker_UnZip_FtpToLocal_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        //{
-        //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //[ExpectedException(typeof(Exception))]
-        //public void Dev2ActivityIOBroker_UnZip_sFtpToLocal_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        //{
-        //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunsFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //[ExpectedException(typeof(Exception))]
-        //public void Dev2ActivityIOBroker_UnZip_UncToLocal_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        //{
-        //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunUncToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //[ExpectedException(typeof(Exception))]
-        //public void Dev2ActivityIOBroker_UnZip_FtpToFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        //{
-        //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //[ExpectedException(typeof(Exception))]
-        //public void Dev2ActivityIOBroker_UnZip_FtpTosFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        //{
-        //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunFtpTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //[ExpectedException(typeof(Exception))]
-        //public void Dev2ActivityIOBroker_UnZip_FtpToUnc_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        //{
-        //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunFtpToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //[ExpectedException(typeof(Exception))]
-        //[Ignore]
-        //public void Dev2ActivityIOBroker_UnZip_sFtpToFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        //{
-        //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunsFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //[ExpectedException(typeof(Exception))]
-        //public void Dev2ActivityIOBroker_UnZip_sFtpTosFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        //{
-        //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunsFtpTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //[ExpectedException(typeof(Exception))]
-        //public void Dev2ActivityIOBroker_UnZip_sFtpToUnc_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        //{
-        //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunsFtpToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //[ExpectedException(typeof(Exception))]
-        //public void Dev2ActivityIOBroker_UnZip_UncToFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        //{
-        //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunUncToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //[ExpectedException(typeof(Exception))]
-        //public void Dev2ActivityIOBroker_UnZip_UncTosFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        //{
-        //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunUncTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //[ExpectedException(typeof(Exception))]
-        //public void Dev2ActivityIOBroker_UnZip_UncToUnc_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
-        //{
-        //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunUncToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_LocalToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryLocally_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
         //{
         //    const bool overWrite = true;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunLocalToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_LocalToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        //{
-        //    const bool overWrite = true;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunLocalToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_LocalTosFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        //{
-        //    const bool overWrite = true;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunLocalTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_LocalToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        //{
-        //    const bool overWrite = true;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunLocalToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_FtpToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        //{
-        //    const bool overWrite = true;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_sFtpToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        //{
-        //    const bool overWrite = true;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunsFtpToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_UncToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        //{
-        //    const bool overWrite = true;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunUncToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_FtpToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        //{
-        //    const bool overWrite = true;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_sFtpToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        //{
-        //    const bool overWrite = true;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunsFtpToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_UncToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        //{
-        //    const bool overWrite = true;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunUncToFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_FtpToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        //{
-        //    const bool overWrite = true;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunFtpToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_sFtpToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        //{
-        //    const bool overWrite = true;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunsFtpToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //public void Dev2ActivityIOBroker_UnZip_UncToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
-        //{
-        //    const bool overWrite = true;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
-
-
-        //    const bool createSourceDirectory = true;
-        //    const bool createDestinationDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool isDestinationADirectory = true;
-        //    RunUncToUncTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
-        //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
-        //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
-        //}
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //[ExpectedException(typeof(Exception))]
-        //public void Dev2ActivityIOBroker_UnZip_SourceIsADirectory_ThrowsException()
-        //{
-        //    const bool overWrite = true;
-        //    const string sourceFileName = "source.txt";
+        //    const string fileName = "source.txt";
         //    const string destinationFileName = "source.txt";
+
 
         //    const bool createSourceDirectory = true;
         //    const bool createDestinationDirectory = true;
         //    const bool isSourceADirectory = true;
         //    const bool isDestinationADirectory = true;
-        //    RunFtpToFtpTestCase(sourceFileName, destinationFileName, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    RunLocalTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
         //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
         //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
         //}
 
         //[TestMethod]
         //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_UnZip")]
-        //[ExpectedException(typeof(Exception))]
-        //public void Dev2ActivityIOBroker_UnZip_DestinationIsAFile_ThrowsException()
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryOnFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+
+        //    RunFtpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryOnUnc_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+
+        //    RunUncTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryOnsFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+
+        //    RunsFftpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryLocally_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
         //{
         //    const bool overWrite = false;
-        //    const string sourceFileName = "source.txt";
-        //    const string destinationFile = "source.txt";
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = false;
+        //    const bool isSourceADirectory = true;
+
+        //    RunLocalTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryOnFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = false;
+        //    const bool isSourceADirectory = true;
+        //    RunFtpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryOnUnc_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = false;
+        //    const bool isSourceADirectory = true;
+        //    RunUncTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryOnsFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = false;
+        //    const bool isSourceADirectory = true;
+        //    RunsFftpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_FileLocally_OverwriteIsFalse_DestinationExists_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunLocalTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_FileLocally_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunLocalTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnFtp_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunFtpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnsFtp_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    RunsFftpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnUnc_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunUncTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_FileLocally_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunLocalTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunFtpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnsFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunsFftpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnUnc_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    RunUncTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnFtp_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunFtpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnsFtp_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunsFftpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnUnc_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunUncTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, false);
+        //    });
+        //}
+
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_FileLocally_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = false;
+        //    const bool isSourceADirectory = false;
+
+        //    RunLocalTestCase(fileName, createSourceDirectory, isSourceADirectory,
+        //         (sourceEndPoint) =>
+        //         {
+        //             var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //             return ActivityIOFactory.CreateOperationsBroker()
+        //                                     .Create(sourceEndPoint, CreateTo, true);
+        //         });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_FileOnFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = false;
+        //    const bool isSourceADirectory = false;
+
+        //    RunFtpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_FileUnc_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = false;
+        //    const bool isSourceADirectory = false;
+
+        //    RunUncTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_FileOnsFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = false;
+        //    const bool isSourceADirectory = false;
+
+        //    RunsFftpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Create_ToFile_DirectoryLocally_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+
+        //    RunLocalTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Create_ToFile_DirectoryOnFtp_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+
+        //    RunFtpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Create_ToFile_DirectoryOnsFtp_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+
+        //    RunsFftpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Create_ToFile_DirectoryOnUnc_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+
+        //    RunUncTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_DirectoryLocally_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const string destinationFileName = "source.txt";
 
 
         //    const bool createSourceDirectory = true;
-        //    const bool isSourceADirectory = false;
-        //    const bool createDestinationDirectory = false;
-        //    const bool isDestinationADirectory = false;
-
-        //    RunLocalTosFtpTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+        //    const bool createDestinationDirectory = true;
+        //    const bool isSourceADirectory = true;
+        //    const bool isDestinationADirectory = true;
+        //    RunLocalTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
         //    {
-        //        var UnZipTo = new Dev2UnZipOperationTO("", overWrite);
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
         //        return ActivityIOFactory.CreateOperationsBroker()
-        //                                .UnZip(sourceEndPoint, destinationEndPoint, UnZipTo);
-        //    }, _zipFile);
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
         //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_DirectoryOnFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+
+        //    RunFtpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_DirectoryOnUnc_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+
+        //    RunUncTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_DirectoryOnsFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = true;
+
+        //    RunsFftpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_DirectoryLocally_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = false;
+        //    const bool isSourceADirectory = true;
+
+        //    RunLocalTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_DirectoryOnFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = false;
+        //    const bool isSourceADirectory = true;
+        //    RunFtpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_DirectoryOnUnc_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = false;
+        //    const bool isSourceADirectory = true;
+        //    RunUncTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_DirectoryOnsFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = false;
+        //    const bool isSourceADirectory = true;
+        //    RunsFftpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Create_ToFile_FileLocally_OverwriteIsFalse_DestinationExists_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunLocalTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Create_ToFile_FileLocally_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunLocalTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Create_ToFile_FileOnFtp_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunFtpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Create_ToFile_FileOnsFtp_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    RunsFftpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //[ExpectedException(typeof(Exception))]
+        //public void Dev2ActivityIOBroker_Create_ToFile_FileOnUnc_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
+        //{
+        //    const bool overWrite = false;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunUncTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_FileLocally_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunLocalTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_FileOnFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunFtpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_FileOnsFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunsFftpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_FileOnUnc_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+        //    RunUncTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_FileOnFtp_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunFtpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_FileOnsFtp_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunsFftpTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("Dev2ActivityIOBroker_Create")]
+        //public void Dev2ActivityIOBroker_Create_ToFile_FileOnUnc_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
+        //{
+        //    const bool overWrite = true;
+        //    const string fileName = "source.txt";
+        //    const bool createSourceDirectory = true;
+        //    const bool isSourceADirectory = false;
+
+        //    RunUncTestCase(fileName, createSourceDirectory, isSourceADirectory, (sourceEndPoint) =>
+        //    {
+        //        var CreateTo = new Dev2CRUDOperationTO(overWrite);
+        //        return ActivityIOFactory.CreateOperationsBroker()
+        //                                .Create(sourceEndPoint, CreateTo, true);
+        //    });
+        //}
+
 
         //#endregion
 
@@ -9323,6 +10351,58 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
             destination.EndPoint.Delete(destination.EndPoint.IOPath);
+        }
+        
+        private void RunLocalTestCase(string fileName, bool createSourceDirectory, bool isDirectory,
+                                        Func<IActivityIOOperationsEndPoint, string> actionToPerform, string testFileName = "")
+        {
+            const string sourceData = "some source string data";
+            dynamic source = CreateLocalEndPoint(fileName, sourceData, createSourceDirectory, testFileName, isDirectory);
+            //------------Execute Test---------------------------
+
+            var result = actionToPerform(source.EndPoint);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Success", result);
+            source.EndPoint.Delete(source.EndPoint.IOPath);
+        }
+
+        private void RunFtpTestCase(string fileName, bool createSourceDirectory, bool isDirectory,
+                                       Func<IActivityIOOperationsEndPoint, string> actionToPerform, string testFileName = "")
+        {
+            const string sourceData = "some source string data";
+            dynamic source = CreateFtpEndPoint(fileName, sourceData, createSourceDirectory, testFileName, isDirectory);
+            //------------Execute Test---------------------------
+
+            var result = actionToPerform(source.EndPoint);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Success", result);
+            source.EndPoint.Delete(source.EndPoint.IOPath);
+        }
+
+        private void RunsFftpTestCase(string fileName, bool createSourceDirectory, bool isDirectory,
+                                      Func<IActivityIOOperationsEndPoint, string> actionToPerform, string testFileName = "")
+        {
+            const string sourceData = "some source string data";
+            dynamic source = CreatesFtpEndPoint(fileName, sourceData, createSourceDirectory, testFileName, isDirectory);
+            //------------Execute Test---------------------------
+
+            var result = actionToPerform(source.EndPoint);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Success", result);
+            source.EndPoint.Delete(source.EndPoint.IOPath);
+        }
+
+        private void RunUncTestCase(string fileName, bool createSourceDirectory, bool isDirectory,
+                                     Func<IActivityIOOperationsEndPoint, string> actionToPerform, string testFileName = "")
+        {
+            const string sourceData = "some source string data";
+            dynamic source = CreateUncEndPoint(fileName, sourceData, createSourceDirectory, testFileName, isDirectory);
+            //------------Execute Test---------------------------
+
+            var result = actionToPerform(source.EndPoint);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Success", result);
+            source.EndPoint.Delete(source.EndPoint.IOPath);
         }
 
         private void RunFtpToLocalTestCase(string sourceFileName, string destinationFile, bool createSourceDirectory,

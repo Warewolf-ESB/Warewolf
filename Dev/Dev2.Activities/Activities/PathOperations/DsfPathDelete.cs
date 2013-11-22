@@ -75,7 +75,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(inputItr).TheValue,
                                                                                 colItr.FetchNextRow(unameItr).TheValue,
                                                                                 colItr.FetchNextRow(passItr).TheValue,
-                                                                                IsNotCertVerifiable);
+                                                                                true);
 
                     IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
                     string result = broker.Delete(dstEndPoint);

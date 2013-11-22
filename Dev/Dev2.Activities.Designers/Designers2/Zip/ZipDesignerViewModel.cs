@@ -61,7 +61,7 @@ namespace Dev2.Activities.Designers2.Zip
             Errors = null;
             ValidateUserNameAndPassword();
             ValidateDestinationUsernameAndPassword();
-            ValidateInputAndOutputPaths();
+            ValidateInputPath();
         }
 
     }

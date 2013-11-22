@@ -72,7 +72,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IActivityIOPath IOpath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(inputItr).TheValue,
                                                                                 colItr.FetchNextRow(unameItr).TheValue,
                                                                                 colItr.FetchNextRow(passItr).TheValue,
-                                                                                IsNotCertVerifiable);
+                                                                                true);
 
                 IActivityIOOperationsEndPoint endpoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(IOpath);
                 try

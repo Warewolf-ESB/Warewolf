@@ -709,7 +709,7 @@ namespace Dev2.PathOperations
                     {
                         foreach(string d in dirs)
                         {
-                            result.Add(ActivityIOFactory.CreatePathFromString(d, src.Username, src.Password));
+                            result.Add(ActivityIOFactory.CreatePathFromString(d, src.Username, src.Password, true));
                         }
                     }
                 }

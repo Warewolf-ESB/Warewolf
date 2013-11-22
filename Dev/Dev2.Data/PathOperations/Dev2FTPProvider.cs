@@ -122,6 +122,7 @@ namespace Dev2.PathOperations {
         {
             var hostName = ExtractHostNameFromPath(path.Path);
             var sftp = new Sftp(hostName, path.Username, path.Password);
+            
             try
             {
                 sftp.Connect();
@@ -347,7 +348,7 @@ namespace Dev2.PathOperations {
                         while(!reader.EndOfStream)
                         {
                             string uri = BuildValidPathForFTP(src, reader.ReadLine());
-                            result.Add(ActivityIOFactory.CreatePathFromString(uri,src.Username,src.Password));
+                            result.Add(ActivityIOFactory.CreatePathFromString(uri,src.Username,src.Password, true));
                         }
 
                         reader.Close();

@@ -360,7 +360,7 @@ namespace Dev2.PathOperations
             while (pos >= 0 && deepestIndex == -1)
             {
                 IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(dirParts[pos], activityIOPath.Username,
-                                                                                 activityIOPath.Password);
+                                                                                 activityIOPath.Password, true);
                 try
                 {
                     if (dst.ListDirectory(tmpPath) != null)
@@ -385,7 +385,7 @@ namespace Dev2.PathOperations
             while (pos <= startDepth && ok)
             {
                 IActivityIOPath toCreate = ActivityIOFactory.CreatePathFromString(dirParts[pos], dst.IOPath.Username,
-                                                                                  dst.IOPath.Password);
+                                                                                  dst.IOPath.Password, true);
                 dst.IOPath = toCreate;
                 ok = CreateDirectory(dst, args);
                 pos++;
@@ -540,7 +540,7 @@ namespace Dev2.PathOperations
                     IActivityIOPath destinationPath =
                         ActivityIOFactory.CreatePathFromString(Path.Combine(dst.IOPath.Path, directory),
                                                                dst.IOPath.Username,
-                                                               dst.IOPath.Password);
+                                                               dst.IOPath.Password, true);
 
                     IActivityIOOperationsEndPoint destinationEndPoint =
                         ActivityIOFactory.CreateOperationEndPointFromIOPath(destinationPath);
@@ -603,7 +603,7 @@ namespace Dev2.PathOperations
                             ActivityIOFactory.CreatePathFromString(
                                 string.Format("{0}{1}{2}", origDstPath, dst.PathSeperator(),
                                               (Dev2ActivityIOPathUtils.ExtractFileName(p.Path))), dst.IOPath.Username,
-                                dst.IOPath.Password);
+                                dst.IOPath.Password, true);
                         if (args.Overwrite || !dst.PathExist(cpPath))
                         {
                             using (s = src.Get(p))
@@ -612,7 +612,7 @@ namespace Dev2.PathOperations
                                 // Need to ensure we have a file name on dst
                                 IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(cpPath.Path,
                                                                                                  dst.IOPath.Username,
-                                                                                                 dst.IOPath.Password);
+                                                                                                 dst.IOPath.Password, true);
                                 IActivityIOOperationsEndPoint tmpEP =
                                     ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
                                 var whereToPut = GetWhereToPut(src, dst);
@@ -767,7 +767,11 @@ namespace Dev2.PathOperations
 
             if (src.RequiresLocalTmpStorage())
             {
-                string tmpFile = CreateTmpFile();
+                string tempDir = CreateTmpDirectory();
+                var tmpFile = Path.Combine(tempDir,
+                                           src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
+                                                                 StringSplitOptions.RemoveEmptyEntries)
+                                              .Last());
                 packFile = tmpFile;
                 Stream s = src.Get(src.IOPath);
                 File.WriteAllBytes(tmpFile, s.ToByteArray());
@@ -853,7 +857,7 @@ namespace Dev2.PathOperations
                 dst =
                     ActivityIOFactory.CreateOperationEndPointFromIOPath(
                         ActivityIOFactory.CreatePathFromString(dst.IOPath.Path, dst.IOPath.Username,
-                                                               dst.IOPath.Password));
+                                                               dst.IOPath.Password, true));
 
                 var zipTransferArgs = new Dev2CRUDOperationTO(args.Overwrite);
 

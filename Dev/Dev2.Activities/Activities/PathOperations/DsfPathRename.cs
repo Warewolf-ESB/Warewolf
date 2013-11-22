@@ -99,12 +99,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IActivityIOPath src = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(inputItr).TheValue,
                                                                                 colItr.FetchNextRow(unameItr).TheValue,
                                                                                 colItr.FetchNextRow(passItr).TheValue,
-                                                                                IsNotCertVerifiable);
+                                                                                true);
 
                     IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(outputItr).TheValue,
                                                                                     colItr.FetchNextRow(desunameItr).TheValue,
                                                                                     colItr.FetchNextRow(despassItr).TheValue,
-                                                                                    IsNotCertVerifiable);
+                                                                                    true);
 
                     IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
                     IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
