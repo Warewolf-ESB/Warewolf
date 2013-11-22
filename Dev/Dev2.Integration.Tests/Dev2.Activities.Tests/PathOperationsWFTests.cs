@@ -9,7 +9,6 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     /// Summary description for PathOperationsWFTests
     /// </summary>
     [TestClass]
-    [Ignore]//Ashley: until Tshepo is done with PBI 10795
     public class PathOperationsWFTests
     {
         string WebserverURI = ServerSettings.WebserverURI;
