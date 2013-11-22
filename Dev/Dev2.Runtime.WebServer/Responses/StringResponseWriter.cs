@@ -33,7 +33,7 @@ namespace Dev2.Runtime.WebServer.Responses
         {
             context.ResponseMessage.Content = new StringContent(_text);
             context.ResponseMessage.Content.Headers.ContentType = _contentType;
-            //UpdateContentDisposition(context.ResponseMessage);
+            UpdateContentDisposition(context.ResponseMessage);
         }
 
         void UpdateContentDisposition(HttpResponseMessage response)
@@ -54,7 +54,8 @@ namespace Dev2.Runtime.WebServer.Responses
                 if(extension != null)
                 {
                     response.Content.Headers.ContentType = ContentTypes.ForceDownload;
-                    response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue(string.Format("attachment; filename=\"Output.{0}\"", extension));
+                    response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                    response.Content.Headers.ContentDisposition.Parameters.Add(new NameValueHeaderValue("filename", "Output." + extension));
                     response.Headers.Add("Server", "Dev2 Server");
                 }
             }

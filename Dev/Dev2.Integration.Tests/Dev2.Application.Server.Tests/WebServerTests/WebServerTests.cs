@@ -22,7 +22,7 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
         [TestCategory("WebServer_ServicesGet")]
         public void WebServer_ServicesGet_DataIsNotLarge_DownloadHeadersNotAdded()
         {
-            string path = ServicesUri + "ABC";
+            string path = ServicesUri + "WebServerTestSmallString";
 
             HttpWebResponse result = TestHelper.GetResponseFromServer(path);
 
@@ -34,16 +34,15 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
 
             var contentTypeValue = result.Headers.Get(ContentType);
 
-            Assert.AreNotEqual("application/force-download", contentTypeValue);
+            Assert.IsFalse(contentTypeValue.Contains("application/force-download"));
         }
 
         [TestMethod]
-        [Ignore]//Ashley 22/11/2013: Hanging integration runs in the environment
         [TestCategory("WebServer_ServicesGet")]
         public void WebServer_ServicesGet_DataIsLarge_DownloadHeadersAdded()
         {
 
-            string path = ServerSettings.WebserverURI + "LargeDataTest";
+            string path = ServerSettings.WebserverURI + "WebServerTestLargeString";
 
             HttpWebResponse result = TestHelper.GetResponseFromServer(path);
 
@@ -56,7 +55,7 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
             var contentTypeValue = result.Headers.Get(ContentType);
             var contentDispositionValue = result.Headers.Get(ContentDisposition);
 
-            Assert.AreEqual("application/force-download", contentTypeValue);
+            StringAssert.Contains(contentTypeValue, "application/force-download");
             Assert.AreEqual("attachment; filename=Output.xml", contentDispositionValue);
         }
 
