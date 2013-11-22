@@ -1,14 +1,14 @@
-﻿using System.Data;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using Dev2.Runtime.Configuration.Tests.XML;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Xml.Linq;
 
 namespace Dev2.Runtime.Configuration.Tests.Settings
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ConfigurationTests
     {
         #region CTOR
