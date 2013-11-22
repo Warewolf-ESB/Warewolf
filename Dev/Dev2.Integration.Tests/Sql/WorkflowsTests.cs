@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dev2.Integration.Tests.Helpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Sql;
 
 
@@ -30,9 +31,8 @@ namespace Dev2.Integration.Tests.Sql
         [TestMethod]
         public void RunWorkflowIntegration()
         {
-            var workflows = new Workflows();
-            var result = workflows.RunWorkflow("http://localhost:1234/services/SampleEmployeesWorkflow?ResultType=Managers");
-            Assert.IsNotNull(result);
+            string reponseData = TestHelper.PostDataToWebserver(string.Format("{0}{1}", "http://localhost:1234/services/", "SampleEmployeesWorkflow?ResultType=Managers"));
+            Assert.IsNotNull(reponseData);
         }
 
     }
