@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Xml.Linq;
-using Dev2.Common;
-using Dev2.Common.Common;
-using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -15,7 +11,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
     /// <author>trevor.williams-ros</author>
     /// <date>2013/02/13</date>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ServicesTests
     {
         #region CreateInputsMethod
