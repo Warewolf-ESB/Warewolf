@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
 using System.Xml;
@@ -222,7 +223,7 @@ namespace Dev2.Runtime.Security
         #endregion
 
         #region EnsureSSL
-        public bool EnsureSSL(string certPath)
+        public bool EnsureSSL(string certPath, IPEndPoint endPoint)
         {
             bool result = false;
 
@@ -230,8 +231,8 @@ namespace Dev2.Runtime.Security
             {
                 try
                 {
-                    SSLCertificateBuilder certificateBuilder = new SSLCertificateBuilder();
-                    result = certificateBuilder.EnsureSSLCertificate(certPath);
+                    var certificateBuilder = new SslCertificateBuilder();
+                    result = certificateBuilder.EnsureSslCertificate(certPath, endPoint);
 
                     result = File.Exists(certPath);
                 }

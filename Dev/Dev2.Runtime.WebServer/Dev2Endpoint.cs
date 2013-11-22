@@ -23,6 +23,7 @@ namespace Dev2.Runtime.WebServer
     {
         public IPEndPoint TheIPEndPoint { get; private set; }
         public string CertificatePath { get; private set; }
+        public string Url { get; private set; }
 
         public bool IsSecured
         {
@@ -55,13 +56,14 @@ namespace Dev2.Runtime.WebServer
             }
         }
 
-        public Dev2Endpoint(IPEndPoint endPoint) : this(endPoint, null)
+        public Dev2Endpoint(IPEndPoint endPoint, string url) : this(endPoint, url, null)
         {
         }
 
-        public Dev2Endpoint(IPEndPoint endPoint, string certPath)
+        public Dev2Endpoint(IPEndPoint endPoint, string url, string certPath)
         {
             TheIPEndPoint = endPoint;
+            Url = url;
             CertificatePath = certPath;
         }
     }

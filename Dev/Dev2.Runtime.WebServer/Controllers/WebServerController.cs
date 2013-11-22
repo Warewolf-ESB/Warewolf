@@ -1,4 +1,5 @@
 using System.Collections.Specialized;
+using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Dev2.Runtime.WebServer.Handlers;
@@ -46,6 +47,16 @@ namespace Dev2.Runtime.WebServer.Controllers
 
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
         }
+
+        //[HttpGet]
+        //[Route("{website}/views/WorkflowService/{file}")]
+        //public HttpResponseMessage GetView(string website, string file)
+        //{
+        //    var uri = Request.RequestUri.OriginalString.Replace("WorkflowService", "Dialogs");
+        //    var response = Request.CreateResponse(HttpStatusCode.Redirect);
+        //    response.Headers.Add("Location", uri);
+        //    return response;
+        //}
 
         [HttpPost]
         [Route("{website}/{path}/Service/{name}/{method}")]

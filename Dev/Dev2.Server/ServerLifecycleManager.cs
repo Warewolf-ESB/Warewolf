@@ -1340,11 +1340,12 @@ namespace Unlimited.Applications.DynamicServicesHost
 
                     List<Dev2Endpoint> endpoints = new List<Dev2Endpoint>();
                     var prefixes = new List<string>();
-                    prefixes.Add(string.Format("http://*:{0}/", webServerPort));
 
                     var httpEndpoint = new IPEndPoint(IPAddress.Any, realPort);
+                    var httpUrl = string.Format("http://*:{0}/", webServerPort);
 
-                    endpoints.Add(new Dev2Endpoint(httpEndpoint));
+                    prefixes.Add(httpUrl);
+                    endpoints.Add(new Dev2Endpoint(httpEndpoint, httpUrl));
 
                     // start SSL traffic if it is enabled ;)
                     if(!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
@@ -1357,13 +1358,13 @@ namespace Unlimited.Applications.DynamicServicesHost
 
                         if(!string.IsNullOrEmpty(sslCertPath))
                         {
-                            var canEnableSSL = HostSecurityProvider.Instance.EnsureSSL(sslCertPath);
+                            var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
+                            var httpsUrl = string.Format("https://*:{0}/", webServerSslPort);
+                            var canEnableSSL = HostSecurityProvider.Instance.EnsureSSL(sslCertPath, httpsEndpoint);
 
                             if(canEnableSSL)
                             {
-                                prefixes.Add(string.Format("https://*:{0}/", webServerSslPort));
-
-                                var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
+                                prefixes.Add(httpsUrl);
                                 endpoints.Add(new Dev2Endpoint(httpsEndpoint, sslCertPath));
                             }
                             else

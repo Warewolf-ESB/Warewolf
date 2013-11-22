@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using Dev2.Common;
 
 namespace Dev2.Runtime.Security
@@ -9,14 +10,17 @@ namespace Dev2.Runtime.Security
     /// <summary>
     /// Build a self-signed SSL cert
     /// </summary>
-    public class SSLCertificateBuilder
+    public class SslCertificateBuilder
     {
+        static string _location;
+        static string Location { get { return _location ?? (_location = Assembly.GetExecutingAssembly().Location); } }
+
         private const string MakeCertPath = @"\SSL Generation\CreateCertificate.bat";
 
-        public bool EnsureSSLCertificate(string certPath)
+        public bool EnsureSslCertificate(string certPath, IPEndPoint endPoint)
         {
-            bool result = false;
-            var asmLoc = Assembly.GetExecutingAssembly().Location;
+            var result = false;
+            var asmLoc = Location;
             var exeBase = string.Empty;
             var authName = AuthorityName();
             var masterData = string.Empty;
@@ -24,7 +28,7 @@ namespace Dev2.Runtime.Security
 
             try
             {
-                if (!string.IsNullOrEmpty(asmLoc))
+                if(!string.IsNullOrEmpty(asmLoc))
                 {
                     asmLoc = Path.GetDirectoryName(asmLoc);
                     workingDir = String.Concat(asmLoc, @"\SSL Generation");
@@ -35,12 +39,12 @@ namespace Dev2.Runtime.Security
                     File.WriteAllText(exeBase, writeBack);
                 }
 
-                if(InvokeProcess("CreateCertificate.bat", workingDir))
+                if(ProcessHost.Invoke(workingDir, "CreateCertificate.bat", null))
                 {
-                    result = true;
+                    result = BindSslCertToPorts(endPoint, certPath);
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 ServerLogger.LogError(e);
             }
@@ -49,39 +53,30 @@ namespace Dev2.Runtime.Security
                 if(!string.IsNullOrEmpty(masterData))
                 {
                     File.WriteAllText(exeBase, masterData);
-                }    
+                }
             }
 
             return result;
         }
 
-        private string AuthorityName()
+        static string AuthorityName()
         {
             return Guid.NewGuid().ToString();
         }
 
-        private bool InvokeProcess(string cmd, string workingDir)
+        static bool BindSslCertToPorts(IPEndPoint endPoint, string sslCertPath)
         {
-            bool invoked = true;
-
-            Process p = new Process();
-            p.StartInfo.CreateNoWindow = true;
-            p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            p.StartInfo.FileName = cmd;
-            p.StartInfo.WorkingDirectory = workingDir;
-            
-            if (p.Start())
-            {
-                // wait up to 10 seconds for exit ;)
-                p.WaitForExit(10000); 
-                
-            }
-            else
-            {
-                invoked = false;
-            }
-
-            return invoked;
+            //
+            // To verify run this at the command prompt:
+            //
+            // netsh http show sslcert ipport=0.0.0.0:1236
+            //
+            var cert = new X509Certificate(sslCertPath);
+            var certHash = cert.GetCertHashString();
+            var args = string.Format("http add sslcert ipport={0}:{1} appid={{12345678-db90-4b66-8b01-88f7af2e36bf}} certhash={2}",
+                    endPoint.Address, endPoint.Port, certHash);
+            return ProcessHost.Invoke(null, "netsh.exe", args);
         }
+
     }
 }

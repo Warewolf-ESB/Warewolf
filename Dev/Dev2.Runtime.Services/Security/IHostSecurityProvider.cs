@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Net;
 
 namespace Dev2.Runtime.Security
 {
@@ -32,6 +33,6 @@ namespace Dev2.Runtime.Security
         /// </summary>
         /// <param name="certPath">The cert path.</param>
         /// <returns></returns>
-        bool EnsureSSL(string certPath);
+        bool EnsureSSL(string certPath, IPEndPoint endPoint);
     }
 }

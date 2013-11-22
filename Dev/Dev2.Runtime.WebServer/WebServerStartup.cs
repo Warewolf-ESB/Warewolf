@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Web.Http;
 using Microsoft.AspNet.SignalR;
@@ -12,6 +14,16 @@ namespace Dev2.Runtime.WebServer
     {
         public const double SizeCapForDownload = 51200; // 50 KB size limit
 
+        public static IDisposable Start(Dev2Endpoint[] endpoints)
+        {
+            var startOptions = new StartOptions();
+            foreach(var endpoint in endpoints)
+            {
+                startOptions.Urls.Add(endpoint.Url);
+            }
+            return WebApp.Start<WebServerStartup>(startOptions);
+        }
+
         public static IDisposable Start(string url)
         {
             return WebApp.Start<WebServerStartup>(url);
@@ -22,7 +34,7 @@ namespace Dev2.Runtime.WebServer
             // Enable NTLM auth
             var listener = (HttpListener)app.Properties[typeof(HttpListener).FullName];
             listener.AuthenticationSchemes = AuthenticationSchemes.Ntlm;
-
+           
             // Enable cross-domain calls
             app.UseCors(CorsOptions.AllowAll);
 

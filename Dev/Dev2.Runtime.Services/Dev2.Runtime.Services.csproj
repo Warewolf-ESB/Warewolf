@@ -159,6 +159,7 @@
     <Compile Include="Network\StudioMessaging.cs" />
     <Compile Include="Network\StudioNetworkSession.cs" />
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
+    <Compile Include="Security\ProcessHost.cs" />
     <Compile Include="Security\SSLCertificateBuilder.cs" />
     <Compile Include="ServiceModel\Data\DbTableList.cs" />
     <Compile Include="ServiceModel\Data\DbColumn.cs" />
