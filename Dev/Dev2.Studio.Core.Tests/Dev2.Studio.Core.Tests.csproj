@@ -172,6 +172,7 @@
     <Compile Include="Dialogs\ResourcePickerDialogTests.cs" />
     <Compile Include="Dialogs\TestResourcePickerDialog.cs" />
     <Compile Include="Factories\WorkSurfaceContextFactoryTests.cs" />
+    <Compile Include="Helpers\TypeSwitchTest.cs" />
     <Compile Include="MainViewModelMock.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2DataGridTests.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2FilterBoxTests.cs" />

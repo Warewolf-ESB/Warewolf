@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Linq;
 
 namespace Dev2.Studio.Core.Helpers
@@ -18,6 +17,12 @@ namespace Dev2.Studio.Core.Helpers
 
         public static void Do(object source, params CaseInfo[] cases)
         {
+
+            if (cases == null)
+            {
+                throw new ArgumentNullException("cases");
+            }
+
             if (source == null)
             {
                 if (!cases.ToList().Any(c => c.IsDefault))

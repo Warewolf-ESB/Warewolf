@@ -176,7 +176,7 @@ namespace Dev2.Integration.Tests.Activities
         public void MoveFile_FileSystemToFileSystem_Overwrite_Expected_FileCopiedAndOverwrittenInNewLocation()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
-            string tmp = System.IO.Path.GetTempFileName();
+            string tmp = Path.GetTempFileName();
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
@@ -198,7 +198,7 @@ namespace Dev2.Integration.Tests.Activities
         public void MoveFile_FileSystemToFileSystem_Overwrite_NoFile_Expected_FileNotFoundExceptionThrownByBroker()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
-            string tmp = System.IO.Path.GetTempFileName();
+            string tmp = Path.GetTempFileName();
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(@"C://NoFile.txt", "", "");
             IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
@@ -339,7 +339,7 @@ namespace Dev2.Integration.Tests.Activities
         public void MoveFile_FileSysytemToFTPS_ValidCredentials_AcceptInvalidCert_Overwrite_Expected_SuccessfulMove()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
-            string tmp = System.IO.Path.GetTempFileName();
+            string tmp = Path.GetTempFileName();
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(string.Concat(ParserStrings.PathOperations_FTPS_AuthPath, "/TestDirectory/Testing.txt"), ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, true);
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOOperationsEndPoint srcEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
@@ -360,7 +360,7 @@ namespace Dev2.Integration.Tests.Activities
         public void MoveFile_FileSysytemToFTPS_ValidCredentials_RejectInvalidCert_Overwrite_Expecte_ExceptionThrownByBroker()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
-            string tmp = System.IO.Path.GetTempFileName();
+            string tmp = Path.GetTempFileName();
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(string.Concat(ParserStrings.PathOperations_FTPS_AuthPath, "/TestDirectory/Testing.txt"), ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, false);
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOOperationsEndPoint srcEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);

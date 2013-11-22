@@ -1,9 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Dev2.Composition;
-using Dev2.Studio.Enums;
-using Dev2.Studio.Utils;
-using Dev2.Studio.ViewModels.Workflow;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests
 {

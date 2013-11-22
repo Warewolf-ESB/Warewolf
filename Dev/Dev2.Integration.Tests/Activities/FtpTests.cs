@@ -23,38 +23,19 @@ namespace Dev2.Integration.Tests.Activities
         private string tmpdir1;
         private string tmpdir2;
 
-        public FtpTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
 
         [TestInitialize]
         public void CreateFiles()
         {
-            tmpfile1 = System.IO.Path.GetTempFileName();
-            tmpfile2 = System.IO.Path.GetTempFileName();
+            tmpfile1 = Path.GetTempFileName();
+            tmpfile2 = Path.GetTempFileName();
 
             FileStream fs1 = File.Create(tmpfile1);
             string tmp = "abc";
@@ -68,8 +49,8 @@ namespace Dev2.Integration.Tests.Activities
             fs2.Write(data, 0, data.Length);
             fs2.Close();
 
-            tmpdir1 = System.IO.Path.GetTempPath() + System.IO.Path.GetRandomFileName();
-            tmpdir2 = System.IO.Path.GetTempPath() + System.IO.Path.GetRandomFileName();
+            tmpdir1 = Path.GetTempPath() + Path.GetRandomFileName();
+            tmpdir2 = Path.GetTempPath() + Path.GetRandomFileName();
 
             Directory.CreateDirectory(tmpdir1);
             Directory.CreateDirectory(tmpdir2);
