@@ -17,9 +17,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             var vstw = new VisualTreeWalker();
 
-            _outputPane = vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9","OutputPane", "DebugOutput");
-            _outputSearch = vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "OutputPane", "DebugOutput", "Edit");
-            _outputStatus = vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "OutputPane", "DebugOutput", "Dev2StatusBarAutomationID", "StatusBar");
+            _outputPane = vstw.GetControlFromRoot(0, false, 0,"Uia.SplitPane", "Zfdcd4e7e932244ab9270e587a5ea8a66","OutputPane", "DebugOutput");
+            _outputSearch = vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Zfdcd4e7e932244ab9270e587a5ea8a66", "OutputPane", "DebugOutput", "Edit");
+            _outputStatus = vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Zfdcd4e7e932244ab9270e587a5ea8a66", "OutputPane", "DebugOutput", "Dev2StatusBarAutomationID", "StatusBar");
 
         }
 
@@ -62,12 +62,15 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// <returns></returns>
         public bool IsSpinnerSpinning()
         {
-            var kids = _outputStatus.GetChildren();
-
-            if (kids != null)
+            if(_outputStatus != null)
             {
-                var spinner = kids.FirstOrDefault(child => child.ClassName == "Uia.CircularProgressBar");
-                return spinner != null && spinner.Height != -1;    
+                var kids = _outputStatus.GetChildren();
+
+                if(kids != null)
+                {
+                    var spinner = kids.FirstOrDefault(child => child.ClassName == "Uia.CircularProgressBar");
+                    return spinner != null && spinner.Height != -1;
+                }
             }
 
             return false;
@@ -109,6 +112,21 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                 if (coll[i].Name.Equals(stepInformationToFind + " : "))
                 {
                     return coll[i + 1];
+                }
+            }
+            return null;
+        }
+
+        public string GetStepName(UITestControl workflowStep)
+        {
+            //return workflowStep.Name;
+            string workflowNamePrefix = "Workflow : ";
+            UITestControlCollection coll = workflowStep.GetChildren();
+            for(int i = 0; i <= coll.Count; i++)
+            {
+                if(coll[i].Name.Contains(workflowNamePrefix))
+                {                    
+                    return coll[i + 1].FriendlyName;
                 }
             }
             return null;

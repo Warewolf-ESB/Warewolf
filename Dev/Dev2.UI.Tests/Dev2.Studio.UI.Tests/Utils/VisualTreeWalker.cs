@@ -159,7 +159,8 @@ namespace Dev2.Studio.UI.Tests.Utils
                             {
                                 var childAutoID = child.GetProperty("AutomationID").ToString();
 
-                                if (childAutoID.Contains(automationIDs[i]) ||
+                                if (childAutoID == automationIDs[i] ||
+                                    childAutoID.Contains(automationIDs[i])||
                                     child.FriendlyName.Contains(automationIDs[i]) ||
                                     child.ControlType.Name.Contains(automationIDs[i]) ||
                                     child.ClassName.Contains(automationIDs[i]))

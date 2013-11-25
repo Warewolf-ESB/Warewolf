@@ -95,7 +95,7 @@ namespace Dev2.Studio.UI.Tests
                     Assert.AreEqual("2", getInput.Text, "After executing " + i + " times the debug input dialog did not persist");
 
                     DebugUIMap.ClickExecute();
-                    OutputUIMap.WaitForExecution();
+                    OutputUIMap.WaitForExecution();                   
                 }
 
                 //Now check the XML tab works ;)
@@ -131,6 +131,34 @@ namespace Dev2.Studio.UI.Tests
 
                 Assert.AreEqual(expectedXML, actualXML);
 
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DebugOutput_whenRun10Time")]
+        public void DebugOutput_WhenRun10Times_NormalExecution_CloseTagsReturned10Times()
+        {
+            //------------Setup for test--------------------------
+            //Open the correct workflow
+            ExplorerUIMap.EnterExplorerSearchText("TravsTestFlow");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TRAV", "TravsTestFlow");                   
+
+            //------------Assert Results-------------------------
+
+            // Check for valid input in the input boxes ;)
+            for(int i = 0; i < 9; i++)
+            {
+                RibbonUIMap.ClickRibbonMenuItem("Debug");
+                PopupDialogUIMap.WaitForDialog();               
+
+                DebugUIMap.ClickExecute();
+                OutputUIMap.WaitForExecution();                
+                UITestControlCollection uiTestControlCollection = OutputUIMap.GetOutputWindow();
+                Assert.IsTrue(uiTestControlCollection.Count > 1);
+                UITestControl lastStep = uiTestControlCollection[uiTestControlCollection.Count - 1];
+                string workflowStepName = OutputUIMap.GetStepName(lastStep);
+                Assert.AreEqual("TravsTestFlow", workflowStepName);
+            }
         }
     }
 }
