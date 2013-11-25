@@ -320,10 +320,17 @@ namespace Dev2.PathOperations
 
                     foreach (ZipEntry ze in zip)
                     {
-                        ze.Extract(extractFromPath,
-                                   args.Overwrite
-                                       ? ExtractExistingFileAction.OverwriteSilently
-                                       : ExtractExistingFileAction.DoNotOverwrite);
+                        try
+                        {
+                            ze.Extract(extractFromPath,
+                                       args.Overwrite
+                                           ? ExtractExistingFileAction.OverwriteSilently
+                                           : ExtractExistingFileAction.DoNotOverwrite);
+                        }
+                        catch (BadPasswordException bpe)
+                        {
+                            throw new Exception("Invalid archive password", bpe);
+                        }
                     }
                 }
             }

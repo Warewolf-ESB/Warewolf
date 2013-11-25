@@ -180,7 +180,7 @@ namespace Dev2.Integration.Tests.Activities
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
-        [ExpectedException(typeof(BadPasswordException))]
+        [ExpectedException(typeof(Exception))]
         public void Dev2ActivityIOBroker_Zip_LocalToLocal_FileToFile_FileHasArchivePassword_UnZipWithoutPasswordThrowsException()
         {
             const bool overWrite = false;
