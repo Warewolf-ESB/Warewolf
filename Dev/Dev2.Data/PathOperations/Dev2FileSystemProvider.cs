@@ -115,7 +115,7 @@ namespace Dev2.PathOperations
                 catch(Exception ex)
                 {
                     ServerLogger.LogError(ex);
-                    throw;
+                    throw new Exception(ex.Message, ex);
                 }
 
             }

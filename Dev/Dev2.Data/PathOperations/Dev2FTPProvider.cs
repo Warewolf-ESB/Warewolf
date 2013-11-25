@@ -47,7 +47,7 @@ namespace Dev2.PathOperations {
             catch(Exception ex)
             {
                 ServerLogger.LogError(ex);
-                throw;
+                throw new Exception(ex.Message, ex);
             }
             return result;
         }
@@ -567,8 +567,18 @@ namespace Dev2.PathOperations {
         /// <returns></returns>
         public IList<IActivityIOPath> ListFoldersInDirectory(IActivityIOPath src)
         {
-            var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSSL(src), src.IsNotCertVerifiable);
-            var dirs = ExtractDirectoryList(src.Path, tmpDirData);
+            var dirs = new List<string>();
+            try
+            {
+                var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSSL(src),
+                                                 src.IsNotCertVerifiable);
+                dirs = ExtractDirectoryList(src.Path, tmpDirData);
+            }
+            catch (Exception ex)
+            {
+                ServerLogger.LogError(ex);
+                throw new Exception(ex.Message, ex);
+            }
             return dirs.Select(dir => BuildValidPathForFTP(src, dir)).Select(uri => ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password)).ToList();
         }
 
@@ -578,8 +588,18 @@ namespace Dev2.PathOperations {
         /// <returns></returns>
         public IList<IActivityIOPath> ListFilesInDirectory(IActivityIOPath src)
         {
-            var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSSL(src), src.IsNotCertVerifiable);
-            var dirs = ExtractFileList(src.Path, tmpDirData);
+            var dirs = new List<string>();
+            try
+            {
+                var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSSL(src),
+                                                 src.IsNotCertVerifiable);
+                 dirs = ExtractFileList(src.Path, tmpDirData);
+            }
+            catch (Exception ex)
+            {
+                ServerLogger.LogError(ex);
+                throw  new Exception(ex.Message, ex);
+            }
             return dirs.Select(uri => ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password)).ToList();
         }
 

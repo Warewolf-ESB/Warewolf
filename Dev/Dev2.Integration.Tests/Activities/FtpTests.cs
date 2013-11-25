@@ -741,35 +741,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             Assert.IsTrue(folderList.Count > 10, "Only found " + folderList.Count + " directories on valid sFTP server");            
         }
-        
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("Dev2FTPProvider_ListFilesInDirectory")]
-        public void Dev2FTPProvider_ListFilesInDirectory_WithValidFTPDirectory_ReturnsListOfFoldersOnly()
-        {
-            //------------Setup for test--------------------------
-            var path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth, "", "");
-            var FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
-            //------------Execute Test---------------------------
-            var folderList = FTPPro.ListFilesInDirectory(path);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1,folderList.Count);            
-        } 
-        
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("Dev2FTPProvider_ListFilesInDirectory")]
-        public void Dev2FTPProvider_ListFilesInDirectory_WithValidSFTPDirectory_ReturnsListOfFoldersOnly()
-        {
-            //------------Setup for test--------------------------
-            var path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_SFTP_Path, ParserStrings.PathOperations_SFTP_Username, ParserStrings.PathOperations_SFTP_Password);
-            var FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
-            //------------Execute Test---------------------------
-            var folderList = FTPPro.ListFilesInDirectory(path);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(folderList.Count > 10, "List files in ftp directory returnd less than 10 files");
-        }
-
+       
         [TestMethod]
         public void ListDirectoryWithValidUsername_InValidPath_Expected_Error()
         {

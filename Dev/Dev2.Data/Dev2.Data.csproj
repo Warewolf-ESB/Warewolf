@@ -118,6 +118,7 @@
     <Compile Include="Parsers\XPathParser.cs" />
     <Compile Include="PathOperations\Enums\WriteType.cs" />
     <Compile Include="PathOperations\Enums\ReadTypes.cs" />
+    <Compile Include="PathOperations\Extension\PathExtensions.cs" />
     <Compile Include="PathOperations\Interfaces\IDestinationUserNamePassword.cs" />
     <Compile Include="ServiceModel\AuthenticationType.cs" />
     <Compile Include="ServiceModel\Helper\ServiceUtils.cs" />

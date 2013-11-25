@@ -207,7 +207,6 @@
     <Compile Include="..\Dev2.Activities.Tests\ActivityTests\BaseActivityUnitTest.cs">
       <Link>Dev2.Activities.Tests\BaseActivityUnitTest.cs</Link>
     </Compile>
-    <Compile Include="Activities\Dev2ActivityIOBrokerTests.cs" />
     <Compile Include="Activities\FileSystemTests.cs" />
     <Compile Include="Activities\FtpTests.cs" />
     <Compile Include="Activities\PathIOTestingUtils.cs">

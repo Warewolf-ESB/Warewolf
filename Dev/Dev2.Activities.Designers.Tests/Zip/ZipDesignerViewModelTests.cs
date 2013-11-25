@@ -41,10 +41,8 @@ namespace Dev2.Activities.Designers.Tests.Zip
             var viewModel = ZipViewModel();
             //------------Execute Test---------------------------
             viewModel.Validate();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1, viewModel.ValidateInputAndOutputPathHitCount);
-            Assert.AreEqual(1, viewModel.ValidateInputPathHitCount);
-            Assert.AreEqual(1, viewModel.ValidateOutputPathHitCount);
+            //------------Assert Results-------------------------            
+            Assert.AreEqual(1, viewModel.ValidateInputPathHitCount);;
             Assert.AreEqual(1, viewModel.ValidateUserNameAndPasswordHitCount);
             Assert.AreEqual(1, viewModel.ValidateDestinationUsernameAndPasswordHitCount);
         }

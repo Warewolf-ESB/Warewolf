@@ -246,21 +246,6 @@ namespace ActivityUnitTests.ActivityTests
         #endregion
 
         #region Blank Output Test
-
-        //2013.05.29: Ashley Lewis for bug 9507 - null output defaults to input
-        [TestMethod]
-        public void ZipFileWithBlankOutputPathExpectedDefaultstoInputPath()
-        {
-            tempFile = Path.GetTempFileName();
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true));
-            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(NewFileName, string.Empty, null, true));
-
-            Dev2ZipOperationTO zipTO = ActivityIOFactory.CreateZipTO(null, null, null);
-            ActivityIOFactory.CreateOperationsBroker().Zip(scrEndPoint, dstEndPoint, zipTO);
-            Assert.IsTrue(File.Exists(Path.GetTempPath() + NewFileName+ ".zip"));
-            Assert.IsFalse(zipTO.Overwrite);
-        }
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityIOBroker_Zip")]
@@ -287,53 +272,6 @@ namespace ActivityUnitTests.ActivityTests
             
         }     
         
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ActivityIOBroker_Zip")]
-        public void ActivityIOBroker_Zip_WhenOverwriteSetFalse_ShouldNotOverwriteFile()
-        {
-            //------------Setup for test--------------------------
-            tempFile = Path.GetTempFileName();
-            var zipPathName = Path.GetTempPath() + NewFileName + ".zip";
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true));
-            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipPathName, string.Empty, null, true));
-            Dev2ZipOperationTO zipTO = ActivityIOFactory.CreateZipTO(null, null, null,false);
-            File.WriteAllText(zipPathName,"");
-            //------------Assert Preconditions-------------------
-            Assert.IsFalse(zipTO.Overwrite);
-            Assert.IsTrue(File.Exists(zipPathName));
-            var readAllBytes = File.ReadAllBytes(zipPathName);
-            Assert.AreEqual(0,readAllBytes.Count());
-            //------------Execute Test---------------------------
-            ActivityIOFactory.CreateOperationsBroker().Zip(scrEndPoint, dstEndPoint, zipTO);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(File.Exists(zipPathName));
-            readAllBytes = File.ReadAllBytes(zipPathName);
-            Assert.AreEqual(0, readAllBytes.Count());
-            
-        }
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("DsfZip_ExecuteConcreteAction")]
-        public void DsfZip_ExecuteConcreteAction_WithArchivePassword_FileZippedWithPassword()
-        {
-            //------------Setup for test--------------------------
-            var dsfZip = new DsfZip();
-            dsfZip.ArchivePassword = "TestPassword";
-
-            tempFile = Path.GetTempFileName();
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true));
-            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(NewFileName, string.Empty, null, true));
-
-            Dev2ZipOperationTO zipTO = ActivityIOFactory.CreateZipTO(null, null, null);                       
-            
-            //------------Execute Test---------------------------
-            ActivityIOFactory.CreateOperationsBroker().Zip(scrEndPoint, dstEndPoint, zipTO);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(File.Exists(Path.GetTempPath() + NewFileName + ".zip"));
-        }
-
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Zip_Execute")]

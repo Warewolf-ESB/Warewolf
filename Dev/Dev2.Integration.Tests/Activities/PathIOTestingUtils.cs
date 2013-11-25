@@ -401,9 +401,8 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
             }
         } 
 
-        public static string ReadFileFTP(IActivityIOOperationsEndPoint endpoint)
+        public static string ReadFile(IActivityIOOperationsEndPoint endpoint)
         {
-
             var stream = endpoint.Get(endpoint.IOPath);
             stream.Position = 0;
             using (var reader = new StreamReader(stream, Encoding.UTF8))

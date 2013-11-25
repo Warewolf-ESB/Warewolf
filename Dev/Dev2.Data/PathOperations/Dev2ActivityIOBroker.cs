@@ -2,6 +2,7 @@
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.PathOperations.Extension;
 using Ionic.Zip;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,6 @@ namespace Dev2.PathOperations
 
         public string Get(IActivityIOOperationsEndPoint path, bool deferredRead = false)
         {
-
             if (!deferredRead)
             {
                 byte[] bytes;
@@ -102,7 +102,7 @@ namespace Dev2.PathOperations
                 {
                     case WriteType.AppendBottom:
                         File.WriteAllText(tmp, File.ReadAllText(dst.IOPath.Path));
-                        File.WriteAllText(tmp, args.FileContents);
+                        File.AppendAllText(tmp, args.FileContents);
                         break;
                     case WriteType.AppendTop:
                         File.WriteAllText(tmp, args.FileContents);
@@ -190,19 +190,6 @@ namespace Dev2.PathOperations
             return src.ListFoldersInDirectory(src.IOPath);
         }
 
-        //public string CreateChildrenDirectoriesAtDestination(IActivityIOOperationsEndPoint dst, IActivityIOOperationsEndPoint src, Dev2CRUDOperationTO args)
-        //{
-        //    IEnumerable<string> activityIOPaths = src.ListDirectory(src.IOPath).Where(path => src.PathIs(path) == enPathType.Directory).Select(path => path.Path.Replace(src.IOPath.Path, ""));
-        //    string origDstPath = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(dst.IOPath.Path);
-        //    foreach(var activityIOPath in activityIOPaths)
-        //    {
-        //        IActivityIOPath pathFromString = ActivityIOFactory.CreatePathFromString(origDstPath + activityIOPath, dst.IOPath.Username, dst.IOPath.Password);
-        //        dst.CreateDirectory(pathFromString, args);
-        //    }
-
-        //    return "";
-        //}
-
         public string Create(IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args, bool createToFile)
         {
             ValidateEndPoint(dst, args, createToFile);
@@ -224,7 +211,7 @@ namespace Dev2.PathOperations
                     {
                         if (dst.PathIs(dst.IOPath) == enPathType.Directory)
                         {
-                            dst.IOPath.Path = Path.Combine(dst.IOPath.Path, GetFileNameFromEndPoint(src));
+                            dst.IOPath.Path = dst.Combine(GetFileNameFromEndPoint(src));
                         }
 
                         using (Stream s = src.Get(src.IOPath))
@@ -240,7 +227,7 @@ namespace Dev2.PathOperations
                         var sourceFile = new FileInfo(src.IOPath.Path);
                         if (dst.PathIs(dst.IOPath) == enPathType.Directory)
                         {
-                            dst.IOPath.Path = Path.Combine(dst.IOPath.Path, sourceFile.Name);
+                            dst.IOPath.Path = dst.Combine(sourceFile.Name);
                         }
 
                         using (Stream s = src.Get(src.IOPath))
@@ -536,9 +523,8 @@ namespace Dev2.PathOperations
                     IList<string> dirParts =
                         sourceEndPoint.IOPath.Path.Split(sourceEndPoint.PathSeperator().ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                     var directory = dirParts.Last();
-
                     IActivityIOPath destinationPath =
-                        ActivityIOFactory.CreatePathFromString(Path.Combine(dst.IOPath.Path, directory),
+                        ActivityIOFactory.CreatePathFromString(dst.Combine(directory),
                                                                dst.IOPath.Username,
                                                                dst.IOPath.Password, true);
 
@@ -1020,7 +1006,7 @@ namespace Dev2.PathOperations
                 if (src.PathIs(src.IOPath) == enPathType.File)
                 {
                     var fileInfo = new FileInfo(sourcePart);
-                    dst.IOPath.Path = Path.Combine(dst.IOPath.Path, sourcePart.Replace(fileInfo.Extension, ".zip"));
+                    dst.IOPath.Path = dst.Combine(sourcePart.Replace(fileInfo.Extension, ".zip"));
                 }
                 else
                 {
@@ -1109,7 +1095,7 @@ namespace Dev2.PathOperations
                     string[] strings = src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
                                                              StringSplitOptions.RemoveEmptyEntries);
                     string lastPart = strings.Last();
-                    dst.IOPath.Path = Path.Combine(dst.IOPath.Path, lastPart);
+                    dst.IOPath.Path = dst.Combine(lastPart);
                 }
             }
         }
