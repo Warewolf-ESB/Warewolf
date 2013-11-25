@@ -347,5 +347,59 @@ namespace Dev2.Data.Tests.Persistence
 
         }
 
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("Dev2BinaryStorage_BasicUsage")]
+        public void Dev2BinaryStorage_BasicUsage_WhenAddingAndRemovingAll_AllDataFetched()
+        {
+
+            //------------Setup for test--------------------------
+            Dev2BinaryStorage<BinaryDataListRow> dic = new Dev2BinaryStorage<BinaryDataListRow>(Guid.NewGuid().ToString(), 4194304); // 4MB buffer ;)
+
+            int cnt = 10000;
+
+            IList<BinaryDataListRow> rows = new List<BinaryDataListRow>(cnt);
+            IList<string> keys = new List<string>();
+
+            List<Guid> theList = new List<Guid>();
+            List<int> itemCount = new List<int>();
+
+            for(int i = 0; i < cnt; i++)
+            {
+                BinaryDataListRow row = new BinaryDataListRow(5);
+                row.UpdateValue("col1" + Guid.NewGuid() + " " + Guid.NewGuid() + " " + Guid.NewGuid() + " " + Guid.NewGuid(), 0, 5);
+                row.UpdateValue("col2", 1, 5);
+                row.UpdateValue("col3" + Guid.NewGuid(), 2, 5);
+                row.UpdateValue("col4", 3, 5);
+                row.UpdateValue("col5" + Guid.NewGuid(), 4, 5);
+
+                rows.Add(row);
+                Guid key = Guid.NewGuid();
+                keys.Add(key.ToString());                
+                theList.Add(key);
+            }
+
+            //------------Execute Test---------------------------
+
+            // add rows
+            for(int i = 0; i < cnt; i++)
+            {
+                dic[keys[i]] = rows[i];
+
+                int itemsToRemove = dic.ItemCount;
+                // fake removals ;)
+                if((i + 1) % 100 == 0)
+                {
+                    if(i == cnt-1)
+                    {
+                        Assert.AreEqual(38, dic.RemoveAll(theList));                      
+                    }
+                    else
+                    {
+                        Assert.AreEqual(itemsToRemove, dic.RemoveAll(theList));                          
+                    }                    
+                }                
+            }
+        }
     }
 }

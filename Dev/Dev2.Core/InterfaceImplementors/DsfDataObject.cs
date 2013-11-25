@@ -35,7 +35,8 @@ namespace Dev2.DynamicServices
         public DsfDataObject(string xmldata, Guid dataListID, string rawPayload = "")
         {
             if (!string.IsNullOrEmpty(xmldata))
-            {
+            {              
+                ThreadsToDispose = new Dictionary<int, List<Guid>>();
                 dynamic dataObject = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(xmldata);
 
                 if (!dataObject.HasError)
@@ -158,7 +159,8 @@ namespace Dev2.DynamicServices
         public Guid EnvironmentID { get; set; }
         public bool IsRemoteWorkflow { get { return EnvironmentID != Guid.Empty; } }
 
-        public string ParentInstanceID { get; set; }
+        public string ParentInstanceID { get; set; }     
+        public Dictionary<int, List<Guid>> ThreadsToDispose { get; set; }
         public string CurrentBookmarkName { get; set; }
         public string ServiceName { get; set; }
         public string WorkflowInstanceId { get; set; }
@@ -309,6 +311,7 @@ namespace Dev2.DynamicServices
             result.WorkflowInstanceId = WorkflowInstanceId;
             result.WorkflowResumeable = WorkflowResumeable;
             result.WorkspaceID = WorkspaceID;
+            result.ThreadsToDispose = ThreadsToDispose;
 
             return result;
         }

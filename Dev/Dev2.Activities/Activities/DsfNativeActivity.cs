@@ -407,6 +407,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             dataObject.NumberOfSteps = dataObject.NumberOfSteps + 1;
+            //Disposes of all used data lists 
+            if(dataObject.IsDebug)
+            {
+                int threadID = Thread.CurrentThread.ManagedThreadId;
+                
+                List<Guid> datlistIds;
+                if(!dataObject.ThreadsToDispose.TryGetValue(threadID,out datlistIds))
+                {
+                    dataObject.ThreadsToDispose.Add(threadID, new List<Guid>() { dataObject.DataListID });    
+                }
+            }
         }
 
         #endregion

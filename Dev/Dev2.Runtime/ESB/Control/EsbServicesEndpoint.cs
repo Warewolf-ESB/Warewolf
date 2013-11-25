@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.ServiceModel;
+using Dev2.Data.Storage;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ESB;
 using Dev2.Runtime.ESB.Execution;
@@ -184,6 +185,7 @@ namespace Dev2.DynamicServices
         /// <returns></returns>
         public Guid ExecuteRequest(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors)
         {
+            ServerLogger.LogMessage("START MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB().ToString("####.####") + " MBs ]");
             Guid resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
             IWorkspace theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
@@ -233,10 +235,21 @@ namespace Dev2.DynamicServices
             }
             finally
             {
+                //Clean up datalists
+                //compiler.ForceDeleteDataListByID(resultID);
+
                 // clean up after the request has executed ;)
+
+                foreach(KeyValuePair<int, List<Guid>> thread in dataObject.ThreadsToDispose)
+                {
+
+                    DataListRegistar.DisposeScope(thread.Key, Guid.Empty);
+
+                }
                 DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, resultID);
             }
-
+            
+            ServerLogger.LogMessage("FINAL MEMORY USAGE AFTER DISPOSE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB().ToString("####.####") + " MBs ]");
             return resultID;
         }
 

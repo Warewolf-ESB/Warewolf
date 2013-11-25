@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
+using Dev2.Common;
 using Dev2.Data.Storage;
 using Dev2.DataList.Contract;
 
@@ -22,7 +24,7 @@ namespace Dev2.Data.Binary_Objects
         /// <param name="childID">The child unique identifier.</param>
         public static void RegisterActivityThreadToParentId(int parentId, int childID)
         {
-            if (parentId <= 0)
+            if(parentId <= 0)
             {
                 throw new Exception("ParentID is invalid [ " + parentId + " ]");
             }
@@ -38,22 +40,15 @@ namespace Dev2.Data.Binary_Objects
         public static void RegisterDataListInScope(int transactionScopeID, Guid dataListID)
         {
             IList<Guid> theList;
-
+            ServerLogger.LogTrace("REGESTIRATION - Transanctional scope ID = " + transactionScopeID);
             int keyID = transactionScopeID;
-
-            // we need to check for a child to parent mapping first ;)
-            int parentID;
-            if (_activityThreadToParentThreadID.TryGetValue(transactionScopeID, out parentID))
-            {
-                keyID = parentID;
-            }
 
             // now we can correctly scope the data list creation ;)
             if(_registrationRoster.TryGetValue(keyID, out theList))
             {
-                if (!theList.Contains(dataListID))
+                if(!theList.Contains(dataListID))
                 {
-                    theList.Add(dataListID);    
+                    theList.Add(dataListID);
                 }
             }
             else
@@ -68,42 +63,46 @@ namespace Dev2.Data.Binary_Objects
         /// </summary>
         /// <param name="transactionScopeID">The transaction scope unique identifier.</param>
         /// <param name="rootRequestID">The root request unique identifier.</param>
-        public static void DisposeScope(int transactionScopeID, Guid rootRequestID)
+        public static void DisposeScope(int transactionScopeID, Guid rootRequestID, bool doCompact = true)
         {
+            ServerLogger.LogTrace("DISPOSING - Transanctional scope ID = " + transactionScopeID);
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            IList<Guid> theList;
-
-            if(_registrationRoster.TryGetValue(transactionScopeID, out theList))
+            try
             {
-                foreach (var id in theList)
-                {
-                    // force its eviction ;)
-                    if (id != rootRequestID)
+                IList<Guid> theList;
+                int removedNumber = 0;
+                if(_registrationRoster.TryGetValue(transactionScopeID, out theList))
+                {                   
+                    theList.Remove(rootRequestID);
+                    removedNumber += BinaryDataListStorageLayer.RemoveAll(theList);
+
+                    // finally reset
+                    IList<Guid> dummy;
+                    _registrationRoster.TryRemove(transactionScopeID, out dummy);
+
+                    // now remove children ;)
+                    foreach(var key in _activityThreadToParentThreadID.Keys)
                     {
-                        if (!compiler.ForceDeleteDataListByID(id))
+                        if(key == transactionScopeID)
                         {
-                            // did not find it in the cache, we need to manually remove it ;)
-                            BinaryDataListStorageLayer.RemoveAll(id.ToString());
+                            int dummyInt;
+                            _activityThreadToParentThreadID.TryRemove(transactionScopeID, out dummyInt);
                         }
                     }
                 }
-
-                // finally reset
-                IList<Guid> dummy;
-                _registrationRoster.TryRemove(transactionScopeID, out dummy);
-
-                // now remove children ;)
-                foreach(var key in _activityThreadToParentThreadID.Keys)
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                // now we need to pack memory to reclaim space ;)
+                if(doCompact)
                 {
-                    if (key == transactionScopeID)
-                    {
-                        int dummyInt;
-                        _activityThreadToParentThreadID.TryRemove(transactionScopeID, out dummyInt);
-                    }
+                    BinaryDataListStorageLayer.CompactMemory();
                 }
             }
         }
-
     }
 }

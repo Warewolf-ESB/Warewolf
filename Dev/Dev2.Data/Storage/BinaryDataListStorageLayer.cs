@@ -10,7 +10,8 @@ namespace Dev2.Data.Storage
     [Serializable]
     public class BinaryDataListStorageLayer : IDisposable
     {
-        
+        static int totalNumRemoved = 0;
+
         [NonSerialized]
         private static Dev2DistributedCache<BinaryDataListRow> LevelZeroCache;
 
@@ -53,11 +54,24 @@ namespace Dev2.Data.Storage
         /// </summary>
         /// <param name="uniqueKey">The unique key.</param>
         /// <returns></returns>
-        public static bool RemoveAll(string uniqueKey)
+        public static int RemoveAll(IEnumerable<Guid> theList)
         {
-            LevelZeroCache.RemoveAll(uniqueKey);
+            return LevelZeroCache.RemoveAll(theList);
+        }
 
-            return true;
+        /// <summary>
+        /// Removes the specified unique key.
+        /// </summary>
+        /// <param name="uniqueKey">The unique key.</param>
+        /// <returns></returns>
+        public static int RemoveAll(string uniqueKey)
+        {
+            return LevelZeroCache.RemoveAll(uniqueKey);
+        }
+
+        public static void CompactMemory()
+        {
+            LevelZeroCache.CompactMemory();
         }
 
         public void Dispose()

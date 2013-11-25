@@ -1,7 +1,15 @@
 ﻿using System;
+using System.Activities;
+using System.Activities.Statements;
+using System.Diagnostics;
+using System.Threading;
+using ActivityUnitTests;
+using Dev2.Data.Enums;
+using Dev2.Data.Storage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Integration.Tests.Helpers;
 using System.Text.RegularExpressions;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
 
@@ -10,7 +18,8 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
     /// Summary description for DsfForEachActivityWFTests
     /// </summary>
     [TestClass]
-    public class DsfForEachActivityWFTests {
+    public class DsfForEachActivityWFTests : BaseActivityUnitTest
+    {
         readonly string WebserverURI = ServerSettings.WebserverURI;
         public DsfForEachActivityWFTests() {
             //
@@ -32,6 +41,57 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
                 testContextInstance = value;
             }
         }
+
+        #region Load Test
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ForEachActivity_Execute")]        
+        public void ForEachActivity_Execute_WhenExecutingForEach200Times_ExpectNoThrashingOfMemoryOrCPU()
+        {
+            //------------Setup for test--------------------------
+
+            SetupArguments(
+                            TestResource.ForEachCurrentDataList
+                          , TestResource.ForEachDataListShape
+                          , enForEachType.NumOfExecution
+                          , false
+                          , null
+                          , null
+                          , null
+                          , null
+                          , "200"
+                          );
+            IDSFDataObject result;
+            
+            var cpuCounter = new PerformanceCounter();
+            var ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+
+            cpuCounter.CategoryName = "Processor";
+            cpuCounter.CounterName = "% Processor Time";
+            cpuCounter.InstanceName = "_Total";
+
+            var preCPU = cpuCounter.NextValue();
+            var preRAM = ramCounter.NextValue();
+
+            //------------Execute Test---------------------------
+
+            ExecuteForEachProcessForReal(out result);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+                        
+            var postCPU = cpuCounter.NextValue();
+            var postRAM = ramCounter.NextValue();
+
+            //------------Assert Results-------------------------
+            
+            var ramDif = postRAM - preRAM;
+            
+            Assert.IsTrue(ramDif < 5, "RAM thrashing is happening [ " + ramDif + " ]");
+            Assert.IsTrue(postCPU < 15.0, "Post CPU thrashing [ " + postCPU + " ] vs [ " + preCPU + " ]");
+        }
+       
+        #endregion
 
         #region ForEach Behaviour Tests
 
@@ -122,6 +182,76 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
             Assert.AreNotEqual(-1, ResponseData.IndexOf(expected), "Expected [ " + expected + "] Got [ " + ResponseData + " ]");
         }
 
-        #endregion Scalar Tests
+        #endregion Scalar Tests       
+
+        #region Private Test Methods
+
+        private DsfActivity CreateWorkflow()
+        {
+            DsfActivity activity = new DsfActivity
+            {
+                ServiceName = "MyTestService",
+                InputMapping = TestResource.ForEach_Input_Mapping,
+                OutputMapping = TestResource.ForEach_Output_Mapping
+            };
+
+            TestData = "<ADL><innerrecset><innerrec></innerrec><innerrec2></innerrec2><innerdate></innerdate></innerrecset><innertesting><innertest></innertest></innertesting><innerScalar></innerScalar></ADL>";
+
+            return activity;
+        }
+
+        private DsfActivity CreateWorkflow(string mapping, bool isInputMapping)
+        {
+            DsfActivity activity = new DsfActivity();
+            if(isInputMapping)
+            {
+                activity.InputMapping = mapping;
+                activity.OutputMapping = TestResource.ForEach_Output_Mapping;
+            }
+            else
+            {
+                activity.InputMapping = TestResource.ForEach_Input_Mapping;
+                activity.OutputMapping = mapping;
+            }
+            activity.ServiceName = "MyTestService";
+
+            TestData = "<ADL><innerrecset><innerrec></innerrec><innerrec2></innerrec2><innerdate></innerdate></innerrecset><innertesting><innertest></innertest></innertesting><innerScalar></innerScalar></ADL>";
+
+            return activity;
+        }
+
+        private void SetupArguments(string currentDL, string testData, enForEachType type, bool isInputMapping = false, string inputMapping = null, string from = null, string to = null, string csvIndexes = null, string numberExecutions = null)
+        {
+            var activityFunction = new ActivityFunc<string, bool>();
+            DsfActivity activity;
+            if(inputMapping != null)
+            {
+                activity = CreateWorkflow(inputMapping, isInputMapping);
+            }
+            else
+            {
+                activity = CreateWorkflow();
+            }
+
+            activityFunction.Handler = activity;
+
+            TestStartNode = new FlowStep
+            {
+                Action = new DsfForEachActivity
+                {
+                    DataFunc = activityFunction,
+                    ForEachType = type,
+                    NumOfExections = numberExecutions,
+                    From = from,
+                    To = to,
+                    CsvIndexes = csvIndexes,
+                }
+            };
+
+            CurrentDl = testData;
+            TestData = currentDL;
+        }
+
+        #endregion
     }
 }

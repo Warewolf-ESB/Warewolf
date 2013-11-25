@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Windows.Documents;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
@@ -64,8 +65,12 @@ namespace Dev2.Tests
             dataObject.ServiceName = "xxx";
             dataObject.WorkflowInstanceId = "333";
             dataObject.WorkflowResumeable = false;
-            dataObject.WorkspaceID = Guid.NewGuid();
-
+            dataObject.WorkspaceID = Guid.NewGuid();            
+            var threadsToDispose = new Dictionary<int, List<Guid>>();
+            List<Guid> guidList = new List<Guid>() { Guid.NewGuid() };
+            threadsToDispose.Add(3,guidList);
+            dataObject.ThreadsToDispose = threadsToDispose;
+            
             //------------Execute Test---------------------------
             IDSFDataObject clonedObject = dataObject.Clone();
 
@@ -73,7 +78,7 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof (IDSFDataObject).GetProperties();
-            Assert.AreEqual(43, properties.Length);
+            Assert.AreEqual(44, properties.Length);
 
             // now check each value to ensure it transfered
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
@@ -119,6 +124,7 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.WorkflowInstanceId, clonedObject.WorkflowInstanceId);
             Assert.AreEqual(dataObject.WorkflowResumeable, clonedObject.WorkflowResumeable);
             Assert.AreEqual(dataObject.WorkspaceID, clonedObject.WorkspaceID);
+            Assert.AreEqual(dataObject.ThreadsToDispose, clonedObject.ThreadsToDispose);
         }
     }
 }

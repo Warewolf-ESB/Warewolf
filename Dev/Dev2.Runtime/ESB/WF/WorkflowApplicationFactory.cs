@@ -21,6 +21,9 @@ namespace Dev2.DynamicServices
     public class WorkflowApplicationFactory
     {
         public static long Balance = 0;
+        private DateTime _runTime;
+
+        public ErrorResultTO AllErrors { get; private set; }
 
         private static readonly FileSystemInstanceStore InstanceStore = new FileSystemInstanceStore();
 
@@ -134,7 +137,10 @@ namespace Dev2.DynamicServices
         /// <returns></returns>
         private IDSFDataObject InvokeWorkflowImpl(Activity workflowActivity, IDSFDataObject dataTransferObject, IList<object> executionExtensions, Guid instanceId, IWorkspace workspace, string bookmarkName, bool isDebug, out ErrorResultTO errors)
         {
-
+            if(AllErrors == null)
+            {
+                AllErrors = new ErrorResultTO();
+            }
             IExecutionToken exeToken = new ExecutionToken() { IsUserCanceled = false };
 
             ExecutionStatusCallbackDispatcher.Instance.Post(dataTransferObject.ExecutionCallbackID, ExecutionStatusCallbackMessageType.StartedCallback);
@@ -155,6 +161,7 @@ namespace Dev2.DynamicServices
                     {
                         Interlocked.Increment(ref Balance);
                         run.Run();
+                        _runTime = DateTime.Now;
                         waitHandle.Wait();
                     }
                     else
@@ -171,6 +178,7 @@ namespace Dev2.DynamicServices
                             else
                             {
                                 run.Run();
+                                _runTime = DateTime.Now;
                             }
 
                             waitHandle.Wait();
@@ -181,7 +189,7 @@ namespace Dev2.DynamicServices
                             ExecutionStatusCallbackDispatcher.Instance.Post(dataTransferObject.ExecutionCallbackID, ExecutionStatusCallbackMessageType.ErrorCallback);
 
                             errors.AddError(e1.Message);
-
+                            AllErrors.AddError(e1.Message);
                             return null;
                         }
                         catch(InstancePersistenceException e2)
@@ -190,7 +198,7 @@ namespace Dev2.DynamicServices
                             ExecutionStatusCallbackDispatcher.Instance.Post(dataTransferObject.ExecutionCallbackID, ExecutionStatusCallbackMessageType.ErrorCallback);
 
                             errors.AddError(e2.Message);
-
+                            AllErrors.AddError(e2.Message);
                             return run.DataTransferObject.Clone();
                         }
                         catch(Exception ex)
@@ -198,6 +206,7 @@ namespace Dev2.DynamicServices
                             Interlocked.Decrement(ref Balance);
 
                             errors.AddError(ex.Message);
+                            AllErrors.AddError(ex.Message);
 
                             ExecutionStatusCallbackDispatcher.Instance.Post(dataTransferObject.ExecutionCallbackID, ExecutionStatusCallbackMessageType.ErrorCallback);
 
@@ -207,6 +216,7 @@ namespace Dev2.DynamicServices
 
                     Interlocked.Decrement(ref Balance);
                     dataTransferObject = run.DataTransferObject.Clone();
+                    DispatchDebugState(run.DataTransferObject, StateType.End, _runTime);
                     // avoid memory leak ;)
                     run.Dispose();
                 }
@@ -218,6 +228,54 @@ namespace Dev2.DynamicServices
 
             return dataTransferObject;
         }
+
+        private void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, DateTime? workflowStartTime = null)
+            {
+                if (dataObject != null)
+                {
+                    Guid parentInstanceID;
+                    Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
+
+                    var debugState = new DebugState
+                        {
+                            ID = dataObject.DataListID,
+                            ParentID = parentInstanceID,
+                            WorkspaceID = dataObject.WorkspaceID,
+                            StateType = stateType,
+                            StartTime = workflowStartTime??DateTime.Now,
+                            EndTime = DateTime.Now,
+                            ActivityType = ActivityType.Workflow,
+                            DisplayName = dataObject.ServiceName,
+                            IsSimulation = dataObject.IsOnDemandSimulation,
+                            ServerID = dataObject.ServerID,
+                            OriginatingResourceID = dataObject.ResourceID,
+                            OriginalInstanceID = dataObject.OriginalInstanceID,
+                            Server = string.Empty,
+                            Version = string.Empty,
+                            SessionID = dataObject.DebugSessionID,
+                            EnvironmentID = dataObject.EnvironmentID,
+                            Name = GetType().Name,
+                            HasError = AllErrors.HasErrors(),
+                            ErrorMessage = AllErrors.MakeDisplayReady()
+                        };
+
+                    if (stateType == StateType.End)
+                    {
+                        debugState.NumberOfSteps = dataObject.NumberOfSteps;
+                    }
+
+                    if (stateType == StateType.Start)
+                    {
+                        debugState.ExecutionOrigin = dataObject.ExecutionOrigin;
+                        debugState.ExecutionOriginDescription = dataObject.ExecutionOriginDescription;
+                    }
+
+                    if (dataObject.IsDebugMode())
+                    {
+                        DebugDispatcher.Instance.Write(debugState);
+                    }
+                }
+            }
 
 
         private sealed class WorkflowApplicationRun : IExecutableService, IDisposable
@@ -240,8 +298,7 @@ namespace Dev2.DynamicServices
             public IDSFDataObject DataTransferObject { get { return _result; } }
             public ErrorResultTO AllErrors { get; private set; }
             private IList<IExecutableService> _associatedServices;
-            private int _previousNumberOfSteps;
-            private DateTime _runTime;
+            private int _previousNumberOfSteps;            
 
             #endregion
 
@@ -280,8 +337,7 @@ namespace Dev2.DynamicServices
                 ID = DataTransferObject.ResourceID;
                 WorkspaceID = DataTransferObject.WorkspaceID;
                 ExecutableServiceRepository.Instance.Add(this);
-                DispatchDebugState(DataTransferObject, StateType.Start);
-                _runTime = DateTime.Now;
+                DispatchDebugState(DataTransferObject, StateType.Start);                
                 _previousNumberOfSteps = DataTransferObject.NumberOfSteps;
                 DataTransferObject.NumberOfSteps = 0;
                 _instance.Run();
@@ -482,7 +538,7 @@ namespace Dev2.DynamicServices
                     {
                         if (_waitHandle != null) _waitHandle.Set();
                         ExecutableServiceRepository.Instance.Remove(this);
-                        DispatchDebugState(DataTransferObject, StateType.End, _runTime);
+                        //DispatchDebugState(DataTransferObject, StateType.End, _runTime);
                         if (DataTransferObject != null) DataTransferObject.NumberOfSteps = _previousNumberOfSteps;
                     }
                     catch(Exception e)

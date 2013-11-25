@@ -12,6 +12,7 @@ namespace Dev2.Studio.Core.Models
         public bool IsRemoteWorkflow { get { return EnvironmentID != Guid.Empty; } }
         public int ParentThreadID { get; set; }
 
+        public Dictionary<int, List<Guid>> ThreadsToDispose { get; set; }
         public string CurrentBookmarkName { get; set; }
         public string ParentServiceName { get; set; }
         public string ParentWorkflowInstanceId { get; set; }

@@ -3629,4 +3629,53 @@ alert("You pressed Cancel!");&amp;lt;br/&amp;gt;\
   &amp;lt;/Flowchart&amp;gt;
 &amp;lt;/Activity&amp;gt;&lt;/XamlDefinition&gt;&lt;/Action&gt;&lt;AuthorRoles&gt;Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,&lt;/AuthorRoles&gt;&lt;Comment&gt;An integration Test to ensure the calculation library functions as expected&lt;/Comment&gt;&lt;Category&gt;Integration Test Services&lt;/Category&gt;&lt;Tags&gt;&lt;/Tags&gt;&lt;HelpLink&gt;a:\&lt;/HelpLink&gt;&lt;UnitTestTargetWorkflowService&gt;&lt;/UnitTestTargetWorkflowService&gt;&lt;DisplayName&gt;Workflow&lt;/DisplayName&gt;&lt;DataList&gt;&lt;result Description="" /&gt;&lt;/DataList&gt;&lt;Signature xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;&lt;SignedInfo&gt;&lt;CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /&gt;&lt;SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /&gt;&lt;Reference URI=""&gt;&lt;Transforms&gt;&lt;Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /&gt;&lt;/Transforms&gt;&lt;DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /&gt;&lt;DigestValue&gt;LJ7uiAqhvcxwsGLO1gTlj/leIlE=&lt;/DigestValue&gt;&lt;/Reference&gt;&lt;/SignedInfo&gt;&lt;SignatureValue&gt;QMlHtk1pm3WIM2+dxPkWcGg7r75n8jZfogGYZP7bWe6XH9DcPLKxY1DDtSeK3yUFT1nKXNMLeA6DHuU3HsFuUHZ2flyL1GCB8Xn2MdJvnnDSIXe6eMGNfRdnDB75fg0ZpqP8xB8zQfNrihDI3E6y9M9wpxpw/4Mm8NEFb+QsIZg=&lt;/SignatureValue&gt;&lt;/Signature&gt;&lt;/Service&gt;</value>
   </data>
+  <data name="ForEachCurrentDataList" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;testing&gt;
+    &lt;test&gt;testVal1&lt;/test&gt;
+  &lt;/testing&gt;
+  
+    &lt;recset&gt;
+      &lt;rec&gt;recVal1&lt;/rec&gt;
+      &lt;rec2&gt;rec2Val1&lt;/rec2&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal2&lt;/rec&gt;
+      &lt;rec2&gt;rec2Val2&lt;/rec2&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal3&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal4&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal5&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;var&gt;Static_Scalar&lt;/var&gt;
+    &lt;resultVar&gt;&lt;/resultVar&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="ForEachDataListShape" xml:space="preserve">
+    <value>&lt;DataList&gt;
+    &lt;var Description="" /&gt;
+    &lt;recset Description=""&gt;
+      &lt;rec Description="" /&gt;
+      &lt;rec2 Description="" /&gt;
+    &lt;/recset&gt;
+    &lt;testing Description=""&gt;
+      &lt;test Description="" /&gt;
+    &lt;/testing&gt;
+    &lt;resultVar Description="" /&gt;
+  &lt;/DataList&gt;</value>
+  </data>
+  <data name="ForEach_Input_Mapping" xml:space="preserve">
+    <value>&lt;Inputs&gt;&lt;Input Name="innerrec" Source="" Recordset="innerrecset" /&gt;&lt;Input Name="innerrec2" Source="" Recordset="innerrecset" /&gt;&lt;Input Name="innerdate" Source="" Recordset="innerrecset" /&gt;&lt;Input Name="innertest" Source="[[recset(*).rec2]]" Recordset="innertesting" /&gt;&lt;Input Name="innerScalar" Source="[[recset(*).rec]]" /&gt;&lt;/Inputs&gt;</value>
+  </data>
+  <data name="ForEach_Output_Mapping" xml:space="preserve">
+    <value>&lt;Outputs&gt;&lt;Output Name="innerrec" MapsTo="innerrec" Value="[[recset().rec]]" Recordset="innerrecset" /&gt;&lt;Output Name="innerrec2" MapsTo="innerrec2" Value="[[recset().rec2]]" Recordset="innerrecset" /&gt;&lt;Output Name="innerdate" MapsTo="innerdate" Value="" Recordset="innerrecset" /&gt;&lt;Output Name="innertest" MapsTo="innertest" Value="" Recordset="innertesting" /&gt;&lt;Output Name="innerScalar" MapsTo="innerScalar" Value="[[resultVar]]" /&gt;&lt;/Outputs&gt;</value>
+  </data>
 </root>

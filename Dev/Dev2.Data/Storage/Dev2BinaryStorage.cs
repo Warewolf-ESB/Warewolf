@@ -1,4 +1,6 @@
 ﻿using System.Collections.Concurrent;
+using System.Threading;
+using System.Threading.Tasks;
 using Dev2.Common;
 using System;
 using System.Collections.Generic;
@@ -34,7 +36,7 @@ namespace Dev2.Data.Storage
         public bool CanFitSegment(int segSize)
         {
             // +1 to account for post insert sizing ;)
-            return (Capacity - (UsedStorage + segSize ) > 0);
+            return (Capacity - (UsedStorage + segSize) > 0);
         }
 
         /// <summary>
@@ -46,7 +48,7 @@ namespace Dev2.Data.Storage
         {
             var result = UsedStorage; // start location of update ;)
             Array.Copy(data, 0, Buffer, UsedStorage, data.Length);
-            UsedStorage += data.Length+1; 
+            UsedStorage += data.Length + 1;
 
             return result;
         }
@@ -95,9 +97,9 @@ namespace Dev2.Data.Storage
 
         public static void Init(int bufCap)
         {
-            scrubBuffer = new InternalStorageBuffer {Buffer = new byte[bufCap], Capacity = bufCap, UsedStorage = 0};
+            scrubBuffer = new InternalStorageBuffer { Buffer = new byte[bufCap], Capacity = bufCap, UsedStorage = 0 };
         }
-        
+
         /// <summary>
         /// Compacts the specified from buffer.
         /// </summary>
@@ -105,20 +107,20 @@ namespace Dev2.Data.Storage
         /// <param name="indexs">The indexs.</param>
         public static void Compact(ref InternalStorageBuffer fromBuffer, ref ConcurrentDictionary<string, BinaryStorageKey> indexs)
         {
-            lock (_lock)
+            lock(_lock)
             {
                 scrubBuffer.ResetBuffer();
 
-                foreach (var storageKey in indexs.Keys)
+                foreach(var storageKey in indexs.Keys)
                 {
                     // Scrub out old data ;)
                     BinaryStorageKey tmpKey;
-                    if (indexs.TryRemove(storageKey, out tmpKey))
+                    if(indexs.TryRemove(storageKey, out tmpKey))
                     {
                         long pos = tmpKey.Position;
                         int len = tmpKey.Length;
 
-                        var bytes =  fromBuffer.FetchFromBuffer(pos, len);
+                        var bytes = fromBuffer.FetchFromBuffer(pos, len);
 
                         var idx = scrubBuffer.InsertSegment(bytes);
 
@@ -126,6 +128,7 @@ namespace Dev2.Data.Storage
 
                         indexs[storageKey] = tmpKey;
                     }
+                    Thread.Sleep(10);
                 }
 
                 // now copy over the data ;)
@@ -139,7 +142,7 @@ namespace Dev2.Data.Storage
     /// Disk based storage ;)
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Dev2BinaryStorage<T> where T : AProtocolBuffer 
+    public class Dev2BinaryStorage<T> where T : AProtocolBuffer
     {
         // internal location data ;)
         private static readonly string RootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -169,7 +172,7 @@ namespace Dev2.Data.Storage
 
         #region Constructors
 
-        public Dev2BinaryStorage(string filename) : this(filename, GlobalConstants.DefaultStorageSegmentSize) { } 
+        public Dev2BinaryStorage(string filename) : this(filename, GlobalConstants.DefaultStorageSegmentSize) { }
 
         public Dev2BinaryStorage(string filename, int bufCap)
         {
@@ -177,22 +180,22 @@ namespace Dev2.Data.Storage
             {
                 lock(_dirLock)
                 {
-                    if (!Directory.Exists(DataListPersistPath))
+                    if(!Directory.Exists(DataListPersistPath))
                     {
                         Directory.CreateDirectory(DataListPersistPath);
                     }
                     else
                     {
-                        if (!startupCleaned)
+                        if(!startupCleaned)
                         {
                             try
                             {
-                                foreach (FileInfo f in new DirectoryInfo(DataListPersistPath).GetFiles("*.data"))
+                                foreach(FileInfo f in new DirectoryInfo(DataListPersistPath).GetFiles("*.data"))
                                 {
                                     f.Delete();
                                 }
                             }
-                            catch (Exception e)
+                            catch(Exception e)
                             {
                                 // Best effort ;)
                                 ServerLogger.LogError(e);
@@ -222,7 +225,7 @@ namespace Dev2.Data.Storage
             }
             set
             {
-                if (value == null)
+                if(value == null)
                 {
                     throw new ArgumentNullException("value", "Cannot add null to dictionary");
                 }
@@ -260,19 +263,27 @@ namespace Dev2.Data.Storage
             }
         }
 
+        public int ItemCount
+        {
+            get
+            {
+                return _itemCnt;
+            }
+        }
+
         #endregion
 
         #region Private Methods
 
         private T Read(string key)
         {
-            lock (_opsLock)
+            lock(_opsLock)
             {
                 try
                 {
                     byte[] rawData = ReadBytes(key);
 
-                    if (rawData == null || rawData.Length == 0)
+                    if(rawData == null || rawData.Length == 0)
                     {
                         return null;
                     }
@@ -281,7 +292,7 @@ namespace Dev2.Data.Storage
 
                     return fromBytes;
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     ServerLogger.LogError(e);
                 }
@@ -292,11 +303,11 @@ namespace Dev2.Data.Storage
 
         private byte[] ReadBytes(string key)
         {
-            lock (_opsLock)
+            lock(_opsLock)
             {
-                
+
                 // not in file or buffer indexes!?
-                if (!_lstIndexes.ContainsKey(key) && !_bufferIndexes.ContainsKey(key))
+                if(!_lstIndexes.ContainsKey(key) && !_bufferIndexes.ContainsKey(key))
                 {
                     return null;
                 }
@@ -306,7 +317,7 @@ namespace Dev2.Data.Storage
                 bool inBuffer;
                 GetPositionLength(key, out pos, out len, out inBuffer);
 
-                if (!inBuffer)
+                if(!inBuffer)
                 {
                     var bytesRead = new byte[len];
 
@@ -339,7 +350,7 @@ namespace Dev2.Data.Storage
              * This method is way too slow, we need to fix the speed issues ;)
              */
 
-            if (!_hasBeenRemoveSinceLastCompact)
+            if(!_hasBeenRemoveSinceLastCompact)
             {
                 return;
             }
@@ -348,7 +359,7 @@ namespace Dev2.Data.Storage
 
             // Get tmp file path
             string directory = Path.GetDirectoryName(_completeFilename);
-            if (directory == null)
+            if(directory == null)
             {
                 throw new Exception(
                     string.Format("Unable to create compact path. '{0}' doesn't contain a valid directory name.",
@@ -361,13 +372,13 @@ namespace Dev2.Data.Storage
             // Open temp file to write entries to
             try
             {
-                using (FileStream tmpFileStream = new FileStream(tempPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                using(FileStream tmpFileStream = new FileStream(tempPath, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
                     // Write entries sequentially into the tmp file, this will exclude any removed entries.
-                    foreach (var key in Keys.ToList())
+                    foreach(var key in Keys.ToList())
                     {
                         byte[] data = ReadBytes(key);
-                        if (data != null && data.Length > 0)
+                        if(data != null && data.Length > 0)
                         {
                             _lstIndexes[key] = new BinaryStorageKey { Length = data.Length, Position = tmpFileStream.Position };
 
@@ -383,7 +394,7 @@ namespace Dev2.Data.Storage
                     tmpFileStream.Close();
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new Exception("Compacting data to the temp file failed.", e);
             }
@@ -396,7 +407,7 @@ namespace Dev2.Data.Storage
                 _file.Close();
                 _file.Dispose();
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new Exception("Unable to close current file for compacting.", e);
             }
@@ -405,7 +416,7 @@ namespace Dev2.Data.Storage
             {
                 File.Move(_completeFilename, backupPath);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new Exception("Unable to backup current file for compacting.", e);
             }
@@ -414,7 +425,7 @@ namespace Dev2.Data.Storage
             {
                 File.Move(tempPath, _completeFilename);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 File.Move(backupPath, _completeFilename);
                 File.Delete(tempPath);
@@ -431,7 +442,7 @@ namespace Dev2.Data.Storage
 
 
             ServerLogger.LogTrace("Compacting finished! [ " + DateTime.Now + " ]");
-            
+
         }
 
         private T ConvertFromBytes(byte[] payload)
@@ -448,7 +459,7 @@ namespace Dev2.Data.Storage
         {
             BinaryStorageKey tmp;
             inBuffer = false;
-            if (_bufferIndexes.TryGetValue(key, out tmp))
+            if(_bufferIndexes.TryGetValue(key, out tmp))
             {
                 // in buffer ;)
                 inBuffer = true;
@@ -459,7 +470,7 @@ namespace Dev2.Data.Storage
                 {
                     throw new Exception(string.Format("Key '{0}' doesn't exist in index.", key));
                 }
-            } 
+            }
 
             position = Convert.ToInt64(tmp.Position);
             length = Convert.ToInt32(tmp.Length);
@@ -509,12 +520,12 @@ namespace Dev2.Data.Storage
 
         public void Add(string key, T objToAdd)
         {
-            lock (_opsLock)
+            lock(_opsLock)
             {
 
                 try
                 {
-                    if (!_bufferIndexes.ContainsKey(key) && !_lstIndexes.ContainsKey(key))
+                    if(!_bufferIndexes.ContainsKey(key) && !_lstIndexes.ContainsKey(key))
                     {
                         _itemCnt++;
                     }
@@ -522,12 +533,12 @@ namespace Dev2.Data.Storage
                     byte[] data = objToAdd.ToByteArray();
 
                     // we need to add to buffer first ;)
-                    if (_internalBuffer.CanFitSegment(data.Length))
+                    if(_internalBuffer.CanFitSegment(data.Length))
                     {
                         // shove into the internal buffer ;)
                         var bufferIdx = _internalBuffer.InsertSegment(data);
 
-                        _bufferIndexes[key] = new BinaryStorageKey {Length = data.Length, Position = bufferIdx};
+                        _bufferIndexes[key] = new BinaryStorageKey { Length = data.Length, Position = bufferIdx };
                     }
                     else
                     {
@@ -536,23 +547,23 @@ namespace Dev2.Data.Storage
 
                         // once buffer is dumped, check for compaction operation ;)
                         // TODO : Background operation so we can continue to fill buffer ;)
-                        if (_file.Length - _lastCompactSize > _compactThresholdSize)
+                        if(_file.Length - _lastCompactSize > _compactThresholdSize)
                         {
                             Compact();
                         }
 
-                        if (_internalBuffer.CanFitSegment(data.Length))
+                        if(_internalBuffer.CanFitSegment(data.Length))
                         {
                             // shove into the internal buffer ;)
                             var bufferIdx = _internalBuffer.InsertSegment(data);
 
-                            _bufferIndexes[key] = new BinaryStorageKey {Length = data.Length, Position = bufferIdx};
+                            _bufferIndexes[key] = new BinaryStorageKey { Length = data.Length, Position = bufferIdx };
                         }
                         else
                         {
                             // Too big, dump to file directly ;)
                             BinaryStorageKey tmp;
-                            if (_lstIndexes.TryGetValue(key, out tmp))
+                            if(_lstIndexes.TryGetValue(key, out tmp))
                             {
                                 tmp.Length = data.Length;
                                 tmp.Position = _file.Length;
@@ -560,7 +571,7 @@ namespace Dev2.Data.Storage
                             }
                             else
                             {
-                                tmp = new BinaryStorageKey {Length = data.Length, Position = _file.Length};
+                                tmp = new BinaryStorageKey { Length = data.Length, Position = _file.Length };
                                 _lstIndexes.TryAdd(key, tmp);
                             }
 
@@ -569,7 +580,7 @@ namespace Dev2.Data.Storage
                         }
                     }
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     ServerLogger.LogError(e);
                 }
@@ -583,13 +594,13 @@ namespace Dev2.Data.Storage
         /// <param name="key">The key.</param>
         public void Remove(string key)
         {
-            lock (_opsLock)
+            lock(_opsLock)
             {
                 BinaryStorageKey tmp;
 
-                if (!_bufferIndexes.TryRemove(key, out tmp))
+                if(!_bufferIndexes.TryRemove(key, out tmp))
                 {
-                    if (_lstIndexes.TryRemove(key, out tmp))
+                    if(_lstIndexes.TryRemove(key, out tmp))
                     {
                         _itemCnt--;
 
@@ -604,8 +615,39 @@ namespace Dev2.Data.Storage
             }
         }
 
+        public int RemoveAll(IEnumerable<Guid> theList)
+        {
+            int removedItems = 0;
+            lock(_opsLock)
+            {
+                BinaryStorageKey tmp;
+
+                Parallel.ForEach(_bufferIndexes.Keys.Where(c => theList.Any(guid => c.IndexOf(guid.ToString(), System.StringComparison.Ordinal) >= 0)), (theKey) =>
+                {
+
+                    _bufferIndexes.TryRemove(theKey, out tmp);
+                    removedItems++;
+                    _itemCnt--;
+
+                    var removeKeys = _lstIndexes.Keys.Where(c => c.IndexOf(theKey, StringComparison.Ordinal) >= 0);
+
+                    foreach(var rKey in removeKeys)
+                    {
+                        _lstIndexes.TryRemove(rKey, out tmp);
+                        _itemCnt--;
+                    }
+
+                });
+
+                _hasBeenRemoveSinceLastCompact = true;
+            }
+
+            return removedItems;
+        }
+
         public int RemoveAll(string key)
         {
+            int removedItems = 0;
             lock(_opsLock)
             {
                 BinaryStorageKey tmp;
@@ -616,16 +658,20 @@ namespace Dev2.Data.Storage
                 foreach(var rKey in removeKeys)
                 {
                     _bufferIndexes.TryRemove(rKey, out tmp);
+                    removedItems++;
                     _itemCnt--;
                 }
 
-                // now we need to pack memory to reclaim space ;)
-                CompactBuffer.Compact(ref _internalBuffer, ref _bufferIndexes);
+                if(_bufferIndexes.Count > 0)
+                {
+                    // now we need to pack memory to reclaim space ;)
+                    CompactBuffer.Compact(ref _internalBuffer, ref _bufferIndexes);
+                }
 
                 // remove all file keys ;)
                 removeKeys = _lstIndexes.Keys.Where(c => c.IndexOf(key, StringComparison.Ordinal) >= 0);
 
-                foreach (var rKey in removeKeys)
+                foreach(var rKey in removeKeys)
                 {
                     _lstIndexes.TryRemove(rKey, out tmp);
                     _itemCnt--;
@@ -634,7 +680,12 @@ namespace Dev2.Data.Storage
                 _hasBeenRemoveSinceLastCompact = true;
             }
 
-            return _itemCnt;
+            return removedItems;
+        }
+
+        public void CompactMemory()
+        {
+            CompactBuffer.Compact(ref _internalBuffer, ref _bufferIndexes);
         }
 
         #endregion
@@ -654,7 +705,7 @@ namespace Dev2.Data.Storage
 
         void Dispose(bool disposing)
         {
-            if (!disposing)
+            if(!disposing)
             {
                 return;
             }

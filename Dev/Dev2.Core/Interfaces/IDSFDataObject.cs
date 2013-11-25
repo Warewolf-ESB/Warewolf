@@ -7,7 +7,8 @@ using Dev2.Web;
 namespace Dev2
 {
     public interface IDSFDataObject
-    {
+    {  
+        Dictionary<int, List<Guid>> ThreadsToDispose { get; set; } 
         //string XmlData { get; set; } // 2012.11.05 : Travis.Frisinger - Removed for Binary DataList
         string CurrentBookmarkName { get; set; }
         string WorkflowInstanceId { get; set; }

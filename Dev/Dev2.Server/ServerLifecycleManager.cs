@@ -407,8 +407,6 @@ namespace Unlimited.Applications.DynamicServicesHost
 
         int ServerLoop(bool interactiveMode)
         {
-            try
-            {
                 if(interactiveMode)
                 {
                     Write("Press <ENTER> to terminate service and/or web server if started");
@@ -423,11 +421,6 @@ namespace Unlimited.Applications.DynamicServicesHost
 
                     return Stop(false, 0);
                 }
-            }
-            catch(Exception)
-            {
-                throw new Exception();
-            }
 
             return 0;
         }

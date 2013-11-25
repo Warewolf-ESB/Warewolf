@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using Dev2.Data.Storage.Binary_Objects;
 using Dev2.Data.Storage.ProtocolBuffers;
@@ -88,6 +89,22 @@ namespace Dev2.Data.Storage
         /// Removes the specified key from storage
         /// </summary>
         /// <param name="key">The key.</param>
+        public int RemoveAll(IEnumerable<Guid> theList)
+        {
+            int totalLeft = 0;
+
+            foreach(var container in _scalableCache.Values)
+            {
+                totalLeft += container.RemoveAll(theList);
+            }
+
+            return totalLeft;
+        }
+
+        /// <summary>
+        /// Removes the specified key from storage
+        /// </summary>
+        /// <param name="key">The key.</param>
         public int RemoveAll(string key)
         {
             int totalLeft = 0;
@@ -98,6 +115,14 @@ namespace Dev2.Data.Storage
             }
 
             return totalLeft;
+        }
+
+        public void CompactMemory()
+        {            
+            foreach(var container in _scalableCache.Values)
+            {
+                container.CompactMemory();
+            }
         }
 
         /// <summary>
