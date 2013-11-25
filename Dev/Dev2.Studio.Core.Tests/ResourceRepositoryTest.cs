@@ -1435,7 +1435,6 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceRepository_DeployResources")]
-        [Ignore]
         public void ResourceRepository_DeployResources_WhenNormalDeploy_ExpectUpdatedResource()
         {
             //------------Setup for test--------------------------
@@ -1486,7 +1485,6 @@ namespace BusinessDesignStudio.Unit.Tests
 
             //------------Assert Results-------------------------
             Assert.AreEqual("NewXaml", findModel.WorkflowXaml);
-            Assert.AreEqual("New Service Definition", findModel.WorkflowXaml);
 
         }
 
