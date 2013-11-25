@@ -105,10 +105,15 @@ namespace Dev2.PathOperations {
                 result = new FileStream(tempFileName,FileMode.Open);
                 sftp.Close();
             }
-            catch(Exception)
+            catch(SftpException ex)
             {
                 sftp.Close();
-                throw new Exception("Fail");
+                throw new Exception(ex.message , ex);
+            }
+            catch (Exception ex)
+            {
+                sftp.Close();
+                throw new Exception(ex.Message, ex);
             }
         }
 
