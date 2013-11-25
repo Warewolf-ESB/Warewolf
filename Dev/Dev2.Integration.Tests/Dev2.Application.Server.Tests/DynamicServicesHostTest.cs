@@ -24,7 +24,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DBervice_Execute")]
-        public void DBervice_Execute_WhenNewAndOldMapping_ExpectPass()
+        public void DBervice_Execute_WhenDataTableUsedAndHtmlRetured_ExpectPass()
         {
             //------------Setup for test--------------------------
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "Service Serialization Test", "");
