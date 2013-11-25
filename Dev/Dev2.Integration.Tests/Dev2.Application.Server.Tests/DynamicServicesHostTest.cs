@@ -21,6 +21,21 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             set;
         }
 
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DBervice_Execute")]
+        public void DBervice_Execute_WhenNewAndOldMapping_ExpectPass()
+        {
+            //------------Setup for test--------------------------
+            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "Service Serialization Test", "");
+
+            //------------Execute Test---------------------------
+            string result = TestHelper.PostDataToWebserver(postData);
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(result, "<Result>PASS</Result>"); 
+        }
+
         #region EmptyToNull Test
 
         [TestMethod]
@@ -69,7 +84,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
             StringAssert.Contains(result, "Anonymous email sent");
         }
-
 
         [TestMethod]
         public void TestPluginNonNull_Expected_FromInResult()
