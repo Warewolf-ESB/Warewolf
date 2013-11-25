@@ -9,21 +9,32 @@ namespace Dev2.Runtime.WebServer.Controllers
 {
     public abstract class AbstractController : ApiController
     {
-        protected HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables)
-            where TRequestHandler : IRequestHandler
+        protected virtual HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables)
+            where TRequestHandler : class, IRequestHandler, new()
         {
-            var user = User;
-            if(user == null || !user.Identity.IsAuthenticated)
+            if(!IsAuthenticated())
             {
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
 
             var context = new WebServerContext(Request, requestVariables);
 
-            var handler = Activator.CreateInstance<TRequestHandler>();
+            var handler = CreateHandler<TRequestHandler>();
             handler.ProcessRequest(context);
 
             return context.ResponseMessage;
+        }
+
+        protected virtual bool IsAuthenticated()
+        {
+            var user = User;
+            return user != null && user.Identity.IsAuthenticated;
+        }
+
+        protected virtual TRequestHandler CreateHandler<TRequestHandler>()
+            where TRequestHandler : class, IRequestHandler, new()
+        {
+            return Activator.CreateInstance<TRequestHandler>();
         }
     }
 }
