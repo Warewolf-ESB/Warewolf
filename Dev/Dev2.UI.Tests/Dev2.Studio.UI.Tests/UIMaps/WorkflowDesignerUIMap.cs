@@ -253,15 +253,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                         {
                             if(smallViewControl.ControlType == ControlType.Button && smallViewControl.Height == 22)
                             {
-                                Point newPoint = new Point();
-                                if (theControl.TryGetClickablePoint(out newPoint))
-                                {
-                                    Mouse.Click(theControl, newPoint);
-                                }
-                                else
-                                {
-                                    return false;
-                                }
+                                Point newPoint = new Point(smallViewControl.Left + 10, smallViewControl.Top + 10);
+                                Mouse.Click(newPoint);
                             }
                             
                         }
