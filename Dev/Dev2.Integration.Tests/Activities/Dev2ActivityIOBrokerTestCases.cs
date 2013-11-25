@@ -8987,7 +8987,6 @@ namespace Dev2.Integration.Tests.Activities
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
-        [Ignore]
         public void Dev2ActivityIOBroker_UnZip_sFtpToFtp_FileToDirectory_OverwriteIsFalse_FileExistsOnDestination_ThrowsException()
         {
             const bool overWrite = false;
