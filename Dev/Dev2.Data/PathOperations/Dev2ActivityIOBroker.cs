@@ -1151,14 +1151,11 @@ namespace Dev2.PathOperations
                 throw new Exception("Source can not be an empty string");
             }
 
-            if (createFile)
+            if (endPoint.PathExist(endPoint.IOPath) && !args.Overwrite)
             {
-                if (endPoint.PathExist(endPoint.IOPath) && !args.Overwrite)
-                {
-                    var type = endPoint.PathIs(endPoint.IOPath) == enPathType.Directory ? "Directory" : "File";
-                    throw new Exception(string.Format("Destination {0} already exists and overwrite is set to false",
-                                                      type));
-                }
+                var type = endPoint.PathIs(endPoint.IOPath) == enPathType.Directory ? "Directory" : "File";
+                throw new Exception(string.Format("Destination {0} already exists and overwrite is set to false",
+                                                  type));
             }
         }
 

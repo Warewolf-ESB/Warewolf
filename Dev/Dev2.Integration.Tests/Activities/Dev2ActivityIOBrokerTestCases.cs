@@ -107,12 +107,12 @@ namespace Dev2.Integration.Tests.Activities
         public void Dev2ActivityIOBroker_Delete_FileOnsFtp_FileDoesExists_FileIsDeleted()
         {
             const string fileName = "source.txt";
-            const bool createSourceFile = false;
+            const bool createSourceFile = true;
             const string sourceData = "some ";
             dynamic source = CreatesFtpEndPoint(fileName, sourceData, createSourceFile, "");
             var result = ActivityIOFactory.CreateOperationsBroker()
                                         .Delete(source.EndPoint);
-            Assert.AreEqual("Failure", result);
+            Assert.AreEqual("Success", result);
         }
         #endregion
 
@@ -360,31 +360,6 @@ namespace Dev2.Integration.Tests.Activities
                    var zipTo = new Dev2ZipOperationTO("Best Speed", "", "", overWrite);
                    return ActivityIOFactory.CreateOperationsBroker()
                                            .Zip(sourceEndPoint, destinationEndPoint, zipTo);
-               });
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2ActivityIOBroker_Zip")]
-        [ExpectedException(typeof(Exception))]
-        public void Dev2ActivityIOBroker_Zip_SourceAndDesinationFilesAreTheSame_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ThrowsException()
-        {
-            const bool overWrite = false;
-            const string sourceFileName = "source.txt";
-            const string destinationFile = "source.zip";
-
-
-            const bool createSourceDirectory = true;
-            const bool isSourceADirectory = false;
-            const bool createDestinationDirectory = false;
-            const bool isDestinationADirectory = false;
-
-            RunLocalToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory,
-               (sourceEndPoint, destinationEndPoint) =>
-               {
-                   var zipTo = new Dev2ZipOperationTO("Best Speed", "", "", overWrite);
-                   return ActivityIOFactory.CreateOperationsBroker()
-                                           .Zip(sourceEndPoint, sourceEndPoint, zipTo);
                });
         }
 
@@ -10947,8 +10922,13 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint, destination.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            destination.EndPoint.Delete(destination.EndPoint.IOPath);
-            source.EndPoint.Delete(source.EndPoint.IOPath);
+            try
+            {
+                destination.EndPoint.Delete(destination.EndPoint.IOPath);
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            {}
         }
         
         private void RunLocalTestCase(string fileName, bool createSourceDirectory, bool isDirectory,
@@ -10961,7 +10941,12 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            source.EndPoint.Delete(source.EndPoint.IOPath);
+            try
+            {
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            { }
         }
 
         private void RunFtpTestCase(string fileName, bool createSourceDirectory, bool isDirectory,
@@ -10974,7 +10959,12 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            //source.EndPoint.Delete(source.EndPoint.IOPath);
+            try
+            {
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            { }
         }
 
         private void RunsFftpTestCase(string fileName, bool createSourceDirectory, bool isDirectory,
@@ -10987,7 +10977,11 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            //source.EndPoint.Delete(source.EndPoint.IOPath);
+            try{
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            { }
         }
 
         private void RunUncTestCase(string fileName, bool createSourceDirectory, bool isDirectory,
@@ -11000,7 +10994,12 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            //source.EndPoint.Delete(source.EndPoint.IOPath);
+            try
+            {
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            { }
         }
 
         private void RunFtpToLocalTestCase(string sourceFileName, string destinationFile, bool createSourceDirectory,
@@ -11017,8 +11016,13 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint, destination.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            destination.EndPoint.Delete(destination.EndPoint.IOPath);
-            //source.EndPoint.Delete(source.EndPoint.IOPath);
+            try
+            {
+                destination.EndPoint.Delete(destination.EndPoint.IOPath);
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            { }
         }
 
         private void RunsFtpToLocalTestCase(string sourceFileName, string destinationFile, bool createSourceDirectory,
@@ -11035,8 +11039,13 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint, destination.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            destination.EndPoint.Delete(destination.EndPoint.IOPath);
-            //source.EndPoint.Delete(source.EndPoint.IOPath);
+            try
+            {
+                destination.EndPoint.Delete(destination.EndPoint.IOPath);
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            { }
         }
 
         private void RunUncToLocalTestCase(string sourceFileName, string destinationFile, bool createSourceDirectory,
@@ -11053,8 +11062,13 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint, destination.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            destination.EndPoint.Delete(destination.EndPoint.IOPath);
-            //source.EndPoint.Delete(source.EndPoint.IOPath);
+            try
+            {
+                destination.EndPoint.Delete(destination.EndPoint.IOPath);
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            { }
         }
 
         private void RunLocalToFtpTestCase(string sourceFileName, string destinationFile, bool createSourceDirectory,
@@ -11074,8 +11088,13 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint, destination.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            destination.EndPoint.Delete(destination.EndPoint.IOPath);
-            //source.EndPoint.Delete(source.EndPoint.IOPath);
+            try
+            {
+                destination.EndPoint.Delete(destination.EndPoint.IOPath);
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            { }
         }
 
         private void RunFtpToFtpTestCase(string sourceFileName, string destinationFile, bool createSourceDirectory,
@@ -11093,8 +11112,13 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint, destination.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            destination.EndPoint.Delete(destination.EndPoint.IOPath);
-            //source.EndPoint.Delete(source.EndPoint.IOPath);
+            try
+            {
+                destination.EndPoint.Delete(destination.EndPoint.IOPath);
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            { }
         }
 
         private void RunsFtpToFtpTestCase(string sourceFileName, string destinationFile, bool createSourceDirectory,
@@ -11112,8 +11136,13 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint, destination.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            destination.EndPoint.Delete(destination.EndPoint.IOPath);
-            //source.EndPoint.Delete(source.EndPoint.IOPath);
+            try
+            {
+                destination.EndPoint.Delete(destination.EndPoint.IOPath);
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            { }
         }
 
         private void RunUncToFtpTestCase(string sourceFileName, string destinationFile, bool createSourceDirectory,
@@ -11131,8 +11160,13 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint, destination.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            destination.EndPoint.Delete(destination.EndPoint.IOPath);
-            //source.EndPoint.Delete(source.EndPoint.IOPath);
+            try
+            {
+                destination.EndPoint.Delete(destination.EndPoint.IOPath);
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            { }
         }
 
         private void RunLocalTosFtpTestCase(string sourceFileName, string destinationFile, bool createSourceDirectory,
@@ -11150,8 +11184,15 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint, destination.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            destination.EndPoint.Delete(destination.EndPoint.IOPath);
-            //source.EndPoint.Delete(source.EndPoint.IOPath);
+
+            try
+            {
+                destination.EndPoint.Delete(destination.EndPoint.IOPath);
+                source.EndPoint.Delete(source.EndPoint.IOPath);}
+            catch (Exception)
+            {
+                 
+            }
         }
 
         private void RunFtpTosFtpTestCase(string sourceFileName, string destinationFile, bool createSourceDirectory,
@@ -11169,8 +11210,13 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint, destination.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            destination.EndPoint.Delete(destination.EndPoint.IOPath);
-            //source.EndPoint.Delete(source.EndPoint.IOPath);
+            try
+            {
+                destination.EndPoint.Delete(destination.EndPoint.IOPath);
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            { }
         }
 
         private void RunsFtpTosFtpTestCase(string sourceFileName, string destinationFile, bool createSourceDirectory,
@@ -11188,8 +11234,13 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint, destination.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            destination.EndPoint.Delete(destination.EndPoint.IOPath);
-            //source.EndPoint.Delete(source.EndPoint.IOPath);
+            try
+            {
+                destination.EndPoint.Delete(destination.EndPoint.IOPath);
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            { }
         }
 
         private void RunUncTosFtpTestCase(string sourceFileName, string destinationFile, bool createSourceDirectory,
@@ -11207,8 +11258,13 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint, destination.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            destination.EndPoint.Delete(destination.EndPoint.IOPath);
-            //source.EndPoint.Delete(source.EndPoint.IOPath);
+            try
+            {
+                destination.EndPoint.Delete(destination.EndPoint.IOPath);
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            { }
         }
 
         private void RunLocalToUncTestCase(string sourceFileName, string destinationFile, bool createSourceDirectory,
@@ -11227,8 +11283,13 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint, destination.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            destination.EndPoint.Delete(destination.EndPoint.IOPath);
-            //source.EndPoint.Delete(source.EndPoint.IOPath);
+            try
+            {
+                destination.EndPoint.Delete(destination.EndPoint.IOPath);
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            { }
         }
 
         private void RunFtpToUncTestCase(string sourceFileName, string destinationFile, bool createSourceDirectory,
@@ -11246,8 +11307,13 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint, destination.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            destination.EndPoint.Delete(destination.EndPoint.IOPath); 
-            //source.EndPoint.Delete(source.EndPoint.IOPath);
+            try
+            {
+                destination.EndPoint.Delete(destination.EndPoint.IOPath);
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            { }
         }
 
         private void RunsFtpToUncTestCase(string sourceFileName, string destinationFile, bool createSourceDirectory,
@@ -11265,8 +11331,13 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint, destination.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            destination.EndPoint.Delete(destination.EndPoint.IOPath);
-            //source.EndPoint.Delete(source.EndPoint.IOPath);
+            try
+            {
+                destination.EndPoint.Delete(destination.EndPoint.IOPath);
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            { }
         }
 
         private void RunUncToUncTestCase(string sourceFileName, string destinationFile, bool createSourceDirectory,
@@ -11284,8 +11355,13 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint, destination.EndPoint);
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", result);
-            destination.EndPoint.Delete(destination.EndPoint.IOPath);
-            //source.EndPoint.Delete(source.EndPoint.IOPath);
+            try
+            {
+                destination.EndPoint.Delete(destination.EndPoint.IOPath);
+                source.EndPoint.Delete(source.EndPoint.IOPath);
+            }
+            catch
+            { }
         }
 
         private dynamic CreateLocalEndPoint(string file, string data, bool createDirectory,string testFile, bool isDirectory = false)
