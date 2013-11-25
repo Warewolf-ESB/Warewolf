@@ -211,6 +211,8 @@ namespace Dev2.Core.Tests
 
         #endregion Add Missing Tests
 
+        
+
         #region RemoveUnused Tests
 
         [TestMethod]
@@ -1042,6 +1044,22 @@ namespace Dev2.Core.Tests
         #endregion
 
         #region Scalar Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DataListViewModel_ValidateNames")]
+        public void DataListViewModel_ValidateNames_ItemHasInvalidChar_ErrorNotRemovedFromDuplicateCheck()
+        {
+            //------------Setup for test--------------------------
+            var dataListViewModel = new DataListViewModel();
+            IDataListItemModel dataListItemModel = new DataListItemModel("test@");
+            dataListItemModel.HasError = true;
+            dataListItemModel.ErrorMessage = StringResources.ErrorMessageInvalidChar;
+            //------------Execute Test---------------------------
+            dataListViewModel.ValidateNames(dataListItemModel);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(StringResources.ErrorMessageInvalidChar, dataListItemModel.ErrorMessage);
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
