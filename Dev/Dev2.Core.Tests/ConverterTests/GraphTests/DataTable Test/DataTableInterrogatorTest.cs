@@ -21,7 +21,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
             IInterrogator interrogator = InterrogatorFactory.CreateInteregator(obj.GetType());
             var mapper = interrogator.CreateMapper(obj);
             //------------Assert Results-------------------------
-            Assert.AreEqual(typeof(DataTableMapper),mapper.GetType());
+            Assert.AreEqual(typeof(DataTableMapper), mapper.GetType());
         }
 
         [TestMethod]

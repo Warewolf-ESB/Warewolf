@@ -34,7 +34,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
             obj.Columns.Add("Col1");
             obj.Columns.Add("Col2");
 
-            obj.Rows.Add(new object[] { "a", "b"});
+            obj.Rows.Add(new object[] { "a", "b" });
             obj.Rows.Add(new object[] { "c", "d" });
             obj.Rows.Add(new object[] { "e", "f" });
 
@@ -85,7 +85,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
 
             Assert.AreEqual("Foo().Col2", result[1].ActualPath);
             Assert.AreEqual("Foo().Col2", result[1].DisplayPath);
-            Assert.AreEqual("b,"+htmlFragment, result[1].SampleData);
+            Assert.AreEqual("b," + htmlFragment, result[1].SampleData);
         }
     }
 }

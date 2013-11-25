@@ -96,16 +96,16 @@ namespace Dev2.DynamicServices
                     Int32.TryParse(dataObject.GetValue("NumberOfSteps"), out numberOfSteps);
                     NumberOfSteps = numberOfSteps;
 
-                    if (dataObject.Bookmark is string)
+                    if(PropertyExist(dataObject,"Bookmark"))
                     {
-                        Bookmark = dataObject.Bookmark;
+                        Bookmark = dataObject.GetValue("Bookmark");
                     }
-                    if (dataObject.InstanceId is string)
+                    if (PropertyExist(dataObject,"InstanceId"))
                     {
 
                         Guid instID;
 
-                        if (Guid.TryParse(dataObject.InstanceId, out instID))
+                        if (Guid.TryParse(dataObject.GetValue("InstanceId") , out instID))
                         {
                             InstanceID = instID;
                         }
@@ -126,9 +126,9 @@ namespace Dev2.DynamicServices
                     IsDataListScoped = isScoped;
 
                     // Set incoming service name ;)
-                    if (dataObject.Service is string)
+                    if (PropertyExist(dataObject, "Service"))
                     {
-                        ServiceName = dataObject.Service;
+                        ServiceName = dataObject.GetValue("Service"); 
                     }
                     // finally set raw payload
                     RawPayload = xmldata;
@@ -148,6 +148,17 @@ namespace Dev2.DynamicServices
             {
                 RawPayload = rawPayload;
             }
+        }
+
+        private bool PropertyExist(UnlimitedObject obj, string property)
+        {
+            var prop = obj.GetValue(property); 
+            if(!string.IsNullOrEmpty(prop))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         #endregion Constructor

@@ -5,7 +5,6 @@ using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Unlimited.Framework.Converters.Graph
 {
-    [Serializable]
     public abstract class BasePath : IPath
     {
         #region Constructor
