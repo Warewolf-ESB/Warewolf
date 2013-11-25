@@ -223,14 +223,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 compiler.ClearErrors(dataObject.DataListID);
 
-               
-                if(ServiceServer != Guid.Empty)
-                {
-                    // we need to adjust the originating server id so debug reflect remote server instead of localhost ;)
-                    dataObject.RemoteInvokerID = ServiceServer.ToString();
-                }
+                    if(ServiceServer != Guid.Empty)
+                    {
+                        // we need to adjust the originating server id so debug reflect remote server instead of localhost ;)
+                        dataObject.RemoteInvokerID = ServiceServer.ToString();
+                    }
 
-                dataObject.RemoteServiceType = context.GetValue(Type);
+                    dataObject.RemoteServiceType = context.GetValue(Type);
 
                 if(dataObject.IsDebugMode())
                 {
