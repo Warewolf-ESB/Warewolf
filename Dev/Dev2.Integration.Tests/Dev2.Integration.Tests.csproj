@@ -358,7 +358,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DataTest\" />
     <Folder Include="locale\" />
   </ItemGroup>
   <ItemGroup>

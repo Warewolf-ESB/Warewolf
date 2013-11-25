@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
 using Dev2.PathOperations;
+using Ionic.Zip;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.UnitTest.Framework.PathOperationTests;
 
 namespace Dev2.Integration.Tests.Activities
 {
     [TestClass]
-    [Ignore]//Ashley 25/11/2013 - Ignored until Tshepo is done with IO tools
     public class Dev2ActivityIOBrokerTestCases
     {
         private string _zipFile = "";
@@ -138,6 +138,79 @@ namespace Dev2.Integration.Tests.Activities
                      var zipTo = new Dev2ZipOperationTO("Best Speed", "", "", overWrite);
                      return ActivityIOFactory.CreateOperationsBroker()
                                              .Zip(sourceEndPoint, destinationEndPoint, zipTo);
+                 });
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_Zip")]
+        public void Dev2ActivityIOBroker_Zip_LocalToLocal_FileToFile_FileHasArchivePassword_UnZipWillRequireSamePassword()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFilename = "destination.zip";
+            const bool createSourceDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool createDestinationDirectory = false;
+            const bool isDestinationADirectory = true;
+
+            RunLocalToLocalTestCase(sourceFileName, destinationFilename, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory,
+                 (sourceEndPoint, destinationEndPoint) =>
+                 {
+                     const string archivePassword = "GgRest74@#$";
+                     var zipTo = new Dev2ZipOperationTO("Best Speed", archivePassword, "", overWrite);
+                     var result =  ActivityIOFactory.CreateOperationsBroker()
+                                             .Zip(sourceEndPoint, destinationEndPoint, zipTo);
+
+                     if (result == "Success")
+                     {
+                         var unzipTo = new Dev2UnZipOperationTO(archivePassword, overWrite);
+                         var destination = CreateLocalEndPoint(sourceFileName, "",false, "", true);
+                         result =  ActivityIOFactory.CreateOperationsBroker()
+                                                 .UnZip(destinationEndPoint, destination.EndPoint, unzipTo);
+                     }
+                     else
+                     {
+                         throw new Exception("Zip operation failed");
+                     }
+                     return result;
+                 });
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_Zip")]
+        [ExpectedException(typeof(BadPasswordException))]
+        public void Dev2ActivityIOBroker_Zip_LocalToLocal_FileToFile_FileHasArchivePassword_UnZipWithoutPasswordThrowsException()
+        {
+            const bool overWrite = false;
+            const string sourceFileName = "source.txt";
+            const string destinationFilename = "destination.zip";
+            const bool createSourceDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool createDestinationDirectory = false;
+            const bool isDestinationADirectory = true;
+
+            RunLocalToLocalTestCase(sourceFileName, destinationFilename, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory,
+                 (sourceEndPoint, destinationEndPoint) =>
+                 {
+                     const string archivePassword = "GgRest74@#$";
+                     var zipTo = new Dev2ZipOperationTO("Best Speed", archivePassword, "", overWrite);
+                     var result = ActivityIOFactory.CreateOperationsBroker()
+                                             .Zip(sourceEndPoint, destinationEndPoint, zipTo);
+
+                     if (result == "Success")
+                     {
+                         var unzipTo = new Dev2UnZipOperationTO("", overWrite);
+                         var destination = CreateLocalEndPoint(sourceFileName, "", false, "", true);
+                         result = ActivityIOFactory.CreateOperationsBroker()
+                                                 .UnZip(destinationEndPoint, destination.EndPoint, unzipTo);
+                     }
+                     else
+                     {
+                         throw new Exception("Zip operation failed");
+                     }
+                     return result;
                  });
         }
 
@@ -9012,8 +9085,6 @@ namespace Dev2.Integration.Tests.Activities
             const bool overWrite = false;
             const string sourceFileName = "source.txt";
             const string destinationFile = "source.txt";
-
-
             const bool createSourceDirectory = true;
             const bool createDestinationDirectory = true;
             const bool isSourceADirectory = false;
