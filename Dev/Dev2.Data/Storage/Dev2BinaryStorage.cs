@@ -656,14 +656,16 @@ namespace Dev2.Data.Storage
                 // remove all buffer keys ;)
                 var removeKeys = _bufferIndexes.Keys.Where(c => c.IndexOf(key, StringComparison.Ordinal) >= 0);
 
+                bool removed = false;
                 foreach(var rKey in removeKeys)
                 {
                     _bufferIndexes.TryRemove(rKey, out tmp);
                     removedItems++;
                     _itemCnt--;
+                    removed = true;
                 }
 
-                if(_bufferIndexes.Count > 0)
+                if(removed)
                 {
                     // now we need to pack memory to reclaim space ;)
                     CompactBuffer.Compact(ref _internalBuffer, ref _bufferIndexes);

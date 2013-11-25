@@ -40,24 +40,24 @@ namespace Dev2.DataList.Contract.Persistence {
         }
 
         public bool DeleteDataList(Guid id, bool onlyIfNotPersisted)
-            {
+        {
             bool result = false;
-                    try
-                    {
-                        IBinaryDataList tmp;
-                if (_repo.TryRemove(id, out tmp)) // cache miss, check persisted DL cache?
+            try
             {
-                    result = true;
-            }
-
-                    BackgroundDispatcher.Instance.Add(tmp);
-
-                }
-                catch (Exception ex)
+                IBinaryDataList tmp;
+                if (_repo.TryRemove(id, out tmp)) // cache miss, check persisted DL cache?
                 {
-                    ServerLogger.LogError(ex);
-                    /* Fail safe */
+                        result = true;
                 }
+
+                BackgroundDispatcher.Instance.Add(tmp);
+
+            }
+            catch (Exception ex)
+            {
+                ServerLogger.LogError(ex);
+                /* Fail safe */
+            }
 
             return result;
         }

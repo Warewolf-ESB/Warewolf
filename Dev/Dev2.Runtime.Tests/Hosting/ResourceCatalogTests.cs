@@ -2360,8 +2360,11 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.IsNotNull(workflow);
             Assert.AreEqual(2, workflow.Count);
-            Assert.AreEqual(resourceName, workflow[0].ResourceName);
-            Assert.AreEqual("Bug6619", workflow[1].ResourceName);
+
+            // the ordering swaps around - hence the contains assert ;)
+
+            StringAssert.Contains(workflow[0].ResourceName,"Bug6619");
+            StringAssert.Contains(workflow[1].ResourceName, "Bug6619");
         }
 
         [TestMethod]

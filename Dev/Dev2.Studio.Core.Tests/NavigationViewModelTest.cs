@@ -1039,17 +1039,8 @@ namespace Dev2.Core.Tests
         #region Disconnect
 
         [TestMethod]
-        [Ignore] //2013.06.02: Ashley lewis contradicts bugs 9444+9445
         public void EnvironmentNodeDisconnect_Expect_NodeRemovedFromRoot()
         {
-            //            var reset = new AutoResetEvent(false);
-            //            ThreadExecuter.RunCodeAsSTA(reset,
-            //                () =>
-            //                {
-            //                
-            //                });
-            //            reset.WaitOne();
-
             Init(false, true);
             // FromCurrentSynchronizationContext will now resolve to the dispatcher thread here
             mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(true);

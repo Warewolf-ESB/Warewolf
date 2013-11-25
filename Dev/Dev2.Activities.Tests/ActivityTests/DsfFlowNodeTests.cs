@@ -193,7 +193,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Dev2DataListDecisionHandler_ExecuteDecisionStack")]
-        [Ignore] //This test is based of the Data Merge workflow there is a problem with how the Assign handles new lines. Speak to Travis he says there is possibly an issue with the serialization and the new lines being removed.
         public void Dev2DataListDecisionHandler_ExecuteDecisionStack_SlashInVariable_CanDeserialize()
         {
             CurrentDl = "<ADL><resul><t/></resul></ADL>";
