@@ -39,7 +39,7 @@ namespace Dev2.Data.Decision
         public string FetchSwitchData(string variableName, IList<string> oldAmbientData)
         {
             Guid dlID = FetchDataListID(oldAmbientData);
-            IBinaryDataListEntry tmp = EvaluateRegion(variableName, dlID);
+            IBinaryDataListEntry tmp = EvaluateForSwitch(variableName, dlID);
 
             if(tmp != null)
             {
@@ -74,18 +74,16 @@ namespace Dev2.Data.Decision
             // Swap out ! with a new internal token to avoid nasty issues with 
             string newDecisionData = Dev2DecisionStack.FromVBPersitableModelToJSON(decisionDataPayload);
 
-            IBinaryDataListEntry tmp = EvaluateRegion(newDecisionData, dlID);
+            var dds = EvaluateRegion(newDecisionData, dlID);
 
             ErrorResultTO errors = new ErrorResultTO();
 
-            if(tmp != null)
+            if(dds != null)
             {
-                string model = tmp.FetchScalar().TheValue; // Get evalauted data value
                 if(dlID != GlobalConstants.NullDataListID)
                 {
                     try
                     {
-                        Dev2DecisionStack dds = _compiler.ConvertFromJsonToModel<Dev2DecisionStack>(model);
 
                         if(dds.TheStack != null)
                         {
@@ -160,13 +158,21 @@ namespace Dev2.Data.Decision
             throw new InvalidExpressionException("Could not populate decision model - DataList Errors!");
         }
 
+        private IBinaryDataListEntry EvaluateForSwitch(string payload, Guid dlID)
+        {
+            ErrorResultTO errors;
+            IBinaryDataListEntry tmp = _compiler.Evaluate(dlID, enActionType.User, payload, false, out errors);
+
+            return tmp;
+        }
+
         /// <summary>
         /// Evaluates the region.
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <param name="dlID">The dl ID.</param>
         /// <returns></returns>
-        private IBinaryDataListEntry EvaluateRegion(string payload, Guid dlID)
+        private Dev2DecisionStack EvaluateRegion(string payload, Guid dlID)
         {
             ErrorResultTO errors;
             if(payload.StartsWith("{\"TheStack\":[{"))
@@ -225,13 +231,11 @@ namespace Dev2.Data.Decision
                         dds = ResolveAllRecords(dlID, dds, decision, effectedCols, out errors);
                     }
                 }
-                payload = _compiler.ConvertModelToJson(dds);
+
+                return dds;
             }
 
-            IBinaryDataListEntry tmp = _compiler.Evaluate(dlID, enActionType.User, payload, false, out errors);
-
-            return tmp;
-
+            return null;
         }
 
         static string GetValueForDecisionVariable(Guid dlID, string decisionColumn)
