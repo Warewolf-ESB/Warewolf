@@ -246,16 +246,24 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 foreach(UITestControl theControl in testFlowChildCollection)
                 {
-                    if(theControl.ControlType == ControlType.Button && theControl.Height == 22 && theControl.Width == 22)
+                    if (theControl.GetProperty("AutomationID").ToString() == "SmallViewContent")
                     {
-                        Point newPoint = new Point();
-                        if(theControl.TryGetClickablePoint(out newPoint))
+                        var smallViewControls = theControl.GetChildren();
+                        foreach (var smallViewControl in smallViewControls)
                         {
-                            Mouse.Click(theControl, newPoint);
-                        }
-                        else
-                        {
-                            return false;
+                            if(smallViewControl.ControlType == ControlType.Button && smallViewControl.Height == 22)
+                            {
+                                Point newPoint = new Point();
+                                if (theControl.TryGetClickablePoint(out newPoint))
+                                {
+                                    Mouse.Click(theControl, newPoint);
+                                }
+                                else
+                                {
+                                    return false;
+                                }
+                            }
+                            
                         }
                     }
                 }
