@@ -32,7 +32,8 @@ namespace Dev2.Runtime.ServiceModel.Utils
             foreach(var path in outputsToMap)
             {
                 // Remove bogus names and dots
-                var name = path.DisplayPath.Replace("NewDataSet", "").Replace(".Table.", "").Replace(".", "").Replace("DocumentElement","");
+                var name = path.DisplayPath.Replace("NewDataSet", "").Replace(".Table.", "").Replace("DocumentElement","");
+                var alias = path.DisplayPath.Replace("NewDataSet", "").Replace(".Table.", "").Replace(".","").Replace("DocumentElement", "");
 
                 var idx = name.IndexOf("()", StringComparison.InvariantCultureIgnoreCase);
                 if(idx >= 0)
@@ -40,7 +41,7 @@ namespace Dev2.Runtime.ServiceModel.Utils
                     name = name.Remove(0, idx + 2);
                 }
 
-                var field = new RecordsetField { Name = name, Alias = string.IsNullOrEmpty(path.OutputExpression) ? name : path.OutputExpression, Path = path };
+                var field = new RecordsetField { Name = name, Alias = string.IsNullOrEmpty(path.OutputExpression) ? alias : path.OutputExpression, Path = path };
 
                 RecordsetField rsField;
                 if(!addFields && (rsField = rsFields.FirstOrDefault(f => f.Path != null ? f.Path.ActualPath == path.ActualPath : f.Name == field.Name)) != null)
@@ -58,6 +59,7 @@ namespace Dev2.Runtime.ServiceModel.Utils
 
                 recordsetIndex++;
             }
+
         }
     }
 }
