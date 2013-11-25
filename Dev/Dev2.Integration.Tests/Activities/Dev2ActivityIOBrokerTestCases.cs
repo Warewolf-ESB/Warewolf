@@ -7,6 +7,7 @@ using Unlimited.UnitTest.Framework.PathOperationTests;
 namespace Dev2.Integration.Tests.Activities
 {
     [TestClass]
+    [Ignore]//Ashley 25/11/2013 - Ignored until Tshepo is done with IO tools
     public class Dev2ActivityIOBrokerTestCases
     {
         private string _zipFile = "";
