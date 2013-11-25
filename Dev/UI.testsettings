@@ -14,7 +14,6 @@
     <DeploymentItem filename="Binaries\IronRuby.dll" />
   </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Scripts setupScript="C:\CodedUI\run.bat" />
   <Execution>
     <Timeouts testTimeout="0" />
     <TestTypeSpecific>
