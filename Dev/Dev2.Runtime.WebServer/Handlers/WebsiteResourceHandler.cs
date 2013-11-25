@@ -62,7 +62,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             ctx.Send(result);
         }
 
-        ResponseWriter GetFileFromPath(Uri uri)
+        IResponseWriter GetFileFromPath(Uri uri)
         {
             var filePath = string.Format("{0}\\Webs{1}\\{2}", Location,
                 Path.GetDirectoryName(uri.LocalPath),
@@ -70,7 +70,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return GetFileFromPath(filePath);
         }
 
-        static ResponseWriter GetFileFromPath(string filePath)
+        static IResponseWriter GetFileFromPath(string filePath)
         {
             var supportedFileExtensions = ConfigurationManager.AppSettings["SupportedFileExtensions"];
             var extension = Path.GetExtension(filePath);

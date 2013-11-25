@@ -2,7 +2,7 @@
 
 namespace Dev2.Runtime.WebServer.Responses
 {
-    public class StatusResponseWriter : ResponseWriter
+    public class StatusResponseWriter : IResponseWriter
     {
         readonly HttpStatusCode _statusCode;
 
@@ -11,12 +11,12 @@ namespace Dev2.Runtime.WebServer.Responses
             _statusCode = statusCode;
         }
 
-        public override void Write(ICommunicationContext context)
+        public void Write(ICommunicationContext context)
         {
             context.Response.Status = _statusCode;
         }
 
-        public override void Write(WebServerContext context)
+        public void Write(WebServerContext context)
         {
             context.ResponseMessage.StatusCode = _statusCode;
         }

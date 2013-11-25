@@ -21,8 +21,9 @@ namespace Dev2.Runtime.WebServer
         public ICommunicationRequest Request { get; private set; }
         public ICommunicationResponse Response { get; private set; }
 
-        public void Send(ResponseWriter response)
+        public void Send(IResponseWriter response)
         {
+            VerifyArgument.IsNotNull("response", response);
             response.Write(this);
         }
 

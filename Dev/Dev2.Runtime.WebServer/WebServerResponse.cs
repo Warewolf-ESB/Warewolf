@@ -9,6 +9,7 @@ namespace Dev2.Runtime.WebServer
     {
         public WebServerResponse(HttpResponseMessage response)
         {
+            VerifyArgument.IsNotNull("response", response);
             Response = response;
         }
 

@@ -145,7 +145,7 @@
     <Compile Include="Responses\StaticFileResponseWriter.cs" />
     <Compile Include="Responses\StringResponseWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Responses\ResponseWriter.cs" />
+    <Compile Include="Responses\IResponseWriter.cs" />
     <Compile Include="WebServerRequest.cs" />
     <Compile Include="WebServerResponse.cs" />
     <Compile Include="WebServerStartup.cs" />

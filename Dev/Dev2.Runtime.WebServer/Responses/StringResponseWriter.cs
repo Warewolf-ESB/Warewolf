@@ -1,10 +1,13 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Web.UI.WebControls;
 
 namespace Dev2.Runtime.WebServer.Responses
 {
-    public class StringResponseWriter : ResponseWriter
+    public class StringResponseWriter : IResponseWriter
     {
         readonly string _text;
         readonly MediaTypeHeaderValue _contentType;
@@ -21,42 +24,55 @@ namespace Dev2.Runtime.WebServer.Responses
             _contentType = contentType;
         }
 
-        public override void Write(ICommunicationContext context)
+        public void Write(ICommunicationContext context)
         {
             var buffer = Encoding.UTF8.GetBytes(_text);
             context.Response.OutputStream.Write(buffer, 0, buffer.Length);
             context.Response.ContentType = _contentType.ToString();
             context.Response.ContentLength = buffer.Length;
+
+            UpdateContentDisposition((contentType, contentDisposition, headers) =>
+            {
+                context.Response.ContentType = contentType.ToString();
+                context.Response.AddHeader(headers.Key, headers.Value);
+                context.Response.AddHeader("content-disposition", contentDisposition.ToString());
+            });
         }
 
-        public override void Write(WebServerContext context)
+        public void Write(WebServerContext context)
         {
             context.ResponseMessage.Content = new StringContent(_text);
             context.ResponseMessage.Content.Headers.ContentType = _contentType;
-            UpdateContentDisposition(context.ResponseMessage);
+
+            UpdateContentDisposition((contentType, contentDisposition, headers) =>
+            {
+                context.ResponseMessage.Content.Headers.ContentType = contentType;
+                context.ResponseMessage.Content.Headers.ContentDisposition = contentDisposition;
+                context.ResponseMessage.Headers.Add(headers.Key, headers.Value);
+            });
         }
 
-        void UpdateContentDisposition(HttpResponseMessage response)
+        void UpdateContentDisposition(Action<MediaTypeHeaderValue, ContentDispositionHeaderValue, KeyValuePair<string, string>> updateContentDisposition)
         {
             var contentLength = Encoding.UTF8.GetByteCount(_text);
             if(contentLength > WebServerStartup.SizeCapForDownload)
             {
                 string extension = null;
-                var contentType = response.Content.Headers.ContentType;
-                if(ContentTypes.Json.Equals(contentType))
+                if(ContentTypes.Json.Equals(_contentType))
                 {
                     extension = "json";
                 }
-                else if(ContentTypes.Xml.Equals(contentType))
+                else if(ContentTypes.Xml.Equals(_contentType))
                 {
                     extension = "xml";
                 }
                 if(extension != null)
                 {
-                    response.Content.Headers.ContentType = ContentTypes.ForceDownload;
-                    response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-                    response.Content.Headers.ContentDisposition.Parameters.Add(new NameValueHeaderValue("filename", "Output." + extension));
-                    response.Headers.Add("Server", "Dev2 Server");
+                    var headers = new KeyValuePair<string, string>("Server", "Dev2 Server");
+                    var contentDisposition = new ContentDispositionHeaderValue("attachment");
+                    contentDisposition.Parameters.Add(new NameValueHeaderValue("filename", "Output." + extension));
+
+                    updateContentDisposition(ContentTypes.ForceDownload, contentDisposition, headers);
                 }
             }
         }

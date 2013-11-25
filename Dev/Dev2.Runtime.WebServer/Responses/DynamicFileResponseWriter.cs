@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Dev2.Runtime.WebServer.Responses
 {
-    public class DynamicFileResponseWriter : ResponseWriter
+    public class DynamicFileResponseWriter : IResponseWriter
     {
         static readonly MediaTypeHeaderValue ContentType = ContentTypes.Html;
 
@@ -23,7 +23,7 @@ namespace Dev2.Runtime.WebServer.Responses
             _contentPath = contentPath;
         }
 
-        public override void Write(ICommunicationContext context)
+        public void Write(ICommunicationContext context)
         {
             // BUG 8593: 2013.02.17 - TWR - removed try/catch as this is handled by caller
             var content = GetContent();
@@ -33,7 +33,7 @@ namespace Dev2.Runtime.WebServer.Responses
             context.Response.ContentLength = buffer.Length;
         }
 
-        public override void Write(WebServerContext context)
+        public void Write(WebServerContext context)
         {
             var content = GetContent();
             context.ResponseMessage.Content = new StringContent(content);
@@ -42,10 +42,15 @@ namespace Dev2.Runtime.WebServer.Responses
 
         string GetContent()
         {
-            var layoutContent = File.ReadAllText(_layoutFile);
+            var layoutContent = ReadLayoutFile();
             var builder = new StringBuilder(layoutContent);
             var content = builder.Replace(_contentPathToken, _contentPath).ToString();
             return content;
+        }
+
+        protected virtual string ReadLayoutFile()
+        {
+            return File.ReadAllText(_layoutFile);
         }
     }
 }

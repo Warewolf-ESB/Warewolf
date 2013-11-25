@@ -5,7 +5,7 @@ using Dev2.Runtime.WebServer.Responses.Streams;
 
 namespace Dev2.Runtime.WebServer.Responses
 {
-    public class StaticFileResponseWriter : ResponseWriter
+    public class StaticFileResponseWriter : IResponseWriter
     {
         readonly string _file;
         readonly MediaTypeHeaderValue _contentType;
@@ -20,7 +20,7 @@ namespace Dev2.Runtime.WebServer.Responses
             _chunkSize = chunkSize;
         }
 
-        public override void Write(ICommunicationContext context)
+        public void Write(ICommunicationContext context)
         {
             context.Response.ContentType = _contentType.ToString();
             Stream outputStream = context.Response.OutputStream;
@@ -29,7 +29,7 @@ namespace Dev2.Runtime.WebServer.Responses
             {
                 long contentLength = 0;
 
-                using(Stream stream = File.Open(_file, FileMode.Open, FileAccess.Read, FileShare.Inheritable))
+                using(Stream stream = OpenFileStream())
                 {
                     byte[] buffer = new byte[_chunkSize];
                     long length = contentLength = stream.Length;
@@ -58,10 +58,15 @@ namespace Dev2.Runtime.WebServer.Responses
             }
         }
 
-        public override void Write(WebServerContext context)
+        public void Write(WebServerContext context)
         {
-            var stream = new HttpFileStream(_file, context.ResponseMessage, _contentType, _chunkSize);
+            var stream = new HttpFileStream(OpenFileStream, context.ResponseMessage, _contentType, _chunkSize);
             stream.Write();
+        }
+
+        protected virtual Stream OpenFileStream()
+        {
+            return File.Open(_file, FileMode.Open, FileAccess.Read, FileShare.Read);
         }
     }
 }

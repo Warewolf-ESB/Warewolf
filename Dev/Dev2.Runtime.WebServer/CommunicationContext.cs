@@ -11,7 +11,7 @@ namespace Dev2.Runtime.WebServer
         ICommunicationRequest Request { get; }
         ICommunicationResponse Response { get; }
 
-        void Send(ResponseWriter response);
+        void Send(IResponseWriter response);
 
         NameValueCollection FetchHeaders();
     }
@@ -53,7 +53,7 @@ namespace Dev2.Runtime.WebServer
         }
 
         #region Send Handling
-        public void Send(ResponseWriter response)
+        public void Send(IResponseWriter response)
         {
             response.Write(this);
 

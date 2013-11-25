@@ -28,7 +28,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
 
-        protected static ResponseWriter CreateForm(dynamic d, string serviceName, string workspaceID, NameValueCollection headers, List<DataListFormat> publicFormats)
+        protected static IResponseWriter CreateForm(dynamic d, string serviceName, string workspaceID, NameValueCollection headers, List<DataListFormat> publicFormats)
         {
             // properly setup xml extraction ;)
             string payload = String.Empty;

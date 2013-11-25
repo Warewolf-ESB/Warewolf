@@ -32,7 +32,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 d.Add(new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(data));
             }
 
-            ResponseWriter responseWriter = CreateForm(d, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats);
+            IResponseWriter responseWriter = CreateForm(d, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats);
             ctx.Send(responseWriter);
         }
 

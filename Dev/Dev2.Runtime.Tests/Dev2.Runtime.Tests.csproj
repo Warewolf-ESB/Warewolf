@@ -69,6 +69,10 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.DurableInstancing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Extensions" />
@@ -177,6 +181,16 @@
     <Compile Include="WebServer\Controllers\TestWebServerController.cs" />
     <Compile Include="WebServer\Controllers\TestUserWebServerController.cs" />
     <Compile Include="WebServer\Controllers\WebServerControllerTests.cs" />
+    <Compile Include="WebServer\Responses\StaticFileResponseWriterTests.cs" />
+    <Compile Include="WebServer\Responses\StatusResponseWriterTests.cs" />
+    <Compile Include="WebServer\Responses\DynamicFileResponseWriterTests.cs" />
+    <Compile Include="WebServer\Responses\StringResponseWriterTests.cs" />
+    <Compile Include="WebServer\Responses\TestDynamicFileResponseWriter.cs" />
+    <Compile Include="WebServer\Responses\TestStaticFileResponseWriter.cs" />
+    <Compile Include="WebServer\Responses\UnitTest1.cs" />
+    <Compile Include="WebServer\WebServerResponseTests.cs" />
+    <Compile Include="WebServer\WebServerRequestTests.cs" />
+    <Compile Include="WebServer\WebServerContextTests.cs" />
     <Compile Include="WorkspaceItemTests.cs" />
     <Compile Include="WorkspaceTest.cs" />
     <Compile Include="XML\XmlResource.cs" />
