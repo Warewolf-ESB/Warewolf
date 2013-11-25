@@ -62,21 +62,66 @@ namespace Dev2.Studio.UI.Tests
 
             Assert.Fail("Poor test construction. Your assert does not validate the workflow existence. this test is currently passing, yet should fail!");
 
-            //string newTestResourceWithDashes = "New-Test-Resource-With-Dashes" + Guid.NewGuid().ToString().Substring(0, 5);
-            //string oldResourceName = "OldResourceName"+Guid.NewGuid().ToString().Substring(0,5);
-            //RibbonUIMap.CreateNewWorkflow();
-            //SendKeys.SendWait("^s");
-            //WizardsUIMap.WaitForWizard();
-            //SaveDialogUIMap.ClickAndTypeInNameTextbox(oldResourceName);
-            ////wait for save tab switch
-            //Playback.Wait(2000);
+            //try
+            //{
+            //    TabManagerUIMap.CloseAllTabs();
+            //    const string newTestResourceWithDashes = "New-Test-Resource-With-Dashes";
+            //    const string oldResourceName = "OldResourceName";
+            //    DockManagerUIMap.ClickOpenTabPage("Explorer");
+            //    ExplorerUIMap.ClearExplorerSearchText();
+            //    ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
+            //    if(ExplorerUIMap.ServiceExists("Localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes))
+            //    {
+            //        ExplorerUIMap.RightClickDeleteProject("Localhost", "WORKFLOWS", "Unassigned",
+            //                                              newTestResourceWithDashes);
+            //    }
+            //    ExplorerUIMap.ClearExplorerSearchText();
+            //    ExplorerUIMap.EnterExplorerSearchText(oldResourceName);
+            //    if(ExplorerUIMap.ServiceExists("Localhost", "WORKFLOWS", "Unassigned", oldResourceName))
+            //    {
+            //        ExplorerUIMap.RightClickDeleteProject("Localhost", "WORKFLOWS", "Unassigned", oldResourceName);
+            //    }
+            //    RibbonUIMap.CreateNewWorkflow();
+            //    SendKeys.SendWait("^s");
+            //    WizardsUIMap.WaitForWizard();
+            //    SaveDialogUIMap.ClickAndTypeInNameTextbox(oldResourceName);
+            //    //wait for save tab switch
+            //    Playback.Wait(2000);
+            //    TabManagerUIMap.CloseAllTabs();
+            //    DockManagerUIMap.ClickOpenTabPage("Explorer");
+            //    ExplorerUIMap.ClearExplorerSearchText();
+            //    ExplorerUIMap.EnterExplorerSearchText(oldResourceName);
+            //    ExplorerUIMap.RightClickRenameProject("Localhost", "WORKFLOWS", "Unassigned", oldResourceName);
+            //    SendKeys.SendWait("New-Test-Resource-With-Dashes{ENTER}");
+            //    DockManagerUIMap.ClickOpenTabPage("Explorer");
+            //    ExplorerUIMap.DoRefresh();
+            //    ExplorerUIMap.ClearExplorerSearchText();
+            //    ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
+            //    ExplorerUIMap.DoubleClickOpenProject("Localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes);
+            //    SendKeys.SendWait("^s");
 
-            //ExplorerUIMap.EnterExplorerSearchText(oldResourceName);
-            //ExplorerUIMap.RightClickRenameProject("localhost", "WORKFLOWS", "Unassigned", oldResourceName);
-            //SendKeys.SendWait("New-Test-Resource-With-Dashes{ENTER}");
-
-            //ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
-            //ExplorerUIMap.DoubleClickOpenProject("Localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes);
+            //    RibbonUIMap.ClickRibbonMenuItem("Debug");
+            //    if(DebugUIMap.WaitForDebugWindow(5000))
+            //    {
+            //        SendKeys.SendWait("{F5}");
+            //        Playback.Wait(1000);
+            //    }
+            //}
+            //finally
+            //{
+            //    //close any open wizards
+            //    var tryFindDialog = StudioWindow.GetChildren()[0];
+            //    if(tryFindDialog.GetType() == typeof(WpfWindow))
+            //    {
+            //        Mouse.Click(tryFindDialog);
+            //        SendKeys.SendWait("{ESCAPE}");
+            //        Assert.Fail("Dialog hanging after test, might not have rendered properly");
+            //    }
+            //    //close any open tabs
+            //    TabManagerUIMap.CloseAllTabs();
+            //    DockManagerUIMap.ClickOpenTabPage("Explorer");
+            //    ExplorerUIMap.ClearExplorerSearchText();
+            //}
             
         }
 
