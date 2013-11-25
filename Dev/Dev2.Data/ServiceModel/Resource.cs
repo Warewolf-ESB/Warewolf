@@ -11,7 +11,6 @@ using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Tamir.SharpSsh.java;
 using Exception = System.Exception;
 
 namespace Dev2.Runtime.ServiceModel.Data
@@ -168,7 +167,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public void UpdateErrorsBasedOnXML(XElement xml)
         {
             var errorMessagesElement = xml.Element("ErrorMessages");
-            Errors = new List<IErrorInfo>();
+            Errors = new List<ErrorInfo>();
             if(errorMessagesElement != null)
             {
                 var errorMessageElements = errorMessagesElement.Elements("ErrorMessage");
@@ -251,11 +250,10 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public bool IsValid { get; set; }
 
-        public List<IErrorInfo> Errors { get; set; }
+        public List<ErrorInfo> Errors { get; set; }
 
         public bool ReloadActions { get; set; }
         
-        [JsonIgnore]
         public string DataList { get; set; }
 
         [JsonIgnore]

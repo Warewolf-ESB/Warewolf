@@ -270,8 +270,8 @@ namespace ActivityUnitTests.ActivityTests
             readAllBytes = File.ReadAllBytes(zipPathName);
             Assert.AreNotEqual(0, readAllBytes.Count());
             
-        }     
-        
+        }
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Zip_Execute")]

@@ -212,7 +212,7 @@ namespace Dev2.DynamicServices.Test
 
             var resources = findResourcesEndPoint.Execute(data, workspace.Object);
 
-            var resourcesObj = JsonConvert.DeserializeObject<List<SerializableResource>>(resources);
+            var resourcesObj = JsonConvert.DeserializeObject<List<IResource>>(resources);
 
             var actualCount = 0;
             foreach (var res in resourcesObj)

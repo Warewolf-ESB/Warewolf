@@ -113,32 +113,24 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>1</val></rs><rs><val>1</val></rs><rs><val>1</val></rs></xml>", "<xml><rs><val/></rs></xml>", out errors);
 
-            try
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+            string error;
+            IBinaryDataListEntry entry;
+
+            // emulate the delete at index 1, aka a header delete ;)
+            if (bdl.TryGetEntry("rs", out entry, out error))
             {
-                IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
-                string error;
-                IBinaryDataListEntry entry;
-
-                // emulate the delete at index 1, aka a header delete ;)
-                if (bdl.TryGetEntry("rs", out entry, out error))
-                {
-                    entry.TryDeleteRows("1");
-                }
-
-                var res = entry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
-
-                var cloneMinIndex = res.FetchRecordsetIndexes().FetchNextIndex();
-                var entryMinIndex = entry.FetchRecordsetIndexes().FetchNextIndex();
-
-                Assert.AreEqual(2, entryMinIndex);
-                Assert.AreEqual(cloneMinIndex, entryMinIndex);
+                entry.TryDeleteRows("1");
             }
-            finally
-            {
-                // clean up ;)
-                compiler.ForceDeleteDataListByID(dlID);
 
-            }
+            var res = entry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
+
+            var cloneMinIndex = res.FetchRecordsetIndexes().FetchNextIndex();
+            var entryMinIndex = entry.FetchRecordsetIndexes().FetchNextIndex();
+
+            Assert.AreEqual(2, entryMinIndex);
+            Assert.AreEqual(cloneMinIndex, entryMinIndex);
+
         }
 
         [TestMethod]
@@ -151,31 +143,22 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>1</val></rs><rs><val>1</val></rs><rs><val>1</val></rs></xml>", "<xml><rs><val/></rs></xml>", out errors);
 
-            try
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+
+            string error;
+            IBinaryDataListEntry entry;
+
+            // emulate the delete ;)
+            if (bdl.TryGetEntry("rs", out entry, out error))
             {
-                IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
-
-                string error;
-                IBinaryDataListEntry entry;
-
-                // emulate the delete ;)
-                if (bdl.TryGetEntry("rs", out entry, out error))
-                {
-                    entry.TryDeleteRows("3");
-                    entry.TryDeleteRows("2");
-                    entry.TryDeleteRows("1");
-                }
-
-                var res = entry.FetchAppendRecordsetIndex();
-
-                Assert.AreEqual(1, res);
+                entry.TryDeleteRows("3");
+                entry.TryDeleteRows("2");
+                entry.TryDeleteRows("1");
             }
-            finally
-            {
-                // clean up ;)
-                compiler.ForceDeleteDataListByID(dlID);
 
-            }
+            var res = entry.FetchAppendRecordsetIndex();
+
+            Assert.AreEqual(1, res);
         }
 
 
@@ -189,28 +172,20 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
 
-            try
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+
+            string error;
+            IBinaryDataListEntry entry;
+
+            if (bdl.TryGetEntry("rs", out entry, out error))
             {
-                IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+                var res = entry.ItemCollectionSize();
+                var isEmpty = entry.IsEmpty();
 
-                string error;
-                IBinaryDataListEntry entry;
-
-                if (bdl.TryGetEntry("rs", out entry, out error))
-                {
-                    var res = entry.ItemCollectionSize();
-                    var isEmpty = entry.IsEmpty();
-
-                    Assert.IsTrue(isEmpty);
-                    Assert.AreEqual(0,res);
-                }
+                Assert.IsTrue(isEmpty);
+                Assert.AreEqual(0,res);
+            }
                 
-            }
-            finally
-            {
-                // clean up ;)
-                compiler.ForceDeleteDataListByID(dlID);
-            }
         }
 
 
@@ -224,31 +199,21 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
 
-            try
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+
+            string error;
+            IBinaryDataListEntry entry;
+
+            if (bdl.TryGetEntry("rs", out entry, out error))
             {
-                IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
-
-                string error;
-                IBinaryDataListEntry entry;
-
-                if (bdl.TryGetEntry("rs", out entry, out error))
+                IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 1);
+                IList<IBinaryDataListItem> row = new List<IBinaryDataListItem>()
                 {
-                    IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 1);
-                    IList<IBinaryDataListItem> row = new List<IBinaryDataListItem>()
-                    {
-                        itm
-                    };
-                    entry.TryPutRecordRowAt(row, 1, out error);
-                    Assert.IsFalse(entry.IsEmpty());
-                    Assert.AreEqual(1, entry.ItemCollectionSize());
-                }
-
-            }
-            finally
-            {
-                // clean up ;)
-                compiler.ForceDeleteDataListByID(dlID);
-
+                    itm
+                };
+                entry.TryPutRecordRowAt(row, 1, out error);
+                Assert.IsFalse(entry.IsEmpty());
+                Assert.AreEqual(1, entry.ItemCollectionSize());
             }
         }
 
@@ -262,32 +227,24 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
 
-            try
+
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+
+            string error;
+            IBinaryDataListEntry entry;
+
+            if (bdl.TryGetEntry("rs", out entry, out error))
             {
-                IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
-
-                string error;
-                IBinaryDataListEntry entry;
-
-                if (bdl.TryGetEntry("rs", out entry, out error))
+                IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", -1);
+                IList<IBinaryDataListItem> row = new List<IBinaryDataListItem>()
                 {
-                    IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", -1);
-                    IList<IBinaryDataListItem> row = new List<IBinaryDataListItem>()
-                    {
-                        itm
-                    };
-                    entry.TryPutRecordRowAt(row, -1, out error);
-                    Assert.IsTrue(entry.IsEmpty());
-                    Assert.AreEqual(0, entry.ItemCollectionSize());
-                }
-
+                    itm
+                };
+                entry.TryPutRecordRowAt(row, -1, out error);
+                Assert.IsTrue(entry.IsEmpty());
+                Assert.AreEqual(0, entry.ItemCollectionSize());
             }
-            finally
-            {
-                // clean up ;)
-                compiler.ForceDeleteDataListByID(dlID);
 
-            }
         }
 
         [TestMethod]
@@ -300,28 +257,21 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
 
-            try
+
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+
+            string error;
+            IBinaryDataListEntry entry;
+
+            if (bdl.TryGetEntry("rs", out entry, out error))
             {
-                IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
-
-                string error;
-                IBinaryDataListEntry entry;
-
-                if (bdl.TryGetEntry("rs", out entry, out error))
-                {
-                    IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 1);
-                    entry.TryPutRecordItemAtIndex(itm, 1, out error);
-                    Assert.IsFalse(entry.IsEmpty());
-                    Assert.AreEqual(1, entry.ItemCollectionSize());
-                }
-
+                IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 1);
+                entry.TryPutRecordItemAtIndex(itm, 1, out error);
+                Assert.IsFalse(entry.IsEmpty());
+                Assert.AreEqual(1, entry.ItemCollectionSize());
             }
-            finally
-            {
-                // clean up ;)
-                compiler.ForceDeleteDataListByID(dlID);
 
-            }
+
         }
 
         [TestMethod]
@@ -334,28 +284,20 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
 
-            try
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+
+            string error;
+            IBinaryDataListEntry entry;
+
+            if (bdl.TryGetEntry("rs", out entry, out error))
             {
-                IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
-
-                string error;
-                IBinaryDataListEntry entry;
-
-                if (bdl.TryGetEntry("rs", out entry, out error))
-                {
-                    IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", -1);
-                    entry.TryPutRecordItemAtIndex(itm, -1, out error);
-                    Assert.IsTrue(entry.IsEmpty());
-                    Assert.AreEqual(0, entry.ItemCollectionSize());
-                }
-
+                IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", -1);
+                entry.TryPutRecordItemAtIndex(itm, -1, out error);
+                Assert.IsTrue(entry.IsEmpty());
+                Assert.AreEqual(0, entry.ItemCollectionSize());
             }
-            finally
-            {
-                // clean up ;)
-                compiler.ForceDeleteDataListByID(dlID);
 
-            }
+
         }
 
         [TestMethod]
@@ -368,29 +310,22 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
 
-            try
+
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+
+            string error;
+            IBinaryDataListEntry entry;
+
+            if (bdl.TryGetEntry("rs", out entry, out error))
             {
-                IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
-
-                string error;
-                IBinaryDataListEntry entry;
-
-                if (bdl.TryGetEntry("rs", out entry, out error))
-                {
-                    IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 1);
-                    entry.TryAppendRecordItem(itm,out error);
-                    Assert.IsFalse(entry.IsEmpty());
-                    Assert.AreEqual(1, entry.ItemCollectionSize());
-                    Assert.AreEqual(2,entry.FetchAppendRecordsetIndex());
-                }
-
+                IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 1);
+                entry.TryAppendRecordItem(itm,out error);
+                Assert.IsFalse(entry.IsEmpty());
+                Assert.AreEqual(1, entry.ItemCollectionSize());
+                Assert.AreEqual(2,entry.FetchAppendRecordsetIndex());
             }
-            finally
-            {
-                // clean up ;)
-                compiler.ForceDeleteDataListByID(dlID);
 
-            }
+
         }
 
         [TestMethod]
@@ -403,28 +338,21 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs><scalarValue/></xml>", out errors);
 
-            try
+
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+
+            string error;
+            IBinaryDataListEntry entry;
+            IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("MyCoolvalue", "scalarValue");
+
+            if (bdl.TryGetEntry("scalarValue", out entry, out error))
             {
-                IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+                entry.TryPutScalar(itm,out error);
 
-                string error;
-                IBinaryDataListEntry entry;
-                IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("MyCoolvalue", "scalarValue");
-
-                if (bdl.TryGetEntry("scalarValue", out entry, out error))
-                {
-                    entry.TryPutScalar(itm,out error);
-
-                    Assert.AreEqual("MyCoolvalue",entry.FetchScalar().TheValue);
-                }
-
+                Assert.AreEqual("MyCoolvalue",entry.FetchScalar().TheValue);
             }
-            finally
-            {
-                // clean up ;)
-                compiler.ForceDeleteDataListByID(dlID);
 
-            }
+
         }
 
         [TestMethod]
@@ -437,29 +365,20 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
 
-            try
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+
+            string error;
+            IBinaryDataListEntry entry;
+
+            if (bdl.TryGetEntry("rs", out entry, out error))
             {
-                IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
-
-                string error;
-                IBinaryDataListEntry entry;
-
-                if (bdl.TryGetEntry("rs", out entry, out error))
-                {
-                    IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 3);
-                    entry.TryPutRecordItemAtIndex(itm, 3, out error);
-                    Assert.IsFalse(entry.IsEmpty());
-                    Assert.AreEqual(1, entry.ItemCollectionSize());
-                    Assert.AreEqual(4, entry.FetchAppendRecordsetIndex());
-                }
-
+                IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 3);
+                entry.TryPutRecordItemAtIndex(itm, 3, out error);
+                Assert.IsFalse(entry.IsEmpty());
+                Assert.AreEqual(1, entry.ItemCollectionSize());
+                Assert.AreEqual(4, entry.FetchAppendRecordsetIndex());
             }
-            finally
-            {
-                // clean up ;)
-                compiler.ForceDeleteDataListByID(dlID);
 
-            }
         }
 
       
@@ -473,31 +392,22 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
 
-            try
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+
+            string error;
+            IBinaryDataListEntry entry;
+
+            if (bdl.TryGetEntry("rs", out entry, out error))
             {
-                IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
-
-                string error;
-                IBinaryDataListEntry entry;
-
-                if (bdl.TryGetEntry("rs", out entry, out error))
-                {
-                    IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 1);
-                    IBinaryDataListItem itm2 = Dev2BinaryDataListFactory.CreateBinaryItem("jane", "rs", "val", 3);
-                    entry.TryPutRecordItemAtIndex(itm, 1, out error);
-                    entry.TryPutRecordItemAtIndex(itm2, 3, out error);
-                    Assert.IsFalse(entry.IsEmpty());
-                    Assert.AreEqual(2, entry.ItemCollectionSize());
-                    Assert.AreEqual(4, entry.FetchAppendRecordsetIndex());
-                }
-
+                IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 1);
+                IBinaryDataListItem itm2 = Dev2BinaryDataListFactory.CreateBinaryItem("jane", "rs", "val", 3);
+                entry.TryPutRecordItemAtIndex(itm, 1, out error);
+                entry.TryPutRecordItemAtIndex(itm2, 3, out error);
+                Assert.IsFalse(entry.IsEmpty());
+                Assert.AreEqual(2, entry.ItemCollectionSize());
+                Assert.AreEqual(4, entry.FetchAppendRecordsetIndex());
             }
-            finally
-            {
-                // clean up ;)
-                compiler.ForceDeleteDataListByID(dlID);
 
-            }
         }
 
         [TestMethod]
@@ -531,27 +441,17 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, shape, out errors);
 
-            try
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+
+            string error;
+            IBinaryDataListEntry entry;
+
+            if (bdl.TryGetEntry("gRec", out entry, out error))
             {
-                IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
-
-                string error;
-                IBinaryDataListEntry entry;
-
-                if (bdl.TryGetEntry("gRec", out entry, out error))
-                {
                    
-                    Assert.IsFalse(entry.IsEmpty());
-                    Assert.AreEqual(3, entry.ItemCollectionSize());
-                    Assert.AreEqual(4, entry.FetchAppendRecordsetIndex());
-                }
-
-            }
-            finally
-            {
-                // clean up ;)
-                compiler.ForceDeleteDataListByID(dlID);
-
+                Assert.IsFalse(entry.IsEmpty());
+                Assert.AreEqual(3, entry.ItemCollectionSize());
+                Assert.AreEqual(4, entry.FetchAppendRecordsetIndex());
             }
         }
 
@@ -586,27 +486,18 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, shape, out errors);
 
-            try
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+
+            string error;
+            IBinaryDataListEntry entry;
+
+            if (bdl.TryGetEntry("gRec", out entry, out error))
             {
-                IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
-
-                string error;
-                IBinaryDataListEntry entry;
-
-                if (bdl.TryGetEntry("gRec", out entry, out error))
-                {
-                    IBinaryDataListItem itm = entry.TryFetchRecordsetColumnAtIndex("opt", 3, out error);
-                    Assert.AreEqual(string.Empty, error);
-                    Assert.AreEqual(string.Empty, itm.TheValue);
-                }
-
+                IBinaryDataListItem itm = entry.TryFetchRecordsetColumnAtIndex("opt", 3, out error);
+                Assert.AreEqual(string.Empty, error);
+                Assert.AreEqual(string.Empty, itm.TheValue);
             }
-            finally
-            {
-                // clean up ;)
-                compiler.ForceDeleteDataListByID(dlID);
 
-            }
         }
 
         [TestMethod]
@@ -619,31 +510,22 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
 
-            try
+
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+
+            string error;
+            IBinaryDataListEntry entry;
+
+            if (bdl.TryGetEntry("rs", out entry, out error))
             {
-                IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+                IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 1);
+                IBinaryDataListItem itm2 = Dev2BinaryDataListFactory.CreateBinaryItem("jane", "rs", "val", 2);
+                entry.TryPutRecordItemAtIndex(itm, 1, out error);
+                entry.TryPutRecordItemAtIndex(itm2, 2, out error);
+                entry.MakeRecordsetEvaluateReady(2, "val", out error);
 
-                string error;
-                IBinaryDataListEntry entry;
-
-                if (bdl.TryGetEntry("rs", out entry, out error))
-                {
-                    IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 1);
-                    IBinaryDataListItem itm2 = Dev2BinaryDataListFactory.CreateBinaryItem("jane", "rs", "val", 2);
-                    entry.TryPutRecordItemAtIndex(itm, 1, out error);
-                    entry.TryPutRecordItemAtIndex(itm2, 2, out error);
-                    entry.MakeRecordsetEvaluateReady(2, "val", out error);
-
-                    Assert.AreEqual(2,entry.FetchLastRecordsetIndex());
-                    Assert.AreEqual(1,entry.ItemCollectionSize());
-                }
-
-            }
-            finally
-            {
-                // clean up ;)
-                compiler.ForceDeleteDataListByID(dlID);
-
+                Assert.AreEqual(2,entry.FetchLastRecordsetIndex());
+                Assert.AreEqual(1,entry.ItemCollectionSize());
             }
         }
 
@@ -657,31 +539,23 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
 
-            try
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+
+            string error;
+            IBinaryDataListEntry entry;
+
+            if (bdl.TryGetEntry("rs", out entry, out error))
             {
-                IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+                IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 1);
+                IBinaryDataListItem itm2 = Dev2BinaryDataListFactory.CreateBinaryItem("jane", "rs", "val", 2);
+                entry.TryPutRecordItemAtIndex(itm, 1, out error);
+                entry.TryPutRecordItemAtIndex(itm2, 2, out error);
+                entry.MakeRecordsetEvaluateReady(GlobalConstants.AllIndexes, "val", out error);
 
-                string error;
-                IBinaryDataListEntry entry;
-
-                if (bdl.TryGetEntry("rs", out entry, out error))
-                {
-                    IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 1);
-                    IBinaryDataListItem itm2 = Dev2BinaryDataListFactory.CreateBinaryItem("jane", "rs", "val", 2);
-                    entry.TryPutRecordItemAtIndex(itm, 1, out error);
-                    entry.TryPutRecordItemAtIndex(itm2, 2, out error);
-                    entry.MakeRecordsetEvaluateReady(GlobalConstants.AllIndexes, "val", out error);
-
-                    Assert.AreEqual(2, entry.FetchLastRecordsetIndex());
-                    Assert.AreEqual(2, entry.ItemCollectionSize());
-                }
+                Assert.AreEqual(2, entry.FetchLastRecordsetIndex());
+                Assert.AreEqual(2, entry.ItemCollectionSize());
             }
-            finally
-            {
-                // clean up ;)
-                compiler.ForceDeleteDataListByID(dlID);
-            }
-        }
+    }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -707,8 +581,6 @@ namespace Dev2.Data.Tests.BinaryDataList
                 data = entry.FetchRecordAt(1, "foo", out error);
             }
 
-            // clean up ;)
-            compiler.ForceDeleteDataListByID(dlID);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, data.Count, "Found non-existent field?!");

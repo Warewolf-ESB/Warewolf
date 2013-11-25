@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using System.Collections.Generic;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 using Unlimited.Framework.Converters.Graph.Ouput;
 using Unlimited.Framework.Converters.Graph.Output;

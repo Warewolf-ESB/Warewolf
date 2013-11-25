@@ -235,17 +235,13 @@ namespace Dev2.DynamicServices
             }
             finally
             {
-                //Clean up datalists
-                //compiler.ForceDeleteDataListByID(resultID);
-
                 // clean up after the request has executed ;)
 
                 foreach(KeyValuePair<int, List<Guid>> thread in dataObject.ThreadsToDispose)
                 {
-
                     DataListRegistar.DisposeScope(thread.Key, Guid.Empty);
-
                 }
+
                 DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, resultID);
             }
             

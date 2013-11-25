@@ -355,7 +355,7 @@ namespace Dev2.Runtime.Hosting
             return result;
         }
 
-        public IList<IResource> GetResourceList(Guid workspaceID, string guidCsv, string type)
+        public IList<Resource> GetResourceList(Guid workspaceID, string guidCsv, string type)
         {
             if(type == null)
             {
@@ -382,10 +382,10 @@ namespace Dev2.Runtime.Hosting
             var resources = workspaceResources.FindAll(r => guids.Contains(r.ResourceID)
                                                             && resourceTypes.Contains(r.ResourceType));
 
-            return resources;
+            return resources.Cast<Resource>().ToList();
         }
 
-        public IList<IResource> GetResourceList(Guid workspaceID, string resourceName, string type, string userRoles, bool useContains = true)
+        public IList<Resource> GetResourceList(Guid workspaceID, string resourceName, string type, string userRoles, bool useContains = true)
         {
             if(string.IsNullOrEmpty(resourceName) && string.IsNullOrEmpty(type))
             {
@@ -405,7 +405,7 @@ namespace Dev2.Runtime.Hosting
                 : workspaceResources.FindAll(r => r.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase)
                                                 && resourceTypes.Contains(r.ResourceType));
 
-            return resources;
+            return resources.Cast<Resource>().ToList();
         }
 
         #endregion
@@ -1121,24 +1121,7 @@ namespace Dev2.Runtime.Hosting
                     WorkspaceID = workspaceID,
                 }
             };
-//            if(resource.Errors.Count > 0)
-//            {
-//                resource.Errors.ForEach(info =>
-//                {
-//                    var existingError = new CompileMessageTO
-//                    {
-//                        ErrorType = info.ErrorType,
-//                        MessageID = Guid.NewGuid(),
-//                        MessagePayload = info.Message,
-//                        ServiceID = resource.ResourceID,
-//                        ServiceName = resource.ResourceName,
-//                        MessageType = (CompileMessageType)Enum.Parse(typeof(CompileMessageType),info.Message),
-//                        UniqueID = info.InstanceID,
-//                        WorkspaceID = workspaceID,
-//                    };
-//                    savedResourceCompileMessage.Add(existingError);
-//                });
-            //}
+
             CompileMessageRepo.Instance.AddMessage(workspaceID, savedResourceCompileMessage);
         }
 

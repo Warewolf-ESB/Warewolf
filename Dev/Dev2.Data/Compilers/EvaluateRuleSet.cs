@@ -185,7 +185,6 @@ namespace Dev2.Data.Compilers
                                 if (result == null)
                                 {
                                     var toReplace = scalar.TheValue;
-                                        //.Replace("\"", "\\\"");
                                     CompiledExpression = CompiledExpression.Replace(token, toReplace);
                                 }
                                 else
@@ -193,7 +192,6 @@ namespace Dev2.Data.Compilers
                                     var itr = result.FetchRecordsetIndexes();
                                     string error;
                                     var replaceVal = scalar.TheValue;
-                                        //.Replace("\"", "\\\"");
 
                                     while (itr.HasMore())
                                     {
@@ -278,7 +276,6 @@ namespace Dev2.Data.Compilers
                                 {
                                     var preTemplate = template;
                                     var toReplace = binaryValue.TheValue;
-                                   // toReplace = toReplace.Replace("\"", "\\\""); // Handle escaped chars ;)
                                     template = template.Replace(token, toReplace);
                                     result.TryPutRecordItemAtIndex(new BinaryDataListItem(template, ns, GlobalConstants.EvaluationRsField,expIdx), expIdx, out error);
                                     Errors.AddError(error);

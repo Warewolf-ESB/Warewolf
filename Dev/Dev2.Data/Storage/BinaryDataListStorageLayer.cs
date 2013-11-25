@@ -10,8 +10,6 @@ namespace Dev2.Data.Storage
     [Serializable]
     public class BinaryDataListStorageLayer : IDisposable
     {
-        static int totalNumRemoved = 0;
-
         [NonSerialized]
         private static Dev2DistributedCache<BinaryDataListRow> LevelZeroCache;
 

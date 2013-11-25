@@ -48,8 +48,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             var res1 = (result.FetchRecordAt(1, out error))[0].TheValue;
             var res2 = (result.FetchRecordAt(2, out error))[0].TheValue;
 
-            _sdlc.DeleteDataListByID(dlID, false);
-
             Assert.IsFalse(errors.HasErrors());
             Assert.AreEqual("f1.1 f1.1", res1);
             Assert.AreEqual("f1.2 f1.2", res2);
@@ -69,8 +67,6 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             var res1 = (result.FetchRecordAt(1, out error))[0].TheValue;
             var res2 = (result.FetchRecordAt(2, out error))[0].TheValue;
-
-            _sdlc.DeleteDataListByID(dlID, false);
 
             Assert.IsFalse(errors.HasErrors());
             Assert.AreEqual("f1.1 f1.1 1", res1);
@@ -92,8 +88,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             var res1 = (result.FetchRecordAt(1, out error))[0].TheValue;
             var res2 = (result.FetchRecordAt(2, out error))[0].TheValue;
 
-            _sdlc.DeleteDataListByID(dlID, false);
-
             Assert.IsFalse(errors.HasErrors());
             Assert.AreEqual("f1.1 f1.1 1", res1);
             Assert.AreEqual("f1.2 f1.2 1", res2);
@@ -110,8 +104,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.User, "[[scalar1]]", out errors);
 
             var res1 = result.FetchScalar().TheValue;
-
-            _sdlc.DeleteDataListByID(dlID, false);
 
             Assert.IsFalse(errors.HasErrors());
             Assert.AreEqual("1", res1);
@@ -131,8 +123,6 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             var res1 = result.FetchScalar().TheValue;
 
-            _sdlc.DeleteDataListByID(dlID, false);
-
             Assert.IsFalse(errors.HasErrors());
             Assert.AreEqual("f1.2", res1);
 
@@ -149,8 +139,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.User, "[[rs1([[scalar1]]).f1]]", out errors);
 
             var res1 = result.FetchScalar().TheValue;
-
-            _sdlc.DeleteDataListByID(dlID, false);
 
             Assert.IsFalse(errors.HasErrors());
             Assert.AreEqual("f1.1", res1);
@@ -172,8 +160,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             int idx = result.FetchLastRecordsetIndex();
             var actual = (result.FetchRecordAt(idx, out error))[0].TheValue;
 
-            _sdlc.DeleteDataListByID(dlID, false);
-
             Assert.AreEqual("f1.2", actual, "Got  [ " + actual + "]");
 
         }
@@ -190,8 +176,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.IsFalse(errors.HasErrors());
             var binaryDataListItem = result.FetchScalar();
             var theValue = binaryDataListItem.TheValue;
-
-            _sdlc.DeleteDataListByID(dlID, false);
 
             Assert.AreEqual("scalar3", theValue);
 
@@ -210,8 +194,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             var res1 = (result.FetchRecordAt(1, out error))[0].TheValue;
             var res2 = (result.FetchRecordAt(2, out error))[0].TheValue;
 
-            _sdlc.DeleteDataListByID(dlID, false);
-
             Assert.AreEqual("f1.1 some cool static data ;)", res1);
             Assert.AreEqual("f1.2 some cool static data ;)", res2);
 
@@ -229,8 +211,6 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             var res1 = (result.FetchRecordAt(1, out error))[0].TheValue;
             var res2 = (result.FetchRecordAt(2, out error))[0].TheValue;
-
-            _sdlc.DeleteDataListByID(dlID, false);
 
             Assert.AreEqual("f1.1 some cool static data ;) even more static data ;)", res1);
             Assert.AreEqual("f1.2 some cool static data ;) even more static data ;)", res2);
@@ -251,8 +231,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             var res1 = (result.FetchRecordAt(1, out error))[0].TheValue;
             var res2 = (result.FetchRecordAt(2, out error))[0].TheValue;
 
-            _sdlc.DeleteDataListByID(dlID, false);
-
             Assert.AreEqual("even more static data ;) f1.1 some cool static data ;)", res1);
             Assert.AreEqual("even more static data ;) f1.2 some cool static data ;)", res2);
 
@@ -271,7 +249,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             var res1 = (result.FetchRecordAt(1, out error))[0].TheValue;
             var res2 = (result.FetchRecordAt(2, out error))[0].TheValue;
 
-            _sdlc.DeleteDataListByID(dlID, false);
 
             Assert.AreEqual("recordset data ;) f1.1 some cool static data ;)", res1);
             Assert.AreEqual("recordset data ;) f1.2 some cool static data ;)", res2);
@@ -294,7 +271,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Assert Results-------------------------
             var res1 = (result.FetchRecordAt(1, out error))[0].TheValue;
             var res2 = (result.FetchRecordAt(2, out error))[0].TheValue;
-            _sdlc.DeleteDataListByID(dlID, false);
+
             Assert.AreEqual("f1.1", res1);
             Assert.AreEqual("f1.2", res2);
         }
@@ -641,9 +618,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Assert Results-------------------------
             Assert.AreEqual("Required input [[scalar1]] cannot be populated", errors.MakeDisplayReady());
 
-            // clean up ;)
-            _sdlc.DeleteDataListByID(shapedInputID, false);
-            _sdlc.DeleteDataListByID(dlID, false);
         }
 
         #endregion
@@ -688,10 +662,6 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             Assert.AreEqual("<DataList><dbo_proc_get_Rows><BigID>1</BigID><Column1>ZZZ</Column1><Column2></Column2></dbo_proc_get_Rows><dbo_proc_get_Rows><BigID>2</BigID><Column1>1</Column1><Column2>1</Column2></dbo_proc_get_Rows><dbo_proc_get_Rows><BigID></BigID><Column1>2</Column1><Column2>2</Column2></dbo_proc_get_Rows></DataList>", resultStr);
 
-            // clean up ;)
-            _sdlc.DeleteDataListByID(parentID, false);
-            _sdlc.DeleteDataListByID(dlID, false);
-
         }
 
         [TestMethod]
@@ -732,9 +702,6 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             Assert.AreEqual("<DataList><scalar>2</scalar><dbo_proc_get_Rows><BigID>1</BigID><Column1>ZZZ</Column1><Column2></Column2></dbo_proc_get_Rows><dbo_proc_get_Rows><BigID>2</BigID><Column1>1</Column1><Column2></Column2></dbo_proc_get_Rows><dbo_proc_get_Rows><BigID></BigID><Column1>2</Column1><Column2></Column2></dbo_proc_get_Rows></DataList>", resultStr);
 
-            // clean up ;)
-            _sdlc.DeleteDataListByID(parentID, false);
-            _sdlc.DeleteDataListByID(dlID, false);
 
         }
 
@@ -777,10 +744,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             var res = tmp.FetchScalar().TheValue;
 
             Assert.AreEqual("ZZZ", res);
-
-            // clean up ;)
-            _sdlc.DeleteDataListByID(parentID, false);
-            _sdlc.DeleteDataListByID(dlID, false);
 
         }
 
@@ -825,9 +788,6 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             Assert.AreEqual("", res);
 
-            // clean up ;)
-            _sdlc.DeleteDataListByID(parentID, false);
-            _sdlc.DeleteDataListByID(dlID, false);
 
         }
 
@@ -869,9 +829,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual("c2", res);
             Assert.AreEqual("rs2.f1.3", tmpRS.TryFetchRecordsetColumnAtIndex("f1", 5, out error).TheValue);
 
-            // clean up ;)
-            _sdlc.DeleteDataListByID(parentID, false);
-            _sdlc.DeleteDataListByID(dlID, false);
         }
 
         [TestMethod]
@@ -907,8 +864,6 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             var res = tmp.FetchScalar().TheValue;
 
-            _sdlc.DeleteDataListByID(parentID, false);
-            _sdlc.DeleteDataListByID(dlID, false);
 
             Assert.AreEqual("scalar", res);
             Assert.AreEqual("rs2.f1.3", tmpRS.TryFetchRecordsetColumnAtIndex("f1", 3, out error).TheValue);
@@ -949,10 +904,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             bdl.TryGetEntry("scalar1", out tmp, out error);
 
             var res = tmp.FetchScalar().TheValue;
-
-            _sdlc.DeleteDataListByID(parentID, false);
-            _sdlc.DeleteDataListByID(dlID, false);
-
             Assert.AreEqual("scalar", res);
         }
 
@@ -986,7 +937,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             var actual = tmpRS.TryFetchRecordsetColumnAtIndex("f1", 2, out error).TheValue;
             Assert.AreEqual("r1f1.2", actual);
 
-            _sdlc.DeleteDataListByID(dlID, false);
         }
 
         [TestMethod]

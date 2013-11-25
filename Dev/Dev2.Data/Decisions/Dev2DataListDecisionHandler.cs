@@ -264,9 +264,6 @@ namespace Dev2.Data.Decision
                 if(binaryDataListItem != null)
                 {
                     var value = binaryDataListItem.TheValue;
-//                    string oldValue = @"\";
-//                    string newValue = @"\\";
-//                    var valueForDecisionVariable = value.Replace(oldValue,newValue);
                     return value;
                 }
             }

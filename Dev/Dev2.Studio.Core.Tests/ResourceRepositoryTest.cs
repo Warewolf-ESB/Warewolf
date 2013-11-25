@@ -15,6 +15,7 @@ using Dev2.DynamicServices;
 using Dev2.Network;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.InterfaceImplementors;
@@ -787,8 +788,6 @@ namespace BusinessDesignStudio.Unit.Tests
             //------------Setup for test--------------------------
             Setup();
             var conn = SetupConnection();
-            var serverID = Guid.NewGuid();
-            var version = new Version(3, 1, 0, 0);
 
             List<ErrorInfo> errors = new List<ErrorInfo>
                 {
@@ -807,9 +806,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resourceObj);
 
-            //conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-            //    .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\" ServerID=\"{1}\" IsValid=\"true\" Version=\"{2}\"><ErrorMessages>{3}</ErrorMessages></Service></Payload>", _resourceGuid, serverID, version,
-            //    "<ErrorMessage Message=\"MappingChange\" ErrorType=\"Critical\" FixType=\"None\" StackTrace=\"SomethingWentWrong\" />"));
+           
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             //------------Execute Test---------------------------
@@ -1696,12 +1693,12 @@ namespace BusinessDesignStudio.Unit.Tests
         #region Helper Methods
 
 
-        private SerializableResource BuildSerializableResourceFromName(string name, Dev2.Data.ServiceModel.ResourceType typeOf, bool isNewResource = false)
+        private Resource BuildSerializableResourceFromName(string name, Dev2.Data.ServiceModel.ResourceType typeOf, bool isNewResource = false)
         {
 
-            SerializableResource sr = new SerializableResource()
+            Resource sr = new Resource()
             {
-                ResourceCategory = "Test Category",
+                ResourcePath = "Test Category",
                 DataList = "",
                 Errors = new List<ErrorInfo>(),
                 IsValid = true,
@@ -1723,14 +1720,14 @@ namespace BusinessDesignStudio.Unit.Tests
         /// <returns></returns>
         private string BuildResourceObjectFromNames(string[] names, Dev2.Data.ServiceModel.ResourceType typeOf)
         {
-            List<SerializableResource> theResources = new List<SerializableResource>();
+            List<Resource> theResources = new List<Resource>();
 
             int cnt = names.Length;
             for (int i = 0; i < cnt; i++)
             {
-                SerializableResource sr = new SerializableResource()
+                Resource sr = new Resource()
                 {
-                    ResourceCategory = "Test Category",
+                    ResourcePath = "Test Category",
                     DataList = "",
                     Errors = new List<ErrorInfo>(),
                     IsValid = true,
@@ -1756,7 +1753,7 @@ namespace BusinessDesignStudio.Unit.Tests
         private string BuildResourceObjectFromGuids(IEnumerable<Guid> ids, Dev2.Data.ServiceModel.ResourceType theType = Dev2.Data.ServiceModel.ResourceType.WorkflowService, List<ErrorInfo> errors = null, bool isValid = true )
         {
 
-            List<SerializableResource> theResources = new List<SerializableResource>();
+            List<Resource> theResources = new List<Resource>();
 
             if (errors == null)
             {
@@ -1765,9 +1762,9 @@ namespace BusinessDesignStudio.Unit.Tests
 
             foreach (var id in ids)
             {
-                SerializableResource sr = new SerializableResource
+                Resource sr = new Resource
                 {
-                    ResourceCategory = "Test Category",
+                    ResourcePath = "Test Category",
                     DataList = "",
                     Errors = errors,
                     IsValid = isValid,

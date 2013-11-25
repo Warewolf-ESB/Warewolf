@@ -456,7 +456,7 @@ namespace ActivityUnitTests
         IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
         protected void DataListRemoval(Guid dlID)
         {
-            dlc.ForceDeleteDataListByID(dlID);
+            //dlc.ForceDeleteDataListByID(dlID);
         }
 
         #endregion Retrieve DataList Values

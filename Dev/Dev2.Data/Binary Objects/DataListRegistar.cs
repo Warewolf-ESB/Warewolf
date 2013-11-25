@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using Dev2.Common;
 using Dev2.Data.Storage;
-using Dev2.DataList.Contract;
 
 namespace Dev2.Data.Binary_Objects
 {
@@ -63,18 +61,17 @@ namespace Dev2.Data.Binary_Objects
         /// </summary>
         /// <param name="transactionScopeID">The transaction scope unique identifier.</param>
         /// <param name="rootRequestID">The root request unique identifier.</param>
+        /// <param name="doCompact">if set to <c>true</c> [document compact].</param>
         public static void DisposeScope(int transactionScopeID, Guid rootRequestID, bool doCompact = true)
         {
             ServerLogger.LogTrace("DISPOSING - Transanctional scope ID = " + transactionScopeID);
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             try
             {
                 IList<Guid> theList;
-                int removedNumber = 0;
                 if(_registrationRoster.TryGetValue(transactionScopeID, out theList))
                 {                   
                     theList.Remove(rootRequestID);
-                    removedNumber += BinaryDataListStorageLayer.RemoveAll(theList);
+                    BinaryDataListStorageLayer.RemoveAll(theList);
 
                     // finally reset
                     IList<Guid> dummy;

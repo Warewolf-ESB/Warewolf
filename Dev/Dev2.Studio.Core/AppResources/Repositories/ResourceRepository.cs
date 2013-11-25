@@ -20,6 +20,7 @@ using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
 using Dev2.Providers.Logs;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.InterfaceImplementors;
@@ -193,7 +194,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             var findResultObj = ExecuteCommand(_environmentModel, findPayload, _environmentModel.Connection.WorkspaceID, false);
 
-            List<SerializableResource> toReloadResources = JsonConvert.DeserializeObject<List<SerializableResource>>(findResultObj);
+            List<Resource> toReloadResources = JsonConvert.DeserializeObject<List<Resource>>(findResultObj);
             var effectedResources = new List<IResourceModel>();
 
             foreach (var serializableResource in toReloadResources)
@@ -519,7 +520,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             var resultObj = ExecuteCommand(_environmentModel, dataObj, _environmentModel.Connection.WorkspaceID, false);
 
-            IList<SerializableResource> resourceList = JsonConvert.DeserializeObject<List<SerializableResource>>(resultObj);
+            IList<Resource> resourceList = JsonConvert.DeserializeObject<List<Resource>>(resultObj);
 
             HydrateResourceModels(resourceList, _environmentModel.Connection.ServerID);
         }
@@ -538,7 +539,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
 
-        void HydrateResourceModels(IEnumerable<SerializableResource> wfServices, Guid serverID)
+        void HydrateResourceModels(IEnumerable<Resource> wfServices, Guid serverID)
         {
             if(wfServices == null)
             {
@@ -582,7 +583,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
         // Make public for testing, should be extracted to a util class for testing....
-        public IResourceModel HydrateResourceModel(Enums.ResourceType resourceType, SerializableResource data, Guid serverID, bool forced = false, bool fetchXAML = false){
+        public IResourceModel HydrateResourceModel(Enums.ResourceType resourceType, Resource data, Guid serverID, bool forced = false, bool fetchXAML = false)
+        {
             
             Guid id = data.ResourceID;
 
@@ -604,7 +606,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.DisplayName = data.ResourceName;
                 resource.IconPath = GetIconPath(data.ResourceType);
                 resource.AuthorRoles = string.Empty;
-                resource.Category = data.ResourceCategory;
+                resource.Category = data.ResourcePath;
                 resource.Tags = string.Empty;
                 resource.Comment = string.Empty;
                 resource.ServerResourceType = data.ResourceType.ToString();

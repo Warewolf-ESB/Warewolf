@@ -549,7 +549,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var result = ta.CreateDebugItemsFromEntry("[[recset()]]", entry, id, enDev2ArgumentType.Input);
 
-            compiler.ForceDeleteDataListByID(id);
+            //compiler.ForceDeleteDataListByID(id);
 
 
             Assert.AreEqual(0, result.Count, "Empty recordset returned items for debug ;(");

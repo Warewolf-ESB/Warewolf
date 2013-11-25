@@ -335,8 +335,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.ParentServiceName = parentServiceName;
                 dataObject.ServiceName = serviceName;
                 dataObject.RemoteInvokeResultShape = string.Empty; // reset targnet shape ;)
-//                dataObject.RemoteInvokerID = string.Empty;
-//                dataObject.RemoteServiceType = string.Empty;
 
                 compiler.ClearErrors(dataObject.DataListID);
             }

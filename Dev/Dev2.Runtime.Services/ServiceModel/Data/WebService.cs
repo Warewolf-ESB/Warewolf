@@ -16,8 +16,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         bool _disposed;
 
         #region Properties
-
-        //public WebSource Source { get; set; }
         public string RequestUrl { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]

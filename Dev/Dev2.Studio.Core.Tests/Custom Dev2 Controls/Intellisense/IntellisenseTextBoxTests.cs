@@ -1,22 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Windows.Threading;
 using Dev2.Core.Tests.Utils;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics.CodeAnalysis;
 using Moq;
 using System;
 using System.Windows;
 using Clipboard = System.Windows.Clipboard;
-using ToolTip = System.Windows.Controls.ToolTip;
 
 namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 {
@@ -235,7 +228,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                 textBox.FilterType = enIntellisensePartType.ScalarsOnly;
                 textBox.Text = "[[var()]]";
                 Thread.Sleep(250);
-                //var toolTipText = ((ToolTip)textBox.ToolTip).Content as string;
                 Assert.IsTrue(textBox.HasError);
             });
            

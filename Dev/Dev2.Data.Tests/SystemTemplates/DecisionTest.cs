@@ -120,8 +120,6 @@ namespace Dev2.Data.Tests.SystemTemplates
             //------------Execute Test---------------------------
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
-
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
 
@@ -164,8 +162,6 @@ namespace Dev2.Data.Tests.SystemTemplates
             //------------Execute Test---------------------------
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
-
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
 
@@ -188,8 +184,6 @@ namespace Dev2.Data.Tests.SystemTemplates
             Assert.AreEqual(0, errors.FetchErrors().Count);
 
             string result = dlc.EvaluateSystemEntry(id, enSystemTag.SystemModel, out errors);
-
-            dlc.ForceDeleteDataListByID(id);
 
             string expected = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null,""DisplayText"":null}";
 
@@ -215,8 +209,6 @@ namespace Dev2.Data.Tests.SystemTemplates
             Assert.AreEqual(0, errors.FetchErrors().Count);
 
             string result = dlc.EvaluateSystemEntry(id, enSystemTag.SystemModel, out errors);
-
-            dlc.ForceDeleteDataListByID(id);
 
             string expected = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""},{""Col1"":""[[B]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNotNumeric""}],""TotalDecisions"":2,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null,""DisplayText"":null}";
 
@@ -246,8 +238,6 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
-
             Assert.IsTrue(result);
         }
         /// <summary>
@@ -269,8 +259,6 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             string result = Dev2DataListDecisionHandler.Instance.FetchSwitchData("[[A]]", new List<string> { bdl.UID.ToString() });
             string expected = "1";
-
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
 
             Assert.AreEqual(expected, result);
         }
@@ -294,8 +282,6 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             string result = Dev2DataListDecisionHandler.Instance.FetchSwitchData("[[A]]", new List<string> { GlobalConstants.NullDataListID.ToString() });
             string expected = "";
-
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
 
             Assert.AreEqual(expected, result);
         }
@@ -346,8 +332,6 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
-
             Assert.IsTrue(result);
         }
 
@@ -376,8 +360,6 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
-
             Assert.IsFalse(result);
         }
 
@@ -399,8 +381,6 @@ namespace Dev2.Data.Tests.SystemTemplates
             string result = dlc.FetchSystemModelAsWebModel<Dev2DecisionStack>(id, out errors);
 
             Assert.AreEqual(0, errors.FetchErrors().Count);
-
-            dlc.ForceDeleteDataListByID(id);
 
             string expected = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null,""DisplayText"":null}";
 
@@ -425,8 +405,6 @@ namespace Dev2.Data.Tests.SystemTemplates
             string result = dlc.FetchSystemModelAsWebModel<Dev2DecisionStack>(id, out errors);
 
             Assert.AreEqual(0, errors.FetchErrors().Count);
-
-            dlc.ForceDeleteDataListByID(id);
 
             string expected = @"{""TheStack"":[null],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null,""DisplayText"":null}";
 
@@ -458,7 +436,6 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
 
             Assert.IsFalse(result);
         }
@@ -494,8 +471,6 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
-
             Assert.IsFalse(result);
         }
         [TestMethod]
@@ -521,8 +496,6 @@ namespace Dev2.Data.Tests.SystemTemplates
             string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
-
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
 
             Assert.IsTrue(result);
         }
@@ -558,8 +531,6 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
-
             Assert.IsTrue(result);
         }
         //Two recordsets both with starred indexes
@@ -594,8 +565,6 @@ namespace Dev2.Data.Tests.SystemTemplates
             string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":""[[Recset2(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
-
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
 
             Assert.IsFalse(result);
         }
@@ -647,7 +616,6 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
 
             Assert.IsFalse(result);
         }
@@ -683,7 +651,6 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
 
             Assert.IsTrue(result);
         }
@@ -735,8 +702,6 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
-
             Assert.IsTrue(result);
         }
         //Three recordsets all with starred indexes!
@@ -779,8 +744,6 @@ namespace Dev2.Data.Tests.SystemTemplates
             const string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":""[[Recset2(*).field]]"",""Col3"":""[[Recset3(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsBetween""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
-
-            c.ForceDeleteDataListByID(bdl.UID); // clean up ;)
 
             Assert.IsFalse(result);
         }
@@ -849,8 +812,6 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
-
             Assert.IsFalse(result);
         }
         [TestMethod]
@@ -892,8 +853,6 @@ namespace Dev2.Data.Tests.SystemTemplates
             string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":""[[Recset1(*).field]]"",""Col3"":""[[Recset2(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsBetween""}],""TotalDecisions"":1,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
-
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
 
             Assert.IsTrue(result);
         }
@@ -961,8 +920,6 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
-
             Assert.IsTrue(result);
         }
 
@@ -991,8 +948,6 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             //------------Execute Test---------------------------
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
-
-            c.DeleteDataListByID(bdl.UID); // clean up ;)
 
             //------------Assert Results-------------------------
             Assert.IsTrue(result);

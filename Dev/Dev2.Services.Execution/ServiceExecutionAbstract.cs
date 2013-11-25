@@ -249,7 +249,6 @@ namespace Dev2.Services.Execution
                 errors = new ErrorResultTO();
                 ErrorResultTO invokeErrors;
                 var formattedPayload = outputFormatter != null ? outputFormatter.Format(result).ToString() : result.ToString();
-                //var formattedPayload = result.ToString();
 
                 // Create a shape from the service action outputs
                 var dlShape = compiler.ShapeDev2DefinitionsToDataList(Service.OutputSpecification, enDev2ArgumentType.Output, false, out invokeErrors);
@@ -265,8 +264,6 @@ namespace Dev2.Services.Execution
 
                 compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), InstanceOutputDefintions, InstanceOutputDefintions, shapeDataListID, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
-
-                //compiler.ForceDeleteDataListByID(shapeDataListID); // clean up 
             }
 
         }

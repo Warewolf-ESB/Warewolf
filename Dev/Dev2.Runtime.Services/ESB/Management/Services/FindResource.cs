@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
@@ -26,9 +24,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
             var resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceName, type, roles);
 
-            IList<SerializableResource> resourceList = resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
-
-            var result = JsonConvert.SerializeObject(resourceList);
+            var result = JsonConvert.SerializeObject(resources);
 
             return result;
         }

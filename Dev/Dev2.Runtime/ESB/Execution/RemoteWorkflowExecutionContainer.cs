@@ -121,7 +121,7 @@ namespace Dev2.Runtime.ESB.Execution
             errors.MergeErrors(invokeErrors);
 
             // clean up ;)
-            dataListCompiler.ForceDeleteDataListByID(tmpID);
+            //dataListCompiler.ForceDeleteDataListByID(tmpID);
 
             if(mergeOp == DataObject.DataListID)
             {

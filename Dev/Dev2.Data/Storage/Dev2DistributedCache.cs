@@ -88,14 +88,17 @@ namespace Dev2.Data.Storage
         /// <summary>
         /// Removes the specified key from storage
         /// </summary>
-        /// <param name="key">The key.</param>
+        /// <param name="theList">The list.</param>
+        /// <returns></returns>
         public int RemoveAll(IEnumerable<Guid> theList)
         {
             int totalLeft = 0;
 
             foreach(var container in _scalableCache.Values)
             {
+                // ReSharper disable PossibleMultipleEnumeration
                 totalLeft += container.RemoveAll(theList);
+                // ReSharper restore PossibleMultipleEnumeration
             }
 
             return totalLeft;

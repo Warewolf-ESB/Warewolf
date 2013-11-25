@@ -414,8 +414,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset2", "field1", out error);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             var actualArray = actual.ToArray();
             actual.Clear();
@@ -441,9 +439,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
-            
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
 
             StringAssert.Contains(actual,expected);
         }
