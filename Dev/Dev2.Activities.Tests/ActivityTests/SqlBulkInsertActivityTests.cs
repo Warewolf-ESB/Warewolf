@@ -596,29 +596,39 @@ namespace Dev2.Tests.Activities.ActivityTests
                     MaxLength = 100 }
                 }
             };
-            SetupArguments("<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1></field1><field2></field2><field3></field3><field4></field4></recset1><recset1><field1>Jane</field1><field2>3</field2><field3>G</field3><field4>26.4</field4></recset1><recset1><field1></field1><field2></field2><field3></field3><field4></field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1></root>", "<root><recset1><field1/><field2/><field3/><field4/></recset1></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
+            SetupArguments("<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1></field1><field2></field2><field3></field3><field4></field4></recset1><recset1><field1>Jane</field1><field2>3</field2><field3>G</field3><field4>26.4</field4></recset1><recset1><field1></field1><field2></field2><field3></field3><field4></field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1></root>", "<root><recset1><field1/><field2/><field3/><field4/></recset1></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]",null,null,PopulateOptions.PopulateBlankRows);
             //------------Execute Test---------------------------
             ExecuteProcess();
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
             Assert.IsNotNull(returnedDataTable);
             Assert.AreEqual(4, returnedDataTable.Columns.Count);
-            Assert.AreEqual(3,returnedDataTable.Rows.Count);
+            Assert.AreEqual(5,returnedDataTable.Rows.Count);
 
             Assert.AreEqual("Bob", returnedDataTable.Rows[0]["field1"]);
             Assert.AreEqual("2", returnedDataTable.Rows[0]["field2"]);
             Assert.AreEqual("C", returnedDataTable.Rows[0]["field3"]);
             Assert.AreEqual("21.2", returnedDataTable.Rows[0]["field4"]);
 
-            Assert.AreEqual("Jane", returnedDataTable.Rows[1]["field1"]);
-            Assert.AreEqual("3", returnedDataTable.Rows[1]["field2"]);
-            Assert.AreEqual("G", returnedDataTable.Rows[1]["field3"]);
-            Assert.AreEqual("26.4", returnedDataTable.Rows[1]["field4"]);
+            Assert.AreEqual("", returnedDataTable.Rows[1]["field1"]);
+            Assert.AreEqual("", returnedDataTable.Rows[1]["field2"]);
+            Assert.AreEqual("", returnedDataTable.Rows[1]["field3"]);
+            Assert.AreEqual("", returnedDataTable.Rows[1]["field4"]);
 
-            Assert.AreEqual("Jill", returnedDataTable.Rows[2]["field1"]);
-            Assert.AreEqual("1999", returnedDataTable.Rows[2]["field2"]);
-            Assert.AreEqual("Z", returnedDataTable.Rows[2]["field3"]);
-            Assert.AreEqual("60", returnedDataTable.Rows[2]["field4"]);
+            Assert.AreEqual("Jane", returnedDataTable.Rows[2]["field1"]);
+            Assert.AreEqual("3", returnedDataTable.Rows[2]["field2"]);
+            Assert.AreEqual("G", returnedDataTable.Rows[2]["field3"]);
+            Assert.AreEqual("26.4", returnedDataTable.Rows[2]["field4"]);
+
+            Assert.AreEqual("", returnedDataTable.Rows[3]["field1"]);
+            Assert.AreEqual("", returnedDataTable.Rows[3]["field2"]);
+            Assert.AreEqual("", returnedDataTable.Rows[3]["field3"]);
+            Assert.AreEqual("", returnedDataTable.Rows[3]["field4"]);
+
+            Assert.AreEqual("Jill", returnedDataTable.Rows[4]["field1"]);
+            Assert.AreEqual("1999", returnedDataTable.Rows[4]["field2"]);
+            Assert.AreEqual("Z", returnedDataTable.Rows[4]["field3"]);
+            Assert.AreEqual("60", returnedDataTable.Rows[4]["field4"]);
         }
         
         [TestMethod]
