@@ -696,13 +696,12 @@ namespace Dev2.PathOperations {
         {
             FtpWebRequest req = null;
             FtpWebResponse resp = null;
-            StringBuilder result = new StringBuilder();
-
+            string result = "";
             try
             {
-                req = (FtpWebRequest)FtpWebRequest.Create(ConvertSSLToPlain(path));
+                req = (FtpWebRequest) FtpWebRequest.Create(ConvertSSLToPlain(path));
 
-                if(user != string.Empty)
+                if (user != string.Empty)
                 {
                     req.Credentials = new NetworkCredential(user, pass);
                 }
@@ -711,42 +710,35 @@ namespace Dev2.PathOperations {
                 req.KeepAlive = false;
                 req.EnableSsl = ssl;
 
-                if(IsNotCertVerifiable)
+                if (IsNotCertVerifiable)
                 {
-                    ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
+                    ServicePointManager.ServerCertificateValidationCallback =
+                        new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
                 }
 
-                resp = (FtpWebResponse)req.GetResponse();
+                resp = (FtpWebResponse) req.GetResponse();
 
-                using(Stream ios = resp.GetResponseStream())
+                using (Stream stream = resp.GetResponseStream())
                 {
-                    int bufLen = 2048; // read 2k at a time
-                    byte[] data = new byte[bufLen];
-                    int len = ios.Read(data, 0, bufLen);
-
-                    while(len != 0)
-                    {
-                        result.Append(Encoding.UTF8.GetString(data));
-                        len = ios.Read(data, 0, bufLen);
-                    }
-
-                    ios.Close();
-                    ios.Dispose();
+                    var reader = new StreamReader(stream, Encoding.UTF8);
+                    result = reader.ReadToEnd();
+                    stream.Close();
+                    stream.Dispose();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ServerLogger.LogError(ex);
                 throw;
             }
             finally
             {
-                if(resp != null)
+                if (resp != null)
                 {
                     resp.Close();
                 }
             }
-            return result.ToString();
+            return result;
         }
 
         string ExtendedDirListSFTP(string path, string user, string pass)
