@@ -17,9 +17,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             var vstw = new VisualTreeWalker();
 
-            _outputPane = vstw.GetControlFromRoot(0, false, 0,"Uia.SplitPane", "Zfdcd4e7e932244ab9270e587a5ea8a66","OutputPane", "DebugOutput");
-            _outputSearch = vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Zfdcd4e7e932244ab9270e587a5ea8a66", "OutputPane", "DebugOutput", "Edit");
-            _outputStatus = vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Zfdcd4e7e932244ab9270e587a5ea8a66", "OutputPane", "DebugOutput", "Dev2StatusBarAutomationID", "StatusBar");
+            _outputPane = vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "OutputPane", "DebugOutput");
+            _outputSearch = vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "OutputPane", "DebugOutput", "Edit");
+            _outputStatus = vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "OutputPane", "DebugOutput", "Dev2StatusBarAutomationID", "StatusBar");
 
         }
 
