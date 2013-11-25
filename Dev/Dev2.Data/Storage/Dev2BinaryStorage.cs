@@ -165,6 +165,7 @@ namespace Dev2.Data.Storage
         private bool _hasBeenRemoveSinceLastCompact;
 
         private int _itemCnt;
+        private int _runningRemoveCnt;
 
         // New internal storage buffer to avoid high disk io, 256 MB of storage by default ;)
         private InternalStorageBuffer _internalBuffer;
@@ -648,7 +649,7 @@ namespace Dev2.Data.Storage
 
         public int RemoveAll(string key)
         {
-            int removedItems = 0;
+            int removedItems = _runningRemoveCnt;
             lock(_opsLock)
             {
                 BinaryStorageKey tmp;
@@ -656,20 +657,15 @@ namespace Dev2.Data.Storage
                 // remove all buffer keys ;)
                 var removeKeys = _bufferIndexes.Keys.Where(c => c.IndexOf(key, StringComparison.Ordinal) >= 0);
 
-                bool removed = false;
                 foreach(var rKey in removeKeys)
                 {
                     _bufferIndexes.TryRemove(rKey, out tmp);
-                    removedItems++;
                     _itemCnt--;
-                    removed = true;
+                    _runningRemoveCnt++;
                 }
 
-                if(removed)
-                {
-                    // now we need to pack memory to reclaim space ;)
-                    CompactBuffer.Compact(ref _internalBuffer, ref _bufferIndexes);
-                }
+                // now we need to pack memory to reclaim space ;)
+                CompactMemory();
 
                 // remove all file keys ;)
                 removeKeys = _lstIndexes.Keys.Where(c => c.IndexOf(key, StringComparison.Ordinal) >= 0);
@@ -683,12 +679,17 @@ namespace Dev2.Data.Storage
                 _hasBeenRemoveSinceLastCompact = true;
             }
 
-            return removedItems;
+            return (removedItems - _runningRemoveCnt);
         }
 
         public void CompactMemory()
         {
-            CompactBuffer.Compact(ref _internalBuffer, ref _bufferIndexes);
+            // compact when we get to a set size ;)
+            if (_runningRemoveCnt > GlobalConstants.MemoryItemCountCompactLevel)
+            {
+                CompactBuffer.Compact(ref _internalBuffer, ref _bufferIndexes);
+                _runningRemoveCnt = 0;
+            }
         }
 
         #endregion

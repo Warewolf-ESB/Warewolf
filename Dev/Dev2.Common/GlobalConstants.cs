@@ -197,5 +197,7 @@ namespace Dev2.Common
 
         public static string SerializableResourceQuote = "__QUOTE__";
         public static string SerializableResourceSingleQuote = "__SQUOTE__";
+
+        public static int MemoryItemCountCompactLevel = 500;
     }
 }
