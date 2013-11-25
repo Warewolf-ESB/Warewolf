@@ -166,6 +166,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Util\FindResourceHelperTest.cs" />
     <Compile Include="Util\ScrubberTestsJson.cs" />
     <Compile Include="Util\ScrubberTestsXml.cs" />
     <Compile Include="WorkspaceItemTests.cs" />

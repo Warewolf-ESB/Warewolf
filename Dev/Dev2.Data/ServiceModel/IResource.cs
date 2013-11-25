@@ -87,7 +87,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         List<ResourceForTree> Dependencies { get; set; }
         bool IsValid { get; set; }
-        List<ErrorInfo> Errors { get; set; }
+        List<IErrorInfo> Errors { get; set; }
 
         string DataList { get; set; }
 

@@ -1693,12 +1693,12 @@ namespace BusinessDesignStudio.Unit.Tests
         #region Helper Methods
 
 
-        private Resource BuildSerializableResourceFromName(string name, Dev2.Data.ServiceModel.ResourceType typeOf, bool isNewResource = false)
+        private SerializableResource BuildSerializableResourceFromName(string name, Dev2.Data.ServiceModel.ResourceType typeOf, bool isNewResource = false)
         {
 
-            Resource sr = new Resource()
+            SerializableResource sr = new SerializableResource()
             {
-                ResourcePath = "Test Category",
+                ResourceCategory = "Test Category",
                 DataList = "",
                 Errors = new List<ErrorInfo>(),
                 IsValid = true,
@@ -1720,14 +1720,14 @@ namespace BusinessDesignStudio.Unit.Tests
         /// <returns></returns>
         private string BuildResourceObjectFromNames(string[] names, Dev2.Data.ServiceModel.ResourceType typeOf)
         {
-            List<Resource> theResources = new List<Resource>();
+            List<SerializableResource> theResources = new List<SerializableResource>();
 
             int cnt = names.Length;
             for (int i = 0; i < cnt; i++)
             {
-                Resource sr = new Resource()
+                SerializableResource sr = new SerializableResource()
                 {
-                    ResourcePath = "Test Category",
+                    ResourceCategory = "Test Category",
                     DataList = "",
                     Errors = new List<ErrorInfo>(),
                     IsValid = true,
@@ -1753,7 +1753,7 @@ namespace BusinessDesignStudio.Unit.Tests
         private string BuildResourceObjectFromGuids(IEnumerable<Guid> ids, Dev2.Data.ServiceModel.ResourceType theType = Dev2.Data.ServiceModel.ResourceType.WorkflowService, List<ErrorInfo> errors = null, bool isValid = true )
         {
 
-            List<Resource> theResources = new List<Resource>();
+            List<SerializableResource> theResources = new List<SerializableResource>();
 
             if (errors == null)
             {
@@ -1762,9 +1762,9 @@ namespace BusinessDesignStudio.Unit.Tests
 
             foreach (var id in ids)
             {
-                Resource sr = new Resource
+                SerializableResource sr = new SerializableResource
                 {
-                    ResourcePath = "Test Category",
+                    ResourceCategory = "Test Category",
                     DataList = "",
                     Errors = errors,
                     IsValid = isValid,

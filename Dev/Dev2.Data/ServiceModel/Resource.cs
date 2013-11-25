@@ -167,7 +167,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public void UpdateErrorsBasedOnXML(XElement xml)
         {
             var errorMessagesElement = xml.Element("ErrorMessages");
-            Errors = new List<ErrorInfo>();
+            Errors = new List<IErrorInfo>();
             if(errorMessagesElement != null)
             {
                 var errorMessageElements = errorMessagesElement.Elements("ErrorMessage");
@@ -250,10 +250,11 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public bool IsValid { get; set; }
 
-        public List<ErrorInfo> Errors { get; set; }
+        public List<IErrorInfo> Errors { get; set; }
 
         public bool ReloadActions { get; set; }
         
+        [JsonIgnore]
         public string DataList { get; set; }
 
         [JsonIgnore]

@@ -20,7 +20,6 @@ using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
 using Dev2.Providers.Logs;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.InterfaceImplementors;
@@ -98,7 +97,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             .FindSingle(c => c.ID == fetchID)).ToList();
 
             // Create the real deployment payload ;)
-            IDeployDTO trueDto = new DeployDTO {ResourceModels = deployableResources};
+            IDeployDTO trueDto = new DeployDTO { ResourceModels = deployableResources };
 
 
             // Deploy - Seems a bit silly to go out to another service only to comeback in?
@@ -107,17 +106,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var targetResourceRepo = targetEnviroment.ResourceRepository;
 
             // Inform the repo to reload the deployed resources against the targetEnviroment ;)
-            foreach (var resourceToReload in deployableResources)
+            foreach(var resourceToReload in deployableResources)
             {
                 var effectedResources = targetResourceRepo.ReloadResource(resourceToReload.ID, resourceToReload.ResourceType, ResourceModelEqualityComparer.Current, true);
-                if (effectedResources != null)
+                if(effectedResources != null)
                 {
-                    foreach (IResourceModel resource in effectedResources)
+                    foreach(IResourceModel resource in effectedResources)
                     {
                         var theID = resource.ID;
                         var resourceToUpdate = deployableResources.FirstOrDefault(res => res.ID == theID);
-                        
-                        if (resourceToUpdate != null)
+
+                        if(resourceToUpdate != null)
                         {
                             resourceToUpdate.Update(resource);
                             Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
@@ -126,7 +125,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                             resourceWithContext.Update(resource);
                             eventPublisher.Publish(new UpdateResourceMessage(resourceWithContext));
                         }
-                        
+
                     }
                 }
             }
@@ -194,29 +193,29 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             var findResultObj = ExecuteCommand(_environmentModel, findPayload, _environmentModel.Connection.WorkspaceID, false);
 
-            List<Resource> toReloadResources = JsonConvert.DeserializeObject<List<Resource>>(findResultObj);
+            List<SerializableResource> toReloadResources = JsonConvert.DeserializeObject<List<SerializableResource>>(findResultObj);
             var effectedResources = new List<IResourceModel>();
 
-            foreach (var serializableResource in toReloadResources)
+            foreach(var serializableResource in toReloadResources)
             {
                 IResourceModel resource = HydrateResourceModel(resourceType, serializableResource, _environmentModel.Connection.ServerID, true, fetchXAML);
-                    var resourceToUpdate = _resourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
+                var resourceToUpdate = _resourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
 
-                    if(resourceToUpdate != null)
+                if(resourceToUpdate != null)
+                {
+                    resourceToUpdate.Update(resource);
+                    effectedResources.Add(resourceToUpdate);
+                }
+                else
+                {
+                    effectedResources.Add(resource);
+                    _resourceModels.Add(resource);
+                    if(ItemAdded != null)
                     {
-                        resourceToUpdate.Update(resource);
-                        effectedResources.Add(resourceToUpdate);
-                    }
-                    else
-                    {
-                        effectedResources.Add(resource);
-                        _resourceModels.Add(resource);
-                        if(ItemAdded != null)
-                        {
-                            ItemAdded(resource, null);
-                        }
+                        ItemAdded(resource, null);
                     }
                 }
+            }
 
             return effectedResources;
         }
@@ -259,7 +258,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 var func = expression.Compile();
                 if(func.Method != null)
                 {
-                    var result =  _resourceModels.Find(func.Invoke);
+                    var result = _resourceModels.Find(func.Invoke);
 
                     // force a payload fetch ;)
                     if(result != null && result.ResourceType == Enums.ResourceType.Service && string.IsNullOrEmpty(result.WorkflowXaml))
@@ -280,9 +279,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 _resourceModels.Add(instanceObj);
             }
-            return SaveResource(_environmentModel, instanceObj.ToServiceDefinition(),_securityContext.Roles, _environmentModel.Connection.WorkspaceID);
-        } 
-        
+            return SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), _securityContext.Roles, _environmentModel.Connection.WorkspaceID);
+        }
+
         public string SaveToServer(IResourceModel instanceObj)
         {
             var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase));
@@ -296,7 +295,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public void Rename(string resourceID, string newName)
         {
             Guid resID;
-            if (Guid.TryParse(resourceID, out resID))
+            if(Guid.TryParse(resourceID, out resID))
             {
                 dynamic package = new UnlimitedObject();
                 package.Service = "RenameResourceService";
@@ -306,7 +305,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 if(executeCommand.Contains("Renamed Resource"))
                 {
                     var findInLocalRepo = _resourceModels.FirstOrDefault(res => res.ID == Guid.Parse(resourceID));
-                    if (findInLocalRepo != null)
+                    if(findInLocalRepo != null)
                     {
                         findInLocalRepo.ResourceName = newName;
                     }
@@ -424,7 +423,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return data;
         }
 
-       
+
         public void Add(IResourceModel instanceObj)
         {
             _resourceModels.Insert(_resourceModels.Count, instanceObj);
@@ -478,33 +477,33 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var iconPath = string.Empty;
 
             switch(type)
-                {
-                        case ResourceType.DbService:
-                        case ResourceType.DbSource:
-                            iconPath = StringResources.Pack_Uri_DatabaseService_Image;
-                            break;
-                        case ResourceType.EmailSource:
-                            iconPath = StringResources.Pack_Uri_EmailSource_Image;
-                            break;
-                        case ResourceType.PluginService:
-                        case ResourceType.PluginSource:
-                            iconPath = StringResources.Pack_Uri_PluginService_Image;
-                            break;
-                        case ResourceType.WebService:
-                        case ResourceType.WebSource:
-                            iconPath = StringResources.Pack_Uri_WebService_Image;
-                            break;
-                        case ResourceType.WorkflowService:
-                            iconPath = StringResources.Pack_Uri_WorkflowService_Image;
-                            break;
-                        case ResourceType.Server:
-                            iconPath = StringResources.Pack_Uri_Server_Image;
-                            break;
-                    }
+            {
+                case ResourceType.DbService:
+                case ResourceType.DbSource:
+                    iconPath = StringResources.Pack_Uri_DatabaseService_Image;
+                    break;
+                case ResourceType.EmailSource:
+                    iconPath = StringResources.Pack_Uri_EmailSource_Image;
+                    break;
+                case ResourceType.PluginService:
+                case ResourceType.PluginSource:
+                    iconPath = StringResources.Pack_Uri_PluginService_Image;
+                    break;
+                case ResourceType.WebService:
+                case ResourceType.WebSource:
+                    iconPath = StringResources.Pack_Uri_WebService_Image;
+                    break;
+                case ResourceType.WorkflowService:
+                    iconPath = StringResources.Pack_Uri_WorkflowService_Image;
+                    break;
+                case ResourceType.Server:
+                    iconPath = StringResources.Pack_Uri_Server_Image;
+                    break;
+            }
 
 
             return iconPath;
-            }
+        }
 
         #endregion Methods
 
@@ -520,7 +519,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             var resultObj = ExecuteCommand(_environmentModel, dataObj, _environmentModel.Connection.WorkspaceID, false);
 
-            IList<Resource> resourceList = JsonConvert.DeserializeObject<List<Resource>>(resultObj);
+            IList<SerializableResource> resourceList = JsonConvert.DeserializeObject<List<SerializableResource>>(resultObj);
 
             HydrateResourceModels(resourceList, _environmentModel.Connection.ServerID);
         }
@@ -539,20 +538,20 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
 
-        void HydrateResourceModels(IEnumerable<Resource> wfServices, Guid serverID)
+        void HydrateResourceModels(IEnumerable<SerializableResource> wfServices, Guid serverID)
         {
             if(wfServices == null)
             {
                 return;
             }
 
-            foreach (var item in wfServices)
+            foreach(var item in wfServices)
             {
                 try
                 {
                     var resourceType = item.ResourceType;
 
-                    if (resourceType == ResourceType.ReservedService)
+                    if(resourceType == ResourceType.ReservedService)
                     {
                         _reservedServices.Add(item.ResourceName.ToUpper());
                         continue;
@@ -562,19 +561,19 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     var enumsResourceType = enumsResourceTypeString == ResourceTypeConverter.TypeWildcard
                                                 ? Enums.ResourceType.Unknown
                                                 : (Enums.ResourceType)
-                                                  Enum.Parse(typeof (Enums.ResourceType), enumsResourceTypeString);
+                                                  Enum.Parse(typeof(Enums.ResourceType), enumsResourceTypeString);
 
                     IResourceModel resource = HydrateResourceModel(enumsResourceType, item, serverID);
-                    if (resource != null)
+                    if(resource != null)
                     {
                         _resourceModels.Add(resource);
-                        if (ItemAdded != null)
+                        if(ItemAdded != null)
                         {
                             ItemAdded(resource, null);
                         }
                     }
                 }
-                catch (Exception)
+                catch(Exception)
                 {
                     // Ignore malformed resource
 
@@ -583,9 +582,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
         // Make public for testing, should be extracted to a util class for testing....
-        public IResourceModel HydrateResourceModel(Enums.ResourceType resourceType, Resource data, Guid serverID, bool forced = false, bool fetchXAML = false)
+        public IResourceModel HydrateResourceModel(Enums.ResourceType resourceType, SerializableResource data, Guid serverID, bool forced = false, bool fetchXAML = false)
         {
-            
+
             Guid id = data.ResourceID;
 
             //2013.05.15: Ashley Lewis - Bug 9348 updates force hydration, initialization doesn't
@@ -601,12 +600,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.ID = id;
                 resource.ServerID = serverID;
                 resource.IsValid = data.IsValid;
-                resource.DataList = data.DataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote,"'");
+                resource.DataList = data.DataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "'");
                 resource.ResourceName = data.ResourceName;
                 resource.DisplayName = data.ResourceName;
                 resource.IconPath = GetIconPath(data.ResourceType);
                 resource.AuthorRoles = string.Empty;
-                resource.Category = data.ResourcePath;
+                resource.Category = data.ResourceCategory;
                 resource.Tags = string.Empty;
                 resource.Comment = string.Empty;
                 resource.ServerResourceType = data.ResourceType.ToString();
@@ -620,9 +619,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     resource.AddError(error);
                 }
 
-                if (fetchXAML)
+                if(fetchXAML)
                 {
-                    resource.WorkflowXaml = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, id); 
+                    resource.WorkflowXaml = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, id);
                 }
 
                 if(isNewWorkflow)
@@ -635,7 +634,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return null;
         }
 
-        
+
         #endregion Private Methods
 
         #region Add/RemoveEnvironment
@@ -794,7 +793,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         private static dynamic ExecuteCommand(IEnvironmentModel targetEnvironment, UnlimitedObject dataObj, Guid workspaceID, bool convertResultToUnlimitedObject = true)
         {
-            var result = targetEnvironment.Connection.ExecuteCommand(dataObj.XmlString, workspaceID,GlobalConstants.NullDataListID);
+            var result = targetEnvironment.Connection.ExecuteCommand(dataObj.XmlString, workspaceID, GlobalConstants.NullDataListID);
 
             if(result == null)
             {
@@ -867,7 +866,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         #endregion
 
-        #region Constructor    
+        #region Constructor
 
         public ResourceRepository(IEnvironmentModel environmentModel, IWizardEngine wizardEngine, IFrameworkSecurityContext securityContext)
         {
