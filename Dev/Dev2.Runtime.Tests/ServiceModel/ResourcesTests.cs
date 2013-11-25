@@ -8,11 +8,12 @@ using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ResourcesTests
     {
 
