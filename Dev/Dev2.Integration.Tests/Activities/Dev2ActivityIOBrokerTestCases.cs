@@ -1673,6 +1673,29 @@ namespace Dev2.Integration.Tests.Activities
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
+        public void Dev2ActivityIOBroker_Zip_LocalToLocal_DestinationIsBlank_ResultIsSuccessful()
+        {
+            const bool overWrite = true;
+            const string sourceFileName = "source.txt";
+            const string destinationFile = "source.zip";
+
+
+            const bool createSourceDirectory = true;
+            const bool createDestinationDirectory = true;
+            const bool isSourceADirectory = false;
+            const bool isDestinationADirectory = true;
+            RunLocalToLocalTestCase(sourceFileName, destinationFile, createSourceDirectory, isSourceADirectory, createDestinationDirectory, isDestinationADirectory, (sourceEndPoint, destinationEndPoint) =>
+            {
+                var zipTo = new Dev2ZipOperationTO("Best Speed", "achivepwd", "", overWrite);
+                destinationEndPoint.IOPath.Path = "";
+                return ActivityIOFactory.CreateOperationsBroker()
+                                        .Zip(sourceEndPoint, destinationEndPoint, zipTo);
+            });
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
         {
             const bool overWrite = true;
