@@ -61,6 +61,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             ErrorResultTO errors;
             var allErrors = new ErrorResultTO();
             var dataObject = new DsfDataObject(correctedUri, GlobalConstants.NullDataListID, payload) { IsFromWebServer = true };
+            dataObject.ServiceName = serviceName;
 
             // now process headers ;)
             if(headers != null)

@@ -60,7 +60,7 @@ namespace Dev2.Converters.Graph.DataTable
                     result[i].SampleData += itemData;
                     if(rowCnt < totalRows)
                     {
-                        result[i].SampleData += GlobalConstants.AnythingToXmlPathSeperator;
+                        result[i].SampleData += GlobalConstants.AnytingToXmlCommaToken;
                     }
                 }
 

@@ -126,9 +126,9 @@ namespace Dev2.DynamicServices
                     IsDataListScoped = isScoped;
 
                     // Set incoming service name ;)
-                    if (PropertyExist(dataObject, "Service"))
+                    if (dataObject.Service is string)
                     {
-                        ServiceName = dataObject.GetValue("Service"); 
+                        ServiceName = dataObject.Service;
                     }
                     // finally set raw payload
                     RawPayload = xmldata;
