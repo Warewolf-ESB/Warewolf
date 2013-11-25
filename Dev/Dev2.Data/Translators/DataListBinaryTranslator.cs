@@ -2,6 +2,7 @@
 using System.Data;
 using System.IO;
 using System.Text;
+using Dev2.Common.Enums;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -105,7 +106,7 @@ namespace Dev2.Server.DataList.Translators
             throw new NotImplementedException();
         }
 
-        public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors)
+        public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors, PopulateOptions populateOptions)
         {
             errors = null;
             throw new NotImplementedException();

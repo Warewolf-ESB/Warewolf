@@ -78,6 +78,7 @@
     <Compile Include="Enums\Dev2EnumConverter.cs" />
     <Compile Include="Enums\enRandomType.cs" />
     <Compile Include="Enums\enScriptType.cs" />
+    <Compile Include="Enums\PopulateOptions.cs" />
     <Compile Include="ExtMethods\BaseEnumExtensions.cs" />
     <Compile Include="ExtMethods\DirectoryInfoExtensionMethods.cs" />
     <Compile Include="ExtMethods\DoubleMetaphone.cs" />

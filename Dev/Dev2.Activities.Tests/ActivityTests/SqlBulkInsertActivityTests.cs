@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common;
+using Dev2.Common.Enums;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Runtime.ServiceModel.Data;
@@ -36,6 +37,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("SQL Bulk Insert", dsfSqlBulkInsertActivity.DisplayName);
             Assert.AreEqual("0", dsfSqlBulkInsertActivity.Timeout);
             Assert.AreEqual("0", dsfSqlBulkInsertActivity.BatchSize);
+            Assert.IsTrue(dsfSqlBulkInsertActivity.IgnoreBlankRows);
         }
 
         [TestMethod]
@@ -496,6 +498,132 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
+        public void DsfSqlBulkInsertActivity_Execute_WithBlankRowsInData_HasDataTableWithDataExcludingBlankRows()
+        {
+            //------------Setup for test--------------------------
+            DataTable returnedDataTable = null;
+            var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
+            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()))
+                .Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedDataTable = dataTable);
+            var dataColumnMappings = new List<DataColumnMapping>
+            {
+                new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field1]]",
+                    OutputColumn = new DbColumn {ColumnName = "TestCol",
+                    DataType = typeof(String),
+                    MaxLength = 100},
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field2]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol2",
+                    DataType = typeof(Int32),
+                    MaxLength = 100 }
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field3]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol3",
+                    DataType = typeof(char),
+                    MaxLength = 100 }
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field4]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol4",
+                    DataType = typeof(decimal),
+                    MaxLength = 100 }
+                }
+            };
+            SetupArguments("<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1></field1><field2></field2><field3></field3><field4></field4></recset1><recset1><field1>Jane</field1><field2>3</field2><field3>G</field3><field4>26.4</field4></recset1><recset1><field1></field1><field2></field2><field3></field3><field4></field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1></root>", "<root><recset1><field1/><field2/><field3/><field4/></recset1></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
+            //------------Execute Test---------------------------
+            ExecuteProcess();
+            //------------Assert Results-------------------------
+            mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
+            Assert.IsNotNull(returnedDataTable);
+            Assert.AreEqual(4, returnedDataTable.Columns.Count);
+            Assert.AreEqual(3,returnedDataTable.Rows.Count);
+
+            Assert.AreEqual("Bob", returnedDataTable.Rows[0]["field1"]);
+            Assert.AreEqual(2, returnedDataTable.Rows[0]["field2"]);
+            Assert.AreEqual('C', returnedDataTable.Rows[0]["field3"]);
+            Assert.AreEqual(21.2m, returnedDataTable.Rows[0]["field4"]);
+
+            Assert.AreEqual("Jane", returnedDataTable.Rows[1]["field1"]);
+            Assert.AreEqual(3, returnedDataTable.Rows[1]["field2"]);
+            Assert.AreEqual('G', returnedDataTable.Rows[1]["field3"]);
+            Assert.AreEqual(26.4m, returnedDataTable.Rows[1]["field4"]);
+
+            Assert.AreEqual("Jill", returnedDataTable.Rows[2]["field1"]);
+            Assert.AreEqual(1999, returnedDataTable.Rows[2]["field2"]);
+            Assert.AreEqual('Z', returnedDataTable.Rows[2]["field3"]);
+            Assert.AreEqual(60m, returnedDataTable.Rows[2]["field4"]);
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSqlBulkInsertActivity_Execute")]
+        public void DsfSqlBulkInsertActivity_Execute_WithIgnoreBlankRowsFalse_HasDataTableWithDataIncludingBlankRows()
+        {
+            //------------Setup for test--------------------------
+            DataTable returnedDataTable = null;
+            var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
+            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()))
+                .Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedDataTable = dataTable);
+            var dataColumnMappings = new List<DataColumnMapping>
+            {
+                new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field1]]",
+                    OutputColumn = new DbColumn {ColumnName = "TestCol",
+                    DataType = typeof(String),
+                    MaxLength = 100},
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field2]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol2",
+                    DataType = typeof(String),
+                    MaxLength = 100 }
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field3]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol3",
+                    DataType = typeof(String),
+                    MaxLength = 100 }
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field4]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol4",
+                    DataType = typeof(String),
+                    MaxLength = 100 }
+                }
+            };
+            SetupArguments("<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1></field1><field2></field2><field3></field3><field4></field4></recset1><recset1><field1>Jane</field1><field2>3</field2><field3>G</field3><field4>26.4</field4></recset1><recset1><field1></field1><field2></field2><field3></field3><field4></field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1></root>", "<root><recset1><field1/><field2/><field3/><field4/></recset1></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
+            //------------Execute Test---------------------------
+            ExecuteProcess();
+            //------------Assert Results-------------------------
+            mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
+            Assert.IsNotNull(returnedDataTable);
+            Assert.AreEqual(4, returnedDataTable.Columns.Count);
+            Assert.AreEqual(3,returnedDataTable.Rows.Count);
+
+            Assert.AreEqual("Bob", returnedDataTable.Rows[0]["field1"]);
+            Assert.AreEqual("2", returnedDataTable.Rows[0]["field2"]);
+            Assert.AreEqual("C", returnedDataTable.Rows[0]["field3"]);
+            Assert.AreEqual("21.2", returnedDataTable.Rows[0]["field4"]);
+
+            Assert.AreEqual("Jane", returnedDataTable.Rows[1]["field1"]);
+            Assert.AreEqual("3", returnedDataTable.Rows[1]["field2"]);
+            Assert.AreEqual("G", returnedDataTable.Rows[1]["field3"]);
+            Assert.AreEqual("26.4", returnedDataTable.Rows[1]["field4"]);
+
+            Assert.AreEqual("Jill", returnedDataTable.Rows[2]["field1"]);
+            Assert.AreEqual("1999", returnedDataTable.Rows[2]["field2"]);
+            Assert.AreEqual("Z", returnedDataTable.Rows[2]["field3"]);
+            Assert.AreEqual("60", returnedDataTable.Rows[2]["field4"]);
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsAndDataFromDataListStar_HasDataTableWithDataColumnHaveCorrectDataTypes()
         {
             //------------Setup for test--------------------------
@@ -705,6 +833,147 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Hello", returnedDataTable.Rows[2]["Val"]);
         }
 
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSqlBulkInsertActivity_Execute")]
+        public void DsfSqlBulkInsertActivity_Execute_IgnoreBlankRowsFalse_HasDataTableWithBlankRowData()
+        {
+            //------------Setup for test--------------------------
+            DataTable returnedDataTable = null;
+            var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
+            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()))
+                .Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedDataTable = dataTable);
+            var dataColumnMappings = new List<DataColumnMapping>
+            {
+                new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field1]]",
+                    OutputColumn = new DbColumn {ColumnName = "TestCol",
+                    DataType = typeof(String),
+                    MaxLength = 100},
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field2]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol2",
+                    DataType = typeof(String),
+                    MaxLength = 100 }
+                }
+                , new DataColumnMapping
+                {
+                    InputColumn = "[[val]]",
+                    OutputColumn = new DbColumn { ColumnName = "Val",
+                    DataType = typeof(String),
+                    MaxLength = 100 }
+                },new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field3]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol3",
+                    DataType = typeof(String),
+                    MaxLength = 100 }
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field4]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol4",
+                    DataType = typeof(String),
+                    MaxLength = 100 }
+                }
+            };
+            SetupArguments("<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1></field1><field2></field2><field3></field3><field4></field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1><val></val></root>", "<root><recset1><field1/><field2/><field3/><field4/></recset1><val/></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]",null,null,PopulateOptions.PopulateBlankRows);
+            //------------Execute Test---------------------------
+            ExecuteProcess();
+            //------------Assert Results-------------------------
+            mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
+            Assert.IsNotNull(returnedDataTable);
+            Assert.AreEqual(5, returnedDataTable.Columns.Count);
+            Assert.AreEqual(3, returnedDataTable.Rows.Count);
+
+            Assert.AreEqual("Bob", returnedDataTable.Rows[0]["TestCol"]);
+            Assert.AreEqual("2", returnedDataTable.Rows[0]["TestCol2"]);
+            Assert.AreEqual("C", returnedDataTable.Rows[0]["TestCol3"]);
+            Assert.AreEqual("21.2", returnedDataTable.Rows[0]["TestCol4"]);
+            Assert.AreEqual("", returnedDataTable.Rows[0]["Val"]);
+
+            Assert.AreEqual("", returnedDataTable.Rows[1]["TestCol"]);
+            Assert.AreEqual("", returnedDataTable.Rows[1]["TestCol2"]);
+            Assert.AreEqual("", returnedDataTable.Rows[1]["TestCol3"]);
+            Assert.AreEqual("", returnedDataTable.Rows[1]["TestCol4"]);
+            Assert.AreEqual("", returnedDataTable.Rows[1]["Val"]);
+
+            Assert.AreEqual("Jill", returnedDataTable.Rows[2]["TestCol"]);
+            Assert.AreEqual("1999", returnedDataTable.Rows[2]["TestCol2"]);
+            Assert.AreEqual("Z", returnedDataTable.Rows[2]["TestCol3"]);
+            Assert.AreEqual("60", returnedDataTable.Rows[2]["TestCol4"]);
+            Assert.AreEqual("", returnedDataTable.Rows[2]["Val"]);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSqlBulkInsertActivity_Execute")]
+        public void DsfSqlBulkInsertActivity_Execute_MixedData_IgnoreBlankRowsTrue_HasDataTableWithOutBlankRowData()
+        {
+            //------------Setup for test--------------------------
+            DataTable returnedDataTable = null;
+            var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
+            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()))
+                .Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedDataTable = dataTable);
+            var dataColumnMappings = new List<DataColumnMapping>
+            {
+                new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field1]]",
+                    OutputColumn = new DbColumn {ColumnName = "TestCol",
+                    DataType = typeof(String),
+                    MaxLength = 100},
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field2]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol2",
+                    DataType = typeof(String),
+                    MaxLength = 100 }
+                }
+                , new DataColumnMapping
+                {
+                    InputColumn = "[[val]]",
+                    OutputColumn = new DbColumn { ColumnName = "Val",
+                    DataType = typeof(String),
+                    MaxLength = 100 }
+                },new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field3]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol3",
+                    DataType = typeof(String),
+                    MaxLength = 100 }
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field4]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol4",
+                    DataType = typeof(String),
+                    MaxLength = 100 }
+                }
+            };
+            SetupArguments("<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1></field1><field2></field2><field3></field3><field4></field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1><val></val></root>", "<root><recset1><field1/><field2/><field3/><field4/></recset1><val/></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
+            //------------Execute Test---------------------------
+            ExecuteProcess();
+            //------------Assert Results-------------------------
+            mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
+            Assert.IsNotNull(returnedDataTable);
+            Assert.AreEqual(5, returnedDataTable.Columns.Count);
+            Assert.AreEqual(2, returnedDataTable.Rows.Count);
+
+            Assert.AreEqual("Bob", returnedDataTable.Rows[0]["TestCol"]);
+            Assert.AreEqual("2", returnedDataTable.Rows[0]["TestCol2"]);
+            Assert.AreEqual("C", returnedDataTable.Rows[0]["TestCol3"]);
+            Assert.AreEqual("21.2", returnedDataTable.Rows[0]["TestCol4"]);
+            Assert.AreEqual("", returnedDataTable.Rows[0]["Val"]);
+            
+            Assert.AreEqual("Jill", returnedDataTable.Rows[1]["TestCol"]);
+            Assert.AreEqual("1999", returnedDataTable.Rows[1]["TestCol2"]);
+            Assert.AreEqual("Z", returnedDataTable.Rows[1]["TestCol3"]);
+            Assert.AreEqual("60", returnedDataTable.Rows[1]["TestCol4"]);
+            Assert.AreEqual("", returnedDataTable.Rows[1]["Val"]);
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
@@ -848,6 +1117,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 KeepIdentity = true,
                 UseInternalTransaction = true,
                 KeepTableLock = true,
+                IgnoreBlankRows = false,
                 InputMappings = dataColumnMappings,
                 Result = "[[result]]"
             };
@@ -857,7 +1127,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = CheckActivityDebugInputOutput(act, dataListShape,dataListWithData, out inRes, out outRes);
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
-            Assert.AreEqual(21, inRes.Count);
+            Assert.AreEqual(22, inRes.Count);
             var debugInputs = inRes[0].FetchResultsList();
             
             Assert.AreEqual(1, debugInputs.Count);
@@ -871,8 +1141,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Fire Triggers: YES", debugInputs[0].Value);
             debugInputs = inRes[4].FetchResultsList();
             Assert.AreEqual("Use Internal Transaction: YES", debugInputs[0].Value);
-
             debugInputs = inRes[5].FetchResultsList();
+            Assert.AreEqual("Ignore Blank Rows: NO", debugInputs[0].Value);
+
+            debugInputs = inRes[6].FetchResultsList();
             Assert.AreEqual("Batchsize: ", debugInputs[0].Value);
             Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
             Assert.AreEqual("[[batchsize]]", debugInputs[1].Value);
@@ -882,7 +1154,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("100", debugInputs[3].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugInputs[3].Type);
 
-            debugInputs = inRes[6].FetchResultsList();
+            debugInputs = inRes[7].FetchResultsList();
             Assert.AreEqual("Timeout: ", debugInputs[0].Value);
             Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
             Assert.AreEqual("[[timeout]]", debugInputs[1].Value);
@@ -892,7 +1164,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("240", debugInputs[3].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugInputs[3].Type);
 
-            debugInputs = inRes[7].FetchResultsList();
+            debugInputs = inRes[8].FetchResultsList();
             Assert.AreEqual(11,debugInputs.Count);
             Assert.AreEqual("1",debugInputs[0].Value);
             Assert.AreEqual(DebugItemResultType.Label,debugInputs[0].Type);
@@ -921,14 +1193,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Jill", debugInputs[10].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugInputs[10].Type);
 
-            debugInputs = inRes[8].FetchResultsList();
+            debugInputs = inRes[9].FetchResultsList();
             Assert.AreEqual("Into", debugInputs[0].Value);
             Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
             Assert.AreEqual("TestCol varchar (100)", debugInputs[1].Value);
             Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
 
-           debugInputs = inRes[9].FetchResultsList();
+           debugInputs = inRes[10].FetchResultsList();
 
            Assert.AreEqual("2", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
@@ -943,14 +1215,14 @@ namespace Dev2.Tests.Activities.ActivityTests
            Assert.AreEqual("1999", debugInputs[4].Value);
            Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
 
-           debugInputs = inRes[10].FetchResultsList();
+           debugInputs = inRes[11].FetchResultsList();
            Assert.AreEqual("Into", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
            Assert.AreEqual("TestCol2 int", debugInputs[1].Value);
            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
 
-           debugInputs = inRes[13].FetchResultsList();
+           debugInputs = inRes[14].FetchResultsList();
 
            Assert.AreEqual("4", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
@@ -965,14 +1237,14 @@ namespace Dev2.Tests.Activities.ActivityTests
            Assert.AreEqual("Hello", debugInputs[4].Value);
            Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
 
-           debugInputs = inRes[14].FetchResultsList();
+           debugInputs = inRes[15].FetchResultsList();
            Assert.AreEqual("Into", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
            Assert.AreEqual("Val varchar (100)", debugInputs[1].Value);
            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
 
-           debugInputs = inRes[15].FetchResultsList();
+           debugInputs = inRes[16].FetchResultsList();
 
            Assert.AreEqual("5", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
@@ -994,7 +1266,7 @@ namespace Dev2.Tests.Activities.ActivityTests
            Assert.AreEqual("KKK", debugInputs[7].Value);
            Assert.AreEqual(DebugItemResultType.Value, debugInputs[7].Type);
             
-            debugInputs = inRes[16].FetchResultsList();
+            debugInputs = inRes[17].FetchResultsList();
            Assert.AreEqual("Into", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
@@ -1050,7 +1322,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = CheckActivityDebugInputOutput(act, dataListShape,dataListWithData, out inRes, out outRes);
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
-            Assert.AreEqual(15, inRes.Count);
+            Assert.AreEqual(16, inRes.Count);
             var debugInputs = inRes[0].FetchResultsList();
             
             Assert.AreEqual(1, debugInputs.Count);
@@ -1064,8 +1336,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Fire Triggers: YES", debugInputs[0].Value);
             debugInputs = inRes[4].FetchResultsList();
             Assert.AreEqual("Use Internal Transaction: YES", debugInputs[0].Value);
-
             debugInputs = inRes[5].FetchResultsList();
+            Assert.AreEqual("Ignore Blank Rows: YES", debugInputs[0].Value);
+
+            debugInputs = inRes[6].FetchResultsList();
             Assert.AreEqual("Batchsize: ", debugInputs[0].Value);
             Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
             Assert.AreEqual("[[batchsize]]", debugInputs[1].Value);
@@ -1075,7 +1349,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("100", debugInputs[3].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugInputs[3].Type);
 
-            debugInputs = inRes[6].FetchResultsList();
+            debugInputs = inRes[7].FetchResultsList();
             Assert.AreEqual("Timeout: ", debugInputs[0].Value);
             Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
             Assert.AreEqual("[[timeout]]", debugInputs[1].Value);
@@ -1085,7 +1359,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("240", debugInputs[3].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugInputs[3].Type);
 
-            debugInputs = inRes[7].FetchResultsList();
+            debugInputs = inRes[8].FetchResultsList();
             Assert.AreEqual(11,debugInputs.Count);
             Assert.AreEqual("1",debugInputs[0].Value);
             Assert.AreEqual(DebugItemResultType.Label,debugInputs[0].Type);
@@ -1114,14 +1388,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Jill", debugInputs[10].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugInputs[10].Type);
 
-            debugInputs = inRes[8].FetchResultsList();
+            debugInputs = inRes[9].FetchResultsList();
             Assert.AreEqual("Into", debugInputs[0].Value);
             Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
             Assert.AreEqual("TestCol varchar (100)", debugInputs[1].Value);
             Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
 
-           debugInputs = inRes[9].FetchResultsList();
+           debugInputs = inRes[10].FetchResultsList();
 
            Assert.AreEqual("2", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
@@ -1136,14 +1410,14 @@ namespace Dev2.Tests.Activities.ActivityTests
            Assert.AreEqual("2", debugInputs[4].Value);
            Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
 
-           debugInputs = inRes[10].FetchResultsList();
+           debugInputs = inRes[11].FetchResultsList();
            Assert.AreEqual("Into", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
            Assert.AreEqual("TestCol2 int", debugInputs[1].Value);
            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
 
-           debugInputs = inRes[11].FetchResultsList();
+           debugInputs = inRes[12].FetchResultsList();
 
            Assert.AreEqual("3", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
@@ -1165,14 +1439,14 @@ namespace Dev2.Tests.Activities.ActivityTests
            Assert.AreEqual("G", debugInputs[7].Value);
            Assert.AreEqual(DebugItemResultType.Value, debugInputs[7].Type);
 
-           debugInputs = inRes[12].FetchResultsList();
+           debugInputs = inRes[13].FetchResultsList();
            Assert.AreEqual("Into", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
            Assert.AreEqual("TestCol3 char (100)", debugInputs[1].Value);
            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
 
-           debugInputs = inRes[13].FetchResultsList();
+           debugInputs = inRes[14].FetchResultsList();
 
            Assert.AreEqual("4", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
@@ -1187,7 +1461,7 @@ namespace Dev2.Tests.Activities.ActivityTests
            Assert.AreEqual("21.2", debugInputs[4].Value);
            Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
 
-           debugInputs = inRes[14].FetchResultsList();
+           debugInputs = inRes[15].FetchResultsList();
            Assert.AreEqual("Into", debugInputs[0].Value);
            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
@@ -1578,8 +1852,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData,ISqlBulkInserter sqlBulkInserter, IList<DataColumnMapping> inputMappings, string resultString,DbSource dbSource = null,string destinationTableName = null)
+        private void SetupArguments(string currentDL, string testData,ISqlBulkInserter sqlBulkInserter, IList<DataColumnMapping> inputMappings, string resultString,DbSource dbSource = null,string destinationTableName = null,PopulateOptions populateOptions = PopulateOptions.IgnoreBlankRows)
         {
+            var ignoreBlankRows = populateOptions == PopulateOptions.IgnoreBlankRows;
             if(dbSource == null)
             {
                 dbSource = new DbSource();                
@@ -1596,7 +1871,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                     TableName = destinationTableName,
                     InputMappings = inputMappings, 
                     SqlBulkInserter = sqlBulkInserter,
-                    Result = resultString
+                    Result = resultString,
+                    IgnoreBlankRows = ignoreBlankRows
                 }
             };
 

@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Enums;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Builders;
 using Dev2.Data.Compilers;
@@ -1043,13 +1044,13 @@ namespace Dev2.Server.Datalist
             return UpsertSystemTag<IBinaryDataListEntry>(curDLID, tag, val, out errors);
         }
 
-        public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors)
+        public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors, PopulateOptions populateOptions)
         {
             errors = new ErrorResultTO();
             try
             {
                 IDataListTranslator t = _dlServer.GetTranslator(DataListFormat.CreateFormat(GlobalConstants._DATATABLE));
-                return t.ConvertToDataTable(input, recsetName, out errors);
+                return t.ConvertToDataTable(input, recsetName, out errors,populateOptions);
             }
             catch(Exception e)
             {

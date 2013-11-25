@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using Dev2.Common;
+using Dev2.Common.Enums;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -32,6 +33,7 @@ namespace Dev2.Activities
             InputMappings = new List<DataColumnMapping>();
             Timeout = "0";
             BatchSize = "0";
+            IgnoreBlankRows = true;
         }
 
         public IList<DataColumnMapping> InputMappings { get; set; }
@@ -71,6 +73,8 @@ namespace Dev2.Activities
                 _sqlBulkInserter = value;
             }
         }
+
+        public bool IgnoreBlankRows { get; set; }
 
         public override enFindMissingType GetFindMissingType()
         {
@@ -143,7 +147,10 @@ namespace Dev2.Activities
                     
                     toUpsert.Add(Result, "Success");
                     compiler.Upsert(executionID, toUpsert, out errors);
-                    AddDebugOutputItemFromEntry(Result, compiler, executionID, debugOutputIndexCounter);
+                    if(toUpsert.IsDebug)
+                    {
+                        AddDebugOutputItemFromEntry(Result, compiler, executionID, debugOutputIndexCounter);
+                    }
                 }
             }
             catch(Exception e)
@@ -206,7 +213,12 @@ namespace Dev2.Activities
                 if(!hasMultiple)
                 {
                     var binaryDataList = compiler.FetchBinaryDataList(executionID, out errors);
-                    dataTableToInsert = compiler.ConvertToDataTable(binaryDataList, currentRecSetName, out errors);
+                    var populateOptions = PopulateOptions.IgnoreBlankRows;
+                    if(!IgnoreBlankRows)
+                    {
+                        populateOptions = PopulateOptions.PopulateBlankRows;
+                    }
+                    dataTableToInsert = compiler.ConvertToDataTable(binaryDataList, currentRecSetName, out errors, populateOptions);
                     foreach(DataRow dataRow in dataTableToInsert.Rows)
                     {
                         actualDataTable.ImportRow(dataRow);
@@ -331,6 +343,10 @@ namespace Dev2.Activities
             debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = string.Format("Use Internal Transaction: {0}", UseInternalTransaction ? "YES" : "NO") });
                 _debugInputs.Add(debugItem);
             
+            debugItem = new DebugItem();
+            debugItem.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = string.Format("Ignore Blank Rows: {0}", IgnoreBlankRows ? "YES" : "NO") });
+                _debugInputs.Add(debugItem);
+            
         }
 
         IDev2IteratorCollection BuildParametersIteratorCollection(IDataListCompiler compiler, Guid executionID,out IDev2DataListEvaluateIterator batchIterator,out IDev2DataListEvaluateIterator timeOutIterator)
@@ -356,7 +372,7 @@ namespace Dev2.Activities
             return parametersIteratorCollection;
         }
 
-        static void FillDataTableWithDataFromDataList(IDev2IteratorCollection iteratorCollection, DataTable dataTableToInsert, List<IDev2DataListEvaluateIterator> listOfIterators)
+        void FillDataTableWithDataFromDataList(IDev2IteratorCollection iteratorCollection, DataTable dataTableToInsert, List<IDev2DataListEvaluateIterator> listOfIterators)
         {
             while(iteratorCollection.HasMoreData())
             {
@@ -366,6 +382,10 @@ namespace Dev2.Activities
                 {
                     dataRow[pos] = value;
                     pos++;
+                }
+                if(IgnoreBlankRows && dataRow.ItemArray.All(o => o == null || (String.IsNullOrEmpty(o as string))))
+                {
+                    continue;
                 }
                 dataTableToInsert.Rows.Add(dataRow);
             }

@@ -2825,6 +2825,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Blank records will not be added to the SQL table..
+        /// </summary>
+        public static string SqlBulkInsertHelpIgnoreBlankRows {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertHelpIgnoreBlankRows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To bulk insert data into a table, put the data to insert in here.
         ///Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.
         ///A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.
@@ -2934,6 +2943,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string SqlBulkInsertToolTipFireTriggers {
             get {
                 return ResourceManager.GetString("SqlBulkInsertToolTipFireTriggers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blank rows will be ignored.
+        /// </summary>
+        public static string SqlBulkInsertToolTipIgnoreBlankRows {
+            get {
+                return ResourceManager.GetString("SqlBulkInsertToolTipIgnoreBlankRows", resourceCulture);
             }
         }
         

@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using Dev2.Common.Enums;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
@@ -347,7 +348,7 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         string ConvertAndFilter(Guid curDlid, DataListFormat typeOf, string filterShape, out ErrorResultTO errors);
 
-        DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors);
+        DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors, PopulateOptions populateOptions = PopulateOptions.IgnoreBlankRows);
 
         /// <summary>
         /// Converts from to.

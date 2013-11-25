@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using Dev2.Common;
+using Dev2.Common.Enums;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.SystemTemplates;
 using Dev2.Data.SystemTemplates.Models;
@@ -595,9 +596,9 @@ namespace Dev2.DataList.Contract
             return _svrCompiler.ConvertAndFilter(null, curDlid, filterShape, typeOf, out errors);
         }
 
-        public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors)
+        public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors, PopulateOptions populateOptions = PopulateOptions.IgnoreBlankRows)
         {
-            return _svrCompiler.ConvertToDataTable(input, recsetName, out errors);
+            return _svrCompiler.ConvertToDataTable(input, recsetName, out errors, populateOptions);
         }
 
         /// <summary>

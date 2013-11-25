@@ -350,6 +350,23 @@
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </CheckBox>
+            
+            <CheckBox Grid.Row="3"
+                      Grid.Column="3"
+                      Grid.ColumnSpan="2"
+                      Content="Skip blank rows"                      
+                      IsChecked="{Binding ModelItem.IgnoreBlankRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipIgnoreBlankRows}"
+                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_IgnoreBlankRows_AutoID}">
+                <i:Interaction.Behaviors>
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpIgnoreBlankRows}"
+                                     DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="IgnoreBlankRows"
+                                         SourcePropertyValue="{Binding ModelItem.IgnoreBlankRows, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </CheckBox>
 
         </Grid>
         

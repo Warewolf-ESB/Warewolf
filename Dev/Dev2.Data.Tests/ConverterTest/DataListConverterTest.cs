@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Common.Enums;
 using Dev2.Data.Translators;
 using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -249,7 +250,7 @@ namespace Dev2.Data.Tests.ConverterTest
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, "<root><rs><val/><otherVal/></rs></root>", out errors);
             var fetchBinaryDataList = compiler.FetchBinaryDataList(dlID, out errors);
             //------------Execute Test---------------------------
-            var convertToDataTable = compiler.ConvertToDataTable(fetchBinaryDataList, "rs", out errors);
+            var convertToDataTable = compiler.ConvertToDataTable(fetchBinaryDataList, "rs", out errors );
             //------------Assert Results-------------------------
             Assert.IsNotNull(convertToDataTable);
             Assert.AreEqual(2,convertToDataTable.Columns.Count);
@@ -260,6 +261,58 @@ namespace Dev2.Data.Tests.ConverterTest
             Assert.AreEqual("1",convertToDataTable.Rows[0]["otherVal"]);
             Assert.AreEqual("zzz", convertToDataTable.Rows[1]["val"]);
             Assert.AreEqual("2", convertToDataTable.Rows[1]["otherVal"]);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListTranslator_ToDataTable")]
+        // ReSharper disable once InconsistentNaming
+        public void DataListTranslator_ToDataTable_WithDataListWithIgnoreBlankRows_PopulatedDataTableWithoutBlankRows()
+        {
+            //------------Setup for test--------------------------
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<root><rs><val>aaa</val><otherVal>1</otherVal></rs><rs><val></val><otherVal></otherVal></rs><rs><val>zzz</val><otherVal>2</otherVal></rs></root>", "<root><rs><val/><otherVal/></rs></root>", out errors);
+            var fetchBinaryDataList = compiler.FetchBinaryDataList(dlID, out errors);
+            //------------Execute Test---------------------------
+            var convertToDataTable = compiler.ConvertToDataTable(fetchBinaryDataList, "rs", out errors, PopulateOptions.IgnoreBlankRows);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(convertToDataTable);
+            Assert.AreEqual(2,convertToDataTable.Columns.Count);
+            Assert.IsTrue(convertToDataTable.Columns.Contains("val"));
+            Assert.IsTrue(convertToDataTable.Columns.Contains("otherVal"));
+            Assert.AreEqual(2,convertToDataTable.Rows.Count);
+            Assert.AreEqual("aaa",convertToDataTable.Rows[0]["val"]);
+            Assert.AreEqual("1",convertToDataTable.Rows[0]["otherVal"]);
+            Assert.AreEqual("zzz", convertToDataTable.Rows[1]["val"]);
+            Assert.AreEqual("2", convertToDataTable.Rows[1]["otherVal"]);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListTranslator_ToDataTable")]
+        // ReSharper disable once InconsistentNaming
+        public void DataListTranslator_ToDataTable_WithDataListWithPopulateBlankRows_PopulatedDataTableWithoutBlankRows()
+        {
+            //------------Setup for test--------------------------
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<root><rs><val>aaa</val><otherVal>1</otherVal></rs><rs><val></val><otherVal></otherVal></rs><rs><val>zzz</val><otherVal>2</otherVal></rs></root>", "<root><rs><val/><otherVal/></rs></root>", out errors);
+            var fetchBinaryDataList = compiler.FetchBinaryDataList(dlID, out errors);
+            //------------Execute Test---------------------------
+            var convertToDataTable = compiler.ConvertToDataTable(fetchBinaryDataList, "rs", out errors, PopulateOptions.PopulateBlankRows);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(convertToDataTable);
+            Assert.AreEqual(2,convertToDataTable.Columns.Count);
+            Assert.IsTrue(convertToDataTable.Columns.Contains("val"));
+            Assert.IsTrue(convertToDataTable.Columns.Contains("otherVal"));
+            Assert.AreEqual(3,convertToDataTable.Rows.Count);
+            Assert.AreEqual("aaa",convertToDataTable.Rows[0]["val"]);
+            Assert.AreEqual("1",convertToDataTable.Rows[0]["otherVal"]);
+            Assert.AreEqual("", convertToDataTable.Rows[1]["val"]);
+            Assert.AreEqual("", convertToDataTable.Rows[1]["otherVal"]);
+            Assert.AreEqual("zzz", convertToDataTable.Rows[2]["val"]);
+            Assert.AreEqual("2", convertToDataTable.Rows[2]["otherVal"]);
         }
 
         [TestMethod]

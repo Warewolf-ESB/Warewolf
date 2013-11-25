@@ -1749,4 +1749,10 @@ Leaving the Archive Password blank will result in no password being required to 
   <data name="UnzipHelpDestinationUsername" xml:space="preserve">
     <value>For protected resources, specify the Username of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
+  <data name="SqlBulkInsertHelpIgnoreBlankRows" xml:space="preserve">
+    <value>Blank records will not be added to the SQL table.</value>
+  </data>
+  <data name="SqlBulkInsertToolTipIgnoreBlankRows" xml:space="preserve">
+    <value>Blank rows will be ignored</value>
+  </data>
 </root>

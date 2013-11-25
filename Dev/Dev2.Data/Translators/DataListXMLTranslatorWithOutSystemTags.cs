@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using Dev2.Common;
+using Dev2.Common.Enums;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Storage.ProtocolBuffers;
 using Dev2.Data.TO;
@@ -422,7 +423,7 @@ namespace Dev2.Data.Translators
             return result.ToString();
         }
 
-        public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors)
+        public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors, PopulateOptions populateOptions)
         {
             errors = null;
             throw new NotImplementedException();
