@@ -99,7 +99,7 @@ namespace Dev2.Studio.UI.Tests
                 }
             }
 
-            Assert.AreEqual(27, allFoundTools.Count, "Not all tools on the alls tools text workflow can be checked for icons");
+            Assert.AreEqual(24, allFoundTools.Count, "Not all tools on the alls tools text workflow can be checked for icons");
 
             Assert.IsTrue(true, "Studio was terminated or hung while opening and closing the all tools workflow");
 
