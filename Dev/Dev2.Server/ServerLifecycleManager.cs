@@ -207,7 +207,6 @@ namespace Unlimited.Applications.DynamicServicesHost
         ExecutionServerChannel _executionChannel;
         DataListServerChannel _dataListChannel;
 
-        string[] _prefixes;
         string _uriAddress;
         string _configFile;
 
@@ -221,7 +220,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         Thread _gcmThread;
         ThreadStart _gcmThreadStart;
         Timer _timer;
-        IDisposable _owinWebServer;
+        IDisposable _owinServer;
 
         // END OF GC MANAGEMENT
 
@@ -407,20 +406,20 @@ namespace Unlimited.Applications.DynamicServicesHost
 
         int ServerLoop(bool interactiveMode)
         {
-                if(interactiveMode)
+            if(interactiveMode)
+            {
+                Write("Press <ENTER> to terminate service and/or web server if started");
+                if(EnvironmentVariables.IsServerOnline)
                 {
-                    Write("Press <ENTER> to terminate service and/or web server if started");
-                    if(EnvironmentVariables.IsServerOnline)
-                    {
-                        Console.ReadLine();
-                    }
-                    else
-                    {
-                        Write("Failed to start Server");
-                    }
-
-                    return Stop(false, 0);
+                    Console.ReadLine();
                 }
+                else
+                {
+                    Write("Failed to start Server");
+                }
+
+                return Stop(false, 0);
+            }
 
             return 0;
         }
@@ -1331,13 +1330,10 @@ namespace Unlimited.Applications.DynamicServicesHost
                         throw new ArgumentException("Web server port is not valid. Please set the webServerPort value in the configuration file.");
                     }
 
-                    List<Dev2Endpoint> endpoints = new List<Dev2Endpoint>();
-                    var prefixes = new List<string>();
+                    var endpoints = new List<Dev2Endpoint>();
 
                     var httpEndpoint = new IPEndPoint(IPAddress.Any, realPort);
                     var httpUrl = string.Format("http://*:{0}/", webServerPort);
-
-                    prefixes.Add(httpUrl);
                     endpoints.Add(new Dev2Endpoint(httpEndpoint, httpUrl));
 
                     // start SSL traffic if it is enabled ;)
@@ -1353,22 +1349,19 @@ namespace Unlimited.Applications.DynamicServicesHost
                         {
                             var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
                             var httpsUrl = string.Format("https://*:{0}/", webServerSslPort);
-                            var canEnableSSL = HostSecurityProvider.Instance.EnsureSSL(sslCertPath, httpsEndpoint);
+                            var canEnableSsl = HostSecurityProvider.Instance.EnsureSSL(sslCertPath, httpsEndpoint);
 
-                            if(canEnableSSL)
+                            if(canEnableSsl)
                             {
-                                prefixes.Add(httpsUrl);
-                                endpoints.Add(new Dev2Endpoint(httpsEndpoint, sslCertPath));
+                                endpoints.Add(new Dev2Endpoint(httpsEndpoint, httpsUrl, sslCertPath));
                             }
                             else
                             {
-                                WriteLine("Could not start webserver to listen for SSL traffic with cert [ " +
-                                          sslCertPath + " ]");
+                                WriteLine("Could not start webserver to listen for SSL traffic with cert [ " + sslCertPath + " ]");
                             }
                         }
                     }
 
-                    _prefixes = prefixes.ToArray();
                     _endpoints = endpoints.ToArray();
                     _uriAddress = uriAddress;
                 }
@@ -1399,6 +1392,11 @@ namespace Unlimited.Applications.DynamicServicesHost
             try
             {
                 _webserver.Stop();
+                if(_owinServer != null)
+                {
+                    _owinServer.Dispose();
+                    _owinServer = null;
+                }
             }
             catch(Exception ex)
             {
@@ -1653,12 +1651,6 @@ namespace Unlimited.Applications.DynamicServicesHost
                 _timer = null;
             }
 
-            if(_owinWebServer != null)
-            {
-                _owinWebServer.Dispose();
-                _owinWebServer = null;
-            }
-
             _webserver = null;
             _esbEndpoint = null;
             _executionChannel = null;
@@ -1891,15 +1883,16 @@ namespace Unlimited.Applications.DynamicServicesHost
                     };
                     StartNetworkServer(endpoints);
 
-                    const string Url = "http://localhost:8080";
-                    _owinWebServer = WebServerStartup.Start(Url);
-                    WriteLine("\r\nSignalR Server running on " + Url);
-
+                    _owinServer = WebServerStartup.Start("http://*:8080/");
+                    //_owinServer = WebServerStartup.Start(_endpoints);
                     _webserver = new Dev2.Runtime.WebServer.WebServer(_endpoints);
                     _webserver.Start();
                     EnvironmentVariables.IsServerOnline = true; // flag server as active
                     WriteLine("\r\nWeb Server Started");
-                    new List<string>(_prefixes).ForEach(c => WriteLine(string.Format("Web server listening at {0}", c)));
+                    foreach(var endpoint in _endpoints)
+                    {
+                        WriteLine(string.Format("Web server listening at {0}", endpoint.Url));
+                    }
                 }
                 catch(Exception e)
                 {

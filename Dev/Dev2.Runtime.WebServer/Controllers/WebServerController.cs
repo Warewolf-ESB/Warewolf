@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Dev2.Runtime.WebServer.Handlers;
@@ -10,22 +9,24 @@ namespace Dev2.Runtime.WebServer.Controllers
     public class WebServerController : AbstractController
     {
         [HttpGet]
-        [Route("{website}/{type}/{file}")]
-        public HttpResponseMessage Get(string website, string type, string file)
+        [Route("{website}/{folder}/{file}")]
+        public HttpResponseMessage Get(string website, string folder, string file)
         {
+            // DO NOT replace {folder} with {type} in route mapping --> {type} is a query string parameter!
             var requestVariables = new NameValueCollection
             {
                 { "website", website }, 
-                { "path", string.Format("{0}/{1}", type, file) }
+                { "path", string.Format("{0}/{1}", folder, file) }
             };
 
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
         }
 
         [HttpGet]
-        [Route("{website}/{path}/{type}/{*file}")]
-        public HttpResponseMessage Get(string website, string path, string type, string file)
+        [Route("{website}/{path}/{folder}/{*file}")]
+        public HttpResponseMessage Get(string website, string path, string folder, string file)
         {
+            // DO NOT replace {folder} with {type} in route mapping --> {type} is a query string parameter!
             var requestVariables = new NameValueCollection
             {
                 { "website", website }, 
@@ -47,16 +48,6 @@ namespace Dev2.Runtime.WebServer.Controllers
 
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
         }
-
-        //[HttpGet]
-        //[Route("{website}/views/WorkflowService/{file}")]
-        //public HttpResponseMessage GetView(string website, string file)
-        //{
-        //    var uri = Request.RequestUri.OriginalString.Replace("WorkflowService", "Dialogs");
-        //    var response = Request.CreateResponse(HttpStatusCode.Redirect);
-        //    response.Headers.Add("Location", uri);
-        //    return response;
-        //}
 
         [HttpPost]
         [Route("{website}/{path}/Service/{name}/{method}")]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,62 +14,86 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
     public class WebServerTests
     {
         const string AssertNotNull = "AssertNotNull";
-        readonly static string ServicesUri = ServerSettings.WebserverURI;
-        readonly static string ServicesHttpsUri = ServerSettings.WebserverHttpsURI;
-        readonly static string WebsiteUri = ServerSettings.WebsiteServerUri;
 
+        const string WebServerTestSmall = "WebServerTestSmallString";
+        const string WebServerTestLarge = "WebServerTestLargeString";
+
+        const string WebServerTest = "WebServerTest";
+        const string WebServerTestExpectedXml = "<DataList><Text>Of resolve to gravity thought my prepare chamber so</Text><Args></Args></DataList>";
+        const string WebServerTestExpectedJson = "{\"Text\":\"Of resolve to gravity thought my prepare chamber so\",\"Args\":\"\"}";
+
+        readonly static string[] ServicesEndPoints =
+        {
+            ServerSettings.WebserverURI,
+            "http://localhost:8080/services/"
+        };
+
+        readonly static string[] WebsiteEndPoints =
+        {
+            ServerSettings.WebsiteServerUri,
+            "http://localhost:8080/wwwroot/"
+        };
+
+        static readonly string[] SslEndPoints =
+        {
+            ServerSettings.WebserverHttpsURI,
+            // "https://localhost:8081/services/" - DO NOT test this as it requires us to bind to port 8081
+        };
 
         [TestMethod]
         [TestCategory("WebServer_ServicesGet")]
         public void WebServer_ServicesGet_DataIsNotLarge_DownloadHeadersNotAdded()
         {
-            string path = ServicesUri + "WebServerTestSmallString";
+            foreach(var endPoint in ServicesEndPoints)
+            {
+                var path = endPoint + WebServerTestSmall;
 
-            HttpWebResponse result = TestHelper.GetResponseFromServer(path);
+                var result = TestHelper.GetResponseFromServer(path);
 
-            var allKeys = result.Headers.AllKeys;
-            const string ContentType = "Content-Type";
-            const string ContentDisposition = "Content-Disposition";
-            CollectionAssert.Contains(allKeys, ContentType);
-            CollectionAssert.DoesNotContain(allKeys, ContentDisposition);
+                var allKeys = result.Headers.AllKeys;
+                const string ContentType = "Content-Type";
+                const string ContentDisposition = "Content-Disposition";
+                CollectionAssert.Contains(allKeys, ContentType);
+                CollectionAssert.DoesNotContain(allKeys, ContentDisposition);
 
-            var contentTypeValue = result.Headers.Get(ContentType);
+                var contentTypeValue = result.Headers.Get(ContentType);
 
-            Assert.IsFalse(contentTypeValue.Contains("application/force-download"));
+                Assert.IsFalse(contentTypeValue.Contains("application/force-download"));
+            }
         }
 
         [TestMethod]
         [TestCategory("WebServer_ServicesGet")]
         public void WebServer_ServicesGet_DataIsLarge_DownloadHeadersAdded()
         {
+            foreach(var endPoint in ServicesEndPoints)
+            {
+                var path = endPoint + WebServerTestLarge;
 
-            string path = ServerSettings.WebserverURI + "WebServerTestLargeString";
+                var result = TestHelper.GetResponseFromServer(path);
 
-            HttpWebResponse result = TestHelper.GetResponseFromServer(path);
+                var allKeys = result.Headers.AllKeys;
+                const string ContentType = "Content-Type";
+                const string ContentDisposition = "Content-Disposition";
+                CollectionAssert.Contains(allKeys, ContentType);
+                CollectionAssert.Contains(allKeys, ContentDisposition);
 
-            var allKeys = result.Headers.AllKeys;
-            const string ContentType = "Content-Type";
-            const string ContentDisposition = "Content-Disposition";
-            CollectionAssert.Contains(allKeys, ContentType);
-            CollectionAssert.Contains(allKeys, ContentDisposition);
+                var contentTypeValue = result.Headers.Get(ContentType);
+                var contentDispositionValue = result.Headers.Get(ContentDisposition);
 
-            var contentTypeValue = result.Headers.Get(ContentType);
-            var contentDispositionValue = result.Headers.Get(ContentDisposition);
-
-            StringAssert.Contains(contentTypeValue, "application/force-download");
-            Assert.AreEqual("attachment; filename=Output.xml", contentDispositionValue);
+                StringAssert.Contains(contentTypeValue, "application/force-download");
+                Assert.AreEqual("attachment; filename=Output.xml", contentDispositionValue);
+            }
         }
 
         [TestMethod]
         [TestCategory("WebServer_ServicesGet")]
         public void WebServer_ServicesGet_Service_CannotExecuteServiceError()
         {
-            //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServicesUri, "CaseSP");
-            //------------Execute Test---------------------------
-            string responseData = TestHelper.PostDataToWebserver(postData);
-            //------------Assert Results-------------------------
-            StringAssert.Contains(responseData, "<InnerError>Can only execute workflows from web browser</InnerError>");
+            VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
+            {
+                new Tuple<string, string, AssertType>("CaseSP", @"<InnerError>Can only execute workflows from web browser</InnerError>", AssertType.Contains)
+            });
         }
 
         // -- Trav New -- //
@@ -76,78 +101,62 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
         [TestCategory("WebServer_ServicesGet")]
         public void WebServer_ServicesGet_ServiceAsJson_CannotExecuteServiceErrorAsJson()
         {
-            //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServicesUri, "CaseSP.json");
-            //------------Execute Test---------------------------
-            string responseData = TestHelper.PostDataToWebserver(postData);
-            //------------Assert Results-------------------------
-
-            var expected = "{ \"FatalError\": \"An internal error occured while executing the service request\",\"errors\": [ \"Can only execute workflows from web browser\"]}";
-            Assert.AreEqual(expected, responseData, "Expected [ " + expected + "] but got [ " + responseData + " ]");
+            const string Expected = "{ \"FatalError\": \"An internal error occured while executing the service request\",\"errors\": [ \"Can only execute workflows from web browser\"]}";
+            VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
+            {
+                new Tuple<string, string, AssertType>("CaseSP.json", Expected, AssertType.Equals)
+            });
         }
 
         [TestMethod]
         public void WebServer_ServicesGet_NonExistingServiceAsJson_InternalErrorsAsJson()
         {
-            //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServicesUri, "BugXXXX.json");
-            //------------Execute Test---------------------------
-            string responseData = TestHelper.PostDataToWebserver(postData);
-            //------------Assert Results-------------------------
-            var expected = "{ \"FatalError\": \"An internal error occured while executing the service request\",\"errors\": [ \"Service [ BugXXXX ] not found.\"]}";
-            Assert.AreEqual(expected, responseData, "Expected [ " + expected + "] but got [ " + responseData + " ]");
+            const string Expected = "{ \"FatalError\": \"An internal error occured while executing the service request\",\"errors\": [ \"Service [ BugXXXX ] not found.\"]}";
+            VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
+            {
+                new Tuple<string, string, AssertType>("BugXXXX.json", Expected, AssertType.Equals)
+            });
         }
 
         [TestMethod]
         [TestCategory("WebServer_ServicesGet")]
         public void WebServer_ServicesGet_NonExistingServiceAsXml_InternalErrorAsXml()
         {
-            //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServicesUri, "BugXXXX.xml");
-            //------------Execute Test---------------------------
-            string responseData = TestHelper.PostDataToWebserver(postData);
-            //------------Assert Results-------------------------
-            var expected = "<FatalError> <Message> An internal error occured while executing the service request </Message><InnerError>Service [ BugXXXX ] not found.</InnerError></FatalError>";
-            Assert.AreEqual(expected, responseData, "Expected [ " + expected + "] but got [ " + responseData + " ]");
+            const string Expected = "<FatalError> <Message> An internal error occured while executing the service request </Message><InnerError>Service [ BugXXXX ] not found.</InnerError></FatalError>";
+            VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
+            {
+                new Tuple<string, string, AssertType>("BugXXXX.xml", Expected, AssertType.Equals)
+            });
         }
 
         [TestMethod]
         [TestCategory("WebServer_ServicesGet")]
         public void WebServer_ServicesGet_WorkflowAsJson_ResultAsJson()
         {
-            //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServicesUri, "Bug9139.json");
-            //------------Execute Test---------------------------
-            string responseData = TestHelper.PostDataToWebserver(postData);
-            //------------Assert Results-------------------------
-            var expected = "{\"result\":\"PASS\"}";
-            Assert.AreEqual(expected, responseData, "Expected [ " + expected + "] but got [ " + responseData + " ]");
+            VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
+            {
+                new Tuple<string, string, AssertType>(WebServerTest + ".json", WebServerTestExpectedJson, AssertType.Equals)
+            });
         }
 
         [TestMethod]
         [TestCategory("WebServer_ServicesGet")]
         public void WebServer_ServicesGet_WorkflowAsXml_ResultAsXml()
         {
-            //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServicesUri, "Bug9139.xml");
-            //------------Execute Test---------------------------
-            string responseData = TestHelper.PostDataToWebserver(postData);
-            //------------Assert Results-------------------------
-            var expected = "<DataList><result>PASS</result></DataList>";
-            Assert.AreEqual(expected, responseData, "Expected [ " + expected + "] but got [ " + responseData + " ]");
+            VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
+            {
+                new Tuple<string, string, AssertType>(WebServerTest + ".xml", WebServerTestExpectedXml, AssertType.Equals)
+            });
         }
 
         [TestMethod]
         [TestCategory("WebServer_ServicesGet")]
         public void WebServer_ServicesGet_WorkflowAsBadExtension_ResultAsXml()
         {
-            //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServicesUri, "Bug9139.ml");
-            //------------Execute Test---------------------------
-            string responseData = TestHelper.PostDataToWebserver(postData);
-            //------------Assert Results-------------------------
-            var expected = "<DataList><result>PASS</result></DataList>";
-            Assert.AreEqual(expected, responseData, "Expected [ " + expected + "] but got [ " + responseData + " ]");
+            VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
+            {
+                new Tuple<string, string, AssertType>(WebServerTest + ".ml", WebServerTestExpectedXml, AssertType.Equals)
+            });
         }
 
         [TestMethod]
@@ -155,16 +164,21 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
         [TestCategory("WebServer_ServicesGet")]
         public void WebServer_ServicesGet_OnSSLPort_ValidResultViaSSL()
         {
-            //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServicesHttpsUri, "Bug9139");
-            //------------Execute Test---------------------------
-            bool wasHTTPS;
-            string responseData = TestHelper.PostDataToWebserver(postData, out wasHTTPS);
+            VerifyRequest(SslEndPoints, new List<Tuple<string, string, AssertType>>
+            {
+                new Tuple<string, string, AssertType>(WebServerTest, WebServerTestExpectedXml, AssertType.Equals)
+            });
 
-            //------------Assert Results-------------------------
-            var expected = "<DataList><result>PASS</result></DataList>";
-            Assert.IsTrue(wasHTTPS);
-            Assert.AreEqual(expected, responseData, "Expected [ " + expected + "] but got [ " + responseData + " ]");
+            ////------------Setup for test--------------------------
+            //string postData = String.Format("{0}{1}", ServicesHttpsUri, "Bug9139");
+            ////------------Execute Test---------------------------
+            //bool wasHTTPS;
+            //string responseData = TestHelper.PostDataToWebserver(postData, out wasHTTPS);
+
+            ////------------Assert Results-------------------------
+            //var expected = "<DataList><result>PASS</result></DataList>";
+            //Assert.IsTrue(wasHTTPS);
+            //Assert.AreEqual(expected, responseData, "Expected [ " + expected + "] but got [ " + responseData + " ]");
         }
 
         [TestMethod]
@@ -172,19 +186,14 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
         [TestCategory("WebServer_ServicesPost")]
         public void WebServer_ServicesPost_Workflow_ResultAsXml()
         {
-            //------------Setup for test--------------------------
-            var message = "hello";
+            const string Input = "hello";
+            var postData = string.Format("<DataList><Text></Text><Args></Args><Input>{0}</Input></DataList>", Input);
+            var expected = WebServerTestExpectedXml.Replace("<Args></Args>", string.Format("<Args>{0}</Args>", Input));
 
-            var postData = string.Format("<DataList><payload>{0}</payload><result></result></DataList>", message);
-            var expectedResponse = string.Format("<DataList><result>{0}</result></DataList>", message);
-
-            var requestData = String.Format("{0}{1}?{2}?", ServicesUri, "PBI 10654 - Web Server Test", postData);
-
-            //------------Execute Test---------------------------
-            var responseData = TestHelper.PostDataToWebserver(requestData);
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(expectedResponse, responseData);
+            VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
+            {
+                new Tuple<string, string, AssertType>(WebServerTest + "?" + postData + "?", expected, AssertType.Equals)
+            });
         }
 
         [TestMethod]
@@ -194,19 +203,16 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
         {
             //------------Setup for test--------------------------
             var instanceID = Guid.NewGuid();
-            var bookmark = "bkmk";
-            var message = "hello";
+            const string Bookmark = "bkmk";
+            const string Input = "hello";
+            var postData = string.Format("<DataList><Text></Text><Args></Args><Input>{0}</Input></DataList>", Input);
+            const string Expected = "<DataList><Text></Text><Args></Args></DataList>"; // expect no result because there isn't a bookmark to be resumed!
 
-            var postData = string.Format("<DataList><payload>{0}</payload><result></result></DataList>", message);
-            var expectedResponse = string.Format("<DataList><result>{0}</result></DataList>", ""); // expect no result because there isn't a bookmark to be resumed!
-
-            var requestData = String.Format("{0}{1}/instances/{2}/bookmarks/{3}?{4}?", ServicesUri, "PBI 10654 - Web Server Test", instanceID, bookmark, postData);
-
-            //------------Execute Test---------------------------
-            var responseData = TestHelper.PostDataToWebserver(requestData);
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(expectedResponse, responseData);
+            VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
+            {
+                new Tuple<string, string, AssertType>(String.Format("{0}/instances/{1}/bookmarks/{2}?{3}?",
+                    WebServerTest, instanceID, Bookmark , postData), Expected, AssertType.Equals)
+            });
         }
 
         [TestMethod]
@@ -327,6 +333,8 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {"),
             {
                 new Tuple<string, string>("services/webservice", Expected),
                 new Tuple<string, string>("sources/websource", Expected),
+                new Tuple<string, string>("dialogs/savedialog", Expected),
+                //new Tuple<string, string>("dialogs/savedialog?type=WorkflowService", Expected),
             };
 
             VerifyWebsiteRequests(requests, new[] { "" });
@@ -347,27 +355,49 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {"),
             VerifyWebsiteRequests(requests, new[] { "services", "sources", "dialogs" });
         }
 
-        static void VerifyWebsiteRequests(IEnumerable<Tuple<string, string>> requests, string[] roots)
+        static void VerifyWebsiteRequests(IEnumerable<Tuple<string, string>> requests, IEnumerable<string> roots)
         {
-            foreach(var request in requests)
-            {
-                foreach(var root in roots)
-                {
-                    var url = String.Format("{0}{1}/{2}", WebsiteUri, root, request.Item1);
+            var allRequests = (from request in requests 
+                               from root in roots 
+                               select new Tuple<string, string, AssertType>(
+                                   string.Format("{0}/{1}", root, request.Item1), 
+                                   request.Item2, 
+                                   request.Item2 == AssertNotNull ? AssertType.IsNotNull : AssertType.StartsWith)).ToList();
+            VerifyRequest(WebsiteEndPoints, allRequests);
+        }
 
+        static void VerifyRequest(IEnumerable<string> endpoints, List<Tuple<string, string, AssertType>> requests)
+        {
+            foreach(var endPoint in endpoints)
+            {
+                foreach(var request in requests)
+                {
+                    //------------Setup for test--------------------------
+                    var expectedSsl = endPoint.StartsWith("https");
+                    var url = String.Format("{0}{1}", endPoint, request.Item1);
                     try
                     {
+
                         //------------Execute Test---------------------------
-                        var responseData = TestHelper.PostDataToWebserver(url);
+                        bool wasSsl;
+                        var responseData = TestHelper.PostDataToWebserver(url, out wasSsl);
 
                         //------------Assert Results-------------------------
-                        if(request.Item2 == AssertNotNull)
+                        Assert.AreEqual(expectedSsl, wasSsl);
+                        switch(request.Item3)
                         {
-                            Assert.IsNotNull(responseData);
-                        }
-                        else
-                        {
-                            StringAssert.StartsWith(responseData, request.Item2);
+                            case AssertType.StartsWith:
+                                StringAssert.StartsWith(responseData, request.Item2, "Expected [ " + request.Item2 + "] but got [ " + responseData + " ]");
+                                break;
+                            case AssertType.Contains:
+                                StringAssert.Contains(responseData, request.Item2, "Expected [ " + request.Item2 + "] but got [ " + responseData + " ]");
+                                break;
+                            case AssertType.Equals:
+                                Assert.AreEqual(responseData, request.Item2, "Expected [ " + request.Item2 + "] but got [ " + responseData + " ]");
+                                break;
+                            case AssertType.IsNotNull:
+                                Assert.IsNotNull(responseData);
+                                break;
                         }
                     }
                     catch(WebException wex)
@@ -375,8 +405,15 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {"),
                         Assert.Fail("{0} - {1}", wex.Message, url);
                     }
                 }
-
             }
+        }
+
+        enum AssertType
+        {
+            StartsWith,
+            Contains,
+            Equals,
+            IsNotNull
         }
     }
 }

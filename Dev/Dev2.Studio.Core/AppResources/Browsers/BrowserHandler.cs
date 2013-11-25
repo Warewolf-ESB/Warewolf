@@ -91,7 +91,7 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 
         public bool GetAuthCredentials(IWebBrowser browser, bool isProxy, string host, int port, string realm, string scheme, ref string username, ref string password)
         {
-            return false;
+            return "ntlm".Equals(scheme, StringComparison.InvariantCultureIgnoreCase);
         }
 
         #endregion

@@ -139,5 +139,101 @@ namespace Dev2.Core.Tests.AppResources.Browsers
 
         #endregion
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("BrowserHandler_GetAuthCredentials")]
+        public void BrowserHandler_GetAuthCredentials_SchemeIsNtlm_True()
+        {
+            //------------Setup for test--------------------------
+            var handler = new BrowserHandler(new Mock<IBrowserPopupController>().Object);
+            
+            //------------Execute Test---------------------------
+            var password = "";
+            var username= "";
+            var result = handler.GetAuthCredentials(new Mock<IWebBrowser>().Object, false, "", 0, "", "NTLM", ref username, ref password);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("BrowserHandler_GetAuthCredentials")]
+        public void BrowserHandler_GetAuthCredentials_SchemeIsNotNtlm_False()
+        {
+            //------------Setup for test--------------------------
+            var handler = new BrowserHandler(new Mock<IBrowserPopupController>().Object);
+
+            //------------Execute Test---------------------------
+            var password = "";
+            var username = "";
+            var result = handler.GetAuthCredentials(new Mock<IWebBrowser>().Object, false, "", 0, "", "Basic", ref username, ref password);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("BrowserHandler_GetAuthCredentials")]
+        public void BrowserHandler_GetAuthCredentials_SchemeIsNull_False()
+        {
+            //------------Setup for test--------------------------
+            var handler = new BrowserHandler(new Mock<IBrowserPopupController>().Object);
+
+            //------------Execute Test---------------------------
+            var password = "";
+            var username = "";
+            var result = handler.GetAuthCredentials(new Mock<IWebBrowser>().Object, false, "", 0, "", null, ref username, ref password);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+  
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("BrowserHandler_OnBeforeBrowse")]
+        public void BrowserHandler_OnBeforeBrowse_False()
+        {
+            //------------Setup for test--------------------------
+            var handler = new BrowserHandler(new Mock<IBrowserPopupController>().Object);
+
+            //------------Execute Test---------------------------
+            var result = handler.OnBeforeBrowse(new Mock<IWebBrowser>().Object, new Mock<IRequest>().Object, new NavigationType(), false);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("BrowserHandler_OnBeforeResourceLoad")]
+        public void BrowserHandler_OnBeforeResourceLoad_False()
+        {
+            //------------Setup for test--------------------------
+            var handler = new BrowserHandler(new Mock<IBrowserPopupController>().Object);
+
+            //------------Execute Test---------------------------
+            var result = handler.OnBeforeResourceLoad(new Mock<IWebBrowser>().Object, new Mock<IRequestResponse>().Object);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("BrowserHandler_GetDownloadHandler")]
+        public void BrowserHandler_GetDownloadHandler_False()
+        {
+            //------------Setup for test--------------------------
+            var handler = new BrowserHandler(new Mock<IBrowserPopupController>().Object);
+            var downloadHandler = new Mock<IDownloadHandler>().Object;
+
+            //------------Execute Test---------------------------
+            var result = handler.GetDownloadHandler(new Mock<IWebBrowser>().Object, "", "", 0, ref downloadHandler);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
     }
 }
