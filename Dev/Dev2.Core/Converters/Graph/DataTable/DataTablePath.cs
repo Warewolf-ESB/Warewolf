@@ -5,9 +5,11 @@ using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Converters.Graph.DataTable
 {
-    [Serializable]
     public class DataTablePath : BasePath
     {
+        public DataTablePath() : this("","")
+        {
+        }
 
         public DataTablePath(string tblName, string colName)
         {
