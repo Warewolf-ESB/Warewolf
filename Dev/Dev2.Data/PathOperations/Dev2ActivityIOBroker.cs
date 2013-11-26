@@ -60,13 +60,14 @@ namespace Dev2.PathOperations
         {
 
             Stream s;
-            string tmp = CreateTmpFile();
+            string result = resultOk; 
 
             // directory put?
             // wild char put?
 
             if (dst.RequiresLocalTmpStorage())
             {
+                string tmp = CreateTmpFile();
                 switch (args.WriteType)
                 {
                     case WriteType.AppendBottom:
@@ -94,57 +95,82 @@ namespace Dev2.PathOperations
                         }
                         break;
                 }
+                result = MoveTmpFileToDestination(dst, tmp, result);
             }
             else
             {
-                // we can write directly to the file
-                switch (args.WriteType)
+                if(File.Exists(dst.IOPath.Path))
                 {
-                    case WriteType.AppendBottom:
-                        File.WriteAllText(tmp, File.ReadAllText(dst.IOPath.Path));
-                        File.AppendAllText(tmp, args.FileContents);
-                        break;
-                    case WriteType.AppendTop:
-                        File.WriteAllText(tmp, args.FileContents);
-                        AppendToTemp(dst.Get(dst.IOPath), tmp);
-                        break;
-                    default:
-                        if (IsBase64(args.FileContents))
-                        {
-                            byte[] data = Convert.FromBase64String(args.FileContents.Replace("Content-Type:BASE64", ""));
-                            File.WriteAllBytes(tmp, data);
-                        }
-                        else
-                        {
+
+                    string tmp = CreateTmpFile();                    
+                    switch(args.WriteType)
+                    {
+                        case WriteType.AppendBottom:
+                            File.WriteAllText(tmp, File.ReadAllText(dst.IOPath.Path));
+                            File.AppendAllText(tmp, args.FileContents);
+                            break;
+                        case WriteType.AppendTop:
                             File.WriteAllText(tmp, args.FileContents);
-                        }
-                        break;
+                            AppendToTemp(dst.Get(dst.IOPath), tmp);
+                            break;
+                        default:
+                            if(IsBase64(args.FileContents))
+                            {
+                                byte[] data = Convert.FromBase64String(args.FileContents.Replace("Content-Type:BASE64", ""));
+                                File.WriteAllBytes(tmp, data);
+                            }
+                            else
+                            {
+                                File.WriteAllText(tmp, args.FileContents);
+                            }
+                            break;
+                    }
+                    result = MoveTmpFileToDestination(dst, tmp, result);
+
+                    RemoveTmpFile(tmp);
                 }
-            }
+                else
+                {
+                    // we can write directly to the file
+                    Dev2CRUDOperationTO newArgs = new Dev2CRUDOperationTO(true);
 
-            string result = resultOk;
+                    CreateEndPoint(dst, newArgs, true);
 
-            using (s = new MemoryStream(File.ReadAllBytes(tmp)))
+                    if(IsBase64(args.FileContents))
+                    {
+                        byte[] data = Convert.FromBase64String(args.FileContents.Replace("Content-Type:BASE64", ""));
+                        File.WriteAllBytes(dst.IOPath.Path, data);
+                    }
+                    else
+                    {
+                        File.WriteAllText(dst.IOPath.Path, args.FileContents);
+                    }
+                }
+            }                       
+
+            return result;
+        }
+
+        string MoveTmpFileToDestination(IActivityIOOperationsEndPoint dst, string tmp, string result)
+        {
+            Stream s;
+            using(s = new MemoryStream(File.ReadAllBytes(tmp)))
             {
                 Dev2CRUDOperationTO newArgs = new Dev2CRUDOperationTO(true);
 
                 //MO : 22-05-2012 : If the file doesnt exisit then create the file
-                if (!dst.PathExist(dst.IOPath))
+                if(!dst.PathExist(dst.IOPath))
                 {
                     CreateEndPoint(dst, newArgs, true);
                 }
-                if (dst.Put(s, dst.IOPath, newArgs, null) < 0)
+                if(dst.Put(s, dst.IOPath, newArgs, null) < 0)
                 {
                     result = resultBad;
                 }
                 s.Close();
                 s.Dispose();
             }
-
-            RemoveTmpFile(tmp);
-
             return result;
-
         }
 
         private static void AppendToTemp(Stream originalFileStream, string temp)

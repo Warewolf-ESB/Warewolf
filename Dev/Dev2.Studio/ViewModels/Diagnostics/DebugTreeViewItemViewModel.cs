@@ -45,18 +45,21 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public void AppendError(string errorMessage)
         {
-            if(Content.HasError)
+            if(Content != null)
             {
-                var currentError = new StringBuilder(Content.ErrorMessage);
-                currentError.Append(errorMessage);
-                Content.ErrorMessage = currentError.ToString();
+                if(Content.HasError)
+                {
+                    var currentError = new StringBuilder(Content.ErrorMessage);
+                    currentError.Append(errorMessage);
+                    Content.ErrorMessage = currentError.ToString();
+                }
+                else Content.ErrorMessage = errorMessage;
+                Content.HasError = true;
+                OnPropertyChanged("Content.ErrorMessage");
+                OnPropertyChanged("Content.HasError");
+                OnPropertyChanged("Content");
+                HasError = true;
             }
-            else Content.ErrorMessage = errorMessage;
-            Content.HasError = true;
-            OnPropertyChanged("Content.ErrorMessage");
-            OnPropertyChanged("Content.HasError");
-            OnPropertyChanged("Content");
-            HasError = true;
         }
 
         protected override void Initialize(IDebugState content)
