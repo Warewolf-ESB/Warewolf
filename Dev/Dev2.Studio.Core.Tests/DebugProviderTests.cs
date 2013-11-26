@@ -6,9 +6,5 @@ namespace Dev2.Core.Tests
     [TestClass][ExcludeFromCodeCoverage]
     public class DebugProviderTests
     {
-        [TestMethod]
-        public void TestMethod1()
-        {
-        }
     }
 }

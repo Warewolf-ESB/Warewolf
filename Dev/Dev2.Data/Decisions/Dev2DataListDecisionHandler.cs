@@ -175,7 +175,7 @@ namespace Dev2.Data.Decision
         private Dev2DecisionStack EvaluateRegion(string payload, Guid dlID)
         {
             ErrorResultTO errors;
-            if(payload.StartsWith("{\"TheStack\":[{"))
+            if(payload.StartsWith("{\"TheStack\":[{") || payload.StartsWith("{'TheStack':[{"))
             {
                 //2013.05.06: Ashley Lewis for PBI 9460 - handle recordsets with stars in their index by resolving them
                 var dds = _compiler.ConvertFromJsonToModel<Dev2DecisionStack>(payload);
@@ -234,7 +234,6 @@ namespace Dev2.Data.Decision
 
                 return dds;
             }
-
             return null;
         }
 
