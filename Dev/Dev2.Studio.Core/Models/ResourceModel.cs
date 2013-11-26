@@ -544,6 +544,13 @@ namespace Dev2.Studio.Core.Models
             {
                 XElement dataList = string.IsNullOrEmpty(DataList) ? new XElement("DataList") : XElement.Parse(DataList);
 
+                var xaml = WorkflowXaml ?? string.Empty;
+
+                if (string.IsNullOrEmpty(xaml))
+                {
+                    xaml = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
+                }
+
                 XElement service = new XElement("Service",
                     new XAttribute("ID", ID),
                     new XAttribute("Version", (Version != null) ? Version.ToString() : "1.0"),
@@ -564,7 +571,7 @@ namespace Dev2.Studio.Core.Models
                     new XElement("Action",
                         new XAttribute("Name", "InvokeWorkflow"),
                         new XAttribute("Type", "Workflow"),
-                        new XElement("XamlDefinition", WorkflowXaml ?? string.Empty)),
+                        new XElement("XamlDefinition", xaml)),
                         new XElement("ErrorMessages", WriteErrors() ?? null)
                     );
 
@@ -577,7 +584,7 @@ namespace Dev2.Studio.Core.Models
                 // when null fetch the XAML ;)
                 if (result == null)
                 {
-                    Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
+                    result = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
                 }
 
                 //2013.07.05: Ashley Lewis for bug 9487 - category may have changed!
