@@ -1179,17 +1179,13 @@ namespace Dev2.Core.Tests.Workflows
             //------------Execute Test---------------------------
             var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh);
 
-            var attr = new Dictionary<Type, Type>();
-
-            wfd.InitializeDesigner(attr);
-
             //------------Assert Results-------------------------
             var result = wfd.Designer.Text;
-            wfd.Dispose();
 
             Assert.AreEqual("resource def", result);
             // error state due to malformed designer text fetched ;)
             Assert.IsTrue(wfd.Designer.IsInErrorState()); 
+            wfd.Dispose();
         }
 
         [TestMethod]
