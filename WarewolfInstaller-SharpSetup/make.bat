@@ -46,7 +46,7 @@ xcopy /X /Y "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\verpatch-b
 @echo -Preping Example Workflows-
 mkdir "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\Services"
 
-PreForShip.exe "C:\Development\Release %1%\BPM Resources - Release\Services" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\Services"
+PrepForShip.exe "C:\Development\Release %1%\BPM Resources - Release\Services" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\Services"
 xcopy /S /Y "C:\Development\Release %1%\BPM Resources - Release\Sources" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server"
 
 @echo -Make Installer-
