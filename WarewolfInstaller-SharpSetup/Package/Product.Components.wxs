@@ -31,6 +31,87 @@
             <Directory Id="dir1931D9C5012B41449415D8D0C9710DEC" Name="SSL Generation" />
         </DirectoryRef>
         <ComponentGroup Id="Server">
+            
+            <!-- New Junk -->
+
+            <Component Id="cmpE9EC7D9921B14EE5BF2DA1807A986836" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{C9DD2CF4-8174-4D4B-9C4E-DF618EE58912}">
+                <File Id="filD16B434756BC4373AB0857E4FBFF526F" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.AspNet.SignalR.Client.dll" />
+            </Component>
+            <Component Id="cmp63145628213C49CBBED45EBBC4042188" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{208F9258-8B3A-4C43-9814-9AB07091CA2A}">
+                <File Id="filA4F5C0D60053422D88A4D9FB59449564" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.AspNet.SignalR.Client.xml" />
+            </Component>
+            <Component Id="cmpE6B2FD90E1084E34B72CBE93887E1E90" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{365B729D-C9CE-4C9F-A1C6-05A49B6A1C6F}">
+                <File Id="filCF6A99B4D8C2403B83473588746C3863" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.AspNet.SignalR.Core.dll" />
+            </Component>
+            <Component Id="cmp0149E016331547BFA331EE8021375A1A" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{05D93799-01EC-47BF-B10C-7CED3BB836F6}">
+                <File Id="filEDD0557701314E07AF8444A1F0DC2384" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.AspNet.SignalR.Core.xml" />
+            </Component>
+            <Component Id="cmpFA289F5ABCB44A89925D57E905427859" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{51E0245C-A6B2-44C7-971B-2F06BD3A0FEF}">
+                <File Id="fil2C9E90A15BA84871B605521E404ADE31" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.Dynamic.dll" />
+            </Component>
+            <Component Id="cmpD6CE90D11E4B44B883E784D0E76111BF" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{953C33E6-328B-49DD-A2ED-0454B3DECCD6}">
+                <File Id="fil6F3BB3209A6442E8A4D9D5FB79C6EFAE" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.Expression.Interactions.dll" />
+            </Component>
+            <Component Id="cmp9169556AFD3A4E02A6DA74AEC9CF924B" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{37BCB002-F338-48EA-9F99-D0B742933EF2}">
+                <File Id="fil1531DB20FE81497385EBBA3E87F0B93C" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.Owin.Cors.dll" />
+            </Component>
+            <Component Id="cmpB50CFC3690254021BADCA2CB54DDF695" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{E47FEFD8-4E16-483B-850B-F00690CE3B67}">
+                <File Id="fil9E0A94B49B2D465B805FBCBFF5558676" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.Owin.Cors.xml" />
+            </Component>
+            <Component Id="cmp9DF964D7BE3048249C8321023336C5C3" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{5B4F7262-3149-4A3A-B76C-3902E8A014E3}">
+                <File Id="filD7F09FC409084EDA8D2EFC58C641D183" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.Owin.Diagnostics.dll" />
+            </Component>
+            <Component Id="cmp4DE90B14F1684B5D9D8FF10C34364162" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{A9EC5095-4DC2-4E98-A38E-B9BBBAD1FF8F}">
+                <File Id="fil55FD6BFA887A45438D10CD341B9240AA" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.Owin.Diagnostics.xml" />
+            </Component>
+            <Component Id="cmp93CAA4C16B1C44D5BCA9D9C11A0A4710" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{AF662045-EB73-4323-8437-8430160B55B3}">
+                <File Id="fil3F26202D1C4047BAA408782A2B89CD4B" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.Owin.dll" />
+            </Component>
+            <Component Id="cmpE5412199322B430C84701DE0B751AE15" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{2F1E01F0-367D-44A6-A5FC-DAC21AE74DC8}">
+                <File Id="fil3C6883F384E341D5A0AB30CEC8AA14DC" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.Owin.Host.HttpListener.dll" />
+            </Component>
+            <Component Id="cmpF3F74D764E52495C8CF826D497C0DB2D" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{18ACB1AD-5AC0-4C08-895C-DC924F2D1B5D}">
+                <File Id="fil7B36E5D8ABC3460FAE807F0F6C79588F" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.Owin.Host.HttpListener.xml" />
+            </Component>
+            <Component Id="cmp44795FC14A0A4D38801DA0EE15CB780E" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{27595B19-59C0-42B2-9BFE-F5850CFC7FAD}">
+                <File Id="fil93685D8812CA47B3853A6799C29EB16B" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.Owin.Hosting.dll" />
+            </Component>
+            <Component Id="cmpA3075D12D9AF471B9FCB01271FCCFA19" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{62FCC796-C4BE-48EF-80B1-425E3CA95A5E}">
+                <File Id="fil92469BC29F554D20A37BD449AEDD65DB" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.Owin.Hosting.xml" />
+            </Component>
+            <Component Id="cmp6851AC8F06C549B689DDC46703373685" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{42F3DC1E-D636-46A1-B0B5-5B740775B8D6}">
+                <File Id="filC8A43A884FE443CA8F01016D4EFF7FC0" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.Owin.Security.dll" />
+            </Component>
+            <Component Id="cmp370C912F60B64E139D5E247C679D8C47" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{C962A23F-66A9-47A4-9478-DC3099969E62}">
+                <File Id="fil883F2291104D43B6BAC3F565559BE8ED" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.Owin.Security.xml" />
+            </Component>
+            <Component Id="cmpBC975D43473140019CFDA1DC3B75E82D" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{EFC7B8DE-C41D-41D5-80CF-4D9E789E790E}">
+                <File Id="filF5FD0E0EA88147BAB2F393A2D170CA2F" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.Owin.xml" />
+            </Component>
+            <Component Id="cmpF526CF0FCC10486FBEA2CD868EA95CDA" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{323DC39F-A692-4D3C-A891-AB9FCC42A410}">
+                <File Id="fil1BBDA745A15D43189BFA2572C95359E5" KeyPath="yes" Source="..\ProductBuild\Server\System.Net.Http.Formatting.dll" />
+            </Component>
+            <Component Id="cmpC523DBDD68DC45B29E5A80DB33590B92" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{C7436BA0-D3D8-4E4A-88F8-1E6E654CE23B}">
+                <File Id="filD35488025BDE4F98A49913C1B011A24F" KeyPath="yes" Source="..\ProductBuild\Server\System.Net.Http.Formatting.xml" />
+            </Component>
+            <Component Id="cmpB414EBD2C4DA484F8A642EA080160B2C" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{BB53C6D2-3FCF-4674-BC6A-C34E60A6DCAC}">
+                <File Id="filA26C999D3B9746ADA1C4BF717E57FB5A" KeyPath="yes" Source="..\ProductBuild\Server\System.Web.Cors.dll" />
+            </Component>
+            <Component Id="cmp137D1B29CF184E2B927785560954CD2A" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{7E5C616A-F8DE-42A6-9F6D-61001002E4F9}">
+                <File Id="fil506B3504F52546E4A5ADF6A68DDF86B4" KeyPath="yes" Source="..\ProductBuild\Server\System.Web.Http.dll" />
+            </Component>
+            <Component Id="cmp2576454B661741D19B8F7C85763CDADE" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{32C142A7-FD86-4C32-AF9C-14AA16710042}">
+                <File Id="filCCA20D07537B4FCD9F488FCFB6070008" KeyPath="yes" Source="..\ProductBuild\Server\System.Web.Http.Owin.dll" />
+            </Component>
+            <Component Id="cmpF653FB816F9846C7AE3286E0A5884A9D" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{6BB7C300-E8C6-4E31-A7C0-E6EEC890EAB5}">
+                <File Id="filE9B30621F4C84A88ADAA3F2C013414BB" KeyPath="yes" Source="..\ProductBuild\Server\System.Web.Http.Owin.xml" />
+            </Component>
+            <Component Id="cmp173565BD53DB4A67B4CAE3043642C58E" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{AB797E41-7519-4501-9971-5C3FEF52C91F}">
+                <File Id="filC3BB37FB009F4D8DB9443287FA00886B" KeyPath="yes" Source="..\ProductBuild\Server\System.Web.Http.xml" />
+            </Component>
+            
+            <!-- End New Junk -->
+            
             <Component Id="cmp62707DDA8BD0362C71EDB96A68049A9D" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{00B67EEE-C507-4FFD-8AC6-FF6EC29E161C}">
                 <File Id="fil858D36B941DA865CC6CA040563732F66" KeyPath="yes" Source="..\ProductBuild\Server\SSL Generation\makecert.exe" />
             </Component>
@@ -631,7 +712,7 @@
             <Directory Id="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Name="Help" />
             <Directory Id="dirF2DB3C44B894CD4571482EAE3116C6E1" Name="locales" />
         </DirectoryRef>
-        <ComponentGroup Id="Studio">
+        <ComponentGroup Id="Studio"> 
             <Component Id="cmp0E096C78207607B31C951A0EFCA9A89B_Studio" Directory="dirStudioRoot" Guid="{637E2388-C33C-4981-92AB-7A4341240DAC}">
                 <File Id="fil7BBC05375326109FFE2251F526A49B6B_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\AdornedControl.dll" />
             </Component>
