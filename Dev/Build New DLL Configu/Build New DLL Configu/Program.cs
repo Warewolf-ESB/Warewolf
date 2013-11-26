@@ -16,7 +16,7 @@ namespace Build_New_DLL_Configu
 
             var dirs = Directory.GetFiles(dir);
 
-            var svrFrag = @"<Component Id=""cmp{0}"" Directory=""dir1931D9C5012B41449415D8D0C9710DEC"" Guid=""{{1}}"">
+            var svrFrag = @"<Component Id=""cmp{0}"" Directory=""dir1931D9C5012B41449415D8D0C9710DEC"" Guid=""{1}"">
                 <File Id=""fil{2}"" KeyPath=""yes"" Source=""..\ProductBuild\Server\{3}"" />
             </Component>";
 
@@ -29,8 +29,14 @@ namespace Build_New_DLL_Configu
 
             foreach (var d in dirs)
             {
-                var svr = string.Format(svrFrag, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), d);
-                var std = string.Format(studioFrag, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), d);
+
+                var file = Path.GetFileName(d);
+
+                var id = "{" + Guid.NewGuid().ToString().ToUpper() + "}";
+                var id2 = "{" + Guid.NewGuid().ToString().ToUpper() + "}";
+
+                var svr = string.Format(svrFrag, Guid.NewGuid().ToString().ToUpper(), id, Guid.NewGuid().ToString().ToUpper(), file);
+                var std = string.Format(studioFrag, Guid.NewGuid().ToString().ToUpper(), id2, Guid.NewGuid().ToString().ToUpper(), file);
 
                 svrList.Add(svr);
                 stdList.Add(std);
