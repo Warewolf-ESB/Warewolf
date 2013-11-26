@@ -313,7 +313,9 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
             self.data.method.Parameters.removeAll();
         }
     };
-    
+
+    self.loadMethodsTime = 0;
+
     self.loadMethods = function (source, isReload) {
         
         if (isReload) {
@@ -332,8 +334,8 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
             self.hasTestResultRecords(false);
         }
 
-       
-        $.post("Service/Services/DbMethods" + window.location.search, ko.toJSON(source), function (result) {
+        var jsonData = ko.toJSON(source);
+        utils.postTimestamped(self, "loadMethodsTime", "Service/Services/DbMethods", jsonData, function (result) {
             self.isSourceMethodsLoading(false);
             self.sourceMethods(result.sort(utils.nameCaseInsensitiveSort));
             var methodName = self.data.method.Name();
