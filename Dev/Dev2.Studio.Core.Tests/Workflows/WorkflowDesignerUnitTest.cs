@@ -352,12 +352,6 @@ namespace Dev2.Core.Tests.Workflows
             DataListItems.Add(DataListItem.Object);
             DataListItems.Add(secondDataListItem.Object);
 
-            //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
-            // Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
-
-            //Juries 8810 TODO
-            //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
-
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 

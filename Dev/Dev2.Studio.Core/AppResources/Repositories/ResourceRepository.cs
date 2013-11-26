@@ -397,21 +397,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var contextualResource = resource as IContextualResourceModel;
             if(contextualResource == null) return null;
 
-            if(_wizardEngine != null && !_wizardEngine.IsWizard(contextualResource))
-            {
-                IContextualResourceModel wizard = _wizardEngine.GetWizard(contextualResource);
-                if(wizard != null)
-                {
-                    UnlimitedObject wizardData = ExecuteDeleteResource(wizard);
-
-                    if(wizardData.HasError)
-                    {
-                        HandleDeleteResourceError(wizardData, contextualResource);
-                        return null;
-                    }
-                }
-            }
-
             UnlimitedObject data = ExecuteDeleteResource(contextualResource);
 
             if(data.HasError)
