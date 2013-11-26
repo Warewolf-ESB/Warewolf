@@ -316,7 +316,7 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
 
     self.loadMethodsTime = 0;
 
-    self.loadMethods = function (source, isReload) {
+    self.loadMethods = function (source, isReload, doneHandler) {
         
         if (isReload) {
             self.sourceMethods.removeAll();
@@ -333,16 +333,17 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
             self.hasTestResults(false);
             self.hasTestResultRecords(false);
         }
-
+        
         var jsonData = ko.toJSON(source);
-        utils.postTimestamped(self, "loadMethodsTime", "Service/Services/DbMethods", jsonData, function (result) {
+
+        utils.postTimestamped(self, "loadMethodsTime", "Service/Services/DbMethods", jsonData, function(result) {
             self.isSourceMethodsLoading(false);
             self.sourceMethods(result.sort(utils.nameCaseInsensitiveSort));
             var methodName = self.data.method.Name();
 
 
             if (methodName !== "" && result.length > 0) {
-                $.each(self.sourceMethods(), function (index, method) {
+                $.each(self.sourceMethods(), function(index, method) {
                     if (method.Name.toLowerCase() === methodName.toLowerCase()) {
                         self.data.method.SourceCode(utils.toHtml(method.SourceCode));
                         return false;
@@ -353,8 +354,11 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
 
                 utils.selectAndScrollToListItem(methodName, $sourceMethodsScrollBox, $sourceMethodsScrollBoxHeight);
             }
-        }).done(function () {
+        }, function() {
             self.isLoading = false; // BUG 9772 - 2013.06.19 - TWR : added
+            if (doneHandler) {
+                doneHandler();
+            }
         });
     };
 
