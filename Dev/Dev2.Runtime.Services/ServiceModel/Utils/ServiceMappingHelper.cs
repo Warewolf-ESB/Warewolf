@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
@@ -51,10 +52,13 @@ namespace Dev2.Runtime.ServiceModel.Utils
 
                 theService.Recordset.Fields.Add(field);
 
-                var data = path.SampleData.Split(',');
-                for(var recordIndex = 0; recordIndex < data.Length; recordIndex++)
+                var data = path.SampleData.Split(GlobalConstants.AnytingToXmlCommaToken.ToCharArray()).Where(c=>c!=string.Empty);
+                var recordIndex = 0;
+
+                foreach (var item in data)
                 {
-                    theService.Recordset.SetValue(recordIndex, recordsetIndex, data[recordIndex]);
+                    theService.Recordset.SetValue(recordIndex, recordsetIndex, item);
+                    recordIndex++;
                 }
 
                 recordsetIndex++;

@@ -51,9 +51,9 @@ namespace Dev2.Converters.Graph.DataTable
             int totalRows = tmp.Rows.Count - 1;
             int rowCnt = 0;
             // now set sample data ;)
+
             foreach(DataRow row in tmp.Rows)
             {
-
                 for(int i = 0; i < totalCols; i++)
                 {
                     var itemData = row.ItemArray[i].ToString();
@@ -65,6 +65,12 @@ namespace Dev2.Converters.Graph.DataTable
                 }
 
                 rowCnt++;
+
+                // exit after 10 rows ;)
+                if (rowCnt == 10)
+                {
+                    break;
+                }
             }
 
         }

@@ -111,7 +111,37 @@ namespace Dev2.Tests.Runtime.ServiceModel.Utils
             Assert.AreEqual("foobar", theService.Recordset.Fields[0].Alias);
         }
 
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServiceMappingHelper_MapDbOutputs")]
+        public void ServiceMappingHelper_MapDbOutputs_WhenSampleDataContainsCommanReplacement_Expect10SampleItems()
+        {
+            //------------Setup for test--------------------------
+            var outputDefs = @"<z:anyType xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:d1p1=""http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput"" i:type=""d1p1:OutputDescription"" xmlns:z=""http://schemas.microsoft.com/2003/10/Serialization/""><d1p1:DataSourceShapes xmlns:d2p1=""http://schemas.microsoft.com/2003/10/Serialization/Arrays""><d2p1:anyType i:type=""d1p1:DataSourceShape""><d1p1:Paths><d2p1:anyType xmlns:d5p1=""http://schemas.datacontract.org/2004/07/Dev2.Converters.Graph.DataTable"" i:type=""d5p1:DataTablePath""><ActualPath xmlns=""http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph"">foo.bar</ActualPath><DisplayPath xmlns=""http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph"">foo.bar</DisplayPath><OutputExpression xmlns=""http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph"" /><SampleData xmlns=""http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph"">1__COMMA__2__COMMA__3__COMMA__4__COMMA__5__COMMA__6__COMMA__7__COMMA__8__COMMA__9__COMMA__10</SampleData></d2p1:anyType></d1p1:Paths></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>";
 
+            var serviceMappingHelper = new ServiceMappingHelper();
+            IOutputDescription outputs = new OutputDescriptionSerializationService().Deserialize(outputDefs);
+            outputs.DataSourceShapes.Add(new DataSourceShape());
+            DbService theService = CreateCountriesDbService();
+            theService.Recordset.Fields.Clear();
+
+            //------------Execute Test---------------------------
+            serviceMappingHelper.MapDbOutputs(outputs, ref theService, true);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, theService.Recordset.Fields.Count);
+            Assert.AreEqual("1", theService.Recordset.Records[0].Cells[0].Value);
+            Assert.AreEqual("2", theService.Recordset.Records[1].Cells[0].Value);
+            Assert.AreEqual("3", theService.Recordset.Records[2].Cells[0].Value);
+            Assert.AreEqual("4", theService.Recordset.Records[3].Cells[0].Value);
+            Assert.AreEqual("5", theService.Recordset.Records[4].Cells[0].Value);
+            Assert.AreEqual("6", theService.Recordset.Records[5].Cells[0].Value);
+            Assert.AreEqual("7", theService.Recordset.Records[6].Cells[0].Value);
+            Assert.AreEqual("8", theService.Recordset.Records[7].Cells[0].Value);
+            Assert.AreEqual("9", theService.Recordset.Records[8].Cells[0].Value);
+            Assert.AreEqual("10", theService.Recordset.Records[9].Cells[0].Value);
+
+        }
 
         public static DbService CreateCountriesDbService()
         {
