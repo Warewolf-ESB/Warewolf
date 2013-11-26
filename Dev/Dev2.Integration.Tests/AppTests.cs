@@ -23,6 +23,12 @@ namespace Dev2.Integration.Tests
             {
                 string studioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Warewolf Studio.exe");
 
+                if (!File.Exists(studioPath))
+                {
+                    // If this test is running in an environment this is where the Studio exe will be (otherwise this path could be resolved by getting the running server process location path)
+                    studioPath = @"C:\IntegrationRun\Binaries\Warewolf Studio.exe";
+                }
+
                 Process.Start(studioPath);
 
                 // Wait for Process to start, and get past the check for a duplicate process
@@ -30,9 +36,6 @@ namespace Dev2.Integration.Tests
 
                 // Start a second studio, this should hit the logic that checks for a duplicate and exit
                 Process secondProcess = Process.Start(studioPath);
-
-                // Wait for Process to start, and stop at the check for a duplicate process
-                Thread.Sleep(7000);
 
                 // Gather actual
                 actual = secondProcess.WaitForExit(15000);
