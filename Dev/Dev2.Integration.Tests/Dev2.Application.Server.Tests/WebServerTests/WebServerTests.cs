@@ -53,8 +53,8 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
                 var allKeys = result.Headers.AllKeys;
                 const string ContentType = "Content-Type";
                 const string ContentDisposition = "Content-Disposition";
-                CollectionAssert.Contains(allKeys, ContentType);
-                CollectionAssert.DoesNotContain(allKeys, ContentDisposition);
+                Assert.IsNotNull(allKeys.FirstOrDefault(k => string.Equals(ContentType, k, StringComparison.InvariantCultureIgnoreCase)));
+                Assert.IsNull(allKeys.FirstOrDefault(k => string.Equals(ContentDisposition, k, StringComparison.InvariantCultureIgnoreCase)));
 
                 var contentTypeValue = result.Headers.Get(ContentType);
 
@@ -75,8 +75,9 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
                 var allKeys = result.Headers.AllKeys;
                 const string ContentType = "Content-Type";
                 const string ContentDisposition = "Content-Disposition";
-                CollectionAssert.Contains(allKeys, ContentType);
-                CollectionAssert.Contains(allKeys, ContentDisposition);
+
+                Assert.IsNotNull(allKeys.FirstOrDefault(k => string.Equals(ContentType, k, StringComparison.InvariantCultureIgnoreCase)));
+                Assert.IsNotNull(allKeys.FirstOrDefault(k => string.Equals(ContentDisposition, k, StringComparison.InvariantCultureIgnoreCase)));
 
                 var contentTypeValue = result.Headers.Get(ContentType);
                 var contentDispositionValue = result.Headers.Get(ContentDisposition);
