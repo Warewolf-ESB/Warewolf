@@ -95,7 +95,7 @@ namespace Dev2.DynamicServices
 
         public void SetDebug(string userName, string serviceName, bool debugOn)
         {
-            
+
         }
 
         public void Rollback(string userName, string serviceName, int versionNo)
@@ -117,7 +117,7 @@ namespace Dev2.DynamicServices
 
         public void Reload()
         {
-           
+
         }
 
         bool UserExists(string userName)
@@ -159,7 +159,7 @@ namespace Dev2.DynamicServices
         {
             try
             {
-                
+
             }
             catch(Exception ex)
             {
@@ -204,7 +204,7 @@ namespace Dev2.DynamicServices
                 {
                     ServerLogger.LogError(ex);
                     errors.AddError(string.Format("Service [ {0} ] not found.", dataObject.ServiceName));
-                   return resultID;
+                    return resultID;
                 }
 
                 ErrorResultTO invokeErrors;
@@ -244,7 +244,7 @@ namespace Dev2.DynamicServices
 
                 DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, resultID);
             }
-            
+
             ServerLogger.LogMessage("FINAL MEMORY USAGE AFTER DISPOSE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB().ToString("####.####") + " MBs ]");
             return resultID;
         }
@@ -269,7 +269,7 @@ namespace Dev2.DynamicServices
         public Guid ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceID, string inputDefs, string outputDefs, out ErrorResultTO errors)
         {
             IWorkspace theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
-            var invoker = new DynamicServicesInvoker(this, this, theWorkspace);
+            var invoker = CreateDynamicServicesInvoker(theWorkspace);
             errors = new ErrorResultTO();
             ErrorResultTO invokeErrors;
             var oldID = dataObject.DataListID;
@@ -278,8 +278,7 @@ namespace Dev2.DynamicServices
             IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> remainingMappings = ShapeForSubRequest(dataObject, inputDefs, outputDefs, out errors);
 
             // local non-scoped execution ;)
-            bool isLocal = string.IsNullOrEmpty(dataObject.RemoteInvokerID);
-
+            bool isLocal = !dataObject.IsRemoteWorkflow;
             EsbExecutionContainer executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
 
             // set the output defs for execution of select service ;)
@@ -318,10 +317,10 @@ namespace Dev2.DynamicServices
                     errors.MergeErrors(invokeErrors);
                 }
             }
-                // The act of doing this moves the index data correctly ;)
-                // We need to remove this in the future.
-                compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-                compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+            // The act of doing this moves the index data correctly ;)
+            // We need to remove this in the future.
+            compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+            compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
 
             return result;
         }
@@ -352,7 +351,7 @@ namespace Dev2.DynamicServices
             else
             {
                 theShape = ShapeMappingsToTargetDataList(inputDefs, outputDefs, out invokeErrors);
-            errors.MergeErrors(invokeErrors);
+                errors.MergeErrors(invokeErrors);
             }
 
             var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, theShape, out invokeErrors);
@@ -364,7 +363,7 @@ namespace Dev2.DynamicServices
 
             if(!dataObject.IsDataListScoped)
             {
-            // Now ID flow through mappings ;)
+                // Now ID flow through mappings ;)
                 remainingMappings = compiler.ShapeForSubExecution(oldID, shapeID, inputDefs, outputDefs, out invokeErrors);
             }
             else
@@ -415,7 +414,7 @@ namespace Dev2.DynamicServices
 
             result = resource.DataList;
 
-                // Handle services ;)
+            // Handle services ;)
             if(result == "<DataList />" && resource.ResourceType != ResourceType.WorkflowService)
             {
                 ErrorResultTO errors;
@@ -473,7 +472,7 @@ namespace Dev2.DynamicServices
         {
             string theShape;
             ErrorResultTO invokeErrors;
-            errors = new ErrorResultTO(); 
+            errors = new ErrorResultTO();
 
             // If no DLID, we need to make it based upon the request ;)
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
@@ -517,38 +516,38 @@ namespace Dev2.DynamicServices
             {
                 XDocument xDoc = XDocument.Load(stringReader);
 
-            XElement rootEl = xDoc.Element("DataList");
-            if(rootEl == null) return xDoc.ToString();
+                XElement rootEl = xDoc.Element("DataList");
+                if(rootEl == null) return xDoc.ToString();
 
-            rootEl.Elements().Where(el =>
-            {
-                var firstOrDefault = el.Attributes("ColumnIODirection").FirstOrDefault();
+                rootEl.Elements().Where(el =>
+                {
+                    var firstOrDefault = el.Attributes("ColumnIODirection").FirstOrDefault();
                     var removeCondition = firstOrDefault != null &&
                                           (firstOrDefault.Value == enDev2ColumnArgumentDirection.Input.ToString() ||
                                            firstOrDefault.Value == enDev2ColumnArgumentDirection.None.ToString());
-                return (removeCondition && !el.HasElements);
-            }).Remove();
+                    return (removeCondition && !el.HasElements);
+                }).Remove();
 
-            var xElements = rootEl.Elements().Where(el => el.HasElements);
-            var enumerable = xElements as IList<XElement> ?? xElements.ToList();
-            enumerable.Elements().Where(element =>
-            {
-                var xAttribute = element.Attributes("ColumnIODirection").FirstOrDefault();
+                var xElements = rootEl.Elements().Where(el => el.HasElements);
+                var enumerable = xElements as IList<XElement> ?? xElements.ToList();
+                enumerable.Elements().Where(element =>
+                {
+                    var xAttribute = element.Attributes("ColumnIODirection").FirstOrDefault();
                     var removeCondition = xAttribute != null &&
                                           (xAttribute.Value == enDev2ColumnArgumentDirection.Input.ToString() ||
                                            xAttribute.Value == enDev2ColumnArgumentDirection.None.ToString());
-                return removeCondition;
-            }).Remove();
-            enumerable.Where(element => !element.HasElements).Remove();
-            return xDoc.ToString();
-        }
+                    return removeCondition;
+                }).Remove();
+                enumerable.Where(element => !element.HasElements).Remove();
+                return xDoc.ToString();
+            }
         }
 
         bool IsServiceWorkflow(Guid workspaceID, string serviceName)
         {
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, serviceName);
             if(resource == null)
-                {
+            {
                 return false;
             }
 
@@ -564,7 +563,7 @@ namespace Dev2.DynamicServices
         /// <returns></returns>
         string ShapeMappingsToTargetDataList(string inputs, string outputs, out ErrorResultTO errors)
         {
-            errors = new ErrorResultTO(); 
+            errors = new ErrorResultTO();
             ErrorResultTO invokeErrors;
             var oDL = DataListUtil.ShapeDefinitionsToDataList(outputs, enDev2ArgumentType.Output, out invokeErrors);
             errors.MergeErrors(invokeErrors);
@@ -603,7 +602,7 @@ namespace Dev2.DynamicServices
                     ServerLogger.LogError(e);
                     errors.AddError(e.Message);
                 }
-        }
+            }
 
             if(!string.IsNullOrEmpty(inputFragment))
             {
@@ -634,10 +633,15 @@ namespace Dev2.DynamicServices
         /// <param name="serviceName">Name of the service.</param>
         /// <returns></returns>
         bool SubExecutionRequiresShape(Guid workspaceID, string serviceName)
-                {
+        {
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, serviceName);
             return resource == null || (resource.ResourceType != ResourceType.WebService && resource.ResourceType != ResourceType.PluginService);
 
+        }
+
+        protected virtual IDynamicServicesInvoker CreateDynamicServicesInvoker(IWorkspace theWorkspace)
+        {
+            return new DynamicServicesInvoker(this, this, theWorkspace);
         }
     }
 }

@@ -22,5 +22,7 @@ namespace Dev2.DynamicServices {
         /// <param name="masterDataListID">The master data list unique identifier.</param>
         /// <returns></returns>
         EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceID, bool isLocal, Guid masterDataListID);
+
+        EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, String serviceName, bool isLocalInvoke, Guid masterDataListID);
     }
 }
