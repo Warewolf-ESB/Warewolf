@@ -609,9 +609,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             reset.WaitOne();
 
-            // remove test datalist ;)
-            DataListRemoval(dataObject.DataListID);
-
             Assert.AreEqual(expectedValue, actual);
         }
 

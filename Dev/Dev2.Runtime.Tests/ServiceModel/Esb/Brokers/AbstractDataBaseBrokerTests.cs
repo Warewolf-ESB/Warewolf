@@ -276,11 +276,11 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
 
             Assert.AreEqual("TestTableName().Col1", result.DataSourceShapes[0].Paths[0].ActualPath);
             Assert.AreEqual("TestTableName().Col1", result.DataSourceShapes[0].Paths[0].DisplayPath);
-            Assert.AreEqual("1,2,3", result.DataSourceShapes[0].Paths[0].SampleData);
+            Assert.AreEqual("1__COMMA__2__COMMA__3", result.DataSourceShapes[0].Paths[0].SampleData);
 
             Assert.AreEqual("TestTableName().Col2", result.DataSourceShapes[0].Paths[1].ActualPath);
             Assert.AreEqual("TestTableName().Col2", result.DataSourceShapes[0].Paths[1].DisplayPath);
-            Assert.AreEqual("row1,row2,", result.DataSourceShapes[0].Paths[1].SampleData);
+            Assert.AreEqual("row1__COMMA__row2__COMMA__", result.DataSourceShapes[0].Paths[1].SampleData);
         }
 
         [TestMethod]
