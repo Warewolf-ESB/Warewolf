@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Collections;
+using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Logs;
@@ -572,6 +573,13 @@ namespace Dev2.Studio.Core.Models
             else if(ResourceType == ResourceType.Source || ResourceType == ResourceType.Service)
             {
                 result = WorkflowXaml;
+
+                // when null fetch the XAML ;)
+                if (result == null)
+                {
+                    Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
+                }
+
                 //2013.07.05: Ashley Lewis for bug 9487 - category may have changed!
                 var startNode = result.IndexOf("<Category>", StringComparison.Ordinal) + "<Category>".Length;
                 var endNode = result.IndexOf("</Category>", StringComparison.Ordinal);
