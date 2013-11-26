@@ -1,8 +1,9 @@
 REM 26.11.2013 - Basic Release Build Script ;)
 
-@echo --Start Release Process--
+@echo --Start Release Process-- 
 
 @echo "Make sure your source is update to date for Release %1%"
+@echo "Using %2% as the release number"
 @echo "Make sure you have updated the build meta data for the installer project"
 
 @set /P waitKey=Press Any Key When Ready
@@ -34,6 +35,13 @@ xcopy /S /Y "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Artifact
 
 xcopy /S /Y "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Staging\" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio\"
 xcopy /S /Y "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Artifacts\" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio\"
+
+@echo -Versioning Artifacts-
+xcopy /X /Y "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\verpatch-bin-1.0.10\*" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio\"
+xcopy /X /Y "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\verpatch-bin-1.0.10\*" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\"
+
+"C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\updatever-server.bat %2%"
+"C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio\updatever-studio.bat %2%"
 
 @echo -Preping Example Workflows-
 mkdir "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\Services"
