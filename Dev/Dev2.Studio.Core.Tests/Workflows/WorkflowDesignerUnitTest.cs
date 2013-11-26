@@ -1151,6 +1151,8 @@ namespace Dev2.Core.Tests.Workflows
 
             wfd.InitializeDesigner(attr);
 
+            wfd.Dispose();
+
             //------------Assert Results-------------------------
             wh.Verify(h => h.CreateWorkflow(It.IsAny<string>()));
             wh.Verify(h => h.EnsureImplementation(It.IsAny<ModelService>()));
@@ -1183,8 +1185,15 @@ namespace Dev2.Core.Tests.Workflows
             //------------Execute Test---------------------------
             var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh);
 
+            var attr = new Dictionary<Type, Type>();
+
+            wfd.InitializeDesigner(attr);
+
             //------------Assert Results-------------------------
-            Assert.AreEqual("resource def", wfd.Designer.Text);
+            var result = wfd.Designer.Text;
+            wfd.Dispose();
+
+            Assert.AreEqual("resource def", result);
             // error state due to malformed designer text fetched ;)
             Assert.IsTrue(wfd.Designer.IsInErrorState()); 
         }
@@ -1216,10 +1225,16 @@ namespace Dev2.Core.Tests.Workflows
             //------------Execute Test---------------------------
             var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh);
 
+
             //------------Assert Results-------------------------
-            Assert.IsNull(wfd.Designer.Text);
+            var result = wfd.Designer.Text;
+            var error = wfd.Designer.IsInErrorState();
+
+            wfd.Dispose();
+
+            Assert.IsNull(result);
             // new valid workflow XAML ;)
-            Assert.IsFalse(wfd.Designer.IsInErrorState()); 
+            Assert.IsFalse(error); 
         }
 
         // - end
@@ -1262,6 +1277,8 @@ namespace Dev2.Core.Tests.Workflows
             Assert.AreEqual(ShellBarItemVisibility.MiniMap, designerView.WorkflowShellBarItemVisibility & ShellBarItemVisibility.MiniMap);
 
             Assert.IsNotNull(wfd.OutlineView);
+
+            wfd.Dispose();
         }
 
         // BUG 9304 - 2013.05.08 - TWR - .NET 4.5 upgrade
@@ -1289,6 +1306,8 @@ namespace Dev2.Core.Tests.Workflows
 
             wh.Verify(h => h.CreateWorkflow(It.IsAny<string>()));
             wh.Verify(h => h.EnsureImplementation(It.IsAny<ModelService>()));
+
+            wfd.Dispose();
         }
 
         #endregion
@@ -2679,7 +2698,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var securityContext = new Mock<IFrameworkSecurityContext>();
             var popupController = new Mock<IPopupController>();
-            //var wizardEngine = new Mock<IWizardEngine>();
+
             if(workflowHelper == null)
             {
                 var wh = new Mock<IWorkflowHelper>();
@@ -2688,6 +2707,7 @@ namespace Dev2.Core.Tests.Workflows
             }
 
             var viewModel = new WorkflowDesignerViewModel(eventPublisher, resourceModel, workflowHelper, securityContext.Object, popupController.Object, createDesigner);
+
             return viewModel;
 
         }

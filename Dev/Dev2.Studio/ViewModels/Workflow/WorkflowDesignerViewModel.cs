@@ -234,7 +234,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string AuthorRoles { get { return _resourceModel.AuthorRoles; } set { _resourceModel.AuthorRoles = value; } }
 
-        public WorkflowDesigner Designer { get { return _wd; } }
+        public WorkflowDesigner Designer { get { return _wd; }  }
 
         public UIElement DesignerView
         {
