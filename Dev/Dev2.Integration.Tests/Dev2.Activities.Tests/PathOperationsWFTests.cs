@@ -9,7 +9,6 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     /// Summary description for PathOperationsWFTests
     /// </summary>
     [TestClass]
-    [Ignore]//Ashley 25/11/2013 - Ignored until Tshepo is done with IO tools
     public class PathOperationsWFTests
     {
         string WebserverURI = ServerSettings.WebserverURI;
