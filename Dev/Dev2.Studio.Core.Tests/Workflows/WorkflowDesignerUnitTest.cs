@@ -1765,7 +1765,6 @@ namespace Dev2.Core.Tests.Workflows
             #endregion
 
             var wd = new WorkflowDesignerViewModelMock(crm.Object, workflowHelper.Object, new Mock<IEventAggregator>().Object);
-            wd.InitializeDesigner(new Dictionary<Type, Type>());
 
             // Execute unit
             var actual = wd.TestPerformAddItems(source.Object);
