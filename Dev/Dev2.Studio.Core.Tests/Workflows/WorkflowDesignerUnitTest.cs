@@ -1181,11 +1181,12 @@ namespace Dev2.Core.Tests.Workflows
 
             //------------Assert Results-------------------------
             var result = wfd.Designer.Text;
+            var error = wfd.Designer.IsInErrorState();
+            wfd.Dispose();
 
             Assert.AreEqual("resource def", result);
             // error state due to malformed designer text fetched ;)
-            Assert.IsTrue(wfd.Designer.IsInErrorState()); 
-            wfd.Dispose();
+            Assert.IsTrue(error); 
         }
 
         [TestMethod]
