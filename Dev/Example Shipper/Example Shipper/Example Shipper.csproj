@@ -7,8 +7,8 @@
     <ProjectGuid>{8F17E6AE-3C8A-446A-8968-0CB6635C4A15}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Example_Shipper</RootNamespace>
-    <AssemblyName>Example Shipper</AssemblyName>
+    <RootNamespace>Example.Shipper</RootNamespace>
+    <AssemblyName>PreForShip</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
