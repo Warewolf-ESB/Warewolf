@@ -171,9 +171,15 @@ namespace Dev2.Tests.Runtime.ServiceModel
             }
             finally
             {
-                if(Directory.Exists(workspacePath))
+                try
                 {
-                    DirectoryHelper.CleanUp(workspacePath);
+                    if (Directory.Exists(workspacePath))
+                    {
+                        DirectoryHelper.CleanUp(workspacePath);
+                    }
+                }
+                catch (Exception e)
+                {
                 }
             }
         }

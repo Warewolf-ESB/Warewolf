@@ -27,6 +27,11 @@ namespace Dev2.Integration.Tests
                 {
                     // If this test is running in an environment this is where the Studio exe will be (otherwise this path could be resolved by getting the running server process location path)
                     studioPath = @"C:\IntegrationRun\Binaries\Warewolf Studio.exe";
+
+                    if (!File.Exists(studioPath))
+                    {
+                        studioPath = @"C:\Development\Dev\Dev2.Studio\bin\Debug\Warewolf Studio.exe";
+                    }
                 }
 
                 Process.Start(studioPath);

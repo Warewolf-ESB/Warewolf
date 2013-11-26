@@ -1,24 +1,16 @@
 ﻿#region
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.Serialization;
 using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Media.Imaging;
-using System.Xml;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.Composition;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
-using Dev2.Providers.Errors;
-using Dev2.Providers.Events;
 using Dev2.Providers.Logs;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Factories;
@@ -29,7 +21,6 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Workspaces;
-using Infragistics.Shared;
 using Newtonsoft.Json;
 using Unlimited.Framework;
 

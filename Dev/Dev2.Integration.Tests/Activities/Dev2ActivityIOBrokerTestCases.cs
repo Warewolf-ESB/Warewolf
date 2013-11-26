@@ -10749,7 +10749,7 @@ namespace Dev2.Integration.Tests.Activities
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
-        public void Dev2ActivityIOBroker_WriteFile_FileOnsFtp_DestinationFileDoesNotExist_ResultIsSuccessful()
+        public void Dev2ActivityIOBroker_WriteFile_FileOnSFtp_DestinationFileDoesNotExist_ResultIsSuccessful()
         {
             const string fileName = "source.txt";
             const bool writeFileSourceDirectory = false;
