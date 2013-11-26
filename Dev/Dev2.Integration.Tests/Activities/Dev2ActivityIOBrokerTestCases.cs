@@ -10,11 +10,11 @@ namespace Dev2.Integration.Tests.Activities
     [TestClass]
     public class Dev2ActivityIOBrokerTestCases
     {
-        private string _zipFile = "";
-        [TestInitialize]
-        public void Initializer()
+        private static string _zipFile = "";
+        [ClassInitialize]
+        public static void Initializer(TestContext context)
         {
-            _zipFile  = Path.Combine(Environment.CurrentDirectory, @"TestData\Test.zip");
+            _zipFile = Path.Combine(context.TestDeploymentDir, "Test.zip");
         }
 
         #region Delete Tests

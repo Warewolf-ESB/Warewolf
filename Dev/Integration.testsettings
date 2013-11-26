@@ -3,6 +3,7 @@
   <Description>These are default test settings for a local test run.</Description>
   <Deployment>
     <DeploymentItem filename="ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe" />
+    <DeploymentItem filename="Dev2.Integration.Tests\TestData\" />
     <DeploymentItem filename="Binaries\IronPython.Modules.dll" />
     <DeploymentItem filename="Binaries\Microsoft.Scripting.dll" />
     <DeploymentItem filename="Binaries\IronRuby.Libraries.dll" />
