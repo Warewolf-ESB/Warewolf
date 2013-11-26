@@ -23,7 +23,8 @@ using Dev2.Runtime.ESB.Execution;
 namespace ActivityUnitTests
 // ReSharper restore CheckNamespace
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class BaseActivityUnitTest
     {
 
