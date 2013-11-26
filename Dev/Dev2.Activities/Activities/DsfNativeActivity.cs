@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Activities;
-using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -55,6 +54,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         // PBI 6602 - On Error properties
         [FindMissing]
         public string OnErrorVariable { get; set; }
+        [FindMissing]
         public string OnErrorWorkflow { get; set; }
         public bool IsEndedOnError { get; set; }
 
@@ -147,7 +147,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 string errorString = compiler.FetchErrors(dataObject.DataListID, true);
                 _tmpErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
                 if(!(this is DsfFlowDecisionActivity))
-                {                    
+                {
                     compiler.ClearErrors(dataObject.DataListID);
                 }
 
@@ -206,10 +206,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     if(!String.IsNullOrEmpty(currentError))
                                     {
                                         PerformCustomErrorHandling(context, compiler, dataObject, currentError, _tmpErrors);
+                                    }
                                 }
                             }
                         }
-                    }
                     }
 
                 }
@@ -282,7 +282,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void PerformErrorDebug(IDSFDataObject dataObject,string errorMessage)
+        void PerformErrorDebug(IDSFDataObject dataObject, string errorMessage)
         {
             var service = ExecutableServiceRepository.Instance.Get(dataObject.WorkspaceID, dataObject.ResourceID);
             if(service != null)
@@ -411,11 +411,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if(dataObject.IsDebug)
             {
                 int threadID = Thread.CurrentThread.ManagedThreadId;
-                
+
                 List<Guid> datlistIds;
-                if(!dataObject.ThreadsToDispose.TryGetValue(threadID,out datlistIds))
+                if(!dataObject.ThreadsToDispose.TryGetValue(threadID, out datlistIds))
                 {
-                    dataObject.ThreadsToDispose.Add(threadID, new List<Guid>() { dataObject.DataListID });    
+                    dataObject.ThreadsToDispose.Add(threadID, new List<Guid>() { dataObject.DataListID });
                 }
             }
         }
@@ -467,7 +467,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
 
             bool hasError = false;
-            string errorMessage = string.Empty;            
+            string errorMessage = string.Empty;
 
             Guid remoteID;
             Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
@@ -674,13 +674,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             return (from s in strings
-                where !string.IsNullOrEmpty(s)
-                                             select new DsfForEachItem
-                                             {
+                    where !string.IsNullOrEmpty(s)
+                    select new DsfForEachItem
+                    {
                         Name = s,
                         Value = s
-                }).ToList();
-                        }
+                    }).ToList();
+        }
 
         #endregion
 
@@ -827,7 +827,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var auditor = dlEntry.ComplexExpressionAuditor;
 
                     int idx = 1;
-                    
+
                     foreach(var item in auditor.FetchAuditItems())
                     {
                         var grpIdx = idx;
@@ -841,7 +841,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             displayExpression = displayExpression.Replace("(*).", string.Concat("(", idx, ")."));
                         }
-                        
+
                         results.Add(new DebugItemResult
                         {
                             Type = DebugItemResultType.Variable,
@@ -883,7 +883,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if(DataListUtil.IsValueRecordset(expression))
             {
                 enRecordsetIndexType recsetIndexType = DataListUtil.GetRecordsetIndexType(expression);
-                string recsetName = DataListUtil.ExtractRecordsetNameFromValue(expression);             
+                string recsetName = DataListUtil.ExtractRecordsetNameFromValue(expression);
                 IBinaryDataListEntry currentRecset;
                 string error;
                 dataList.TryGetEntry(recsetName, out currentRecset, out error);
@@ -975,7 +975,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if(dlEntry.ComplexExpressionAuditor == null)
             {
                 string initExpression = expression;
-                
+
                 var fieldName = DataListUtil.ExtractFieldNameFromValue(expression);
                 enRecordsetIndexType indexType = DataListUtil.GetRecordsetIndexType(expression);
                 string error;
@@ -996,30 +996,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             else
             {
                 // Complex expressions are handled differently ;)
-               var auditor = dlEntry.ComplexExpressionAuditor;
-               enRecordsetIndexType indexType = DataListUtil.GetRecordsetIndexType(expression);
+                var auditor = dlEntry.ComplexExpressionAuditor;
+                enRecordsetIndexType indexType = DataListUtil.GetRecordsetIndexType(expression);
 
                 foreach(var item in auditor.FetchAuditItems())
-               {
-                   var grpIdx = -1;
+                {
+                    var grpIdx = -1;
 
-                   try
-                   {
-                       grpIdx = Int32.Parse(DataListUtil.ExtractIndexRegionFromRecordset(item.TokenBinding));
-                   }
+                    try
+                    {
+                        grpIdx = Int32.Parse(DataListUtil.ExtractIndexRegionFromRecordset(item.TokenBinding));
+                    }
                     catch(Exception)
-                   {
-                       // Best effort ;)
-                   }
+                    {
+                        // Best effort ;)
+                    }
 
                     if(indexType == enRecordsetIndexType.Star)
-                   {
-                       var displayExpression = item.Expression.Replace(item.Token, item.RawExpression);
-                       results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = displayExpression, GroupName = displayExpression, GroupIndex = grpIdx });
-                       results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = displayExpression, GroupIndex = grpIdx });
-                       results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = item.BoundValue, GroupName = displayExpression, GroupIndex = grpIdx });
-                   }
-               }
+                    {
+                        var displayExpression = item.Expression.Replace(item.Token, item.RawExpression);
+                        results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = displayExpression, GroupName = displayExpression, GroupIndex = grpIdx });
+                        results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = displayExpression, GroupIndex = grpIdx });
+                        results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = item.BoundValue, GroupName = displayExpression, GroupIndex = grpIdx });
+                    }
+                }
             }
 
             return results;
@@ -1050,10 +1050,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         recordField = dlEntry.TryFetchIndexedRecordsetUpsertPayload(index, out error);
                         ignoreCompare = true;
-                    }  
+                    }
                 }
 
-                GetValue(dlEntry, value, iterCnt, fieldName, indexType, results, initExpression, recordField, index, ignoreCompare);               
+                GetValue(dlEntry, value, iterCnt, fieldName, indexType, results, initExpression, recordField, index, ignoreCompare);
             }
         }
 
@@ -1068,7 +1068,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 NewGetValue(dlEntry, value, iterCnt, fieldName, indexType, results, initExpression, recordField, index);
             }
-           
+
         }
 
         /// <summary>
@@ -1101,7 +1101,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = instanceData, GroupName = initExpression, GroupIndex = index });
                     results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = initExpression, GroupIndex = index });
-                    results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = injectVal, GroupName = initExpression, GroupIndex = index });    
+                    results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = injectVal, GroupName = initExpression, GroupIndex = index });
                 }
                 else
                 {
@@ -1111,9 +1111,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     recsetName = DataListUtil.AddBracketsToValueIfNotExist(recsetName);
                     results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = recsetName, GroupName = initExpression, GroupIndex = index });
                     results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = initExpression, GroupIndex = index });
-                    results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = injectVal, GroupName = initExpression, GroupIndex = index });    
+                    results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = injectVal, GroupName = initExpression, GroupIndex = index });
                 }
-                
+
             }
             else
             {
