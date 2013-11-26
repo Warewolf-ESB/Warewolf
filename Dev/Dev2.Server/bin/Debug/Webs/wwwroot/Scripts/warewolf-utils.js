@@ -161,7 +161,7 @@ utils.updateSaveValidationSpan = function (selectorText, helpText) {
 //
 // viewModel must have int property with the name given in timestampProp
 //
-utils.postTimestamped = function (viewModel, timestampProp, url, jsonData, callback) {
+utils.postTimestamped = function (viewModel, timestampProp, url, jsonData, callback, doneHandler) {
     var timestamp = new Date().valueOf();
     var searchStr = window.location.search;
     searchStr += (searchStr ? "&" : "?") + "t=" + timestamp;
@@ -175,6 +175,10 @@ utils.postTimestamped = function (viewModel, timestampProp, url, jsonData, callb
                 callback(result);
             }
         };
+    }).done(function() {
+        if (doneHandler) {
+            doneHandler();
+        }
     });
 };
 
