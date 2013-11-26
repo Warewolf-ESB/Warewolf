@@ -45,11 +45,11 @@ namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual("Foo().Col1", result[0].ActualPath);
             Assert.AreEqual("Foo().Col1", result[0].DisplayPath);
-            Assert.AreEqual("a,c,e", result[0].SampleData);
+            Assert.AreEqual("a__COMMA__c__COMMA__e", result[0].SampleData);
 
             Assert.AreEqual("Foo().Col2", result[1].ActualPath);
             Assert.AreEqual("Foo().Col2", result[1].DisplayPath);
-            Assert.AreEqual("b,d,f", result[1].SampleData);
+            Assert.AreEqual("b__COMMA__d__COMMA__f", result[1].SampleData);
         }
 
         [TestMethod]
@@ -81,11 +81,11 @@ namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual("Foo().Col1", result[0].ActualPath);
             Assert.AreEqual("Foo().Col1", result[0].DisplayPath);
-            Assert.AreEqual("a,c", result[0].SampleData);
+            Assert.AreEqual("a__COMMA__c", result[0].SampleData);
 
             Assert.AreEqual("Foo().Col2", result[1].ActualPath);
             Assert.AreEqual("Foo().Col2", result[1].DisplayPath);
-            Assert.AreEqual("b," + htmlFragment, result[1].SampleData);
+            Assert.AreEqual("b__COMMA__" + htmlFragment, result[1].SampleData);
         }
     }
 }
