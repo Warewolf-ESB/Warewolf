@@ -47,7 +47,8 @@ namespace Dev2.PathOperations {
             catch(Exception ex)
             {
                 ServerLogger.LogError(ex);
-                throw new Exception(ex.Message, ex);
+                var message = string.Format("{0} ,  [{1}]", ex.Message, path.Path);
+                throw new Exception(message, ex);
             }
             return result;
         }
@@ -582,7 +583,8 @@ namespace Dev2.PathOperations {
             catch (Exception ex)
             {
                 ServerLogger.LogError(ex);
-                throw new Exception(ex.Message, ex);
+                string message = string.Format("{0} : [{1}]", ex.Message, src.Path);
+                throw new Exception(message, ex);
             }
             return dirs.Select(dir => BuildValidPathForFTP(src, dir)).Select(uri => ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password)).ToList();
         }
@@ -603,7 +605,8 @@ namespace Dev2.PathOperations {
             catch (Exception ex)
             {
                 ServerLogger.LogError(ex);
-                throw  new Exception(ex.Message, ex);
+                string message = string.Format("{0} : [{1}]", ex.Message, src.Path);
+                throw  new Exception(message, ex);
             }
             return dirs.Select(uri => ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password)).ToList();
         }
@@ -643,11 +646,7 @@ namespace Dev2.PathOperations {
 
                 IList<IActivityIOPath> allFiles = ListFilesInDirectory(ActivityIOFactory.CreatePathFromString(path, user, pass));
                 IList<IActivityIOPath> allDirs = ListFoldersInDirectory(ActivityIOFactory.CreatePathFromString(path, user, pass));
-
-                //string tmpDirData = ExtendedDirList(path, user, pass, ssl, IsNotCertVerifiable);
-
-                //List<string> dirs = ExtractDirectoryList(path, tmpDirData);
-
+                
                 if(allDirs.Count == 0)
                 {
                     // delete path ;)
@@ -797,7 +796,6 @@ namespace Dev2.PathOperations {
                             {
                                 basePath += "/";
                             }
-                            //result.Add(basePath + part);
                             result.Add(part);
                         }
                     }
@@ -912,7 +910,7 @@ namespace Dev2.PathOperations {
             catch (Exception exception)
             {
                 result = false;
-                throw new Exception(string.Format("Could not delete {0}. Please check the path exists.", src.Path));
+                throw new Exception(string.Format("Could not delete {0}. Please check the path exists.", src.Path), exception);
             }
             finally
             {

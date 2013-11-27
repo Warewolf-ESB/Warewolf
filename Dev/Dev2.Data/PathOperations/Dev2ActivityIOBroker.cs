@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.Binary_Objects;
@@ -543,54 +547,45 @@ namespace Dev2.PathOperations
         private bool TransferDirectoryContents(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
                                                Dev2CRUDOperationTO args)
         {
-            // List directory contents
-
+            ValidateSourceAndDestinationContents(src, dst, args);
+           
             if (args.DoRecursiveCopy)
             {
-                IList<IActivityIOPath> srcContentsFolders = src.ListFoldersInDirectory(src.IOPath);
-                foreach (var sourcePath in srcContentsFolders)
+                try
                 {
-                    IActivityIOOperationsEndPoint sourceEndPoint =
-                        ActivityIOFactory.CreateOperationEndPointFromIOPath(sourcePath);
-
-                    IList<string> dirParts =
-                        sourceEndPoint.IOPath.Path.Split(sourceEndPoint.PathSeperator().ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                    var directory = dirParts.Last();
-                    IActivityIOPath destinationPath =
-                        ActivityIOFactory.CreatePathFromString(dst.Combine(directory),
-                                                               dst.IOPath.Username,
-                                                               dst.IOPath.Password, true);
-
-                    IActivityIOOperationsEndPoint destinationEndPoint =
-                        ActivityIOFactory.CreateOperationEndPointFromIOPath(destinationPath);
-                    dst.CreateDirectory(destinationPath, args);
-                    TransferDirectoryContents(sourceEndPoint, destinationEndPoint, args);
+                    // List directory contents
+                    IList<IActivityIOPath> srcContentsFolders = src.ListFoldersInDirectory(src.IOPath);
+                    Task.WaitAll(srcContentsFolders.Select(sourcePath => Task.Run(() =>
+                        {
+                            IActivityIOOperationsEndPoint sourceEndPoint =
+                                ActivityIOFactory.CreateOperationEndPointFromIOPath(sourcePath);
+                            IList<string> dirParts =
+                                sourceEndPoint.IOPath.Path.Split(sourceEndPoint.PathSeperator().ToCharArray(),
+                                                                 StringSplitOptions.RemoveEmptyEntries);
+                            IActivityIOPath destinationPath =
+                                ActivityIOFactory.CreatePathFromString(dst.Combine(dirParts.Last()), dst.IOPath.Username,
+                                                                       dst.IOPath.Password, true);
+                            IActivityIOOperationsEndPoint destinationEndPoint =
+                                ActivityIOFactory.CreateOperationEndPointFromIOPath(destinationPath);
+                            dst.CreateDirectory(destinationPath, args);
+                            TransferDirectoryContents(sourceEndPoint, destinationEndPoint, args);
+                        })).ToArray());
+                }
+                catch (AggregateException e)
+                {
+                    string message = "";
+                    foreach (var exception in e.InnerExceptions)
+                    {
+                        if (exception != null && !string.IsNullOrEmpty(exception.Message))
+                        {
+                            message += exception.Message + "\r\n";
+                        }
+                    }
+                    throw new Exception(message, e);
                 }
             }
 
             IList<IActivityIOPath> srcContents = src.ListFilesInDirectory(src.IOPath);
-            IList<IActivityIOPath> dstContents = dst.ListFilesInDirectory(dst.IOPath);
-
-            if (!args.Overwrite)
-            {
-                var sourceFileNames = srcContents.Select(srcFile => GetFileNameFromEndPoint(src, srcFile)).ToList();
-                var destinationFileNames = dstContents.Select(dstFile => GetFileNameFromEndPoint(dst, dstFile)).ToList();
-
-                if (destinationFileNames.Count > 0)
-                {
-                    var commonFiles = sourceFileNames.Where(destinationFileNames.Contains).ToList();
-
-                    if (commonFiles.Count > 0)
-                    {
-                        string fileNames = commonFiles.Aggregate("",
-                                                                 (current, commonFile) =>
-                                                                 current + ("\r\n" + commonFile));
-                        throw new Exception(
-                            "The following file(s) exist in the destination folder and overwrite is set to false:- " +
-                            fileNames);
-                    }
-                }
-            }
 
             bool result = true;
 
@@ -621,7 +616,8 @@ namespace Dev2.PathOperations
                         IActivityIOPath cpPath =
                             ActivityIOFactory.CreatePathFromString(
                                 string.Format("{0}{1}{2}", origDstPath, dst.PathSeperator(),
-                                              (Dev2ActivityIOPathUtils.ExtractFileName(p.Path))), dst.IOPath.Username,
+                                              (Dev2ActivityIOPathUtils.ExtractFileName(p.Path))),
+                                dst.IOPath.Username,
                                 dst.IOPath.Password, true);
                         if (args.Overwrite || !dst.PathExist(cpPath))
                         {
@@ -631,7 +627,8 @@ namespace Dev2.PathOperations
                                 // Need to ensure we have a file name on dst
                                 IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(cpPath.Path,
                                                                                                  dst.IOPath.Username,
-                                                                                                 dst.IOPath.Password, true);
+                                                                                                 dst.IOPath.Password,
+                                                                                                 true);
                                 IActivityIOOperationsEndPoint tmpEP =
                                     ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
                                 var whereToPut = GetWhereToPut(src, dst);
@@ -653,7 +650,8 @@ namespace Dev2.PathOperations
                             // Need to ensure we have a file name on dst
                             string tmp = origDstPath + "\\" + Dev2ActivityIOPathUtils.ExtractFileName(p.Path);
 
-                            IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(tmp, dst.IOPath.Username,
+                            IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(tmp,
+                                                                                             dst.IOPath.Username,
                                                                                              dst.IOPath.Password);
                             IActivityIOOperationsEndPoint tmpEP =
                                 ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
@@ -679,6 +677,69 @@ namespace Dev2.PathOperations
                 }
             }
             return result;
+        }
+
+
+
+
+        /// <summary>
+        /// Transfer the contents of the directory
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="dst"></param>
+        /// <param name="args"></param>
+        private void ValidateSourceAndDestinationContents(IActivityIOOperationsEndPoint src,
+                                                          IActivityIOOperationsEndPoint dst,
+                                                          Dev2CRUDOperationTO args)
+        {
+            if (!args.Overwrite)
+            {
+                IList<IActivityIOPath> srcContentsFolders = src.ListFoldersInDirectory(src.IOPath);
+                foreach (var sourcePath in srcContentsFolders)
+                {
+                    IActivityIOOperationsEndPoint sourceEndPoint =
+                        ActivityIOFactory.CreateOperationEndPointFromIOPath(sourcePath);
+
+                    IList<string> dirParts =
+                        sourceEndPoint.IOPath.Path.Split(sourceEndPoint.PathSeperator().ToCharArray(),
+                                                         StringSplitOptions.RemoveEmptyEntries);
+                    var directory = dirParts.Last();
+                    IActivityIOPath destinationPath =
+                        ActivityIOFactory.CreatePathFromString(dst.Combine(directory),
+                                                               dst.IOPath.Username,
+                                                               dst.IOPath.Password, true);
+
+                    IActivityIOOperationsEndPoint destinationEndPoint =
+                        ActivityIOFactory.CreateOperationEndPointFromIOPath(destinationPath);
+
+                    if (destinationEndPoint.PathExist(destinationEndPoint.IOPath))
+                    {
+                        ValidateSourceAndDestinationContents(sourceEndPoint, destinationEndPoint, args);
+                    }
+                }
+
+
+                IList<IActivityIOPath> srcContents = src.ListFilesInDirectory(src.IOPath);
+                IList<IActivityIOPath> dstContents = dst.ListFilesInDirectory(dst.IOPath);
+
+                var sourceFileNames = srcContents.Select(srcFile => GetFileNameFromEndPoint(src, srcFile)).ToList();
+                var destinationFileNames = dstContents.Select(dstFile => GetFileNameFromEndPoint(dst, dstFile)).ToList();
+
+                if (destinationFileNames.Count > 0)
+                {
+                    var commonFiles = sourceFileNames.Where(destinationFileNames.Contains).ToList();
+
+                    if (commonFiles.Count > 0)
+                    {
+                        string fileNames = commonFiles.Aggregate("",
+                                                                 (current, commonFile) =>
+                                                                 current + ("\r\n" + commonFile));
+                        throw new Exception(
+                            "The following file(s) exist in the destination folder and overwrite is set to false:- " +
+                            fileNames);
+                    }
+                }
+            }
         }
 
         private static DirectoryInfo GetWhereToPut(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst)
