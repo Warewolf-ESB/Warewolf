@@ -1,4 +1,4 @@
-﻿<Activity mc:Ignorable="sads sap sap2010" x:Class="TfsBuild.Process" this:Process.BuildSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.BuildSettings()]" this:Process.TestSpecs="[New Microsoft.TeamFoundation.Build.Workflow.Activities.TestSpecList(New Microsoft.TeamFoundation.Build.Workflow.Activities.AgileTestPlatformSpec(&quot;**\*test*.dll&quot;))]" this:Process.BuildNumberFormat="[&quot;$(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.r)&quot;]" this:Process.SolutionSpecificBuildOutputs="[False]" this:Process.CleanWorkspace="[Microsoft.TeamFoundation.Build.Workflow.Activities.CleanWorkspaceOption.All]" this:Process.RunCodeAnalysis="[Microsoft.TeamFoundation.Build.Workflow.Activities.CodeAnalysisOption.AsConfigured]" this:Process.SourceAndSymbolServerSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.SourceAndSymbolServerSettings(True, Nothing)]" this:Process.AgentSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.AgentSettings() With {.MaxWaitTime = New System.TimeSpan(4, 0, 0), .MaxExecutionTime = New System.TimeSpan(0, 0, 0), .TagComparison = Microsoft.TeamFoundation.Build.Workflow.Activities.TagComparison.MatchExactly }]" this:Process.AssociateChangesetsAndWorkItems="[True]" this:Process.CreateWorkItem="[True]" this:Process.MSBuildPlatform="[Microsoft.TeamFoundation.Build.Workflow.Activities.ToolPlatform.Auto]" this:Process.MSBuildMultiProc="[True]" this:Process.PerformTestImpactAnalysis="[True]" this:Process.CreateLabel="[True]" this:Process.DisableTests="[False]" this:Process.Verbosity="[Microsoft.TeamFoundation.Build.Workflow.BuildVerbosity.Normal]" this:Process.SupportedReasons="All" this:Process.TryStartEnvironment="True" this:Process.RunBatFileName="run.bat" this:Process.WorkspaceNameSuffix="TestRunWorkspace" this:Process.DoCallToWarewolfServer="True" this:Process.BranchID="DEV" this:Process.WarewolfServerUri="Http://RSAKLFSVRWRWBLD:1234/services/QueueAllTestRunsAsync" this:Process.TestResultsStagingDirectory="\\RSAKLFSVRWRWBLD\TestResults" this:Process.DeleteWorkspaceAtTheEnd="True" this:Process.DoResultDeployment="True" this:Process.UseStagedBuild="True" this:Process.UseStagedCodedUIBuild="True" this:Process.WarewolfServerUriOnError="Http://RSAKLFSVRWRWBLD:1234/services/JustSendCIReport"
+﻿<Activity mc:Ignorable="sads sap sap2010" x:Class="TfsBuild.Process" this:Process.BuildSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.BuildSettings()]" this:Process.TestSpecs="[New Microsoft.TeamFoundation.Build.Workflow.Activities.TestSpecList(New Microsoft.TeamFoundation.Build.Workflow.Activities.AgileTestPlatformSpec(&quot;**\*test*.dll&quot;))]" this:Process.BuildNumberFormat="[&quot;$(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.r)&quot;]" this:Process.SolutionSpecificBuildOutputs="[False]" this:Process.CleanWorkspace="[Microsoft.TeamFoundation.Build.Workflow.Activities.CleanWorkspaceOption.All]" this:Process.RunCodeAnalysis="[Microsoft.TeamFoundation.Build.Workflow.Activities.CodeAnalysisOption.AsConfigured]" this:Process.SourceAndSymbolServerSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.SourceAndSymbolServerSettings(True, Nothing)]" this:Process.AgentSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.AgentSettings() With {.MaxWaitTime = New System.TimeSpan(4, 0, 0), .MaxExecutionTime = New System.TimeSpan(0, 0, 0), .TagComparison = Microsoft.TeamFoundation.Build.Workflow.Activities.TagComparison.MatchExactly }]" this:Process.AssociateChangesetsAndWorkItems="[True]" this:Process.CreateWorkItem="[True]" this:Process.MSBuildPlatform="[Microsoft.TeamFoundation.Build.Workflow.Activities.ToolPlatform.Auto]" this:Process.MSBuildMultiProc="[True]" this:Process.PerformTestImpactAnalysis="[True]" this:Process.CreateLabel="[True]" this:Process.DisableTests="[False]" this:Process.Verbosity="[Microsoft.TeamFoundation.Build.Workflow.BuildVerbosity.Normal]" this:Process.SupportedReasons="All" this:Process.TryStartEnvironment="True" this:Process.RunBatFileName="run.bat" this:Process.WorkspaceNameSuffix="TestRunWorkspace" this:Process.DoCallToWarewolfServer="True" this:Process.BranchID="DEV" this:Process.WarewolfServerUri="Http://RSAKLFSVRWRWBLD:1234/services/QueueAllTestRunsAsync" this:Process.TestResultsStagingDirectory="\\RSAKLFSVRWRWBLD\TestResults" this:Process.DeleteWorkspaceAtTheEnd="True" this:Process.DoResultDeployment="True" this:Process.WarewolfServerUriOnError="Http://RSAKLFSVRWRWBLD:1234/services/JustSendCIReport"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
  xmlns:mt="clr-namespace:Microsoft.TeamFoundation;assembly=Microsoft.TeamFoundation.Common"
@@ -70,8 +70,6 @@
     <x:Property Name="DeleteWorkspaceAtTheEnd" Type="InArgument(x:Boolean)" />
     <x:Property Name="DoResultDeployment" Type="InArgument(x:Boolean)" />
     <x:Property Name="SpecifiedChangeSet" Type="InArgument(x:String)" />
-    <x:Property Name="UseStagedBuild" Type="InArgument(x:Boolean)" />
-    <x:Property Name="UseStagedCodedUIBuild" Type="InArgument(x:Boolean)" />
     <x:Property Name="WarewolfServerUriOnError" Type="InArgument(x:String)" />
   </x:Members>
   <this:Process.MSBuildArguments>
@@ -298,339 +296,154 @@
                                     </If.Then>
                                   </If>
                                 </Sequence>
-                                <If Condition="[UseStagedCodedUIBuild]" DisplayName="If UseStaged CodedUI Build" sap2010:WorkflowViewState.IdRef="If_51">
-                                  <If.Then>
-                                    <Sequence DisplayName="Get, Unzip and Run Builds" sap2010:WorkflowViewState.IdRef="Sequence_53">
-                                      <Sequence DisplayName="Get Coded UI Solution Build" sap2010:WorkflowViewState.IdRef="Sequence_50">
-                                        <TryCatch DisplayName="TryGetZippedBuild" sap2010:WorkflowViewState.IdRef="TryCatch_12">
-                                          <TryCatch.Try>
-                                            <InvokeMethod DisplayName="Delete Existing Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_14" MethodName="Delete" TargetType="si:File">
-                                              <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\CodedUI" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
-                                            </InvokeMethod>
-                                          </TryCatch.Try>
-                                          <TryCatch.Catches>
-                                            <Catch x:TypeArguments="si:IOException" sap2010:WorkflowViewState.IdRef="Catch`1_11">
-                                              <ActivityAction x:TypeArguments="si:IOException">
-                                                <ActivityAction.Argument>
-                                                  <DelegateInArgument x:TypeArguments="si:IOException" Name="exception" />
-                                                </ActivityAction.Argument>
-                                                <Sequence DisplayName="Delete Existing and Retry" sap2010:WorkflowViewState.IdRef="Sequence_60">
-                                                  <InvokeMethod DisplayName="Delete Existing Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_16" MethodName="Delete" TargetType="si:File">
-                                                    <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\CodedUI" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
-                                                  </InvokeMethod>
-                                                </Sequence>
-                                              </ActivityAction>
-                                            </Catch>
-                                          </TryCatch.Catches>
-                                        </TryCatch>
-                                        <If Condition="[SpecifiedChangeSet Is Nothing]" DisplayName="If Changeset not Specified" sap2010:WorkflowViewState.IdRef="If_58">
-                                          <If.Then>
-                                            <Sequence DisplayName="Get Latest Changeset" sap2010:WorkflowViewState.IdRef="Sequence_61">
-                                              <Assign DisplayName="Get Latest Version" sap2010:WorkflowViewState.IdRef="Assign_9">
-                                                <Assign.To>
-                                                  <OutArgument x:TypeArguments="x:String">[SpecifiedChangeSet]</OutArgument>
-                                                </Assign.To>
-                                                <Assign.Value>
-                                                  <InArgument x:TypeArguments="x:String">[BuildDetail.SourceGetVersion.Remove(0, 1)]</InArgument>
-                                                </Assign.Value>
-                                              </Assign>
+                                <Sequence DisplayName="Get, Unzip and Run Builds" sap2010:WorkflowViewState.IdRef="Sequence_53">
+                                  <Sequence DisplayName="Get Coded UI Solution Build" sap2010:WorkflowViewState.IdRef="Sequence_50">
+                                    <TryCatch DisplayName="TryGetZippedBuild" sap2010:WorkflowViewState.IdRef="TryCatch_12">
+                                      <TryCatch.Try>
+                                        <InvokeMethod DisplayName="Delete Existing Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_14" MethodName="Delete" TargetType="si:File">
+                                          <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\CodedUI" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
+                                        </InvokeMethod>
+                                      </TryCatch.Try>
+                                      <TryCatch.Catches>
+                                        <Catch x:TypeArguments="si:IOException" sap2010:WorkflowViewState.IdRef="Catch`1_11">
+                                          <ActivityAction x:TypeArguments="si:IOException">
+                                            <ActivityAction.Argument>
+                                              <DelegateInArgument x:TypeArguments="si:IOException" Name="exception" />
+                                            </ActivityAction.Argument>
+                                            <Sequence DisplayName="Delete Existing and Retry" sap2010:WorkflowViewState.IdRef="Sequence_60">
+                                              <InvokeMethod DisplayName="Delete Existing Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_16" MethodName="Delete" TargetType="si:File">
+                                                <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\CodedUI" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
+                                              </InvokeMethod>
                                             </Sequence>
-                                          </If.Then>
-                                        </If>
-                                        <InvokeMethod DisplayName="Get Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_8" MethodName="Copy" TargetType="si:File">
-                                          <InArgument x:TypeArguments="x:String">["\\rsaklfsvrtfsbld\Automated Builds\TestRunStaging\CodedUI" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
-                                          <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\CodedUI.zip"]</InArgument>
-                                        </InvokeMethod>
-                                        <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;&quot; &amp; BuildDirectory &amp; &quot;\CodedUI.zip&quot; &amp; &quot;&quot;&quot; -d &quot;&quot;&quot; &amp; BuildDirectory &amp; &quot;&quot;&quot;&quot;]" DisplayName="Unzip Build" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\unzip.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_21">
-                                          <mtbwa:InvokeProcess.ErrorDataReceived>
-                                            <ActivityAction x:TypeArguments="x:String">
-                                              <ActivityAction.Argument>
-                                                <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
-                                              </ActivityAction.Argument>
-                                              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_49">
-                                                <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_28" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[errOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                                                <TerminateWorkflow sap2010:WorkflowViewState.IdRef="TerminateWorkflow_2" Reason="Cannot download the build from staging" />
-                                              </Sequence>
-                                            </ActivityAction>
-                                          </mtbwa:InvokeProcess.ErrorDataReceived>
-                                          <mtbwa:InvokeProcess.OutputDataReceived>
-                                            <ActivityAction x:TypeArguments="x:String">
-                                              <ActivityAction.Argument>
-                                                <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
-                                              </ActivityAction.Argument>
-                                            </ActivityAction>
-                                          </mtbwa:InvokeProcess.OutputDataReceived>
-                                        </mtbwa:InvokeProcess>
-                                        <InvokeMethod DisplayName="Delete Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_9" MethodName="Delete" TargetType="si:File">
-                                          <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\CodedUI.zip"]</InArgument>
-                                        </InvokeMethod>
-                                      </Sequence>
-                                      <Sequence DisplayName="Get Server and Studio and Start Them" sap2010:WorkflowViewState.IdRef="Sequence_52">
-                                        <TryCatch DisplayName="TryGetZippedBuild" sap2010:WorkflowViewState.IdRef="TryCatch_11">
-                                          <TryCatch.Try>
-                                            <InvokeMethod DisplayName="Get Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_10" MethodName="Copy" TargetType="si:File">
-                                              <InArgument x:TypeArguments="x:String">["\\rsaklfsvrtfsbld\Automated Builds\TestRunStaging\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
-                                              <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
-                                            </InvokeMethod>
-                                          </TryCatch.Try>
-                                          <TryCatch.Catches>
-                                            <Catch x:TypeArguments="si:IOException" sap2010:WorkflowViewState.IdRef="Catch`1_10">
-                                              <ActivityAction x:TypeArguments="si:IOException">
-                                                <ActivityAction.Argument>
-                                                  <DelegateInArgument x:TypeArguments="si:IOException" Name="exception" />
-                                                </ActivityAction.Argument>
-                                                <InvokeMethod DisplayName="Delete Existing Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_15" MethodName="Delete" TargetType="si:File">
-                                                  <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
-                                                </InvokeMethod>
-                                              </ActivityAction>
-                                            </Catch>
-                                          </TryCatch.Catches>
-                                        </TryCatch>
-                                        <mtbwa:InvokeProcess DisplayName="Clear Unzip Location" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\IntegrationRun\clean.bat&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_22">
-                                          <mtbwa:InvokeProcess.ErrorDataReceived>
-                                            <ActivityAction x:TypeArguments="x:String">
-                                              <ActivityAction.Argument>
-                                                <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
-                                              </ActivityAction.Argument>
-                                              <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_29" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[errOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                                            </ActivityAction>
-                                          </mtbwa:InvokeProcess.ErrorDataReceived>
-                                          <mtbwa:InvokeProcess.OutputDataReceived>
-                                            <ActivityAction x:TypeArguments="x:String">
-                                              <ActivityAction.Argument>
-                                                <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
-                                              </ActivityAction.Argument>
-                                              <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_30" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[stdOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                                            </ActivityAction>
-                                          </mtbwa:InvokeProcess.OutputDataReceived>
-                                        </mtbwa:InvokeProcess>
-                                        <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;&quot; &amp; BuildDirectory &amp; &quot;\&quot; &amp; SpecifiedChangeSet &amp; &quot;.zip&quot; &amp; &quot;&quot;&quot; -d &quot;&quot;C:\CodedUI&quot;&quot;&quot;]" DisplayName="Unzip Build" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\unzip.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_23">
-                                          <mtbwa:InvokeProcess.ErrorDataReceived>
-                                            <ActivityAction x:TypeArguments="x:String">
-                                              <ActivityAction.Argument>
-                                                <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
-                                              </ActivityAction.Argument>
-                                              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_51">
-                                                <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_31" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[errOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                                                <TerminateWorkflow sap2010:WorkflowViewState.IdRef="TerminateWorkflow_3" Reason="Cannot download the build from staging" />
-                                              </Sequence>
-                                            </ActivityAction>
-                                          </mtbwa:InvokeProcess.ErrorDataReceived>
-                                          <mtbwa:InvokeProcess.OutputDataReceived>
-                                            <ActivityAction x:TypeArguments="x:String">
-                                              <ActivityAction.Argument>
-                                                <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
-                                              </ActivityAction.Argument>
-                                            </ActivityAction>
-                                          </mtbwa:InvokeProcess.OutputDataReceived>
-                                        </mtbwa:InvokeProcess>
-                                        <InvokeMethod DisplayName="Delete Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_11" MethodName="Delete" TargetType="si:File">
+                                          </ActivityAction>
+                                        </Catch>
+                                      </TryCatch.Catches>
+                                    </TryCatch>
+                                    <If Condition="[SpecifiedChangeSet Is Nothing]" DisplayName="If Changeset not Specified" sap2010:WorkflowViewState.IdRef="If_58">
+                                      <If.Then>
+                                        <Sequence DisplayName="Get Latest Changeset" sap2010:WorkflowViewState.IdRef="Sequence_61">
+                                          <Assign DisplayName="Get Latest Version" sap2010:WorkflowViewState.IdRef="Assign_9">
+                                            <Assign.To>
+                                              <OutArgument x:TypeArguments="x:String">[SpecifiedChangeSet]</OutArgument>
+                                            </Assign.To>
+                                            <Assign.Value>
+                                              <InArgument x:TypeArguments="x:String">[BuildDetail.SourceGetVersion.Remove(0, 1)]</InArgument>
+                                            </Assign.Value>
+                                          </Assign>
+                                        </Sequence>
+                                      </If.Then>
+                                    </If>
+                                    <InvokeMethod DisplayName="Get Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_8" MethodName="Copy" TargetType="si:File">
+                                      <InArgument x:TypeArguments="x:String">["\\rsaklfsvrtfsbld\Automated Builds\TestRunStaging\CodedUI" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
+                                      <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\CodedUI.zip"]</InArgument>
+                                    </InvokeMethod>
+                                    <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;&quot; &amp; BuildDirectory &amp; &quot;\CodedUI.zip&quot; &amp; &quot;&quot;&quot; -d &quot;&quot;&quot; &amp; BuildDirectory &amp; &quot;&quot;&quot;&quot;]" DisplayName="Unzip Build" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\unzip.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_21">
+                                      <mtbwa:InvokeProcess.ErrorDataReceived>
+                                        <ActivityAction x:TypeArguments="x:String">
+                                          <ActivityAction.Argument>
+                                            <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
+                                          </ActivityAction.Argument>
+                                          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_49">
+                                            <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_28" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[errOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                                            <TerminateWorkflow sap2010:WorkflowViewState.IdRef="TerminateWorkflow_2" Reason="Cannot download the build from staging" />
+                                          </Sequence>
+                                        </ActivityAction>
+                                      </mtbwa:InvokeProcess.ErrorDataReceived>
+                                      <mtbwa:InvokeProcess.OutputDataReceived>
+                                        <ActivityAction x:TypeArguments="x:String">
+                                          <ActivityAction.Argument>
+                                            <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
+                                          </ActivityAction.Argument>
+                                        </ActivityAction>
+                                      </mtbwa:InvokeProcess.OutputDataReceived>
+                                    </mtbwa:InvokeProcess>
+                                    <InvokeMethod DisplayName="Delete Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_9" MethodName="Delete" TargetType="si:File">
+                                      <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\CodedUI.zip"]</InArgument>
+                                    </InvokeMethod>
+                                  </Sequence>
+                                  <Sequence DisplayName="Get Server and Studio and Start Them" sap2010:WorkflowViewState.IdRef="Sequence_52">
+                                    <TryCatch DisplayName="TryGetZippedBuild" sap2010:WorkflowViewState.IdRef="TryCatch_11">
+                                      <TryCatch.Try>
+                                        <InvokeMethod DisplayName="Get Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_10" MethodName="Copy" TargetType="si:File">
+                                          <InArgument x:TypeArguments="x:String">["\\rsaklfsvrtfsbld\Automated Builds\TestRunStaging\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
                                           <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
                                         </InvokeMethod>
-                                        <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;&quot; &amp; SourcesDirectory &amp; &quot;\BuildUtils\CodedUI\RunSpecificChangeSet.bat&quot;&quot;&quot;]" DisplayName="Run ChangeSet Build" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\GhostView.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_24">
-                                          <mtbwa:InvokeProcess.ErrorDataReceived>
-                                            <ActivityAction x:TypeArguments="x:String">
-                                              <ActivityAction.Argument>
-                                                <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
-                                              </ActivityAction.Argument>
-                                              <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_32" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[errOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                                            </ActivityAction>
-                                          </mtbwa:InvokeProcess.ErrorDataReceived>
-                                          <mtbwa:InvokeProcess.OutputDataReceived>
-                                            <ActivityAction x:TypeArguments="x:String">
-                                              <ActivityAction.Argument>
-                                                <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
-                                              </ActivityAction.Argument>
-                                              <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_33" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[stdOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                                            </ActivityAction>
-                                          </mtbwa:InvokeProcess.OutputDataReceived>
-                                        </mtbwa:InvokeProcess>
-                                        <Delay DisplayName="Wait for Studio Start ;)" Duration="00:02:00" sap2010:WorkflowViewState.IdRef="Delay_1" />
-                                      </Sequence>
-                                    </Sequence>
-                                  </If.Then>
-                                  <If.Else>
-                                    <Sequence sap2010:WorkflowViewState.IdRef="Sequence_54">
-                                      <If Condition="[BuildSettings.HasProjectsToBuild]" DisplayName="If BuildSettings.HasProjectsToBuild" sap2010:WorkflowViewState.IdRef="If_17" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                        <If.Then>
-                                          <ForEach x:TypeArguments="x:String" DisplayName="For Each Project in BuildSettings.ProjectsToBuild" sap2010:WorkflowViewState.IdRef="ForEach`1_4" mtbwt:BuildTrackingParticipant.Importance="Low" Values="[BuildSettings.ProjectsToBuild]">
-                                            <ActivityAction x:TypeArguments="x:String">
-                                              <ActivityAction.Argument>
-                                                <DelegateInArgument x:TypeArguments="x:String" Name="serverBuildProjectItem" />
-                                              </ActivityAction.Argument>
-                                              <TryCatch DisplayName="Try to Compile the Project" sap2010:WorkflowViewState.IdRef="TryCatch_3" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                                <TryCatch.Try>
-                                                  <Sequence DisplayName="Compile the Project" sap2010:WorkflowViewState.IdRef="Sequence_16" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                                    <Sequence.Variables>
-                                                      <Variable x:TypeArguments="x:String" Name="localProject" />
-                                                      <Variable x:TypeArguments="x:String" Default="[outputDirectory]" Name="outputDirectoryPerProject" />
-                                                    </Sequence.Variables>
-                                                    <mtbwa:ConvertWorkspaceItem DisplayName="Convert Server Path to Local Path" sap2010:WorkflowViewState.IdRef="ConvertWorkspaceItem_2" mtbwt:BuildTrackingParticipant.Importance="Low" Input="[serverBuildProjectItem]" Result="[localProject]" Workspace="[Workspace]" />
-                                                    <If Condition="[SolutionSpecificBuildOutputs]" DisplayName="If Build Outputs are Solution-Specific" sap2010:WorkflowViewState.IdRef="If_15" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                                      <If.Then>
-                                                        <Sequence DisplayName="Update Output Directory" sap2010:WorkflowViewState.IdRef="Sequence_15" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                                          <Assign x:TypeArguments="x:String" DisplayName="Set Solution-Specific Output Directory" sap2010:WorkflowViewState.IdRef="Assign`1_10" mtbwt:BuildTrackingParticipant.Importance="Low" To="[outputDirectoryPerProject]" Value="[System.IO.Path.Combine(outputDirectory, System.IO.Path.GetFileNameWithoutExtension(localProject))]" />
-                                                          <If Condition="[System.IO.Directory.Exists(outputDirectoryPerProject)]" DisplayName="If Output Directory Exists" sap2010:WorkflowViewState.IdRef="If_14" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                                            <If.Then>
-                                                              <mtbwa:WriteBuildWarning DisplayName="Write Duplicate Project Names Warning" sap2010:WorkflowViewState.IdRef="WriteBuildWarning_3" Message="[String.Format(&quot;{0} conflicts with another solution/project. Build outputs for solutions/projects with the same name will be copied to the same directory. To separate the build outputs, change the name of one of the solutions/projects.&quot;, System.IO.Path.GetFileNameWithoutExtension(localProject))]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                                                            </If.Then>
-                                                          </If>
-                                                        </Sequence>
-                                                      </If.Then>
-                                                    </If>
-                                                    <mtbwa:MSBuild CommandLineArguments="[String.Format(&quot;/p:SkipInvalidConfigurations=true {0}&quot;, MSBuildArguments)]" Configuration="[platformConfiguration.Configuration]" DisplayName="Run MSBuild for Project" GenerateVSPropsFile="[True]" sap2010:WorkflowViewState.IdRef="MSBuild_2" LogFileDropLocation="[logFileDropLocation]" MaxProcesses="[If (MSBuildMultiProc, 0, 1)]" OutDir="[outputDirectoryPerProject]" Platform="[platformConfiguration.Platform]" Project="[localProject]" RunCodeAnalysis="[RunCodeAnalysis]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" TargetsNotLogged="[New String() {&quot;GetNativeManifest&quot;, &quot;GetCopyToOutputDirectoryItems&quot;, &quot;GetTargetPath&quot;}]" ToolPlatform="[MSBuildPlatform]" Verbosity="[Verbosity]" />
-                                                  </Sequence>
-                                                </TryCatch.Try>
-                                                <TryCatch.Catches>
-                                                  <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_1">
-                                                    <ActivityAction x:TypeArguments="s:Exception">
-                                                      <ActivityAction.Argument>
-                                                        <DelegateInArgument x:TypeArguments="s:Exception" Name="ex" />
-                                                      </ActivityAction.Argument>
-                                                      <Sequence DisplayName="Handle Exception" sap2010:WorkflowViewState.IdRef="Sequence_17">
-                                                        <Sequence.Variables>
-                                                          <Variable x:TypeArguments="scg:ICollection(mtbc:IQueuedBuild)" Name="failedRequests" />
-                                                        </Sequence.Variables>
-                                                        <mtbwa:SetBuildProperties CompilationStatus="[Microsoft.TeamFoundation.Build.Client.BuildPhaseStatus.Failed]" DisplayName="Set CompilationStatus to Failed" sap2010:WorkflowViewState.IdRef="SetBuildProperties_4" mtbwt:BuildTrackingParticipant.Importance="Low" PropertiesToSet="CompilationStatus" />
-                                                        <If Condition="[CreateWorkItem]" DisplayName="If CreateWorkItem" sap2010:WorkflowViewState.IdRef="If_16" mtbwt:BuildTrackingParticipant.Importance="Low">
-                                                          <If.Then>
-                                                            <mtbwa:InvokeForReason DisplayName="Create Work Item for non-Shelveset Builds" sap2010:WorkflowViewState.IdRef="InvokeForReason_5" Reason="Manual, IndividualCI, BatchedCI, Schedule, ScheduleForced, UserCreated">
-                                                              <mtbwa:OpenWorkItem AssignedTo="[BuildDetail.RequestedFor]" Comment="[&quot;This work item was created by TFS Build on a build failure.&quot;]" CustomFields="[New Dictionary(Of String, String) From { {&quot;System.Reason&quot;, &quot;Build Failure&quot;}, {&quot;Microsoft.VSTS.TCM.ReproSteps&quot;, &quot;Start the build using TFS Build&quot;}, {&quot;Priority&quot;, &quot;1&quot;}, {&quot;Severity&quot;, &quot;1 - Critical&quot;} }]" DisplayName="Create Work Item" sap2010:WorkflowViewState.IdRef="OpenWorkItem_1" Title="[String.Format(&quot;Build Failure in Build: {0}&quot;, BuildDetail.BuildNumber)]" Type="[&quot;Bug&quot;]" />
-                                                            </mtbwa:InvokeForReason>
-                                                          </If.Then>
-                                                        </If>
-                                                        <mtbwa:GetApprovedRequests DisplayName="Get Requests Approved for Check In" sap2010:WorkflowViewState.IdRef="GetApprovedRequests_1" mtbwt:BuildTrackingParticipant.Importance="None" Result="[failedRequests]" />
-                                                        <mtbwa:RetryRequests Behavior="[Microsoft.TeamFoundation.Build.Workflow.Activities.RetryBehavior.DoNotBatch]" DisplayName="Mark Requests for Retry" sap2010:WorkflowViewState.IdRef="RetryRequests_2" mtbwt:BuildTrackingParticipant.Importance="Low" Requests="[failedRequests]" />
-                                                        <Rethrow DisplayName="Rethrow the exception so the build will stop" sap2010:WorkflowViewState.IdRef="Rethrow_1" mtbwt:BuildTrackingParticipant.Importance="Low" />
-                                                      </Sequence>
-                                                    </ActivityAction>
-                                                  </Catch>
-                                                </TryCatch.Catches>
-                                              </TryCatch>
-                                            </ActivityAction>
-                                          </ForEach>
-                                        </If.Then>
-                                      </If>
-                                      <If Condition="[TryStartEnvironment]" DisplayName="If Try Start Environment" sap2010:WorkflowViewState.IdRef="If_40">
-                                        <If.Then>
-                                          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_46">
-                                            <If Condition="[UseStagedBuild]" DisplayName="If Use Staged Build" sap2010:WorkflowViewState.IdRef="If_50">
-                                              <If.Then>
-                                                <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;&quot; &amp; SourcesDirectory &amp; &quot;\BuildUtils\CodedUI\&quot; &amp; RunBatFileName &amp; &quot;&quot;&quot;&quot;]" DisplayName="Start ENV" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\GhostView.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_12">
-                                                  <mtbwa:InvokeProcess.ErrorDataReceived>
-                                                    <ActivityAction x:TypeArguments="x:String">
-                                                      <ActivityAction.Argument>
-                                                        <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
-                                                      </ActivityAction.Argument>
-                                                      <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_16" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[errOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                                                    </ActivityAction>
-                                                  </mtbwa:InvokeProcess.ErrorDataReceived>
-                                                  <mtbwa:InvokeProcess.OutputDataReceived>
-                                                    <ActivityAction x:TypeArguments="x:String">
-                                                      <ActivityAction.Argument>
-                                                        <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
-                                                      </ActivityAction.Argument>
-                                                      <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_17" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[stdOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                                                    </ActivityAction>
-                                                  </mtbwa:InvokeProcess.OutputDataReceived>
-                                                </mtbwa:InvokeProcess>
-                                              </If.Then>
-                                              <If.Else>
-                                                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_45">
-                                                  <Sequence DisplayName="Get, Unzip and Run Build" sap2010:WorkflowViewState.IdRef="Sequence_48">
-                                                    <TryCatch DisplayName="Try Get Zipped Build" sap2010:WorkflowViewState.IdRef="TryCatch_8">
-                                                      <TryCatch.Try>
-                                                        <InvokeMethod DisplayName="Get Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_5" MethodName="Copy" TargetType="si:File">
-                                                          <InArgument x:TypeArguments="x:String">["\\rsaklfsvrtfsbld\Automated Builds\TestRunStaging\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
-                                                          <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
-                                                        </InvokeMethod>
-                                                      </TryCatch.Try>
-                                                      <TryCatch.Catches>
-                                                        <Catch x:TypeArguments="si:IOException" sap2010:WorkflowViewState.IdRef="Catch`1_7">
-                                                          <ActivityAction x:TypeArguments="si:IOException">
-                                                            <ActivityAction.Argument>
-                                                              <DelegateInArgument x:TypeArguments="si:IOException" Name="exception" />
-                                                            </ActivityAction.Argument>
-                                                            <InvokeMethod DisplayName="Delete Existing Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_13" MethodName="Delete" TargetType="si:File">
-                                                              <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
-                                                            </InvokeMethod>
-                                                          </ActivityAction>
-                                                        </Catch>
-                                                      </TryCatch.Catches>
-                                                    </TryCatch>
-                                                    <mtbwa:InvokeProcess DisplayName="Clear Unzip Location" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\CodedUI\clean.bat&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_20">
-                                                      <mtbwa:InvokeProcess.ErrorDataReceived>
-                                                        <ActivityAction x:TypeArguments="x:String">
-                                                          <ActivityAction.Argument>
-                                                            <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
-                                                          </ActivityAction.Argument>
-                                                          <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_26" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[errOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                                                        </ActivityAction>
-                                                      </mtbwa:InvokeProcess.ErrorDataReceived>
-                                                      <mtbwa:InvokeProcess.OutputDataReceived>
-                                                        <ActivityAction x:TypeArguments="x:String">
-                                                          <ActivityAction.Argument>
-                                                            <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
-                                                          </ActivityAction.Argument>
-                                                          <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_27" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[stdOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                                                        </ActivityAction>
-                                                      </mtbwa:InvokeProcess.OutputDataReceived>
-                                                    </mtbwa:InvokeProcess>
-                                                    <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;&quot; &amp; BuildDirectory &amp; &quot;\&quot; &amp; SpecifiedChangeSet &amp; &quot;.zip&quot; &amp; &quot;&quot;&quot; -d &quot;&quot;C:\CodedUI&quot;&quot;&quot;]" DisplayName="Unzip Build" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\unzip.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_19">
-                                                      <mtbwa:InvokeProcess.ErrorDataReceived>
-                                                        <ActivityAction x:TypeArguments="x:String">
-                                                          <ActivityAction.Argument>
-                                                            <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
-                                                          </ActivityAction.Argument>
-                                                          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_47">
-                                                            <InvokeMethod DisplayName="Delete Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_12" MethodName="Delete" TargetType="si:File">
-                                                              <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
-                                                            </InvokeMethod>
-                                                            <TerminateWorkflow sap2010:WorkflowViewState.IdRef="TerminateWorkflow_1" Reason="Cannot download the build from staging" />
-                                                          </Sequence>
-                                                        </ActivityAction>
-                                                      </mtbwa:InvokeProcess.ErrorDataReceived>
-                                                      <mtbwa:InvokeProcess.OutputDataReceived>
-                                                        <ActivityAction x:TypeArguments="x:String">
-                                                          <ActivityAction.Argument>
-                                                            <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
-                                                          </ActivityAction.Argument>
-                                                          <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_25" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[stdOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                                                        </ActivityAction>
-                                                      </mtbwa:InvokeProcess.OutputDataReceived>
-                                                    </mtbwa:InvokeProcess>
-                                                    <InvokeMethod DisplayName="Delete Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_7" MethodName="Delete" TargetType="si:File">
-                                                      <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
-                                                    </InvokeMethod>
-                                                    <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;&quot; &amp; SourcesDirectory &amp; &quot;\BuildUtils\CodedUI\RunSpecificChangeSet.bat&quot;&quot;&quot;]" DisplayName="Run ChangeSet Build" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\GhostView.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_18">
-                                                      <mtbwa:InvokeProcess.ErrorDataReceived>
-                                                        <ActivityAction x:TypeArguments="x:String">
-                                                          <ActivityAction.Argument>
-                                                            <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
-                                                          </ActivityAction.Argument>
-                                                          <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_22" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[errOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                                                        </ActivityAction>
-                                                      </mtbwa:InvokeProcess.ErrorDataReceived>
-                                                      <mtbwa:InvokeProcess.OutputDataReceived>
-                                                        <ActivityAction x:TypeArguments="x:String">
-                                                          <ActivityAction.Argument>
-                                                            <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
-                                                          </ActivityAction.Argument>
-                                                          <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_23" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[stdOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                                                        </ActivityAction>
-                                                      </mtbwa:InvokeProcess.OutputDataReceived>
-                                                    </mtbwa:InvokeProcess>
-                                                    <Delay DisplayName="Wait for Studio Start ;)" Duration="00:02:00" sap2010:WorkflowViewState.IdRef="Delay_2" />
-                                                  </Sequence>
-                                                </Sequence>
-                                              </If.Else>
-                                            </If>
+                                      </TryCatch.Try>
+                                      <TryCatch.Catches>
+                                        <Catch x:TypeArguments="si:IOException" sap2010:WorkflowViewState.IdRef="Catch`1_10">
+                                          <ActivityAction x:TypeArguments="si:IOException">
+                                            <ActivityAction.Argument>
+                                              <DelegateInArgument x:TypeArguments="si:IOException" Name="exception" />
+                                            </ActivityAction.Argument>
+                                            <InvokeMethod DisplayName="Delete Existing Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_15" MethodName="Delete" TargetType="si:File">
+                                              <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
+                                            </InvokeMethod>
+                                          </ActivityAction>
+                                        </Catch>
+                                      </TryCatch.Catches>
+                                    </TryCatch>
+                                    <mtbwa:InvokeProcess DisplayName="Clear Unzip Location" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\CodedUI\clean.bat&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_22">
+                                      <mtbwa:InvokeProcess.ErrorDataReceived>
+                                        <ActivityAction x:TypeArguments="x:String">
+                                          <ActivityAction.Argument>
+                                            <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
+                                          </ActivityAction.Argument>
+                                          <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_29" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[errOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                                        </ActivityAction>
+                                      </mtbwa:InvokeProcess.ErrorDataReceived>
+                                      <mtbwa:InvokeProcess.OutputDataReceived>
+                                        <ActivityAction x:TypeArguments="x:String">
+                                          <ActivityAction.Argument>
+                                            <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
+                                          </ActivityAction.Argument>
+                                          <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_30" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[stdOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                                        </ActivityAction>
+                                      </mtbwa:InvokeProcess.OutputDataReceived>
+                                    </mtbwa:InvokeProcess>
+                                    <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;&quot; &amp; BuildDirectory &amp; &quot;\&quot; &amp; SpecifiedChangeSet &amp; &quot;.zip&quot; &amp; &quot;&quot;&quot; -d &quot;&quot;C:\CodedUI&quot;&quot;&quot;]" DisplayName="Unzip Build" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\unzip.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_23">
+                                      <mtbwa:InvokeProcess.ErrorDataReceived>
+                                        <ActivityAction x:TypeArguments="x:String">
+                                          <ActivityAction.Argument>
+                                            <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
+                                          </ActivityAction.Argument>
+                                          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_51">
+                                            <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_31" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[errOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                                            <TerminateWorkflow sap2010:WorkflowViewState.IdRef="TerminateWorkflow_3" Reason="Cannot download the build from staging" />
                                           </Sequence>
-                                        </If.Then>
-                                      </If>
-                                    </Sequence>
-                                  </If.Else>
-                                </If>
+                                        </ActivityAction>
+                                      </mtbwa:InvokeProcess.ErrorDataReceived>
+                                      <mtbwa:InvokeProcess.OutputDataReceived>
+                                        <ActivityAction x:TypeArguments="x:String">
+                                          <ActivityAction.Argument>
+                                            <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
+                                          </ActivityAction.Argument>
+                                        </ActivityAction>
+                                      </mtbwa:InvokeProcess.OutputDataReceived>
+                                    </mtbwa:InvokeProcess>
+                                    <InvokeMethod DisplayName="Delete Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_11" MethodName="Delete" TargetType="si:File">
+                                      <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
+                                    </InvokeMethod>
+                                    <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;&quot; &amp; SourcesDirectory &amp; &quot;\BuildUtils\CodedUI\RunSpecificChangeSet.bat&quot;&quot;&quot;]" DisplayName="Run ChangeSet Build" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\GhostView.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_24">
+                                      <mtbwa:InvokeProcess.ErrorDataReceived>
+                                        <ActivityAction x:TypeArguments="x:String">
+                                          <ActivityAction.Argument>
+                                            <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
+                                          </ActivityAction.Argument>
+                                          <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_32" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[errOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                                        </ActivityAction>
+                                      </mtbwa:InvokeProcess.ErrorDataReceived>
+                                      <mtbwa:InvokeProcess.OutputDataReceived>
+                                        <ActivityAction x:TypeArguments="x:String">
+                                          <ActivityAction.Argument>
+                                            <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
+                                          </ActivityAction.Argument>
+                                          <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_33" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[stdOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                                        </ActivityAction>
+                                      </mtbwa:InvokeProcess.OutputDataReceived>
+                                    </mtbwa:InvokeProcess>
+                                    <Delay DisplayName="Wait for Studio Start ;)" Duration="00:02:00" sap2010:WorkflowViewState.IdRef="Delay_1" />
+                                  </Sequence>
+                                </Sequence>
                                 <If Condition="[Not DisableTests]" DisplayName="If Not DisableTests" sap2010:WorkflowViewState.IdRef="If_56" mtbwt:BuildTrackingParticipant.Importance="Low">
                                   <If.Then>
                                     <Sequence DisplayName="Run Tests" sap2010:WorkflowViewState.IdRef="Sequence_58" mtbwt:BuildTrackingParticipant.Importance="Low">
@@ -979,7 +792,7 @@
         </Catch>
       </TryCatch.Catches>
     </TryCatch>
-    <sads:DebugSymbol.Symbol>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AuMEO+ME9AIDAekC7wRs7wR2AwHnApEFigKRBeMCAwHVApEF8wGRBYMCAwHTApIF5gGSBbwCAwHPApIFxAKSBdYCAwHNApMF8gGTBZcCAwHKApMFnwKTBbQCAwHIApMFvwKTBcwCAwHGApQFrQOUBc0DAwHDApQF0gWUBecFAwHBApQFgwGUBakBAwG/ApQFjwWUBaIFAwG9ApQFhwSUBd0EAwG6ApQFgAOUBaADAwG4ApQFTpQFbQMBtgKUBecElAX/BAMBtAKUBeUDlAX9AwMBsgKUBbIFlAXEBQMBsAKUBd4BlAXIAgMBrQKkBbkBpAXSAQMBpAKqBaQCqgWsAgMBnQKqBfsBqgWdAgMBmwLYA5gC2AP9AgMB+wPYA/QB2AORAgMB+QPZA0nZA4IBAwHyA9sDP9sD5QQDAfQD8gPcAfID9AMDAcwD8gODAfIDzgEDAcsD8gPLBPIDngUDAckD8gOkBfIDtwUDAcgD8gNe8gN6AwHGA6AEYqAEvgEDAaEDoQRioQSiAQMBngOrBGarBKYBAwGaA78EgAK/BI0CAwGTA78EsgG/BPcBAwGSA7cEgAK3BI0CAwGPA7cEsgG3BPcBAwGOA9YEgALWBI0CAwGEA9YEsgHWBPcBAwGDA8oEPcwETAMB/gLNBD3NBLgBAwH8AusEgALrBI0CAwHvAusEsgHrBPcBAwHuAuMEgALjBI0CAwHrAuMEsgHjBPcBAwHqAtsDygHbA/4DAwH2A8sEZssEpgEDAf8CzQSNAc0EtQEDAf0C</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>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+wTgAfsEkQIDAZoB+wRi+wRxAwGYAfsEmgL7BLUCAwGWAacC9wGnAq0FAwHFA6cC2QGnAvABAwHDA68CKbECOAMBugO5Ai29AjgDAbUDwgIzwgJUAwGsA8QCKc0CNAMBrgPRAk7RArEBAwGpA9ICTtICcwMBpwPUAkTUAvcBAwGiA9QCmwLUAtcCAwGgA9oCK90CNgMBmQPpAk7pAnMDAZYD7wIp8gI4AwGOA/oCLfwCPAMBigOBA2aBA6oBAwGGA48DK48D5AIDAYIDhwMrhwPkAgMB/gKTA0STA/4BAwH5ApMDogKTA94CAwH3ApkDK5wDNgMB8AKoA06oA44BAwHsAqoDRKoDwgEDAegCqgPuAaoDrgIDAeYCuAMruAPkAgMB4gKwAyuwA+QCAwHeArwDXLwDZgMB3ALCAzXCA1EDAYoCxAMr+gM1AwGMAoIEnAGCBO8CAwGHArACUrACmQEDAbsDugIvvAI+AwG2A8UCK8wCNAMBrwPbAi3bAuYCAwGcA9wCLdwCqAEDAZoD8AJS8AKuAQMBkgPxAlLxApIBAwGPA/sCVvsClgEDAYsDjwPwAY8D/QEDAYQDjwOiAY8D5wEDAYMDhwPwAYcD/QEDAYADhwOiAYcD5wEDAf8CmgMtmgPmAgMB8wKbAy2bA6gBAwHxArgD8AG4A/0BAwHkArgDogG4A+cBAwHjArAD8AGwA/0BAwHgArADogGwA+cBAwHfAsQD5wHEA/QBAwHXAskDL/gDOgMBjQK7Ali7Ap8BAwG3A8oCVsoCgQEDAbIDxwJXxwJrAwGwA9sC8gHbAv8BAwGeA9sCpAHbAukBAwGdA9wCfdwCpQEDAZsDmgPyAZoD/wEDAfUCmgOkAZoD6QEDAfQCmwN9mwOlAQMB8gLOAzPbAz4DAaYC4wM39ANCAwGOAs8DNdoDQAMBpwLnAznrAz4DAaAC7AM57APNAgMBngLtAznxAz4DAZcC8gM58gOKAgMBlALzAznzA80CAwGPAtMDZtMDdgMBqQLUA2bUA3YDAagC1gM31gPmAgMB0gLXAzfXA9kCAwHMAtgDN9gDzwIDAcUC2QM32QPqBQMBqgLnA0fnA7ABAwGhAukDPekD1QEDAaMC7AOJAuwDygIDAZ8C7QNH7QNiAwGYAu8DPe8DrwIDAZoC8gP1AfIDhwIDAZUC8wNX8wOmAQMBkwLzA7gC8wPKAgMBkQLWA4oC1gPjAgMB1QLWA/MB1gODAgMB0wLXA+YB1wO8AgMBzwLXA8QC1wPWAgMBzQLYA/IB2AOXAgMBygLYA58C2AO0AgMByALYA78C2APMAgMBxgLZA60D2QPNAwMBwwLZA9IF2QPnBQMBwQLZA4MB2QOpAQMBvwLZA48F2QOiBQMBvQLZA4cE2QPdBAMBugLZA4AD2QOgAwMBuALZA07ZA20DAbYC2QPnBNkD/wQDAbQC2QPlA9kD/QMDAbIC2QOyBdkDxAUDAbAC2QPeAdkDyAIDAa0C6QO5AekD0gEDAaQC7wOkAu8DrAIDAZ0C7wP7Ae8DnQIDAZsC</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -1107,7 +920,7 @@
       <sap2010:ViewStateData Id="Assign`1_8" sap:VirtualizedContainerService.HintSize="464,22" />
       <sap2010:ViewStateData Id="Assign`1_9" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="If_12" sap:VirtualizedContainerService.HintSize="464,208" />
-      <sap2010:ViewStateData Id="Sequence_11" sap:VirtualizedContainerService.HintSize="1423,394">
+      <sap2010:ViewStateData Id="Sequence_11" sap:VirtualizedContainerService.HintSize="820,394">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1196,121 +1009,13 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_53" sap:VirtualizedContainerService.HintSize="508,3710">
+      <sap2010:ViewStateData Id="Sequence_53" sap:VirtualizedContainerService.HintSize="820,3710">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ConvertWorkspaceItem_2" sap:VirtualizedContainerService.HintSize="611,22" />
-      <sap2010:ViewStateData Id="Assign`1_10" sap:VirtualizedContainerService.HintSize="464,22" />
-      <sap2010:ViewStateData Id="WriteBuildWarning_3" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_14" sap:VirtualizedContainerService.HintSize="464,208" />
-      <sap2010:ViewStateData Id="Sequence_15" sap:VirtualizedContainerService.HintSize="486,394">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_15" sap:VirtualizedContainerService.HintSize="611,542" />
-      <sap2010:ViewStateData Id="MSBuild_2" sap:VirtualizedContainerService.HintSize="611,22" />
-      <sap2010:ViewStateData Id="Sequence_16" sap:VirtualizedContainerService.HintSize="633,790">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="SetBuildProperties_4" sap:VirtualizedContainerService.HintSize="464,22" />
-      <sap2010:ViewStateData Id="OpenWorkItem_1" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="InvokeForReason_5" sap:VirtualizedContainerService.HintSize="222,146" />
-      <sap2010:ViewStateData Id="If_16" sap:VirtualizedContainerService.HintSize="464,294" />
-      <sap2010:ViewStateData Id="GetApprovedRequests_1" sap:VirtualizedContainerService.HintSize="464,22" />
-      <sap2010:ViewStateData Id="RetryRequests_2" sap:VirtualizedContainerService.HintSize="464,22" />
-      <sap2010:ViewStateData Id="Rethrow_1" sap:VirtualizedContainerService.HintSize="464,22" />
-      <sap2010:ViewStateData Id="Sequence_17" sap:VirtualizedContainerService.HintSize="486,623">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Catch`1_1" sap:VirtualizedContainerService.HintSize="637,21">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_3" sap:VirtualizedContainerService.HintSize="651,1017" />
-      <sap2010:ViewStateData Id="ForEach`1_4" sap:VirtualizedContainerService.HintSize="681,1165" />
-      <sap2010:ViewStateData Id="If_17" sap:VirtualizedContainerService.HintSize="868,1313" />
-      <sap2010:ViewStateData Id="WriteBuildMessage_16" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="WriteBuildMessage_17" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="InvokeProcess_12" sap:VirtualizedContainerService.HintSize="234,278" />
-      <sap2010:ViewStateData Id="InvokeMethod_5" sap:VirtualizedContainerService.HintSize="218,132" />
-      <sap2010:ViewStateData Id="InvokeMethod_13" sap:VirtualizedContainerService.HintSize="218,132" />
-      <sap2010:ViewStateData Id="Catch`1_7" sap:VirtualizedContainerService.HintSize="404,21">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-            <x:Boolean x:Key="IsPinned">False</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_8" sap:VirtualizedContainerService.HintSize="418,359" />
-      <sap2010:ViewStateData Id="WriteBuildMessage_26" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="WriteBuildMessage_27" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="InvokeProcess_20" sap:VirtualizedContainerService.HintSize="418,278" />
-      <sap2010:ViewStateData Id="InvokeMethod_12" sap:VirtualizedContainerService.HintSize="218,132" />
-      <sap2010:ViewStateData Id="TerminateWorkflow_1" sap:VirtualizedContainerService.HintSize="218,22" />
-      <sap2010:ViewStateData Id="Sequence_47" sap:VirtualizedContainerService.HintSize="240,318">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="WriteBuildMessage_25" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="InvokeProcess_19" sap:VirtualizedContainerService.HintSize="418,574" />
-      <sap2010:ViewStateData Id="InvokeMethod_7" sap:VirtualizedContainerService.HintSize="418,132" />
-      <sap2010:ViewStateData Id="WriteBuildMessage_22" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="WriteBuildMessage_23" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="InvokeProcess_18" sap:VirtualizedContainerService.HintSize="418,278" />
-      <sap2010:ViewStateData Id="Delay_2" sap:VirtualizedContainerService.HintSize="418,22" />
-      <sap2010:ViewStateData Id="Sequence_48" sap:VirtualizedContainerService.HintSize="440,1967">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_45" sap:VirtualizedContainerService.HintSize="462,2091">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_50" sap:VirtualizedContainerService.HintSize="721,2239" />
-      <sap2010:ViewStateData Id="Sequence_46" sap:VirtualizedContainerService.HintSize="743,2363">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_40" sap:VirtualizedContainerService.HintSize="868,2511" />
-      <sap2010:ViewStateData Id="Sequence_54" sap:VirtualizedContainerService.HintSize="890,3988">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_51" sap:VirtualizedContainerService.HintSize="1423,4136" />
       <sap2010:ViewStateData Id="Assign`1_18" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="FindMatchingFiles_5" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="ConvertWorkspaceItem_3" sap:VirtualizedContainerService.HintSize="200,22" />
@@ -1369,7 +1074,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_56" sap:VirtualizedContainerService.HintSize="1423,1251">
+      <sap2010:ViewStateData Id="If_56" sap:VirtualizedContainerService.HintSize="820,1251">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1377,14 +1082,14 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_12" sap:VirtualizedContainerService.HintSize="1445,5985">
+      <sap2010:ViewStateData Id="Sequence_12" sap:VirtualizedContainerService.HintSize="842,5559">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ForEach`1_3" sap:VirtualizedContainerService.HintSize="1475,6133" />
+      <sap2010:ViewStateData Id="ForEach`1_3" sap:VirtualizedContainerService.HintSize="1475,5707" />
       <sap2010:ViewStateData Id="WriteBuildMessage_8" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="WriteBuildMessage_9" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="InvokeProcess_4" sap:VirtualizedContainerService.HintSize="234,278" />
@@ -1395,7 +1100,7 @@
       <sap2010:ViewStateData Id="If_30" sap:VirtualizedContainerService.HintSize="1475,208" />
       <sap2010:ViewStateData Id="SetBuildProperties_8" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="If_31" sap:VirtualizedContainerService.HintSize="1475,208" />
-      <sap2010:ViewStateData Id="Sequence_13" sap:VirtualizedContainerService.HintSize="1497,7467">
+      <sap2010:ViewStateData Id="Sequence_13" sap:VirtualizedContainerService.HintSize="1497,7041">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1410,13 +1115,13 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_2" sap:VirtualizedContainerService.HintSize="1515,7694" />
+      <sap2010:ViewStateData Id="TryCatch_2" sap:VirtualizedContainerService.HintSize="1515,7268" />
       <sap2010:ViewStateData Id="AssociateChangesetsAndWorkItems_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="InvokeForReason_4" sap:VirtualizedContainerService.HintSize="222,146" />
       <sap2010:ViewStateData Id="WriteBuildWarning_2" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="If_13" sap:VirtualizedContainerService.HintSize="464,294" />
-      <sap2010:ViewStateData Id="If_11" sap:VirtualizedContainerService.HintSize="589,7694" />
-      <sap2010:ViewStateData Id="Parallel_1" sap:VirtualizedContainerService.HintSize="2258,7740" />
+      <sap2010:ViewStateData Id="If_11" sap:VirtualizedContainerService.HintSize="589,7268" />
+      <sap2010:ViewStateData Id="Parallel_1" sap:VirtualizedContainerService.HintSize="2258,7314" />
       <sap2010:ViewStateData Id="Throw_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="If_32" sap:VirtualizedContainerService.HintSize="2258,208" />
       <sap2010:ViewStateData Id="FindMatchingFiles_3" sap:VirtualizedContainerService.HintSize="200,22" />
@@ -1463,14 +1168,14 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="2280,9528">
+      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="2280,9102">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="2298,9733" />
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="2298,9307" />
       <sap2010:ViewStateData Id="Assign_8" sap:VirtualizedContainerService.HintSize="512,60" />
       <sap2010:ViewStateData Id="InvokeMethod_3" sap:VirtualizedContainerService.HintSize="512,132" />
       <sap2010:ViewStateData Id="InvokeMethod_4" sap:VirtualizedContainerService.HintSize="218,132" />
@@ -1509,7 +1214,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="If_44" sap:VirtualizedContainerService.HintSize="2298,480" />
-      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="2320,15797" />
+      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="2320,15371" />
       <sap2010:ViewStateData Id="WriteBuildMessage_3" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="Assign_6" sap:VirtualizedContainerService.HintSize="242,60" />
       <sap2010:ViewStateData Id="Assign_7" sap:VirtualizedContainerService.HintSize="242,60" />
@@ -1523,7 +1228,7 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="If_37" sap:VirtualizedContainerService.HintSize="2320,494" />
       <sap2010:ViewStateData Id="WriteBuildMessage_5" sap:VirtualizedContainerService.HintSize="2320,22" />
-      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="2342,17743">
+      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="2342,17317">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1531,23 +1236,23 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="InvokeProcess_26" sap:VirtualizedContainerService.HintSize="200,264" />
-      <sap2010:ViewStateData Id="Catch`1_12" sap:VirtualizedContainerService.HintSize="400,337">
+      <sap2010:ViewStateData Id="Catch`1_12" sap:VirtualizedContainerService.HintSize="2346,21">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_13" sap:VirtualizedContainerService.HintSize="414,499" />
-      <sap2010:ViewStateData Id="Sequence_62" sap:VirtualizedContainerService.HintSize="436,623">
+      <sap2010:ViewStateData Id="TryCatch_13" sap:VirtualizedContainerService.HintSize="2360,17544" />
+      <sap2010:ViewStateData Id="Sequence_62" sap:VirtualizedContainerService.HintSize="2382,17668">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="476,703" />
+      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="2422,17748" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
