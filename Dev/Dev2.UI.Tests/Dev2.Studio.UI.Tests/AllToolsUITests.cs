@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -73,7 +72,7 @@ namespace Dev2.Studio.UI.Tests
                     if (child.BoundingRectangle.Y > 800)
                     {
                         //might already be scrolled
-                        var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
+                        var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetVerticalScrollBar(theTab);
                         WpfControl getTop = scrollBar as WpfControl;
                         if (getTop.Top < 200)
                         {
@@ -85,7 +84,7 @@ namespace Dev2.Studio.UI.Tests
                     else
                     {
                         //might already be scrolled
-                        var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
+                        var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetVerticalScrollBar(theTab);
                         WpfControl getTop = scrollBar as WpfControl;
                         if (getTop.Top > 200)
                         {
@@ -147,30 +146,7 @@ namespace Dev2.Studio.UI.Tests
             foreach (var child in toolsWithLargeViews)
             {
                 //Some of the tools on the design surface are out of view, look for them...
-                if (child.BoundingRectangle.Y > 800)
-                {
-                    //might already be scrolled
-                    var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
-                    WpfControl getTop = scrollBar as WpfControl;
-                    if(getTop.Top < 200)
-                    {
-                        //Look low
-                        Mouse.StartDragging(scrollBar);
-                        Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
-                    }
-                }
-                else
-                {
-                    //might already be scrolled
-                    var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
-                    WpfControl getTop = scrollBar as WpfControl;
-                    if(getTop.Top > 200)
-                    {
-                        //Look high
-                        Mouse.StartDragging(scrollBar);
-                        Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollUp(theTab));
-                    }
-                }
+                WorkflowDesignerUIMap.ScrollControlIntoView(theTab, child);
 
                 Mouse.Move(child, new Point(15, 15));
                 Playback.Wait(1000);
@@ -191,7 +167,6 @@ namespace Dev2.Studio.UI.Tests
 
                 Mouse.Click(toggleButton);
             }
-
         }
 
         [TestMethod]
@@ -230,7 +205,7 @@ namespace Dev2.Studio.UI.Tests
                 if (tool.BoundingRectangle.Y > 800)
                 {
                     //might already be scrolled
-                    var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
+                    var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetVerticalScrollBar(theTab);
                     WpfControl getTop = scrollBar as WpfControl;
                     if(getTop.Top < 200)
                     {
@@ -242,7 +217,7 @@ namespace Dev2.Studio.UI.Tests
                 else
                 {
                     //might already be scrolled
-                    var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
+                    var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetVerticalScrollBar(theTab);
                     WpfControl getTop = scrollBar as WpfControl;
                     if(getTop.Top > 200)
                     {

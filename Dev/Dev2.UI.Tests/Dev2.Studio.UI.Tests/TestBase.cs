@@ -167,17 +167,15 @@ namespace Dev2.CodedUI.Tests
         public void ChangingResourceExpectedPopUpWarningWithShowAffected()
         {
             // Open the workflow
-
             ExplorerUIMap.EnterExplorerSearchText("NewForeachUpgrade");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", "NewForeachUpgradeDifferentExecutionTests");
-            //Edit the inputs and outputs
 
+            //Edit the inputs and outputs
             VariablesUIMap.CheckScalarInputAndOuput(0);
             VariablesUIMap.CheckScalarInput(0);
 
             //Save the workflow
             RibbonUIMap.ClickRibbonMenuItem("Save");
-
             PopupDialogUIMap.WaitForDialog();
 
             //Click the show affected button
@@ -186,7 +184,6 @@ namespace Dev2.CodedUI.Tests
             Playback.Wait(2000);
 
             var result = TabManagerUIMap.GetActiveTabName().Contains("ForEachUpgradeTest");
-
             Assert.IsTrue(result, "Affected workflow not shown after show affected workflow button pressed.");
         }
 
@@ -265,11 +262,9 @@ namespace Dev2.CodedUI.Tests
         }
 
         [TestMethod]
-        // 05/11 - Failure is Correct - Functionality is broken ;)
         public void CheckAddMissingIsWorkingWhenManuallyAddingVariableExpectedToShowVariablesAsUnUsed()
         {
             //Open the correct workflow
-
             ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
 
             // flakey bit of code, we need to wait ;)
@@ -322,17 +317,14 @@ namespace Dev2.CodedUI.Tests
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-
+            
             Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             requiredPoint.Offset(20, 50);
 
             // Drag a ForEach onto the Workflow
             ToolboxUIMap.DragControlToWorkflowDesigner("ForEach", workflowPoint1, "For Each");
-
-
+            
             // Get a sample workflow, and drag it onto the "Drop Activity Here" part of the ForEach box
-
             ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
             var targetPoint = new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25);
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns", targetPoint);
@@ -516,7 +508,6 @@ namespace Dev2.CodedUI.Tests
         // 05/11 - Failure is Intermittent ;)
         public void DebugBuriedErrors_Expected_OnlyErrorStepIsInError()
         {
-
             //Open the correct workflow
             ExplorerUIMap.EnterExplorerSearchText("Bug8372");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug8372");

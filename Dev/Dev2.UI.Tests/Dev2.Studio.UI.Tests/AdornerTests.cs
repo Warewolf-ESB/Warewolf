@@ -14,7 +14,6 @@ namespace Dev2.Studio.UI.Tests
     [CodedUITest]
     public class AdornerTests : UIMapBase
     {
-
         #region Cleanup
         [ClassInitialize]
         public static void ClassInit(TestContext tctx)
@@ -38,8 +37,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         #endregion
-
-
+        
         #region Large View Tests
 
         [TestMethod]
@@ -509,10 +507,9 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("ExternalService_EditService")]
         public void ExternalService_EditService_EditWithNoSecondSaveDialog_ExpectOneDialog()
         {
-
             //------------Setup for test--------------------------
             ExplorerUIMap.EnterExplorerSearchText("Edit Service Workflow");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "UI TEST", "Edit Service Workflow");;
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "UI TEST", "Edit Service Workflow");
 
             var newMapping = "ZZZ"+Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6);
 
@@ -528,9 +525,10 @@ namespace Dev2.Studio.UI.Tests
 
             WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
 
-            Playback.Wait(500);
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             Mouse.Click(button);
-            WizardsUIMap.WaitForWizard();
+            button.WaitForControlReady();
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
 
             DatabaseServiceWizardUIMap.ClickMappingTab();
             SendKeys.SendWait("{TAB}");
@@ -538,8 +536,7 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait(newMapping);
             // -- wizard closed
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
-
-
+            
             // -- DO Web Services --
 
             //Get Adorner buttons
@@ -548,11 +545,10 @@ namespace Dev2.Studio.UI.Tests
             // move to show adorner buttons ;)
             WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
 
-            Playback.Wait(500);
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             Mouse.Click(button);
-            Playback.Wait(1000);
-
-            WizardsUIMap.WaitForWizard();
+            button.WaitForControlReady();
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
 
             DatabaseServiceWizardUIMap.ClickMappingTab();
 
@@ -573,11 +569,10 @@ namespace Dev2.Studio.UI.Tests
             // move to show adorner buttons ;)
             WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
 
-            Playback.Wait(500);
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             Mouse.Click(button);
-            Playback.Wait(1000);
-
-            WizardsUIMap.WaitForWizard();
+            button.WaitForControlReady();
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
 
             DatabaseServiceWizardUIMap.ClickMappingTab(); // click on the second tab ;)
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");
@@ -588,8 +583,7 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait("{TAB}{TAB}");
             Playback.Wait(500);
             SendKeys.SendWait("{ENTER}");
-
-
+            
             //------------Assert Results-------------------------
 
             // check services for warning icon to incidate mappings out of date ;)
@@ -599,18 +593,31 @@ namespace Dev2.Studio.UI.Tests
                 Assert.Fail("'Fix Errors' button not visible");
             }
 
+            button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TravsTestService", "Close Mapping");
+            WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
+            Mouse.Click(button);
+            button.WaitForControlReady();
+
             if (!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "FetchCities"))
             {
                 Assert.Fail("'Fix Errors' button not visible");
             }
+
+            button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "FetchCities", "Close Mapping");
+            WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
+            Mouse.Click(button);
+            button.WaitForControlReady();
 
             if (!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "DummyService"))
             {
                 Assert.Fail("'Fix Errors' button not visible");
             }
 
+            button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "DummyService", "Close Mapping");
+            WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
+            Mouse.Click(button);
+            button.WaitForControlReady();
         }
-
 
         [TestMethod]
         [TestCategory("UITest")]
@@ -645,14 +652,11 @@ namespace Dev2.Studio.UI.Tests
 
                 //Assert workflow opened after a time out.
                 Assert.IsNotNull(waitForTabToOpen);
-
         }
-
-
+        
         [TestMethod]
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
         {
-
             const string resourceToUse = "Bug_10528";
             const string innerResource = "Bug_10528_InnerWorkFlow";
 
@@ -712,9 +716,7 @@ namespace Dev2.Studio.UI.Tests
             {
                 Assert.Fail("The control was not resized properly.");
             }
-
         }
-
 
         [TestMethod]
         [TestCategory("DsfActivityTests")]
@@ -722,113 +724,109 @@ namespace Dev2.Studio.UI.Tests
         [Owner("Travis Frisinger")]
         public void ResizeAdornerMappingsOnDrop_Expected_AdornerMappingIsResized()
         {
+            const string resourceToUse = "CalculateTaxReturns";
+            RibbonUIMap.CreateNewWorkflow();
 
-                const string resourceToUse = "CalculateTaxReturns";
-                RibbonUIMap.CreateNewWorkflow();
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
 
-                UITestControl theTab = TabManagerUIMap.GetActiveTab();
-                UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            // Get a point underneath the start button for the workflow
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X,
+                                                theStartButton.BoundingRectangle.Y + 200);
 
-                // Get a point underneath the start button for the workflow
-                Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X,
-                                                 theStartButton.BoundingRectangle.Y + 200);
+            // Get a sample workflow
+            ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", resourceToUse, workflowPoint1);
 
-                // Get a sample workflow
-                ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
-                ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", resourceToUse, workflowPoint1);
+            UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse);
+            Mouse.Click(controlOnWorkflow, new Point(5, 5));
 
-                UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse);
-                Mouse.Click(controlOnWorkflow, new Point(5, 5));
-
-                UITestControlCollection controlCollection = controlOnWorkflow.GetChildren();
-                Point initialResizerPoint = new Point();
-                // Validate the assumption that the last child is the resizer
-                var resizeThumb = controlCollection[controlCollection.Count - 1];
-                if (resizeThumb.ControlType.ToString() == "Indicator")
+            UITestControlCollection controlCollection = controlOnWorkflow.GetChildren();
+            Point initialResizerPoint = new Point();
+            // Validate the assumption that the last child is the resizer
+            var resizeThumb = controlCollection[controlCollection.Count - 1];
+            if (resizeThumb.ControlType.ToString() == "Indicator")
+            {
+                if (resizeThumb.BoundingRectangle.X == -1)
                 {
-                    if (resizeThumb.BoundingRectangle.X == -1)
-                    {
-                        Assert.Fail("Resize indicator is not visible");
-                    }
-
-                    initialResizerPoint.X = resizeThumb.BoundingRectangle.X + 5;
-                    initialResizerPoint.Y = resizeThumb.BoundingRectangle.Y + 5;
-                }
-                else
-                {
-                    Assert.Fail("Cannot find resize indicator");
+                    Assert.Fail("Resize indicator is not visible");
                 }
 
-                // Drag
-                Mouse.Move(new Point(resizeThumb.Left + 5, resizeThumb.Top + 5));
-                Mouse.StartDragging();
-
-                // Y - 50 since it starts at the lowest point
-                Mouse.StopDragging(new Point(initialResizerPoint.X + 50, initialResizerPoint.Y + 50));
-
-                // Check position to see it dragged
-                Point newResizerPoint = new Point();
-                if (resizeThumb.ControlType.ToString() == "Indicator")
-                {
-                    newResizerPoint.X = resizeThumb.BoundingRectangle.X + 5;
-                    newResizerPoint.Y = resizeThumb.BoundingRectangle.Y + 5;
-                }
-
-                if (!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y > initialResizerPoint.Y))
-                {
-                    Assert.Fail("The control was not resized properly.");
-                }
+                initialResizerPoint.X = resizeThumb.BoundingRectangle.X + 5;
+                initialResizerPoint.Y = resizeThumb.BoundingRectangle.Y + 5;
             }
+            else
+            {
+                Assert.Fail("Cannot find resize indicator");
+            }
+
+            // Drag
+            Mouse.Move(new Point(resizeThumb.Left + 5, resizeThumb.Top + 5));
+            Mouse.StartDragging();
+
+            // Y - 50 since it starts at the lowest point
+            Mouse.StopDragging(new Point(initialResizerPoint.X + 50, initialResizerPoint.Y + 50));
+
+            // Check position to see it dragged
+            Point newResizerPoint = new Point();
+            if (resizeThumb.ControlType.ToString() == "Indicator")
+            {
+                newResizerPoint.X = resizeThumb.BoundingRectangle.X + 5;
+                newResizerPoint.Y = resizeThumb.BoundingRectangle.Y + 5;
+            }
+
+            if (!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y > initialResizerPoint.Y))
+            {
+                Assert.Fail("The control was not resized properly.");
+            }
+        }
 
         // PBI 8601 (Task 8855)
         [TestMethod]
         public void QuickVariableInputFromListTest()
         {
+            Clipboard.Clear();
+            // Create the workflow
+            RibbonUIMap.CreateNewWorkflow();
 
-                Clipboard.Clear();
-                // Create the workflow
-                RibbonUIMap.CreateNewWorkflow();
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.GetActiveTab();
+            Point startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            Point point = new Point(startPoint.X, startPoint.Y + 200);
 
-                // Get some variables
-                UITestControl theTab = TabManagerUIMap.GetActiveTab();
-                Point startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
-                Point point = new Point(startPoint.X, startPoint.Y + 200);
-
-                // Drag the tool onto the workflow
+            // Drag the tool onto the workflow
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
 
-                //Get Mappings button
-                UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign",
-                                                                               "Open Quick Variable Input");
+            //Get Mappings button
+            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign", "Open Quick Variable Input");
 
-                // Click it
-                Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
-                Mouse.Click();
+            // Click it
+            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
+            Mouse.Click();
 
-                // Enter some invalid data
-                WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",",
-                                                                                        "some(<).", "_suf",
-                                                                                        "varOne,varTwo,varThree");
+            // Enter some invalid data
+            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",",
+                                                                                    "some(<).", "_suf",
+                                                                                    "varOne,varTwo,varThree");
 
-                // Click done
-                WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
+            // Click done
+            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
 
-                var errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
-                                                                                   "Prefix contains invalid characters");
-                Assert.IsNotNull(errorControl, "No error displayed for incorrect QVI input");
+            var errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
+                                                                                "Prefix contains invalid characters");
+            Assert.IsNotNull(errorControl, "No error displayed for incorrect QVI input");
 
-                // Assert clicking an error focusses the correct textbox
-                Mouse.Click(errorControl.GetChildren()[0]);
+            // Assert clicking an error focusses the correct textbox
+            Mouse.Click(errorControl.GetChildren()[0]);
 
-                // enter some correct data
-                SendKeys.SendWait("^a^xpre_");
+            // enter some correct data
+            SendKeys.SendWait("^a^xpre_");
 
-                WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
+            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
 
-                // Check the data
-                string varName = WorkflowDesignerUIMap.AssignControl_GetVariableName(theTab, "Assign", 0);
-                StringAssert.Contains(varName, "[[pre_varOne_suf]]");
-
+            // Check the data
+            string varName = WorkflowDesignerUIMap.AssignControl_GetVariableName(theTab, "Assign", 0);
+            StringAssert.Contains(varName, "[[pre_varOne_suf]]");
         }
     }
 }

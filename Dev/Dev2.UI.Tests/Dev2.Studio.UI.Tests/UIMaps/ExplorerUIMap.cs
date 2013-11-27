@@ -143,7 +143,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                 Mouse.Click(p);
                 Playback.Wait(50);
                 Mouse.DoubleClick(p);
-                Playback.Wait(250);
+                Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+                theControl.WaitForControlReady();
+                Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
             }
         }
 

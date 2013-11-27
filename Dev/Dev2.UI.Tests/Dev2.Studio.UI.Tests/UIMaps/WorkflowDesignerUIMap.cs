@@ -18,8 +18,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
     public partial class WorkflowDesignerUIMap : UIMapBase
     {
          VisualTreeWalker vstw = new VisualTreeWalker();
-
-
+        
         /// <summary>
         /// Finds a control on the Workflow Designer
         /// </summary>
@@ -1133,11 +1132,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
 
         /// <summary>
-        /// Scrolls the viewer_ get scroll bar.
+        /// Scrolls the viewer_ get vertical scroll bar.
         /// </summary>
         /// <param name="theTab">The tab.</param>
         /// <returns></returns>
-        public UITestControl ScrollViewer_GetScrollBar(UITestControl theTab)
+        public UITestControl ScrollViewer_GetVerticalScrollBar(UITestControl theTab)
         {
             var scrollViewerChildren = GetScrollViewer(theTab).GetChildren();
             foreach(var scrollViewerChild in scrollViewerChildren)
@@ -1148,6 +1147,31 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                     foreach(var scrollChild in getVericalScrollBarChildren)
                     {
                         if(scrollChild.FriendlyName == "thumb")
+                        {
+                            return scrollChild;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Scrolls the viewer_ get horizontal scroll bar.
+        /// </summary>
+        /// <param name="theTab">The tab.</param>
+        /// <returns></returns>
+        public UITestControl ScrollViewer_GetHorizontalScrollBar(UITestControl theTab)
+        {
+            var scrollViewerChildren = GetScrollViewer(theTab).GetChildren();
+            foreach(var scrollViewerChild in scrollViewerChildren)
+            {
+                if(scrollViewerChild.FriendlyName == "HorizontalScrollBar")
+                {
+                    var getVericalScrollBarChildren = scrollViewerChild.GetChildren();
+                    foreach(var scrollChild in getVericalScrollBarChildren)
+                    {
+                        if(scrollChild.FriendlyName == string.Empty)
                         {
                             return scrollChild;
                         }
@@ -1190,6 +1214,52 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             foreach(var control in GetScrollViewer(theTab).GetChildren())
             {
                 if(control.FriendlyName == "VerticalScrollBar")
+                {
+                    foreach(var scrollControl in control.GetChildren())
+                    {
+                        if(scrollControl.FriendlyName == "repeatButton")
+                        {
+                            return scrollControl;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Scrolls the viewer_ get scroll down.
+        /// </summary>
+        /// <param name="theTab">The tab.</param>
+        /// <returns></returns>
+        public UITestControl ScrollViewer_GetScrollRight(UITestControl theTab)
+        {
+            foreach(var control in GetScrollViewer(theTab).GetChildren())
+            {
+                if(control.FriendlyName == "HorizontalScrollBar")
+                {
+                    foreach(var scrollControl in control.GetChildren())
+                    {
+                        if(scrollControl.FriendlyName == "repeatButton1")
+                        {
+                            return scrollControl;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Scrolls the viewer_ get scroll up.
+        /// </summary>
+        /// <param name="theTab">The tab.</param>
+        /// <returns></returns>
+        public UITestControl ScrollViewer_GetScrollLeft(UITestControl theTab)
+        {
+            foreach(var control in GetScrollViewer(theTab).GetChildren())
+            {
+                if(control.FriendlyName == "HorizontalScrollBar")
                 {
                     foreach(var scrollControl in control.GetChildren())
                     {
@@ -1273,7 +1343,59 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public UITestControl GetSqlBulkInsertLargeViewFirstInputTextbox(UITestControl sqlBulkInsertToolOnWorkflow)
         {
             return vstw.GetChildByAutomationIDPath(sqlBulkInsertToolOnWorkflow, "LargeViewContent", "LargeDataGrid", "Uia.DataGridRow", "Item: Dev2.TO.DataColumnMapping, Column Display In...", "UI__Row0_InputColumn_AutoID");
+        }
 
+        public void ScrollControlIntoView(UITestControl theTab, UITestControl theControl)
+        {
+            var workSurface = TabManagerUIMap.GetWorkSurface(theTab);
+            if(theControl.BoundingRectangle.Y > workSurface.Height)
+            {
+                //might already be scrolled
+                var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetVerticalScrollBar(theTab);
+                WpfControl getTop = scrollBar as WpfControl;
+                if(getTop.Top < 200)
+                {
+                    //Scoll bar is at the top, scroll down
+                    Mouse.StartDragging(scrollBar);
+                    Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
+                }
+            }
+            else
+            {
+                //might already be scrolled
+                var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetVerticalScrollBar(theTab);
+                WpfControl getTop = scrollBar as WpfControl;
+                if(getTop.Top > 200)
+                {
+                    //Scroll bar is at the bottom, scroll up
+                    Mouse.StartDragging(scrollBar);
+                    Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollUp(theTab));
+                }
+            }
+            if (theControl.BoundingRectangle.X > workSurface.Width)
+            {
+                //might already be scrolled
+                var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetHorizontalScrollBar(theTab);
+                WpfControl getLeft = scrollBar as WpfControl;
+                if (getLeft.Left < 2084)
+                {
+                    //Scoll bar is at the left, scroll right
+                    Mouse.StartDragging(scrollBar);
+                    Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollRight(theTab));
+                }
+            }
+            else
+            {
+                //might already be scrolled
+                var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetVerticalScrollBar(theTab);
+                WpfControl getLeft = scrollBar as WpfControl;
+                if(getLeft.Left > 2084)
+                {
+                    //Scroll bar is at the right, scroll left
+                    Mouse.StartDragging(scrollBar);
+                    Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollLeft(theTab));
+                }
+            }
         }
     }
 }

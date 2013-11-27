@@ -250,5 +250,10 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
             return _tabManager.Tabs[_tabManager.SelectedIndex];
         }
+
+        public UITestControl GetWorkSurface(UITestControl theTab)
+        {
+            return theTab.GetChildren().FirstOrDefault(t => t.GetProperty("AutomationID").ToString().Contains("WorkSurfaceContext"));
+        }
     }
 }
