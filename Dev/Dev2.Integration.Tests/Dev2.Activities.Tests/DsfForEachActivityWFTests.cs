@@ -42,57 +42,6 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
             }
         }
 
-        #region Load Test
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ForEachActivity_Execute")]        
-        public void ForEachActivity_Execute_WhenExecutingForEach200Times_ExpectNoThrashingOfMemoryOrCPU()
-        {
-            //------------Setup for test--------------------------
-
-            SetupArguments(
-                            TestResource.ForEachCurrentDataList
-                          , TestResource.ForEachDataListShape
-                          , enForEachType.NumOfExecution
-                          , false
-                          , null
-                          , null
-                          , null
-                          , null
-                          , "200"
-                          );
-            IDSFDataObject result;
-            
-            var cpuCounter = new PerformanceCounter();
-            var ramCounter = new PerformanceCounter("Memory", "Available MBytes");
-
-            cpuCounter.CategoryName = "Processor";
-            cpuCounter.CounterName = "% Processor Time";
-            cpuCounter.InstanceName = "_Total";
-
-            var preCPU = cpuCounter.NextValue();
-            var preRAM = ramCounter.NextValue();
-
-            //------------Execute Test---------------------------
-
-            ExecuteForEachProcessForReal(out result);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-                        
-            var postCPU = cpuCounter.NextValue();
-            var postRAM = ramCounter.NextValue();
-
-            //------------Assert Results-------------------------
-            
-            var ramDif = postRAM - preRAM;
-            
-            Assert.IsTrue(ramDif < 5, "RAM thrashing is happening [ " + ramDif + " ]");
-            Assert.IsTrue(postCPU < 15.0, "Post CPU thrashing [ " + postCPU + " ] vs [ " + preCPU + " ]");
-        }
-       
-        #endregion
-
         #region ForEach Behaviour Tests
 
         // Blocked by Bug 7926
