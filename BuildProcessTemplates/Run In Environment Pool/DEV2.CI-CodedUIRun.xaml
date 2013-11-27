@@ -437,7 +437,7 @@
                                 </ActivityAction>
                               </mtbwa:InvokeProcess.OutputDataReceived>
                             </mtbwa:InvokeProcess>
-                            <Delay DisplayName="Wait for Studio Start ;)" Duration="00:02:00" sap2010:WorkflowViewState.IdRef="Delay_1" />
+                            <Delay DisplayName="Wait for Studio Start ;)" Duration="00:01:00" sap2010:WorkflowViewState.IdRef="Delay_1" />
                           </Sequence>
                         </Sequence>
                         <If Condition="[Not DisableTests]" DisplayName="If Not DisableTests" sap2010:WorkflowViewState.IdRef="If_56" mtbwt:BuildTrackingParticipant.Importance="Low">
