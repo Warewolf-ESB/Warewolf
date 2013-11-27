@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Controllers;
@@ -30,10 +31,28 @@ namespace Dev2.Runtime.WebServer.Security
             {
                 actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
             }
-            if(!_authorizationProvider.IsAuthorized(user))
+
+            AuthorizeRequestType requestType;
+            Enum.TryParse("Web" + actionContext.ActionDescriptor.ActionName, out requestType);
+
+            var resourceID = requestType == AuthorizeRequestType.WebExecute || requestType == AuthorizeRequestType.WebBookmark
+            ? GetResourceName(actionContext)
+            : actionContext.Request.GetResourceID();
+
+            if(!_authorizationProvider.IsAuthorized(user, requestType, resourceID))
             {
                 actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Access has been denied for this request.");
             }
+        }
+
+        string GetResourceName(HttpActionContext actionContext)
+        {
+            var parm = actionContext.ActionDescriptor.GetParameters().FirstOrDefault(p => p.ParameterName == "name");
+            if(parm == null)
+            {
+                return null;
+            }
+            return parm.DefaultValue.ToString();
         }
     }
 }
