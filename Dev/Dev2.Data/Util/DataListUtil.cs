@@ -826,8 +826,8 @@ namespace Dev2.DataList.Contract
             else
             {
 
-                IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollection(defs, !(isInput));
-                IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs, !(isInput));
+                IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollection(defs, (isInput));
+                IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs, (isInput));
 
                 // open datashape
                 result.Append(string.Concat("<", _adlRoot, ">"));
@@ -1595,7 +1595,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         private static string BuildDev2RecordSetShape(IRecordSetCollection recCol, bool isInput)
         {
-
             StringBuilder result = new StringBuilder();
 
             IList<IRecordSetDefinition> defs = recCol.RecordSets;
@@ -1608,6 +1607,11 @@ namespace Dev2.DataList.Contract
                 if(tmp.Columns.Count > 0)
                 {
                     string setName = tmp.SetName;
+
+                    //if (!isInput && tmp.Columns.Count > 0)
+                    //{
+                    //    setName = tmp.Columns[0].RecordSetName;
+                    //}
 
                     result.Append(string.Concat("<", setName, ">"));
                     result.Append(Environment.NewLine);

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities;
 using Dev2.DataList.Contract;
 using Dev2.Services.Execution;
@@ -58,11 +59,10 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // ShapeForSubRequest
             var mockEsb = new Mock<IEsbChannel>();
-            //mockEsb.Setup(s => s.ShapeForSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<string>(), It.IsAny<string>(), out errors)).Returns(new List<KeyValuePair<enDev2ArgumentType, List<IDev2Definition>>>());
+            //mockEsb.Setup(s => s.ShapeForSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<string>(), It.IsAny<string>(), out errors)).Returns(null);
             databaseActivity.MockExecutionImpl(mockEsb.Object, dataObj.Object, string.Empty, string.Empty, out errors);
 
             //assert
-            Assert.IsFalse(errors.HasErrors(), "Errors where thrown while executing a database servic");
             dbServiceExecution.Verify(s => s.Execute(out errors));
         }
 

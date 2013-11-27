@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices.Test;
@@ -788,37 +789,40 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             Assert.AreEqual("", res);
 
-
         }
 
-
         [TestMethod]
-        public void ShapeOutput_With_RecordsetAndScalar_Expect_Merge()
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_Shape")]
+        public void ServerDataListCompiler_Shape_WhenOutputsContainDifferentRecordsetsAndColumnsAndAppendNotation_ExpectMappingToOccurAppendStyle()
         {
-            ErrorResultTO errors;
-            string error;
 
-            // Create parent dataList
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
             const string dataListWellformedMultData = "<DataList><scalar1>p1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>p2</scalar2></DataList>";
-            byte[] data = (TestHelper.ConvertStringToByteArray(dataListWellformedMultData));
-            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            byte[] pdata = (TestHelper.ConvertStringToByteArray(dataListWellformedMultData));
+
+            var format = DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags);
+
+            Guid parentID = _sdlc.ConvertTo(null, format, pdata, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
             // Create child list to branch from -- Emulate Input shaping
-            const string dataListWellformedComplexData = "<DataList><scalar1>c1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>c2</scalar2></DataList>";
-            data = (TestHelper.ConvertStringToByteArray(dataListWellformedComplexData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            const string dataListWellformedComplexData = "<DataList><scalar1>c1</scalar1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>c2</scalar2></DataList>";
+            var data = (TestHelper.ConvertStringToByteArray(dataListWellformedComplexData));
+            Guid dlID = _sdlc.ConvertTo(null, format, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+
+            const string outputs = @"<Outputs><Output Name=""f1a"" MapsTo=""[[rs1().f1]]"" Value=""[[rs1().f1]]"" Recordset=""rs2"" /><Output Name=""scalar2"" MapsTo=""scalar2"" Value=""[[scalar1]]"" /></Outputs>";
+
             // Set ParentID
             _sdlc.SetParentUID(dlID, parentID, out errors);
-
-           
-            // Value is target shape
-            const string outputs = @"<Outputs><Output Name=""f1a"" MapsTo=""f1a"" Value=""[[rs1().f1]]"" Recordset=""rs2"" /><Output Name=""scalar2"" MapsTo=""scalar2"" Value=""[[scalar1]]"" /></Outputs>";
-
+            
+            //------------Execute Test---------------------------
             Guid shapedOutputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Output, outputs, out errors);
 
             var bdl = _sdlc.FetchBinaryDataList(null, shapedOutputID, out errors);
 
             IBinaryDataListEntry tmp;
             IBinaryDataListEntry tmpRS;
+            string error;
             bdl.TryGetEntry("rs1", out tmpRS, out error);
 
             // Check scalar value
@@ -826,9 +830,10 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             var res = tmp.FetchScalar().TheValue;
 
+            //------------Assert Results-------------------------
             Assert.AreEqual("c2", res);
             Assert.AreEqual("rs2.f1.3", tmpRS.TryFetchRecordsetColumnAtIndex("f1", 5, out error).TheValue);
-
+    
         }
 
         [TestMethod]
@@ -849,7 +854,9 @@ namespace Dev2.Data.Tests.BinaryDataList
 
 
             // Value is target shape
-            const string outputs = @"<Outputs><Output Name=""f1a"" MapsTo=""f1a"" Value=""[[rs1(*).f1]]"" Recordset=""rs2"" /><Output Name=""scalar2"" MapsTo=""scalar2"" Value=""[[scalar1]]"" /></Outputs>";
+            //const string outputs = @"<Outputs><Output Name=""f1a"" MapsTo=""f1a"" Value=""[[rs1(*).f1]]"" Recordset=""rs2"" /><Output Name=""scalar2"" MapsTo=""scalar2"" Value=""[[scalar1]]"" /></Outputs>";
+
+            const string outputs = @"<Outputs><Output Name=""f1a"" MapsTo=""[[rs1(*).f1]]"" Value=""[[rs1(*).f1]]"" Recordset=""rs2"" /><Output Name=""scalar2"" MapsTo=""scalar2"" Value=""[[scalar1]]"" /></Outputs>";
 
             Guid shapedOutputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Output, outputs, out errors);
 

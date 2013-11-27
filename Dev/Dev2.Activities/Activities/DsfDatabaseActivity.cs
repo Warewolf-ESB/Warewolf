@@ -35,10 +35,16 @@ namespace Dev2.Activities
 
             // Adjust the remaining output mappings ;)
             compiler.SetParentID(dataObject.DataListID, oldID);
+
             if (remainingMappings != null)
             {
                 var outputMappings = remainingMappings.FirstOrDefault(c => c.Key == enDev2ArgumentType.Output);
                 compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputMappings.Value, out execErrors);
+                errors.MergeErrors(execErrors);
+            }
+            else
+            {
+                compiler.Shape(dataObject.DataListID, enDev2ArgumentType.DB_ForEach, outputs, out execErrors);
                 errors.MergeErrors(execErrors);
             }
 

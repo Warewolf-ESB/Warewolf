@@ -413,6 +413,7 @@ namespace Dev2.Server.Datalist
                 break;
                 case enDev2ArgumentType.Output_Append_Style:
                 case enDev2ArgumentType.Output:
+                case enDev2ArgumentType.DB_ForEach:
                     result = PerformOutputShaping(ctx, curDLID, typeOf, definitions, ref errors, result);
                 break;
             }
@@ -1169,12 +1170,6 @@ namespace Dev2.Server.Datalist
                             targetItems.Add(binaryDataListItem);
                         }
 
-                        if (targetItems.Count == 0)
-                        {
-                            var i = 0;
-                            i += 1;
-                        }
-
                         idxType = targetDef.Value.IdxType;
                     }//st
 
@@ -1416,30 +1411,30 @@ namespace Dev2.Server.Datalist
 
                     allErrors.MergeErrors(errors);
                     if(val == null)
-                            {
+                    {
                         string errorTmp;
                         val = DataListConstants.baseEntry.Clone(enTranslationDepth.Shape, pushToId, out errorTmp);
                         allErrors.AddError(errorTmp);
-                            }
+                    }
 
                     // now upsert into the pushDL
                     string upsertExpression = outputExpressionExtractor(def);
                     toUpsert.Add(upsertExpression, val);
                 }
                 else if(expression == string.Empty && (typeOf == enDev2ArgumentType.Input) && def.IsRequired)
-                        {
+                {
                     allErrors.AddError("Required input [[" + def.Name + "]] cannot be populated");
                 }
             }
 
             // finally process instruction set and move data
             if(toUpsert.HasData())
-                            {
+            {
                 Upsert(ctx, pushToId, toUpsert, out errors);
                 allErrors.MergeErrors(errors);
             }
 
-                            }
+        }
 
         /// <summary>
         /// Definitions the index of the has numeric.
@@ -1476,9 +1471,24 @@ namespace Dev2.Server.Datalist
                                                             && !string.IsNullOrEmpty(definition.RawValue)
                                                             && !DefinitionHasNumericIndex(definition, inputExpressionExtractor, outputExpressionExtractor));
 
-            var recordSets = tmpRecs.ToLookup(definition =>
+
+            ILookup<string, IDev2Definition> recordSets = null;
+
+            if(typeOf == enDev2ArgumentType.DB_ForEach)
+            {
+                recordSets = tmpRecs.ToLookup(definition =>
+                                              DataListUtil.AddBracketsToValueIfNotExist(
+                                                  DataListUtil.MakeValueIntoHighLevelRecordset(
+                                                      DataListUtil.ExtractRecordsetNameFromValue(
+                                                          outputExpressionExtractor(definition)
+                                                          ), true)));
+            }
+            else
+            {
+                recordSets = tmpRecs.ToLookup(definition =>
                 DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(DataListUtil.ExtractRecordsetNameFromValue(inputExpressionExtractor(definition)
                 ), true)));
+            }
 
             var recordsetUpserter = new Dev2DataListUpsertPayloadBuilder<RecordsetGroup>(false);
 
@@ -1490,8 +1500,7 @@ namespace Dev2.Server.Datalist
                 {
                     var rsDefinitions = recordSet.ToList();
 
-                    var recordSetGroup = new RecordsetGroup(val, rsDefinitions, inputExpressionExtractor,
-                                                            outputExpressionExtractor);
+                    var recordSetGroup = new RecordsetGroup(val, rsDefinitions, inputExpressionExtractor, outputExpressionExtractor);
 
                     recordsetUpserter.Add(recordSetGroup);
                 }
@@ -1528,6 +1537,7 @@ namespace Dev2.Server.Datalist
                         return expression;
                     };
                 case enDev2ArgumentType.Output:
+                case enDev2ArgumentType.DB_ForEach:
                     return def =>
                             {
                                 string expression;
@@ -1566,9 +1576,9 @@ namespace Dev2.Server.Datalist
                     }
 
         public Func<IDev2Definition, string> BuildOutputExpressionExtractor(enDev2ArgumentType typeOf)
-                    {
+        {
             switch(typeOf)
-                        {
+            {
                 case enDev2ArgumentType.Input:
                     return def =>
                             {
@@ -1587,6 +1597,7 @@ namespace Dev2.Server.Datalist
                     };
                 case enDev2ArgumentType.Output:
                 case enDev2ArgumentType.Output_Append_Style:
+                case enDev2ArgumentType.DB_ForEach:
                     return def =>
                         {
                         string expression = string.Empty;

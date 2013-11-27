@@ -95,6 +95,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.IsTrue(isHTML);
         }
 
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DataListUtil_ShapeDefsToDataList")]
