@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Runtime.WebServer.Security;
 using Dev2.Workspaces;
 using Microsoft.AspNet.SignalR.Hubs;
 
 namespace Dev2.Runtime.WebServer.Hubs
 {
+    [AuthorizeHub]
     [HubName("resources")]
     public class ResourcesHub : ServerHub
     {

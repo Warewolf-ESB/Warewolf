@@ -2,10 +2,11 @@ using System.Collections.Specialized;
 using System.Net.Http;
 using System.Web.Http;
 using Dev2.Runtime.WebServer.Handlers;
+using Dev2.Runtime.WebServer.Security;
 
 namespace Dev2.Runtime.WebServer.Controllers
 {
-    [Authorize]
+    [AuthorizeWeb]
     public class WebServerController : AbstractController
     {
         [HttpGet]

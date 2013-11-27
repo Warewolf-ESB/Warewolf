@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Principal;
 using System.Text;
 using Dev2.Common;
 
@@ -8,6 +9,11 @@ namespace Dev2.Runtime.WebServer
 {
     public static class Extensions
     {
+        public static bool IsAuthenticated(this IPrincipal user)
+        {
+            return user != null && user.Identity.IsAuthenticated;
+        }
+
         public static Encoding GetContentEncoding(this HttpContent content)
         {
             var encoding = content == null ? string.Empty : content.Headers.ContentEncoding.FirstOrDefault();

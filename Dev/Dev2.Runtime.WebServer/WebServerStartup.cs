@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Web.Http;
 using Microsoft.AspNet.SignalR;
@@ -34,7 +32,7 @@ namespace Dev2.Runtime.WebServer
             // Enable NTLM auth
             var listener = (HttpListener)app.Properties[typeof(HttpListener).FullName];
             listener.AuthenticationSchemes = AuthenticationSchemes.Ntlm;
-           
+
             // Enable cross-domain calls
             app.UseCors(CorsOptions.AllowAll);
 
@@ -46,7 +44,6 @@ namespace Dev2.Runtime.WebServer
             // Add SignalR routing...
             var hubConfiguration = new HubConfiguration { EnableDetailedErrors = true, EnableJSONP = true };
             app.MapSignalR(hubConfiguration);
-            GlobalHost.HubPipeline.RequireAuthentication();
 
             // Add web server routing...
             var config = new HttpConfiguration();

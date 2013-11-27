@@ -27,8 +27,7 @@ namespace Dev2.Runtime.WebServer.Controllers
 
         protected virtual bool IsAuthenticated()
         {
-            var user = User;
-            return user != null && user.Identity.IsAuthenticated;
+            return User.IsAuthenticated();
         }
 
         protected virtual TRequestHandler CreateHandler<TRequestHandler>()
