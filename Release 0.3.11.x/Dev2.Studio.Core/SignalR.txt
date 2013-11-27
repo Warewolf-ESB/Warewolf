@@ -1,8 +1,0 @@
-﻿1. Open the library package manager console by selecting Tools, Library Package Manager, Package Manager Console.
-2. In the package manager console, 
-	2.1 set the default project to Dev2.Studio.Core
-	2.2 enter the following command:
-
-Install-Package Microsoft.AspNet.SignalR.Client
-
-3. Repeat 2 for the project to Dev2.Studio
