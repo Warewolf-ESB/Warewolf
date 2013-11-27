@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/Colors.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- ComboBox Brushes -->
+    <SolidColorBrush x:Key="ComboBoxBackgroundBrush" Color="{StaticResource Color_009b}" />
+    <SolidColorBrush x:Key="ComboBoxBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="ComboBoxReadOnlyBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="ComboBoxHoverBackgroundBrush" Color="{StaticResource Color_009b}" />
+    <SolidColorBrush x:Key="ComboBoxHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ComboBoxFocusedBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ComboBoxDisabledBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="ComboBoxReadOnlyBackgroundBrush" Color="{StaticResource Color_014b}" />
+    <SolidColorBrush x:Key="PopupBackgroundBrush" Color="{StaticResource Color_009b}" />
+    <SolidColorBrush x:Key="PopupBorderBrush" Color="{StaticResource WarewolfOrange}" />
+
+    <!-- ComboBoxItem Brushes -->
+    <SolidColorBrush x:Key="ComboBoxItemHoverBackgroundBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="ComboBoxItemHoverBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="ComboBoxItemPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="ComboBoxItemPressedBorderBrush" Color="{StaticResource WarewolfDarkGrey}" />
+
+    <!-- ComboBoxToggleButton Brushes -->
+    <SolidColorBrush x:Key="ComboBoxToggleButtonBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="ComboBoxToggleButtonPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="ComboBoxToggleButtonDropDownSeparatorBackgroundBrush" Color="{StaticResource Color_006b}" />
+    <SolidColorBrush x:Key="ComboBoxToggleButtonPressedBorderBrush" Color="{StaticResource Color_024b}" />
+
+</ResourceDictionary>

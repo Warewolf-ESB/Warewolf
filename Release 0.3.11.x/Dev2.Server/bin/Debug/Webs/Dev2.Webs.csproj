@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{46327255-E2D2-4FBE-A04C-0FA3E0360604}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dev2.Server.Web</RootNamespace>
+    <AssemblyName>Dev2.Server.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Tests\Services\DbServiceViewModelTests.js" />
+    <Content Include="Tests\Services\WebServiceViewModelTests.js" />
+    <Content Include="wwwroot\default.htm" />
+    <Content Include="Tests\Decisions\DecisionModelTests.js" />
+    <Content Include="Tests\Dialogs\SaveViewModelTests.js" />
+    <Content Include="Tests\Services\PluginServiceViewModelTests.js" />
+    <Content Include="Tests\Sources\PluginSourceViewModelTests.js" />
+    <Content Include="Tests\Sources\DbSourceViewModelTests.js" />
+    <Content Include="Tests\Sources\ServerViewModelTests.js" />
+    <Content Include="Tests\Sources\WebSourceViewModelTests.js" />
+    <Content Include="Tests\SourceTests.htm" />
+    <Content Include="Tests\Switch\DragModel_Test.js" />
+    <Content Include="Tests\Switch\DropModelTests.js" />
+    <Content Include="Tests\Services\ServiceViewModelTests.js" />
+    <Content Include="wwwroot\Content\icons.gif" />
+    <Content Include="wwwroot\Content\qunit-1.11.0.css" />
+    <Content Include="wwwroot\Content\Site.css" />
+    <Content Include="wwwroot\Content\themes\warewolf\images\ui-icons_3f3f3f_0.png" />
+    <Content Include="wwwroot\Content\themes\warewolf\images\ui-icons_ff8613_0.png" />
+    <Content Include="wwwroot\Content\themes\warewolf\images\ui-icons_ffffff_0.png" />
+    <Content Include="wwwroot\Content\themes\warewolf\jquery-ui.css" />
+    <Content Include="wwwroot\Content\ui.dynatree.css" />
+    <Content Include="wwwroot\favicon.ico" />
+    <Content Include="wwwroot\Images\ajax-loader.gif" />
+    <Content Include="wwwroot\Images\ajax-loader32.gif" />
+    <Content Include="wwwroot\Images\clear-filter.png" />
+    <Content Include="wwwroot\Images\cross.png" />
+    <Content Include="wwwroot\Images\edit.png" />
+    <Content Include="wwwroot\Images\error.png" />
+    <Content Include="wwwroot\Images\folder-closed.png" />
+    <Content Include="wwwroot\Images\folder-open.png" />
+    <Content Include="wwwroot\Images\refresh.png" />
+    <Content Include="wwwroot\Images\tick.png" />
+    <Content Include="wwwroot\Images\warning.png" />
+    <Content Include="wwwroot\Layout.htm" />
+    <Content Include="wwwroot\Scripts\fx\jquery-ui-1.10.3.custom.min.js" />
+    <Content Include="wwwroot\Scripts\fx\knockout-2.2.1.debug.js" />
+    <Content Include="wwwroot\Scripts\Services\ServiceData.js" />
+    <Content Include="wwwroot\Scripts\warewolf-globals.js" />
+    <Content Include="wwwroot\Scripts\warewolf-jquery.js" />
+    <Content Include="wwwroot\Scripts\warewolf-ko.js" />
+    <Content Include="wwwroot\Scripts\warewolf-recordsets.js" />
+    <Content Include="wwwroot\Scripts\warewolf-studio.js" />
+    <Content Include="wwwroot\Scripts\Dialogs\SaveViewModel.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery-1.9.1.min.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.caret.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.dataTables.min.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.dynatree-1.2.4.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.dynatree.min.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.mockjax.js" />
+    <Content Include="wwwroot\Scripts\fx\knockout-2.2.1.js" />
+    <Content Include="wwwroot\Scripts\fx\knockout.mapping-latest.js" />
+    <Content Include="wwwroot\Scripts\fx\knockout.validation.min.js" />
+    <Content Include="wwwroot\Scripts\fx\qunit-1.11.0.js" />
+    <Content Include="wwwroot\Scripts\Decisions\DecisionModel.js" />
+    <Content Include="wwwroot\Scripts\Services\WebServiceViewModel.js" />
+    <Content Include="wwwroot\Scripts\Services\DbServiceViewModel.js" />
+    <Content Include="wwwroot\Scripts\warewolf-utils.js" />
+    <Content Include="wwwroot\Scripts\Services\PluginServiceViewModel.js" />
+    <Content Include="wwwroot\Scripts\Sources\WebSourceViewModel.js" />
+    <Content Include="wwwroot\Scripts\Sources\EmailSourceViewModel.js" />
+    <Content Include="wwwroot\Scripts\Sources\DbSourceViewModel.js" />
+    <Content Include="wwwroot\Scripts\Sources\PluginSourceViewModel.js" />
+    <Content Include="wwwroot\Scripts\Sources\ServerViewModel.js" />
+    <Content Include="wwwroot\Views\Services\WebService.htm" />
+    <Content Include="wwwroot\Views\Services\DbService.htm" />
+    <Content Include="wwwroot\Views\Services\PluginService.htm" />
+    <Content Include="wwwroot\Views\Sources\WebSource.htm" />
+    <Content Include="wwwroot\Views\Sources\EmailSource.htm" />
+    <Content Include="wwwroot\Views\Sources\DbSource.htm" />
+    <Content Include="wwwroot\Views\Sources\PluginSource.htm" />
+    <Content Include="wwwroot\Views\Switch\Drag.htm" />
+    <Content Include="wwwroot\Scripts\Switch\DragModel.js" />
+    <Content Include="wwwroot\Views\Switch\Drop.htm" />
+    <Content Include="wwwroot\Scripts\Switch\DropModel.js" />
+    <Content Include="wwwroot\Views\Templates\InputMapping.htm" />
+    <Content Include="wwwroot\Views\Templates\OutputMapping.htm" />
+    <None Include="wwwroot\Scripts\fx\jquery-1.7.1.intellisense.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.Guid.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.scrollTo-1.4.3.1.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.validate.min.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.validate.unobtrusive.min.js" />
+    <Content Include="wwwroot\Scripts\fx\modernizr-2.5.3.js" />
+    <Content Include="wwwroot\Scripts\fx\placeMe-1.0.js" />
+    <Content Include="wwwroot\Scripts\_references.js" />
+    <Content Include="wwwroot\Views\Decisions\Wizard.htm" />
+    <Content Include="wwwroot\Views\Dialogs\SaveDialog.htm" />
+    <Content Include="wwwroot\Views\Sources\Server.htm" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>4340</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:4340/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

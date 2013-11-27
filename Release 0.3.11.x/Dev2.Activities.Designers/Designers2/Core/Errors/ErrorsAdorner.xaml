@@ -1,0 +1,66 @@
+﻿<adorners:AdornerControl x:Class="Dev2.Activities.Designers2.Core.Errors.ErrorsAdorner"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:adorners="clr-namespace:Dev2.Activities.Designers2.Core.Adorners"
+                         xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                         xmlns:errors="clr-namespace:Dev2.Providers.Errors;assembly=Dev2.Infrastructure"
+                         mc:Ignorable="d"
+                         d:DesignHeight="300"
+                         d:DesignWidth="300"
+                         d:DataContext="{d:DesignInstance core:ActivityDesignerViewModel}">
+    <Border Width="300"
+            MinHeight="200"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            CornerRadius="4"
+            BorderBrush="#FFA60013"
+            BorderThickness="1"
+            Background="#FFFFCAD5"
+            Padding="4">
+
+        <Grid x:Name="ErrorsGrid">
+            <Grid.Resources>
+                <DataTemplate x:Key="ErrorDisplayTemplate"
+                              DataType="errors:IActionableErrorInfo">
+                    <StackPanel Margin="0,5,0,5" AutomationProperties.AutomationId="ErrorsPanel">
+                        <TextBlock TextWrapping="Wrap"
+                                   VerticalAlignment="Top">
+                                <Hyperlink Command="{Binding Path=DataContext.OpenErrorsLinkCommand, ElementName=ErrorsGrid}"
+                                           CommandParameter="{Binding}">
+                                    <Run Text="{Binding Message}"></Run>
+                                </Hyperlink>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap"
+                                   VerticalAlignment="Top"
+                                   Text="{Binding FixData}"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </Grid.Resources>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Text="Errors"
+                       FontWeight="Bold"></TextBlock>
+            <Button Grid.Row="0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Command="{Binding ShowErrorsToggleCommand}"
+                    ToolTip="Close Errors"
+                    Style="{StaticResource CloseButtonStyle}">
+            </Button>
+            <ItemsControl Grid.Row="1"
+                          Margin="0,5,0,0"
+                          VerticalAlignment="Top"
+                          ItemsSource="{Binding Errors}"
+                          ItemTemplate="{StaticResource ErrorDisplayTemplate}"
+                          BorderBrush="Transparent" />
+        </Grid>
+    </Border>
+</adorners:AdornerControl>

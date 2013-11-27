@@ -1,0 +1,62 @@
+﻿<DataList>
+    <Locales>
+        <LocationID>1</LocationID>
+        <Address>19 Pineside Road, New Germany</Address>
+        <Lat></Lat>
+        <Long></Long>
+    </Locales>
+    <Locales>
+        <LocationID>2</LocationID>
+        <Address>1244 Old North Coast Rd, Redhill</Address>
+        <Lat></Lat>
+        <Long></Long>
+    </Locales>
+    <Locales>
+        <LocationID>3</LocationID>
+        <Address>Westmead Road, Westmead</Address>
+        <Lat></Lat>
+        <Long></Long>
+    </Locales>
+    <Locales>
+        <LocationID>4</LocationID>
+        <Address>Turquoise Road, Queensmead</Address>
+        <Lat></Lat>
+        <Long></Long>
+    </Locales>
+    <Locales>
+        <LocationID>5</LocationID>
+        <Address>Old Main Road, Isipingo</Address>
+        <Lat></Lat>
+        <Long></Long>
+    </Locales>
+    <Locales>
+        <LocationID>7</LocationID>
+        <Address>2 Brook Street North, Warwick Junction</Address>
+        <Lat></Lat>
+        <Long></Long>
+    </Locales>
+    <Locales>
+        <LocationID>8</LocationID>
+        <Address>Bellair Road, Corner Bellair &amp; Edwin Swales/Sarnia Arterial</Address>
+        <Lat></Lat>
+        <Long></Long>
+    </Locales>
+    <Locales>
+        <LocationID>9</LocationID>
+        <Address>Riverside Road, Durban North</Address>
+        <Lat></Lat>
+        <Long></Long>
+    </Locales>
+    <Locales>
+        <LocationID>10</LocationID>
+        <Address>Malacca Road, Durban North</Address>
+        <Lat></Lat>
+        <Long></Long>
+    </Locales>
+    <Locales>
+        <LocationID>11</LocationID>
+        <Address>Glanville Road, Woodlands</Address>
+        <Lat></Lat>
+        <Long></Long>
+    </Locales>
+</DataList>

@@ -1,0 +1,61 @@
+﻿html {
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    color: #333;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+header, footer, nav, section {
+    display: block;
+}
+
+
+/* Styles for basic forms
+-----------------------------------------------------------*/
+
+textarea {
+    min-height: 75px;
+}
+
+input, textarea, select {
+    padding: 3px;
+    width: 257px;
+    font-size: 1em;
+}
+
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
+}
+
+.editor-label {
+    margin: 1em 0 0 0;
+    width: 100px;
+    display: inline-block;
+}
+
+.editor-field {
+    margin: 0.5em 0 0 0;
+    width: 220px;
+}
+
+.content {
+    padding: 1em;
+    height: 100%;
+}
+
+.button-bar {
+    text-align: right;
+    margin: 20px 0;
+    width: 336px;
+}
