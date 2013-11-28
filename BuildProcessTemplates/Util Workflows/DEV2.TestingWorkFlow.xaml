@@ -52,7 +52,8 @@
       </mtbwa:AgentScope.Variables>
       <Sequence DisplayName="GetLatestBuildNumber" sap2010:WorkflowViewState.IdRef="Sequence_4">
         <Sequence.Variables>
-          <Variable x:TypeArguments="s:Int32[]" Default="[New Integer() {}]" Name="BuildNumbers" />
+          <Variable x:TypeArguments="scg:List(x:Int32)" Default="[New List(Of Integer)]" Name="BuildNumbersList" />
+          <Variable x:TypeArguments="s:Int32[]" Name="BuildNumbersArray" />
         </Sequence.Variables>
         <InvokeMethod DisplayName="Read Builds Folder" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="GetFiles" TargetType="si:Directory">
           <InvokeMethod.Result>
@@ -83,7 +84,7 @@
                 <If.Then>
                   <Sequence DisplayName="Can Parse" sap2010:WorkflowViewState.IdRef="Sequence_5">
                     <mtbwa:WriteBuildMessage DisplayName="Write &quot;Adding&quot; Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_8" Message="[&quot;Adding &quot; &amp; Integer.Parse(build) &amp; &quot; to list of build numbers&quot;]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                    <AddToCollection x:TypeArguments="x:Int32" Collection="[BuildNumbers]" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[Integer.Parse(build)]" />
+                    <AddToCollection x:TypeArguments="x:Int32" Collection="[BuildNumbersList]" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[Integer.Parse(build)]" />
                   </Sequence>
                 </If.Then>
                 <If.Else>
@@ -93,24 +94,33 @@
             </Sequence>
           </ActivityAction>
         </ForEach>
-        <If Condition="[BuildNumbers.Length = 0]" DisplayName="If No Builds Found" sap2010:WorkflowViewState.IdRef="If_2">
+        <Assign DisplayName="Convert List to Array">
+          <Assign.To>
+            <OutArgument x:TypeArguments="s:Int32[]">[BuildNumbersArray]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="s:Int32[]">[BuildNumbersList.ToArray()]</InArgument>
+          </Assign.Value>
+          <sap2010:WorkflowViewState.IdRef>Assign_12</sap2010:WorkflowViewState.IdRef>
+        </Assign>
+        <If Condition="[BuildNumbersArray.Length = 0]" DisplayName="If No Builds Found" sap2010:WorkflowViewState.IdRef="If_2">
           <If.Then>
             <TerminateWorkflow sap2010:WorkflowViewState.IdRef="TerminateWorkflow_1" Reason="No builds found in staging directory" />
           </If.Then>
         </If>
-        <mtbwa:WriteBuildMessage DisplayName="Write number of builds found" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_10" Message="[&quot;Found &quot; &amp; BuildNumbers.Length.ToString &amp; &quot; build numbers&quot;]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+        <mtbwa:WriteBuildMessage DisplayName="Write number of builds found" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_10" Message="[&quot;Found &quot; &amp; BuildNumbersArray.Length.ToString &amp; &quot; build numbers&quot;]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
         <Assign DisplayName="Get Latest Build Number" sap2010:WorkflowViewState.IdRef="Assign_11">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[SpecifiedChangeSet]</OutArgument>
           </Assign.To>
           <Assign.Value>
-            <InArgument x:TypeArguments="x:String">[BuildNumbers.Max().ToString]</InArgument>
+            <InArgument x:TypeArguments="x:String">[BuildNumbersArray.Max().ToString]</InArgument>
           </Assign.Value>
         </Assign>
       </Sequence>
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="[&quot;------------------- Latest Build Found: &quot; &amp; SpecifiedChangeSet &amp; &quot; -------------------&quot;]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>d01DOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5UZXN0aW5nV29ya0Zsb3cueGFtbC8B2QMBnQQBBAGOAwHAAwEDAWEB7wIBAikDcg4CAQEtBS8QAgFHMAVwGAIBAi4HLsUBAgFIMLEBMM4BAgEHMIIBMKQBAgEFMN8BMIoCAgEDNQduEgIBDW8Hb90CAgEJLjIuagIBSTc5N00CAQ45CT4YAgFCPwk/4QICAT1ACV8TAgEdYAlkDgIBGGUJZc0CAgEUZgltEgIBD29+b/YBAgELPTI9QwIBRTs3O0cCAUM/iwE/+gECAT9AhgFAmAECATtFDV0YAgEeYBdgMgIBGWINYoYBAgEbZYwBZeYBAgEWazRrUQIBEmg1aEkCARBJD1AYAgE1UQ9RsQICATFSD1wUAgEfYl1igwECARxOOk6UAQIBOEs7S0ICATZRngFRygECATNSHVJFAgEgVBNXHgIBJ1oTWq8CAgEjVRVV4AICAS1WFVayAQIBKFqfAVrIAQIBJVWbAVX5AQIBL1ZLVlsCAStWlwFWrwECASk=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d01DOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5UZXN0aW5nV29ya0Zsb3cueGFtbDIB2QMBnQQBBAGOAwHAAwEDAWEB7wIBAikDfA4CAQEtBS8QAgFMMAV6GAIBAi4HLsUBAgFNMLEBMM4BAgEHMIIBMKQBAgEFMN8BMIoCAgEDNQd4EgIBDXkHed0CAgEJLjIuagIBTjdBN1kCAQ46CT8YAgFHQAlA4QICAUJBCWATAgEiYQlpEgIBHWoJbg4CARhvCW/SAgIBFHAJdxICAQ95fnn2AQIBCz4yPkMCAUo8NzxHAgFIQIsBQPoBAgFEQYYBQZgBAgFARg1eGAIBI2Y1ZlECASBjNmNJAgEeahdqNwIBGWwNbIYBAgEbb4wBb+sBAgEWdTR1VgIBEnI1ckkCARBKD1EYAgE6Ug9SsQICATZTD10UAgEkbF1sgwECARxPOk+UAQIBPUw7TEICATtSngFSygECAThTHVNFAgElVRNYHgIBLFsTW68CAgEoVhVW4AICATJXFVe2AQIBLVufAVvIAQIBKlabAVb5AQIBNFdLV18CATBXmwFXswECAS4=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -145,11 +155,12 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="516,790" />
+      <sap2010:ViewStateData Id="Assign_12" sap:VirtualizedContainerService.HintSize="516,60" />
       <sap2010:ViewStateData Id="TerminateWorkflow_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="516,208" />
       <sap2010:ViewStateData Id="WriteBuildMessage_10" sap:VirtualizedContainerService.HintSize="516,22" />
       <sap2010:ViewStateData Id="Assign_11" sap:VirtualizedContainerService.HintSize="516,60" />
-      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="538,1558">
+      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="538,1658">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -157,15 +168,15 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="WriteBuildMessage_6" sap:VirtualizedContainerService.HintSize="538,22" />
-      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="560,1744" />
-      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="582,2054">
+      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="560,1844" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="582,2154">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="622,2134" />
+      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="622,2234" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
