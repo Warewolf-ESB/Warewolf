@@ -382,6 +382,75 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ResourceModel_ToServiceDefinition")]
+        public void ResourceModel_ToServiceDefinition_GivenXamlNull_ExpectFetchOfXaml()
+        {
+            //------------Setup for test--------------------------
+            Setup();
+            var eventPublisher = new EventPublisher();
+            var environmentModel = CreateMockEnvironment(eventPublisher);
+
+            var repo = new Mock<IResourceRepository>();
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("resource xaml");
+
+            environmentModel.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var instanceID = Guid.NewGuid();
+            var model = new ResourceModel(environmentModel.Object)
+            {
+                ID = instanceID
+            };
+            
+            //------------Execute Test---------------------------
+            var serviceDefinition = model.ToServiceDefinition();
+            //------------Assert Results-------------------------
+            var serviceElement = XElement.Load(new StringReader(serviceDefinition));
+            Assert.IsNotNull(serviceElement);
+
+            var actionElement = serviceElement.Element("Action");
+            var xmalElement = actionElement.Element("XamlDefinition");
+
+            Assert.AreEqual("resource xaml", xmalElement.Value);
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ResourceModel_ToServiceDefinition")]
+        public void ResourceModel_ToServiceDefinition_GivenXamlPresent_ExpectExistingXamlUsed()
+        {
+            //------------Setup for test--------------------------
+            Setup();
+            var eventPublisher = new EventPublisher();
+            var environmentModel = CreateMockEnvironment(eventPublisher);
+
+            var repo = new Mock<IResourceRepository>();
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("resource xaml");
+
+            environmentModel.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var instanceID = Guid.NewGuid();
+            var model = new ResourceModel(environmentModel.Object)
+            {
+                ID = instanceID,
+                WorkflowXaml = "current xaml"
+            };
+
+            //------------Execute Test---------------------------
+            var serviceDefinition = model.ToServiceDefinition();
+            //------------Assert Results-------------------------
+            var serviceElement = XElement.Load(new StringReader(serviceDefinition));
+            Assert.IsNotNull(serviceElement);
+
+            var actionElement = serviceElement.Element("Action");
+            var xmalElement = actionElement.Element("XamlDefinition");
+
+            Assert.AreEqual("current xaml", xmalElement.Value);
+
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceModel_ToServiceDefinition")]
         public void ResourceModel_ToServiceDefinition_GivenHasMoreThanOneError_ThenThereShouldBeTwoErrorElements()
@@ -390,6 +459,11 @@ namespace Dev2.Core.Tests
             Setup();
             var eventPublisher = new EventPublisher();
             var environmentModel = CreateMockEnvironment(eventPublisher);
+
+            var repo = new Mock<IResourceRepository>();
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("resource xaml");
+
+            environmentModel.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var instanceID = Guid.NewGuid();
             var model = new ResourceModel(environmentModel.Object)

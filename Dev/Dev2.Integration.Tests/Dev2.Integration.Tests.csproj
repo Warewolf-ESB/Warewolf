@@ -235,31 +235,32 @@
     <Compile Include="Dev2.Activities.Tests\DsfDateTimeActivityWFTest.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfActivityAbstractTest.cs" />
     <Compile Include="Dev2.Activities.Tests\ToolingWorkflowTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\EndpointInterrogator\EndpointInterrogatorTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\NestedWorkflow.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\OnErrorTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\PluginTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\RemoteInvokeTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\WebServiceTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Build.Test\BuidTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Channel Tests\DataListChannel.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Channel Tests\ExecutionChannelTests.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\DeleteResourceTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\DynamicServicesHostTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\InternalServices\AddResourceServiceTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\InternalServices\FindDependenciesServiceTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\InternalServices\FindDirectoryServiceTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\InternalServices\FindDriveServiceTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\InternalServices\FindNetworkComputerServiceTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\InternalServices\FindResourceServiceTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\InternalServices\GetDatabaseTablesServiceTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\InternalServices\GetGetDatabaseColumnsForTableServiceTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\InternalServices\SaveResourceServiceTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\RelativeUriResourceTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\ServerLifecycleManagerTest.cs" />
+    <Compile Include="Server Test\Bpm unit tests\DatabaseTest.cs" />
+    <Compile Include="Server Test\Bpm unit tests\EndpointInterrogator\EndpointInterrogatorTest.cs" />
+    <Compile Include="Server Test\Bpm unit tests\NestedWorkflow.cs" />
+    <Compile Include="Server Test\Bpm unit tests\OnErrorTest.cs" />
+    <Compile Include="Server Test\Bpm unit tests\PluginTest.cs" />
+    <Compile Include="Server Test\Bpm unit tests\RemoteInvokeTest.cs" />
+    <Compile Include="Server Test\Bpm unit tests\WebServiceTest.cs" />
+    <Compile Include="Server Test\Build.Test\BuidTest.cs" />
+    <Compile Include="Server Test\Channel Tests\DataListChannel.cs" />
+    <Compile Include="Server Test\Channel Tests\ExecutionChannelTests.cs" />
+    <Compile Include="Server Test\DeleteResourceTest.cs" />
+    <Compile Include="Server Test\DynamicServicesHostTest.cs" />
+    <Compile Include="Server Test\InternalServices\AddResourceServiceTest.cs" />
+    <Compile Include="Server Test\InternalServices\FindDependenciesServiceTest.cs" />
+    <Compile Include="Server Test\InternalServices\FindDirectoryServiceTest.cs" />
+    <Compile Include="Server Test\InternalServices\FindDriveServiceTest.cs" />
+    <Compile Include="Server Test\InternalServices\FindNetworkComputerServiceTest.cs" />
+    <Compile Include="Server Test\InternalServices\FindResourceServiceTest.cs" />
+    <Compile Include="Server Test\InternalServices\GetDatabaseTablesServiceTest.cs" />
+    <Compile Include="Server Test\InternalServices\GetGetDatabaseColumnsForTableServiceTest.cs" />
+    <Compile Include="Server Test\InternalServices\SaveResourceServiceTest.cs" />
+    <Compile Include="Server Test\RelativeUriResourceTest.cs" />
+    <Compile Include="Server Test\ServerLifecycleManagerTest.cs" />
     <Compile Include="Runtime.ServiceModel\ConnectionTests.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\WebServerTests\WebServerTests.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Workspace\XML\XmlResource.cs" />
+    <Compile Include="Server Test\WebServerTests\WebServerTests.cs" />
+    <Compile Include="Server Test\Workspace\XML\XmlResource.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\FileSystemQueryTest.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\FrameworkSecurityProviderTest.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\Models\EnviromentModelTests.cs" />
@@ -295,7 +296,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Enums\WebpartType.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\ComplexWebpageTest.cs" />
+    <Compile Include="Server Test\ComplexWebpageTest.cs" />
     <Compile Include="Runtime.ServiceModel\DbServiceTests.cs" />
     <Compile Include="Runtime.ServiceModel\PluginSourceTests.cs" />
     <Compile Include="Runtime.ServiceModel\TestDbServices.cs" />
@@ -361,16 +362,16 @@
     <Folder Include="locale\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Dev2.Application.Server.Tests\Workspace\XML\Calculate_RecordSet_Subtract.xml" />
-    <EmbeddedResource Include="Dev2.Application.Server.Tests\Workspace\XML\CitiesDatabase.xml" />
-    <EmbeddedResource Include="Dev2.Application.Server.Tests\Workspace\XML\HostSecurityProvider.xml" />
-    <EmbeddedResource Include="Dev2.Application.Server.Tests\Workspace\XML\HostSecurityProviderServerSigned.xml" />
-    <EmbeddedResource Include="Dev2.Application.Server.Tests\Workspace\XML\HostSecurityProviderSystemSigned.xml" />
-    <EmbeddedResource Include="Dev2.Application.Server.Tests\Workspace\XML\ReadMe.txt" />
-    <EmbeddedResource Include="Dev2.Application.Server.Tests\Workspace\XML\ServerConnection1.xml" />
-    <EmbeddedResource Include="Dev2.Application.Server.Tests\Workspace\XML\ServerConnection2.xml" />
-    <EmbeddedResource Include="Dev2.Application.Server.Tests\Workspace\XML\TestDecisionUnsigned.xml" />
-    <EmbeddedResource Include="Dev2.Application.Server.Tests\Workspace\XML\WorkspaceItem.xml" />
+    <EmbeddedResource Include="Server Test\Workspace\XML\Calculate_RecordSet_Subtract.xml" />
+    <EmbeddedResource Include="Server Test\Workspace\XML\CitiesDatabase.xml" />
+    <EmbeddedResource Include="Server Test\Workspace\XML\HostSecurityProvider.xml" />
+    <EmbeddedResource Include="Server Test\Workspace\XML\HostSecurityProviderServerSigned.xml" />
+    <EmbeddedResource Include="Server Test\Workspace\XML\HostSecurityProviderSystemSigned.xml" />
+    <EmbeddedResource Include="Server Test\Workspace\XML\ReadMe.txt" />
+    <EmbeddedResource Include="Server Test\Workspace\XML\ServerConnection1.xml" />
+    <EmbeddedResource Include="Server Test\Workspace\XML\ServerConnection2.xml" />
+    <EmbeddedResource Include="Server Test\Workspace\XML\TestDecisionUnsigned.xml" />
+    <EmbeddedResource Include="Server Test\Workspace\XML\WorkspaceItem.xml" />
     <None Include="App.config" />
     <None Include="DeploymentScripts\Deploy.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -468,8 +469,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="DeploymentScripts\AutomatedStart.pdb" />
-    <EmbeddedResource Include="Dev2.Application.Server.Tests\Workspace\XML\BUG_10638_Result.xml" />
-    <EmbeddedResource Include="Dev2.Application.Server.Tests\Workspace\XML\Bug_10528_Result.xml" />
+    <EmbeddedResource Include="Server Test\Workspace\XML\BUG_10638_Result.xml" />
+    <EmbeddedResource Include="Server Test\Workspace\XML\Bug_10528_Result.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
