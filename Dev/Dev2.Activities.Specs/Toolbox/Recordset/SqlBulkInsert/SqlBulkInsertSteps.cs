@@ -13,7 +13,7 @@ using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 
-namespace Dev2.Activities.Specs.SqlBulkInsert
+namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
 {
     [Binding]
     public class SqlBulkInsertSteps : BaseActivityUnitTest

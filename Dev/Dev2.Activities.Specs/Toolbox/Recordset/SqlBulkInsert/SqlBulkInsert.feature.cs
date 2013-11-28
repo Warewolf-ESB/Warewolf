@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs.SqlBulkInsert
+namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.SqlBulkInsert
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "SqlBulkInsert")))
             {
-                Dev2.Activities.Specs.SqlBulkInsert.SqlBulkInsertFeature.FeatureSetup(null);
+                Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert.SqlBulkInsertFeature.FeatureSetup(null);
             }
         }
         

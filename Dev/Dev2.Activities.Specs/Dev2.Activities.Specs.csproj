@@ -39,6 +39,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
@@ -62,18 +63,68 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="SqlBulkInsert\SqlBulkInsert.feature.cs">
+    <Compile Include="Toolbox\Data\Assign\Assign.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Assign.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Data\Assign\AssignSteps.cs" />
+    <Compile Include="Toolbox\Data\BaseConversion\BaseConversion.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BaseConversion.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Data\BaseConversion\BaseConversionSteps.cs" />
+    <Compile Include="Toolbox\Data\CaseConversion\CaseConversion.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CaseConversion.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Data\CaseConversion\CaseConversionSteps.cs" />
+    <Compile Include="Toolbox\Data\DataMerge\DataMerge.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataMerge.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Data\DataMerge\DataMergeSteps.cs" />
+    <Compile Include="Toolbox\Data\DataSplit\DataSplit.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSplit.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Data\DataSplit\DataSplitSteps.cs" />
+    <Compile Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsert.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SqlBulkInsert.feature</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlBulkInsert\SqlBulkInsertSteps.cs" />
+    <Compile Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsertSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="SqlBulkInsert\SqlBulkInsert.feature">
+    <None Include="Toolbox\Data\Assign\Assign.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Assign.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Data\BaseConversion\BaseConversion.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>BaseConversion.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Data\CaseConversion\CaseConversion.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CaseConversion.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Data\DataMerge\DataMerge.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DataMerge.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Data\DataSplit\DataSplit.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DataSplit.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsert.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SqlBulkInsert.feature.cs</LastGenOutput>
     </None>
@@ -109,7 +160,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SqlBulkInsert\databasesetup.txt" />
+    <Content Include="Toolbox\Recordset\SqlBulkInsert\databasesetup.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Toolbox\ControlFlow\" />
+    <Folder Include="Toolbox\FileAndFolder\" />
+    <Folder Include="Toolbox\LoopConstructs\" />
+    <Folder Include="Toolbox\Resources\" />
+    <Folder Include="Toolbox\Scripting\" />
+    <Folder Include="Toolbox\Utility\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
