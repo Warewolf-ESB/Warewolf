@@ -544,7 +544,7 @@ namespace Dev2.Studio.Core.Models
             {
                 XElement dataList = string.IsNullOrEmpty(DataList) ? new XElement("DataList") : XElement.Parse(DataList);
 
-                var xaml = WorkflowXaml ?? string.Empty;
+                var xaml = WorkflowXaml;
 
                 if (string.IsNullOrEmpty(xaml))
                 {

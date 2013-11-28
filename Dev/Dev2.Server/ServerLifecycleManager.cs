@@ -1883,7 +1883,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                     };
                     StartNetworkServer(endpoints);
 
-                    _owinServer = WebServerStartup.Start("http://*:8080/");
+                    //_owinServer = WebServerStartup.Start("http://*:8080/");
                     //_owinServer = WebServerStartup.Start(_endpoints);
                     _webserver = new Dev2.Runtime.WebServer.WebServer(_endpoints);
                     _webserver.Start();
