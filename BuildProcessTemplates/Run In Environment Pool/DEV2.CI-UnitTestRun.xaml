@@ -176,143 +176,103 @@
           </mtbwa:SyncWorkspace.RequestsFailed>
         </mtbwa:SyncWorkspace>
       </Sequence>
-      <If Condition="[UseStagedBuild]" DisplayName="If UseStagedBuild" sap2010:WorkflowViewState.IdRef="If_52">
-        <If.Then>
-          <mtbwa:InvokeProcess DisplayName="Download Build" FileName="[SourcesDirectory &amp; &quot;\DownloadBuildToWorkspace.bat&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_4">
-            <mtbwa:InvokeProcess.ErrorDataReceived>
-              <ActivityAction x:TypeArguments="x:String">
-                <ActivityAction.Argument>
-                  <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
-                </ActivityAction.Argument>
-                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_44">
-                  <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_10" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[errOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                  <TerminateWorkflow sap2010:WorkflowViewState.IdRef="TerminateWorkflow_3" Reason="Cannot download the build from staging" />
-                </Sequence>
-              </ActivityAction>
-            </mtbwa:InvokeProcess.ErrorDataReceived>
-            <mtbwa:InvokeProcess.OutputDataReceived>
-              <ActivityAction x:TypeArguments="x:String">
-                <ActivityAction.Argument>
-                  <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
-                </ActivityAction.Argument>
-                <mtbwa:WriteBuildMessage DisplayName="Write Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_11" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[stdOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-              </ActivityAction>
-            </mtbwa:InvokeProcess.OutputDataReceived>
-          </mtbwa:InvokeProcess>
-        </If.Then>
-        <If.Else>
-          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_52">
-            <Sequence DisplayName="Get and Unzip Build" sap2010:WorkflowViewState.IdRef="Sequence_54">
-              <If Condition="[SpecifiedChangeSet Is Nothing]" DisplayName="If no Changeset Specified">
-                <If.Then>
-                  <Sequence DisplayName="GetLatestBuildNumber">
+      <Sequence DisplayName="Get and Unzip Build" sap2010:WorkflowViewState.IdRef="Sequence_54">
+        <If Condition="[SpecifiedChangeSet Is Nothing]" DisplayName="If no Changeset Specified" sap2010:WorkflowViewState.IdRef="If_55">
+          <If.Then>
+            <Sequence DisplayName="GetLatestBuildNumber" sap2010:WorkflowViewState.IdRef="Sequence_57">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="scg:List(x:Int32)" Default="[New List(Of Integer)]" Name="BuildNumbersList" />
+                <Variable x:TypeArguments="s:Int32[]" Name="BuildNumbersArray" />
+                <Variable x:TypeArguments="x:Int32" Name="BuildNumber" />
+                <Variable x:TypeArguments="s:String[]" Name="BuildFileNames" />
+              </Sequence.Variables>
+              <InvokeMethod DisplayName="Read Builds Folder" sap2010:WorkflowViewState.IdRef="InvokeMethod_8" MethodName="GetFiles" TargetType="si:Directory">
+                <InvokeMethod.Result>
+                  <OutArgument x:TypeArguments="s:String[]">[BuildFileNames]</OutArgument>
+                </InvokeMethod.Result>
+                <InArgument x:TypeArguments="x:String">[BuildStagingDirectory]</InArgument>
+              </InvokeMethod>
+              <ForEach x:TypeArguments="x:String" DisplayName="ForEach&lt;String&gt;" sap2010:WorkflowViewState.IdRef="ForEach`1_12" Values="[BuildFileNames]">
+                <ActivityAction x:TypeArguments="x:String">
+                  <ActivityAction.Argument>
+                    <DelegateInArgument x:TypeArguments="x:String" Name="build" />
+                  </ActivityAction.Argument>
+                  <Sequence DisplayName="Build Array of Build Numbers" sap2010:WorkflowViewState.IdRef="Sequence_56">
                     <Sequence.Variables>
-                      <Variable x:TypeArguments="scg:List(x:Int32)" Default="[New List(Of Integer)]" Name="BuildNumbersList" />
-                      <Variable x:TypeArguments="s:Int32[]" Name="BuildNumbersArray" />
                       <Variable x:TypeArguments="x:Int32" Name="BuildNumber" />
-                      <Variable x:TypeArguments="s:String[]" Name="BuildFileNames" />
                     </Sequence.Variables>
-                    <InvokeMethod DisplayName="Read Builds Folder" MethodName="GetFiles" TargetType="si:Directory">
-                      <InvokeMethod.Result>
-                        <OutArgument x:TypeArguments="s:String[]">[BuildFileNames]</OutArgument>
-                      </InvokeMethod.Result>
-                      <InArgument x:TypeArguments="x:String">[BuildStagingDirectory]</InArgument>
-                      <sap2010:WorkflowViewState.IdRef>InvokeMethod_8</sap2010:WorkflowViewState.IdRef>
-                    </InvokeMethod>
-                    <ForEach x:TypeArguments="x:String" DisplayName="ForEach&lt;String&gt;" Values="[BuildFileNames]">
-                      <ActivityAction x:TypeArguments="x:String">
-                        <ActivityAction.Argument>
-                          <DelegateInArgument x:TypeArguments="x:String" Name="build" />
-                        </ActivityAction.Argument>
-                        <Sequence DisplayName="Build Array of Build Numbers">
-                          <Sequence.Variables>
-                            <Variable x:TypeArguments="x:Int32" Name="BuildNumber" />
-                          </Sequence.Variables>
-                          <Assign DisplayName="Trim Off Path">
-                            <Assign.To>
-                              <OutArgument x:TypeArguments="x:String">[build]</OutArgument>
-                            </Assign.To>
-                            <Assign.Value>
-                              <InArgument x:TypeArguments="x:String">[build.Remove(0, BuildStagingDirectory.Length + 1).TrimEnd(New Char() {"."c, "z"c, "i"c, "p"c})]</InArgument>
-                            </Assign.Value>
-                            <sap2010:WorkflowViewState.IdRef>Assign_9</sap2010:WorkflowViewState.IdRef>
-                          </Assign>
-                          <If Condition="[Integer.TryParse(build, BuildNumber)]" DisplayName="If Can Parse Build Number">
-                            <If.Then>
-                              <Sequence DisplayName="Can Parse">
-                                <AddToCollection x:TypeArguments="x:Int32" Collection="[BuildNumbersList]" Item="[Integer.Parse(build)]" sap2010:WorkflowViewState.IdRef="AddToCollection`1_2" />
-                                <sap2010:WorkflowViewState.IdRef>Sequence_55</sap2010:WorkflowViewState.IdRef>
-                              </Sequence>
-                            </If.Then>
-                            <sap2010:WorkflowViewState.IdRef>If_53</sap2010:WorkflowViewState.IdRef>
-                          </If>
-                          <sap2010:WorkflowViewState.IdRef>Sequence_56</sap2010:WorkflowViewState.IdRef>
-                        </Sequence>
-                      </ActivityAction>
-                      <sap2010:WorkflowViewState.IdRef>ForEach`1_12</sap2010:WorkflowViewState.IdRef>
-                    </ForEach>
-                    <Assign DisplayName="Convert List to Array">
+                    <Assign DisplayName="Trim Off Path" sap2010:WorkflowViewState.IdRef="Assign_9">
                       <Assign.To>
-                        <OutArgument x:TypeArguments="s:Int32[]">[BuildNumbersArray]</OutArgument>
+                        <OutArgument x:TypeArguments="x:String">[build]</OutArgument>
                       </Assign.To>
                       <Assign.Value>
-                        <InArgument x:TypeArguments="s:Int32[]">[BuildNumbersList.ToArray()]</InArgument>
+                        <InArgument x:TypeArguments="x:String">[build.Remove(0, BuildStagingDirectory.Length + 1).TrimEnd(New Char() {"."c, "z"c, "i"c, "p"c})]</InArgument>
                       </Assign.Value>
-                      <sap2010:WorkflowViewState.IdRef>Assign_10</sap2010:WorkflowViewState.IdRef>
                     </Assign>
-                    <If Condition="[BuildNumbersArray.Length = 0]" DisplayName="If No Builds Found">
+                    <If Condition="[Integer.TryParse(build, BuildNumber)]" DisplayName="If Can Parse Build Number" sap2010:WorkflowViewState.IdRef="If_53">
                       <If.Then>
-                        <TerminateWorkflow Reason="No builds found in staging directory" sap2010:WorkflowViewState.IdRef="TerminateWorkflow_7" />
+                        <Sequence DisplayName="Can Parse" sap2010:WorkflowViewState.IdRef="Sequence_55">
+                          <AddToCollection x:TypeArguments="x:Int32" Collection="[BuildNumbersList]" sap2010:WorkflowViewState.IdRef="AddToCollection`1_2" Item="[Integer.Parse(build)]" />
+                        </Sequence>
                       </If.Then>
-                      <sap2010:WorkflowViewState.IdRef>If_54</sap2010:WorkflowViewState.IdRef>
                     </If>
-                    <Assign DisplayName="Get Latest Build Number">
-                      <Assign.To>
-                        <OutArgument x:TypeArguments="x:String">[SpecifiedChangeSet]</OutArgument>
-                      </Assign.To>
-                      <Assign.Value>
-                        <InArgument x:TypeArguments="x:String">[BuildNumbersArray.Max().ToString]</InArgument>
-                      </Assign.Value>
-                      <sap2010:WorkflowViewState.IdRef>Assign_11</sap2010:WorkflowViewState.IdRef>
-                    </Assign>
-                    <sap2010:WorkflowViewState.IdRef>Sequence_57</sap2010:WorkflowViewState.IdRef>
                   </Sequence>
+                </ActivityAction>
+              </ForEach>
+              <Assign DisplayName="Convert List to Array" sap2010:WorkflowViewState.IdRef="Assign_10">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="s:Int32[]">[BuildNumbersArray]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="s:Int32[]">[BuildNumbersList.ToArray()]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <If Condition="[BuildNumbersArray.Length = 0]" DisplayName="If No Builds Found" sap2010:WorkflowViewState.IdRef="If_54">
+                <If.Then>
+                  <TerminateWorkflow sap2010:WorkflowViewState.IdRef="TerminateWorkflow_7" Reason="No builds found in staging directory" />
                 </If.Then>
-                <sap2010:WorkflowViewState.IdRef>If_55</sap2010:WorkflowViewState.IdRef>
               </If>
-              <InvokeMethod DisplayName="Get Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_5" MethodName="Copy" TargetType="si:File">
-                <InArgument x:TypeArguments="x:String">[BuildStagingDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
-                <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
-              </InvokeMethod>
-              <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;&quot; &amp; BuildDirectory &amp; &quot;\&quot; &amp; SpecifiedChangeSet &amp; &quot;.zip&quot; &amp; &quot;&quot;&quot; -d &quot;&quot;&quot; &amp; BuildDirectory &amp; &quot;&quot;&quot;&quot;]" DisplayName="Unzip Build" FileName="[SourcesDirectory &amp; &quot;\unzip.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_7">
-                <mtbwa:InvokeProcess.ErrorDataReceived>
-                  <ActivityAction x:TypeArguments="x:String">
-                    <ActivityAction.Argument>
-                      <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
-                    </ActivityAction.Argument>
-                    <Sequence sap2010:WorkflowViewState.IdRef="Sequence_53">
-                      <InvokeMethod DisplayName="Delete Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_7" MethodName="Delete" TargetType="si:File">
-                        <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
-                      </InvokeMethod>
-                      <TerminateWorkflow sap2010:WorkflowViewState.IdRef="TerminateWorkflow_6" Reason="Cannot download the build from staging" />
-                    </Sequence>
-                  </ActivityAction>
-                </mtbwa:InvokeProcess.ErrorDataReceived>
-                <mtbwa:InvokeProcess.OutputDataReceived>
-                  <ActivityAction x:TypeArguments="x:String">
-                    <ActivityAction.Argument>
-                      <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
-                    </ActivityAction.Argument>
-                  </ActivityAction>
-                </mtbwa:InvokeProcess.OutputDataReceived>
-              </mtbwa:InvokeProcess>
-              <InvokeMethod DisplayName="Delete Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_6" MethodName="Delete" TargetType="si:File">
-                <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
-              </InvokeMethod>
+              <Assign DisplayName="Get Latest Build Number" sap2010:WorkflowViewState.IdRef="Assign_11">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[SpecifiedChangeSet]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[BuildNumbersArray.Max().ToString]</InArgument>
+                </Assign.Value>
+              </Assign>
             </Sequence>
-          </Sequence>
-        </If.Else>
-      </If>
+          </If.Then>
+        </If>
+        <InvokeMethod DisplayName="Get Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_5" MethodName="Copy" TargetType="si:File">
+          <InArgument x:TypeArguments="x:String">[BuildStagingDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
+          <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
+        </InvokeMethod>
+        <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;&quot; &amp; BuildDirectory &amp; &quot;\&quot; &amp; SpecifiedChangeSet &amp; &quot;.zip&quot; &amp; &quot;&quot;&quot; -d &quot;&quot;&quot; &amp; BuildDirectory &amp; &quot;&quot;&quot;&quot;]" DisplayName="Unzip Build" FileName="[SourcesDirectory &amp; &quot;\unzip.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_7">
+          <mtbwa:InvokeProcess.ErrorDataReceived>
+            <ActivityAction x:TypeArguments="x:String">
+              <ActivityAction.Argument>
+                <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
+              </ActivityAction.Argument>
+              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_53">
+                <InvokeMethod DisplayName="Delete Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_7" MethodName="Delete" TargetType="si:File">
+                  <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
+                </InvokeMethod>
+                <TerminateWorkflow sap2010:WorkflowViewState.IdRef="TerminateWorkflow_6" Reason="Cannot download the build from staging" />
+              </Sequence>
+            </ActivityAction>
+          </mtbwa:InvokeProcess.ErrorDataReceived>
+          <mtbwa:InvokeProcess.OutputDataReceived>
+            <ActivityAction x:TypeArguments="x:String">
+              <ActivityAction.Argument>
+                <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
+              </ActivityAction.Argument>
+            </ActivityAction>
+          </mtbwa:InvokeProcess.OutputDataReceived>
+        </mtbwa:InvokeProcess>
+        <InvokeMethod DisplayName="Delete Zipped Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_6" MethodName="Delete" TargetType="si:File">
+          <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; ".zip"]</InArgument>
+        </InvokeMethod>
+      </Sequence>
       <Sequence DisplayName="Test" sap2010:WorkflowViewState.IdRef="Sequence_13">
         <Sequence.Variables>
           <Variable x:TypeArguments="scg:IList(mtvc:Changeset)" Name="associatedChangesets" />
@@ -540,7 +500,7 @@
       </If>
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="------------------- Unit Test Run DONE -------------------" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>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AuMBO+MBVwMBsQLgATzgAU8DAa8C5gEd5gE9AwGqAugBE+gBjAEDAawC8AE68AFcAwGnAu0BO+0BTwMBpQKCAjqCAnoDAY4ChAJhhAKJAQMBjAKlAhGlAtUEAwH1AaYCEaYCsAUDAegBqQIR0gIbAwGkAegCEegCogIDAZIB6QIR6QL6AgMBhQHzAhHzApUCAgF89AIRhgMWAgFyhwMRmwMWAgFdtgMTwAMdAgFAxANoxAOJAQIBPtADE98DKQIBLuMDaOMDogECASyWAXaWAYMBAwHuApYBlAGWAZwBAwHtApYBXZYBbgMB6wKiATmiAUsDAegCogFUogGDAQMB5wKiAfUBogGCAgMB5QKiAZQCogGoAgMB4wKiAdwBogHtAQMB4QLMARXTAR4DAb8C1AEV2gEaAwG1AugBY+gBiQEDAa0CpQLyAaUC0gQDAfgBpQLYAaUC6wEDAfYBpgLhAaYCrQUDAesBpgLDAaYC2gEDAekBqQLNAakC2gEDAeUBrgIV0AIgAwGlAegCvgHoAokCAwGVAegCkQLoAp8CAwGTAekC3gHpAvMBAwGQAekCiAHpAqABAwGOAekC+gHpAokCAwGMAekCZOkCcgMBigHpAuoC6QL3AgMBiAHpArsB6QLQAQMBhgHzAr0B8wL7AQIBf/MCgwLzApICAgF99AIf9AJNAgFz9gIVhAMgAgF1hwMfhwNTAgFeiQMVmQMgAgFgtgORAbYDpAECAUa7Axe+AyYCAUHQAzLQA8kBAgEx0AP5AdADrwICAS/RAUDRAaABAwHCAs4BQc4BSAMBwALUASPUAUsDAbYC1gEZ2AEkAwG5ArACGbgCJAMBtwHAAh3MAigDAaYB+AIZ+AKVAQIBeYADHYADswECAXaLAxmNAzUCAWSVAx2VA7UBAgFhvANAvANKAgFEvQNAvQNsAgFC1wEb1wG8AQMBugK0Ahu0AsoCAwHgAbUCG7UCvQIDAdoBtgIbtgKzAgMB0wG3Ahu3At4FAwG4AcQCH8gCJAMBsQHJAh/JArMCAwGvAcoCH8oC8AEDAawBywIfywKzAgMBpwH4AlL4AmECAXqAA5sBgAOwAQIBd4sDowKLA9QCAgFniwP8AYsDlQICAWaLA94BiwPvAQIBZYwDG4wDrgICAWmVA50BlQOyAQIBYtcBUdcBZQMBvQLXAaEB1wG5AQMBuwK0Au4BtALHAgMB4wG0AtcBtALnAQMB4QG1AsoBtQKgAgMB3QG1AqgCtQK6AgMB2wG2AtYBtgL7AQMB2AG2AoMCtgKYAgMB1gG2AqMCtgKwAgMB1AG3ApEDtwKxAwMB0QG3AsYFtwLbBQMBzwG3Ame3Ao0BAwHNAbcCgwW3ApYFAwHLAbcC6wO3AsEEAwHIAbcC5AK3AoQDAwHGAbcCMrcCUQMBxAG3AtsEtwLzBAMBwgG3AskDtwLhAwMBwAG3AqYFtwK4BQMBvgG3AsIBtwKsAgMBuwG3AsoEtwLRBAMBuQHEAi3EApYBAwGyAcYCI8YCuwEDAbQByQLvAckCsAIDAbABygLbAcoC7QEDAa0BywI9ywKMAQMBqwHLAp4CywKwAgMBqQGMA6cBjAPLAQIBcIwD1gGMA4cCAgFujANYjANnAgFsjAOQAowDqwICAWrGAp8BxgK4AQMBtQE=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -612,17 +572,6 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="WriteBuildMessage_10" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="TerminateWorkflow_3" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="Sequence_44" sap:VirtualizedContainerService.HintSize="222,208">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="WriteBuildMessage_11" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="InvokeProcess_4" sap:VirtualizedContainerService.HintSize="256,464" />
       <sap2010:ViewStateData Id="InvokeMethod_8" sap:VirtualizedContainerService.HintSize="516,132" />
       <sap2010:ViewStateData Id="Assign_9" sap:VirtualizedContainerService.HintSize="464,60" />
       <sap2010:ViewStateData Id="AddToCollection`1_2" sap:VirtualizedContainerService.HintSize="200,22" />
@@ -666,21 +615,13 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="InvokeProcess_7" sap:VirtualizedContainerService.HintSize="663,567" />
       <sap2010:ViewStateData Id="InvokeMethod_6" sap:VirtualizedContainerService.HintSize="663,132" />
-      <sap2010:ViewStateData Id="Sequence_54" sap:VirtualizedContainerService.HintSize="685,2633">
+      <sap2010:ViewStateData Id="Sequence_54" sap:VirtualizedContainerService.HintSize="1251,2633">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_52" sap:VirtualizedContainerService.HintSize="707,2757">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_52" sap:VirtualizedContainerService.HintSize="1251,2905" />
       <sap2010:ViewStateData Id="Assign`1_7" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="Assign`1_8" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="Sequence_11" sap:VirtualizedContainerService.HintSize="470,208">
@@ -860,15 +801,15 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="If_47" sap:VirtualizedContainerService.HintSize="1251,418" />
       <sap2010:ViewStateData Id="WriteBuildMessage_6" sap:VirtualizedContainerService.HintSize="1251,22" />
-      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="1273,10642" />
-      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="1295,10952">
+      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="1273,10370" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="1295,10680">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="1335,11032" />
+      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="1335,10760" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
