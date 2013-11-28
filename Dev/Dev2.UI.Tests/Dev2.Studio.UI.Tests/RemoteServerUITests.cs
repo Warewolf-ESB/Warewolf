@@ -323,12 +323,56 @@ namespace Dev2.Studio.UI.Tests
         public void RemoteServerUITests_EditRemotePluginSource_PluginSourceIsEdited()
         {
             const string TextToSearchWith = "PluginSource";
+            var path = string.Empty;
+
+            //Edit remote plugin source
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            Playback.Wait(3500);
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}{ENTER}");
-            Playback.Wait(1000);
+            PluginSourceMap.ClickPluginSourceAssemblyPath();
+            Keyboard.SendKeys("{LEFT}{LEFT}{LEFT}{LEFT} ");
+            Keyboard.SendKeys("-");
+            Keyboard.SendKeys(" ");
+            Keyboard.SendKeys("C");
+            Keyboard.SendKeys("o");
+            Keyboard.SendKeys("p");
+            Keyboard.SendKeys("y");
+            Playback.Wait(100);
+            Keyboard.SendKeys("{TAB}{ENTER}");
             SaveDialogUIMap.ClickSave();
 
+            //Change it back
+            ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
+            PluginSourceMap.ClickPluginSourceAssemblyPath();
+            var persistClipboard = Clipboard.GetText();
+            Keyboard.SendKeys("{CTRL}a{CTRL}c{END}");
+            Playback.Wait(100);
+            Keyboard.SendKeys("{LEFT}");
+            Playback.Wait(100);
+            Keyboard.SendKeys("{LEFT}");
+            Playback.Wait(100);
+            Keyboard.SendKeys("{LEFT}");
+            Playback.Wait(100);
+            Keyboard.SendKeys("{LEFT}");
+            Playback.Wait(100);
+            Keyboard.SendKeys("{BACK}");
+            Playback.Wait(100);
+            Keyboard.SendKeys("{BACK}");
+            Playback.Wait(100);
+            Keyboard.SendKeys("{BACK}");
+            Playback.Wait(100);
+            Keyboard.SendKeys("{BACK}");
+            Playback.Wait(100);
+            Keyboard.SendKeys("{BACK}");
+            Playback.Wait(100);
+            Keyboard.SendKeys("{BACK}");
+            Playback.Wait(100);
+            Keyboard.SendKeys("{BACK}");
+            Playback.Wait(100);
+            Keyboard.SendKeys("{TAB}{ENTER}");
+            SaveDialogUIMap.ClickSave();
+            path = Clipboard.GetText();
+            Clipboard.SetText(persistClipboard);
+
+            Assert.AreEqual(@"C:\DevelopmentDropOff\Integration Tests\Pugin1 - Copy.dll", path, "Cannot change remote plugin source");
         }
 
         [TestMethod]

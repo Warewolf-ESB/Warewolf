@@ -16,5 +16,15 @@
     
     public partial class PluginSourceMap
     {
+        public void TabToAssemblyPath()
+        {
+            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
+            Keyboard.SendKeys(wizard, "{TAB}{TAB}");
+        }
+
+        public void ClickPluginSourceAssemblyPath()
+        {
+            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[0], new Point(423, 406));
+        }
     }
 }
