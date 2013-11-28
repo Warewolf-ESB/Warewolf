@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Common;
 using Dev2.DataList;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -13,14 +14,14 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
 {
     public class FindRecordsMultipleCriteriaDesignerViewModel : ActivityCollectionDesignerViewModel<FindRecordsTO>
     {
-        readonly IList<string> _requiresSearchCriteria = new List<string> { "Not Contains", "Contains", "Equal", "Not Equal", "Ends With", "Starts With", "Regex", ">", "<", "<=", ">=" };
+        readonly IList<string> _requiresSearchCriteria = new List<string> { "Doesnt Contains", "Contains", "=", GlobalConstants.NotEqualsUnicodeChar, "Ends With", "Starts With", "Is Regex", ">", "<", GlobalConstants.LessThenOrEqualToUnicodeChar, GlobalConstants.GreaterThenOrEqualToUnicodeChar };
 
         public FindRecordsMultipleCriteriaDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
             AddTitleBarHelpToggle();
 
-            WhereOptions = new ObservableCollection<string>(FindRecsetOptions.FindAll().Select(c => c.HandlesType()).OrderBy(c => c));
+            WhereOptions = new ObservableCollection<string>(FindRecsetOptions.FindAll().Select(c => c.HandlesType()));
             SearchTypeUpdatedCommand = new RelayCommand(OnSearchTypeChanged, o => true);
 
             dynamic mi = ModelItem;

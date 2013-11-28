@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace Dev2.Common
@@ -8,7 +9,7 @@ namespace Dev2.Common
      * Moved the CustomIcons to Dev2.Studio / AppResources / Converters
      * Since that is where they where being used ;)
      */
-    
+
     public static class GlobalConstants
     {
         // Force Webserver Contants
@@ -87,9 +88,9 @@ namespace Dev2.Common
 
         // Storage Cache Constants
         public const int DefaultColumnSizeLvl1 = 10;
-        public const int DefaultStorageSegments = 8; 
+        public const int DefaultStorageSegments = 8;
         public const int DefaultStorageSegmentSize = 64 * 1024 * 1024; // 64 MB default buffer size ;)
-        public const int DefaultAliasCacheSize = 32*1024; // 32KB of alias cache ;)
+        public const int DefaultAliasCacheSize = 32 * 1024; // 32KB of alias cache ;)
         public const string DefaultStorageZipEntry = "Dev2Storage";
 
         public const string DataListIoColDirection = "ColumnIODirection";
@@ -199,5 +200,47 @@ namespace Dev2.Common
         public static string SerializableResourceSingleQuote = "__SQUOTE__";
 
         public static int MemoryItemCountCompactLevel = 500;
+
+        public static string NotEqualsUnicodeChar = "≠";
+        public static string GreaterThenOrEqualToUnicodeChar = "≥";
+        public static string LessThenOrEqualToUnicodeChar = "≤";
+
+        public static List<string> FindRecordsOperations = new List<string>()
+        {
+                "=",
+                ">",
+                "<",
+                NotEqualsUnicodeChar,
+                GreaterThenOrEqualToUnicodeChar,
+                LessThenOrEqualToUnicodeChar,
+                "Is Alphanumeric",
+                //"Is Base64",
+                //"Is Between",
+                //"Is Binary", 
+                "Contains",
+                "Is Date",
+                "Is Email",
+                "Ends With",
+                //"Is Hex",
+                "Is Numeric",
+                "Is Regex",
+                "Starts With",
+                "Is Text",
+                "Is XML",
+                //"Not Alphanumeric",
+                //"Not Base64",
+                //"Not Between",
+                //"Not Binary",
+                "Doesnt Contain",
+                "Not Date",
+                "Not Email",
+                //"Doesnt Ends With",
+                //"Not Hex",
+                "Not Numeric",
+                //"Not Regex",
+                //"Doesnt Start With",
+                "Not Text",
+                "Not XML"
+        };
     }
 }

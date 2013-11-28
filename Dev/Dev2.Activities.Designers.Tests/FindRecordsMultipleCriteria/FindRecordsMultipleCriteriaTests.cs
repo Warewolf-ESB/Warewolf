@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
+using Dev2.Common;
 using Dev2.DataList;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
@@ -19,7 +20,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_Equal_RequiresCriteriaInput_IsCriteriaEnabledTrue()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Equal", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "=", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
         }
 
         [TestMethod]
@@ -27,7 +28,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_NotContains_RequiresCriteriaInput_IsCriteriaEnabledTrue()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Not Contains", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Doesnt Contains", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
         }
 
         [TestMethod]
@@ -43,7 +44,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_NotEqual_RequiresCriteriaInput_IsCriteriaEnabledTrue()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Not Equal", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(GlobalConstants.NotEqualsUnicodeChar, isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
 
         }
         [TestMethod]
@@ -67,7 +68,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_Regex_RequiresCriteriaInput_IsCriteriaEnabledTrue()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Regex", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Is Regex", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
         }
 
         [TestMethod]
@@ -91,7 +92,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_LessThanEqual_RequiresCriteriaInput_IsCriteriaEnabledTrue()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "<=", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(GlobalConstants.LessThenOrEqualToUnicodeChar, isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
         }
 
         [TestMethod]
@@ -99,7 +100,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_GreaterThanEqual_RequiresCriteriaInput_IsCriteriaEnabledTrue()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: ">=", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(GlobalConstants.GreaterThenOrEqualToUnicodeChar, isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
         }
 
         [TestMethod]
@@ -181,7 +182,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             //------------Setup for test--------------------------
             var items = new List<FindRecordsTO>
             {
-                new FindRecordsTO("xxxx", "Equals", 1),
+                new FindRecordsTO("xxxx", "=", 1),
                 new FindRecordsTO("yyyy", "Contains", 2)
             };
 
@@ -192,11 +193,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.ModelItem);
             Assert.IsNotNull(viewModel.ModelItemCollection);
-            Assert.AreEqual("ResultsCollection", viewModel.CollectionName);
-
-            var expectedOptions = FindRecsetOptions.FindAll().Select(c => c.HandlesType()).OrderBy(c => c).ToList();
-            CollectionAssert.AreEqual(expectedOptions, viewModel.WhereOptions);
-
+            Assert.AreEqual("ResultsCollection", viewModel.CollectionName);            
             Assert.AreEqual(1, viewModel.TitleBarToggles.Count);
         }
 

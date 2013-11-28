@@ -47,41 +47,41 @@ namespace Dev2.Data.Decisions.Operations
         IsNotError,
         [DecisionTypeDisplayValue("Is Numeric")]
         IsNumeric,
-        [DecisionTypeDisplayValue("Is Not Numeric")]
+        [DecisionTypeDisplayValue("Not Numeric")]
         IsNotNumeric,
         [DecisionTypeDisplayValue("Is Text")]
         IsText,
-        [DecisionTypeDisplayValue("Is Not Text")]
+        [DecisionTypeDisplayValue("Not Text")]
         IsNotText,
         [DecisionTypeDisplayValue("Is Alphanumeric")]
         IsAlphanumeric,
-        [DecisionTypeDisplayValue("Is Not Alphanumeric")]
+        [DecisionTypeDisplayValue("Not Alphanumeric")]
         IsNotAlphanumeric,
         [DecisionTypeDisplayValue("Is XML")]
         IsXML,
-        [DecisionTypeDisplayValue("Is Not XML")]
+        [DecisionTypeDisplayValue("Not XML")]
         IsNotXML,
         [DecisionTypeDisplayValue("Is Date")]
         IsDate,
-        [DecisionTypeDisplayValue("Is Not Date")]
+        [DecisionTypeDisplayValue("Not Date")]
         IsNotDate,
         [DecisionTypeDisplayValue("Is Email")]
         IsEmail,
-        [DecisionTypeDisplayValue("Is Not Email")]
+        [DecisionTypeDisplayValue("Not Email")]
         IsNotEmail,
         [DecisionTypeDisplayValue("Is Regular Expression")]
         IsRegEx,
-        [DecisionTypeDisplayValue("Is Equal")]
+        [DecisionTypeDisplayValue("=")]
         IsEqual,
-        [DecisionTypeDisplayValue("Is Not Equal")]
+        [DecisionTypeDisplayValue("≠")]
         IsNotEqual,
-        [DecisionTypeDisplayValue("Is Less Than")]
+        [DecisionTypeDisplayValue("<")]
         IsLessThan,
-        [DecisionTypeDisplayValue("Is Less Than Or Equal To")]
+        [DecisionTypeDisplayValue("≤")]
         IsLessThanOrEqual,
-        [DecisionTypeDisplayValue("Is Greater Than")]
+        [DecisionTypeDisplayValue(">")]
         IsGreaterThan,
-        [DecisionTypeDisplayValue("Is Greater Than Or Equal To")]
+        [DecisionTypeDisplayValue("≥")]
         IsGreaterThanOrEqual,
         [DecisionTypeDisplayValue("Contains")]
         IsContains,
@@ -93,15 +93,15 @@ namespace Dev2.Data.Decisions.Operations
         IsBetween,
         [DecisionTypeDisplayValue("Is Binary")]
         IsBinary,
-        [DecisionTypeDisplayValue("Is Not Binary")]
+        [DecisionTypeDisplayValue("Not Binary")]
         IsNotBinary,
         [DecisionTypeDisplayValue("Is Hex")]
         IsHex,
-        [DecisionTypeDisplayValue("Is Not Hex")]
+        [DecisionTypeDisplayValue("Not Hex")]
         IsNotHex,
         [DecisionTypeDisplayValue("Is Base64")]
         IsBase64,
-        [DecisionTypeDisplayValue("Is Not Base64")]
+        [DecisionTypeDisplayValue("Not Base64")]
         IsNotBase64
     }
 }

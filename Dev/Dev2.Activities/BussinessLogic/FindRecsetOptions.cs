@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 
 namespace Dev2.DataList
@@ -12,7 +13,7 @@ namespace Dev2.DataList
     public static class FindRecsetOptions
     {
 
-        private static readonly Dictionary<string, IFindRecsetOptions> _options = new Dictionary<string, IFindRecsetOptions>();
+        private static Dictionary<string, IFindRecsetOptions> _options = new Dictionary<string, IFindRecsetOptions>();
 
         /// <summary>
         /// Private method for intitailizing the list of options
@@ -35,6 +36,22 @@ namespace Dev2.DataList
                     }
                 }
             }
+            SortRecordsetOptions();
+        }
+
+        private static void SortRecordsetOptions()
+        {
+            Dictionary<string, IFindRecsetOptions> tmpDictionary = new Dictionary<string, IFindRecsetOptions>();
+            foreach(string findRecordsOperation in GlobalConstants.FindRecordsOperations)
+            {
+                KeyValuePair<string, IFindRecsetOptions> firstOrDefault = _options.FirstOrDefault(c => c.Value.HandlesType() == findRecordsOperation);
+                if(!string.IsNullOrEmpty(firstOrDefault.Key))
+                {
+                    tmpDictionary.Add(firstOrDefault.Key,firstOrDefault.Value);
+                }
+            }
+
+            _options = tmpDictionary;            
         }
 
         /// <summary>

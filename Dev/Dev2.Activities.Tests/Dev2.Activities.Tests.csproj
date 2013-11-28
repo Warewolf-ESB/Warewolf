@@ -143,6 +143,7 @@
     <Compile Include="FindMissingStrategyTest\MixedActivityFindMissingStrategyTests.cs" />
     <Compile Include="FindMissingStrategyTest\StaticActivityFindMissingStrategyTests.cs" />
     <Compile Include="FindMissingStrategyTest\DsfNativeActivityFindMissingStrategyTests.cs" />
+    <Compile Include="FindRecsetOptionsTests\FindRecsetOptionsTests.cs" />
     <Compile Include="IBaseActivityUnitTest.cs" />
     <Compile Include="Mocks\ActivityOperationBrokerMock.cs" />
     <Compile Include="Properties\Annotations.cs" />

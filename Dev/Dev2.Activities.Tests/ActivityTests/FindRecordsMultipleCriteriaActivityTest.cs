@@ -176,7 +176,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Action = new DsfFindRecordsMultipleCriteriaActivity
                 {
                     FieldsToSearch = "[[Recset().Field1]],[[Recset().Field2]],[[Recset().Field3]]",
-                    ResultsCollection = new List<FindRecordsTO>{new FindRecordsTO("32",">",1),new FindRecordsTO("Mr A","Equal",2)},
+                    ResultsCollection = new List<FindRecordsTO>{new FindRecordsTO("32",">",1),new FindRecordsTO("Mr A","=",2)},
                     StartIndex = "",
                     Result = "[[Result().res]]",
                     RequireAllTrue = false
@@ -333,7 +333,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Action = new DsfFindRecordsMultipleCriteriaActivity
                 {
                     FieldsToSearch = "[[Recset().Field1]],[[Recset().Field2]],[[Recset().Field3]]",
-                    ResultsCollection = new List<FindRecordsTO>{new FindRecordsTO("32",">",1),new FindRecordsTO("Mr A","Equal",2)},
+                    ResultsCollection = new List<FindRecordsTO>{new FindRecordsTO("32",">",1),new FindRecordsTO("Mr A","=",2)},
                     StartIndex = "",
                     RequireAllTrue = true,
                     Result = "[[Result().res]]"
@@ -538,7 +538,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var act = new DsfFindRecordsMultipleCriteriaActivity { 
                 FieldsToSearch = "[[Customers(*)]]", 
-                ResultsCollection = new List<FindRecordsTO>{new FindRecordsTO("/","Contains",1),new FindRecordsTO("Wallis","Equal",2)},
+                ResultsCollection = new List<FindRecordsTO>{new FindRecordsTO("/","Contains",1),new FindRecordsTO("Wallis","=",2)},
                 RequireAllTrue = true,
                 Result = "[[res]]" };
 
@@ -600,7 +600,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(3, fetchInputList.Count);
             Assert.AreEqual("2", fetchInputList[0].Value);
             Assert.AreEqual(DebugItemResultType.Label, fetchInputList[0].Type);
-            Assert.AreEqual("Equal", fetchInputList[1].Value);
+            Assert.AreEqual("=", fetchInputList[1].Value);
             Assert.AreEqual(DebugItemResultType.Variable, fetchInputList[1].Type);
             Assert.AreEqual("Wallis", fetchInputList[2].Value);
             Assert.AreEqual(DebugItemResultType.Value, fetchInputList[2].Type);

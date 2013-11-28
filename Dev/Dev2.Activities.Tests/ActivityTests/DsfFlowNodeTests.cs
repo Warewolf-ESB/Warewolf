@@ -382,7 +382,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Williams-Ros", inRes[1].ResultsList[8].Value);
             Assert.AreEqual("Frisigner", inRes[1].ResultsList[11].Value);
 
-            Assert.AreEqual("If Wallis Is Equal Buchan OR Barney Is Equal Buchan OR Trevor Is Equal Williams-Ros OR Travis Is Equ", inRes[2].ResultsList[2].Value);
+            Assert.AreEqual("If Wallis = Buchan OR Barney = Buchan OR Trevor = Williams-Ros OR Travis = Frisigner OR Jurie = Smit", inRes[2].ResultsList[2].Value);
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(1, outRes[0].FetchResultsList().Count);
@@ -423,7 +423,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Williams-Ros", inRes[1].ResultsList[8].Value);
             Assert.AreEqual("Frisigner", inRes[1].ResultsList[11].Value);
 
-            Assert.AreEqual("If Wallis Is Equal Buchan OR Barney Is Equal Buchan OR Trevor Is Equal Williams-Ros OR Travis Is Equ", inRes[2].ResultsList[2].Value);
+            Assert.AreEqual("If Wallis = Buchan OR Barney = Buchan OR Trevor = Williams-Ros OR Travis = Frisigner OR Jurie = Smit", inRes[2].ResultsList[2].Value);
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(1, outRes[0].FetchResultsList().Count);

@@ -67,7 +67,7 @@ namespace Dev2.DataList
 
         public override string HandlesType()
         {
-            return "Not Contains";
+            return "Doesnt Contain";
         }
     }
 }

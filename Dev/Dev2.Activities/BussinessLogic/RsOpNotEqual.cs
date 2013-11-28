@@ -69,7 +69,7 @@ namespace Dev2.DataList
 
         public override string HandlesType()
         {
-            return "Not Equal";
+            return "≠";
         }
     }
 }
