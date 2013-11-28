@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Clipboard = System.Windows.Clipboard;
 
 namespace Dev2.Studio.UI.Tests
 {
@@ -261,26 +262,21 @@ namespace Dev2.Studio.UI.Tests
             const string TextToSearchWith = "RemoteDBService";
             string actionName = string.Empty;
 
-            try
-            {
-                //Edit remote db service
-                OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-                DatabaseServiceWizardUIMap.ClickScrollActionListUp();
-                DatabaseServiceWizardUIMap.ClickFirstAction();
-                DatabaseServiceWizardUIMap.ClickTestAction();
-                Playback.Wait(100);
-                DatabaseServiceWizardUIMap.ClickOK();
-            }
-            finally
-            {
-                //Change it back
-                OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-                actionName = DatabaseServiceWizardUIMap.GetActionName();
-                DatabaseServiceWizardUIMap.ClickSecondAction();
-                DatabaseServiceWizardUIMap.ClickTestAction();
-                Playback.Wait(100);
-                DatabaseServiceWizardUIMap.ClickOK();
-            }
+            //Edit remote db service
+            OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
+            DatabaseServiceWizardUIMap.ClickScrollActionListUp();
+            DatabaseServiceWizardUIMap.ClickFirstAction();
+            DatabaseServiceWizardUIMap.ClickTestAction();
+            Playback.Wait(100);
+            DatabaseServiceWizardUIMap.ClickOK();
+            
+            //Change it back
+            ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
+            actionName = DatabaseServiceWizardUIMap.GetActionName();
+            DatabaseServiceWizardUIMap.ClickSecondAction();
+            DatabaseServiceWizardUIMap.ClickTestAction();
+            Playback.Wait(100);
+            DatabaseServiceWizardUIMap.ClickOK();
 
             //Assert remote db service changed its action
             Assert.AreEqual("dbo.fn_diagramob", actionName, "Cannot edit remote db service");
@@ -291,16 +287,34 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteEmailSource_EmailSourceIsEdited()
         {
+            const string TextToSearchWith = "EmailSource";
+            var timeout = string.Empty;
 
-            Assert.Fail("External mail server issues!");
+            //Edit remote email source
+            OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
+            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
+            Keyboard.SendKeys(wizard, "{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}1234{TAB}{ENTER}");
+            wizard.WaitForControlReady();
+            Keyboard.SendKeys("@gmail.com{TAB}dev2developer@yahoo.com{ENTER}");
+            Playback.Wait(10000);
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            SaveDialogUIMap.ClickSave();
 
-            //const string TextToSearchWith = "EmailSource";
-            //OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            //Playback.Wait(3500);
+            //Change it back
+            ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
+            wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
+            var persistClipboard = Clipboard.GetText();
+            Keyboard.SendKeys(wizard, "{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{CTRL}c100{TAB}{ENTER}");
+            timeout = Clipboard.GetText();
+            Clipboard.SetText(persistClipboard);
+            wizard.WaitForControlReady();
+            Keyboard.SendKeys("@gmail.com{TAB}dev2developer@yahoo.com{ENTER}");
+            Playback.Wait(10000);
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            SaveDialogUIMap.ClickSave();
 
-            ////Playback.Wait(1000);
-            ////SaveDialogUIMap.ClickSave();
-
+            //Assert remote email source changed its timeout
+            Assert.AreEqual("1234", timeout, "Cannot edit remote email source");
         }
 
         [TestMethod]
@@ -322,14 +336,25 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemotePluginService_PluginServiceIsEdited()
         {
-
             const string TextToSearchWith = "PluginService";
+            var actionName = string.Empty;
+
+            //Edit remote plugin service
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            Playback.Wait(3500);
+            PluginServiceWizardUIMap.ClickActionAtIndex(3);
             PluginServiceWizardUIMap.ClickTest();
             Playback.Wait(1000);
             PluginServiceWizardUIMap.ClickOK();
 
+            //Change it back
+            ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
+            actionName = PluginServiceWizardUIMap.GetActionName();
+            PluginServiceWizardUIMap.ClickActionAtIndex(4);
+            PluginServiceWizardUIMap.ClickTest();
+            Playback.Wait(1000);
+            PluginServiceWizardUIMap.ClickOK();
+
+            Assert.AreEqual("ToString", actionName, "Cannot change remote plugin service");
         }
 
         [TestMethod]

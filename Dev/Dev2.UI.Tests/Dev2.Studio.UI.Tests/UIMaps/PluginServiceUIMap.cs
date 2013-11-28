@@ -1,24 +1,18 @@
 ﻿using System.Windows.Forms;
+using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
+using Clipboard = System.Windows.Clipboard;
 
 namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
 {
     using System;
-    using System.Collections.Generic;
     using System.Drawing;
-    using System.Windows.Input;
-    using System.CodeDom.Compiler;
-    using System.Text.RegularExpressions;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
     
     
-    public partial class PluginServiceWizardUIMap
+    public partial class PluginServiceWizardUIMap : UIMapBase
     {
         public string GetWorkflowWizardName()
         {
@@ -79,5 +73,22 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
         #region Fields
         private UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
         #endregion
+
+        public void ClickActionAtIndex(int i)
+        {
+            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[0], new Point(172, (164 + (30*i))));
+        }
+
+        public string GetActionName()
+        {
+            var persistClipboard = Clipboard.GetText();
+            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
+            Mouse.StartDragging(wizard, new Point(398, 83));
+            Mouse.StopDragging(wizard, 45, 0);
+            Keyboard.SendKeys(wizard, "{CTRL}c");
+            var actionName = Clipboard.GetText();
+            Clipboard.SetText(persistClipboard);
+            return actionName;
+        }
     }
 }
