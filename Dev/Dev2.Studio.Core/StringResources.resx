@@ -267,15 +267,15 @@
     <comment>net.tcp://sameeraw:2094/dsfDevmanager/</comment>
   </data>
   <data name="Uri_Development_Environment" xml:space="preserve">
-    <value>http://127.0.0.1:77/dsf</value>
+    <value>http://localhost:77/dsf</value>
     <comment>http://tuw-devfs:1994/dsfDev/</comment>
   </data>
   <data name="Uri_Live_Environment" xml:space="preserve">
-    <value>http://127.0.0.1:77/dsf</value>
+    <value>http://localhost:77/dsf</value>
     <comment>http://tuw-devfs:1996/dsfLive/</comment>
   </data>
   <data name="Uri_Testing_Environment" xml:space="preserve">
-    <value>http://127.0.0.1:77/dsf</value>
+    <value>http://localhost:77/dsf</value>
     <comment>http://tuw-devfs:1995/dsfTest/</comment>
   </data>
   <data name="Uri_Start_Page" xml:space="preserve">
@@ -465,7 +465,7 @@ Sofware development by: www.dev2.co.za
     <value>localhost</value>
   </data>
   <data name="DefaultEnvironmentUri" xml:space="preserve">
-    <value>http://127.0.0.1:77/dsf</value>
+    <value>http://localhost:77/dsf</value>
   </data>
   <data name="Feedback_Recordings_Directory" xml:space="preserve">
     <value>Feedback</value>

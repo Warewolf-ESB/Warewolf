@@ -189,7 +189,6 @@
     <Compile Include="WebServer\Responses\StringResponseWriterTests.cs" />
     <Compile Include="WebServer\Responses\TestDynamicFileResponseWriter.cs" />
     <Compile Include="WebServer\Responses\TestStaticFileResponseWriter.cs" />
-    <Compile Include="WebServer\Responses\UnitTest1.cs" />
     <Compile Include="WebServer\WebServerResponseTests.cs" />
     <Compile Include="WebServer\WebServerRequestTests.cs" />
     <Compile Include="WebServer\WebServerContextTests.cs" />

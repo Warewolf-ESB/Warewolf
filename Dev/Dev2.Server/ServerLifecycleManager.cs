@@ -200,7 +200,6 @@ namespace Unlimited.Applications.DynamicServicesHost
         AssemblyReference[] _externalDependencies;
         Dictionary<string, WorkflowEntry[]> _workflowGroups;
         Dev2Endpoint[] _endpoints;
-        IFrameworkWebServer _webserver;
         EsbServicesEndpoint _esbEndpoint;
 
         StudioNetworkServer _networkServer;
@@ -1391,7 +1390,6 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             try
             {
-                _webserver.Stop();
                 if(_owinServer != null)
                 {
                     _owinServer.Dispose();
@@ -1651,7 +1649,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                 _timer = null;
             }
 
-            _webserver = null;
+            _owinServer = null;
             _esbEndpoint = null;
             _executionChannel = null;
 
@@ -1875,6 +1873,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 try
                 {
+                    // TODO: Rip this out!
                     var endpoints = new List<string>
                     {
                         WebServerResources.LocalServerAddress,
@@ -1882,11 +1881,9 @@ namespace Unlimited.Applications.DynamicServicesHost
                         _uriAddress,
                     };
                     StartNetworkServer(endpoints);
+                    // END TODO
 
-                    //_owinServer = WebServerStartup.Start("http://*:8080/");
-                    //_owinServer = WebServerStartup.Start(_endpoints);
-                    _webserver = new Dev2.Runtime.WebServer.WebServer(_endpoints);
-                    _webserver.Start();
+                    _owinServer = WebServerStartup.Start(_endpoints);
                     EnvironmentVariables.IsServerOnline = true; // flag server as active
                     WriteLine("\r\nWeb Server Started");
                     foreach(var endpoint in _endpoints)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 
 namespace Dev2.Workspaces
 {
@@ -15,6 +16,8 @@ namespace Dev2.Workspaces
         {
             get;
         }
+
+        Guid GetWorkspaceID(WindowsIdentity identity);
 
         /// <summary>
         /// Overwrites this workspace with the server versions except for those provided.

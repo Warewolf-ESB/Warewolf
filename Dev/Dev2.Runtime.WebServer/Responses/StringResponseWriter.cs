@@ -24,35 +24,15 @@ namespace Dev2.Runtime.WebServer.Responses
             _contentType = contentType;
         }
 
-        public void Write(ICommunicationContext context)
-        {
-            var buffer = Encoding.UTF8.GetBytes(_text);
-            context.Response.OutputStream.Write(buffer, 0, buffer.Length);
-            context.Response.ContentType = _contentType.ToString();
-            context.Response.ContentLength = buffer.Length;
-
-            UpdateContentDisposition((contentType, contentDisposition, headers) =>
-            {
-                context.Response.ContentType = contentType.ToString();
-                context.Response.AddHeader(headers.Key, headers.Value);
-                context.Response.AddHeader("content-disposition", contentDisposition.ToString());
-            });
-        }
-
         public void Write(WebServerContext context)
         {
             context.ResponseMessage.Content = new StringContent(_text);
             context.ResponseMessage.Content.Headers.ContentType = _contentType;
 
-            UpdateContentDisposition((contentType, contentDisposition, headers) =>
-            {
-                context.ResponseMessage.Content.Headers.ContentType = contentType;
-                context.ResponseMessage.Content.Headers.ContentDisposition = contentDisposition;
-                context.ResponseMessage.Headers.Add(headers.Key, headers.Value);
-            });
+            UpdateContentDisposition(context.ResponseMessage);
         }
 
-        void UpdateContentDisposition(Action<MediaTypeHeaderValue, ContentDispositionHeaderValue, KeyValuePair<string, string>> updateContentDisposition)
+        void UpdateContentDisposition(HttpResponseMessage responseMessage)
         {
             var contentLength = Encoding.UTF8.GetByteCount(_text);
             if(contentLength > WebServerStartup.SizeCapForDownload)
@@ -68,11 +48,12 @@ namespace Dev2.Runtime.WebServer.Responses
                 }
                 if(extension != null)
                 {
-                    var headers = new KeyValuePair<string, string>("Server", "Dev2 Server");
                     var contentDisposition = new ContentDispositionHeaderValue("attachment");
                     contentDisposition.Parameters.Add(new NameValueHeaderValue("filename", "Output." + extension));
 
-                    updateContentDisposition(ContentTypes.ForceDownload, contentDisposition, headers);
+                    responseMessage.Content.Headers.ContentType = ContentTypes.ForceDownload;
+                    responseMessage.Content.Headers.ContentDisposition = contentDisposition;
+                    responseMessage.Headers.Add("Server", "Dev2 Server");
                 }
             }
         }

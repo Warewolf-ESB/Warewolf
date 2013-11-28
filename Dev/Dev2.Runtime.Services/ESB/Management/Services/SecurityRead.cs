@@ -12,33 +12,19 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class SecurityRead : IEsbManagementEndpoint
     {
-        public List<WindowsGroupPermission> Permissions { get; private set; }
-
-        List<WindowsGroupPermission> DefaultPermissions
+        static List<WindowsGroupPermission> DefaultPermissions
         {
             get
             {
-                var windowsGroupPermissions = new List<WindowsGroupPermission>();
-                windowsGroupPermissions.Add(new WindowsGroupPermission
+                return new List<WindowsGroupPermission>
                 {
-                    IsServer = true,
-                    WindowsGroup = "BuiltIn\\Administrators",
-                    View = false,
-                    Execute = false,
-                    Contribute = true,
-                    DeployTo = true,
-                    DeployFrom = true,
-                    Administrator = true
-                    
-                });
-
-                return windowsGroupPermissions;
+                    WindowsGroupPermission.CreateDefault()
+                };
             }
         }
 
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
-
             if(File.Exists("secure.config"))
             {
                 var encryptedData = File.ReadAllText("secure.config");

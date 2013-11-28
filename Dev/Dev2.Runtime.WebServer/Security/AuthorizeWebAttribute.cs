@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Controllers;
@@ -35,9 +34,7 @@ namespace Dev2.Runtime.WebServer.Security
             AuthorizeRequestType requestType;
             Enum.TryParse("Web" + actionContext.ActionDescriptor.ActionName, out requestType);
 
-            var resourceID = requestType == AuthorizeRequestType.WebExecute || requestType == AuthorizeRequestType.WebBookmark
-            ? GetResourceName(actionContext)
-            : actionContext.Request.GetResourceID();
+            var resourceID = GetResourceID(actionContext.Request, requestType);
 
             if(!_authorizationProvider.IsAuthorized(user, requestType, resourceID))
             {
@@ -45,14 +42,10 @@ namespace Dev2.Runtime.WebServer.Security
             }
         }
 
-        string GetResourceName(HttpActionContext actionContext)
+        string GetResourceID(HttpRequestMessage requestMessage, AuthorizeRequestType requestType)
         {
-            var parm = actionContext.ActionDescriptor.GetParameters().FirstOrDefault(p => p.ParameterName == "name");
-            if(parm == null)
-            {
-                return null;
-            }
-            return parm.DefaultValue.ToString();
+            return null;
+            //actionContext.Request.GetResourceID();
         }
     }
 }

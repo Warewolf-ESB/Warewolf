@@ -69,39 +69,5 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
 
             Assert.AreEqual(NewContent, task.Result);
         }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("StaticFileResponseWriter_Write")]
-        public void StaticFileResponseWriter_Write_ICommunicationContext_WritesContent()
-        {
-            //------------Setup for test--------------------------
-            const string NewContent = "Hello world";
-
-            var content = string.Empty;
-            var responseWriter = new TestStaticFileResponseWriter(NewContent, "text/plain");
-            var response = new Mock<ICommunicationResponse>();
-            response.SetupAllProperties();
-            response.Setup(r => r.OutputStream.Write(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>())).Callback((byte[] buffer, int offset, int length) =>
-            {
-                if(length > 0)
-                {
-                    content += Encoding.UTF8.GetString(buffer, offset, length);
-                }
-            });
-
-            var context = new Mock<ICommunicationContext>();
-            context.Setup(c => c.Response).Returns(response.Object);
-
-            //------------Execute Test---------------------------
-            responseWriter.Write(context.Object);
-
-            //------------Assert Results-------------------------
-
-            Assert.AreEqual(ContentTypes.Plain.ToString(), context.Object.Response.ContentType);
-
-            Assert.AreEqual(NewContent, content);
-        }
-
     }
 }

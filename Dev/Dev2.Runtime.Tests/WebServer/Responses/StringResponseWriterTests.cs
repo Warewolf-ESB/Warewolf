@@ -88,38 +88,6 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("StringResponseWriter_Write")]
-        public void StringResponseWriter_Write_ICommunicationContext_WritesContent()
-        {
-            //------------Setup for test--------------------------
-            const string NewContent = "Hello world";
-
-            var content = string.Empty;
-            var responseWriter = new StringResponseWriter(NewContent, ContentTypes.Plain);
-            var response = new Mock<ICommunicationResponse>();
-            response.SetupAllProperties();
-            response.Setup(r => r.OutputStream.Write(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>())).Callback((byte[] buffer, int offset, int length) =>
-            {
-                if(length > 0)
-                {
-                    content += Encoding.UTF8.GetString(buffer, offset, length);
-                }
-            });
-
-            var context = new Mock<ICommunicationContext>();
-            context.Setup(c => c.Response).Returns(response.Object);
-
-            //------------Execute Test---------------------------
-            responseWriter.Write(context.Object);
-
-            //------------Assert Results-------------------------
-
-            Assert.AreEqual(ContentTypes.Plain.ToString(), context.Object.Response.ContentType);
-            Assert.AreEqual(NewContent, content);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("StringResponseWriter_Write")]
         public void StringResponseWriter_Write_LargeContentWebServerContext_WritesContentAndUpdateContentDisposition()
         {
             //------------Setup for test--------------------------
@@ -149,38 +117,6 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
             task.Wait();
 
             Assert.AreEqual(largeContent, task.Result);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("StringResponseWriter_Write")]
-        public void StringResponseWriter_Write_LargeContentICommunicationContext_WritesContentAndUpdateContentDisposition()
-        {
-            //------------Setup for test--------------------------
-            var content = string.Empty;
-            var response = new Mock<ICommunicationResponse>();
-            response.SetupAllProperties();
-            response.Setup(r => r.OutputStream.Write(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>())).Callback((byte[] buffer, int offset, int length) =>
-            {
-                if(length > 0)
-                {
-                    content += Encoding.UTF8.GetString(buffer, offset, length);
-                }
-            });
-
-            var context = new Mock<ICommunicationContext>();
-            context.Setup(c => c.Response).Returns(response.Object);
-
-            var contentType = ContentTypes.Xml;
-            var largeContent = CreateLargeContent(contentType);
-
-            var responseWriter = new StringResponseWriter(largeContent, contentType);
-
-            //------------Execute Test---------------------------
-            responseWriter.Write(context.Object);
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(ContentTypes.ForceDownload.ToString(), context.Object.Response.ContentType);
         }
 
         static string CreateLargeContent(MediaTypeHeaderValue contentType)

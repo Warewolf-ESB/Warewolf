@@ -12,7 +12,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerResponse_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void WebServerResponse_Constructor_ResponsIsNull_ThrowsArgumentNullException()
+        public void WebServerResponse_Constructor_ResponseIsNull_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
 
@@ -24,7 +24,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerResponse_Constructor")]
-        public void WebServerResponse_Constructor_ResponsIsNotNull_PropertiesInitialized()
+        public void WebServerResponse_Constructor_ResponseIsNotNull_PropertiesInitialized()
         {
             //------------Setup for test--------------------------
             var response = new HttpResponseMessage();

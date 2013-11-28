@@ -22,11 +22,6 @@ namespace Dev2.Runtime.WebServer
             return WebApp.Start<WebServerStartup>(startOptions);
         }
 
-        public static IDisposable Start(string url)
-        {
-            return WebApp.Start<WebServerStartup>(url);
-        }
-
         public void Configuration(IAppBuilder app)
         {
             // Enable NTLM auth

@@ -60,5 +60,21 @@ namespace Dev2.Data.Settings.Security
                     : !string.IsNullOrEmpty(WindowsGroup) && !string.IsNullOrEmpty(ResourceName);
             }
         }
+
+        public static WindowsGroupPermission CreateDefault()
+        {
+            return new WindowsGroupPermission
+            {
+                IsServer = true,
+                WindowsGroup = BuiltInAdministratorsText,
+                View = false,
+                Execute = false,
+                Contribute = true,
+                DeployTo = true,
+                DeployFrom = true,
+                Administrator = true
+
+            };
+        }
     }
 }

@@ -55,10 +55,6 @@
     <Reference Include="DEV2.MultiPartFormPasser">
       <HintPath>..\Binaries\DEV2.MultiPartFormPasser.dll</HintPath>
     </Reference>
-    <Reference Include="HttpFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\HttpFramework.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core">
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.0.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
     </Reference>
@@ -127,10 +123,9 @@
     <Compile Include="Handlers\WebPostRequestHandler.cs" />
     <Compile Include="Responses\ContentTypes.cs" />
     <Compile Include="Responses\Streams\HttpPushContentStream.cs" />
-    <Compile Include="CommunicationContext.cs" />
-    <Compile Include="CommunicationContextCallback.cs" />
-    <Compile Include="CommunicationRequest.cs" />
-    <Compile Include="CommunicationResponse.cs" />
+    <Compile Include="ICommunicationContext.cs" />
+    <Compile Include="ICommunicationRequest.cs" />
+    <Compile Include="ICommunicationResponse.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Hubs\EsbHub.cs" />
     <Compile Include="Hubs\ResourcesHub.cs" />
@@ -143,7 +138,6 @@
     <Compile Include="Security\IAuthorizationProvider.cs" />
     <Compile Include="WebServerContext.cs" />
     <Compile Include="Dev2Endpoint.cs" />
-    <Compile Include="HttpServer.cs" />
     <Compile Include="Responses\Streams\HttpFileStream.cs" />
     <Compile Include="Responses\DynamicFileResponseWriter.cs" />
     <Compile Include="Responses\StatusResponseWriter.cs" />
@@ -156,7 +150,6 @@
     <Compile Include="WebServerStartup.cs" />
     <Compile Include="Controllers\WebServerController.cs" />
     <Compile Include="Handlers\AbstractWebRequestHandler.cs" />
-    <Compile Include="WebServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">

@@ -23,16 +23,6 @@ namespace Dev2.Runtime.WebServer.Responses
             _contentPath = contentPath;
         }
 
-        public void Write(ICommunicationContext context)
-        {
-            // BUG 8593: 2013.02.17 - TWR - removed try/catch as this is handled by caller
-            var content = GetContent();
-            var buffer = Encoding.UTF8.GetBytes(content);
-            context.Response.ContentType = ContentType.ToString();
-            context.Response.OutputStream.Write(buffer, 0, buffer.Length);
-            context.Response.ContentLength = buffer.Length;
-        }
-
         public void Write(WebServerContext context)
         {
             var content = GetContent();

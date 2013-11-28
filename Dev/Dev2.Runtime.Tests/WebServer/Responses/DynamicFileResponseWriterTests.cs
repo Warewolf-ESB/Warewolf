@@ -87,38 +87,5 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
 
             Assert.AreEqual(string.Format(LayoutContentFormat, NewContent), task.Result);
         }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("DynamicFileResponseWriter_Write")]
-        public void DynamicFileResponseWriter_Write_ICommunicationContext_WritesContent()
-        {
-            //------------Setup for test--------------------------
-            const string Token = "%%Token%%";
-            const string LayoutContentFormat = "<html><body>{0}</body></html>";
-            const string NewContent = "Hello world";
-
-            string content = null;
-            var responseWriter = new TestDynamicFileResponseWriter(string.Format(LayoutContentFormat, Token), Token, NewContent);
-            var response = new Mock<ICommunicationResponse>();
-            response.SetupAllProperties();
-            response.Setup(r => r.OutputStream.Write(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>())).Callback((byte[] buffer, int offset, int length) =>
-            {
-                content = Encoding.UTF8.GetString(buffer);
-            });
-
-            var context = new Mock<ICommunicationContext>();
-            context.Setup(c => c.Response).Returns(response.Object);
-
-            //------------Execute Test---------------------------
-            responseWriter.Write(context.Object);
-
-            //------------Assert Results-------------------------
-
-            Assert.AreEqual(ContentTypes.Html.ToString(), context.Object.Response.ContentType);
-
-            Assert.AreEqual(string.Format(LayoutContentFormat, NewContent), content);
-        }
-
     }
 }

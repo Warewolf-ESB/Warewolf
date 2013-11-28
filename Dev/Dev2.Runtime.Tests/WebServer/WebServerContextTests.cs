@@ -98,7 +98,6 @@ namespace Dev2.Tests.Runtime.WebServer
 
             var response = new Mock<IResponseWriter>();
             response.Setup(r => r.Write(It.IsAny<WebServerContext>())).Verifiable();
-            response.Setup(r => r.Write(It.IsAny<ICommunicationContext>())).Verifiable();
          
 
             //------------Execute Test---------------------------
@@ -106,7 +105,6 @@ namespace Dev2.Tests.Runtime.WebServer
 
             //------------Assert Results-------------------------
             response.Verify(r => r.Write(It.IsAny<WebServerContext>()));
-            response.Verify(r => r.Write(It.IsAny<ICommunicationContext>()), Times.Never());
         }
     }
 }

@@ -236,7 +236,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://127.0.0.1:77/dsf.
+        ///   Looks up a localized string similar to http://localhost:77/dsf.
         /// </summary>
         public static string DefaultEnvironmentUri {
             get {
@@ -1348,7 +1348,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://127.0.0.1:77/dsf.
+        ///   Looks up a localized string similar to http://localhost:77/dsf.
         /// </summary>
         public static string Uri_Development_Environment {
             get {
@@ -1375,7 +1375,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://127.0.0.1:77/dsf.
+        ///   Looks up a localized string similar to http://localhost:77/dsf.
         /// </summary>
         public static string Uri_Live_Environment {
             get {
@@ -1438,7 +1438,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://127.0.0.1:77/dsf.
+        ///   Looks up a localized string similar to http://localhost:77/dsf.
         /// </summary>
         public static string Uri_Testing_Environment {
             get {

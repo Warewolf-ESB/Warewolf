@@ -34,28 +34,5 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
             //------------Assert Results-------------------------
             Assert.AreEqual(Expected, context.ResponseMessage.StatusCode);
         }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("StatusResponseWriter_Write")]
-        public void StatusResponseWriter_Write_ICommunicationContext_WritesTheStatus()
-        {
-            //------------Setup for test--------------------------
-            const HttpStatusCode Expected = HttpStatusCode.PaymentRequired;
-
-            var response = new Mock<ICommunicationResponse>();
-            response.SetupAllProperties();
-
-            var context = new Mock<ICommunicationContext>();
-            context.Setup(c => c.Response).Returns(response.Object);
-
-            var responseWriter = new StatusResponseWriter(Expected);
-
-            //------------Execute Test---------------------------
-            responseWriter.Write(context.Object);
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(Expected, context.Object.Response.Status);
-        }
     }
 }

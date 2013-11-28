@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using HttpFramework.Exceptions;
+using System.Web;
 
 namespace Dev2.Runtime.WebServer.Responses.Streams
 {
@@ -49,9 +49,8 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
                     }
                 }
             }
-            catch(HttpException ex)
+            catch(HttpException)
             {
-                return;
             }
             finally
             {

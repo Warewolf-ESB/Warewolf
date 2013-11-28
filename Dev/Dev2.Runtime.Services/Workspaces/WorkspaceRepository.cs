@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Runtime.Hosting;
 
@@ -20,10 +21,12 @@ namespace Dev2.Workspaces
         public static readonly Guid ServerWorkspaceID = Guid.Empty;
         public static readonly string ServerWorkspacePath = EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID);
 
+        readonly ConcurrentDictionary<string, Guid> _userMap;
         readonly ConcurrentDictionary<Guid, IWorkspace> _items = new ConcurrentDictionary<Guid, IWorkspace>();
         readonly IResourceCatalog _resourceCatalog;
 
         private static readonly object WorkspaceLock = new object();
+        private static readonly object UserMapLock = new object();
 
         #region Singleton Instance
 
@@ -78,6 +81,7 @@ namespace Dev2.Workspaces
             _resourceCatalog = resourceCatalog;
             Directory.CreateDirectory(EnvironmentVariables.WorkspacePath);
 
+            _userMap = ReadUserMap();
             // ResourceCatalog constructor calls LoadFrequentlyUsedServices() 
             // which loads the server workspace resources so don't do it here
             Get(ServerWorkspaceID, true, false);
@@ -118,6 +122,23 @@ namespace Dev2.Workspaces
         #endregion
 
         #endregion
+
+        public Guid GetWorkspaceID(WindowsIdentity identity)
+        {
+            var userID = identity.Name;
+            if(identity.User != null)
+            {
+                userID = identity.User.Value;
+            }
+            Guid workspaceID;
+            if(!_userMap.TryGetValue(userID, out workspaceID))
+            {
+                workspaceID = Guid.NewGuid();
+                _userMap.TryAdd(userID, workspaceID);
+                WriteUserMap(_userMap);
+            }
+            return workspaceID;
+        }
 
         #region Get
 
@@ -315,6 +336,53 @@ namespace Dev2.Workspaces
         }
 
         #endregion
+
+        static string GetUserMapFileName()
+        {
+            return Path.Combine(EnvironmentVariables.WorkspacePath, "workspaces.uws");
+        }
+
+        static ConcurrentDictionary<string, Guid> ReadUserMap()
+        {
+            // force a lock on the file system ;)
+            lock(UserMapLock)
+            {
+                var filePath = GetUserMapFileName();
+                var fileExists = File.Exists(filePath);
+                using(var stream = File.Open(filePath, FileMode.OpenOrCreate))
+                {
+                    var formatter = new BinaryFormatter();
+                    if(fileExists)
+                    {
+                        try
+                        {
+                            return (ConcurrentDictionary<string, Guid>)formatter.Deserialize(stream);
+                        }
+                        // ReSharper disable EmptyGeneralCatchClause 
+                        catch(Exception ex)
+                        // ReSharper restore EmptyGeneralCatchClause
+                        {
+                            ServerLogger.LogError(ex);
+                            // Deserialization failed so overwrite with new one.
+                        }
+                    }
+
+                    var result = new ConcurrentDictionary<string, Guid>();
+                    formatter.Serialize(stream, result);
+                    return result;
+                }
+            }
+        }
+
+        static void WriteUserMap(ConcurrentDictionary<string, Guid> userMap)
+        {
+            var filePath = GetUserMapFileName();
+            using(var stream = File.Open(filePath, FileMode.OpenOrCreate))
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(stream, userMap);
+            }
+        }
 
         #endregion
     }

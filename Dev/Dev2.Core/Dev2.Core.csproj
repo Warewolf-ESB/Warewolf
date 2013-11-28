@@ -241,7 +241,6 @@
     <Compile Include="Interfaces\IFrameworkFileIO.cs" />
     <Compile Include="Interfaces\IFrameworkPluginComponent.cs" />
     <Compile Include="Interfaces\IFrameworkSecurityProvider.cs" />
-    <Compile Include="Interfaces\IFrameworkWebServer.cs" />
     <Compile Include="Network\Execution\ExecutionStatusCallbackDispatcher.cs" />
     <Compile Include="Network\Execution\ExecutionStatusCallbackMessage.cs" />
     <Compile Include="Network\Execution\IExecutionStatusCallbackDispatcher.cs" />

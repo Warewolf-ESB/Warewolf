@@ -25,19 +25,16 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
         readonly static string[] ServicesEndPoints =
         {
             ServerSettings.WebserverURI,
-            "http://localhost:8080/services/"
         };
 
         readonly static string[] WebsiteEndPoints =
         {
             ServerSettings.WebsiteServerUri,
-            "http://localhost:8080/wwwroot/"
         };
 
         static readonly string[] SslEndPoints =
         {
             ServerSettings.WebserverHttpsURI,
-            // "https://localhost:8081/services/" - DO NOT test this as it requires us to bind to port 8081
         };
 
         [TestMethod]
@@ -358,11 +355,11 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {"),
 
         static void VerifyWebsiteRequests(IEnumerable<Tuple<string, string>> requests, IEnumerable<string> roots)
         {
-            var allRequests = (from request in requests 
-                               from root in roots 
+            var allRequests = (from request in requests
+                               from root in roots
                                select new Tuple<string, string, AssertType>(
-                                   string.Format("{0}/{1}", root, request.Item1), 
-                                   request.Item2, 
+                                   string.Format("{0}/{1}", root, request.Item1),
+                                   request.Item2,
                                    request.Item2 == AssertNotNull ? AssertType.IsNotNull : AssertType.StartsWith)).ToList();
             VerifyRequest(WebsiteEndPoints, allRequests);
         }
