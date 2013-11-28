@@ -37,14 +37,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         /// <summary>
         /// NewDbSource
         /// </summary>
-        public void NewDbSource()
+        public void ClickNewDbSource()
         {
-            #region Variable Declarations
-            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            #endregion
-
             // Click image
-            Mouse.Click(uIItemImage, new Point(343, 82));
+            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[0], new Point(343, 82));
         }
         
         /// <summary>
@@ -52,8 +48,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         /// </summary>
         public void ClickFirstAction()
         {
-            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            Mouse.Click(uIItemImage, new Point(172, 164));
+            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[0], new Point(172, 164));
         }
 
         /// <summary>

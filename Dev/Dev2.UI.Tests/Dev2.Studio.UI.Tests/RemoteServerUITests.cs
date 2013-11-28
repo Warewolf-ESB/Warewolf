@@ -121,27 +121,30 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_DragAndDropWorkflowFromRemoteServerOnALocalHostCreatedWorkflow_WorkFlowIsDroppedAndCanExecute()
         {
+            const string remoteWorkflowName = "Recursive File Copy";
 
-            const string TextToSearchWith = "Recursive File Copy";
             //Ensure that we're in localhost
             ExplorerUIMap.ClickServerInServerDDL(LocalHostServerName);
-            //Create a workfliow
+
+            //Create a workflow
             RibbonUIMap.CreateNewWorkflow();
             var theTab = TabManagerUIMap.GetActiveTab();
-            ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
-
             var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
 
-            ExplorerUIMap.EnterExplorerSearchText(TextToSearchWith);
-            ExplorerUIMap.DragControlToWorkflowDesigner(RemoteServerName, "WORKFLOWS", "UTILITY", TextToSearchWith, point);
+            //Drag on a remote workflow
+            ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
+            ExplorerUIMap.EnterExplorerSearchText(remoteWorkflowName);
+            ExplorerUIMap.DragControlToWorkflowDesigner(RemoteServerName, "WORKFLOWS", "UTILITY", remoteWorkflowName, point);
 
+            //Should be able to get clean debug output
             OpenMenuItem("Debug");
             PopupDialogUIMap.WaitForDialog();
             DebugUIMap.ClickExecute();
             OutputUIMap.WaitForExecution();
 
+            //Assert that the workflow really is on the design surface and debug output is clean
             Assert.IsFalse(OutputUIMap.IsAnyStepsInError(), "The remote workflow threw errors when executed locally");
-            Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, TextToSearchWith));
+            Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, remoteWorkflowName));
         }
 
         [TestMethod]
@@ -195,14 +198,28 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteDbSource_DbSourceIsEdited()
         {
-
             const string TextToSearchWith = "DBSource";
-            OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            Playback.Wait(3500);
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
-            Playback.Wait(1000);
-            SaveDialogUIMap.ClickSave();
+            var userName = string.Empty;
 
+            try
+            {
+                //Edit remote db source
+                OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
+                Keyboard.SendKeys("{TAB}{TAB}{RIGHT}{TAB}testuser{TAB}test123{TAB}{ENTER}{TAB}{TAB}{ENTER}");
+                Playback.Wait(100);
+                SaveDialogUIMap.ClickSave();
+            }
+            finally
+            {
+                //Change it back
+                ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
+                userName = DatabaseSourceUIMap.GetUserName();
+                Keyboard.SendKeys("{TAB}{TAB}{LEFT}{TAB}{TAB}{ENTER}");
+                Playback.Wait(100);
+                SaveDialogUIMap.ClickSave();
+            }
+
+            Assert.AreEqual("testuser", userName, "Cannot edit remote db source");
         }
 
         [TestMethod]
@@ -241,12 +258,32 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteDbService_DbServiceIsEdited()
         {
-            Assert.Fail("Bad test! Not indicative that things worked!");
-            //const string TextToSearchWith = "DBService";
-            //OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            //Playback.Wait(3500);
-            //Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
- 
+            const string TextToSearchWith = "RemoteDBService";
+            string actionName = string.Empty;
+
+            try
+            {
+                //Edit remote db service
+                OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
+                DatabaseServiceWizardUIMap.ClickScrollActionListUp();
+                DatabaseServiceWizardUIMap.ClickFirstAction();
+                DatabaseServiceWizardUIMap.ClickTestAction();
+                Playback.Wait(100);
+                DatabaseServiceWizardUIMap.ClickOK();
+            }
+            finally
+            {
+                //Change it back
+                OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
+                actionName = DatabaseServiceWizardUIMap.GetActionName();
+                DatabaseServiceWizardUIMap.ClickSecondAction();
+                DatabaseServiceWizardUIMap.ClickTestAction();
+                Playback.Wait(100);
+                DatabaseServiceWizardUIMap.ClickOK();
+            }
+
+            //Assert remote db service changed its action
+            Assert.AreEqual("dbo.fn_diagramob", actionName, "Cannot edit remote db service");
         }
 
         [TestMethod]
