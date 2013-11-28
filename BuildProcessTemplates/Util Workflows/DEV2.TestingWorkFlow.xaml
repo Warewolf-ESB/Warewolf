@@ -59,6 +59,7 @@
           </InvokeMethod.Result>
           <InArgument x:TypeArguments="x:String">[BuildsDirectory]</InArgument>
         </InvokeMethod>
+        <mtbwa:WriteBuildMessage DisplayName="Write Number of Build Found" Message="[&quot;Found &quot; &amp; BuildFileNames.Length.ToString &amp; &quot; builds in &quot; &amp; BuildsDirectory]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_11" />
         <ForEach x:TypeArguments="x:String" DisplayName="ForEach&lt;String&gt;" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[BuildFileNames]">
           <ActivityAction x:TypeArguments="x:String">
             <ActivityAction.Argument>
@@ -103,7 +104,7 @@
       </Sequence>
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="[&quot;------------------- Latest Build Found: &quot; &amp; SpecifiedChangeSet &amp; &quot; -------------------&quot;]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>d01DOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5UZXN0aW5nV29ya0Zsb3cueGFtbCYBYQHvAgECKANrDgIBASwFLhACATsvBWkYAgECLQctxQECATwvsQEvzgECAQcvggEvpAECAQUv3wEvigICAQM0B2cSAgENaAdo3QICAQktMi1qAgE9OAk9GAIBNj4JXRMCARdeCV7NAgIBE18JZhICAQ5ofmj2AQIBCzwyPEMCATk6NzpHAgE3PoYBPpgBAgE0Qw1bGAIBGF6MAV7mAQIBFWQ0ZFECARFhNWFJAgEPRw9OGAIBL08PT7ECAgErUA9aFAIBGUw6TG4CATJJO0lCAgEwT54BT8oBAgEtUB1QRQIBGlITVR4CASFYE1ivAgIBHVMVU+ACAgEnVBVUqQECASJYnwFYyAECAR9TmwFT+QECASlUS1RbAgElVJcBVKYBAgEj</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d01DOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5UZXN0aW5nV29ya0Zsb3cueGFtbCgBYQHvAgECKANsDgIBASwFLhACAUAvBWoYAgECLQctxQECAUEvsQEvzgECAQcvggEvpAECAQUv3wEvigICAQM0B2gSAgENaQdp3QICAQktMi1qAgFCOAk9GAIBOz4JPuECAgE2PwleEwIBF18JX80CAgETYAlnEgIBDml+afYBAgELPDI8QwIBPjo3OkcCATw+VD7DAQIBOD+GAT+YAQIBNEQNXBgCARhfjAFf5gECARVlNGVRAgERYjViSQIBD0gPTxgCAS9QD1CxAgIBK1EPWxQCARlNOk1uAgEySjtKQgIBMFCeAVDKAQIBLVEdUUUCARpTE1YeAgEhWRNZrwICAR1UFVTgAgIBJ1UVVakBAgEiWZ8BWcgBAgEfVJsBVPkBAgEpVUtVWwIBJVWXAVWmAQIBIw==</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -116,6 +117,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="InvokeMethod_1" sap:VirtualizedContainerService.HintSize="516,132" />
+      <sap2010:ViewStateData Id="WriteBuildMessage_11" sap:VirtualizedContainerService.HintSize="516,22" />
       <sap2010:ViewStateData Id="Assign_10" sap:VirtualizedContainerService.HintSize="464,60" />
       <sap2010:ViewStateData Id="WriteBuildMessage_7" sap:VirtualizedContainerService.HintSize="464,22" />
       <sap2010:ViewStateData Id="WriteBuildMessage_8" sap:VirtualizedContainerService.HintSize="200,22" />
@@ -139,7 +141,7 @@
       <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="516,790" />
       <sap2010:ViewStateData Id="WriteBuildMessage_10" sap:VirtualizedContainerService.HintSize="516,22" />
       <sap2010:ViewStateData Id="Assign_11" sap:VirtualizedContainerService.HintSize="516,60" />
-      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="538,1248">
+      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="538,1310">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -147,15 +149,15 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="WriteBuildMessage_6" sap:VirtualizedContainerService.HintSize="538,22" />
-      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="560,1434" />
-      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="582,1744">
+      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="560,1496" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="582,1806">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="622,1824" />
+      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="622,1886" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
