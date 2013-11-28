@@ -82,8 +82,8 @@
               <If Condition="[Integer.TryParse(build, BuildNumber)]" DisplayName="If Can Parse Build Number" sap2010:WorkflowViewState.IdRef="If_1">
                 <If.Then>
                   <Sequence DisplayName="Can Parse" sap2010:WorkflowViewState.IdRef="Sequence_5">
-                    <mtbwa:WriteBuildMessage DisplayName="Write &quot;Adding&quot; Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_8" Message="[&quot;Adding &quot; &amp; BuildNumber.ToString &amp; &quot; to list of build numbers&quot;]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                    <AddToCollection x:TypeArguments="x:Int32" Collection="[BuildNumbers]" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[BuildNumber]" />
+                    <mtbwa:WriteBuildMessage DisplayName="Write &quot;Adding&quot; Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_8" Message="[&quot;Adding &quot; &amp; Integer.Parse(build) &amp; &quot; to list of build numbers&quot;]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                    <AddToCollection x:TypeArguments="x:Int32" Collection="[BuildNumbers]" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[Integer.Parse(build)]" />
                   </Sequence>
                 </If.Then>
                 <If.Else>
@@ -110,7 +110,7 @@
       </Sequence>
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="[&quot;------------------- Latest Build Found: &quot; &amp; SpecifiedChangeSet &amp; &quot; -------------------&quot;]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>d01DOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5UZXN0aW5nV29ya0Zsb3cueGFtbC4B2QMBnQQBBAGOAwHAAwEDAWEB7wIBAikDcg4CAQEtBS8QAgFGMAVwGAIBAi4HLsUBAgFHMLEBMM4BAgEHMIIBMKQBAgEFMN8BMIoCAgEDNQduEgIBDW8Hb90CAgEJLjIuagIBSDkJPhgCAUE/CT/hAgIBPEAJXxMCARxgCWQOAgEXZQllzQICARNmCW0SAgEOb35v9gECAQs9Mj1DAgFEOzc7RwIBQj+LAT/6AQIBPkCGAUCYAQIBOkUNXRgCAR1gF2AyAgEYYg1ihgECARpljAFl5gECARVrNGtRAgERaDVoSQIBD0kPUBgCATRRD1GxAgIBMFIPXBQCAR5iXWKDAQIBG046TpQBAgE3SztLQgIBNVGeAVHKAQIBMlIdUkUCAR9UE1ceAgEmWhNarwICASJVFVXgAgIBLFYVVqkBAgEnWp8BWsgBAgEkVZsBVfkBAgEuVktWWwIBKlaXAVamAQIBKA==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d01DOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5UZXN0aW5nV29ya0Zsb3cueGFtbC4B2QMBnQQBBAGOAwHAAwEDAWEB7wIBAikDcg4CAQEtBS8QAgFGMAVwGAIBAi4HLsUBAgFHMLEBMM4BAgEHMIIBMKQBAgEFMN8BMIoCAgEDNQduEgIBDW8Hb90CAgEJLjIuagIBSDkJPhgCAUE/CT/hAgIBPEAJXxMCARxgCWQOAgEXZQllzQICARNmCW0SAgEOb35v9gECAQs9Mj1DAgFEOzc7RwIBQj+LAT/6AQIBPkCGAUCYAQIBOkUNXRgCAR1gF2AyAgEYYg1ihgECARpljAFl5gECARVrNGtRAgERaDVoSQIBD0kPUBgCATRRD1GxAgIBMFIPXBQCAR5iXWKDAQIBG046TpQBAgE3SztLQgIBNVGeAVHKAQIBMlIdUkUCAR9UE1ceAgEmWhNarwICASJVFVXgAgIBLFYVVrIBAgEnWp8BWsgBAgEkVZsBVfkBAgEuVktWWwIBKlaXAVavAQIBKA==</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
