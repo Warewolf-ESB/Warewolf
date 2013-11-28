@@ -21,6 +21,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         private UITestControl _explorerTree;
         private UITestControl _explorerSearch;
         private UITestControl _explorerNewConnectionControl;
+        private UITestControl _explorerRefresh;
+
         public ExplorerUIMap()
         {
             var vstw = new VisualTreeWalker();
@@ -28,6 +30,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             _explorerTree = vstw.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "Navigation");
             _explorerSearch = vstw.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "FilterTextBox", "UI_DataListSearchtxt_AutoID");
             _explorerNewConnectionControl = vstw.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "ConnectUserControl");
+            _explorerRefresh = vstw.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "UI_SourceServerRefreshbtn_AutoID");
         }
 
         public UITestControlCollection GetCategoryItems()

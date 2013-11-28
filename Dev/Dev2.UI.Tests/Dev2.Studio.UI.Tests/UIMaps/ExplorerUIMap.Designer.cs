@@ -32,28 +32,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// </summary>
         public void DoRefresh()
         {
-            // Find the explorer main window
-            UITestControl anItem = this.UIBusinessDesignStudioWindow.UIExplorerCustom;
-            anItem.Find();
-            anItem.GetChildren();
-
-            // Find the explorer sub window
-            UITestControl explorerMenu = new UITestControl(anItem);
-            explorerMenu.SearchProperties["AutomationId"] = "Explorer";
-            explorerMenu.Find();
-
-            // Find the refresh button
-            UITestControl refreshButton = new UITestControl(explorerMenu);
-            UITestControlCollection explorerChildren = explorerMenu.GetChildren();
-            var connectUserControl = explorerChildren.First(c => c.FriendlyName == "TheNavigationView");
-            var connectUserControlChilren = connectUserControl.GetChildren();
-            refreshButton = connectUserControlChilren.First(c => c.FriendlyName == "UI_SourceServerRefreshbtn_AutoID");
-            //refreshButton.SearchProperties["AutomationId"] = "UI_SourceServerbtnRefresh_AutoID";
-            //refreshButton.Find();
-
-            // And click it
-            Mouse.Click(refreshButton, new Point(5, 5));
-            Thread.Sleep(3000);
+            // Click refresh
+            Mouse.Click(_explorerRefresh, new Point(5, 5));
+            _explorerRefresh.WaitForControlReady();
         }
 
         public void PinPane()

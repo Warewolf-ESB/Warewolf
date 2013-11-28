@@ -46,54 +46,63 @@ namespace Dev2.Studio.UI.Tests
         [Owner("Ashley")]
         public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_DbServiceMappingsFixed()
         {
+            try
+            {
+                const string workflowToUse = "Bug_10011";
+                const string serviceToUse = "Bug_10011_DbService";
+                Clipboard.Clear();
 
-            Assert.Fail("This test is impacted by the one below that uses the same resource. Please adjust to use different resources. AND this test does not click the fix errors button. Fix as well.");
+                // Open the Workflow
+                ExplorerUIMap.ClickServerInServerDDL("localhost");
+                ExplorerUIMap.EnterExplorerSearchText(workflowToUse);
+                ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", workflowToUse);
+                var theTab = TabManagerUIMap.GetActiveTab();
 
-            //const string workflowToUse = "Bug_10011";
-            //const string serviceToUse = "Bug_10011_DbService";
-            //Clipboard.Clear();
-            //// Open the Workflow
-            //ExplorerUIMap.ClickServerInServerDDL("localhost");
+                // Edit the DbService
+                ExplorerUIMap.EnterExplorerSearchText(serviceToUse);
+                ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", serviceToUse);
 
-            //ExplorerUIMap.EnterExplorerSearchText(workflowToUse);
-            //ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", workflowToUse);
-            //var theTab = TabManagerUIMap.GetActiveTab();
-            //// Edit the DbService
+                // Get wizard window
+                WizardsUIMap.WaitForWizard();
+                // Tab to mappings
+                DatabaseServiceWizardUIMap.TabToOutputMappings();
+                // Remove column 1+2's mapping
+                Playback.Wait(200);
+                SendKeys.SendWait("{TAB}");
+                SendKeys.SendWait("{TAB}");
+                SendKeys.SendWait("{TAB}");
+                SendKeys.SendWait("{TAB}");
+                SendKeys.SendWait("{DEL}");
+                SendKeys.SendWait("{TAB}");
+                SendKeys.SendWait("{DEL}");
 
-            //ExplorerUIMap.EnterExplorerSearchText(serviceToUse);
-            //ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", serviceToUse);
-            //// Get wizard window
+                // Save
+                DatabaseServiceWizardUIMap.ClickOK();
+                if (ResourceChangedPopUpUIMap.WaitForDialog(5000))
+                {
+                    ResourceChangedPopUpUIMap.ClickCancel();
+                }
 
-            //WizardsUIMap.WaitForWizard();
-            //// Tab to mappings
-            //DatabaseServiceWizardUIMap.TabToOutputMappings();
-            //// Remove column 1+2's mapping
-            //Playback.Wait(200);
-            //SendKeys.SendWait("{TAB}");
-            //SendKeys.SendWait("{TAB}");
-            //SendKeys.SendWait("{TAB}");
-            //SendKeys.SendWait("{TAB}");
-            //SendKeys.SendWait("{DEL}");
-            //SendKeys.SendWait("{TAB}");
-            //SendKeys.SendWait("{DEL}");
-            //// Save
-            //DatabaseServiceWizardUIMap.ClickOK();
-
-            //if(ResourceChangedPopUpUIMap.WaitForDialog(5000))
-            //{
-            //    ResourceChangedPopUpUIMap.ClickCancel();
-            //}
-
-            //// Fix Errors
-            //if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, serviceToUse + "(ServiceDesigner)"))
-            //{
-            //    // Assert mapping does not exist
-            //    Assert.IsFalse(WorkflowDesignerUIMap.DoesActivityDataMappingContainText(WorkflowDesignerUIMap.FindControlByAutomationId(theTab, serviceToUse + "(ServiceDesigner)"), "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
-            //}
-            //else
-            //{
-            //    Assert.Fail("'Fix Errors' button not visible");
-            //}
+                // Fix Errors
+                if (WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, serviceToUse + "(ServiceDesigner)"))
+                {
+                    // Assert mapping does not exist
+                    Assert.IsFalse(
+                        WorkflowDesignerUIMap.DoesActivityDataMappingContainText(
+                            WorkflowDesignerUIMap.FindControlByAutomationId(theTab, serviceToUse + "(ServiceDesigner)"),
+                            "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
+                }
+                else
+                {
+                    Assert.Fail("'Fix Errors' button not visible");
+                }
+            }
+            finally
+            {
+                //this is very important do not remove
+                //this test shares a resource with other tests and cannot stay open, it may have been changed in a way that effects those other tests
+                TabManagerUIMap.CloseAllTabs();
+            }
         }
 
         [TestMethod]
@@ -102,37 +111,49 @@ namespace Dev2.Studio.UI.Tests
         [Owner("Ashley")]
         public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_UserIsPromptedToAddRequiredDbServiceMappings()
         {
-            // Open the Workflow
-
-            ExplorerUIMap.EnterExplorerSearchText("PBI_9957_UITEST");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTCATEGORY", "PBI_9957_UITEST");
-            var theTab = TabManagerUIMap.GetActiveTab();
-            // Edit the DbService
-
-            ExplorerUIMap.EnterExplorerSearchText("Bug_10011_DbService");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
-
-            // Get wizard window
-            WizardsUIMap.WaitForWizard();
-            DatabaseServiceWizardUIMap.TabToInputMappings();
-
-            SendKeys.SendWait("{TAB}");
-            Playback.Wait(150);
-            SendKeys.SendWait(" ");
-            // Save
-            DatabaseServiceWizardUIMap.ClickOK();
-            ResourceChangedPopUpUIMap.ClickCancel();
-
-            // Fix Errors
-            if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService"))
+            try
             {
-                //Assert mappings are prompting the user to add required mapping
-                var getCloseMappingToggle = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Bug_10011_DbService", "Close Mapping");
-                Assert.IsNotNull(getCloseMappingToggle, "Fix Error does not prompt the user to input required mappings");
+                // Open the Workflow
+                ExplorerUIMap.EnterExplorerSearchText("PBI_9957_UITEST");
+                ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTCATEGORY", "PBI_9957_UITEST");
+                var theTab = TabManagerUIMap.GetActiveTab();
+
+                // Edit the DbService
+                ExplorerUIMap.EnterExplorerSearchText("Bug_10011_DbService");
+                ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
+
+                // Get wizard window
+                WizardsUIMap.WaitForWizard();
+                DatabaseServiceWizardUIMap.TabToInputMappings();
+
+                //set the first input to required
+                SendKeys.SendWait("{TAB}");
+                Playback.Wait(150);
+                SendKeys.SendWait(" ");
+
+                // Save
+                DatabaseServiceWizardUIMap.ClickOK();
+                ResourceChangedPopUpUIMap.ClickCancel();
+
+                // Fix Errors
+                if (WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService"))
+                {
+                    //Assert mappings are prompting the user to add required mapping
+                    var getCloseMappingToggle = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Bug_10011_DbService",
+                                                                                        "Close Mapping");
+                    Assert.IsNotNull(getCloseMappingToggle,
+                                     "Fix Error does not prompt the user to input required mappings");
+                }
+                else
+                {
+                    Assert.Fail("'Fix Errors' button not visible");
+                }
             }
-            else
+            finally
             {
-                Assert.Fail("'Fix Errors' button not visible");
+                //this is very important do not remove
+                //this test shares a resource with other tests and cannot stay open, it may have been changed in a way that effects those other tests
+                TabManagerUIMap.CloseAllTabs();
             }
         }
     }
