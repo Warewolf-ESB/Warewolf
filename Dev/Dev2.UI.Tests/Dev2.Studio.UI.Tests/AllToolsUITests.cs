@@ -46,7 +46,7 @@ namespace Dev2.Studio.UI.Tests
         [Description("Test for 'All Tools' workflow: The workflow is openned. The icons must display. The tab must be able to close again")]
         [Owner("Ashley")]
         // ReSharper disable InconsistentNaming
-        public void StudioTooling_StudioToolingUITest_CanToolsDisplay_NoExceptionsThrown()
+        public void StudioTooling_StudioToolingUITest_CanToolsDisplay_IconIsVisible()
         // ReSharper restore InconsistentNaming
         {
 
@@ -69,30 +69,7 @@ namespace Dev2.Studio.UI.Tests
                     child.ClassName != "Uia.DsfWebPageActivityDesigner")
                 {
                     //Some of the tools on the design surface are out of view, look for them...
-                    if (child.BoundingRectangle.Y > 800)
-                    {
-                        //might already be scrolled
-                        var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetVerticalScrollBar(theTab);
-                        WpfControl getTop = scrollBar as WpfControl;
-                        if (getTop.Top < 200)
-                        {
-                            //Look low
-                            Mouse.StartDragging(scrollBar);
-                            Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
-                        }
-                    }
-                    else
-                    {
-                        //might already be scrolled
-                        var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetVerticalScrollBar(theTab);
-                        WpfControl getTop = scrollBar as WpfControl;
-                        if (getTop.Top > 200)
-                        {
-                            //Look high
-                            Mouse.StartDragging(scrollBar);
-                            Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollUp(theTab));
-                        }
-                    }
+                    WorkflowDesignerUIMap.ScrollControlIntoView(theTab, child);
                     Assert.IsTrue(WorkflowDesignerUIMap.IsActivityIconVisible(child), child.FriendlyName + " is missing its icon on the design surface");
                     allFoundTools.Add(child);
                 }

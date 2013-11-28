@@ -52,6 +52,12 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.EnterExplorerSearchText("email service");
             Point point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", point);
+            //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
+            Point newPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            if (point != newPoint)
+            {
+                WorkflowDesignerUIMap.DragControl("Email Service", newPoint);
+            }
             List<UITestControl> connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
             Assert.AreEqual(1, connectors.Count, "Start auto connector was not created");
@@ -67,6 +73,12 @@ namespace Dev2.Studio.UI.Tests
             Point point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
             //Drag a control to the design surface
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
+            //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
+            Point newPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            if(point != newPoint)
+            {
+                WorkflowDesignerUIMap.DragControl("Assign", newPoint);
+            }
             List<UITestControl> connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
             Assert.AreEqual(1, connectors.Count, "Start auto connector was not created");
@@ -78,10 +90,10 @@ namespace Dev2.Studio.UI.Tests
         public void AutoConnectorTests_DragAToolOnALineBetweenConnectors_ASecondConnectorIsCreated()
         {
             //Drag a tool to the design surface
-
             ExplorerUIMap.EnterExplorerSearchText("AutoConnectorResource");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "AutoConnectorResource");
-            UITestControl control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "MultiAssignDesigner");
+            var theTab = TabManagerUIMap.GetActiveTab();
+            UITestControl control = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "MultiAssignDesigner");
 
             //Drag a tool to the design surface
             //Note that this point is a position relative to the multi assign on the design surface. This is to ensure that the tool is dropped exactly on the line
@@ -89,6 +101,14 @@ namespace Dev2.Studio.UI.Tests
             {
                 var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
                 ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
+                //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
+                var newPoint = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
+                if(point != newPoint)
+                {
+                    var theControl = WorkflowDesignerUIMap.GetAllControlsOnDesignSurface(theTab)[5];
+                    Mouse.StartDragging(theControl, new Point(10, 10));
+                    Mouse.StopDragging(newPoint);
+                }
             }
             else
             {
@@ -105,7 +125,6 @@ namespace Dev2.Studio.UI.Tests
         public void AutoConnectorTests_DragAnActivityOnALineBetweenConnectors_ASecondConnectorIsCreated()
         {
             //Drag an activity to the design surface
-
             ExplorerUIMap.EnterExplorerSearchText("AutoConnectorResource");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "AutoConnectorResource");
             var control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "MultiAssignDesigner");
@@ -116,6 +135,24 @@ namespace Dev2.Studio.UI.Tests
             {
                 var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
                 ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", point);
+                if (WorkflowDesignerUIMap.TryCloseMappings("Email Service"))
+                {
+                    //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
+                    var newPoint = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
+                    if(point != newPoint)
+                    {
+                        WorkflowDesignerUIMap.DragControl("Email Service", new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 50));
+                    }
+                }
+                else
+                {
+                    //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
+                    var newPoint = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
+                    if (point != newPoint)
+                    {
+                        WorkflowDesignerUIMap.DragControl("Email Service", newPoint);
+                    }
+                }
             }
             else
             {
@@ -142,6 +179,14 @@ namespace Dev2.Studio.UI.Tests
             {
                 var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
                 ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
+                //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
+                var newPoint = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
+                if(point != newPoint)
+                {
+                    Playback.Wait(2000);
+                    DecisionWizardUIMap.ClickCancel();
+                    WorkflowDesignerUIMap.DragControl("Decision", newPoint);
+                }
             }
             else
             {

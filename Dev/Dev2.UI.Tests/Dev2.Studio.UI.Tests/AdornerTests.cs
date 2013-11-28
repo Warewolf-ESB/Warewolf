@@ -593,30 +593,21 @@ namespace Dev2.Studio.UI.Tests
                 Assert.Fail("'Fix Errors' button not visible");
             }
 
-            button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TravsTestService", "Close Mapping");
-            WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
-            Mouse.Click(button);
-            button.WaitForControlReady();
+            WorkflowDesignerUIMap.TryCloseMappings("TravsTestService");
 
             if (!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "FetchCities"))
             {
                 Assert.Fail("'Fix Errors' button not visible");
             }
 
-            button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "FetchCities", "Close Mapping");
-            WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
-            Mouse.Click(button);
-            button.WaitForControlReady();
+            WorkflowDesignerUIMap.TryCloseMappings("FetchCities");
 
             if (!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "DummyService"))
             {
                 Assert.Fail("'Fix Errors' button not visible");
             }
 
-            button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "DummyService", "Close Mapping");
-            WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
-            Mouse.Click(button);
-            button.WaitForControlReady();
+            WorkflowDesignerUIMap.TryCloseMappings("DummyService");
         }
 
         [TestMethod]

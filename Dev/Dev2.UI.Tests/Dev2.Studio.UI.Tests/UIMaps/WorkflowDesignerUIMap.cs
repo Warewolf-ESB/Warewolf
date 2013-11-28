@@ -1397,5 +1397,24 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                 }
             }
         }
+
+        public void DragControl(string controlAutomationID, Point point)
+        {
+            var theControl = FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), controlAutomationID);
+            Mouse.StartDragging(theControl, new Point(10, 10));
+            Mouse.StopDragging(point);
+        }
+
+        public bool TryCloseMappings(string controlAutomationID)
+        {
+            var button = WorkflowDesignerUIMap.Adorner_GetButton(TabManagerUIMap.GetActiveTab(), controlAutomationID, "Close Mapping");
+            if (button != null)
+            {
+                WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
+                Mouse.Click(button);
+                return true;
+            }
+            return false;
+        }
     }
 }
