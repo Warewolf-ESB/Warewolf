@@ -322,15 +322,6 @@ label {
     }
 
 
-
-input:focus, button:focus, textarea:focus, select:focus {
-    border: 1px solid #ff8613;
-}
-
-input:hover,textarea:hover {
-    border: 1px solid #ff8613;
-}
-
 input, textarea, select {
     padding: 5px;
     width: 247px;
@@ -339,6 +330,7 @@ input, textarea, select {
     font-family: inherit;
     color: inherit;
 }
+
 select {
     padding: 5px 4px 4px 4px;
 }
@@ -552,7 +544,7 @@ tr.pager td {
 }
 
 ol.selectable {
-    list-style-type: none;
+    list-style-type: none;    
     margin: 0;
     padding: 0;
 }
@@ -897,6 +889,16 @@ img.noMargin {
     padding: 10px;
 }
 
-.plugin-source > a:focus, select:focus {
-    border: 0px transparent;
+input:focus, button:focus, textarea:focus, select:focus {
+    border: 1px solid #ff8613;
+}
+
+input:hover,textarea:hover {
+    border: 1px solid #ff8613;
+}
+
+.decision-select 
+{
+    font-family: Tahoma, Geneva, sans-serif;
+    padding: 5px 4px 5px 4px;
 }

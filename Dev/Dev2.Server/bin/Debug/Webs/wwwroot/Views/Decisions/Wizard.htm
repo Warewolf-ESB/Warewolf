@@ -30,7 +30,7 @@
 							</label>
                                     <input type="text"  name="Col1" id="Col1" data-bind="value: Col1, valueUpdate: 'blur', visible: PopulatedColumnCnt() > 0" class="veryShortField" style="margin-top: 2px; height: 16px" />                              
 
-                                    <select data-bind="options: $parent.data.decisionFunctions, value: EvaluationFn,optionsText: 'displayValue', optionsValue: 'optionValue', event:{ change: $parent.rowChanged}" class="shortField required topAlign">
+                                    <select data-bind="options: $parent.data.decisionFunctions, value: EvaluationFn,optionsText: 'displayValue', optionsValue: 'optionValue', event:{ change: $parent.rowChanged}" class="shortField required topAlign decision-select ">
                                     </select>
 
                                     <textarea name="Col2" id="Col2" draggable="false" 
