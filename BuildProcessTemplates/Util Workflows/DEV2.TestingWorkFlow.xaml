@@ -52,7 +52,7 @@
       </mtbwa:AgentScope.Variables>
       <Sequence DisplayName="GetLatestBuildNumber" sap2010:WorkflowViewState.IdRef="Sequence_4">
         <Sequence.Variables>
-          <Variable x:TypeArguments="s:Int32[]" Name="BuildNumbers" />
+          <Variable x:TypeArguments="s:Int32[]" Default="[New Integer() {}]" Name="BuildNumbers" />
         </Sequence.Variables>
         <InvokeMethod DisplayName="Read Builds Folder" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="GetFiles" TargetType="si:Directory">
           <InvokeMethod.Result>
@@ -110,7 +110,7 @@
       </Sequence>
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="[&quot;------------------- Latest Build Found: &quot; &amp; SpecifiedChangeSet &amp; &quot; -------------------&quot;]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>d01DOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5UZXN0aW5nV29ya0Zsb3cueGFtbC4B2QMBnQQBBAGOAwHAAwEDAWEB7wIBAikDcg4CAQEtBS8QAgFGMAVwGAIBAi4HLsUBAgFHMLEBMM4BAgEHMIIBMKQBAgEFMN8BMIoCAgEDNQduEgIBDW8Hb90CAgEJLjIuagIBSDkJPhgCAUE/CT/hAgIBPEAJXxMCARxgCWQOAgEXZQllzQICARNmCW0SAgEOb35v9gECAQs9Mj1DAgFEOzc7RwIBQj+LAT/6AQIBPkCGAUCYAQIBOkUNXRgCAR1gF2AyAgEYYg1ihgECARpljAFl5gECARVrNGtRAgERaDVoSQIBD0kPUBgCATRRD1GxAgIBMFIPXBQCAR5iXWKDAQIBG046TpQBAgE3SztLQgIBNVGeAVHKAQIBMlIdUkUCAR9UE1ceAgEmWhNarwICASJVFVXgAgIBLFYVVrIBAgEnWp8BWsgBAgEkVZsBVfkBAgEuVktWWwIBKlaXAVavAQIBKA==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d01DOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5UZXN0aW5nV29ya0Zsb3cueGFtbC8B2QMBnQQBBAGOAwHAAwEDAWEB7wIBAikDcg4CAQEtBS8QAgFHMAVwGAIBAi4HLsUBAgFIMLEBMM4BAgEHMIIBMKQBAgEFMN8BMIoCAgEDNQduEgIBDW8Hb90CAgEJLjIuagIBSTc5N00CAQ45CT4YAgFCPwk/4QICAT1ACV8TAgEdYAlkDgIBGGUJZc0CAgEUZgltEgIBD29+b/YBAgELPTI9QwIBRTs3O0cCAUM/iwE/+gECAT9AhgFAmAECATtFDV0YAgEeYBdgMgIBGWINYoYBAgEbZYwBZeYBAgEWazRrUQIBEmg1aEkCARBJD1AYAgE1UQ9RsQICATFSD1wUAgEfYl1igwECARxOOk6UAQIBOEs7S0ICATZRngFRygECATNSHVJFAgEgVBNXHgIBJ1oTWq8CAgEjVRVV4AICAS1WFVayAQIBKFqfAVrIAQIBJVWbAVX5AQIBL1ZLVlsCAStWlwFWrwECASk=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
