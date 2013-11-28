@@ -229,17 +229,32 @@ namespace Dev2.Studio.UI.Tests
         public void RemoteServerUITests_EditRemoteWebSource_WebSourceIsEdited()
         {
             const string TextToSearchWith = "WebSource";
+            var query = string.Empty;
+
+            //Edit remote web source
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            Playback.Wait(3500);
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            Playback.Wait(20000);
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}?CountryName=Canada{TAB}{TAB}{TAB}{ENTER}");
             Playback.Wait(1000);
             SaveDialogUIMap.ClickSave();
 
+            //Change it back
+            ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
+            Playback.Wait(20000);
+            var persistClipboard = Clipboard.GetText();
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{CTRL}c?CountryName=South Africa{TAB}{TAB}{TAB}{ENTER}");
+            query = Clipboard.GetText();
+            Clipboard.SetText(persistClipboard);
+            Playback.Wait(1000);
+            SaveDialogUIMap.ClickSave();
+
+            Assert.AreEqual("?CountryName=Canada", query, "Cannot change remote web source");
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
+        [Ignore]//Bug 10828
         public void RemoteServerUITests_EditRemoteWebService_WebServiceIsEdited()
         {
             Assert.Fail("Bad test! Not indicative that things worked!");
