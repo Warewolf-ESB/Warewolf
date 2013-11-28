@@ -274,7 +274,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Exceptions.cs" />
-    <Compile Include="Exceptions\FrameworkException.cs" />
     <Compile Include="Exceptions\ExceptionHandling.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

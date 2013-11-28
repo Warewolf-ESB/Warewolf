@@ -209,6 +209,7 @@
     </Compile>
     <Compile Include="Activities\FileSystemTests.cs" />
     <Compile Include="Activities\FtpTests.cs" />
+    <Compile Include="Activities\GeneralWorkflowTest.cs" />
     <Compile Include="Activities\PathIOTestingUtils.cs">
       <SubType>
       </SubType>
@@ -235,7 +236,10 @@
     <Compile Include="Dev2.Activities.Tests\DsfDateTimeActivityWFTest.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfActivityAbstractTest.cs" />
     <Compile Include="Dev2.Activities.Tests\ToolingWorkflowTest.cs" />
+    <Compile Include="Dev2.Studio.Core.Tests\TcpClientHostTest.cs" />
+    <Compile Include="Internal Services\RenameResourceServiceTests.cs" />
     <Compile Include="Server Test\Bpm unit tests\DatabaseTest.cs" />
+    <Compile Include="Server Test\Bpm unit tests\DBServiceTest.cs" />
     <Compile Include="Server Test\Bpm unit tests\EndpointInterrogator\EndpointInterrogatorTest.cs" />
     <Compile Include="Server Test\Bpm unit tests\NestedWorkflow.cs" />
     <Compile Include="Server Test\Bpm unit tests\OnErrorTest.cs" />

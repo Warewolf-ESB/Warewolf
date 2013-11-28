@@ -16,6 +16,41 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
         ///</summary>
         public TestContext TestContext { get; set; }
 
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("RecordsetMapping_NestedWorkflows")]
+        // Ensure we can map portions of a recordset as input and other portionas as output
+        public void RecordsetMapping_NestedWorkflows_MixedInputAndOutput_ExpectValidResult()
+        {
+
+            //------------Setup for test--------------------------
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug_10247_Outter");
+            string expected = @"<rs><result>2</result></rs><rs><result>3</result></rs>";
+
+            //------------Execute Test---------------------------
+            string responseData = TestHelper.PostDataToWebserver(postData);
+
+            //------------Assert Results-------------------------
+
+            // Standardise the outputs (Remove newlines, etc)
+            expected = TestHelper.CleanUp(expected);
+            responseData = TestHelper.CleanUp(responseData);
+            StringAssert.Contains(responseData, expected);
+
+        }
+
+        [TestMethod]
+        public void DataBaseTest_CanDbServiceReturnCorrectCase()
+        {
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug9490");
+            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+
+            string expected1 = "<result><val>abc_def_hij</val></result><result><val>ABC_DEF_HIJ</val></result>";
+
+            StringAssert.Contains(ResponseData, expected1, "But Got [ " + ResponseData + " ]");
+        }
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DBService_Execute")]
