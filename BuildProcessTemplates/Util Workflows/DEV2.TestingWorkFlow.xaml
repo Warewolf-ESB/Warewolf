@@ -42,7 +42,7 @@
       <Variable x:TypeArguments="mtbc:IBuildAgent" Name="BuildAgent" />
     </Sequence.Variables>
     <Sequence DisplayName="Initialize" sap2010:WorkflowViewState.IdRef="Sequence_1" mtbwt:BuildTrackingParticipant.Importance="Low">
-      <mtbwa:UpdateBuildNumber BuildNumberFormat="Workspace Cleanup Util_$(Date:yyyyMMdd)$(Rev:.r)" DisplayName="Update Build Number" sap2010:WorkflowViewState.IdRef="UpdateBuildNumber_1" />
+      <mtbwa:UpdateBuildNumber BuildNumberFormat="Get Latest Build Number Test_$(Date:yyyyMMdd)$(Rev:.r)" DisplayName="Update Build Number" sap2010:WorkflowViewState.IdRef="UpdateBuildNumber_1" />
     </Sequence>
     <mtbwa:AgentScope DataToIgnore="" DisplayName="Run On Agent" sap2010:WorkflowViewState.IdRef="AgentScope_1" MaxExecutionTime="[AgentSettings.MaxExecutionTime]" MaxWaitTime="[AgentSettings.MaxWaitTime]" ReservationSpec="[AgentSettings.GetAgentReservationSpec()]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces">
       <mtbwa:AgentScope.Variables>
@@ -76,23 +76,22 @@
                   <InArgument x:TypeArguments="x:String">[build.TrimEnd(New Char() {"."c, "z"c, "i"c, "p"c})]</InArgument>
                 </Assign.Value>
               </Assign>
-              <mtbwa:WriteBuildMessage DisplayName="Write &quot;Trying to parse&quot; Message" Message="[&quot;Trying to parse &quot; &amp; build]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_7" />
+              <mtbwa:WriteBuildMessage DisplayName="Write &quot;Trying to parse&quot; Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_7" Message="[&quot;Trying to parse &quot; &amp; build]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
               <If Condition="[Integer.TryParse(build, BuildNumber)]" DisplayName="If Can Parse Build Number" sap2010:WorkflowViewState.IdRef="If_1">
                 <If.Then>
-                  <Sequence DisplayName="Can Parse">
-                    <mtbwa:WriteBuildMessage DisplayName="Write &quot;Adding&quot; Message" Message="[&quot;Adding &quot; &amp; BuildNumber.ToString &amp; &quot; to list of build numbers&quot;]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_8" />
+                  <Sequence DisplayName="Can Parse" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                    <mtbwa:WriteBuildMessage DisplayName="Write &quot;Adding&quot; Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_8" Message="[&quot;Adding &quot; &amp; BuildNumber.ToString &amp; &quot; to list of build numbers&quot;]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
                     <AddToCollection x:TypeArguments="x:Int32" Collection="[BuildNumbers]" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[BuildNumber]" />
-                    <sap2010:WorkflowViewState.IdRef>Sequence_5</sap2010:WorkflowViewState.IdRef>
                   </Sequence>
                 </If.Then>
                 <If.Else>
-                  <mtbwa:WriteBuildMessage DisplayName="Write &quot;Cannot parse&quot; Message" Message="[&quot;Cannot parse &quot; &amp; build]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_9" />
+                  <mtbwa:WriteBuildMessage DisplayName="Write &quot;Cannot parse&quot; Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_9" Message="[&quot;Cannot parse &quot; &amp; build]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
                 </If.Else>
               </If>
             </Sequence>
           </ActivityAction>
         </ForEach>
-        <mtbwa:WriteBuildMessage DisplayName="Write number of builds found" Message="[&quot;Found &quot; &amp; BuildNumbers.Length.ToString &amp; &quot; build numbers&quot;]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_10" />
+        <mtbwa:WriteBuildMessage DisplayName="Write number of builds found" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_10" Message="[&quot;Found &quot; &amp; BuildNumbers.Length.ToString &amp; &quot; build numbers&quot;]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
         <Assign DisplayName="Get Latest Build Number" sap2010:WorkflowViewState.IdRef="Assign_11">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[SpecifiedChangeSet]</OutArgument>
@@ -104,7 +103,7 @@
       </Sequence>
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="[&quot;------------------- Latest Build Found: &quot; &amp; SpecifiedChangeSet &amp; &quot; -------------------&quot;]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>d01DOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5UZXN0aW5nV29ya0Zsb3cueGFtbCYBYQHvAgECKANsDgIBASwFLhACATsvBWoYAgECLQctvwECATwvsQEvzgECAQcvggEvpAECAQUv3wEvigICAQM0B2gSAgENaQdp3QICAQktMi1kAgE9OAk9GAIBNj4JXhMCARdfCV/NAgIBE2AJZxICAQ5pfmn2AQIBCzwyPEMCATk6NzpHAgE3PoYBPpgBAgE0Qw1cGAIBGF9VX68BAgEVZTRlUQIBEWI1YkkCAQ9HD04YAgEvTw9PsQICAStQD1sUAgEZTDpMbgIBMkk7SUICATBPaE+UAQIBLVAdUEUCARpSE1YeAgEhWRNZrwICAR1TFVPgAgIBJ1QVVKkBAgEiWWlZkgECAR9TZVPDAQIBKVRLVFsCASVUlwFUpgECASM=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d01DOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5UZXN0aW5nV29ya0Zsb3cueGFtbCYBYQHvAgECKANrDgIBASwFLhACATsvBWkYAgECLQctxQECATwvsQEvzgECAQcvggEvpAECAQUv3wEvigICAQM0B2cSAgENaAdo3QICAQktMi1qAgE9OAk9GAIBNj4JXRMCARdeCV7NAgIBE18JZhICAQ5ofmj2AQIBCzwyPEMCATk6NzpHAgE3PoYBPpgBAgE0Qw1bGAIBGF6MAV7mAQIBFWQ0ZFECARFhNWFJAgEPRw9OGAIBL08PT7ECAgErUA9aFAIBGUw6TG4CATJJO0lCAgEwT54BT8oBAgEtUB1QRQIBGlITVR4CASFYE1ivAgIBHVMVU+ACAgEnVBVUqQECASJYnwFYyAECAR9TmwFT+QECASlUS1RbAgElVJcBVKYBAgEj</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
