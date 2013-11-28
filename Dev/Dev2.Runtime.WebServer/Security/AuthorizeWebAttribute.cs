@@ -31,21 +31,21 @@ namespace Dev2.Runtime.WebServer.Security
                 actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
             }
 
-            AuthorizeRequestType requestType;
+            AuthorizationRequestType requestType;
             Enum.TryParse("Web" + actionContext.ActionDescriptor.ActionName, out requestType);
 
-            var resourceID = GetResourceID(actionContext.Request, requestType);
+            var request = new AuthorizationRequest
+            {
+                RequestType = requestType,
+                User = user,
+                Url = actionContext.Request.RequestUri,
+                QueryString = new QueryString(actionContext.Request.GetQueryNameValuePairs())
+            };
 
-            if(!_authorizationProvider.IsAuthorized(user, requestType, resourceID))
+            if(!_authorizationProvider.IsAuthorized(request))
             {
                 actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Access has been denied for this request.");
             }
-        }
-
-        string GetResourceID(HttpRequestMessage requestMessage, AuthorizeRequestType requestType)
-        {
-            return null;
-            //actionContext.Request.GetResourceID();
         }
     }
 }

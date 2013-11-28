@@ -1,6 +1,6 @@
 ﻿namespace Dev2.Runtime.WebServer.Security
 {
-    public enum AuthorizeRequestType
+    public enum AuthorizationRequestType
     {
         Unknown,
         WebGet,

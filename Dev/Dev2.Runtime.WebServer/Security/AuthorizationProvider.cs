@@ -1,21 +1,22 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Security.Principal;
 using Dev2.Data.Settings.Security;
 using Dev2.Runtime.ESB.Management.Services;
-using Newtonsoft.Json;
 
 namespace Dev2.Runtime.WebServer.Security
 {
     public class AuthorizationProvider : IAuthorizationProvider
     {
+        readonly ISecurityConfigProvider _securityConfigProvider;
         static readonly string[] EmptyRoles = new string[0];
 
-        readonly List<WindowsGroupPermission> _permissions;
+        readonly ConcurrentDictionary<Tuple<string, string>, bool> _requests = new ConcurrentDictionary<Tuple<string, string>, bool>();
 
         // Singleton instance - lazy initialization is used to ensure that the creation is threadsafe
-        readonly static Lazy<AuthorizationProvider> TheInstance = new Lazy<AuthorizationProvider>(() => new AuthorizationProvider(ReadPermissions()));
+        readonly static Lazy<AuthorizationProvider> TheInstance = new Lazy<AuthorizationProvider>(() => new AuthorizationProvider(new SecurityConfigProvider()));
         public static AuthorizationProvider Instance
         {
             get
@@ -24,67 +25,125 @@ namespace Dev2.Runtime.WebServer.Security
             }
         }
 
-        static List<WindowsGroupPermission> ReadPermissions()
+        protected AuthorizationProvider(ISecurityConfigProvider securityConfigProvider)
         {
-            var reader = new SecurityRead();
-            var json = reader.Execute(null, null);
-            return JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(json);
+            VerifyArgument.IsNotNull("securityConfigProvider", securityConfigProvider);
+            _securityConfigProvider = securityConfigProvider;
+            _securityConfigProvider.Changed += OnSecurityConfigProviderChanged;
         }
 
-        protected AuthorizationProvider(List<WindowsGroupPermission> permissions)
+        void OnSecurityConfigProviderChanged(object sender, FileSystemEventArgs fileSystemEventArgs)
         {
-            _permissions = permissions;
+            _requests.Clear();
         }
 
-        public bool IsAuthorized(IPrincipal user, AuthorizeRequestType requestType, string resourceID)
+        public bool IsAuthorized(IAuthorizationRequest request)
         {
-            var roles = GetRoles(requestType, resourceID);
-            return roles.Any(user.IsInRole);
-        }
-
-        IEnumerable<string> GetRoles(AuthorizeRequestType requestType, string resourceID)
-        {
-            //switch(requestType)
-            //{
-            //    case AuthorizeRequestType.WebGet:
-            //        return _permissions.Where(p => (p.View || p.Contribute) && Matches(p, resourceID)).Select(p => p.WindowsGroup);
-
-            //    case AuthorizeRequestType.WebInvokeService:
-            //        return _permissions.Where(p => (p.Contribute || p.Execute) && Matches(p, resourceID)).Select(p => p.WindowsGroup);
-
-            //    case AuthorizeRequestType.WebExecute:
-            //        return _permissions.Where(p => p.Execute && Matches(p, resourceID)).Select(p => p.WindowsGroup);
-
-            //    case AuthorizeRequestType.WebBookmark:
-            //        return _permissions.Where(p => p.Execute && Matches(p, resourceID)).Select(p => p.WindowsGroup);
-            //}
-            //return EmptyRoles;
-
-
-            return new List<string>
+            bool authorized;
+            if(!_requests.TryGetValue(request.Key, out authorized))
             {
-                "xxxx",
-                "DnsAdmins",
-                WindowsGroupPermission.BuiltInAdministratorsText
-            };
+                var roles = GetRoles(request);
+                authorized = roles.Any(request.User.IsInRole);
+                _requests.TryAdd(request.Key, authorized);
+            }
+            return authorized;
         }
 
-        static bool Matches(WindowsGroupPermission permission, string resourceID)
+        IEnumerable<string> GetRoles(IAuthorizationRequest request)
+        {
+            var resource = request.QueryString["rid"];
+            if(string.IsNullOrEmpty(resource))
+            {
+                switch(request.RequestType)
+                {
+                    case AuthorizationRequestType.WebExecute:
+                        resource = GetWebExecuteName(request.Url.AbsolutePath);
+                        break;
+
+                    case AuthorizationRequestType.WebBookmark:
+                        resource = GetWebBookmarkName(request.Url.AbsolutePath);
+                        break;
+                }
+            }
+
+            switch(request.RequestType)
+            {
+                case AuthorizationRequestType.WebGet:
+                    return _securityConfigProvider.Permissions.Where(p => (p.View || p.Contribute) && Matches(p, resource)).Select(p => p.WindowsGroup);
+
+                case AuthorizationRequestType.WebInvokeService:
+                    return _securityConfigProvider.Permissions.Where(p => (p.Contribute || p.Execute) && Matches(p, resource)).Select(p => p.WindowsGroup);
+
+                case AuthorizationRequestType.WebExecute:
+                    return _securityConfigProvider.Permissions.Where(p => p.Execute && Matches(p, resource)).Select(p => p.WindowsGroup);
+
+                case AuthorizationRequestType.WebBookmark:
+                    return _securityConfigProvider.Permissions.Where(p => p.Execute && Matches(p, resource)).Select(p => p.WindowsGroup);
+            }
+            return EmptyRoles;
+
+
+            //return new List<string>
+            //{
+            //    "xxxx",
+            //    "DnsAdmins",                
+            //    WindowsGroupPermission.BuiltInAdministratorsText
+            //};
+        }
+
+        static bool Matches(WindowsGroupPermission permission, string resource)
         {
             if(permission.IsServer)
             {
                 return true;
             }
 
-            Guid id;
-            if(Guid.TryParse(resourceID, out id))
+            if(string.IsNullOrEmpty(resource))
             {
-                return permission.ResourceID == id;
+                return false;
+            }
+
+            Guid resourceID;
+            if(Guid.TryParse(resource, out resourceID))
+            {
+                return permission.ResourceID == resourceID;
             }
 
             // ResourceName is in the format: {categoryName}\{resourceName}
-            return permission.ResourceName.EndsWith("\\" + resourceID);
+            return permission.ResourceName.EndsWith("\\" + resource);
         }
 
+        static string GetWebExecuteName(string absolutePath)
+        {
+            var startIndex = GetNameStartIndex(absolutePath);
+            return startIndex.HasValue ? absolutePath.Substring(startIndex.Value, absolutePath.Length - startIndex.Value) : null;
+        }
+
+        static string GetWebBookmarkName(string absolutePath)
+        {
+            var startIndex = GetNameStartIndex(absolutePath);
+            if(startIndex.HasValue)
+            {
+                var endIndex = absolutePath.IndexOf("/instances/", startIndex.Value, StringComparison.InvariantCultureIgnoreCase);
+                if(endIndex != -1)
+                {
+                    return absolutePath.Substring(startIndex.Value, endIndex - startIndex.Value);
+                }
+            }
+
+            return null;
+        }
+
+        static int? GetNameStartIndex(string absolutePath)
+        {
+            var startIndex = absolutePath.IndexOf("services/", StringComparison.InvariantCultureIgnoreCase);
+            if(startIndex == -1)
+            {
+                return startIndex;
+            }
+
+            startIndex += 9;
+            return startIndex;
+        }
     }
 }

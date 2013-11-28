@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Principal;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
@@ -25,18 +24,25 @@ namespace Dev2.Runtime.WebServer.Security
         {
             VerifyArgument.IsNotNull("hubDescriptor", hubDescriptor);
             VerifyArgument.IsNotNull("request", request);
-            return IsAuthorized(request.User);
+            return IsAuthorized(request);
         }
 
         public bool AuthorizeHubMethodInvocation(IHubIncomingInvokerContext hubIncomingInvokerContext, bool appliesToMethod)
         {
             VerifyArgument.IsNotNull("hubIncomingInvokerContext", hubIncomingInvokerContext);
-            return IsAuthorized(hubIncomingInvokerContext.Hub.Context.User);
+            return IsAuthorized(hubIncomingInvokerContext.Hub.Context.Request);
         }
 
-        bool IsAuthorized(IPrincipal user)
+        bool IsAuthorized(IRequest request)
         {
-            return user.IsAuthenticated() && _authorizationProvider.IsAuthorized(user, AuthorizeRequestType.Unknown, string.Empty);
+            var authorizationRequest = new AuthorizationRequest
+            {
+                RequestType = AuthorizationRequestType.Unknown,
+                User = request.User,
+                Url = request.Url,
+                QueryString = request.QueryString
+            };
+            return request.User.IsAuthenticated() && _authorizationProvider.IsAuthorized(authorizationRequest);
         }
     }
 }

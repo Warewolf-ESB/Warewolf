@@ -28,9 +28,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 throw new InvalidDataException("Empty values passed.");
             }
-            
+
             values.TryGetValue("Permissions", out permissions);
-            
+
             if(string.IsNullOrEmpty(permissions))
             {
                 throw new InvalidDataException("Empty permissions passed.");
@@ -72,12 +72,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             var byteConverter = new ASCIIEncoding();
             var encryptedData = SecurityEncryption.Encrypt(permissions);
             byte[] dataToEncrypt = byteConverter.GetBytes(encryptedData);
-            File.WriteAllBytes("secure.config", dataToEncrypt);
+            File.WriteAllBytes(SecurityConfigProvider.FileName, dataToEncrypt);
         }
 
         static FileInfo DenyAccessToSecurityFileToEveryone()
         {
-            var fileInfo = new FileInfo("secure.config");
+            var fileInfo = new FileInfo(SecurityConfigProvider.FileName);
             // Get a DirectorySecurity object that represents the current security settings.
             var accessControl = fileInfo.GetAccessControl();
             //remove any inherited access
