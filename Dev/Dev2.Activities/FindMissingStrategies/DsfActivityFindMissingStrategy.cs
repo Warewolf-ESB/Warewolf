@@ -66,6 +66,17 @@ namespace Dev2.FindMissingStrategies
                         }                        
                     }
                 }
+
+                if(!string.IsNullOrEmpty(act.OnErrorVariable))
+                {
+                    results.Add(act.OnErrorVariable);
+                }
+
+                if(!string.IsNullOrEmpty(act.OnErrorWorkflow))
+                {
+                    results.Add(act.OnErrorWorkflow);
+                }
+
             }
             return results;
         }
