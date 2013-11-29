@@ -105,6 +105,30 @@
       <DependentUpon>Replace.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Data\Replace\ReplaceSteps.cs" />
+    <Compile Include="Toolbox\Recordset\Count\Count.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Count.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Recordset\Count\CountSteps.cs" />
+    <Compile Include="Toolbox\Recordset\Delete\Delete.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Delete.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Recordset\Delete\DeleteSteps.cs" />
+    <Compile Include="Toolbox\Recordset\FindRecordIndex\FindRecordIndex.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FindRecordIndex.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Recordset\FindRecordIndex\FindRecordIndexSteps.cs" />
+    <Compile Include="Toolbox\Recordset\Sort\Sort.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sort.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Recordset\Sort\SortSteps.cs" />
     <Compile Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsert.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -112,6 +136,11 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsertSteps.cs" />
+    <Compile Include="Toolbox\Recordset\Unique\Unique.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Unique.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\Utility\Calculate\Calculate.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -136,11 +165,18 @@
       <DependentUpon>FormatNumber.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Utility\FormatNumber\FormatNumberSteps.cs" />
+    <Compile Include="Toolbox\Utility\WebRequest\WebRequest.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebRequest.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Utility\WebRequest\WebRequestSteps.cs" />
     <Compile Include="Toolbox\Utility\XPath\XPath.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>XPath.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\Utility\XPath\XPathSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -173,9 +209,29 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Replace.feature.cs</LastGenOutput>
     </None>
+    <None Include="Toolbox\Recordset\Count\Count.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Count.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\Delete\Delete.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Delete.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\FindRecordIndex\FindRecordIndex.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FindRecordIndex.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\Sort\Sort.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Sort.feature.cs</LastGenOutput>
+    </None>
     <None Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsert.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SqlBulkInsert.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\Unique\Unique.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Unique.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\Calculate\Calculate.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -192,6 +248,10 @@
     <None Include="Toolbox\Utility\FormatNumber\FormatNumber.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FormatNumber.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\WebRequest\WebRequest.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WebRequest.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\XPath\XPath.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

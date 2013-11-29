@@ -1,11 +1,10 @@
 ﻿Feature: XPath
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+	In order to run a query against xml
+	As a Warewolf user
+	I want to a tool that I can use to execute xpath queries
 
-@mytag
-Scenario: Add two numbers
-	Given I have entered 50 into the calculator
-	And I have entered 70 into the calculator
-	When I press add
-	Then the result should be 120 on the screen
+Scenario: Use XPath to get data off XML
+	Given I have this xml '<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>'
+	And I have a variable "[[firstNum]]" with xpath "//root/number[@id='1']/text()"
+	When the xpath tool is executed
+	Then the variable "[[firstNum]]" should have a value "One"

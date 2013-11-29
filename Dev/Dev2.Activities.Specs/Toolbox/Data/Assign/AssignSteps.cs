@@ -26,8 +26,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
                     Action = _multiAssign
                 };
 
-            ErrorResultTO errors;
-
             var data = new StringBuilder();
             data.Append("<ADL>");
             foreach (var variable in _variableList)
