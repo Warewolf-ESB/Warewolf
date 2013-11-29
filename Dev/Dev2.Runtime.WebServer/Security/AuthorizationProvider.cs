@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Web;
 using Dev2.Data.Settings.Security;
 using Dev2.Runtime.ESB.Management.Services;
 
@@ -13,17 +14,11 @@ namespace Dev2.Runtime.WebServer.Security
         readonly ISecurityConfigProvider _securityConfigProvider;
         static readonly string[] EmptyRoles = new string[0];
 
-        readonly ConcurrentDictionary<Tuple<string, string>, bool> _requests = new ConcurrentDictionary<Tuple<string, string>, bool>();
+        readonly ConcurrentDictionary<Tuple<string, string>, bool> _cachedRequests = new ConcurrentDictionary<Tuple<string, string>, bool>();
 
         // Singleton instance - lazy initialization is used to ensure that the creation is threadsafe
-        readonly static Lazy<AuthorizationProvider> TheInstance = new Lazy<AuthorizationProvider>(() => new AuthorizationProvider(new SecurityConfigProvider()));
-        public static AuthorizationProvider Instance
-        {
-            get
-            {
-                return TheInstance.Value;
-            }
-        }
+        static readonly Lazy<AuthorizationProvider> TheInstance = new Lazy<AuthorizationProvider>(() => new AuthorizationProvider(new SecurityConfigProvider()));
+        public static AuthorizationProvider Instance { get { return TheInstance.Value; } }
 
         protected AuthorizationProvider(ISecurityConfigProvider securityConfigProvider)
         {
@@ -32,21 +27,24 @@ namespace Dev2.Runtime.WebServer.Security
             _securityConfigProvider.Changed += OnSecurityConfigProviderChanged;
         }
 
-        void OnSecurityConfigProviderChanged(object sender, FileSystemEventArgs fileSystemEventArgs)
-        {
-            _requests.Clear();
-        }
+        public int CachedRequestCount { get { return _cachedRequests.Count; } }
 
         public bool IsAuthorized(IAuthorizationRequest request)
         {
+            VerifyArgument.IsNotNull("request", request);
             bool authorized;
-            if(!_requests.TryGetValue(request.Key, out authorized))
+            if(!_cachedRequests.TryGetValue(request.Key, out authorized))
             {
                 var roles = GetRoles(request);
                 authorized = roles.Any(request.User.IsInRole);
-                _requests.TryAdd(request.Key, authorized);
+                _cachedRequests.TryAdd(request.Key, authorized);
             }
             return authorized;
+        }
+
+        void OnSecurityConfigProviderChanged(object sender, FileSystemEventArgs fileSystemEventArgs)
+        {
+            _cachedRequests.Clear();
         }
 
         IEnumerable<string> GetRoles(IAuthorizationRequest request)
@@ -125,7 +123,7 @@ namespace Dev2.Runtime.WebServer.Security
         static string GetWebExecuteName(string absolutePath)
         {
             var startIndex = GetNameStartIndex(absolutePath);
-            return startIndex.HasValue ? absolutePath.Substring(startIndex.Value, absolutePath.Length - startIndex.Value) : null;
+            return startIndex.HasValue ? HttpUtility.UrlDecode(absolutePath.Substring(startIndex.Value, absolutePath.Length - startIndex.Value)) : null;
         }
 
         static string GetWebBookmarkName(string absolutePath)
@@ -136,7 +134,7 @@ namespace Dev2.Runtime.WebServer.Security
                 var endIndex = absolutePath.IndexOf("/instances/", startIndex.Value, StringComparison.InvariantCultureIgnoreCase);
                 if(endIndex != -1)
                 {
-                    return absolutePath.Substring(startIndex.Value, endIndex - startIndex.Value);
+                    return HttpUtility.UrlDecode(absolutePath.Substring(startIndex.Value, endIndex - startIndex.Value));
                 }
             }
 
