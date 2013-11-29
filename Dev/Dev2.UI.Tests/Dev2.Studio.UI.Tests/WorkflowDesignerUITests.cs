@@ -180,6 +180,8 @@ namespace Dev2.Studio.UI.Tests
                                                         new Point(startButton.BoundingRectangle.X + 50,
                                                                   startButton.BoundingRectangle.Y + 150));
 
+            WorkflowDesignerUIMap.TryCloseMappings("Email Service");
+
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service",
                                                         new Point(startButton.BoundingRectangle.X + 50,
                                                                   startButton.BoundingRectangle.Y + 300));

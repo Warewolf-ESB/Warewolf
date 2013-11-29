@@ -212,6 +212,12 @@ namespace Dev2.Studio.UI.Tests
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
             Playback.Wait(2000);
             DecisionWizardUIMap.ClickCancel();
+            //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
+            Point newPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            if (point != newPoint)
+            {
+                WorkflowDesignerUIMap.DragControl("Decision", newPoint);
+            }
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
             Assert.AreEqual(1, connectors.Count, "Start auto connector doesnt work");

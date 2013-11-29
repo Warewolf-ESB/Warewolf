@@ -16,8 +16,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         /// </summary>
         public void ClickCancel()
         {
-            WpfImage uIItemImage = StudioWindow.GetChildren()[0].GetChildren()[0] as WpfImage;
-            Mouse.DoubleClick(uIItemImage, new Point(760, 484));
+            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[0], new Point(760, 484));
         }
 
         /// <summary>
