@@ -82,15 +82,19 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void WebServiceWizardCreateServiceAndSourceExpectedServiceCreated()
         {
+            ExplorerUIMap.ClickServerInServerDDL("localhost");
+
             //Initialization
             var sourceNameId = Guid.NewGuid().ToString().Substring(0, 5);
             var sourceName = "codeduitest" + sourceNameId;
+
             var serviceNameId = Guid.NewGuid().ToString().Substring(0, 5);
             var serviceName = "codeduitest" + serviceNameId;
 
             WebServiceWizardUIMap.InitializeFullTestServiceAndSource(serviceName, sourceName);
-            
+
             //Assert
+            ExplorerUIMap.DoRefresh();
             ExplorerUIMap.EnterExplorerSearchText(serviceName);
             Playback.Wait(3500);
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SERVICES", "Unassigned", serviceName));
@@ -141,8 +145,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         // 05/11 - Failure is Intermittent ;)
         public void NewPluginServiceShortcutKeyExpectedPluginServiceOpens()
         {
-            StudioWindow.SetFocus();
-            SendKeys.SendWait("^+P");
+            StudioWindow.WaitForControlReady();
+            Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}P");
             WizardsUIMap.WaitForWizard();
             PluginServiceWizardUIMap.ClickCancel();
         }
@@ -151,8 +155,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         // 05/11 - Failure is Correct - Broken Functionality ;)
         public void NewWebServiceShortcutKeyExpectedWebServiceOpens()
         {
-            StudioWindow.SetFocus();
-            SendKeys.SendWait("^+W");
+            StudioWindow.WaitForControlReady();
+            Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}W");
             WizardsUIMap.WaitForWizard();
             WebServiceWizardUIMap.Cancel();
         }
@@ -166,17 +170,18 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [Owner("Travis Frisinger")]
         public void EmailSourceWizardCreateNewSourceExpectedSourceCreated()
         {
-            Assert.Fail("External mail server issues!");
-            ////Initialization
-            //var sourceName = Guid.NewGuid().ToString().Substring(0, 5);
-            //var name = "codeduitest" + sourceName;
+            ExplorerUIMap.ClickServerInServerDDL("localhost");
 
-            //EmailSourceWizardUIMap.InitializeFullTestSource(name);
+            //Initialization
+            var sourceName = Guid.NewGuid().ToString().Substring(0, 5);
+            var name = "codeduitest" + sourceName;
 
-            ////Assert
-            //ExplorerUIMap.EnterExplorerSearchText(name);
+            EmailSourceWizardUIMap.InitializeFullTestSource(name);
 
-            //Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", "Unassigned", name));
+            //Assert
+            ExplorerUIMap.EnterExplorerSearchText(name);
+
+            Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", "Unassigned", name));
         }
 
         #endregion

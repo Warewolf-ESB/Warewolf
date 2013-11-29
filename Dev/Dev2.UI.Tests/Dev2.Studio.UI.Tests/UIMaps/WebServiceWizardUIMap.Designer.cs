@@ -36,60 +36,29 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
     {
         public void InitializeFullTestServiceAndSource(string serviceName, string sourceName)
         {
-            //init
-            var explorer = new ExplorerUIMap();
-
-            //Open Web Source Wizard
-            explorer.ClearExplorerSearchText();
-            explorer.EnterExplorerSearchText("$");
-            var getLocalServer = explorer.GetLocalServer();
-            var menuPt = new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y);
-            Mouse.Click(MouseButtons.Right, ModifierKeys.None, menuPt);
-
-            Playback.Wait(300);
-
-            menuPt.Offset(5, 5);
-            Mouse.Move(menuPt);
-            Playback.Wait(300);
-
-            for (var i = 0; i < 8; i++)
-            {
-                Keyboard.SendKeys("{DOWN}");
-            }
-
-            SendKeys.SendWait("{ENTER}");
+            //Open wizard
+            RibbonUIMap.ClickRibbonMenuItem("New Web Service");
 
             //Wait for wizard
             WizardsUIMap.WaitForWizard();
-            Playback.Wait(100);
+
+            //Click new web source
+            WebServiceWizardUIMap.ClickNewWebSource();
 
             //Web Source Details
-            SendKeys.SendWait("{TAB}http://www.webservicex.net/globalweather.asmx{TAB}{TAB}{TAB}{TAB}");
+            SendKeys.SendWait("http://www.webservicex.net/globalweather.asmx{TAB}{TAB}{TAB}");
             Playback.Wait(100);
             SendKeys.SendWait("{ENTER}");
-            Playback.Wait(100);
+            Playback.Wait(10000 );
+            WebSourceWizardUIMap.ClickSave();
             SendKeys.SendWait("{TAB}{TAB}{TAB}" + sourceName + "{TAB}{ENTER}");
             Playback.Wait(1000);
 
-            //Open Web Service Wizard
-            getLocalServer = explorer.GetLocalServer();
-            Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
-            for (var i = 0; i < 5; i++)
-            {
-                SendKeys.SendWait("{DOWN}");
-            }
-
-            Playback.Wait(500);
-            SendKeys.SendWait("{ENTER}");
-
-            //Wait for wizard
-            WizardsUIMap.WaitForWizard();
-
             //Web Service Details
-            SendKeys.SendWait("{TAB}{TAB}{DOWN}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
             Playback.Wait(500);
             SendKeys.SendWait("{ENTER}");
-            Playback.Wait(5000);//wait for test
+            Playback.Wait(10000);//wait for test
             SendKeys.SendWait("{TAB}{ENTER}");
             Playback.Wait(1000);
             SendKeys.SendWait("{TAB}{TAB}{TAB}" + serviceName + "{TAB}{ENTER}");

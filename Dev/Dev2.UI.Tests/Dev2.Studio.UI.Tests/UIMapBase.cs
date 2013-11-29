@@ -577,6 +577,22 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion Web Service Wizard UI Map
 
+        #region Web Source Wizard UI Map
+
+        public WebSourceWizardUIMap WebSourceWizardUIMap
+        {
+            get
+            {
+                if(_webSourceWizardUIMap == null)
+                    _webSourceWizardUIMap = new WebSourceWizardUIMap();
+                return _webSourceWizardUIMap;
+            }
+        }
+
+        private WebSourceWizardUIMap _webSourceWizardUIMap;
+
+        #endregion Web Source Wizard UI Map
+
         #region Wizards UI Map
 
         public WizardsUIMap WizardsUIMap
