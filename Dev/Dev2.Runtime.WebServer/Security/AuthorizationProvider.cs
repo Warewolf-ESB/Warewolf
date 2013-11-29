@@ -83,16 +83,21 @@ namespace Dev2.Runtime.WebServer.Security
 
                 case WebServerRequestType.WebBookmarkWorkflow:
                     return _securityConfigProvider.Permissions.Where(p => (p.Contribute || p.Execute) && Matches(p, resource)).Select(p => p.WindowsGroup);
+
+                case WebServerRequestType.HubConnect:
+                case WebServerRequestType.EsbSendMemo:
+                case WebServerRequestType.ResourcesSend:
+                case WebServerRequestType.ResourcesSendMemo:
+                case WebServerRequestType.ResourcesSave:
+                    // TODO: Fix hub permissions
+                    return new List<string>
+                    {
+                        WindowsGroupPermission.BuiltInAdministratorsText
+                    };
             }
             return EmptyRoles;
 
 
-            //return new List<string>
-            //{
-            //    "xxxx",
-            //    "DnsAdmins",                
-            //    WindowsGroupPermission.BuiltInAdministratorsText
-            //};
         }
 
         static bool Matches(WindowsGroupPermission permission, string resource)
