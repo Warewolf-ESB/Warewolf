@@ -47,6 +47,10 @@
     <Reference Include="HgCo.WindowsLive.SkyDriveServiceClient">
       <HintPath>..\Binaries\HgCo.WindowsLive.SkyDriveServiceClient.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.0.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CompilerServices.AsyncTargetingPack.Net4, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.CompilerServices.AsyncTargetingPack.1.0.0\lib\net40\Microsoft.CompilerServices.AsyncTargetingPack.Net4.dll</HintPath>
@@ -189,6 +193,9 @@
     <Compile Include="WebServer\Responses\StringResponseWriterTests.cs" />
     <Compile Include="WebServer\Responses\TestDynamicFileResponseWriter.cs" />
     <Compile Include="WebServer\Responses\TestStaticFileResponseWriter.cs" />
+    <Compile Include="WebServer\Security\AuthorizeHubAttributeTests.cs" />
+    <Compile Include="WebServer\Security\QueryStringTests.cs" />
+    <Compile Include="WebServer\Security\AuthorizeWebAttributeTests.cs" />
     <Compile Include="WebServer\WebServerResponseTests.cs" />
     <Compile Include="WebServer\WebServerRequestTests.cs" />
     <Compile Include="WebServer\WebServerContextTests.cs" />

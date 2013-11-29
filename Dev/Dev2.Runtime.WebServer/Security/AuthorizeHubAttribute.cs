@@ -7,8 +7,6 @@ namespace Dev2.Runtime.WebServer.Security
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
     public class AuthorizeHubAttribute : Attribute, IAuthorizeHubConnection, IAuthorizeHubMethodInvocation
     {
-        readonly IAuthorizationProvider _authorizationProvider;
-
         public AuthorizeHubAttribute()
             : this(AuthorizationProvider.Instance)
         {
@@ -17,8 +15,10 @@ namespace Dev2.Runtime.WebServer.Security
         public AuthorizeHubAttribute(IAuthorizationProvider authorizationProvider)
         {
             VerifyArgument.IsNotNull("authorizationProvider", authorizationProvider);
-            _authorizationProvider = authorizationProvider;
+            Provider = authorizationProvider;
         }
+
+        public IAuthorizationProvider Provider { get; private set; }
 
         public bool AuthorizeHubConnection(HubDescriptor hubDescriptor, IRequest request)
         {
@@ -37,12 +37,12 @@ namespace Dev2.Runtime.WebServer.Security
         {
             var authorizationRequest = new AuthorizationRequest
             {
-                RequestType = WebServerRequestType.Unknown,
+                RequestType = WebServerRequestType.WebGet,
                 User = request.User,
                 Url = request.Url,
                 QueryString = request.QueryString
             };
-            return request.User.IsAuthenticated() && _authorizationProvider.IsAuthorized(authorizationRequest);
+            return request.User.IsAuthenticated() && Provider.IsAuthorized(authorizationRequest);
         }
     }
 }

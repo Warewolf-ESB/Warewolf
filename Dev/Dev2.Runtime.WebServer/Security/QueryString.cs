@@ -28,7 +28,18 @@ namespace Dev2.Runtime.WebServer.Security
 
         public IEnumerable<string> GetValues(string key)
         {
-            return new[] { this[key] };
+            var value = this[key];
+            if(string.IsNullOrEmpty(value))
+            {
+                return new string[0];
+            }
+
+            var values = value.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            for(var i = 0; i < values.Length; i++)
+            {
+                values[i] = values[i].Trim();
+            }
+            return values;
         }
 
         public string Get(string key)
