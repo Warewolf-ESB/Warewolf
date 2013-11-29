@@ -34,7 +34,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         /// </summary>
         public void HitDoneWithKeyboard()
         {
-            UITestControl decisionDialog = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            UITestControl decisionDialog = StudioWindow.GetChildren()[0].GetChildren()[0];
             // Click middle of the image to set focus
             Mouse.Click(decisionDialog, new Point(decisionDialog.BoundingRectangle.X + decisionDialog.Width / 2, decisionDialog.BoundingRectangle.Y + decisionDialog.Height / 2));
             SendKeys.SendWait("{TAB}");
@@ -70,7 +70,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         /// </summary>
         public void GetFirstIntellisense(string startWith, bool deleteText = false, Point relativeToWizard = default(Point))
         {
-            var wizard = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
 
             //prompt intellisense
             SendKeys.SendWait(startWith);

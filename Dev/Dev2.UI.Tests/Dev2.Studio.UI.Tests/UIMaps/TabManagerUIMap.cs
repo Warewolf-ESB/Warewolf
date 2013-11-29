@@ -114,19 +114,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             var timeout = 0;
             while(close != null && (!close.TryGetClickablePoint(out point) && timeout < totalTimeOut))
             {
-                //try close explorer pane
-                ExplorerUIMap.ClosePane(control);
-                //this is for close all tabs:
-                //the tab switch caused by closing the tab
-                //triggers show resource in explorer tree
-                //causing the explorer pane to pop out
-                //blocking the tab close button for the next tab close
                 timeout++;
-                if(timeout>3)
-                {
-                    //try moving mouse over the pane (only necessary when an unsaved workflow has just been saved)
-                    Mouse.Move(new Point(StudioWindow.Left + 200, StudioWindow.Top + 200));
-                }
             }
             if(close != null && timeout < totalTimeOut)
             {

@@ -91,7 +91,6 @@ namespace Dev2.Studio.UI.Tests
             //------------Execute Test---------------------------
             ExplorerUIMap.RightClickDeployProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", "PluginsReturningXMLFromComplexType");
             var theTab = TabManagerUIMap.GetActiveTab();
-            ExplorerUIMap.ClosePane(theTab);
 
             //wait for resource tree to load
             Playback.Wait(1000);

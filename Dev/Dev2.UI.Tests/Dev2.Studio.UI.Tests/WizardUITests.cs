@@ -197,7 +197,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void DecisionWizard_Save_WhenMouseUsedToSelect2ndAnd3rdInputFields_FieldDataSavedCorrectly()
         {
             //------------Setup for test--------------------------
-            Clipboard.Clear();
             RibbonUIMap.CreateNewWorkflow();
 
             var theTab = TabManagerUIMap.GetActiveTab();
@@ -210,7 +209,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
             Playback.Wait(1500);
             _decisionWizardUiMap.SendTabs(4);
-            _decisionWizardUiMap.SelectMenuItem(37); // select between ;)
+            _decisionWizardUiMap.SelectMenuItem(11); // select between ;)
 
             _decisionWizardUiMap.SendTabs(11);
             _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(100, 150));
@@ -238,7 +237,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void SaveDecisionWithBlankFieldsExpectedDecisionSaved()
         {
-            Clipboard.Clear();
             //Initialize
             RibbonUIMap.CreateNewWorkflow();
 

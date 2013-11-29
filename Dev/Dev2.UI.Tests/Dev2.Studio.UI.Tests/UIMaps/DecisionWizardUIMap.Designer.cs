@@ -27,64 +27,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
     using MouseButtons = System.Windows.Forms.MouseButtons;
     
-    
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public partial class DecisionWizardUIMap
     {
-        #region Properties
-        public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
-        {
-            get
-            {
-                if ((this.mUIBusinessDesignStudioWindow == null))
-                {
-                    this.mUIBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
-                }
-                return this.mUIBusinessDesignStudioWindow;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
-    public class UIBusinessDesignStudioWindow : WpfWindow
-    {
-        
-        public UIBusinessDesignStudioWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
-            #endregion
-        }
-        
-        #region Properties
-
-        public WpfImage UIItemImage
-        {
-            get
-            {
-                if ((this.mUIItemImage == null))
-                {
-                    this.mUIItemImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mUIItemImage.WindowTitles.Add(TestBase.GetStudioWindowName());
-                    #endregion
-                }
-                return this.mUIItemImage;
-            }
-        }
-
-        #endregion
-        
-        #region Fields
-
-        private WpfImage mUIItemImage;
-
-        #endregion
     }
 }
