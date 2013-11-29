@@ -118,7 +118,7 @@ namespace Dev2.Studio.UI.Tests
             DatabaseServiceWizardUIMap.TabToInputMappings();
 
             //set the first input to required
-            SendKeys.SendWait("{TAB}{TAB}");
+            Keyboard.SendKeys("{TAB}");
             Playback.Wait(150);
             SendKeys.SendWait(" ");
 

@@ -271,7 +271,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
             WizardsUIMap.WaitForWizard();
-            Playback.Wait(2000);
+            Playback.Wait(5000);
             //------------Execute Test---------------------------
             _decisionWizardUiMap.SendTabs(4);
             Playback.Wait(100);
