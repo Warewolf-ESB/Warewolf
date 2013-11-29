@@ -518,13 +518,14 @@ namespace Dev2.Studio.UI.Tests
             // Get some design surface
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
+            //Get DB service
+            var control = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "TravsTestService");
+            WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(control.BoundingRectangle);
+
             //Get Adorner buttons
             var button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TravsTestService", "Edit");
 
             // -- DO DB Services --
-
-            WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
-
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             Mouse.Click(button);
             button.WaitForControlReady();
@@ -536,14 +537,16 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait(newMapping);
             // -- wizard closed
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
-            
+
             // -- DO Web Services --
+
+            //Get DB service
+            control = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FetchCities");
+            // move to show adorner buttons ;)
+            WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(control.BoundingRectangle);
 
             //Get Adorner buttons
             button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "FetchCities", "Edit");
-
-            // move to show adorner buttons ;)
-            WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
 
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             Mouse.Click(button);
@@ -563,11 +566,12 @@ namespace Dev2.Studio.UI.Tests
 
             // -- DO Plugin Services --
 
+            control = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DummyService");
+            // move to show adorner buttons ;)
+            WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(control.BoundingRectangle);
+
             //Get Adorner buttons
             button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "DummyService", "Edit");
-
-            // move to show adorner buttons ;)
-            WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
 
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             Mouse.Click(button);

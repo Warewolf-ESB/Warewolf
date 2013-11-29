@@ -28,7 +28,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// <returns></returns>
         public void MoveMouseForAdornersToAppear(Rectangle boundingRectangle)
         {
-            var p =  new Point((boundingRectangle.X - 25), (boundingRectangle.Y +60));
+            var p =  new Point((boundingRectangle.X + 25), (boundingRectangle.Y + 60));
 
             Mouse.Move(p);
         }
