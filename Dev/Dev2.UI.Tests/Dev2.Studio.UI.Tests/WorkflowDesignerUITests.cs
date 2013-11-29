@@ -232,6 +232,12 @@ namespace Dev2.Studio.UI.Tests
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             var thePoint = new Point(theStartButton.BoundingRectangle.X + 30, theStartButton.BoundingRectangle.Y + 100);
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign", thePoint);
+            //Recalculate point (it will have jumped during the drag if the screen res is low or the studio is windowed)
+            var newPoint = new Point(theStartButton.BoundingRectangle.X + 30, theStartButton.BoundingRectangle.Y + 100);
+            if(newPoint != thePoint)
+            {
+                WorkflowDesignerUIMap.DragControl("Assign", newPoint);
+            }
 
             WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
 
