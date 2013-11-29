@@ -13,6 +13,7 @@
     <DeploymentItem filename="Binaries\IronRuby.dll" />
   </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
+  <Scripts setupScript="C:\Development\Dev\Binaries\clean - TestResults.bat" />
   <Execution>
     <Timeouts runTimeout="1800000" testTimeout="300000" />
     <TestTypeSpecific>
