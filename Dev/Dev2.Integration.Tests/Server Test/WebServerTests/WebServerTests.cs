@@ -286,7 +286,7 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {"),
                 new Tuple<string, string>("Switch/DragModel.js", @"function DragViewModel() {"),
             };
 
-            VerifyWebsiteRequests(requests, new[] { "services/Scripts", "sources/Scripts", "dialogs/Scripts" });
+            VerifyWebsiteRequests(requests, new[] { "Scripts", "services/Scripts", "sources/Scripts", "dialogs/Scripts" });
         }
 
         [TestMethod]

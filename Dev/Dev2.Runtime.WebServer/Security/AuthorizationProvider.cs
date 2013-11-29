@@ -56,11 +56,11 @@ namespace Dev2.Runtime.WebServer.Security
             {
                 switch(request.RequestType)
                 {
-                    case AuthorizationRequestType.WebExecute:
+                    case WebServerRequestType.WebExecuteWorkflow:
                         resource = GetWebExecuteName(request.Url.AbsolutePath);
                         break;
 
-                    case AuthorizationRequestType.WebBookmark:
+                    case WebServerRequestType.WebBookmarkWorkflow:
                         resource = GetWebBookmarkName(request.Url.AbsolutePath);
                         break;
                 }
@@ -68,17 +68,21 @@ namespace Dev2.Runtime.WebServer.Security
 
             switch(request.RequestType)
             {
-                case AuthorizationRequestType.WebGet:
+                case WebServerRequestType.WebGet:
+                case WebServerRequestType.WebGetContent:
+                case WebServerRequestType.WebGetImage:
+                case WebServerRequestType.WebGetScript:
+                case WebServerRequestType.WebGetView:
                     return _securityConfigProvider.Permissions.Where(p => (p.View || p.Contribute) && Matches(p, resource)).Select(p => p.WindowsGroup);
 
-                case AuthorizationRequestType.WebInvokeService:
+                case WebServerRequestType.WebInvokeService:
                     return _securityConfigProvider.Permissions.Where(p => (p.Contribute || p.Execute) && Matches(p, resource)).Select(p => p.WindowsGroup);
 
-                case AuthorizationRequestType.WebExecute:
-                    return _securityConfigProvider.Permissions.Where(p => p.Execute && Matches(p, resource)).Select(p => p.WindowsGroup);
+                case WebServerRequestType.WebExecuteWorkflow:
+                    return _securityConfigProvider.Permissions.Where(p => (p.Contribute || p.Execute) && Matches(p, resource)).Select(p => p.WindowsGroup);
 
-                case AuthorizationRequestType.WebBookmark:
-                    return _securityConfigProvider.Permissions.Where(p => p.Execute && Matches(p, resource)).Select(p => p.WindowsGroup);
+                case WebServerRequestType.WebBookmarkWorkflow:
+                    return _securityConfigProvider.Permissions.Where(p => (p.Contribute || p.Execute) && Matches(p, resource)).Select(p => p.WindowsGroup);
             }
             return EmptyRoles;
 

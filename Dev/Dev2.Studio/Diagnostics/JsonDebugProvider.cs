@@ -10,7 +10,7 @@ namespace Dev2.Studio.Diagnostics
     {
         public IEnumerable<DebugState> GetDebugStates(string serverWebUri, DirectoryPath directory, FilePath filePath)
         {
-            var webclient = new WebClient();
+            var webclient = new WebClient { Credentials = CredentialCache.DefaultCredentials };
             var address = String.Format(serverWebUri + "{0}/{1}?DirectoryPath={2}&FilePath={3}",
                 "Services", "DebugStateService", directory.PathToSerialize, filePath.Title);
             var datalistJSON = webclient.UploadString(address, string.Empty);

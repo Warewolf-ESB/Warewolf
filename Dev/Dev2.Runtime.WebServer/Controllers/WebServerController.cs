@@ -38,8 +38,47 @@ namespace Dev2.Runtime.WebServer.Controllers
         }
 
         [HttpGet]
+        [Route("{website}/content/{*file}")]
+        public HttpResponseMessage GetContent(string website, string file)
+        {
+            var requestVariables = new NameValueCollection
+            {
+                { "website", website }, 
+                { "path", string.Format("content/{0}", file) }
+            };
+
+            return ProcessRequest<WebsiteResourceHandler>(requestVariables);
+        }
+
+        [HttpGet]
+        [Route("{website}/images/{*file}")]
+        public HttpResponseMessage GetImage(string website, string file)
+        {
+            var requestVariables = new NameValueCollection
+            {
+                { "website", website }, 
+                { "path", string.Format("images/{0}", file) }
+            };
+
+            return ProcessRequest<WebsiteResourceHandler>(requestVariables);
+        }
+
+        [HttpGet]
+        [Route("{website}/scripts/{*file}")]
+        public HttpResponseMessage GetScript(string website, string file)
+        {
+            var requestVariables = new NameValueCollection
+            {
+                { "website", website }, 
+                { "path", string.Format("scripts/{0}", file) }
+            };
+
+            return ProcessRequest<WebsiteResourceHandler>(requestVariables);
+        }
+
+        [HttpGet]
         [Route("{website}/views/{*file}")]
-        public HttpResponseMessage Get(string website, string file)
+        public HttpResponseMessage GetView(string website, string file)
         {
             var requestVariables = new NameValueCollection
             {
@@ -69,7 +108,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         [HttpGet]
         [HttpPost]
         [Route("services/{name}")]
-        public HttpResponseMessage Execute(string name)
+        public HttpResponseMessage ExecuteWorkflow(string name)
         {
             var requestVariables = new NameValueCollection
             {
@@ -84,7 +123,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         [HttpGet]
         [HttpPost]
         [Route("services/{name}/instances/{instanceid}/bookmarks/{bookmark}")]
-        public HttpResponseMessage Bookmark(string name, string instanceid, string bookmark)
+        public HttpResponseMessage BookmarkWorkflow(string name, string instanceid, string bookmark)
         {
             var requestVariables = new NameValueCollection
             {

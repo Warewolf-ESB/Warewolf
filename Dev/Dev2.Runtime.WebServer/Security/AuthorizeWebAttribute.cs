@@ -31,12 +31,9 @@ namespace Dev2.Runtime.WebServer.Security
                 actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
             }
 
-            AuthorizationRequestType requestType;
-            Enum.TryParse("Web" + actionContext.ActionDescriptor.ActionName, out requestType);
-
             var request = new AuthorizationRequest
             {
-                RequestType = requestType,
+                RequestType = ParseRequestType(actionContext),
                 User = user,
                 Url = actionContext.Request.RequestUri,
                 QueryString = new QueryString(actionContext.Request.GetQueryNameValuePairs())
@@ -46,6 +43,15 @@ namespace Dev2.Runtime.WebServer.Security
             {
                 actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Access has been denied for this request.");
             }
+        }
+
+        static WebServerRequestType ParseRequestType(HttpActionContext actionContext)
+        {
+            var actionName = actionContext.ActionDescriptor.ActionName;
+
+            WebServerRequestType requestType;
+            Enum.TryParse("Web" + actionName, true, out requestType);
+            return requestType;
         }
     }
 }

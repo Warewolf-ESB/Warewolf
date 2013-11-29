@@ -37,7 +37,7 @@ namespace Dev2.Runtime.WebServer.Security
         {
             var authorizationRequest = new AuthorizationRequest
             {
-                RequestType = AuthorizationRequestType.Unknown,
+                RequestType = WebServerRequestType.Unknown,
                 User = request.User,
                 Url = request.Url,
                 QueryString = request.QueryString

@@ -1,7 +1,9 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
+using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Handlers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -58,18 +60,43 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerController_Get")]
-        public void WebServerController_Get_WebsiteStarFile_InvokesWebsiteResourceHandler()
+        public void WebServerController_Get_WebsiteGet_InvokesWebsiteResourceHandler()
+        {
+            Verify_WebsiteGetFile(WebServerRequestType.WebGetContent, "content/site.css");
+            Verify_WebsiteGetFile(WebServerRequestType.WebGetImage, "images/test.png");
+            Verify_WebsiteGetFile(WebServerRequestType.WebGetScript, "scripts/fx/test.js");
+            Verify_WebsiteGetFile(WebServerRequestType.WebGetView, "views/services/webservice.htm");
+        }
+
+        static void Verify_WebsiteGetFile(WebServerRequestType requestType, string url)
         {
             //------------Setup for test--------------------------
             var requestVariables = new NameValueCollection
             {
-                { "website", WebSite }, 
-                { "path", "views/services/webservice.htm" }
+                { "website", WebSite },
+                { "path", url }
             };
+
             var controller = new TestWebServerController(HttpMethod.Get);
 
             //------------Execute Test---------------------------
-            controller.Get(WebSite, "views/services/webservice.htm");
+            switch(requestType)
+            {
+                case WebServerRequestType.WebGetContent:
+                    controller.GetContent(WebSite, url);
+                    break;
+                case WebServerRequestType.WebGetImage:
+                    controller.GetImage(WebSite, url);
+                    break;
+                case WebServerRequestType.WebGetScript:
+                    controller.GetScript(WebSite, url);
+                    break;
+                case WebServerRequestType.WebGetView:
+                    controller.GetView(WebSite, url);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("requestType");
+            }
 
             //------------Assert Results-------------------------
             Assert.AreEqual(typeof(WebsiteResourceHandler), controller.ProcessRequestHandlerType);
@@ -112,7 +139,7 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             var controller = new TestWebServerController(HttpMethod.Post);
 
             //------------Execute Test---------------------------
-            controller.Execute("HelloWorld");
+            controller.ExecuteWorkflow("HelloWorld");
 
             //------------Assert Results-------------------------
             Assert.AreEqual(typeof(WebPostRequestHandler), controller.ProcessRequestHandlerType);
@@ -132,7 +159,7 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             var controller = new TestWebServerController(HttpMethod.Get);
 
             //------------Execute Test---------------------------
-            controller.Execute("HelloWorld");
+            controller.ExecuteWorkflow("HelloWorld");
 
             //------------Assert Results-------------------------
             Assert.AreEqual(typeof(WebGetRequestHandler), controller.ProcessRequestHandlerType);
@@ -155,7 +182,7 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             var controller = new TestWebServerController(HttpMethod.Post);
 
             //------------Bookmark Test---------------------------
-            controller.Bookmark("HelloWorld", "inst", "bmk");
+            controller.BookmarkWorkflow("HelloWorld", "inst", "bmk");
 
             //------------Assert Results-------------------------
             Assert.AreEqual(typeof(WebPostRequestHandler), controller.ProcessRequestHandlerType);
@@ -177,7 +204,7 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             var controller = new TestWebServerController(HttpMethod.Get);
 
             //------------Bookmark Test---------------------------
-            controller.Bookmark("HelloWorld", "inst", "bmk");
+            controller.BookmarkWorkflow("HelloWorld", "inst", "bmk");
 
             //------------Assert Results-------------------------
             Assert.AreEqual(typeof(WebGetRequestHandler), controller.ProcessRequestHandlerType);

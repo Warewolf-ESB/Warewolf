@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Dev2.Runtime.Configuration.ComponentModel;
-using Dev2.Runtime.Configuration.Settings;
 using Newtonsoft.Json;
 
 namespace Dev2.Runtime.Configuration.Services
@@ -16,7 +12,7 @@ namespace Dev2.Runtime.Configuration.Services
 
         public WebCommunicationService()
         {
-            _webClient = new WebClient();
+            _webClient = new WebClient { Credentials = CredentialCache.DefaultCredentials };
         }
 
         public IEnumerable<WorkflowDescriptor> GetResources(string uri)

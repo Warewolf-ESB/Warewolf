@@ -62,7 +62,7 @@ namespace Dev2.Studio.Core.Network
                 Uri.TryCreate(new Uri(StringResources.Uri_WebServer), relativeUrl, out url);
             }
 
-            using(var webClient = new WebClient { Encoding = Encoding.UTF8 })
+            using(var webClient = new WebClient { Credentials = CredentialCache.DefaultCredentials, Encoding = Encoding.UTF8 })
             {
                 if(asyncCallback == null)
                 {
