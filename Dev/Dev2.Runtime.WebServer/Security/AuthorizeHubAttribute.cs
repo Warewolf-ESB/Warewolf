@@ -24,25 +24,13 @@ namespace Dev2.Runtime.WebServer.Security
         {
             VerifyArgument.IsNotNull("hubDescriptor", hubDescriptor);
             VerifyArgument.IsNotNull("request", request);
-            return IsAuthorized(request);
+            return request.User.IsAuthenticated() && Provider.IsAuthorized(hubDescriptor.GetAuthorizationRequest(request));
         }
 
-        public bool AuthorizeHubMethodInvocation(IHubIncomingInvokerContext hubIncomingInvokerContext, bool appliesToMethod)
+        public bool AuthorizeHubMethodInvocation(IHubIncomingInvokerContext context, bool appliesToMethod)
         {
-            VerifyArgument.IsNotNull("hubIncomingInvokerContext", hubIncomingInvokerContext);
-            return IsAuthorized(hubIncomingInvokerContext.Hub.Context.Request);
-        }
-
-        bool IsAuthorized(IRequest request)
-        {
-            var authorizationRequest = new AuthorizationRequest
-            {
-                RequestType = WebServerRequestType.WebGet,
-                User = request.User,
-                Url = request.Url,
-                QueryString = request.QueryString
-            };
-            return request.User.IsAuthenticated() && Provider.IsAuthorized(authorizationRequest);
+            VerifyArgument.IsNotNull("context", context);
+            return Provider.IsAuthorized(context.GetAuthorizationRequest());
         }
     }
 }

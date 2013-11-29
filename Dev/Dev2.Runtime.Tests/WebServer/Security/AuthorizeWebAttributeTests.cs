@@ -84,39 +84,6 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Verify_OnAuthorization_Response(true, null, true, HttpStatusCode.OK, null);
         }
 
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizeWebAttribute_ParseRequestType")]
-        public void AuthorizeWebAttribute_ParseRequestType_ActionNameIsParsedCorrectly()
-        {
-            Verify_ActionNameIsParsedCorrectly("xxx", WebServerRequestType.Unknown);
-
-            var methodNames = typeof(WebServerController).GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Where(mi => !mi.IsSpecialName).Select(mi => mi.Name);
-            foreach(var methodName in methodNames)
-            {
-                Verify_ActionNameIsParsedCorrectly(methodName, (WebServerRequestType)Enum.Parse(typeof(WebServerRequestType), "Web" + methodName));
-            }
-        }
-
-        static void Verify_ActionNameIsParsedCorrectly(string actionName, WebServerRequestType expectedRequestType)
-        {
-            //------------Setup for test--------------------------
-            IAuthorizationRequest authorizationRequest = null;
-
-            var authorizationProvider = new Mock<IAuthorizationProvider>();
-            authorizationProvider.Setup(p => p.IsAuthorized(It.IsAny<IAuthorizationRequest>())).Callback((IAuthorizationRequest request) => authorizationRequest = request);
-
-            var attribute = new AuthorizeWebAttribute(authorizationProvider.Object);
-            var actionContext = CreateActionContext(true, actionName);
-
-            //------------Execute Test---------------------------
-            attribute.OnAuthorization(actionContext);
-
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(authorizationRequest);
-            Assert.AreEqual(expectedRequestType, authorizationRequest.RequestType);
-        }
-
         static void Verify_OnAuthorization_Response(bool isAuthenticated, string actionName, bool isAuthorized, HttpStatusCode expectedStatusCode, string expectedMessage)
         {
             //------------Setup for test--------------------------
@@ -145,7 +112,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             }
         }
 
-        static HttpActionContext CreateActionContext(bool isAuthenticated, string actionName)
+        public static HttpActionContext CreateActionContext(bool isAuthenticated, string actionName)
         {
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.Identity.IsAuthenticated).Returns(isAuthenticated);

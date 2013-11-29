@@ -12,8 +12,15 @@
         WebGetView,
         WebInvokeService,
         WebExecuteWorkflow,
-        WebBookmarkWorkflow
+        WebBookmarkWorkflow,
 
         // See Hubs
+        HubConnect,
+
+        EsbSendMemo,
+
+        ResourcesSend,
+        ResourcesSendMemo,
+        ResourcesSave,
     }
 }

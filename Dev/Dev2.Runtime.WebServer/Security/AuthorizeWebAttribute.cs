@@ -32,27 +32,10 @@ namespace Dev2.Runtime.WebServer.Security
                 return;
             }
 
-            var request = new AuthorizationRequest
-            {
-                RequestType = ParseRequestType(actionContext),
-                User = user,
-                Url = actionContext.Request.RequestUri,
-                QueryString = new QueryString(actionContext.Request.GetQueryNameValuePairs())
-            };
-
-            if(!Provider.IsAuthorized(request))
+            if(!Provider.IsAuthorized(actionContext.GetAuthorizationRequest()))
             {
                 actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Access has been denied for this request.");
             }
-        }
-
-        static WebServerRequestType ParseRequestType(HttpActionContext actionContext)
-        {
-            var actionName = actionContext.ActionDescriptor.ActionName;
-
-            WebServerRequestType requestType;
-            Enum.TryParse("Web" + actionName, true, out requestType);
-            return requestType;
         }
     }
 }

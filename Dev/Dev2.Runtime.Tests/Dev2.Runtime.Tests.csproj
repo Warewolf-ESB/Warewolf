@@ -193,6 +193,7 @@
     <Compile Include="WebServer\Responses\StringResponseWriterTests.cs" />
     <Compile Include="WebServer\Responses\TestDynamicFileResponseWriter.cs" />
     <Compile Include="WebServer\Responses\TestStaticFileResponseWriter.cs" />
+    <Compile Include="WebServer\Security\AuthorizationRequestHelperTests.cs" />
     <Compile Include="WebServer\Security\AuthorizeHubAttributeTests.cs" />
     <Compile Include="WebServer\Security\QueryStringTests.cs" />
     <Compile Include="WebServer\Security\AuthorizeWebAttributeTests.cs" />

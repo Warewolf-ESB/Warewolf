@@ -133,6 +133,7 @@
     <Compile Include="Hubs\ServerHub.cs" />
     <Compile Include="Security\AuthorizationProvider.cs" />
     <Compile Include="Security\AuthorizationRequest.cs" />
+    <Compile Include="Security\AuthorizationRequestHelper.cs" />
     <Compile Include="WebServerRequestType.cs" />
     <Compile Include="Security\AuthorizeHubAttribute.cs" />
     <Compile Include="Security\AuthorizeWebAttribute.cs" />
