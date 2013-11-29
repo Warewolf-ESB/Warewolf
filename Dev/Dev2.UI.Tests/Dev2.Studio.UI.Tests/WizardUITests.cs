@@ -276,7 +276,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             //------------Execute Test---------------------------
             _decisionWizardUiMap.SendTabs(4);
             Playback.Wait(100);
-            _decisionWizardUiMap.SelectMenuItem(29);
+            _decisionWizardUiMap.SelectMenuItem(11);
             //Assert intellisense works
             Playback.Wait(100);
             _decisionWizardUiMap.SendTabs(11);
