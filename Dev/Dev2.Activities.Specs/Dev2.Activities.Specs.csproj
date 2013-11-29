@@ -93,6 +93,18 @@
       <DependentUpon>DataSplit.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Data\DataSplit\DataSplitSteps.cs" />
+    <Compile Include="Toolbox\Data\FindIndex\FindIndex.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FindIndex.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Data\FindIndex\FindIndexSteps.cs" />
+    <Compile Include="Toolbox\Data\Replace\Replace.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Replace.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Data\Replace\ReplaceSteps.cs" />
     <Compile Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsert.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -100,6 +112,35 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsertSteps.cs" />
+    <Compile Include="Toolbox\Utility\Calculate\Calculate.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Calculate.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Utility\Calculate\CalculateSteps.cs" />
+    <Compile Include="Toolbox\Utility\DateandTimeDifference\DateandTimeDifference.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DateandTimeDifference.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Utility\DateandTimeDifference\DateandTimeDifferenceSteps.cs" />
+    <Compile Include="Toolbox\Utility\DateandTime\DateandTime.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DateandTime.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Utility\DateandTime\DateandTimeSteps.cs" />
+    <Compile Include="Toolbox\Utility\FormatNumber\FormatNumber.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FormatNumber.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Utility\FormatNumber\FormatNumberSteps.cs" />
+    <Compile Include="Toolbox\Utility\XPath\XPath.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>XPath.feature</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -124,9 +165,37 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DataSplit.feature.cs</LastGenOutput>
     </None>
+    <None Include="Toolbox\Data\FindIndex\FindIndex.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FindIndex.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Data\Replace\Replace.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Replace.feature.cs</LastGenOutput>
+    </None>
     <None Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsert.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SqlBulkInsert.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\Calculate\Calculate.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Calculate.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\DateandTimeDifference\DateandTimeDifference.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DateandTimeDifference.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\DateandTime\DateandTime.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DateandTime.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\FormatNumber\FormatNumber.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FormatNumber.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\XPath\XPath.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>XPath.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -168,7 +237,6 @@
     <Folder Include="Toolbox\LoopConstructs\" />
     <Folder Include="Toolbox\Resources\" />
     <Folder Include="Toolbox\Scripting\" />
-    <Folder Include="Toolbox\Utility\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

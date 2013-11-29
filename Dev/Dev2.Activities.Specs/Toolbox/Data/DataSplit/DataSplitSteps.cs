@@ -1,9 +1,11 @@
 ﻿using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ActivityUnitTests;
 using System;
 using Dev2.DataList.Contract;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -16,6 +18,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         private readonly List<Tuple<string, string, string>> _variableList = new List<Tuple<string, string, string>>();
         private IDSFDataObject _result;
         private string _stringToSplit;
+        private string _recordSetName = "";
+        private string _fieldName = "";
         
         private void BuildDataList()
         {
@@ -27,25 +31,35 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             };
 
             var data = new StringBuilder();
-            data.Append("<ADL>");
-
-            var testData = new StringBuilder();
-            testData.Append("<root>");
+            data.Append("<root>");
 
             int row = 1;
             foreach (var variable in _variableList)
             {
                 string variableName = DataListUtil.RemoveLanguageBrackets(variable.Item1);
-                data.Append(string.Format("<{0}/>", variableName));
+
+                if (variableName.Contains("(*)") || variableName.Contains("()"))
+                {
+                    variableName = variableName.Replace("(*)", "").Replace("()", "");
+                    var variableNameSplit = variableName.Split(".".ToCharArray());
+                    data.Append(string.Format("<{0}>", variableNameSplit[0]));
+                    data.Append(string.Format("<{0}/>", variableNameSplit[1]));
+                    data.Append(string.Format("</{0}>", variableNameSplit[0]));
+
+                    _recordSetName = variableNameSplit[0];
+                    _fieldName = variableNameSplit[1];
+                }
+                else
+                {
+                    data.Append(string.Format("<{0}/>", variableName));
+                }
                 _dataSplit.ResultsCollection.Add(new DataSplitDTO(variable.Item1, variable.Item2, variable.Item3, row));
                 row++;
             }
 
-            data.Append("</ADL>");
-            testData.Append("</root>");
-
+            data.Append("</root>");
             CurrentDl = data.ToString();
-            TestData = testData.ToString();
+            TestData = data.ToString();
         }
 
         [Given(@"A string to split with value ""(.*)""")]
@@ -68,10 +82,19 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             _result = ExecuteProcess();
         }
         
-        [Then(@"the split result is ""(.*)""")]
-        public void ThenTheSplitResultIs(string p0)
+        [Then(@"the split result will be")]
+        public void ThenTheSplitResultWillBe(Table table)
         {
-            var foreachItems = _dataSplit.GetForEachOutputs();
+            List<TableRow> tableRows = table.Rows.ToList();
+            string error;
+            var recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, _recordSetName, _fieldName, out error);
+
+            Assert.AreEqual(tableRows.Count, recordSetValues.Count);
+
+            for (int i = 0; i < tableRows.Count; i++)
+            {
+                Assert.AreEqual(tableRows[i][0], recordSetValues[i]);
+            }
         }
     }
 }

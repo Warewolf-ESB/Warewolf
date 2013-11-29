@@ -69,7 +69,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         {
             string error;
             string actualValue;
-            GetScalarValueFromDataList(_result.DataListID, "result", out actualValue, out error);
+            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable), out actualValue, out error);
             Assert.AreEqual(value, actualValue);
         }
     }

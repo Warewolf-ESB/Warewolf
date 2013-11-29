@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
+namespace Dev2.Activities.Specs.Toolbox.Data.Replace
 {
     using TechTalk.SpecFlow;
     
@@ -19,20 +19,20 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
-    public partial class DataSplitFeature
+    public partial class ReplaceFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "DataSplit.feature"
+#line 1 "Replace.feature"
 #line hidden
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "DataSplit", "In order to split data\r\nAs a Warewolf user\r\nI want a tool that splits two or more" +
-                    " pieces of data", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Replace", "In order to search and replace\r\nAs a Warewolf user\r\nI want a tool I can use to se" +
+                    "arch and replace for words", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -47,9 +47,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         public virtual void TestInitialize()
         {
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
-                        && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "DataSplit")))
+                        && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Replace")))
             {
-                Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitFeature.FeatureSetup(null);
+                Dev2.Activities.Specs.Toolbox.Data.Replace.ReplaceFeature.FeatureSetup(null);
             }
         }
         
@@ -70,34 +70,23 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Split text to a recordset using split type index")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        public virtual void SplitTextToARecordsetUsingSplitTypeIndex()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Replace placeholders in a sentence with names")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Replace")]
+        public virtual void ReplacePlaceholdersInASentenceWithNames()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text to a recordset using split type index", ((string[])(null)));
-#line 6
-this.ScenarioSetup(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Replace placeholders in a sentence with names", ((string[])(null)));
 #line 7
- testRunner.Given("A string to split with value \"abcde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Index\" at \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a sentence \"Dear Mr XXXX, We welcome you as a customer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
- testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "letters"});
-            table1.AddRow(new string[] {
-                        "a"});
-            table1.AddRow(new string[] {
-                        "b"});
-            table1.AddRow(new string[] {
-                        "c"});
-            table1.AddRow(new string[] {
-                        "d"});
-            table1.AddRow(new string[] {
-                        "e"});
+ testRunner.And("I want to find the characters \"XXXX\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
- testRunner.Then("the split result will be", ((string)(null)), table1, "Then ");
+ testRunner.And("I want to replace them with \"Warewolf user\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 11
+ testRunner.When("the replace tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 12
+ testRunner.Then("the result should be \"Dear Mr Warewolf user, We welcome you as a customer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
+namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
 {
     using TechTalk.SpecFlow;
     
@@ -19,20 +19,20 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
-    public partial class DataSplitFeature
+    public partial class DateandTimeDifferenceFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "DataSplit.feature"
+#line 1 "DateandTimeDifference.feature"
 #line hidden
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "DataSplit", "In order to split data\r\nAs a Warewolf user\r\nI want a tool that splits two or more" +
-                    " pieces of data", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "DateandTimeDifference", "In order to work with date and time\r\nAs a Warewolf user\r\nI want a tool that will " +
+                    "allow me to compare two dates", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -47,9 +47,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         public virtual void TestInitialize()
         {
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
-                        && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "DataSplit")))
+                        && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "DateandTimeDifference")))
             {
-                Dev2.Activities.Specs.Toolbox.Data.DataSplit.DataSplitFeature.FeatureSetup(null);
+                Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference.DateandTimeDifferenceFeature.FeatureSetup(null);
             }
         }
         
@@ -70,34 +70,25 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Split text to a recordset using split type index")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        public virtual void SplitTextToARecordsetUsingSplitTypeIndex()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate the number of days between two given dates")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DateandTimeDifference")]
+        public virtual void CalculateTheNumberOfDaysBetweenTwoGivenDates()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text to a recordset using split type index", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of days between two given dates", ((string[])(null)));
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line 7
- testRunner.Given("A string to split with value \"abcde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a first date \"2013-11-29\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
- testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Index\" at \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a second date \"2014-11-28\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9
- testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "letters"});
-            table1.AddRow(new string[] {
-                        "a"});
-            table1.AddRow(new string[] {
-                        "b"});
-            table1.AddRow(new string[] {
-                        "c"});
-            table1.AddRow(new string[] {
-                        "d"});
-            table1.AddRow(new string[] {
-                        "e"});
+ testRunner.And("the date format as \"yyyy-mm-dd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
- testRunner.Then("the split result will be", ((string)(null)), table1, "Then ");
+ testRunner.And("I selected output in \"Weeks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 11
+ testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 12
+ testRunner.Then("the difference should be \"52\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
