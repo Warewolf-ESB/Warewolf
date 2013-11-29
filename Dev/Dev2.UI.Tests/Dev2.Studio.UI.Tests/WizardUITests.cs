@@ -135,9 +135,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             StudioWindow.WaitForControlReady();
             Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}D");
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
-            StudioWindow.WaitForControlReady();
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+            WizardsUIMap.WaitForWizard();
+            Playback.Wait(2000);
             DatabaseServiceWizardUIMap.ClickCancel();
         }
 

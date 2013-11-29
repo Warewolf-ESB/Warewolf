@@ -56,7 +56,7 @@ namespace Dev2.CodedUI.Tests
         public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
         {
             var preCount = TabManagerUIMap.GetTabCount();
-            RibbonUIMap.CreateNewWorkflow();
+            Keyboard.SendKeys(StudioWindow, "{CTRL}W");
             string activeTabName = TabManagerUIMap.GetActiveTabName();
             var postCount = TabManagerUIMap.GetTabCount();
             Assert.IsTrue(postCount == preCount + 1, "Tab quantity has not been increased");
