@@ -105,6 +105,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void DatabaseServiceWizardCreateNewServiceExpectedServiceCreated()
         {
+            ExplorerUIMap.ClickServerInServerDDL("localhost");
+
             //Initialization
             var serverSourceCategoryName = Guid.NewGuid().ToString().Substring(0, 5);
             var serverSourceName = Guid.NewGuid().ToString().Substring(0, 5);
