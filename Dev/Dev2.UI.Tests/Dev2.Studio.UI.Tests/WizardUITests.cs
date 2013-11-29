@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
 
@@ -126,9 +127,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
-           
-            SendKeys.SendWait("^+D");
-            Playback.Wait(3000);
+            StudioWindow.WaitForControlReady();
+            Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}D");
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+            StudioWindow.WaitForControlReady();
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
             DatabaseServiceWizardUIMap.ClickCancel();
         }
 

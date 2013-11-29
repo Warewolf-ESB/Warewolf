@@ -26,6 +26,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         {
             var persistClipboard = Clipboard.GetText();
             var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
+            wizard.WaitForControlReady();
             Mouse.StartDragging(wizard, new Point(418, 81));
             Mouse.StopDragging(wizard, 108, -1);
             Keyboard.SendKeys(wizard, "{CTRL}c");
