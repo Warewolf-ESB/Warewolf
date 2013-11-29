@@ -108,6 +108,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             //DbSource
             RibbonUIMap.ClickRibbonMenuItem("UI_RibbonHomeTabDBServiceBtn_AutoID");
             WizardsUIMap.WaitForWizard();
+            Playback.Wait(2000);
             SendKeys.SendWait("{TAB}{TAB}{ENTER}");
             Playback.Wait(10);
             SendKeys.SendWait("RSAKLFSVRGENDEV");
@@ -133,7 +134,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             SendKeys.SendWait(serverAndSourceName);
             Playback.Wait(10);
             SendKeys.SendWait("{ENTER}");
-            Playback.Wait(2000);
+            Playback.Wait(4000);
             //DbService
             ClickFirstAction();
             ClickTestAction();

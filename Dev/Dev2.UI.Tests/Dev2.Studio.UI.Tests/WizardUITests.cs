@@ -271,6 +271,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
             WizardsUIMap.WaitForWizard();
+            Playback.Wait(2000);
             //------------Execute Test---------------------------
             _decisionWizardUiMap.SendTabs(4);
             Playback.Wait(100);
@@ -382,6 +383,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             //Drag on two decisions
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
             WizardsUIMap.WaitForWizard();
+            Playback.Wait(2000);
 
             _decisionWizardUiMap.HitDoneWithKeyboard();
             var newPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
@@ -391,6 +393,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", newPoint);
             WizardsUIMap.WaitForWizard();
+            Playback.Wait(2000);
 
             _decisionWizardUiMap.HitDoneWithKeyboard();
 
