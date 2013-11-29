@@ -120,19 +120,17 @@
         </If.Then>
       </If>
     </Sequence>
-    <If Condition="[SpecifiedChangeSet Is Nothing]" DisplayName="If No Changeset Specified">
+    <If Condition="[SpecifiedChangeSet Is Nothing]" DisplayName="If No Changeset Specified" sap2010:WorkflowViewState.IdRef="If_51">
       <If.Then>
-        <Assign DisplayName="Run on Juries Machine - Ash">
+        <Assign DisplayName="Run on Juries Machine - Ash" sap2010:WorkflowViewState.IdRef="Assign_15">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[AgentSettings.Name]</OutArgument>
           </Assign.To>
           <Assign.Value>
             <InArgument x:TypeArguments="x:String">RSAKLFJURIE - Agent 1</InArgument>
           </Assign.Value>
-          <sap2010:WorkflowViewState.IdRef>Assign_15</sap2010:WorkflowViewState.IdRef>
         </Assign>
       </If.Then>
-      <sap2010:WorkflowViewState.IdRef>If_51</sap2010:WorkflowViewState.IdRef>
     </If>
     <mtbwa:AgentScope DataToIgnore="" DisplayName="Run On Agent" sap2010:WorkflowViewState.IdRef="AgentScope_1" MaxExecutionTime="[AgentSettings.MaxExecutionTime]" MaxWaitTime="[AgentSettings.MaxWaitTime]" ReservationSpec="[AgentSettings.GetAgentReservationSpec()]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces">
       <mtbwa:AgentScope.Variables>
@@ -188,7 +186,7 @@
         <If Condition="[CleanWorkspace = Microsoft.TeamFoundation.Build.Workflow.Activities.CleanWorkspaceOption.All]" DisplayName="If CleanWorkspace = CleanWorkspaceOption.All" sap2010:WorkflowViewState.IdRef="If_47" mtbwt:BuildTrackingParticipant.Importance="Low">
           <If.Then>
             <Sequence DisplayName="Delete TestResults" sap2010:WorkflowViewState.IdRef="Sequence_45" mtbwt:BuildTrackingParticipant.Importance="Low">
-              <mtbwa:InvokeProcess DisplayName="Clean TestResults" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\clean - TestResults.bat&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_21">
+              <mtbwa:InvokeProcess DisplayName="Clean TestResults" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\Cleaning Utils\clean - TestResults.bat&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_21">
                 <mtbwa:InvokeProcess.ErrorDataReceived>
                   <ActivityAction x:TypeArguments="x:String">
                     <ActivityAction.Argument>
@@ -431,7 +429,7 @@
                                 </Catch>
                               </TryCatch.Catches>
                             </TryCatch>
-                            <mtbwa:InvokeProcess DisplayName="Clear Unzip Location" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\IntegrationRun\clean.bat&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_16">
+                            <mtbwa:InvokeProcess DisplayName="Clear Unzip Location" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\Cleaning Utils\IntegrationRun\clean.bat&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_16">
                               <mtbwa:InvokeProcess.ErrorDataReceived>
                                 <ActivityAction x:TypeArguments="x:String">
                                   <ActivityAction.Argument>
@@ -618,69 +616,6 @@
                 <Throw DisplayName="Rethrow Compilation Exception" Exception="[compilationException]" sap2010:WorkflowViewState.IdRef="Throw_1" mtbwt:BuildTrackingParticipant.Importance="Low" />
               </If.Then>
             </If>
-            <Parallel DisplayName="Get Impacted Tests, Index Sources and Publish Symbols" sap2010:WorkflowViewState.IdRef="Parallel_2">
-              <If Condition="[PerformTestImpactAnalysis]" DisplayName="If PerformTestImpactAnalysis" sap2010:WorkflowViewState.IdRef="If_33" mtbwt:BuildTrackingParticipant.Importance="Low">
-                <If.Then>
-                  <Sequence DisplayName="Get Impacted Tests" sap2010:WorkflowViewState.IdRef="Sequence_28" mtbwt:BuildTrackingParticipant.Importance="Low">
-                    <Sequence.Variables>
-                      <Variable x:TypeArguments="scg:IEnumerable(x:String)" Name="assemblies" />
-                    </Sequence.Variables>
-                    <mtbwa:FindMatchingFiles DisplayName="Find Build Outputs" sap2010:WorkflowViewState.IdRef="FindMatchingFiles_3" mtbwt:BuildTrackingParticipant.Importance="Low" MatchPattern="[String.Format(&quot;{0}\**\*.dll;{0}\**\*.exe&quot;, BinariesDirectory)]" Result="[assemblies]" />
-                    <mttbb:GetImpactedTests BaselineBuildDropLocation="{x:Null}" CodeChanges="{x:Null}" ImpactedTests="{x:Null}" Assemblies="[assemblies]" AssociatedChangesets="[associatedChangesets]" BinariesRoot="[BinariesDirectory]" Build="[BuildDetail]" DisplayName="Get Impacted Tests" sap2010:WorkflowViewState.IdRef="GetImpactedTests_1" Workspace="[Workspace]" />
-                  </Sequence>
-                </If.Then>
-              </If>
-              <If Condition="[SourceAndSymbolServerSettings.IndexSources Or SourceAndSymbolServerSettings.HasSymbolStorePath]" DisplayName="If SourceAndSymbolServerSettings.IndexSources Or SourceAndSymbolServerSettings.HasSymbolStorePath" sap2010:WorkflowViewState.IdRef="If_36" mtbwt:BuildTrackingParticipant.Importance="Low">
-                <If.Then>
-                  <mtbwa:InvokeForReason DisplayName="Index Sources and Publish Symbols for Triggered Builds" sap2010:WorkflowViewState.IdRef="InvokeForReason_6" Reason="Triggered">
-                    <mtbwa:InvokeForReason.Variables>
-                      <Variable x:TypeArguments="scg:IEnumerable(x:String)" Name="symbolFiles" />
-                    </mtbwa:InvokeForReason.Variables>
-                    <mtbwa:FindMatchingFiles DisplayName="Find Symbol Files" sap2010:WorkflowViewState.IdRef="FindMatchingFiles_4" mtbwt:BuildTrackingParticipant.Importance="Low" MatchPattern="[String.Format(&quot;{0}\**\*.pdb&quot;, BinariesDirectory)]" Result="[symbolFiles]" />
-                    <If Condition="[SourceAndSymbolServerSettings.IndexSources]" DisplayName="If SourceAndSymbolServerSettings.IndexSources" sap2010:WorkflowViewState.IdRef="If_34" mtbwt:BuildTrackingParticipant.Importance="Low">
-                      <If.Then>
-                        <TryCatch DisplayName="Try Index Sources" sap2010:WorkflowViewState.IdRef="TryCatch_5" mtbwt:BuildTrackingParticipant.Importance="Low">
-                          <TryCatch.Try>
-                            <mtbwa:IndexSources DisplayName="Index Sources" FileList="[symbolFiles]" sap2010:WorkflowViewState.IdRef="IndexSources_1" />
-                          </TryCatch.Try>
-                          <TryCatch.Catches>
-                            <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_4">
-                              <ActivityAction x:TypeArguments="s:Exception">
-                                <ActivityAction.Argument>
-                                  <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
-                                </ActivityAction.Argument>
-                                <mtbwa:WriteBuildError DisplayName="Write Indexing Sources Error" sap2010:WorkflowViewState.IdRef="WriteBuildError_2" Message="[exception.Message]" />
-                              </ActivityAction>
-                            </Catch>
-                          </TryCatch.Catches>
-                        </TryCatch>
-                      </If.Then>
-                    </If>
-                    <If Condition="[SourceAndSymbolServerSettings.HasSymbolStorePath]" DisplayName="If SourceAndSymbolServerSettings.HasSymbolStorePath" sap2010:WorkflowViewState.IdRef="If_35" mtbwt:BuildTrackingParticipant.Importance="Low">
-                      <If.Then>
-                        <TryCatch DisplayName="Try Publish Symbols" sap2010:WorkflowViewState.IdRef="TryCatch_6" mtbwt:BuildTrackingParticipant.Importance="Low">
-                          <TryCatch.Try>
-                            <mtbwa:SharedResourceScope DisplayName="Synchronize Access to Symbol Store" sap2010:WorkflowViewState.IdRef="SharedResourceScope_1" mtbwt:BuildTrackingParticipant.Importance="Low" MaxExecutionTime="[TimeSpan.Zero]" MaxWaitTime="[New TimeSpan(1, 0, 0)]" ResourceName="[SourceAndSymbolServerSettings.SymbolStorePath]">
-                              <mtbwa:PublishSymbols DisplayName="Publish Symbols" FileList="[symbolFiles]" sap2010:WorkflowViewState.IdRef="PublishSymbols_1" ProductName="[BuildDetail.BuildDefinition.Name]" StorePath="[SourceAndSymbolServerSettings.SymbolStorePath]" Version="[BuildDetail.BuildNumber]" />
-                            </mtbwa:SharedResourceScope>
-                          </TryCatch.Try>
-                          <TryCatch.Catches>
-                            <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_5">
-                              <ActivityAction x:TypeArguments="s:Exception">
-                                <ActivityAction.Argument>
-                                  <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
-                                </ActivityAction.Argument>
-                                <mtbwa:WriteBuildError DisplayName="Write Publishing Symbols Error" sap2010:WorkflowViewState.IdRef="WriteBuildError_3" Message="[exception.Message]" />
-                              </ActivityAction>
-                            </Catch>
-                          </TryCatch.Catches>
-                        </TryCatch>
-                      </If.Then>
-                    </If>
-                  </mtbwa:InvokeForReason>
-                </If.Then>
-              </If>
-            </Parallel>
           </Sequence>
         </TryCatch.Try>
       </TryCatch>
@@ -779,7 +714,7 @@
       <If Condition="[DeleteWorkspaceAtTheEnd]" DisplayName="If Can Delete Workspace At The End" sap2010:WorkflowViewState.IdRef="If_40">
         <If.Then>
           <Sequence DisplayName="Delete Workspace" sap2010:WorkflowViewState.IdRef="Sequence_31">
-            <mtbwa:InvokeProcess DisplayName="Delete TestResults" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\clean - TestResults.bat&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_20">
+            <mtbwa:InvokeProcess DisplayName="Delete TestResults" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\Cleaning Utils\clean - TestResults.bat&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_20">
               <mtbwa:InvokeProcess.ErrorDataReceived>
                 <ActivityAction x:TypeArguments="x:String">
                   <ActivityAction.Argument>
@@ -829,7 +764,7 @@
       </If.Else>
     </If>
     <mtbwa:WriteBuildMessage DisplayName="Show End Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_5" Message="******** END INTEGRATION TEST RUN ********" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-    <sads:DebugSymbol.Symbol>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J6oCNgMBzwO0Alu0AnMDAZwDuQIjwAIsAwHJA8ECI8gCLAMBxQPJAiPOAjIDAcADzwIj6QItAwGsA+oCI/ECLAMBpwPyAiP2AigDAaID9wIj/gIsAwGdA40DJY8DNAMBhgOQAyWQA6sBAwGDA6QDSqQDpgEDAfoCpQNKpQOKAQMB9wLAA+gBwAP1AQMB8ALAA5oBwAPfAQMB7wK4A+gBuAP1AQMB7AK4A5oBuAPfAQMB6wLLAyXLA94CAwHfAswDJcwDoAEDAd0C6QPoAekD9QEDAdAC6QOaAekD3wEDAc8C4QPoAeED9QEDAcwC4QOaAeED3wEDAcsC9APfAfQD7AEDAcUC+QMnqAQyAwH7AakCUKkClwEDAdADvgJPvgJUAwHMA7sCULsCZAMBygPGAk/GAlQDAcgDwwJQwwJoAwHGA80CTM0CYwMBwwPLAlHLAmEDAcEDzwKgAc8CsgEDAb4D1AIn5wIyAwGtA+8CT+8CawMBqgPsAlDsAmMDAagD8gIx8gJRAwGjA/QCJ/QCoAEDAaUD/AJO/AJwAwGgA/kCT/kCYwMBngOOA06OA5kBAwGHA5ADdZADqAEDAYQDywPqAcsD9wEDAeECywOcAcsD4QEDAeACzAN1zAOdAQMB3gL+AyuLBDYDAZQCkwQvpAQ6AwH8AdgCKd8CMgMBuAPgAinmAi4DAa4D9AJ39AKdAQMBpgP/Ay2KBDgDAZUClwQxmwQ2AwGOApwEMZwExQIDAYwCnQQxoQQ2AwGFAqIEMaIEggIDAYICowQxowTFAgMB/QHdAlTdArQBAwG7A9oCVdoCXAMBuQPgAjfgAl8DAa8D4gIt5AI4AwGyA4MEXoMEbgMBlwKEBF6EBG4DAZYChgQvhgTeAgMBwAKHBC+HBNECAwG6AogEL4gExwIDAbMCiQQviQTiBQMBmAKXBD+XBKgBAwGPApkENZkEzQEDAZECnASBApwEwgIDAY0CnQQ/nQRaAwGGAp8ENZ8EpwIDAYgCogTtAaIE/wEDAYMCowRPowSeAQMBgQKjBLACowTCAgMB/wHjAi/jAtABAwGzA4YEggKGBNsCAwHDAoYE6wGGBPsBAwHBAocE3gGHBLQCAwG9AocEvAKHBM4CAwG7AogE6gGIBI8CAwG4AogElwKIBKwCAwG2AogEtwKIBMQCAwG0AokEpQOJBMUDAwGxAokEygWJBN8FAwGvAokEe4kEoQEDAa0CiQSHBYkEmgUDAasCiQT/A4kE1QQDAagCiQT4AokEmAMDAaYCiQRGiQRlAwGkAokE3wSJBPcEAwGiAokE3QOJBPUDAwGgAokEqgWJBLwFAwGeAokE1gGJBMACAwGbApkEsQGZBMoBAwGSAp8EnAKfBKQCAwGLAp8E8wGfBJUCAwGJAuMCZeMCeQMBtgPjArUB4wLNAQMBtAM=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -884,7 +819,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="If_4" sap:VirtualizedContainerService.HintSize="464,356" />
-      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="1063,1100">
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="952,1100">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -917,7 +852,7 @@
       <sap2010:ViewStateData Id="WriteBuildMessage_28" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="WriteBuildMessage_29" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="InvokeProcess_18" sap:VirtualizedContainerService.HintSize="464,278" />
-      <sap2010:ViewStateData Id="Sequence_43" sap:VirtualizedContainerService.HintSize="1063,1695">
+      <sap2010:ViewStateData Id="Sequence_43" sap:VirtualizedContainerService.HintSize="952,1695">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -928,11 +863,11 @@
       <sap2010:ViewStateData Id="SetBuildProperties_3" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="InvokeForReason_3" sap:VirtualizedContainerService.HintSize="222,208" />
       <sap2010:ViewStateData Id="WriteBuildMessage_1" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_10" sap:VirtualizedContainerService.HintSize="1063,356" />
+      <sap2010:ViewStateData Id="If_10" sap:VirtualizedContainerService.HintSize="952,356" />
       <sap2010:ViewStateData Id="Assign`1_8" sap:VirtualizedContainerService.HintSize="464,22" />
       <sap2010:ViewStateData Id="Assign`1_9" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="If_12" sap:VirtualizedContainerService.HintSize="464,208" />
-      <sap2010:ViewStateData Id="Sequence_11" sap:VirtualizedContainerService.HintSize="931,394">
+      <sap2010:ViewStateData Id="Sequence_11" sap:VirtualizedContainerService.HintSize="820,394">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -941,22 +876,22 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="InvokeMethod_13" sap:VirtualizedContainerService.HintSize="218,132" />
       <sap2010:ViewStateData Id="InvokeMethod_14" sap:VirtualizedContainerService.HintSize="218,132" />
-      <sap2010:ViewStateData Id="Sequence_46" sap:VirtualizedContainerService.HintSize="240,253">
+      <sap2010:ViewStateData Id="Sequence_46" sap:VirtualizedContainerService.HintSize="240,256">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Catch`1_8" sap:VirtualizedContainerService.HintSize="404,21">
+      <sap2010:ViewStateData Id="Catch`1_8" sap:VirtualizedContainerService.HintSize="400,329">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_9" sap:VirtualizedContainerService.HintSize="663,359" />
+      <sap2010:ViewStateData Id="TryCatch_9" sap:VirtualizedContainerService.HintSize="414,491" />
       <sap2010:ViewStateData Id="Assign_13" sap:VirtualizedContainerService.HintSize="516,60" />
       <sap2010:ViewStateData Id="Assign_14" sap:VirtualizedContainerService.HintSize="516,60" />
       <sap2010:ViewStateData Id="InvokeMethod_15" sap:VirtualizedContainerService.HintSize="516,132" />
@@ -986,11 +921,19 @@
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_48" sap:VirtualizedContainerService.HintSize="663,1758" />
-      <sap2010:ViewStateData Id="InvokeMethod_10" sap:VirtualizedContainerService.HintSize="663,132" />
+      <sap2010:ViewStateData Id="If_48" sap:VirtualizedContainerService.HintSize="414,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeMethod_10" sap:VirtualizedContainerService.HintSize="414,132" />
       <sap2010:ViewStateData Id="InvokeMethod_12" sap:VirtualizedContainerService.HintSize="218,132" />
       <sap2010:ViewStateData Id="TerminateWorkflow_2" sap:VirtualizedContainerService.HintSize="218,22" />
       <sap2010:ViewStateData Id="Sequence_39" sap:VirtualizedContainerService.HintSize="240,318">
@@ -1000,9 +943,9 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="InvokeProcess_17" sap:VirtualizedContainerService.HintSize="663,567" />
-      <sap2010:ViewStateData Id="InvokeMethod_11" sap:VirtualizedContainerService.HintSize="663,132" />
-      <sap2010:ViewStateData Id="Sequence_40" sap:VirtualizedContainerService.HintSize="685,3232">
+      <sap2010:ViewStateData Id="InvokeProcess_17" sap:VirtualizedContainerService.HintSize="414,567" />
+      <sap2010:ViewStateData Id="InvokeMethod_11" sap:VirtualizedContainerService.HintSize="414,132" />
+      <sap2010:ViewStateData Id="Sequence_40" sap:VirtualizedContainerService.HintSize="440,1657">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1036,14 +979,14 @@
       <sap2010:ViewStateData Id="WriteBuildMessage_20" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="WriteBuildMessage_21" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="InvokeProcess_14" sap:VirtualizedContainerService.HintSize="418,278" />
-      <sap2010:ViewStateData Id="Sequence_41" sap:VirtualizedContainerService.HintSize="685,1788">
+      <sap2010:ViewStateData Id="Sequence_41" sap:VirtualizedContainerService.HintSize="440,1788">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_38" sap:VirtualizedContainerService.HintSize="931,5184">
+      <sap2010:ViewStateData Id="Sequence_38" sap:VirtualizedContainerService.HintSize="820,3609">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1108,7 +1051,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_20" sap:VirtualizedContainerService.HintSize="931,1251">
+      <sap2010:ViewStateData Id="If_20" sap:VirtualizedContainerService.HintSize="820,1251">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1118,22 +1061,22 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="WriteBuildMessage_10" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="WriteBuildMessage_11" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="InvokeProcess_7" sap:VirtualizedContainerService.HintSize="931,278" />
-      <sap2010:ViewStateData Id="Sequence_12" sap:VirtualizedContainerService.HintSize="953,7351">
+      <sap2010:ViewStateData Id="InvokeProcess_7" sap:VirtualizedContainerService.HintSize="820,278" />
+      <sap2010:ViewStateData Id="Sequence_12" sap:VirtualizedContainerService.HintSize="842,5776">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ForEach`1_3" sap:VirtualizedContainerService.HintSize="983,7499" />
+      <sap2010:ViewStateData Id="ForEach`1_3" sap:VirtualizedContainerService.HintSize="872,5924" />
       <sap2010:ViewStateData Id="SetBuildProperties_6" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_29" sap:VirtualizedContainerService.HintSize="983,208" />
+      <sap2010:ViewStateData Id="If_29" sap:VirtualizedContainerService.HintSize="872,208" />
       <sap2010:ViewStateData Id="SetBuildProperties_7" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_30" sap:VirtualizedContainerService.HintSize="983,208" />
+      <sap2010:ViewStateData Id="If_30" sap:VirtualizedContainerService.HintSize="872,208" />
       <sap2010:ViewStateData Id="SetBuildProperties_8" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_31" sap:VirtualizedContainerService.HintSize="983,208" />
-      <sap2010:ViewStateData Id="Sequence_13" sap:VirtualizedContainerService.HintSize="1005,8367">
+      <sap2010:ViewStateData Id="If_31" sap:VirtualizedContainerService.HintSize="872,208" />
+      <sap2010:ViewStateData Id="Sequence_13" sap:VirtualizedContainerService.HintSize="894,6792">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1141,68 +1084,24 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="Assign`1_15" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="Catch`1_3" sap:VirtualizedContainerService.HintSize="1009,21">
+      <sap2010:ViewStateData Id="Catch`1_3" sap:VirtualizedContainerService.HintSize="898,21">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_2" sap:VirtualizedContainerService.HintSize="1023,8594" />
+      <sap2010:ViewStateData Id="TryCatch_2" sap:VirtualizedContainerService.HintSize="912,7019" />
       <sap2010:ViewStateData Id="Throw_1" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_32" sap:VirtualizedContainerService.HintSize="1023,208" />
-      <sap2010:ViewStateData Id="FindMatchingFiles_3" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="GetImpactedTests_1" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="Sequence_28" sap:VirtualizedContainerService.HintSize="222,208">
+      <sap2010:ViewStateData Id="If_32" sap:VirtualizedContainerService.HintSize="912,208" />
+      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="934,7391">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_33" sap:VirtualizedContainerService.HintSize="464,1330" />
-      <sap2010:ViewStateData Id="FindMatchingFiles_4" sap:VirtualizedContainerService.HintSize="543,22" />
-      <sap2010:ViewStateData Id="IndexSources_1" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="WriteBuildError_2" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="Catch`1_4" sap:VirtualizedContainerService.HintSize="404,21">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_5" sap:VirtualizedContainerService.HintSize="418,287" />
-      <sap2010:ViewStateData Id="If_34" sap:VirtualizedContainerService.HintSize="543,435" />
-      <sap2010:ViewStateData Id="PublishSymbols_1" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="SharedResourceScope_1" sap:VirtualizedContainerService.HintSize="222,146" />
-      <sap2010:ViewStateData Id="WriteBuildError_3" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="Catch`1_5" sap:VirtualizedContainerService.HintSize="404,21">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_6" sap:VirtualizedContainerService.HintSize="418,373" />
-      <sap2010:ViewStateData Id="If_35" sap:VirtualizedContainerService.HintSize="543,521" />
-      <sap2010:ViewStateData Id="InvokeForReason_6" sap:VirtualizedContainerService.HintSize="565,1182" />
-      <sap2010:ViewStateData Id="If_36" sap:VirtualizedContainerService.HintSize="690,1330" />
-      <sap2010:ViewStateData Id="Parallel_2" sap:VirtualizedContainerService.HintSize="1023,51">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-            <x:Boolean x:Key="IsPinned">False</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="1045,9057">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="1063,9262">
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="952,7596">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1230,7 +1129,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_44" sap:VirtualizedContainerService.HintSize="1063,1096" />
+      <sap2010:ViewStateData Id="If_44" sap:VirtualizedContainerService.HintSize="952,1096" />
       <sap2010:ViewStateData Id="InvokeProcess_12" sap:VirtualizedContainerService.HintSize="200,264" />
       <sap2010:ViewStateData Id="Sequence_33" sap:VirtualizedContainerService.HintSize="222,388">
         <sap:WorkflowViewStateService.ViewState>
@@ -1256,7 +1155,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="WriteBuildWarning_7" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_41" sap:VirtualizedContainerService.HintSize="1063,808" />
+      <sap2010:ViewStateData Id="If_41" sap:VirtualizedContainerService.HintSize="952,808" />
       <sap2010:ViewStateData Id="InvokeProcess_20" sap:VirtualizedContainerService.HintSize="200,264" />
       <sap2010:ViewStateData Id="DeleteWorkspace_2" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="DeleteDirectory_4" sap:VirtualizedContainerService.HintSize="200,22" />
@@ -1268,8 +1167,8 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_40" sap:VirtualizedContainerService.HintSize="1063,722" />
-      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="1085,15403" />
+      <sap2010:ViewStateData Id="If_40" sap:VirtualizedContainerService.HintSize="952,722" />
+      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="1085,13737" />
       <sap2010:ViewStateData Id="WriteBuildMessage_3" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="Assign_6" sap:VirtualizedContainerService.HintSize="242,60" />
       <sap2010:ViewStateData Id="Assign_7" sap:VirtualizedContainerService.HintSize="242,60" />
@@ -1283,14 +1182,14 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="If_37" sap:VirtualizedContainerService.HintSize="1085,494" />
       <sap2010:ViewStateData Id="WriteBuildMessage_5" sap:VirtualizedContainerService.HintSize="1085,22" />
-      <sap2010:ViewStateData Id="Sequence_48" sap:VirtualizedContainerService.HintSize="1107,17597">
+      <sap2010:ViewStateData Id="Sequence_48" sap:VirtualizedContainerService.HintSize="1107,15931">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="1147,17677" />
+      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="1147,16011" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
