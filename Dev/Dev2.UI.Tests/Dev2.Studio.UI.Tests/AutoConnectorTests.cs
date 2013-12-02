@@ -90,7 +90,7 @@ namespace Dev2.Studio.UI.Tests
         {
             //Drag a tool to the design surface
             ExplorerUIMap.EnterExplorerSearchText("AutoConnectorResource");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTCATEGORY", "AutoConnectorResource");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "AutoConnectorResource");
             var theTab = TabManagerUIMap.GetActiveTab();
             UITestControl control = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "MultiAssignDesigner");
 
@@ -125,7 +125,7 @@ namespace Dev2.Studio.UI.Tests
         {
             //Drag an activity to the design surface
             ExplorerUIMap.EnterExplorerSearchText("AutoConnectorResource");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTCATEGORY", "AutoConnectorResource");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "AutoConnectorResource");
             var control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "MultiAssignDesigner");
             // Drag another service to over the line between two connectors
             ExplorerUIMap.EnterExplorerSearchText("email service");
@@ -169,7 +169,7 @@ namespace Dev2.Studio.UI.Tests
         {
 
             ExplorerUIMap.EnterExplorerSearchText("AutoConnectorResource");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTCATEGORY", "AutoConnectorResource");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "AutoConnectorResource");
             var control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "MultiAssignDesigner");
 
             //Drag a decision to the design surface
