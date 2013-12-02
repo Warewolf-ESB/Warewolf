@@ -98,6 +98,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, mappings on the service are set to required and hitting the fix errors adorner should prompt the user to add required mappings to the activity instance's mappings")]
         [Owner("Ashley")]
+        [Ignore]
         public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_UserIsPromptedToAddRequiredDbServiceMappings()
         {
             const string workflowResourceName = "DesignTimeErrorHandlingRequiredMappingUITest";

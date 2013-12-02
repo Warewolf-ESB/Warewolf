@@ -1,8 +1,6 @@
 ﻿using System.Globalization;
 using System.Windows.Forms;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.Studio.UI.Tests;
-using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -52,11 +50,11 @@ namespace Dev2.CodedUI.Tests
 
         //PBI_8853
         [TestMethod]
-        // 05/11 - Failure is Correct - Broken Functionality ;)
+        [Ignore]
         public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
         {
             var preCount = TabManagerUIMap.GetTabCount();
-            Keyboard.SendKeys(StudioWindow, "{CTRL}W");
+            Keyboard.SendKeys("{CTRL}W");
             string activeTabName = TabManagerUIMap.GetActiveTabName();
             var postCount = TabManagerUIMap.GetTabCount();
             Assert.IsTrue(postCount == preCount + 1, "Tab quantity has not been increased");

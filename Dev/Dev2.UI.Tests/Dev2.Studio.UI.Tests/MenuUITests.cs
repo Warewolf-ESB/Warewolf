@@ -42,7 +42,7 @@ namespace Dev2.Studio.UI.Tests
         {
             
             ExplorerUIMap.EnterExplorerSearchText("ServiceExecutionTest");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "ServiceExecutionTest");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTCATEGORY", "ServiceExecutionTest");
             
             Playback.Wait(2000);
             SendKeys.SendWait("{F5}");

@@ -45,9 +45,8 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Test for 'All Tools' workflow: The workflow is openned. The icons must display. The tab must be able to close again")]
         [Owner("Ashley")]
-        // ReSharper disable InconsistentNaming
+        [Ignore]
         public void StudioTooling_StudioToolingUITest_CanToolsDisplay_IconIsVisible()
-        // ReSharper restore InconsistentNaming
         {
 
             ExplorerUIMap.EnterExplorerSearchText("AllTools");

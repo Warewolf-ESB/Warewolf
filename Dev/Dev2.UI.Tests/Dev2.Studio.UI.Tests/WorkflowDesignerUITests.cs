@@ -321,7 +321,7 @@ namespace Dev2.Studio.UI.Tests
 
         // Bug 6617
         [TestMethod]
-        // 13/11 - Needs grooming. Bad test conditions ;)
+        [Ignore]
         public void OpeningDependancyWindowTwiceKeepsItOpen()
         {
             // The workflow so we have a second tab
