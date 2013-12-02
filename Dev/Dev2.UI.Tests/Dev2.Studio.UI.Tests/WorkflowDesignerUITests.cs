@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -329,10 +328,8 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.EnterExplorerSearchText("Base64ToString");
 
             // Open the Dependancy Window twice
-            for (int openCount = 0; openCount < 2; openCount++)
-            {
-                ExplorerUIMap.RightClickShowProjectDependancies("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
-            }
+            ExplorerUIMap.RightClickShowProjectDependancies("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
+            ExplorerUIMap.RightClickShowProjectDependancies("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
 
             string activeTab = TabManagerUIMap.GetActiveTabName();
             if (activeTab == "Base64ToString")

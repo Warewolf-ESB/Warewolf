@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
-using System.Linq;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -340,12 +339,10 @@ namespace Dev2.Studio.UI.Tests
             LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);
 
             //Get the first error control
-            var errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
-                                                                                  "Password must have a value");
+            var errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,"Password must have a value");
 
             //Get the second error control
-            var desErrorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
-                                                                                  "Destination Password must have a value");
+            var desErrorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Destination Password must have a value");
 
             //Make sure that the error controls arnt null
             Assert.IsNotNull(errorControl, "The error didnt show up");
@@ -505,6 +502,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ExternalService_EditService")]
+        [Ignore]
         public void ExternalService_EditService_EditWithNoSecondSaveDialog_ExpectOneDialog()
         {
             //------------Setup for test--------------------------
@@ -650,6 +648,7 @@ namespace Dev2.Studio.UI.Tests
         }
         
         [TestMethod]
+        [Ignore]
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
         {
             const string resourceToUse = "Bug_10528";
@@ -717,6 +716,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("DsfActivityTests")]
         [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands and the resize control is visible")]
         [Owner("Travis Frisinger")]
+        [Ignore]
         public void ResizeAdornerMappingsOnDrop_Expected_AdornerMappingIsResized()
         {
             const string resourceToUse = "CalculateTaxReturns";

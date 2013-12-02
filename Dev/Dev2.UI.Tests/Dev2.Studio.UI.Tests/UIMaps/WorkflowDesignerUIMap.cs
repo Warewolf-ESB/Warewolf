@@ -1412,6 +1412,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
                 Mouse.Click(button);
+                Playback.Wait(100);
                 return true;
             }
             return false;

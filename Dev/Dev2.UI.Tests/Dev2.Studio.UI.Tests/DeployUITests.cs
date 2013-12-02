@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Studio.UI.Tests
 {
     [CodedUITest]
+    [Ignore]
     public class DeployUITests : UIMapBase
     {
         #region Cleanup
