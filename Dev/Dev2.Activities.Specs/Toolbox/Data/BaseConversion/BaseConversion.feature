@@ -82,3 +82,64 @@ Scenario: Convert from base64 to base64
 	Given I convert value "QUE=" from type "Base 64" to type "Base 64" 
 	When the base conversion tool is executed
 	Then the result is "QUE="
+
+#BB
+Scenario: Convert blank from text to binary 
+	Given I convert value "" from type "Text" to type "Binary" 
+	When the base conversion tool is executed
+	Then the result is ""
+
+Scenario: Convert blank from text to hexadecimal 
+	Given I convert value "" from type "Text" to type "Hex" 
+	When the base conversion tool is executed
+	Then the result is ""
+
+Scenario: Convert blank from text to base64 
+	Given I convert value "" from type "Text" to type "Base 64" 
+	When the base conversion tool is executed
+	Then the result is ""
+
+Scenario: Convert blank from binary to text 
+	Given I convert value "" from type "Binary" to type "Text" 
+	When the base conversion tool is executed
+	Then the result is ""
+
+Scenario: Convert blank from binary to hexadecimal 
+	Given I convert value "" from type "Binary" to type "Hex" 
+	When the base conversion tool is executed
+	Then the result is ""
+
+Scenario: Convert blank from binary to base64 
+	Given I convert value "" from type "Binary" to type "Base 64" 
+	When the base conversion tool is executed
+	Then the result is ""
+
+Scenario: Convert blank from hexadecimal to text 
+	Given I convert value "" from type "Hex" to type "Text" 
+	When the base conversion tool is executed
+	Then the result is ""
+
+Scenario: Convert blank from hexadecimal to binary 
+	Given I convert value "" from type "Hex" to type "Binary" 
+	When the base conversion tool is executed
+	Then the result is ""
+
+Scenario: Convert blank from hexadecimal to base64 
+	Given I convert value "" from type "Hex" to type "Base 64" 
+	When the base conversion tool is executed
+	Then the result is ""
+
+Scenario: Convert blank from base64 to hexadecimal 
+	Given I convert value "" from type "Base 64" to type "Hex" 
+	When the base conversion tool is executed
+	Then the result is ""	
+
+Scenario: Convert blank from base64 to text 
+	Given I convert value "" from type "Base 64" to type "Text" 
+	When the base conversion tool is executed
+	Then the result is ""
+
+Scenario: Convert blank from base64 to binary 
+	Given I convert value "" from type "Base 64" to type "Binary" 
+	When the base conversion tool is executed
+	Then the result is ""

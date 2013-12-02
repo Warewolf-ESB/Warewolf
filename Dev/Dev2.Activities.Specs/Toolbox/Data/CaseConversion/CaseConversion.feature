@@ -19,8 +19,29 @@ Scenario: Convert a sentence to Sentence
 	When the case conversion tool is executed
 	Then the sentence will be "Warewolf rocks"
 
-
 Scenario: Convert a sentence to Title Case
 	Given I convert a sentence "WAREWOLF Rocks" to "Title Case"	
 	When the case conversion tool is executed
 	Then the sentence will be "Warewolf Rocks"
+
+#BB
+
+Scenario: Convert a sentence starting with a number to UPPER CASE
+	Given I convert a sentence "1 Warewolf Rocks" to "UPPER"	
+	When the case conversion tool is executed
+	Then the sentence will be "1 WAREWOLF ROCKS"
+
+Scenario: Convert a sentence starting with a number to lower case
+	Given I convert a sentence "1 Warewolf Rocks" to "lower"	
+	When the case conversion tool is executed
+	Then the sentence will be "1 warewolf rocks"
+
+Scenario: Convert a sentence starting with a number to Sentence case
+	Given I convert a sentence "1 WAREWOLF Rocks" to "Sentence"	
+	When the case conversion tool is executed
+	Then the sentence will be "1 warewolf rocks"
+
+Scenario: Convert a sentence starting with a number to Title Case
+	Given I convert a sentence "1 WAREWOLF Rocks" to "Title Case"	
+	When the case conversion tool is executed
+	Then the sentence will be "1 Warewolf Rocks"
