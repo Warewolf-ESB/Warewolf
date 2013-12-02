@@ -897,6 +897,11 @@ input:hover,textarea:hover {
     border: 1px solid #ff8613;
 }
 
+.veryShortField
+{
+        font-family: Tahoma, Geneva, sans-serif;
+}
+
 .decision-select 
 {
     font-family: Tahoma, Geneva, sans-serif;
