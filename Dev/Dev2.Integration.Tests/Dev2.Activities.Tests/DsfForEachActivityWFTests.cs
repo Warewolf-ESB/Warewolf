@@ -121,7 +121,6 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
         #region All Tools Test
 
         [TestMethod]
-        [Ignore]//Ashley - 02/12/2013: Ignored while grooming, these tests where failing before I started
         public void ForEachAllToolsTest()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "ForEachUpgradeTest");

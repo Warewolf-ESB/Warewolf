@@ -21,7 +21,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         readonly string WebserverURI = ServerSettings.WebserverURI;
 
         [TestMethod]
-        [Ignore]//Ashley - 02/12/2013: Ignored while grooming, these tests where failing before I started
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WorkflowService_Invoke")]
         public void WorkflowService_Invoke_WithNestedWorkflowHavingForEachDataListNotInSequence_ShouldStillMapCorrectly()

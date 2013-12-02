@@ -108,7 +108,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
         #region Studio Server Integration Tests
 
         [TestMethod]
-        [Ignore]//Ashley - 02/12/2013: Ignored while grooming, these tests where failing before I started
         public void Environment_ServiceNotExistsOnService_ExpectedErrorMessageServiceNotExist()
         {
             // BUG 8593: 2013.02.17 - TWR - changed code to test POST web request

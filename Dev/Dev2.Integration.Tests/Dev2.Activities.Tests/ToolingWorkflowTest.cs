@@ -61,7 +61,6 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         #endregion
 
         [TestMethod]
-        [Ignore]//Ashley - 02/12/2013: Ignored while grooming, these tests where failing before I started
         public void AllToolsTestExpectPass()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "Tool Testing");

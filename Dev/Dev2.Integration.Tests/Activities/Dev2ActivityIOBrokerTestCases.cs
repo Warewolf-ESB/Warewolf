@@ -18,7 +18,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
         #region Delete Tests
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Delete")]
         public void Dev2ActivityIOBroker_Delete_FileLocally_FileExists_FileIsDeleted()
@@ -32,7 +32,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual("Success", result);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Delete")]
         public void Dev2ActivityIOBroker_Delete_FileLocally_FileDoesExists_FileIsDeleted()
@@ -46,7 +46,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual("Failure", result);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Delete")]
         public void Dev2ActivityIOBroker_Delete_FileOnUnc_FileExists_FileIsDeleted()
@@ -60,7 +60,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual("Success", result);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Delete")]
         public void Dev2ActivityIOBroker_Delete_FileOnUnc_FileDoesExists_FileIsDeleted()
@@ -74,7 +74,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual("Failure", result);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Delete")]
         public void Dev2ActivityIOBroker_Delete_FileOnFtp_FileExists_FileIsDeleted()
@@ -88,7 +88,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual("Success", result);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Delete")]
         public void Dev2ActivityIOBroker_Delete_FileOnsFtp_FileExists_FileIsDeleted()
@@ -102,7 +102,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual("Success", result);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Delete")]
         public void Dev2ActivityIOBroker_Delete_FileOnsFtp_FileDoesExists_FileIsDeleted()
@@ -118,7 +118,7 @@ namespace Dev2.Integration.Tests.Activities
         #endregion
 
         #region Zip Unit Tests
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -141,7 +141,7 @@ namespace Dev2.Integration.Tests.Activities
                  });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToLocal_FileToFile_FileHasArchivePassword_UnZipWillRequireSamePassword()
@@ -177,7 +177,7 @@ namespace Dev2.Integration.Tests.Activities
                  });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -214,7 +214,7 @@ namespace Dev2.Integration.Tests.Activities
                  });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -236,7 +236,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalTosFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -258,7 +258,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToUnc_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -280,7 +280,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_FtpToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -302,7 +302,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -324,7 +324,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_UncToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -346,7 +346,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_FtpToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -368,7 +368,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -390,7 +390,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_UncToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -413,7 +413,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -437,7 +437,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_FtpToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -461,7 +461,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -485,7 +485,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_UncToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -509,7 +509,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_FtpToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -532,7 +532,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -555,7 +555,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_UncToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -578,7 +578,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -601,7 +601,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalTosFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -624,7 +624,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToUnc_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -647,7 +647,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -672,7 +672,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -694,7 +694,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -716,7 +716,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToUnc_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -738,7 +738,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_FtpToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -759,7 +759,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_UncToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -780,7 +780,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -801,7 +801,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_FtpToUnc_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -823,7 +823,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_FtpTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -844,7 +844,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_FtpToLocal_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -866,7 +866,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -887,7 +887,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_FtpToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -908,7 +908,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -929,7 +929,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_UncToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -950,7 +950,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -971,7 +971,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalTosFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -992,7 +992,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToUnc_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -1013,7 +1013,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_FtpToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -1035,7 +1035,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -1056,7 +1056,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_UncToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -1077,7 +1077,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1100,7 +1100,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1123,7 +1123,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1146,7 +1146,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1169,7 +1169,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1192,7 +1192,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1215,7 +1215,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1238,7 +1238,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1261,7 +1261,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1284,7 +1284,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1307,7 +1307,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1330,7 +1330,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1353,7 +1353,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1376,7 +1376,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1399,7 +1399,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1422,7 +1422,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1445,7 +1445,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1468,7 +1468,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1491,7 +1491,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1514,7 +1514,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1537,7 +1537,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1560,7 +1560,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1583,7 +1583,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1606,7 +1606,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1629,7 +1629,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1652,7 +1652,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1675,7 +1675,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1698,7 +1698,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         [ExpectedException(typeof(Exception))]
@@ -1721,7 +1721,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -1743,7 +1743,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToLocal_DestinationIsBlank_ResultIsSuccessful()
@@ -1766,7 +1766,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -1788,7 +1788,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalTosFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -1810,7 +1810,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -1832,7 +1832,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_FtpToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -1854,7 +1854,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -1876,7 +1876,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_UncToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -1898,7 +1898,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_FtpToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -1920,7 +1920,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -1942,7 +1942,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_UncToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -1964,7 +1964,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_FtpToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -1986,7 +1986,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -2008,7 +2008,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_UncToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -2030,7 +2030,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -2052,7 +2052,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_FtpToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -2074,7 +2074,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -2096,7 +2096,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_UncToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -2118,7 +2118,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToFtp_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -2140,7 +2140,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalTosFtp_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -2162,7 +2162,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalToUnc_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -2184,7 +2184,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_FtpToFtp_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -2209,7 +2209,7 @@ namespace Dev2.Integration.Tests.Activities
         #endregion
 
         #region Rename Tests
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_LocalToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -2231,7 +2231,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -2256,7 +2256,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -2281,7 +2281,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -2306,7 +2306,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -2331,7 +2331,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -2356,7 +2356,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_FtpToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -2378,7 +2378,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_sFtpToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -2400,7 +2400,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_UncToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -2422,7 +2422,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_FtpToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -2443,7 +2443,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_sFtpToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -2464,7 +2464,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_UncToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -2485,7 +2485,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_LocalToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -2506,7 +2506,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_LocalTosFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -2527,7 +2527,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_LocalToUnc_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -2548,7 +2548,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -2570,7 +2570,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -2592,7 +2592,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -2614,7 +2614,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -2636,7 +2636,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -2658,7 +2658,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -2680,7 +2680,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -2702,7 +2702,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -2724,7 +2724,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -2746,7 +2746,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -2768,7 +2768,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_LocalToLocal_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -2788,7 +2788,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_LocalToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -2808,7 +2808,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_LocalTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -2828,7 +2828,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_LocalToUnc_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -2848,7 +2848,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_FtpToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -2868,7 +2868,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_UncToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -2888,7 +2888,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_sFtpToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -2908,7 +2908,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_FtpToUnc_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -2928,7 +2928,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_FtpTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -2948,7 +2948,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_FtpToLocal_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -2968,7 +2968,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_LocalToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -2987,7 +2987,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_FtpToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3006,7 +3006,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_sFtpToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3025,7 +3025,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_UncToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3044,7 +3044,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_LocalToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3063,7 +3063,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_LocalTosFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3082,7 +3082,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_LocalToUnc_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3101,7 +3101,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_FtpToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3121,7 +3121,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_sFtpToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3140,7 +3140,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_UncToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3159,7 +3159,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3180,7 +3180,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3201,7 +3201,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3222,7 +3222,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3243,7 +3243,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3264,7 +3264,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3285,7 +3285,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3306,7 +3306,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3327,7 +3327,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3348,7 +3348,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3369,7 +3369,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3390,7 +3390,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3411,7 +3411,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3432,7 +3432,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3453,7 +3453,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3474,7 +3474,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3495,7 +3495,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3518,7 +3518,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3541,7 +3541,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3564,7 +3564,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3587,7 +3587,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3610,7 +3610,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3633,7 +3633,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3656,7 +3656,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3679,7 +3679,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3702,7 +3702,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3725,7 +3725,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3748,7 +3748,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         [ExpectedException(typeof(Exception))]
@@ -3771,7 +3771,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_sFtpToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -3793,7 +3793,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_LocalToFtp_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -3815,7 +3815,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_LocalToUnc_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -3840,7 +3840,7 @@ namespace Dev2.Integration.Tests.Activities
         #endregion
 
         #region Copy Tests
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3863,7 +3863,7 @@ namespace Dev2.Integration.Tests.Activities
                  });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3885,7 +3885,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalTosFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3907,7 +3907,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalToUnc_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3929,7 +3929,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_FtpToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3951,7 +3951,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3973,7 +3973,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_UncToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3995,7 +3995,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_FtpToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4017,7 +4017,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4039,7 +4039,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_UncToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4062,7 +4062,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4086,7 +4086,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -4111,7 +4111,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_FtpToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4135,7 +4135,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4159,7 +4159,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_UncToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4183,7 +4183,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_FtpToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4206,7 +4206,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4229,7 +4229,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_UncToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4252,7 +4252,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4275,7 +4275,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalTosFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4298,7 +4298,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalToUnc_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4321,7 +4321,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -4345,7 +4345,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -4369,7 +4369,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -4393,7 +4393,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -4417,7 +4417,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -4441,7 +4441,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -4465,7 +4465,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -4489,7 +4489,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -4513,7 +4513,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -4537,7 +4537,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -4561,7 +4561,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalToLocal_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -4583,7 +4583,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -4608,7 +4608,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -4633,7 +4633,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -4658,7 +4658,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -4684,7 +4684,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -4706,7 +4706,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -4728,7 +4728,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalToUnc_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -4750,7 +4750,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_FtpToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -4771,7 +4771,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_UncToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -4792,7 +4792,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -4813,7 +4813,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_FtpToUnc_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -4835,7 +4835,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_FtpTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -4856,7 +4856,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_FtpToLocal_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -4878,7 +4878,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4899,7 +4899,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_FtpToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4920,7 +4920,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4941,7 +4941,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_UncToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4962,7 +4962,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4983,7 +4983,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalTosFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -5004,7 +5004,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalToUnc_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -5025,7 +5025,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_FtpToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -5047,7 +5047,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -5068,7 +5068,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_UncToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -5089,7 +5089,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5112,7 +5112,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5135,7 +5135,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5158,7 +5158,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5181,7 +5181,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5204,7 +5204,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5227,7 +5227,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5250,7 +5250,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5273,7 +5273,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5296,7 +5296,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5319,7 +5319,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5342,7 +5342,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5365,7 +5365,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5388,7 +5388,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5411,7 +5411,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5434,7 +5434,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5457,7 +5457,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5480,7 +5480,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5503,7 +5503,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5526,7 +5526,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5549,7 +5549,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5572,7 +5572,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5595,7 +5595,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5618,7 +5618,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5641,7 +5641,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5664,7 +5664,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5687,7 +5687,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5710,7 +5710,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         [ExpectedException(typeof(Exception))]
@@ -5733,7 +5733,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -5755,7 +5755,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -5777,7 +5777,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalTosFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -5799,7 +5799,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -5821,7 +5821,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_FtpToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -5843,7 +5843,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -5865,7 +5865,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_UncToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -5887,7 +5887,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_FtpToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -5909,7 +5909,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -5931,7 +5931,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_UncToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -5953,7 +5953,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_FtpToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -5975,7 +5975,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -5997,7 +5997,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_UncToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -6019,7 +6019,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -6041,7 +6041,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_FtpToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -6063,7 +6063,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -6085,7 +6085,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_UncToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -6107,7 +6107,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalToFtp_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -6129,7 +6129,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalTosFtp_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -6151,7 +6151,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalToUnc_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -6173,7 +6173,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_FtpToFtp_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -6196,7 +6196,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        //[TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        //[TestMethod]
         //[Owner("Tshepo Ntlhokoa")]
         //[TestCategory("Dev2ActivityIOBroker_CreateEndPoint")]
         //public void Dev2ActivityIOBroker_CreateEndPoint_DestinationIsDirectoryEndsWithASlash_ReturnStatusIsSuccessful()
@@ -6216,7 +6216,7 @@ namespace Dev2.Integration.Tests.Activities
         #endregion
 
         #region Move Tests
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6239,7 +6239,7 @@ namespace Dev2.Integration.Tests.Activities
                  });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6261,7 +6261,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalTosFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6283,7 +6283,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalToUnc_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6305,7 +6305,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_FtpToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6327,7 +6327,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6349,7 +6349,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_UncToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6371,7 +6371,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_FtpToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6393,7 +6393,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6415,7 +6415,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_UncToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6438,7 +6438,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6463,7 +6463,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -6488,7 +6488,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -6513,7 +6513,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -6538,7 +6538,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -6563,7 +6563,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -6589,7 +6589,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_FtpToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6613,7 +6613,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6637,7 +6637,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_UncToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6661,7 +6661,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_FtpToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6684,7 +6684,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6707,7 +6707,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_UncToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6730,7 +6730,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6753,7 +6753,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalTosFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6776,7 +6776,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalToUnc_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6799,7 +6799,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -6823,7 +6823,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -6847,7 +6847,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -6871,7 +6871,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -6895,7 +6895,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -6919,7 +6919,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -6943,7 +6943,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -6967,7 +6967,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -6991,7 +6991,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7015,7 +7015,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7039,7 +7039,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalToLocal_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -7061,7 +7061,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -7083,7 +7083,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -7105,7 +7105,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalToUnc_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -7127,7 +7127,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_FtpToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -7149,7 +7149,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_UncToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -7171,7 +7171,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -7193,7 +7193,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_FtpToUnc_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -7215,7 +7215,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_FtpTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -7237,7 +7237,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_FtpToLocal_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -7259,7 +7259,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -7280,7 +7280,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_FtpToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -7301,7 +7301,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -7322,7 +7322,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_UncToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -7343,7 +7343,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -7364,7 +7364,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalTosFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -7385,7 +7385,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalToUnc_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -7406,7 +7406,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_FtpToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -7428,7 +7428,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -7449,7 +7449,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_UncToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -7470,7 +7470,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7493,7 +7493,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7516,7 +7516,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7539,7 +7539,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7562,7 +7562,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7585,7 +7585,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7608,7 +7608,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7631,7 +7631,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7654,7 +7654,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7677,7 +7677,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7700,7 +7700,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7723,7 +7723,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7746,7 +7746,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7769,7 +7769,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7792,7 +7792,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7815,7 +7815,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7838,7 +7838,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7861,7 +7861,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7884,7 +7884,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7907,7 +7907,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7930,7 +7930,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7953,7 +7953,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7976,7 +7976,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -7999,7 +7999,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -8022,7 +8022,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -8045,7 +8045,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -8068,7 +8068,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -8091,7 +8091,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         [ExpectedException(typeof(Exception))]
@@ -8114,7 +8114,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -8136,7 +8136,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -8158,7 +8158,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalTosFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -8180,7 +8180,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -8202,7 +8202,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_FtpToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -8224,7 +8224,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -8246,7 +8246,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_UncToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -8268,7 +8268,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_FtpToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -8290,7 +8290,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -8312,7 +8312,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_UncToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -8334,7 +8334,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_FtpToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -8356,7 +8356,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -8378,7 +8378,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_UncToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -8400,7 +8400,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -8422,7 +8422,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_FtpToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -8444,7 +8444,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -8466,7 +8466,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_UncToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -8488,7 +8488,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalToFtp_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -8510,7 +8510,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalTosFtp_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -8532,7 +8532,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalToUnc_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -8557,7 +8557,7 @@ namespace Dev2.Integration.Tests.Activities
         #endregion
 
         #region UnZip Tests
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_LocalToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -8580,7 +8580,7 @@ namespace Dev2.Integration.Tests.Activities
                  }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_LocalToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -8600,7 +8600,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_LocalToUnc_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -8621,7 +8621,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_FtpToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -8643,7 +8643,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_sFtpToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -8665,7 +8665,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_UncToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -8687,7 +8687,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_FtpToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -8709,7 +8709,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_sFtpToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -8731,7 +8731,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_UncToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -8753,7 +8753,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
@@ -8776,7 +8776,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
@@ -8799,7 +8799,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
@@ -8822,7 +8822,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
@@ -8845,7 +8845,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
@@ -8868,7 +8868,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
@@ -8891,7 +8891,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
@@ -8914,7 +8914,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
@@ -8937,7 +8937,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
@@ -8960,7 +8960,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
@@ -8983,7 +8983,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
@@ -9006,7 +9006,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
@@ -9029,7 +9029,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
@@ -9052,7 +9052,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
@@ -9075,7 +9075,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
@@ -9096,7 +9096,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
@@ -9119,7 +9119,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_LocalToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9141,7 +9141,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_LocalToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9163,7 +9163,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_LocalTosFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9185,7 +9185,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_LocalToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9207,7 +9207,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_FtpToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9229,7 +9229,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_sFtpToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9251,7 +9251,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_UncToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9273,7 +9273,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_FtpToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9295,7 +9295,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_sFtpToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9317,7 +9317,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_UncToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9339,7 +9339,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_FtpToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9361,7 +9361,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_sFtpToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9383,7 +9383,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_UncToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9405,7 +9405,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
@@ -9427,7 +9427,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         [ExpectedException(typeof(Exception))]
@@ -9455,7 +9455,7 @@ namespace Dev2.Integration.Tests.Activities
 
         #region Create Tests
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_FileLocally_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -9474,7 +9474,7 @@ namespace Dev2.Integration.Tests.Activities
                  });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -9492,7 +9492,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_FileUnc_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -9510,7 +9510,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnsFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -9528,7 +9528,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         [ExpectedException(typeof(Exception))]
@@ -9547,7 +9547,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         [ExpectedException(typeof(Exception))]
@@ -9567,7 +9567,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         [ExpectedException(typeof(Exception))]
@@ -9586,7 +9586,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         [ExpectedException(typeof(Exception))]
@@ -9605,7 +9605,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryLocally_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9622,7 +9622,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryOnFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9641,7 +9641,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryOnUnc_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9659,7 +9659,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryOnsFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9677,7 +9677,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryLocally_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -9695,7 +9695,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryOnFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -9713,7 +9713,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryOnUnc_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -9732,7 +9732,7 @@ namespace Dev2.Integration.Tests.Activities
 
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryOnsFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -9750,7 +9750,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         [ExpectedException(typeof(Exception))]
@@ -9769,7 +9769,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         [ExpectedException(typeof(Exception))]
@@ -9789,7 +9789,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         [ExpectedException(typeof(Exception))]
@@ -9808,7 +9808,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         [ExpectedException(typeof(Exception))]
@@ -9827,7 +9827,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         [ExpectedException(typeof(Exception))]
@@ -9846,7 +9846,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_FileLocally_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9864,7 +9864,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9882,7 +9882,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnsFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9901,7 +9901,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnUnc_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9918,7 +9918,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnFtp_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -9936,7 +9936,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnsFtp_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -9954,7 +9954,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnUnc_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -9973,7 +9973,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_FileLocally_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -9992,7 +9992,7 @@ namespace Dev2.Integration.Tests.Activities
                  });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_FileOnFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -10010,7 +10010,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_FileUnc_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -10028,7 +10028,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_FileOnsFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -10046,7 +10046,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         [ExpectedException(typeof(Exception))]
@@ -10065,7 +10065,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         [ExpectedException(typeof(Exception))]
@@ -10085,7 +10085,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         [ExpectedException(typeof(Exception))]
@@ -10104,7 +10104,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         [ExpectedException(typeof(Exception))]
@@ -10123,7 +10123,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_DirectoryLocally_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -10140,7 +10140,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_DirectoryOnFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -10159,7 +10159,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_DirectoryOnUnc_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -10177,7 +10177,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_DirectoryOnsFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -10195,7 +10195,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_DirectoryLocally_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -10213,7 +10213,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_DirectoryOnFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -10231,7 +10231,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_DirectoryOnUnc_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -10250,7 +10250,7 @@ namespace Dev2.Integration.Tests.Activities
 
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_DirectoryOnsFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -10268,7 +10268,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         [ExpectedException(typeof(Exception))]
@@ -10287,7 +10287,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         [ExpectedException(typeof(Exception))]
@@ -10307,7 +10307,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         [ExpectedException(typeof(Exception))]
@@ -10326,7 +10326,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         [ExpectedException(typeof(Exception))]
@@ -10345,7 +10345,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         [ExpectedException(typeof(Exception))]
@@ -10364,7 +10364,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_FileLocally_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -10382,7 +10382,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_FileOnFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -10400,7 +10400,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_FileOnsFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -10419,7 +10419,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_FileOnUnc_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -10436,7 +10436,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_FileOnFtp_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -10454,7 +10454,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_FileOnsFtp_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -10472,7 +10472,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_FileOnUnc_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -10494,7 +10494,7 @@ namespace Dev2.Integration.Tests.Activities
         #endregion
 
         #region Write Tests
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileLocally_WriteTypeAppendBottom_DestinationExists_DataIsAppended()
@@ -10511,7 +10511,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "some data");
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileOnFtp_WriteTypeAppendBottom_DestinationExists_DataIsAppended()
@@ -10528,7 +10528,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "some data");
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileOnsFtp_WriteTypeAppendBottom_DestinationExists_DataIsAppended()
@@ -10545,7 +10545,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "some data");
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileOnUnc_WriteTypeAppendBottom_DestinationExists_DataIsAppended()
@@ -10562,7 +10562,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "some data");
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileLocally_WriteTypeAppendTop_DestinationExists_DataIsAppended()
@@ -10579,7 +10579,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "data some");
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileOnFtp_WriteTypeAppendTop_DestinationExists_DataIsAppended()
@@ -10596,7 +10596,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "data some");
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileOnsFtp_WriteTypeAppendTop_DestinationExists_DataIsAppended()
@@ -10613,7 +10613,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "data some");
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileOnUnc_WriteTypeAppendTop_DestinationExists_DataIsAppended()
@@ -10630,7 +10630,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "data some");
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileLocally_WriteTypeOverwrite_DestinationExists_DataIsAppended()
@@ -10647,7 +10647,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "data ");
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileOnFtp_WriteTypeOverwrite_DestinationExists_DataIsAppended()
@@ -10664,7 +10664,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "data ");
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileOnsFtp_WriteTypeOverwrite_DestinationExists_DataIsAppended()
@@ -10681,7 +10681,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "data ");
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileOnUnc_WriteTypeOverwrite_DestinationExists_DataIsAppended()
@@ -10698,7 +10698,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "data ");
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileLocally_DestinationFileDoesNotExist_ResultIsSuccessful()
@@ -10714,7 +10714,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "data");
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileOnUnc_DestinationFileDoesNotExist_ResultIsSuccessful()
@@ -10730,7 +10730,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "data");
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileOnFtp_DestinationFileDoesNotExist_ResultIsSuccessful()
@@ -10746,7 +10746,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "data");
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileOnSFtp_DestinationFileDoesNotExist_ResultIsSuccessful()
@@ -10765,7 +10765,7 @@ namespace Dev2.Integration.Tests.Activities
         #endregion
 
         #region Read Files Tests
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_ReadFile")]
         public void Dev2ActivityIOBroker_ReadFile_FileLocally_DestinationExists_ReadsSuccessfully()
@@ -10780,7 +10780,7 @@ namespace Dev2.Integration.Tests.Activities
             source.EndPoint.Delete(source.EndPoint.IOPath);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_ReadFile")]
         [ExpectedException(typeof(Exception))]
@@ -10794,7 +10794,7 @@ namespace Dev2.Integration.Tests.Activities
                                              .Get(source.EndPoint);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_ReadFile")]
         public void Dev2ActivityIOBroker_ReadFile_FileOnUnc_DestinationExists_ReadsSuccessfully()
@@ -10809,7 +10809,7 @@ namespace Dev2.Integration.Tests.Activities
             source.EndPoint.Delete(source.EndPoint.IOPath);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_ReadFile")]
         [ExpectedException(typeof(Exception))]
@@ -10823,7 +10823,7 @@ namespace Dev2.Integration.Tests.Activities
                                              .Get(source.EndPoint);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_ReadFile")]
         public void Dev2ActivityIOBroker_ReadFile_FileOnFtp_DestinationExists_ReadsSuccessfully()
@@ -10838,7 +10838,7 @@ namespace Dev2.Integration.Tests.Activities
             source.EndPoint.Delete(source.EndPoint.IOPath);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_ReadFile")]
         [ExpectedException(typeof(Exception))]
@@ -10852,7 +10852,7 @@ namespace Dev2.Integration.Tests.Activities
                                              .Get(source.EndPoint);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_ReadFile")]
         public void Dev2ActivityIOBroker_ReadFile_FileOnsFtp_DestinationExists_ReadsSuccessfully()
@@ -10867,7 +10867,7 @@ namespace Dev2.Integration.Tests.Activities
             source.EndPoint.Delete(source.EndPoint.IOPath);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_ReadFile")]
         [ExpectedException(typeof(Exception))]
@@ -10883,7 +10883,7 @@ namespace Dev2.Integration.Tests.Activities
         #endregion
         
         #region Read Files Tests
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_ReadFolder")]
         public void Dev2ActivityIOBroker_ReadFolder_FileLocally_DestinationExists_ReadsSuccessfully()
@@ -10898,7 +10898,7 @@ namespace Dev2.Integration.Tests.Activities
             source.EndPoint.Delete(source.EndPoint.IOPath);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_ReadFolder")]
         [ExpectedException(typeof(Exception))]
@@ -10912,7 +10912,7 @@ namespace Dev2.Integration.Tests.Activities
                                              .ListDirectory(source.EndPoint, ReadTypes.Files);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_ReadFolder")]
         public void Dev2ActivityIOBroker_ReadFolder_FileOnUnc_DestinationExists_ReadsSuccessfully()
@@ -10927,7 +10927,7 @@ namespace Dev2.Integration.Tests.Activities
             source.EndPoint.Delete(source.EndPoint.IOPath);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_ReadFolder")]
         [ExpectedException(typeof(Exception))]
@@ -10941,7 +10941,7 @@ namespace Dev2.Integration.Tests.Activities
                                              .ListDirectory(source.EndPoint, ReadTypes.Files);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_ReadFolder")]
         public void Dev2ActivityIOBroker_ReadFolder_FileOnFtp_DestinationExists_ReadsSuccessfully()
@@ -10956,7 +10956,7 @@ namespace Dev2.Integration.Tests.Activities
             source.EndPoint.Delete(source.EndPoint.IOPath);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_ReadFolder")]
         [ExpectedException(typeof(Exception))]
@@ -10970,7 +10970,7 @@ namespace Dev2.Integration.Tests.Activities
                                              .ListDirectory(source.EndPoint, ReadTypes.Files);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_ReadFolder")]
         public void Dev2ActivityIOBroker_ReadFolder_FileOnsFtp_DestinationExists_ReadsSuccessfully()
@@ -10985,7 +10985,7 @@ namespace Dev2.Integration.Tests.Activities
             source.EndPoint.Delete(source.EndPoint.IOPath);
         }
 
-        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_ReadFolder")]
         [ExpectedException(typeof(Exception))]
