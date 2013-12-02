@@ -128,6 +128,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// News the database service shortcut key expected database service opens.
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
             StudioWindow.WaitForControlReady(1000);
@@ -137,6 +138,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
 
         [TestMethod]
+        [Ignore]
         public void NewPluginServiceShortcutKeyExpectedPluginServiceOpens()
         {
             StudioWindow.WaitForControlReady(1000);
