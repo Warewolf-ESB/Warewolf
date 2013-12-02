@@ -57,23 +57,48 @@ namespace Dev2.Studio.UI.Tests
             // Assert all the icons are visible
             var designer = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
             var allTools = designer.GetChildren();
-            var allFoundTools = new UITestControlCollection();
-            foreach (var child in allTools)
+
+            HashSet<UITestControl> controls = new HashSet<UITestControl>();
+
+            foreach(var child in allTools)
             {
-                if (child.ControlType == "Custom" &&
+                if(child.ControlType == "Custom" &&
                     child.ClassName != "Uia.ConnectorWithoutStartDot" &&
                     child.ClassName != "Uia.StartSymbol" &&
                     child.ClassName != "Uia.UserControl" &&
                     child.ClassName != "Uia.DsfWebPageActivityDesigner")
                 {
                     //Some of the tools on the design surface are out of view, look for them...
-                    WorkflowDesignerUIMap.ScrollControlIntoView(theTab, child);
+                    if(child.BoundingRectangle.Y > 800)
+                    {
+                        //might already be scrolled
+                        var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
+                        WpfControl getTop = scrollBar as WpfControl;
+                        if(getTop.Top < 200)
+                        {
+                            //Look low
+                            Mouse.StartDragging(scrollBar);
+                            Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
+                        }
+                    }
+                    else
+                    {
+                        //might already be scrolled
+                        var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
+                        WpfControl getTop = scrollBar as WpfControl;
+                        if(getTop.Top > 200)
+                        {
+                            //Look high
+                            Mouse.StartDragging(scrollBar);
+                            Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollUp(theTab));
+                        }
+                    }
                     Assert.IsTrue(WorkflowDesignerUIMap.IsActivityIconVisible(child), child.FriendlyName + " is missing its icon on the design surface");
-                    allFoundTools.Add(child);
+                    controls.Add(child);
                 }
             }
 
-            Assert.AreEqual(24, allFoundTools.Count, "Not all tools on the alls tools text workflow can be checked for icons");
+            Assert.AreEqual(25, controls.Count, "Not all tools on the alls tools text workflow can be checked for icons");
 
             Assert.IsTrue(true, "Studio was terminated or hung while opening and closing the all tools workflow");
 

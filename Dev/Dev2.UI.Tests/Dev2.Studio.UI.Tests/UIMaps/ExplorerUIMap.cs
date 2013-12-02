@@ -206,8 +206,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             VisualTreeWalker vsw = new VisualTreeWalker();
             var item = vsw.GetChildByAutomationIDPath(ddlBase, "U_UI_ExplorerServerCbx_AutoID_" + serverName);
 
-                    Mouse.Click(item, new Point(5, 5));
-                }
+            Mouse.Click(item, new Point(5, 5));
+        }
 
         /// <summary>
         /// Selecteds the name of the sever.

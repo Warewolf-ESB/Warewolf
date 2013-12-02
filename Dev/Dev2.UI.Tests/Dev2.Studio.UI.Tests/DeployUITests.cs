@@ -6,10 +6,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Studio.UI.Tests
 {
     [CodedUITest]
-    [Ignore]
     public class DeployUITests : UIMapBase
     {
         #region Cleanup
+
+        const string LocalServerName = "localhost";
 
         [ClassInitialize]
         public static void ClassInit(TestContext tctx)
@@ -29,6 +30,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCleanup]
         public void MyTestCleanup()
         {
+            ExplorerUIMap.ClickServerInServerDDL(LocalServerName);
             TabManagerUIMap.CloseAllTabs();
         }
         #endregion
@@ -93,7 +95,7 @@ namespace Dev2.Studio.UI.Tests
             var theTab = TabManagerUIMap.GetActiveTab();
 
             //wait for resource tree to load
-            Playback.Wait(1000);
+            Playback.Wait(2500);
 
             // Assert All Service Types Visible
             var sourceResources = DeployUIMap.GetSourceNavigationTree();
@@ -104,7 +106,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.AreEqual("UI_SourceServer_SOURCES_AutoID", environmentNode.Nodes[2].FriendlyName, "Third service type is not sources");
 
             DeployUIMap.EnterTextInSourceServerFilterBox(theTab, "ldnslgnsdg"); // Random text
-
+            Playback.Wait(1500);
             var result = DeployUIMap.DoesSourceServerHaveDeployItems(theTab);
 
             TabManagerUIMap.CloseTab("Deploy");

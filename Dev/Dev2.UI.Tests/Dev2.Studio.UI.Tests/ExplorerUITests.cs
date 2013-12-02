@@ -47,14 +47,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes);
-
-            RibbonUIMap.ClickRibbonMenuItem("Debug");
-            if(DebugUIMap.WaitForDebugWindow(2500))
-            {
-                SendKeys.SendWait("{F5}");
-                Playback.Wait(1000);
-            }
-
+            
         }
     }
 }

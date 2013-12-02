@@ -18,7 +18,29 @@ namespace Dev2.Studio.UI.Tests.UIMaps
     public partial class WorkflowDesignerUIMap : UIMapBase
     {
          VisualTreeWalker vstw = new VisualTreeWalker();
-        
+
+
+         public UITestControl ScrollViewer_GetScrollBar(UITestControl theTab)
+         {
+             var scrollViewer = GetScrollViewer(theTab);
+             var scrollViewerChildren = GetScrollViewer(theTab).GetChildren();
+             foreach(var scrollViewerChild in scrollViewerChildren)
+             {
+                 if(scrollViewerChild.FriendlyName == "VerticalScrollBar")
+                 {
+                     var getVericalScrollBarChildren = scrollViewerChild.GetChildren();
+                     foreach(var scrollChild in getVericalScrollBarChildren)
+                     {
+                         if(scrollChild.FriendlyName == "thumb")
+                         {
+                             return scrollChild;
+                         }
+                     }
+                 }
+             }
+             return null;
+         }
+
         /// <summary>
         /// Finds a control on the Workflow Designer
         /// </summary>
