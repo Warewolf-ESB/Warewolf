@@ -16,7 +16,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         /// </summary>
         public void ClickCancel()
         {
-            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[0], new Point(760, 484));
+            var win = StudioWindow.GetChildren()[0].GetChildren()[0];
+            win.WaitForControlEnabled();
+
+            Mouse.Click(win, new Point(760, 484));
         }
 
         /// <summary>

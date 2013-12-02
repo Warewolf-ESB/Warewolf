@@ -182,7 +182,7 @@ namespace Dev2.Studio.UI.Tests
                 var newPoint = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
                 if(point != newPoint)
                 {
-                    Playback.Wait(2000);
+                    Playback.Wait(4000);
                     DecisionWizardUIMap.ClickCancel();
                     WorkflowDesignerUIMap.DragControl("Decision", newPoint);
                 }
@@ -192,7 +192,7 @@ namespace Dev2.Studio.UI.Tests
                 throw new Exception("MultiAssignDesigner not found on active tab");
             }
 
-            Playback.Wait(2000);
+            Playback.Wait(4000);
             DecisionWizardUIMap.ClickCancel();
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
@@ -209,7 +209,7 @@ namespace Dev2.Studio.UI.Tests
             Point point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
             //Drag a control to the design surface
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
-            Playback.Wait(2000);
+            Playback.Wait(4000);
             DecisionWizardUIMap.ClickCancel();
             //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
             Point newPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();

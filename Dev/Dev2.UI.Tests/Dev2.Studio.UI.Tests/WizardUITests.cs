@@ -203,7 +203,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", pt);
             WizardsUIMap.WaitForWizard();
-            Playback.Wait(1500);
+            Playback.Wait(2500);
             _decisionWizardUiMap.SendTabs(4);
             _decisionWizardUiMap.SelectMenuItem(11); // select between ;)
 
