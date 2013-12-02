@@ -896,14 +896,3 @@ input:focus, button:focus, textarea:focus, select:focus {
 input:hover,textarea:hover {
     border: 1px solid #ff8613;
 }
-
-.veryShortField
-{
-        font-family: Tahoma, Geneva, sans-serif;
-}
-
-.decision-select 
-{
-    font-family: Tahoma, Geneva, sans-serif;
-    padding: 5px 4px 5px 4px;
-}

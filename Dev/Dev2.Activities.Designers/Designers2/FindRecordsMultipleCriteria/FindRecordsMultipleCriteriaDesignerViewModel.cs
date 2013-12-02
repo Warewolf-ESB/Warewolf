@@ -14,7 +14,7 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
 {
     public class FindRecordsMultipleCriteriaDesignerViewModel : ActivityCollectionDesignerViewModel<FindRecordsTO>
     {
-        readonly IList<string> _requiresSearchCriteria = new List<string> { "Doesnt Contains", "Contains", "=", GlobalConstants.NotEqualsUnicodeChar, "Ends With", "Starts With", "Is Regex", ">", "<", GlobalConstants.LessThenOrEqualToUnicodeChar, GlobalConstants.GreaterThenOrEqualToUnicodeChar };
+        readonly IList<string> _requiresSearchCriteria = new List<string> { "Doesn't Contains", "Contains", "=", "<> (Not Equal)", "Ends With", "Starts With", "Is Regex", ">", "<", "<=", ">=" };
 
         public FindRecordsMultipleCriteriaDesignerViewModel(ModelItem modelItem)
             : base(modelItem)

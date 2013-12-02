@@ -182,7 +182,7 @@ namespace Dev2.Studio.Core.Helpers
                 throw new ArgumentNullException("uri", @"Cannot pass null or empty uri");
             }
 
-            using (var client = new WebClient())
+            using (var client = new WebClient{Credentials = CredentialCache.DefaultCredentials})
             {
                 string serverLogData = client.UploadString(uri, "");
                 string value = serverLogData.Replace("<DataList><Dev2System.ManagmentServicePayload>", "").Replace("</Dev2System.ManagmentServicePayload></DataList>", "");

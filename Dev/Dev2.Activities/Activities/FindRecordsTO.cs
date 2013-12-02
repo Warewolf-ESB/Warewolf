@@ -5,6 +5,7 @@ using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
+using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -56,7 +57,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             set
             {
-                _searchType = value;
+                _searchType = FindRecordsDisplayUtil.ConvertForDisplay(value);
                 OnPropertyChanged("SearchType");
                 RaiseCanAddRemoveChanged();
             }

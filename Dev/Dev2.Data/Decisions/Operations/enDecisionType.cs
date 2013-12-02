@@ -73,15 +73,15 @@ namespace Dev2.Data.Decisions.Operations
         IsRegEx,
         [DecisionTypeDisplayValue("=")]
         IsEqual,
-        [DecisionTypeDisplayValue("≠")]
+        [DecisionTypeDisplayValue("<> (Not Equal)")]
         IsNotEqual,
         [DecisionTypeDisplayValue("<")]
         IsLessThan,
-        [DecisionTypeDisplayValue("≤")]
+        [DecisionTypeDisplayValue("<=")]
         IsLessThanOrEqual,
         [DecisionTypeDisplayValue(">")]
         IsGreaterThan,
-        [DecisionTypeDisplayValue("≥")]
+        [DecisionTypeDisplayValue(">=")]
         IsGreaterThanOrEqual,
         [DecisionTypeDisplayValue("Contains")]
         IsContains,

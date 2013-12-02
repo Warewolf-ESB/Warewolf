@@ -160,6 +160,7 @@
     <Compile Include="TOTests\DataSplitDTOTests.cs" />
     <Compile Include="TOTests\FindRecordsTOTests.cs" />
     <Compile Include="Utils\DsfFakeActivity.cs" />
+    <Compile Include="Utils\FindRecordsDisplayUtilTests.cs" />
     <Compile Include="Utils\MockDsfNativeActivity.cs" />
     <Compile Include="Utils\StringComparer.cs" />
     <Compile Include="Utils\TestActivity.cs" />

@@ -14,6 +14,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using Dev2.Util;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -23,6 +24,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// </New>
     public class DsfFindRecordsActivity : DsfActivityAbstract<string>, IRecsetSearch
     {
+        #region Fields
+
+        private string searchType;
+
+        #endregion
+
 
         #region Properties
 
@@ -36,8 +43,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Property for holding a string the user selects in the "Where" drop down box
         /// </summary>
-        [Inputs("SearchType")]        
-        public string SearchType { get; set; }
+        [Inputs("SearchType")]
+        public string SearchType
+        {
+            get
+            {
+                return searchType;
+            }
+            set
+            {
+                searchType = FindRecordsDisplayUtil.ConvertForDisplay(value);
+            }
+        }
 
         /// <summary>
         /// Property for holding a string the user enters into the "Match" box
@@ -63,7 +80,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Property for holding a bool the user chooses with the "MatchCase" Checkbox
         /// </summary>
-        [Inputs("MatchCase")]        
+        [Inputs("MatchCase")]
         public bool MatchCase { get; set; }
 
         public bool RequireAllFieldsToMatch { get; set; }
@@ -99,7 +116,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             _debugInputs = new List<DebugItem>();
-            _debugOutputs = new List<DebugItem>();            
+            _debugOutputs = new List<DebugItem>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             ErrorResultTO errors = new ErrorResultTO();
@@ -113,7 +130,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IList<string> toSearch = FieldsToSearch.Split(',');
                 // now process each field for entire evaluated Where expression....
                 IBinaryDataListEntry bdle = compiler.Evaluate(executionID, enActionType.User, SearchCriteria, false, out errors);
-                if (dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode())
                 {
                     var itemToAdd = new DebugItem();
                     itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Fields To Search" });
@@ -121,55 +138,55 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 allErrors.MergeErrors(errors);
 
-                if (bdle != null)
+                if(bdle != null)
                 {
                     IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(bdle);
                     IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                     int idx = 1;
-                    if (!Int32.TryParse(StartIndex, out idx))
+                    if(!Int32.TryParse(StartIndex, out idx))
                     {
                         idx = 1;
                     }
                     IBinaryDataList toSearchList = compiler.FetchBinaryDataList(executionID, out errors);
                     allErrors.MergeErrors(errors);
                     int iterationIndex = 0;
-                    foreach (string s in toSearch)
+                    foreach(string s in toSearch)
                     {
-                        if (dataObject.IsDebug || dataObject.RemoteInvoke)
+                        if(dataObject.IsDebug || dataObject.RemoteInvoke)
                         {
                             IBinaryDataListEntry tmpEntry = compiler.Evaluate(executionID, enActionType.User, s, false, out errors);
                             AddDebugInputItem(s, string.Empty, tmpEntry, executionID);
                         }
                         // each entry in the recordset
-                        while (itr.HasMoreRecords())
+                        while(itr.HasMoreRecords())
                         {
                             IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
-                            foreach (IBinaryDataListItem c in cols)
+                            foreach(IBinaryDataListItem c in cols)
                             {
                                 IRecsetSearch searchTO = ConvertToSearchTO(c.TheValue, idx.ToString(CultureInfo.InvariantCulture));
                                 IList<string> results = RecordsetInterrogator.FindRecords(toSearchList, searchTO, out errors);
                                 allErrors.MergeErrors(errors);
                                 string concatRes = string.Empty;
-                                
-                                foreach (string r in results)
+
+                                foreach(string r in results)
                                 {
                                     concatRes = string.Concat(concatRes, r, ",");
                                 }
 
-                                if (concatRes.EndsWith(","))
+                                if(concatRes.EndsWith(","))
                                 {
                                     concatRes = concatRes.Remove(concatRes.Length - 1);
                                 }
-                                    //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                                //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                                 List<string> regions = DataListCleaningUtils.SplitIntoRegions(Result);
                                 //2013.06.07: Massimo Guerrera for BUG 9497 - To handle putting out to a scalar as a CSV
-                                foreach (var region in regions)
+                                foreach(var region in regions)
                                 {
-                                    if (!DataListUtil.IsValueRecordset(region))
+                                    if(!DataListUtil.IsValueRecordset(region))
                                     {
                                         toUpsert.Add(region, concatRes);
                                         toUpsert.FlushIterationFrame();
-                                        if (dataObject.IsDebug)
+                                        if(dataObject.IsDebug)
                                         {
                                             AddDebugOutputItem(region, concatRes, executionID, iterationIndex);
                                         }
@@ -178,15 +195,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     {
                                         iterationIndex = 0;
 
-                                        foreach (string r in results)
+                                        foreach(string r in results)
                                         {
                                             toUpsert.Add(region, r);
                                             toUpsert.FlushIterationFrame();
-                                            if (dataObject.IsDebug)
+                                            if(dataObject.IsDebug)
                                             {
                                                 AddDebugOutputItem(region, r, executionID, iterationIndex);
                                             }
-                                    
+
                                             iterationIndex++;
                                         }
                                     }
@@ -195,26 +212,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                     }
 
-                    if (dataObject.IsDebugMode())
+                    if(dataObject.IsDebugMode())
                     {
                         AddDebugInputItem(SearchCriteria, "Where", bdle, executionID);
                     }
 
                     // now push the result to the server
                     compiler.Upsert(executionID, toUpsert, out errors);
-                    allErrors.MergeErrors(errors);                   
+                    allErrors.MergeErrors(errors);
                 }
             }
             finally
             {
 
-                if (allErrors.HasErrors())
+                if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfFindRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
 
-                if (dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -227,8 +244,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
         {
             DebugItem itemToAdd = new DebugItem();
-            
-            if (labelText == "Where")
+
+            if(labelText == "Where")
             {
                 itemToAdd.Add(new DebugItemResult() { Type = DebugItemResultType.Label, Value = "Where" });
                 itemToAdd.Add(new DebugItemResult() { Type = DebugItemResultType.Value, Value = SearchType });
@@ -237,13 +254,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return;
             }
 
-            
-            if (!string.IsNullOrWhiteSpace(labelText))
+
+            if(!string.IsNullOrWhiteSpace(labelText))
             {
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
             }
 
-            if (valueEntry != null)
+            if(valueEntry != null)
             {
                 itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
             }
@@ -273,7 +290,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugInput in _debugInputs)
+            foreach(IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -282,7 +299,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugOutput in _debugOutputs)
+            foreach(IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -299,7 +316,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="context"></param>
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates.Count == 1)
+            if(updates.Count == 1)
             {
                 FieldsToSearch = updates[0].Item2;
             }
@@ -312,7 +329,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="context"></param>
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates.Count == 1)
+            if(updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }

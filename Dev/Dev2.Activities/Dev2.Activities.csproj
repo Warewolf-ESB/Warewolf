@@ -215,6 +215,7 @@
     <Compile Include="Util.cs" />
     <Compile Include="Utilities\ActivityHelper.cs" />
     <Compile Include="Utilities\ActivityInputOutputUtils.cs" />
+    <Compile Include="Utilities\FindRecordsDisplayUtil.cs" />
     <Compile Include="Utilities\IWorkflowHelper.cs" />
     <Compile Include="Utilities\WorkflowHelper.cs" />
     <Compile Include="Utilities\GeneralSettings.cs" />

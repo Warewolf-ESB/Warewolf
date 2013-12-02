@@ -29,7 +29,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             foreach (string item in e.AddedItems)
             {
-                if (item == "Not Contains" || item == "Contains" || item == "Equal" || item == "Not Equal" || item == "Ends With" || item == "Starts With" || item == "Regex" || item == ">" || item == "<" || item == "<=" || item == ">=")
+                if(item == "Doesn't Contains" || item == "Contains" || item == "=" || item == "<> (Not Equal)" || item == "Ends With" || item == "Starts With" || item == "Is Regex" || item == ">" || item == "<" || item == "<=" || item == ">=")
                 {
                     txtMatch.IsEnabled = true;
                 }
