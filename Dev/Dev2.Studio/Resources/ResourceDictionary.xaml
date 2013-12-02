@@ -910,7 +910,7 @@
         </StackPanel>
     </DataTemplate>
 
-    <!--<DataTemplate DataType="{x:Type bdsm:BetweenOperatorType}">
+    <DataTemplate DataType="{x:Type bdsm:BetweenOperatorType}">
         <StackPanel Orientation="Horizontal"
                     Margin="10">
             <RadioButton GroupName="Test"
@@ -927,7 +927,7 @@
                      MinWidth="100" />
 
         </StackPanel>
-    </DataTemplate>-->
+    </DataTemplate>
 
     <!-- Expander Style -->
     <Style x:Key="ExpanderHeaderFocusVisual">

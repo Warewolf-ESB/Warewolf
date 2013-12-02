@@ -301,6 +301,7 @@
     <Compile Include="AppResources\Workflow\WorkflowDebugger.CustomTrackingEventArgs.cs" />
     <Compile Include="AppResources\Workflow\WorkflowDebugger.CustomTrackingParticipant.cs" />
     <Compile Include="Factories\ResourceModelFactory.cs" />
+    <Compile Include="Interfaces\IDecisionType.cs" />
     <Compile Include="Interfaces\IDev2StudioView.cs" />
     <Compile Include="Interfaces\IEnvironmentModel.cs" />
     <Compile Include="Interfaces\IFilePersistenceProvider.cs" />
@@ -391,8 +392,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\Debugger\DsfDebuggerDataObject.cs" />
+    <Compile Include="Models\DecisionModels\BetweenOperatorType.cs" />
+    <Compile Include="Models\DecisionModels\DateDecisionType.cs" />
+    <Compile Include="Models\DecisionModels\DecisionType.cs" />
+    <Compile Include="Models\DecisionModels\IntegerDecisionType.cs" />
+    <Compile Include="Models\DecisionModels\NormalDecisionType.cs" />
     <Compile Include="Interfaces\ITagCloudItemModel.cs" />
     <Compile Include="Interfaces\ITagModel.cs" />
+    <Compile Include="Models\DecisionModels\StringDecisionType.cs" />
     <Compile Include="Models\EnvironmentModel.cs" />
     <Compile Include="Models\IWorkSurfaceObject.cs" />
     <Compile Include="Models\OperatorType.cs" />
@@ -490,6 +497,8 @@
     <Compile Include="Interfaces\IWebResourceViewModel.cs" />
     <Compile Include="ViewModels\UserInterfaceBuilder\WebResourceViewModel.cs" />
     <Compile Include="ViewModels\Wizards\DataListChangeNotificationViewModel.cs" />
+    <Compile Include="ViewModels\Workflow\ConfigureDecisionViewModel.cs" />
+    <Compile Include="Interfaces\IConfigureDecisionViewModel.cs" />
     <Compile Include="Wizards\CallBackHandlers\DsfBaseConvertActivityWizCallback.cs" />
     <Compile Include="Wizards\CallBackHandlers\DsfBaseWizCallback.cs" />
     <Compile Include="Wizards\CallBackHandlers\DsfCalculateActivityWizCallback.cs" />
@@ -598,7 +607,6 @@
     <Folder Include="ViewModels\DataListShowMissing\" />
     <Folder Include="ViewModels\DataMapping\" />
     <Folder Include="ViewModels\Deploy\" />
-    <Folder Include="ViewModels\Workflow\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
