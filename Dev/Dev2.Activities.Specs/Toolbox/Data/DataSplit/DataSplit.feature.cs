@@ -70,11 +70,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Split text to a recordset using split type index")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Split text to a recordset using Index")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
-        public virtual void SplitTextToARecordsetUsingSplitTypeIndex()
+        public virtual void SplitTextToARecordsetUsingIndex()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text to a recordset using split type index", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text to a recordset using Index", ((string[])(null)));
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line 7
