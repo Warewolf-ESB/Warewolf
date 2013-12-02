@@ -222,7 +222,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             var expected = "If [[VariableName]] Is Between [[VariableName]] and [[VariableName]]";
 
-            Playback.Wait(1500);
             var getDecision = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FlowDecisionDesigner");
             getDecision.WaitForControlEnabled();
             var getDecisionText = getDecision.GetChildren()[0] as WpfEdit;
