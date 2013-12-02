@@ -86,7 +86,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 11
  testRunner.When("the replace tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 12
- testRunner.Then("the result should be \"Dear Mr Warewolf user, We welcome you as a customer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the replaced result should be \"Dear Mr Warewolf user, We welcome you as a custome" +
+                    "r\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

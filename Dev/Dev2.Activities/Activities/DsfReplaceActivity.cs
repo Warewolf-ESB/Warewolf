@@ -117,31 +117,33 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     var labelItem = new DebugItem();
-                    labelItem.Add(new DebugItemResult{Type = DebugItemResultType.Label,Value = "Fields To Search"});
+                    labelItem.Add(new DebugItemResult {Type = DebugItemResultType.Label, Value = "Fields To Search"});
                     _debugInputs.Add(labelItem);
                 }
                 // Fetch all fields to search....
-                IList<string> toSearch = FieldsToSearch.Split(new[] { ',' , ' '}, StringSplitOptions.RemoveEmptyEntries);
+                IList<string> toSearch = FieldsToSearch.Split(new[] {',', ' '}, StringSplitOptions.RemoveEmptyEntries);
                 while (iteratorCollection.HasMoreData())
                 {
-                    
-                    
+
+
                     // now process each field for entire evaluated Where expression....                    
 
                     string findValue = iteratorCollection.FetchNextRow(itrFind).TheValue;
                     string replaceWithValue = iteratorCollection.FetchNextRow(itrReplace).TheValue;
                     foreach (string s in toSearch)
                     {
-                        if(!DataListUtil.IsEvaluated(s))
+                        if (!DataListUtil.IsEvaluated(s))
                         {
                             allErrors.AddError("Please insert only variables into Fields To Search");
                             return;
                         }
                         IBinaryDataListEntry entryToReplaceIn;
 
-                        toUpsert = replaceOperation.Replace(executionId, s.Trim(), findValue, replaceWithValue, CaseMatch, toUpsert,
+                        toUpsert = replaceOperation.Replace(executionId, s.Trim(), findValue, replaceWithValue,
+                                                            CaseMatch, toUpsert,
                                                             out errors, out replacementCount, out entryToReplaceIn);
-                        if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                        if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) ||
+                            dataObject.RemoteInvoke)
                         {
                             AddDebugInputItem(s.Trim(), string.Empty, entryToReplaceIn, executionId);
                         }
@@ -155,7 +157,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
-                    AddDebugInputItem(Find, "Find", expressionsEntryFind,executionId);
+                    AddDebugInputItem(Find, "Find", expressionsEntryFind, executionId);
                     AddDebugInputItem(ReplaceWith, "Replace With", expressionsEntryReplaceWith, executionId);
                 }
 
@@ -174,6 +176,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // now push the result to the server
                 compiler.Upsert(executionId, toUpsert, out errors);
                 allErrors.MergeErrors(errors);
+            }
+            catch (Exception ex)
+            {
+                
             }
             finally
             {

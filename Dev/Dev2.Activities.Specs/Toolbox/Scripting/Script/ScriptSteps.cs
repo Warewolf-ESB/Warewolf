@@ -3,37 +3,40 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Text;
 using ActivityUnitTests;
+using Dev2.Common.Enums;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
+namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
 {
     [Binding]
-    public class XPathSteps : BaseActivityUnitTest
+    public class ScriptSteps : BaseActivityUnitTest
     {
-        private DsfXPathActivity _xPath;
-        private readonly List<Tuple<string, string>> _variableList = new List<Tuple<string, string>>();
+        private DsfScriptingActivity _dsfScripting;
+       
         private IDSFDataObject _result;
-        private string _xmlData;
+        private const string ResultVariable = "[[result]]";
+        private readonly List<Tuple<string, string>> _variableList = new List<Tuple<string, string>>();
+        private string _scriptToExecute;
+        private enScriptType _language;
         private string _recordSetName;
-        private string _fieldName;
+
+
 
         private void BuildDataList()
         {
-            _xPath = new DsfXPathActivity {SourceString = _xmlData};
+            _dsfScripting = new DsfScriptingActivity { Script = _scriptToExecute, ScriptType = _language, Result = ResultVariable };
 
             TestStartNode = new FlowStep
-                {
-                    Action = _xPath
-                };
-
-            var shape = new StringBuilder();
-            shape.Append("<ADL>");
+            {
+                Action = _dsfScripting
+            };
 
             var data = new StringBuilder();
-            data.Append("<ADL>");
+            var shape = new StringBuilder();
+            data.Append("<root>");
+            shape.Append("<root>");
 
             int row = 1;
             foreach (var variable in _variableList)
@@ -61,46 +64,49 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
                 row++;
             }
 
-            shape.Append("</ADL>");
-            data.Append("</ADL>");
+            data.Append(string.Format("<{0}></{0}>", DataListUtil.RemoveLanguageBrackets(ResultVariable)));
+            shape.Append(string.Format("<{0}></{0}>", DataListUtil.RemoveLanguageBrackets(ResultVariable)));
+            data.Append("</root>");
+            shape.Append("</root>");
 
             CurrentDl = shape.ToString();
             TestData = data.ToString();
         }
 
-        [Given(@"I have this xml '(.*)'")]
-        public void GivenIHaveThisXml(string xmlData)
+        [Given(@"I have a variable ""(.*)"" with this value ""(.*)""")]
+        public void GivenIHaveAVariableWithThisValue(string variable, string value)
         {
-            _xmlData = xmlData;
+            _variableList.Add(new Tuple<string, string>(variable, value));
         }
-        
-        [Given(@"I have a variable ""(.*)"" with xpath ""(.*)""")]
-        public void GivenIHaveAVariableWithXpath(string variable, string xpath)
+
+
+        [Given(@"I have this script to execute ""(.*)""")]
+        public void GivenIHaveThisScriptToExecute(string scriptToExecute)
         {
-            _variableList.Add(new Tuple<string, string>(variable, xpath));
+            _scriptToExecute = scriptToExecute;
         }
-        
-        [When(@"the xpath tool is executed")]
-        public void WhenTheXpathToolIsExecuted()
+
+        [Given(@"I have selected the language as ""(.*)""")]
+        public void GivenIHaveSelectedTheLanguageAs(string language)
+        {
+            _language = (enScriptType)Enum.Parse(typeof(enScriptType), language);
+        }
+
+        [When(@"I execute the script tool")]
+        public void WhenIExecuteTheScriptTool()
         {
             BuildDataList();
             _result = ExecuteProcess();
         }
-        
-        [Then(@"the variable \[\[firstNum]] should have a value ""(.*)""")]
-        public void ThenTheVariableFirstNumShouldHaveAValue(string result)
-        {
-            
-        }
 
-        [Then(@"the variable ""(.*)"" should have a value ""(.*)""")]
-        public void ThenTheVariableShouldHaveAValue(string variable, string value)
+        [Then(@"the script result should be ""(.*)""")]
+        public void ThenTheScriptResultShouldBe(string result)
         {
             string error;
             string actualValue;
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
+            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            Assert.AreEqual(value, actualValue);
+            Assert.IsTrue(actualValue.Contains(result));
         }
     }
 }

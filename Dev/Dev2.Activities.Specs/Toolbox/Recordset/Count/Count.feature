@@ -3,6 +3,7 @@
 	As a Warewolf user
 	I want a tool that takes a record set counts it
 
+@NumberOfRecordsInARecordset
 Scenario: Count a number of records in a recordset
 	Given I have a recordset with this shape
 	| rs       |

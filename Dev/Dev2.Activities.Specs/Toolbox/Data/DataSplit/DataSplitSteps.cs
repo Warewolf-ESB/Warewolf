@@ -32,20 +32,20 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
 
             var data = new StringBuilder();
             data.Append("<root>");
-
+            
             int row = 1;
             foreach (var variable in _variableList)
             {
-                string variableName = DataListUtil.RemoveLanguageBrackets(variable.Item1);
+                _dataSplit.ResultsCollection.Add(new DataSplitDTO(variable.Item1, variable.Item2, variable.Item3, row));
 
-                if (variableName.Contains("(*)") || variableName.Contains("()"))
+                string variableName = DataListUtil.RemoveLanguageBrackets(variable.Item1);
+                if (variableName.Contains("(") && variableName.Contains(")"))
                 {
-                    variableName = variableName.Replace("(*)", "").Replace("()", "");
+                    variableName = variableName.Replace("(", "").Replace(")", "").Replace("*", "");
                     var variableNameSplit = variableName.Split(".".ToCharArray());
                     data.Append(string.Format("<{0}>", variableNameSplit[0]));
                     data.Append(string.Format("<{0}/>", variableNameSplit[1]));
                     data.Append(string.Format("</{0}>", variableNameSplit[0]));
-
                     _recordSetName = variableNameSplit[0];
                     _fieldName = variableNameSplit[1];
                 }
@@ -53,7 +53,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
                 {
                     data.Append(string.Format("<{0}/>", variableName));
                 }
-                _dataSplit.ResultsCollection.Add(new DataSplitDTO(variable.Item1, variable.Item2, variable.Item3, row));
                 row++;
             }
 

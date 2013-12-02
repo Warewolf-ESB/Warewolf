@@ -72,10 +72,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Count a number of records in a recordset")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Count")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NumberOfRecordsInARecordset")]
         public virtual void CountANumberOfRecordsInARecordset()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Count a number of records in a recordset", ((string[])(null)));
-#line 6
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Count a number of records in a recordset", new string[] {
+                        "NumberOfRecordsInARecordset"});
+#line 7
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -86,11 +88,11 @@ this.ScenarioSetup(scenarioInfo);
                         "rs().row"});
             table1.AddRow(new string[] {
                         "rs().row"});
-#line 7
+#line 8
  testRunner.Given("I have a recordset with this shape", ((string)(null)), table1, "Given ");
-#line 12
- testRunner.When("the count tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
+ testRunner.When("the count tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 14
  testRunner.Then("the result count should be 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

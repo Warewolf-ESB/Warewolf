@@ -15,16 +15,17 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         private const string ResultVariable = "[[result]]";
         private DsfReplaceActivity _replace;
         private IDSFDataObject _result;
-        private string _inFields;
+        private const string InFields = "[[sentence]]";
         private string _find;
         private string _replaceWith;
+        private string _sentence;
 
         private void BuildDataList()
         {
             _replace = new DsfReplaceActivity
             {
                 Result = ResultVariable,
-                FieldsToSearch = _inFields,
+                FieldsToSearch = InFields,
                 Find = _find,
                 ReplaceWith = _replaceWith
             };
@@ -35,19 +36,26 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
             };
 
 
+            var shape = new StringBuilder();
+            shape.Append("<ADL>");
+            shape.Append(string.Format("<{0}/>", DataListUtil.RemoveLanguageBrackets(InFields)));
+            shape.Append(string.Format("<{0}/>", DataListUtil.RemoveLanguageBrackets(ResultVariable)));
+            shape.Append("</ADL>");
+
             var data = new StringBuilder();
             data.Append("<root>");
+            data.Append(string.Format("<{0}>{1}</{0}>", DataListUtil.RemoveLanguageBrackets(InFields), _sentence));
             data.Append(string.Format("<{0}></{0}>", DataListUtil.RemoveLanguageBrackets(ResultVariable)));
             data.Append("</root>");
-
-            CurrentDl = data.ToString();
+            
+            CurrentDl = shape.ToString();
             TestData = data.ToString();
         }
 
         [Given(@"I have a sentence ""(.*)""")]
-        public void GivenIHaveASentence(string inFields)
+        public void GivenIHaveASentence(string sentence)
         {
-            _inFields = inFields;
+            _sentence = sentence;
         }
         
         [Given(@"I want to find the characters ""(.*)""")]
@@ -68,13 +76,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
             BuildDataList();
             _result = ExecuteProcess();
         }
-        
-        [Then(@"the result should be ""(.*)""")]
-        public void ThenTheResultShouldBe(string result)
+
+        [Then(@"the replaced result should be ""(.*)""")]
+        public void ThenTheReplacedResultShouldBe(string result)
         {
             string error;
             string actualValue;
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(InFields),
                                        out actualValue, out error);
             Assert.AreEqual(result, actualValue);
         }

@@ -9,4 +9,4 @@ Scenario: Replace placeholders in a sentence with names
 	And I want to find the characters "XXXX"
 	And I want to replace them with "Warewolf user"
 	When the replace tool is executed
-	Then the result should be "Dear Mr Warewolf user, We welcome you as a customer"
+	Then the replaced result should be "Dear Mr Warewolf user, We welcome you as a customer"

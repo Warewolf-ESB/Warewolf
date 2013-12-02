@@ -24,20 +24,18 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         {
             var data = new StringBuilder();
             data.Append("<root>");
-
+            
             int row = 1;
             foreach (var variable in _variableList)
             {
                 string variableName = DataListUtil.RemoveLanguageBrackets(variable);
-
-                if (variableName.Contains("(*)") || variableName.Contains("()"))
+                if (variableName.Contains("(") && variableName.Contains(")"))
                 {
-                    variableName = variableName.Replace("(*)", "").Replace("()", "");
+                    variableName = variableName.Replace("(", "").Replace(")", "").Replace("*", "");
                     var variableNameSplit = variableName.Split(".".ToCharArray());
                     data.Append(string.Format("<{0}>", variableNameSplit[0]));
                     data.Append(string.Format("<{0}/>", variableNameSplit[1]));
                     data.Append(string.Format("</{0}>", variableNameSplit[0]));
-
                     _recordSetName = variableNameSplit[0];
                 }
                 else
@@ -46,6 +44,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
                 }
                 row++;
             }
+
 
             data.Append(string.Format("<{0}></{0}>", DataListUtil.RemoveLanguageBrackets(ResultVariable)));
             data.Append("</root>");
