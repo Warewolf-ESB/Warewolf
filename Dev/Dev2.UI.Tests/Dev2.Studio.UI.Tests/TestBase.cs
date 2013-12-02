@@ -249,7 +249,7 @@ namespace Dev2.CodedUI.Tests
                 }
             }
 
-            Playback.Wait(2000);
+            Playback.Wait(3000);
 
             string helpText = realfxBox.GetProperty("Helptext").ToString();
 

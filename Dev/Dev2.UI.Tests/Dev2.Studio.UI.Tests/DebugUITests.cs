@@ -84,10 +84,11 @@ namespace Dev2.Studio.UI.Tests
 
             Playback.Wait(100);
             SendKeys.SendWait("{TAB}");
-            Playback.Wait(100);
+            Playback.Wait(200);
             SendKeys.SendWait("1");
+            Playback.Wait(200);
             SendKeys.SendWait("{TAB}");
-            Playback.Wait(100);
+            Playback.Wait(200);
             SendKeys.SendWait("2");
 
             DebugUIMap.ClickExecute();
@@ -132,17 +133,14 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait(KeyboardCommands.CopyCommand);
             var actualXML = Clipboard.GetData(DataFormats.Text);
 
+            actualXML = actualXML.ToString().Replace(Environment.NewLine, "").Replace(" ","");
+
             //close the window ;)
             DebugUIMap.CloseDebugWindow_ByCancel();
 
-            const string expectedXML = @"<DataList>
-<countries>
-<CountryID>1</CountryID>
-<Description>2</Description>
-</countries>
-</DataList>";
+            const string expectedXML = @"<DataList><countries><CountryID>1</CountryID><Description>2</Description></countries></DataList>";
 
-            Assert.AreEqual(expectedXML, actualXML);
+            Assert.AreEqual(expectedXML, actualXML, "Got [ " + actualXML + " ]");
 
         }
 

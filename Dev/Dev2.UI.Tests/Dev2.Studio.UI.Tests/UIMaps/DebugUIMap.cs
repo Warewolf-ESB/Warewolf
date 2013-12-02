@@ -25,6 +25,8 @@
             return rowList.Count;
         }
 
+
+
         public void CloseDebugWindow_ByCancel()
         {
             WpfWindow debugWindow = GetDebugWindow();

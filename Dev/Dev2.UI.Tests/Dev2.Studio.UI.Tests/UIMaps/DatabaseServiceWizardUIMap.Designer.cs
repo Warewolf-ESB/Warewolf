@@ -110,6 +110,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             //DbSource
             RibbonUIMap.ClickRibbonMenuItem("UI_RibbonHomeTabDBServiceBtn_AutoID");
             WizardsUIMap.WaitForWizard();
+            Playback.Wait(9000); // darn db query can take a long time ;)
             SendKeys.SendWait("{TAB}{TAB}{ENTER}");
             Playback.Wait(10);
             SendKeys.SendWait("RSAKLFSVRGENDEV");

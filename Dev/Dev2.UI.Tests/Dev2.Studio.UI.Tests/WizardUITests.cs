@@ -75,7 +75,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             }
 
             uiTestControl.WaitForControlEnabled();
-
+            WizardsUIMap.WaitForWizard();
             SendKeys.SendWait("{ESC}");
         }
 

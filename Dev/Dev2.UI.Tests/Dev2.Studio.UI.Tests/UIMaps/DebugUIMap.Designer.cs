@@ -41,6 +41,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
             var vstw = new VisualTreeWalker();
 
             var debugWindow = GetDebugWindow();
+            debugWindow.WaitForControlEnabled();
             var inputGrid = vstw.GetChildByAutomationIDPath(debugWindow, "TabItems", "UI_InputDataTab_AutoID", "DataListInputs");
             return inputGrid.GetChildren()[row] as WpfRow;
         }
