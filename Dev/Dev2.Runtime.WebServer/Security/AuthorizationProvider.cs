@@ -71,16 +71,16 @@ namespace Dev2.Runtime.WebServer.Security
                 case WebServerRequestType.WebGetImage:
                 case WebServerRequestType.WebGetScript:
                 case WebServerRequestType.WebGetView:
-                    return _securityConfigProvider.Permissions.Where(p => (p.View || p.Contribute) && Matches(p, resource)).Select(p => p.WindowsGroup);
+                    return _securityConfigProvider.Permissions.Where(p => (p.Administrator || p.View || p.Contribute)).Select(p => p.WindowsGroup);
 
                 case WebServerRequestType.WebInvokeService:
-                    return _securityConfigProvider.Permissions.Where(p => (p.Contribute || p.Execute) && Matches(p, resource)).Select(p => p.WindowsGroup);
+                    return IsWebInvokeServiceSave(request.Url.AbsolutePath) 
+                        ? _securityConfigProvider.Permissions.Where(p => (p.Administrator || p.Contribute) && Matches(p, resource)).Select(p => p.WindowsGroup) 
+                        : _securityConfigProvider.Permissions.Where(p => (p.Administrator || p.View || p.Contribute) && Matches(p, resource)).Select(p => p.WindowsGroup);
 
                 case WebServerRequestType.WebExecuteWorkflow:
-                    return _securityConfigProvider.Permissions.Where(p => (p.Contribute || p.Execute) && Matches(p, resource)).Select(p => p.WindowsGroup);
-
                 case WebServerRequestType.WebBookmarkWorkflow:
-                    return _securityConfigProvider.Permissions.Where(p => (p.Contribute || p.Execute) && Matches(p, resource)).Select(p => p.WindowsGroup);
+                    return _securityConfigProvider.Permissions.Where(p => (p.Administrator || p.Contribute || p.Execute) && Matches(p, resource)).Select(p => p.WindowsGroup);
 
                 case WebServerRequestType.HubConnect:
                 case WebServerRequestType.EsbSendMemo:
@@ -151,6 +151,11 @@ namespace Dev2.Runtime.WebServer.Security
 
             startIndex += 9;
             return startIndex;
+        }
+
+        static bool IsWebInvokeServiceSave(string absolutePath)
+        {
+            return absolutePath.EndsWith("/save", StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

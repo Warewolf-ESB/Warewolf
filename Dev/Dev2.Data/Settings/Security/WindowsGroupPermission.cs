@@ -42,6 +42,32 @@ namespace Dev2.Data.Settings.Security
         public bool IsNew { get { return _isNew; } set { OnPropertyChanged(ref _isNew, value); } }
 
         [JsonIgnore]
+        public Permissions Permissions
+        {
+            get
+            {
+                var result = Permissions.None;
+                if(View) { result |= Permissions.View; }
+                if(Execute) { result |= Permissions.Execute; }
+                if(Contribute) { result |= Permissions.Contribute; }
+                if(DeployTo) { result |= Permissions.DeployTo; }
+                if(DeployFrom) { result |= Permissions.DeployFrom; }
+                if(Administrator) { result |= Permissions.Administrator; }
+
+                return result;
+            }
+            set
+            {
+                View = (value & Permissions.View) == Permissions.View;
+                Execute = (value & Permissions.Execute) == Permissions.Execute;
+                Contribute = (value & Permissions.Contribute) == Permissions.Contribute;
+                DeployTo = (value & Permissions.DeployTo) == Permissions.DeployTo;
+                DeployFrom = (value & Permissions.DeployFrom) == Permissions.DeployFrom;
+                Administrator = (value & Permissions.Administrator) == Permissions.Administrator;
+            }
+        }
+
+        [JsonIgnore]
         public bool IsBuiltInAdministrators
         {
             get

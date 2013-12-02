@@ -5,6 +5,7 @@ using Dev2.Data.Settings.Security;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Security;
+using Microsoft.AspNet.SignalR.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -143,201 +144,134 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationProvider_IsAuthorized")]
-        public void AuthorizationProvider_IsAuthorized_QueryStringHasResourceIDAndUserIsInRoleForResource_True()
+        public void AuthorizationProvider_IsAuthorized_WebInvokeService_CorrectAuthorizations()
         {
-            //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
+            var workspaceID = Guid.NewGuid();
 
-            const string PermissionGroup = "Admins";
-            const string UserRole = "Admins";
-            var permissions = new List<WindowsGroupPermission>
+            var queryString = new Mock<INameValueCollection>();
+            queryString.Setup(q => q["rid"]).Returns(resourceID.ToString());
+            queryString.Setup(q => q["wid"]).Returns(workspaceID.ToString());
+
+            const string UrlFormat = "http://localhost:1234/wwwroot/{0}?wid={1}&rid={2}";
+            var requests = new[]
             {
-                new WindowsGroupPermission { WindowsGroup = PermissionGroup, ResourceID = resourceID, Contribute = true, IsServer = false }
+                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/dbservice", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
+                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Help/GetDictionary", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
+                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Resources/PathsAndNames", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
+                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Resources/Sources", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
+                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/DbSources/Search", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
+                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/DbSources/Get", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
+                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Services/Get?", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
+                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "sservices/Service/DbSources/Get", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
+                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Services/Save", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
             };
 
-            var securityConfigProvider = new Mock<ISecurityConfigProvider>();
-            securityConfigProvider.SetupGet(p => p.Permissions).Returns(permissions);
-            var authorizationProvider = new TestAuthorizationProvider(securityConfigProvider.Object);
-
-            var request = new Mock<IAuthorizationRequest>();
-            request.Setup(r => r.User.IsInRole(UserRole)).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string>("User", "Url"));
-            request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebGet);
-            request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(resourceID.ToString());
-
-            //------------Execute Test---------------------------
-            var authorized = authorizationProvider.IsAuthorized(request.Object);
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(authorized);
+            Verify_IsAuthorized(requests);
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationProvider_IsAuthorized")]
-        public void AuthorizationProvider_IsAuthorized_QueryStringHasResourceIDAndUserIsNotInRoleForResource_False()
+        public void AuthorizationProvider_IsAuthorized_WebGetXXX_CorrectAuthorizations()
         {
-            //------------Setup for test--------------------------
-            var resourceID = Guid.NewGuid();
+            var queryString = new Mock<INameValueCollection>();
 
-            const string PermissionGroup = "Admins";
-            const string UserRole = "Admins1";
-            var permissions = new List<WindowsGroupPermission>
+            const string UrlFormat = "http://localhost:1234/wwwroot/{0}";
+            var requests = new[]
             {
-                new WindowsGroupPermission { WindowsGroup = PermissionGroup, ResourceID = resourceID, Contribute = true, IsServer = false }
+                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebGet, string.Format(UrlFormat, "services/Scripts/warewolf-ko.js"), queryString.Object),
+                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebGetContent, string.Format(UrlFormat, "content/Site.css"), queryString.Object),
+                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebGetImage, string.Format(UrlFormat, "images/clear-filter.png"), queryString.Object),
+                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebGetScript, string.Format(UrlFormat, "scripts/fx/jquery-1.9.1.min.js"), queryString.Object),
+                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebGetView, string.Format(UrlFormat, "views/services/dbservice.htm"), queryString.Object),
             };
 
-            var securityConfigProvider = new Mock<ISecurityConfigProvider>();
-            securityConfigProvider.SetupGet(p => p.Permissions).Returns(permissions);
-            var authorizationProvider = new TestAuthorizationProvider(securityConfigProvider.Object);
-
-            var request = new Mock<IAuthorizationRequest>();
-            request.Setup(r => r.User.IsInRole(UserRole)).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string>("User", "Url"));
-            request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebGet);
-            request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(resourceID.ToString());
-
-            //------------Execute Test---------------------------
-            var authorized = authorizationProvider.IsAuthorized(request.Object);
-
-            //------------Assert Results-------------------------
-            Assert.IsFalse(authorized);
+            Verify_IsAuthorized(requests);
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationProvider_IsAuthorized")]
-        public void AuthorizationProvider_IsAuthorized_ExecuteWorkflowAndUserIsInRoleForResource_True()
+        public void AuthorizationProvider_IsAuthorized_WebExecuteOrBookmarkWorkflow_CorrectAuthorizations()
         {
-            //------------Setup for test--------------------------
+            var queryString = new Mock<INameValueCollection>();
+
             const string ResourceName = "Test 123";
-            const string Url = "http://localhost/services/" + ResourceName;
 
-            const string PermissionGroup = "Admins";
-            const string UserRole = "Admins";
-            var permissions = new List<WindowsGroupPermission>
+            const string UrlFormat = "http://localhost:1234/services/{0}{1}";
+            var requests = new[]
             {
-                new WindowsGroupPermission { WindowsGroup = PermissionGroup, ResourceName = "Category\\" + ResourceName, Contribute = true, IsServer = false }
+                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.Execute, WebServerRequestType.WebBookmarkWorkflow, string.Format(UrlFormat, ResourceName, "/instances/id/bookmark/bmk"), queryString.Object, ResourceName),
+                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.Execute, WebServerRequestType.WebExecuteWorkflow, string.Format(UrlFormat, ResourceName, ""), queryString.Object, ResourceName),
             };
 
-            var securityConfigProvider = new Mock<ISecurityConfigProvider>();
-            securityConfigProvider.SetupGet(p => p.Permissions).Returns(permissions);
-            var authorizationProvider = new TestAuthorizationProvider(securityConfigProvider.Object);
-
-            var request = new Mock<IAuthorizationRequest>();
-            request.Setup(r => r.User.IsInRole(UserRole)).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string>("User", Url));
-            request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebExecuteWorkflow);
-            request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns((string)null);
-            request.Setup(r => r.Url).Returns(new Uri(Url));
-
-            //------------Execute Test---------------------------
-            var authorized = authorizationProvider.IsAuthorized(request.Object);
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(authorized);
+            Verify_IsAuthorized(requests);
         }
 
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationProvider_IsAuthorized")]
-        public void AuthorizationProvider_IsAuthorized_ExecuteWorkflowAndUserIsNotInRoleForResource_False()
+        void Verify_IsAuthorized(TestAuthorizationRequest[] requests)
         {
-            //------------Setup for test--------------------------
-            const string ResourceName = "Test 123";
-            const string Url = "http://localhost/services/" + ResourceName;
+            var isServers = new[] { false, true };
 
-            const string PermissionGroup = "Admins";
-            const string UserRole = "Admins1";
-            var permissions = new List<WindowsGroupPermission>
+            foreach(var isServer in isServers)
             {
-                new WindowsGroupPermission { WindowsGroup = PermissionGroup, ResourceName = "Category\\" + ResourceName, Contribute = true, IsServer = false }
-            };
+                foreach(var request in requests)
+                {
+                    Verify_IsAuthorized(Permissions.None, request, isServer);
+                    Verify_IsAuthorized(Permissions.View, request, isServer);
+                    Verify_IsAuthorized(Permissions.Execute, request, isServer);
+                    Verify_IsAuthorized(Permissions.Contribute, request, isServer);
+                    Verify_IsAuthorized(Permissions.Administrator, request, isServer);
 
-            var securityConfigProvider = new Mock<ISecurityConfigProvider>();
-            securityConfigProvider.SetupGet(p => p.Permissions).Returns(permissions);
-            var authorizationProvider = new TestAuthorizationProvider(securityConfigProvider.Object);
-
-            var request = new Mock<IAuthorizationRequest>();
-            request.Setup(r => r.User.IsInRole(UserRole)).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string>("User", Url));
-            request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebExecuteWorkflow);
-            request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns((string)null);
-            request.Setup(r => r.Url).Returns(new Uri(Url));
-
-            //------------Execute Test---------------------------
-            var authorized = authorizationProvider.IsAuthorized(request.Object);
-
-            //------------Assert Results-------------------------
-            Assert.IsFalse(authorized);
+                    Verify_IsAuthorized(Permissions.View | Permissions.Execute, request, isServer);
+                    Verify_IsAuthorized(Permissions.View | Permissions.Contribute, request, isServer);
+                    Verify_IsAuthorized(Permissions.Execute | Permissions.Contribute, request, isServer);
+                    Verify_IsAuthorized(Permissions.View | Permissions.Execute | Permissions.Contribute, request, isServer);
+                }
+            }
         }
 
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationProvider_IsAuthorized")]
-        public void AuthorizationProvider_IsAuthorized_BookmarkWorkflowAndUserIsInRoleForResource_True()
+        void Verify_IsAuthorized(Permissions configPermissions, TestAuthorizationRequest authorizationRequest, bool isServer)
         {
-            //------------Setup for test--------------------------
-            const string ResourceName = "Test 123";
-            const string Url = "http://localhost/services/" + ResourceName + "/instances/id/bookmark/bmk";
+            var configPermission = new WindowsGroupPermission { WindowsGroup = TestAuthorizationRequest.UserRole, IsServer = isServer, Permissions = configPermissions };
 
-            const string PermissionGroup = "Admins";
-            const string UserRole = "Admins";
-            var permissions = new List<WindowsGroupPermission>
+            if(!isServer && !string.IsNullOrEmpty(authorizationRequest.Resource))
             {
-                new WindowsGroupPermission { WindowsGroup = PermissionGroup, ResourceName = "Category\\" + ResourceName, Contribute = true, IsServer = false }
-            };
+                Guid resourceID;
+                if(Guid.TryParse(authorizationRequest.Resource, out resourceID))
+                {
+                    configPermission.ResourceID = resourceID;
+                }
+                else
+                {
+                    configPermission.ResourceName = string.Format("TestCategory\\{0}", authorizationRequest.Resource);
+                }
+            }
 
-            var securityConfigProvider = new Mock<ISecurityConfigProvider>();
-            securityConfigProvider.SetupGet(p => p.Permissions).Returns(permissions);
-            var authorizationProvider = new TestAuthorizationProvider(securityConfigProvider.Object);
+            authorizationRequest.UserIsInRole = false;
+            Verify_IsAuthorized(configPermission, authorizationRequest);
 
-            var request = new Mock<IAuthorizationRequest>();
-            request.Setup(r => r.User.IsInRole(UserRole)).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string>("User", Url));
-            request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebBookmarkWorkflow);
-            request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns((string)null);
-            request.Setup(r => r.Url).Returns(new Uri(Url));
-
-            //------------Execute Test---------------------------
-            var authorized = authorizationProvider.IsAuthorized(request.Object);
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(authorized);
+            authorizationRequest.UserIsInRole = true;
+            Verify_IsAuthorized(configPermission, authorizationRequest);
         }
 
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationProvider_IsAuthorized")]
-        public void AuthorizationProvider_IsAuthorized_BookmarkWorkflowAndUserIsNotInRoleForResource_False()
+        void Verify_IsAuthorized(WindowsGroupPermission configPermissions, TestAuthorizationRequest authorizationRequest)
         {
-            //------------Setup for test--------------------------
-            const string ResourceName = "Test 123";
-            const string Url = "http://localhost/services/" + ResourceName + "/instances/id/bookmark/bmk";
-
-            const string PermissionGroup = "Admins";
-            const string UserRole = "Admins1";
-            var permissions = new List<WindowsGroupPermission>
-            {
-                new WindowsGroupPermission { WindowsGroup = PermissionGroup, ResourceName = "Category\\" + ResourceName, Contribute = true, IsServer = false }
-            };
+            //------------Setup for test--------------------------           
 
             var securityConfigProvider = new Mock<ISecurityConfigProvider>();
-            securityConfigProvider.SetupGet(p => p.Permissions).Returns(permissions);
+            securityConfigProvider.SetupGet(p => p.Permissions).Returns(new[] { configPermissions });
             var authorizationProvider = new TestAuthorizationProvider(securityConfigProvider.Object);
 
-            var request = new Mock<IAuthorizationRequest>();
-            request.Setup(r => r.User.IsInRole(UserRole)).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string>("User", Url));
-            request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebBookmarkWorkflow);
-            request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns((string)null);
-            request.Setup(r => r.Url).Returns(new Uri(Url));
-
             //------------Execute Test---------------------------
-            var authorized = authorizationProvider.IsAuthorized(request.Object);
+            var authorized = authorizationProvider.IsAuthorized(authorizationRequest);
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(authorized);
+            var expected = authorizationRequest.UserIsInRole &&
+                (configPermissions.Permissions & authorizationRequest.AllowedPermissions) != 0;
+
+            Assert.AreEqual(expected, authorized, string.Format("\nUserIsInRole: {0}\nAllowed: {1}\nConfig: {2}\nIsServer: {3}\nURL: {4}",
+                authorizationRequest.UserIsInRole, authorizationRequest.AllowedPermissions, configPermissions.Permissions, configPermissions.IsServer, authorizationRequest.Url));
         }
     }
 }
