@@ -68,7 +68,6 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         // This was how the bug replicated itself, because the studio did not wait for the
         // server to return information
         [TestMethod]
-        [Ignore]
         public void EnvironmentConnectionReconnectionSpamExpectedAlwaysReconnects()
         {
             // We will perform 10 connections and check if the studio can always connect to the server           
@@ -76,7 +75,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
 
             List<bool> actualConnections = new List<bool>();
             List<bool> expectedConnections = new List<bool>();
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 10; i++)
             {
                 environmentConn.Connect();
                 expectedConnections.Add(true);
