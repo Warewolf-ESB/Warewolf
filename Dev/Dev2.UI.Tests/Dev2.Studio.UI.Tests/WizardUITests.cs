@@ -196,7 +196,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var theTab = TabManagerUIMap.GetActiveTab();
 
             //------------Execute Test---------------------------
-
             VariablesUIMap.ClickScalarVariableName(0);
             SendKeys.SendWait("VariableName");
 
@@ -223,10 +222,19 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var expected = "If [[VariableName]] Is Between [[VariableName]] and [[VariableName]]";
 
             var getDecision = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FlowDecisionDesigner");
+            Playback.Wait(500);
             var getDecisionText = getDecision.GetChildren()[0] as WpfEdit;
-            var displayValue = getDecisionText.Text;
+            if (getDecisionText != null)
+            {
+                var displayValue = getDecisionText.Text;
 
-            Assert.AreEqual(expected, displayValue, "Decision intellisense doesnt work when using the mouse to select intellisense results");
+                Assert.AreEqual(expected, displayValue,
+                                "Decision intellisense doesnt work when using the mouse to select intellisense results");
+            }
+            else
+            {
+                Assert.Fail("Null decision");
+            }
         }
 
         //Bug 9339 + Bug 9378
