@@ -15,7 +15,7 @@
     <DeploymentItem filename="Binaries\IronRuby.dll" />
   </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Execution hostProcessPlatform="MSIL">
+  <Execution hostProcessPlatform="MSIL" parallelTestCount="2">
     <Timeouts runTimeout="2400000" testTimeout="300000" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">

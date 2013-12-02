@@ -39,7 +39,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
         #region Language Tests
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         public void CreateFileUsingRecordsetWithNoIndex()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "CreateFileUsingRecordsetWithNoIndexTest");
@@ -50,7 +50,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             StringAssert.Contains(ResponseData, expected);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         public void CreateFileUsingRecordsetWithRecordsetWithIndex()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "CreateFileUsingRecordsetWithRecordsetWithIndex");
@@ -61,7 +61,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             StringAssert.Contains(ResponseData, expected);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         public void CreateFileUsingRecordsetWithStar()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "CreateFileUsingRecordsetWithStar");
@@ -75,7 +75,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             StringAssert.Contains(ResponseData, expected);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         public void CreateFileUsingScalar()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "CreateFileUsingScalar");
@@ -90,7 +90,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
         #region Create File Tests
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         public void CreateFile()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "CreateFileOnFileSystemTest");
@@ -105,7 +105,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
         #region Read File Tests
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         public void ReadFile()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "ReadFileOffFileSystemTest");
@@ -121,7 +121,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
         #region Write File Tests
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         public void WriteToFile()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "WriteToFileOnFileSysytemTest");
@@ -136,7 +136,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
         #region Create Folder Tests
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         public void CreateFolder()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "CreateFolderOnFileSystemTest");
@@ -151,7 +151,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
         #region Read Folder Tests
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         public void ReadFolder()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "ReadFolderFromFileSystemTest");
@@ -162,7 +162,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             StringAssert.Contains(ResponseData, expected);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         public void ReadFolderInForEachLoop_Expected_NoNotImplementedError()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "FolderReadInForEachTest");
@@ -174,7 +174,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         }
 
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         public void FolderReadUsingScalar()
         {
             string postData = String.Format("{0}{1}", WebserverURI, "FolderReadUsingScalar");
@@ -189,7 +189,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
         #region Copy Tests
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         public void CopyFile()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "CopyFileLocalToLocalTest");
@@ -200,7 +200,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             StringAssert.Contains(ResponseData, expected);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         public void CopyFileToFTP()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "CreateFileCopyToFTP");
@@ -211,7 +211,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             StringAssert.Contains(ResponseData, expected);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         [Owner("Ashley Lewis")]
         [TestCategory("DsfCopyTool_Execution")]
         public void DsfCopyTool_Execute_RemoteToLocal_Success()
@@ -226,7 +226,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             StringAssert.Contains(ResponseData, expected);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         [Owner("Ashley Lewis")]
         [TestCategory("DsfCopyTool_Execution")]
         public void DsfCopyTool_Execute_RemoteToRemote_Success()
@@ -245,7 +245,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
         #region Delete Tests
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         public void DeleteFolder()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "DeleteFolderFromFileSystemTest");
@@ -260,7 +260,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
         #region Move Tests
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         public void MoveFolder()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "MoveFolderOnFileSystemTest");
@@ -275,7 +275,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
         #region Rename Tests
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         public void RenameFolder()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "RenameFolderOnFileSystemTest");
@@ -290,7 +290,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
         #region UnZip Tests
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         public void UnZip()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "UnZipOnFileSystemTest");
@@ -305,7 +305,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
         #region Zip Tests
 
-        [TestMethod]
+        [TestMethod][Ignore]//Ashley - 02/12/2013: Ignoring all IO tests for now
         public void ZipFolder()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "ZipFolderOnFileSystemTest");

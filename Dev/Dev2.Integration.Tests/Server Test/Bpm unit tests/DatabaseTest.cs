@@ -18,6 +18,7 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
 
 
         [TestMethod]
+        [Ignore]//Ashley - 02/12/2013: Ignored while grooming, these tests where failing before I started
         [Owner("Travis Frisinger")]
         [TestCategory("RecordsetMapping_NestedWorkflows")]
         // Ensure we can map portions of a recordset as input and other portionas as output

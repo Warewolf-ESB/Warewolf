@@ -64,7 +64,7 @@ namespace Dev2.Studio.UI.Tests
                 //------------Setup for test--------------------------
                 //Open the correct workflow
                 ExplorerUIMap.EnterExplorerSearchText("Bug9394");
-                ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTCATEGORY", "Bug9394");
+                ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug9394");
 
                 // prime the values ;)
                 RibbonUIMap.ClickRibbonMenuItem("Debug");

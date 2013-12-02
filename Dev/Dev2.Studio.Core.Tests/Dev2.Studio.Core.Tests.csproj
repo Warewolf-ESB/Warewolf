@@ -176,7 +176,6 @@
     <Compile Include="Custom Dev2 Controls\NavigationViewTests.cs" />
     <Compile Include="DataListClientChannelTests.cs" />
     <Compile Include="CompositionInitializer.cs" />
-    <Compile Include="ConfigureDecisionViewModelTest.cs" />
     <Compile Include="Settings\SettingsViewModelTests.cs" />
     <Compile Include="Settings\TestSecurityViewModel.cs" />
     <Compile Include="Settings\TestSettingsViewModel.cs" />
@@ -189,7 +188,6 @@
     <Compile Include="DataMappingViewModelTest.cs" />
     <Compile Include="DebugOutputFilterStrategyTests.cs" />
     <Compile Include="DebugOutputViewModelTest.cs" />
-    <Compile Include="DecisionTypeTest.cs" />
     <Compile Include="DeployServiceTest.cs" />
     <Compile Include="DeployStatsCalculatorTests.cs" />
     <Compile Include="Deploy\DeployViewModelTest.cs" />

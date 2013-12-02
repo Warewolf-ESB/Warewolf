@@ -1,5 +1,4 @@
 ﻿using System.Windows.Forms;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -42,7 +41,7 @@ namespace Dev2.Studio.UI.Tests
         {
             
             ExplorerUIMap.EnterExplorerSearchText("ServiceExecutionTest");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTCATEGORY", "ServiceExecutionTest");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "ServiceExecutionTest");
             
             Playback.Wait(2000);
             SendKeys.SendWait("{F5}");
