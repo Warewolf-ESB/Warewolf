@@ -178,14 +178,6 @@ namespace Dev2.Studio.UI.Tests
             {
                 var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
                 ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
-                //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
-                var newPoint = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
-                if(point != newPoint)
-                {
-                    Playback.Wait(4000);
-                    DecisionWizardUIMap.ClickCancel();
-                    WorkflowDesignerUIMap.DragControl("Decision", newPoint);
-                }
             }
             else
             {
@@ -193,10 +185,11 @@ namespace Dev2.Studio.UI.Tests
             }
 
             Playback.Wait(4000);
+    
             DecisionWizardUIMap.ClickCancel();
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
-            Assert.IsTrue(connectors.Count >= 2, "Connector line wasn't split");
+            Assert.IsTrue(connectors.Count == 2, "Connector line wasn't split");
         }
 
         [TestMethod]

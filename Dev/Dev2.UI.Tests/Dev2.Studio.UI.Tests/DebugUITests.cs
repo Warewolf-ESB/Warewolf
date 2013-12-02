@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.IO;
+using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -61,75 +63,86 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("DebugInput_whenRun10Time")]
         public void DebugInput_WhenRun10Times_ExpectInputsPersistAndXMLRemainsLinked_InputsAndXMLRemainPersisted()
         {
-                //------------Setup for test--------------------------
-                //Open the correct workflow
-                ExplorerUIMap.EnterExplorerSearchText("Bug9394");
-                ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug9394");
 
-                // prime the values ;)
+            // Remove the PersistSettings.dat ;)
+            var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).Replace("Roaming", "");
+            var settingPath = Path.Combine(appData, @"Local\Warewolf\DebugData\PersistSettings.dat");
+
+            if (File.Exists(settingPath))
+            {
+                File.Delete(settingPath);
+            }
+
+            //------------Setup for test--------------------------
+            //Open the correct workflow
+            ExplorerUIMap.EnterExplorerSearchText("Bug9394");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug9394");
+
+            // prime the values ;)
+            RibbonUIMap.ClickRibbonMenuItem("Debug");
+            PopupDialogUIMap.WaitForDialog();
+
+            Playback.Wait(100);
+            SendKeys.SendWait("{TAB}");
+            Playback.Wait(100);
+            SendKeys.SendWait("1");
+            SendKeys.SendWait("{TAB}");
+            Playback.Wait(100);
+            SendKeys.SendWait("2");
+
+            DebugUIMap.ClickExecute();
+            OutputUIMap.WaitForExecution();
+                
+            //------------Assert Results-------------------------
+
+            // Check for valid input in the input boxes ;)
+            for (int i = 0; i < 9; i++)
+            {
                 RibbonUIMap.ClickRibbonMenuItem("Debug");
                 PopupDialogUIMap.WaitForDialog();
 
-                SendKeys.SendWait("{TAB}");
-                Playback.Wait(100);
-                SendKeys.SendWait("1");
-                SendKeys.SendWait("{TAB}");
-                Playback.Wait(100);
-                SendKeys.SendWait("2");
+                var getInput = DebugUIMap.GetRow(0).Cells[1].GetChildren()[0] as WpfEdit;
+                Assert.AreEqual("1", getInput.Text, "After executing " + i + " times the debug input dialog did not persist");
+
+                getInput = DebugUIMap.GetRow(1).Cells[1].GetChildren()[0] as WpfEdit;
+                Assert.AreEqual("2", getInput.Text, "After executing " + i + " times the debug input dialog did not persist");
 
                 DebugUIMap.ClickExecute();
-                OutputUIMap.WaitForExecution();
-                
-                //------------Assert Results-------------------------
+                OutputUIMap.WaitForExecution();                   
+            }
 
-                // Check for valid input in the input boxes ;)
-                for (int i = 0; i < 9; i++)
-                {
-                    RibbonUIMap.ClickRibbonMenuItem("Debug");
-                    PopupDialogUIMap.WaitForDialog();
+            //Now check the XML tab works ;)
+            OutputUIMap.WaitForExecution();
+            SendKeys.SendWait(KeyboardCommands.Debug);
+            Playback.Wait(200);
+            DebugUIMap.ClickXMLTab();
+            Playback.Wait(200);
 
-                    var getInput = DebugUIMap.GetRow(0).Cells[1].GetChildren()[0] as WpfEdit;
-                    Assert.AreEqual("1", getInput.Text, "After executing " + i + " times the debug input dialog did not persist");
+            // flip back and forth to check persistence ;)
+            DebugUIMap.ClickInputDataTab();
+            Playback.Wait(200);
+            DebugUIMap.ClickXMLTab();
+            Playback.Wait(200);
 
-                    getInput = DebugUIMap.GetRow(1).Cells[1].GetChildren()[0] as WpfEdit;
-                    Assert.AreEqual("2", getInput.Text, "After executing " + i + " times the debug input dialog did not persist");
+            SendKeys.SendWait(KeyboardCommands.TabCommand);
+            Playback.Wait(200);
+            SendKeys.SendWait(KeyboardCommands.SelectAllCommand);
+            Playback.Wait(200);
+            Clipboard.Clear();
+            SendKeys.SendWait(KeyboardCommands.CopyCommand);
+            var actualXML = Clipboard.GetData(DataFormats.Text);
 
-                    DebugUIMap.ClickExecute();
-                    OutputUIMap.WaitForExecution();                   
-                }
+            //close the window ;)
+            DebugUIMap.CloseDebugWindow_ByCancel();
 
-                //Now check the XML tab works ;)
-                OutputUIMap.WaitForExecution();
-                SendKeys.SendWait(KeyboardCommands.Debug);
-                Playback.Wait(200);
-                DebugUIMap.ClickXMLTab();
-                Playback.Wait(200);
-
-                // flip back and forth to check persistence ;)
-                DebugUIMap.ClickInputDataTab();
-                Playback.Wait(200);
-                DebugUIMap.ClickXMLTab();
-                Playback.Wait(200);
-
-                SendKeys.SendWait(KeyboardCommands.TabCommand);
-                Playback.Wait(200);
-                SendKeys.SendWait(KeyboardCommands.SelectAllCommand);
-                Playback.Wait(200);
-                Clipboard.Clear();
-                SendKeys.SendWait(KeyboardCommands.CopyCommand);
-                var actualXML = Clipboard.GetData(DataFormats.Text);
-
-                //close the window ;)
-                DebugUIMap.CloseDebugWindow_ByCancel();
-
-                const string expectedXML = @"<DataList>
-  <countries>
-    <CountryID>1</CountryID>
-    <Description>2</Description>
-  </countries>
+            const string expectedXML = @"<DataList>
+<countries>
+<CountryID>1</CountryID>
+<Description>2</Description>
+</countries>
 </DataList>";
 
-                Assert.AreEqual(expectedXML, actualXML);
+            Assert.AreEqual(expectedXML, actualXML);
 
         }
 

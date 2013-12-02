@@ -297,7 +297,7 @@ namespace Dev2.Studio.UI.Tests
                                                        new Point(theStartNode.BoundingRectangle.X + 20,
                                                                  theStartNode.BoundingRectangle.Y + 100));
             RibbonUIMap.ClickRibbonMenuItem("Save");
-            WizardsUIMap.WaitForWizard(10000);
+            WizardsUIMap.WaitForWizard();
             SaveDialogUIMap.ClickAndTypeInNameTextbox(secondName);
             Playback.Wait(3000);
 
