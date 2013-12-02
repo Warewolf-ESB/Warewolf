@@ -159,9 +159,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// <returns></returns>
         private UITestControl GetServiceItem(string serverName, string serviceType, string folderName, string projectName,bool overrideDblClickBehavior = false)
         {
-            Playback.Wait(200);
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
 
             var args = new string[] {serverName, serviceType, folderName, projectName};
+
+            _explorerTree.WaitForControlEnabled();
 
             var parent = _explorerTree;
 
@@ -192,6 +194,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                 }
             }
 
+            parent.WaitForControlEnabled();
+
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+
             return parent;
 
         }
@@ -204,11 +210,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             // clear before we search ;)
             ClearExplorerSearchText();
+            _explorerSearch.WaitForControlEnabled();
 
             Mouse.Click(_explorerSearch, new Point(12, 8));
             Playback.Wait(100);
             SendKeys.SendWait(textToSearchWith);
-            Playback.Wait(500);
+            Playback.Wait(1000);
         }
 
         #region filter box mappings
@@ -318,12 +325,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public void ClearExplorerSearchText()
         {
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+            
             Mouse.Click(_explorerSearch,new Point(5,5));
             SendKeys.SendWait("{HOME}");
             Playback.Wait(50);
             SendKeys.SendWait("+{END}");
             Playback.Wait(50);
             SendKeys.SendWait("{DELETE}");
+
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
         }
 
         public void ConnectToAllServers(WpfComboBox comboBox)

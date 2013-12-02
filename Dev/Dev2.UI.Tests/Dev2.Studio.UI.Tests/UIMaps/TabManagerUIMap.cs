@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
 using Dev2.Studio.UI.Tests;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using System.Drawing;
 using System.Windows.Forms;
@@ -227,8 +228,12 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public UITestControl GetActiveTab()
         {
-            Playback.Wait(500);
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+
             var tabMgr = new UIUI_TabManager_AutoIDTabList1(StudioWindow);
+
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+
             var idx = tabMgr.SelectedIndex;
 
             if (idx >= tabMgr.Tabs.Count)

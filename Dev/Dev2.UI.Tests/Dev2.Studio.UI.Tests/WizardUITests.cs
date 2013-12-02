@@ -392,7 +392,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", newPoint);
             WizardsUIMap.WaitForWizard();
-            Playback.Wait(2000);
 
             _decisionWizardUiMap.HitDoneWithKeyboard();
 
@@ -412,7 +411,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             SendKeys.SendWait("{DOWN}{DOWN}{ENTER}");
             Mouse.Click(designSurface);
             SendKeys.SendWait("^v");
+
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+
 
             // Assert 
             Assert.AreEqual("System Menu Bar", uIItemImage.FriendlyName);

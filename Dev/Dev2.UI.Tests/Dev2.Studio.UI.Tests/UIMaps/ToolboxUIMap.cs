@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 using Dev2.Studio.UI.Tests.Utils;
 using System.Drawing;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 
 namespace Dev2.Studio.UI.Tests.UIMaps
@@ -33,7 +34,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// <param name="searchID">The search unique identifier.</param>
         public void DragControlToWorkflowDesigner(string controlId, Point p, string searchID = "")
         {
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             UITestControl theControl = FindToolboxItemByAutomationId(controlId, searchID);
+            theControl.WaitForControlEnabled();
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
             Mouse.StartDragging(theControl, MouseButtons.Left);
             Mouse.StopDragging(p);
         }
