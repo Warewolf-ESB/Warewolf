@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading;
 using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -84,28 +83,18 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
 
         public void ClickRibbonMenuItem(string itemName)
         {
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             var ribbonButtons = UIBusinessDesignStudioWindow.GetChildren();
             var control = ribbonButtons.FirstOrDefault(c => c.FriendlyName == itemName || c.GetChildren().Any(child => child.FriendlyName == itemName));
             var p = new Point(control.BoundingRectangle.X + 5, control.BoundingRectangle.Y + 5);
-            control.WaitForControlEnabled();
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
-
             Mouse.Click(p);
-            Playback.Wait(500);
-           
+            Playback.Wait(1000);
         }
 
         public void CreateNewWorkflow()
         {
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
-
             var uiTestControlCollection = UIBusinessDesignStudioWindow.GetChildren();
             var control = uiTestControlCollection.FirstOrDefault(c => c.FriendlyName == "UI_RibbonHomeTabWorkflowBtn_AutoID");
             var p = new Point(control.BoundingRectangle.Left + 5, control.BoundingRectangle.Top + 5);
-            control.WaitForControlEnabled();
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
-
             Mouse.Click(p);
             Playback.Wait(500);
 
@@ -113,10 +102,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
 
         public UITestControl GetControlByName(string name)
         {
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             var children = UIBusinessDesignStudioWindow.GetChildren();
             var control = children.FirstOrDefault(c => c.FriendlyName == name || c.GetChildren().Any(child => child.FriendlyName == name));
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
 
             return control;
         }

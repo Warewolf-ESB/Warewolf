@@ -33,7 +33,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                 string automationId = theControl.GetProperty("AutomationId").ToString();
                 if(automationId.Contains(controlAutomationId) || theControl.FriendlyName.Contains(controlAutomationId))
                 {
-                    theControl.WaitForControlEnabled();
                     return theControl;
                 }
             }
@@ -82,10 +81,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// <returns></returns>
         public Point GetPointUnderStartNode(UITestControl theTab)
         {
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             UITestControl startNode = FindStartNode(theTab);
-            startNode.WaitForControlEnabled();
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+
             return GetPointUnderControl(startNode);
         }
 
@@ -907,8 +904,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// </returns>
         public UITestControl GetFlowchartDesigner(UITestControl theTab)
         {
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
-
             var flowchartDesigner = vstw.GetChildByAutomationIDPath(theTab,
                 "WorkSurfaceContextViewModel",
                 "Uia.WorkflowDesignerView",
@@ -917,10 +912,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                 "ActivityTypeDesigner",
                 "WorkflowItemPresenter",
                 "FlowchartDesigner");
-
-            flowchartDesigner.WaitForControlEnabled();
-
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
 
             return flowchartDesigner;
         }
@@ -1416,16 +1407,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         public bool TryCloseMappings(string controlAutomationID)
         {
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
-
             var button = WorkflowDesignerUIMap.Adorner_GetButton(TabManagerUIMap.GetActiveTab(), controlAutomationID, "Close Mapping");
-
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
-
             if (button != null)
             {
                 WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
-                button.WaitForControlEnabled();
                 Mouse.Click(button);
                 return true;
             }

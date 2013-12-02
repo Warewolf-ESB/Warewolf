@@ -35,6 +35,7 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
+
         [TestMethod]
         public void CheckIfDebugProcessingBarIsShowingDurningExecutionExpectedToShowDuringExecutionOnly()
         {

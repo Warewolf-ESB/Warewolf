@@ -1,5 +1,4 @@
 ﻿using System.Windows.Forms;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
@@ -34,10 +33,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         /// </summary>
         public void HitDoneWithKeyboard()
         {
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             UITestControl decisionDialog = StudioWindow.GetChildren()[0].GetChildren()[0];
-            decisionDialog.WaitForControlEnabled();
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
             // Click middle of the image to set focus
             Mouse.Click(decisionDialog, new Point(decisionDialog.BoundingRectangle.X + decisionDialog.Width / 2, decisionDialog.BoundingRectangle.Y + decisionDialog.Height / 2));
             SendKeys.SendWait("{TAB}");
