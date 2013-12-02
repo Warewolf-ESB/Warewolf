@@ -197,6 +197,8 @@
     <Compile Include="WebServer\Security\AuthorizeHubAttributeTests.cs" />
     <Compile Include="WebServer\Security\QueryStringTests.cs" />
     <Compile Include="WebServer\Security\AuthorizeWebAttributeTests.cs" />
+    <Compile Include="WebServer\Security\AuthorizationProviderTests.cs" />
+    <Compile Include="WebServer\Security\TestAuthorizationProvider.cs" />
     <Compile Include="WebServer\WebServerResponseTests.cs" />
     <Compile Include="WebServer\WebServerRequestTests.cs" />
     <Compile Include="WebServer\WebServerContextTests.cs" />
