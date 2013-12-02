@@ -50,9 +50,8 @@ namespace Dev2.Studio.UI.Tests
             Clipboard.Clear();
 
             // Open the Workflow
-            ExplorerUIMap.ClickServerInServerDDL("localhost");
             ExplorerUIMap.EnterExplorerSearchText(workflowToUse);
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", workflowToUse);
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTCATEGORY", workflowToUse);
             var theTab = TabManagerUIMap.GetActiveTab();
 
             // Edit the DbService
