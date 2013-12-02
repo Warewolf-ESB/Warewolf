@@ -65,25 +65,24 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         #region Service Wizards
 
         [TestMethod]
-        // 05/11 - Failure is Intermittent ;)
         public void ClickNewPluginServiceExpectedPluginServiceOpens()
         {
-            RibbonUIMap.ClickRibbonMenuItem("UI_RibbonHomeTabPluginServiceBtn_AutoID");
-            Playback.Wait(2000);
-            UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            RibbonUIMap.ClickNewPlugin();
+            UITestControl uiTestControl = PluginServiceWizardUIMap.GetWizardWindow();
             if(uiTestControl == null)
             {
                 Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
             }
-            Playback.Wait(3000);
+
+            uiTestControl.WaitForControlEnabled();
+
             SendKeys.SendWait("{ESC}");
         }
 
         [TestMethod]
+        [Ignore] // This is not safe nor quick - Needs local web service ;)
         public void WebServiceWizardCreateServiceAndSourceExpectedServiceCreated()
         {
-            ExplorerUIMap.ClickServerInServerDDL("localhost");
-
             //Initialization
             var sourceNameId = Guid.NewGuid().ToString().Substring(0, 5);
             var sourceName = "codeduitest" + sourceNameId;
@@ -109,8 +108,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void DatabaseServiceWizardCreateNewServiceExpectedServiceCreated()
         {
-            ExplorerUIMap.ClickServerInServerDDL("localhost");
-
             //Initialization
             var serverSourceCategoryName = Guid.NewGuid().ToString().Substring(0, 5);
             var serverSourceName = Guid.NewGuid().ToString().Substring(0, 5);
@@ -133,28 +130,25 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
-            StudioWindow.WaitForControlReady();
-            Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}D");
+            StudioWindow.WaitForControlReady(1000);
+            Keyboard.SendKeys(StudioWindow,"{CTRL}{SHIFT}D");
             WizardsUIMap.WaitForWizard();
-            Playback.Wait(2000);
             DatabaseServiceWizardUIMap.ClickCancel();
         }
 
         [TestMethod]
-        // 05/11 - Failure is Intermittent ;)
         public void NewPluginServiceShortcutKeyExpectedPluginServiceOpens()
         {
-            StudioWindow.WaitForControlReady();
+            StudioWindow.WaitForControlReady(1000);
             Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}P");
             WizardsUIMap.WaitForWizard();
             PluginServiceWizardUIMap.ClickCancel();
         }
 
         [TestMethod]
-        // 05/11 - Failure is Correct - Broken Functionality ;)
         public void NewWebServiceShortcutKeyExpectedWebServiceOpens()
         {
-            StudioWindow.WaitForControlReady();
+            StudioWindow.WaitForControlReady(1000);
             Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}W");
             WizardsUIMap.WaitForWizard();
             WebServiceWizardUIMap.Cancel();
@@ -167,10 +161,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         //2013.06.22: Ashley Lewis for bug 9478
         [TestMethod]
         [Owner("Travis Frisinger")]
+        [Ignore] // External Smtp Server required ;)
         public void EmailSourceWizardCreateNewSourceExpectedSourceCreated()
         {
-            ExplorerUIMap.ClickServerInServerDDL("localhost");
-
             //Initialization
             var sourceName = Guid.NewGuid().ToString().Substring(0, 5);
             var name = "codeduitest" + sourceName;
@@ -205,8 +198,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             VariablesUIMap.ClickScalarVariableName(0);
             SendKeys.SendWait("VariableName");
 
-            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
-            Playback.Wait(1500);
+            var pt = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+
+            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", pt);
+            WizardsUIMap.WaitForWizard();
             _decisionWizardUiMap.SendTabs(4);
             _decisionWizardUiMap.SelectMenuItem(11); // select between ;)
 
@@ -269,7 +264,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             SendKeys.SendWait("VariableName");
 
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
-            WizardsUIMap.WaitForWizard();
             Playback.Wait(5000);
             //------------Execute Test---------------------------
             _decisionWizardUiMap.SendTabs(4);

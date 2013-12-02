@@ -35,6 +35,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
             Mouse.Click(uIItemImage, new Point(874, 533));
         }
 
+        public UITestControl GetWizardWindow()
+        {
+            Playback.Wait(150);
+            return UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+        }
+
         public void HitTestAndOkWithKeyboard()
         {
             Playback.Wait(200);

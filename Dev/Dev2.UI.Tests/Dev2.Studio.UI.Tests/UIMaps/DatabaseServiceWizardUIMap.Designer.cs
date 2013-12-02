@@ -48,7 +48,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         /// </summary>
         public void ClickFirstAction()
         {
-            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[0], new Point(172, 164));
+            var control = StudioWindow.GetChildren()[0].GetChildren()[0];
+            control.WaitForControlEnabled();
+            Mouse.Click(control, new Point(172, 164));
         }
 
         /// <summary>
@@ -66,12 +68,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         /// </summary>
         public void ClickTestAction()
         {
-            #region Variable Declarations
-            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            #endregion
+            var control = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            control.WaitForControlEnabled();
 
             // Click image
-            Mouse.Click(uIItemImage, new Point(889, 84));
+            Mouse.Click(control, new Point(889, 84));
         }
         
         /// <summary>
@@ -100,6 +101,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         public void ClickCancel()
         {
             UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            uIItemImage.WaitForControlEnabled();
             Mouse.Click(uIItemImage, new Point(874, 533));
         }
 
@@ -108,7 +110,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             //DbSource
             RibbonUIMap.ClickRibbonMenuItem("UI_RibbonHomeTabDBServiceBtn_AutoID");
             WizardsUIMap.WaitForWizard();
-            Playback.Wait(2000);
             SendKeys.SendWait("{TAB}{TAB}{ENTER}");
             Playback.Wait(10);
             SendKeys.SendWait("RSAKLFSVRGENDEV");

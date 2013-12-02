@@ -34,6 +34,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void DragControlToWorkflowDesigner(string controlId, Point p, string searchID = "")
         {
             UITestControl theControl = FindToolboxItemByAutomationId(controlId, searchID);
+            theControl.WaitForControlEnabled();
             Mouse.StartDragging(theControl, MouseButtons.Left);
             Mouse.StopDragging(p);
         }

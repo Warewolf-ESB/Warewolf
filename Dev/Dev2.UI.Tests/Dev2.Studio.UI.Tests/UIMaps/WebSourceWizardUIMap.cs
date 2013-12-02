@@ -7,7 +7,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
     {
         public void ClickSave()
         {
-            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[0], new Point(648, 501));
+            var control = StudioWindow.GetChildren()[0].GetChildren()[0];
+            control.WaitForControlEnabled();
+            Mouse.Click(control, new Point(648, 501));
         }
     }
 }

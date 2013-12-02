@@ -81,13 +81,19 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             }
         }
 
+        public void ClickNewPlugin()
+        {
+            ClickRibbonMenuItem("UI_RibbonHomeTabPluginServiceBtn_AutoID");
+        }
+
         public void ClickRibbonMenuItem(string itemName)
         {
             var ribbonButtons = UIBusinessDesignStudioWindow.GetChildren();
             var control = ribbonButtons.FirstOrDefault(c => c.FriendlyName == itemName || c.GetChildren().Any(child => child.FriendlyName == itemName));
+            control.WaitForControlEnabled();
             var p = new Point(control.BoundingRectangle.X + 5, control.BoundingRectangle.Y + 5);
             Mouse.Click(p);
-            Playback.Wait(1000);
+            Playback.Wait(100);
         }
 
         public void CreateNewWorkflow()

@@ -34,7 +34,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
 
     public partial class WebServiceWizardUIMap : UIMapBase
     {
-        public void InitializeFullTestServiceAndSource(string serviceName, string sourceName)
+        public void     InitializeFullTestServiceAndSource(string serviceName, string sourceName)
         {
             //Open wizard
             RibbonUIMap.ClickRibbonMenuItem("New Web Service");

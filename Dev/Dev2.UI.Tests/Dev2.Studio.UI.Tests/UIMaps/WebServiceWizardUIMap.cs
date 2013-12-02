@@ -8,7 +8,9 @@
     {
         private void ClickNewWebSource()
         {
-            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[0], new Point(410, 79));
+            var control = StudioWindow.GetChildren()[0].GetChildren()[0];
+            control.WaitForControlEnabled();
+            Mouse.Click(control, new Point(410, 79));
         }
     }
 }

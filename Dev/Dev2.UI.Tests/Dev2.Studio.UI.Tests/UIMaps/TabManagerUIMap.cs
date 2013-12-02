@@ -135,6 +135,10 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public void CloseAllTabs()
         {
+
+            Playback.Wait(150);
+            SendKeys.SendWait("{ESC}");
+
             // fetch the darn thing once ;)
             var tabManager = GetManager();
 
@@ -228,6 +232,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         public UITestControl GetActiveTab()
         {
             Playback.Wait(500);
+            StudioWindow.WaitForControlEnabled();
             var tabMgr = new UIUI_TabManager_AutoIDTabList1(StudioWindow);
             var idx = tabMgr.SelectedIndex;
 

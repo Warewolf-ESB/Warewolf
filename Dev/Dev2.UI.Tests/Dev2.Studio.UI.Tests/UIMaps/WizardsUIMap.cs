@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 namespace Dev2.Studio.UI.Tests.UIMaps
@@ -13,7 +11,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// </summary>
         public void WaitForWizard(int timeOut = DefaultTimeOut, bool throwIfNotFound = true)
         {
-            Playback.Wait(1500);
+            Playback.Wait(2000);
         }
 
 
