@@ -2,17 +2,8 @@
 <TestSettings name="Integration Test Settings" id="e8eace60-accd-4300-bc1d-1c967914da3a" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a local test run.</Description>
   <Deployment>
-    <DeploymentItem filename="ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe" />
     <DeploymentItem filename="Dev2.Integration.Tests\TestData\" />
-    <DeploymentItem filename="Binaries\IronPython.Modules.dll" />
-    <DeploymentItem filename="Binaries\Microsoft.Scripting.dll" />
-    <DeploymentItem filename="Binaries\IronRuby.Libraries.dll" />
-    <DeploymentItem filename="Binaries\Microsoft.Dynamic.dll" />
-    <DeploymentItem filename="Binaries\IronPython.dll" />
-    <DeploymentItem filename="Binaries\CefSharp\" />
-    <DeploymentItem filename="Binaries\IronRuby.Libraries.Yaml.dll" />
     <DeploymentItem filename="Dev2.PluginTester\bin\Debug\Dev2.PluginTester.dll" />
-    <DeploymentItem filename="Binaries\IronRuby.dll" />
   </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
   <Execution hostProcessPlatform="MSIL">
