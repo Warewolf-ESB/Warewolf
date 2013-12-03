@@ -314,11 +314,11 @@
                                     <TextBlock Text="Workflow"
                                                Style="{StaticResource TextBlockStyleRibbonHeader}" />
                                 </Border>
+                                <!--ToolTip="New Workflow"-->
                                 <StackPanel Orientation="Horizontal">
                                     <Button Command="{Binding NewResourceCommand}"
                                             CommandParameter="Workflow"
                                             Style="{DynamicResource ButtonStyleRibbon}"
-                                            ToolTip="Ctrl+W"
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabWorkflowBtn_AutoID">
                                         <Grid>
                                             <Grid.RowDefinitions>
@@ -328,22 +328,23 @@
 
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource Workflow-32}"
-                                                   ToolTip="New Workflow" />
+                                                   ToolTip="{Binding CanNewResourceReason, TargetNullValue='New Workflow (Ctrl+W)'}"
+                                                   />
                                         </Grid>
                                     </Button>
                                     <Button Command="{Binding SaveCommand}"
                                             Style="{DynamicResource ButtonStyleRibbon}"
-                                            ToolTip="{Binding CanSaveReason}">
+                                           >
                                         <Grid>
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource Save-32}"
-                                                   ToolTip="Save" />
+                                                   ToolTip="{Binding CanSaveReason, TargetNullValue='Save (Ctrl+S)'}"
+                                                   />
                                         </Grid>
                                     </Button>
 
                                     <Button Command="{Binding DeployCommand}"
-                                            Style="{DynamicResource ButtonStyleRibbon}"
-                                            ToolTip="Ctrl+W">
+                                            Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto" />
@@ -352,7 +353,8 @@
 
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource Deploy-32}"
-                                                   ToolTip="Deploy" />
+                                                   ToolTip="Deploy (Ctrl+D)"
+                                                   />
                                         </Grid>
                                     </Button>
                                 </StackPanel>
@@ -370,11 +372,11 @@
                                     <TextBlock Text="Services"
                                                Style="{StaticResource TextBlockStyleRibbonHeader}" />
                                 </Border>
+                                
                                 <StackPanel Orientation="Horizontal">
                                     <Button Command="{Binding NewResourceCommand}"
                                             CommandParameter="DatabaseService"
                                             Style="{DynamicResource ButtonStyleRibbon}"
-                                            ToolTip="Ctrl+Shift+D"
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabDBServiceBtn_AutoID">
                                         <Grid>
                                             <Grid.RowDefinitions>
@@ -384,13 +386,13 @@
 
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource DatabaseService-32}"
-                                                   ToolTip="New Database Service" />
-                                        </Grid>
+                                                   ToolTip="{Binding CanNewResourceReason, TargetNullValue='New Database Service (Ctrl+Shift+D)'}"
+                                                   />
+                                        </Grid>                                       
                                     </Button>
                                     <Button Command="{Binding NewResourceCommand}"
                                             CommandParameter="ResourceService"
                                             Style="{DynamicResource ButtonStyleRibbon}"
-                                            ToolTip="Ctrl+Shift+P"
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabPluginServiceBtn_AutoID">
                                         <Grid>
                                             <Grid.RowDefinitions>
@@ -400,13 +402,13 @@
 
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource PluginService-32}"
-                                                   ToolTip="New Plugin Service" />
+                                                   ToolTip="{Binding CanNewResourceReason, TargetNullValue='New Plugin Service (Ctrl+Shift+P)'}"
+                                                   />
                                         </Grid>
                                     </Button>
                                     <Button Command="{Binding NewResourceCommand}"
                                             CommandParameter="WebService"
                                             Style="{DynamicResource ButtonStyleRibbon}"
-                                            ToolTip="Ctrl+Shift+W"
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabWebServiceBtn_AutoID">
                                         <Grid>
                                             <Grid.RowDefinitions>
@@ -416,7 +418,8 @@
 
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource WebService-32}"
-                                                   ToolTip="New Web Service" />
+                                                   ToolTip="{Binding CanNewResourceReason, TargetNullValue='New Web Service (Ctrl+Shift+W)'}"
+                                                   />
                                         </Grid>
                                     </Button>
                                 </StackPanel>
@@ -437,7 +440,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Button Command="{Binding ViewInBrowserCommand}"
                                             Style="{DynamicResource ButtonStyleRibbon}"
-                                            ToolTip="{Binding CanViewInBrowserReason}">
+                                            >
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto" />
@@ -446,7 +449,8 @@
 
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource ExecuteViewInBrowser-32}"
-                                                   ToolTip="View in Browser" />
+                                                   ToolTip="{Binding CanViewInBrowserReason, TargetNullValue='View in Browser'}"
+                                                   />
                                         </Grid>
                                     </Button>
                                     <Button Command="{Binding DebugCommand}"

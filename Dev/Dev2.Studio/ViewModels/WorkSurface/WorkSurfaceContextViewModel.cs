@@ -398,7 +398,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 const AuthorizationContext AuthorizationContext = AuthorizationContext.Contribute;
                 enabled = IsAuthorized(AuthorizationContext);
-                CanExecuteReason = AuthorizationContext.GetReason(enabled);
+                CanSaveReason = AuthorizationContext.GetReason(enabled);
             }
             return enabled;
         }
@@ -410,7 +410,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 const AuthorizationContext AuthorizationContext = AuthorizationContext.Execute;
                 enabled = IsAuthorized(AuthorizationContext);
-                CanExecuteReason = AuthorizationContext.GetReason(enabled);
+                CanDebugReason = AuthorizationContext.GetReason(enabled);
             }
             return enabled;
         }
