@@ -2,7 +2,7 @@
 
 namespace Dev2.Runtime.Security
 {
-    internal static class ProcessHost
+    public static class ProcessHost
     {
         public static bool Invoke(string workingDir, string fileName, string args)
         {
