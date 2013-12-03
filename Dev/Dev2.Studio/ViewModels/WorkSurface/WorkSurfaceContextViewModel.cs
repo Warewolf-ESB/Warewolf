@@ -4,24 +4,21 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Data.ServiceModel.Messages;
-using Dev2.Diagnostics;
 using Dev2.Messages;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
+using Dev2.Services.Security;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
@@ -33,9 +30,7 @@ using Dev2.Studio.Factory;
 using Dev2.Studio.InterfaceImplementors.WizardResourceKeys;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
-using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Studio.Webs;
-using Dev2.Studio.Webs.Callbacks;
 using Dev2.Utils;
 using Newtonsoft.Json;
 using Unlimited.Framework;
@@ -49,7 +44,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
     /// <date>2/27/2013</date>
     public class WorkSurfaceContextViewModel : BaseViewModel,
                                  IHandle<SaveResourceMessage>, IHandle<DebugResourceMessage>,
-                                 IHandle<ExecuteResourceMessage>, 
+                                 IHandle<ExecuteResourceMessage>,
                                  IHandle<UpdateWorksurfaceDisplayName>
     {
         #region private fields
@@ -95,7 +90,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 return _debugOutputViewModel;
             }
             set { _debugOutputViewModel = value; }
-        } 
+        }
 
         public bool DeleteRequested { get; set; }
 
@@ -154,14 +149,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                     if(ContextualResourceModel != null)
                     {
                         ContextualResourceModel.OnDesignValidationReceived += ValidationMemoReceived;
-                }
+                    }
                 }
 
                 if(WorkSurfaceViewModel != null)
                 {
                     WorkSurfaceViewModel.ConductWith(this);
+                }
             }
-        }
         }
 
         void ValidationMemoReceived(object sender, DesignValidationMemo designValidationMemo)
@@ -181,7 +176,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             get
             {
                 return ContextualResourceModel != null && IsEnvironmentConnected() && !DebugOutputViewModel.IsProcessing;
-        }
+            }
         }
 
         public ICommand EditCommand
@@ -204,7 +199,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             get
             {
                 return _saveCommand ??
-                       (_saveCommand = new RelayCommand(param => Save(), param => CanDebug()));
+                       (_saveCommand = new RelayCommand(param => Save(), param => CanSave()));
             }
         }
 
@@ -231,8 +226,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             WorkSurfaceKey = workSurfaceKey;
             WorkSurfaceViewModel = workSurfaceViewModel;
 
-             ImportService.TryGetExportValue(out _windowManager);
-             _workspaceItemRepository = WorkspaceItemRepository.Instance;
+            ImportService.TryGetExportValue(out _windowManager);
+            _workspaceItemRepository = WorkspaceItemRepository.Instance;
 
             var model = WorkSurfaceViewModel as IWorkflowDesignerViewModel;
             if(model != null)
@@ -243,7 +238,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                     // MUST use connection server event publisher - debug events are published from the server!
                     DebugOutputViewModel = new DebugOutputViewModel(_environmentModel.Connection.ServerEvents, EnvironmentRepository.Instance);
                     _environmentModel.IsConnectedChanged += EnvironmentModelOnIsConnectedChanged();
-            }
+                }
             }
         }
 
@@ -359,6 +354,13 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         #region public methods
 
+        bool CanSave()
+        {
+            //var permissionsService = new AuthorizationServiceBase(new WindowsGroupPermission[] { });
+            //return CanDebug() && permissionsService.IsAuthorized(AuthorizationContext.Save, ContextualResourceModel.ID.ToString());
+            return CanDebug();
+        }
+
         bool CanDebug()
         {
             return IsEnvironmentConnected()
@@ -412,8 +414,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             dynamic buildRequest = new UnlimitedObject();
 
             buildRequest.Service = "TerminateExecutionService";
-             string[] securityRoles = {"Administrators"};
-             buildRequest.Roles = String.Join(",", securityRoles);
+            string[] securityRoles = { "Administrators" };
+            buildRequest.Roles = String.Join(",", securityRoles);
 
             buildRequest.ResourceID = ContextualResourceModel.ID;
 
@@ -461,7 +463,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public void Save(bool isLocalSave = false)
         {
             Save(ContextualResourceModel, isLocalSave);
-            if (WorkSurfaceViewModel != null)
+            if(WorkSurfaceViewModel != null)
             {
                 WorkSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
             }
@@ -540,7 +542,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 return;
             }
             var showResourceChangedUtil = new ResourceChangeHandler(EventPublisher);
-            showResourceChangedUtil.ShowResourceChanged(resource, compileMessageList.Dependants);            
+            showResourceChangedUtil.ShowResourceChanged(resource, compileMessageList.Dependants);
         }
 
         void DisplaySaveResult(string result, IContextualResourceModel resource)
@@ -614,7 +616,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 DebugOutputViewModel.Dispose();
             }
-           
+
             if(ContextualResourceModel != null)
             {
                 ContextualResourceModel.OnDesignValidationReceived -= ValidationMemoReceived;

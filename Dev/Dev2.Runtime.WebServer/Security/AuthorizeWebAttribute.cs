@@ -10,17 +10,17 @@ namespace Dev2.Runtime.WebServer.Security
     public class AuthorizeWebAttribute : AuthorizationFilterAttribute
     {
         public AuthorizeWebAttribute()
-            : this(AuthorizationProvider.Instance)
+            : this(AuthorizationService.Instance)
         {
         }
 
-        public AuthorizeWebAttribute(IAuthorizationProvider authorizationProvider)
+        public AuthorizeWebAttribute(IAuthorizationService authorizationService)
         {
-            VerifyArgument.IsNotNull("authorizationProvider", authorizationProvider);
-            Provider = authorizationProvider;
+            VerifyArgument.IsNotNull("AuthorizationService", authorizationService);
+            Service = authorizationService;
         }
 
-        public IAuthorizationProvider Provider { get; private set; }
+        public IAuthorizationService Service { get; private set; }
 
         public override void OnAuthorization(HttpActionContext actionContext)
         {
@@ -32,7 +32,7 @@ namespace Dev2.Runtime.WebServer.Security
                 return;
             }
 
-            if(!Provider.IsAuthorized(actionContext.GetAuthorizationRequest()))
+            if(!Service.IsAuthorized(actionContext.GetAuthorizationRequest()))
             {
                 actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Access has been denied for this request.");
             }

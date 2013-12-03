@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Dev2.Data.Settings.Security;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Security;
+using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -12,18 +12,18 @@ using Moq;
 namespace Dev2.Tests.Runtime.WebServer.Security
 {
     [TestClass]
-    public class AuthorizationProviderTests
+    public class AuthorizationServiceTests
     {
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationProvider_Instance")]
-        public void AuthorizationProvider_Instance_Singleton()
+        [TestCategory("AuthorizationService_Instance")]
+        public void AuthorizationService_Instance_Singleton()
         {
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var instance1 = AuthorizationProvider.Instance;
-            var instance2 = AuthorizationProvider.Instance;
+            var instance1 = AuthorizationService.Instance;
+            var instance2 = AuthorizationService.Instance;
 
             //------------Assert Results-------------------------
             Assert.AreSame(instance1, instance2);
@@ -31,27 +31,27 @@ namespace Dev2.Tests.Runtime.WebServer.Security
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationProvider_Constructor")]
+        [TestCategory("AuthorizationService_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void AuthorizationProvider_Constructor_SecurityConfigProviderIsNull_ThrowsArgumentNullException()
+        public void AuthorizationService_Constructor_SecurityConfigProviderIsNull_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var authorizationProvider = new TestAuthorizationProvider(null);
+            var authorizationService = new TestAuthorizationService(null);
 
             //------------Assert Results-------------------------
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationProvider_Constructor")]
-        public void AuthorizationProvider_Constructor_SecurityConfigProviderChangedEvent_ClearsCachedRequests()
+        [TestCategory("AuthorizationService_Constructor")]
+        public void AuthorizationService_Constructor_SecurityConfigProviderChangedEvent_ClearsCachedRequests()
         {
             //------------Setup for test--------------------------
             var securityConfigProvider = new Mock<ISecurityConfigProvider>();
 
-            var authorizationProvider = new TestAuthorizationProvider(securityConfigProvider.Object);
+            var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
 
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
@@ -59,43 +59,43 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.Unknown);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
-            authorizationProvider.IsAuthorized(request.Object);
-            Assert.AreEqual(1, authorizationProvider.CachedRequestCount);
+            authorizationService.IsAuthorized(request.Object);
+            Assert.AreEqual(1, authorizationService.CachedRequestCount);
 
             //------------Execute Test---------------------------
             securityConfigProvider.Raise(m => m.Changed += null, new FileSystemEventArgs(WatcherChangeTypes.All, "temp", null));
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(0, authorizationProvider.CachedRequestCount);
+            Assert.AreEqual(0, authorizationService.CachedRequestCount);
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationProvider_IsAuthorized")]
+        [TestCategory("AuthorizationService_IsAuthorized")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void AuthorizationProvider_IsAuthorized_RequestIsNull_ThrowsArgumentNullException()
+        public void AuthorizationService_IsAuthorized_RequestIsNull_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
             var securityConfigProvider = new Mock<ISecurityConfigProvider>();
 
-            var authorizationProvider = new TestAuthorizationProvider(securityConfigProvider.Object);
+            var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
 
             //------------Execute Test---------------------------
-            authorizationProvider.IsAuthorized(null);
+            authorizationService.IsAuthorized(null);
 
             //------------Assert Results-------------------------
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationProvider_IsAuthorized")]
-        public void AuthorizationProvider_IsAuthorized_RequestIsFirstTime_AuthorizationCalculatedAndCached()
+        [TestCategory("AuthorizationService_IsAuthorized")]
+        public void AuthorizationService_IsAuthorized_RequestIsFirstTime_AuthorizationCalculatedAndCached()
         {
             //------------Setup for test--------------------------
             var securityConfigProvider = new Mock<ISecurityConfigProvider>();
             securityConfigProvider.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
 
-            var authorizationProvider = new TestAuthorizationProvider(securityConfigProvider.Object);
+            var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
 
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
@@ -103,25 +103,25 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebGet);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
-            Assert.AreEqual(0, authorizationProvider.CachedRequestCount);
+            Assert.AreEqual(0, authorizationService.CachedRequestCount);
 
             //------------Execute Test---------------------------
-            authorizationProvider.IsAuthorized(request.Object);
+            authorizationService.IsAuthorized(request.Object);
 
             //------------Assert Results-------------------------
             securityConfigProvider.VerifyGet(p => p.Permissions, Times.Once());
-            Assert.AreEqual(1, authorizationProvider.CachedRequestCount);
+            Assert.AreEqual(1, authorizationService.CachedRequestCount);
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationProvider_IsAuthorized")]
-        public void AuthorizationProvider_IsAuthorized_RequestIsSecondTime_CachedAuthorizationUsed()
+        [TestCategory("AuthorizationService_IsAuthorized")]
+        public void AuthorizationService_IsAuthorized_RequestIsSecondTime_CachedAuthorizationUsed()
         {
             //------------Setup for test--------------------------
             var securityConfigProvider = new Mock<ISecurityConfigProvider>();
             securityConfigProvider.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
-            var authorizationProvider = new TestAuthorizationProvider(securityConfigProvider.Object);
+            var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
 
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
@@ -129,22 +129,22 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebGet);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
-            authorizationProvider.IsAuthorized(request.Object);
+            authorizationService.IsAuthorized(request.Object);
             securityConfigProvider.VerifyGet(p => p.Permissions, Times.Once());
-            Assert.AreEqual(1, authorizationProvider.CachedRequestCount);
+            Assert.AreEqual(1, authorizationService.CachedRequestCount);
 
             //------------Execute Test---------------------------
-            authorizationProvider.IsAuthorized(request.Object);
+            authorizationService.IsAuthorized(request.Object);
 
             //------------Assert Results-------------------------
             securityConfigProvider.VerifyGet(p => p.Permissions, Times.Once());
-            Assert.AreEqual(1, authorizationProvider.CachedRequestCount);
+            Assert.AreEqual(1, authorizationService.CachedRequestCount);
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationProvider_IsAuthorized")]
-        public void AuthorizationProvider_IsAuthorized_WebInvokeService_CorrectAuthorizations()
+        [TestCategory("AuthorizationService_IsAuthorized")]
+        public void AuthorizationService_IsAuthorized_WebInvokeService_CorrectAuthorizations()
         {
             var resourceID = Guid.NewGuid();
             var workspaceID = Guid.NewGuid();
@@ -172,8 +172,8 @@ namespace Dev2.Tests.Runtime.WebServer.Security
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationProvider_IsAuthorized")]
-        public void AuthorizationProvider_IsAuthorized_WebGetXXX_CorrectAuthorizations()
+        [TestCategory("AuthorizationService_IsAuthorized")]
+        public void AuthorizationService_IsAuthorized_WebGetXXX_CorrectAuthorizations()
         {
             var queryString = new Mock<INameValueCollection>();
 
@@ -192,8 +192,8 @@ namespace Dev2.Tests.Runtime.WebServer.Security
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationProvider_IsAuthorized")]
-        public void AuthorizationProvider_IsAuthorized_WebExecuteOrBookmarkWorkflow_CorrectAuthorizations()
+        [TestCategory("AuthorizationService_IsAuthorized")]
+        public void AuthorizationService_IsAuthorized_WebExecuteOrBookmarkWorkflow_CorrectAuthorizations()
         {
             var queryString = new Mock<INameValueCollection>();
 
@@ -261,10 +261,10 @@ namespace Dev2.Tests.Runtime.WebServer.Security
 
             var securityConfigProvider = new Mock<ISecurityConfigProvider>();
             securityConfigProvider.SetupGet(p => p.Permissions).Returns(new[] { configPermissions });
-            var authorizationProvider = new TestAuthorizationProvider(securityConfigProvider.Object);
+            var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
 
             //------------Execute Test---------------------------
-            var authorized = authorizationProvider.IsAuthorized(authorizationRequest);
+            var authorized = authorizationService.IsAuthorized(authorizationRequest);
 
             //------------Assert Results-------------------------
             var expected = authorizationRequest.UserIsInRole &&

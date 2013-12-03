@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using Dev2.Data.Settings.Security;
+using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Data.Tests.Settings.Security
+namespace Dev2.Infrastructure.Tests.Services.Security
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
@@ -143,7 +143,7 @@ namespace Dev2.Data.Tests.Settings.Security
         public void WindowsGroupPermissionComparer_Compare_SortViewAscending_ReturnsCorrectValue()
         {
             Verify_Compare(-1, ListSortDirection.Ascending, "View",
-                new WindowsGroupPermission { View = false }, new WindowsGroupPermission { View = true});
+                new WindowsGroupPermission { View = false }, new WindowsGroupPermission { View = true });
         }
 
         [TestMethod]

@@ -110,7 +110,6 @@
     <Compile Include="Persistence\StorageSettingsManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceModel\ServiceUtilsTests.cs" />
-    <Compile Include="Settings\Security\WindowsGroupPermissionComparerTests.cs" />
     <Compile Include="SystemTemplates\DecisionTest.cs" />
     <Compile Include="TestStrings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -151,7 +150,9 @@
     <EmbeddedResource Include="TestingResources\SampleTFS.trx" />
     <EmbeddedResource Include="TestingResources\SampleTFSNoNamespace.trx" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Settings\" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Principal;
-using Dev2.Data.Settings.Security;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Security;
+using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR.Hosting;
 using Moq;
 

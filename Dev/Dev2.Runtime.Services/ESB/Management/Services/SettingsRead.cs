@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using Dev2.Common;
 using Dev2.Data.Settings;
-using Dev2.Data.Settings.Security;
 using Dev2.DynamicServices;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 

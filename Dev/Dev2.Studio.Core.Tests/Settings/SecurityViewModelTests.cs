@@ -4,14 +4,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Windows.Forms;
 using CubicOrange.Windows.Forms.ActiveDirectory;
-using Dev2.Data.Settings.Security;
 using Dev2.Dialogs;
 using Dev2.Help;
+using Dev2.Services.Security;
 using Dev2.Settings.Security;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -650,7 +649,7 @@ namespace Dev2.Core.Tests.Settings
                 ResourceID = resourceID,
                 ResourceName = ResourceName
             };
-            
+
             var picker = new Mock<IResourcePickerDialog>();
             picker.Setup(p => p.ShowDialog()).Returns(false);
             picker.SetupProperty(p => p.SelectedResource);
@@ -663,7 +662,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Execute Test---------------------------
             viewModel.PickResourceCommand.Execute(viewModel.ResourcePermissions[0]);
             //------------Assert Results-------------------------
-            Assert.AreEqual(resourceModel.Object,picker.Object.SelectedResource);
+            Assert.AreEqual(resourceModel.Object, picker.Object.SelectedResource);
         }
 
         [TestMethod]

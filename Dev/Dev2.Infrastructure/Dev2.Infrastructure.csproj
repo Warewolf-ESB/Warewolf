@@ -103,6 +103,11 @@
     <Compile Include="Providers\Events\IEventPublisher.cs" />
     <Compile Include="Communication\DesignValidationMemo.cs" />
     <Compile Include="DisposableObject.cs" />
+    <Compile Include="Services\Security\AuthorizationContext.cs" />
+    <Compile Include="Services\Security\AuthorizationServiceBase.cs" />
+    <Compile Include="Services\Security\Permissions.cs" />
+    <Compile Include="Services\Security\WindowsGroupPermission.cs" />
+    <Compile Include="Services\Security\WindowsGroupPermissionComparer.cs" />
     <Compile Include="Services\SubscriptionService.cs" />
     <Compile Include="Threading\AsyncWorker.cs" />
     <Compile Include="Threading\IAsyncWorker.cs" />

@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Forms;
 using Caliburn.Micro;
 using Dev2.Core.Tests.Utils;
-using Dev2.Data.Settings.Security;
+using Dev2.Services.Security;
 using Dev2.Settings;
 using Dev2.Settings.Security;
 using Dev2.Studio.Core.Controller;

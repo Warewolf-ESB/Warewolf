@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Security.Permissions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,6 +24,8 @@ namespace Dev2.Studio
 
         public App()
         {
+            // PrincipalPolicy must be set to WindowsPrincipal to check roles.
+            AppDomain.CurrentDomain.SetPrincipalPolicy(System.Security.Principal.PrincipalPolicy.WindowsPrincipal);
             _hasShutdownStarted = false;
             ShouldRestart = false;
             InitializeComponent();
@@ -40,6 +43,7 @@ namespace Dev2.Studio
             }
         }
 
+        [PrincipalPermission(SecurityAction.Demand)]  // Principal must be authenticated
         protected override void OnStartup(StartupEventArgs e)
         {
             bool createdNew;

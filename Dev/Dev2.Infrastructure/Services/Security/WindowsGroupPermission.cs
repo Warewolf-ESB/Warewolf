@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace Dev2.Data.Settings.Security
+namespace Dev2.Services.Security
 {
     public class WindowsGroupPermission : ObservableObject
     {

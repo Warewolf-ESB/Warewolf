@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Dev2.Data.Settings.Security;
+using Dev2.Services.Security;
 using Newtonsoft.Json;
 
 namespace Dev2.Data.Settings

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using Dev2.Data.Settings.Security;
+using Dev2.Services.Security;
 using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services

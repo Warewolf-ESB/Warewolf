@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Dev2.Settings.Security"
-             xmlns:security="clr-namespace:Dev2.Data.Settings.Security;assembly=Dev2.Data"
+             xmlns:security="clr-namespace:Dev2.Services.Security;assembly=Dev2.Infrastructure"
              xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core;assembly=Dev2.Activities.Designers"
              xmlns:help="clr-namespace:Dev2.Help"
              xmlns:help1="clr-namespace:Dev2.Activities.Designers2.Core.Help;assembly=Dev2.Activities.Designers"

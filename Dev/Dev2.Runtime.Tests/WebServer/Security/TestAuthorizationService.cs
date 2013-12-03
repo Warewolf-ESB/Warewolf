@@ -3,9 +3,9 @@ using Dev2.Runtime.WebServer.Security;
 
 namespace Dev2.Tests.Runtime.WebServer.Security
 {
-    public class TestAuthorizationProvider : AuthorizationProvider
+    public class TestAuthorizationService : AuthorizationService
     {
-        public TestAuthorizationProvider(ISecurityConfigProvider securityConfigProvider)
+        public TestAuthorizationService(ISecurityConfigProvider securityConfigProvider)
             : base(securityConfigProvider)
         {
         }

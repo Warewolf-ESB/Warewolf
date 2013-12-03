@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.ComponentModel;
 
-namespace Dev2.Data.Settings.Security
+namespace Dev2.Services.Security
 {
     public class WindowsGroupPermissionComparer : IComparer
     {

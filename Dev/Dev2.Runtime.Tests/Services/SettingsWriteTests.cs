@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Dev2.Data.Settings;
-using Dev2.Data.Settings.Security;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class SettingsWriteTests
     {
 
@@ -38,8 +39,8 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             settingsWrite.Execute(new Dictionary<string, string> { { "NoSettings", "Something" } }, null);
             //------------Assert Results-------------------------
-        }  
-        
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsWrite_Execute")]
@@ -65,8 +66,8 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             StringAssert.Contains(execute, "Error writing settings configuration.");
 
-        } 
- 
+        }
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -85,7 +86,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(File.Exists("secure.config"));
             File.Delete("secure.config");
             Assert.AreEqual("Success", execute);
-        }  
+        }
 
         #endregion Exeute
 

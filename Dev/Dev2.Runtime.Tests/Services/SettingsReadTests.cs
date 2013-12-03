@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Dev2.Data.Settings;
-using Dev2.Data.Settings.Security;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class SettingsReadTests
     {
 
@@ -35,8 +36,8 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var permission = new WindowsGroupPermission { Administrator = true, IsServer = true, WindowsGroup = Environment.UserName };
-            var permission2 = new WindowsGroupPermission { Administrator = false,DeployFrom = false, IsServer = true, WindowsGroup = "NETWORK SERVICE" };
-            var windowsGroupPermissions = new List<WindowsGroupPermission> { permission,permission2 };
+            var permission2 = new WindowsGroupPermission { Administrator = false, DeployFrom = false, IsServer = true, WindowsGroup = "NETWORK SERVICE" };
+            var windowsGroupPermissions = new List<WindowsGroupPermission> { permission, permission2 };
             var serializeObject = JsonConvert.SerializeObject(windowsGroupPermissions);
             var securityWrite = new SecurityWrite();
             securityWrite.Execute(new Dictionary<string, string> { { "Permissions", serializeObject } }, null);
@@ -67,7 +68,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(false, settings.Security[1].DeployTo);
             Assert.AreEqual(false, settings.Security[1].DeployFrom);
             Assert.AreEqual(false, settings.Security[1].Administrator);
-            
+
         }
 
         [TestMethod]
@@ -76,7 +77,7 @@ namespace Dev2.Tests.Runtime.Services
         public void SettingsRead_Execute_WhenBadSecurityData_SettingsErrorPopulated()
         {
             //------------Setup for test--------------------------
-            File.WriteAllText("secure.config",@"some bogus data");
+            File.WriteAllText("secure.config", @"some bogus data");
             var settingsRead = new SettingsRead();
             //------------Assert Preconditions-------------------------
             Assert.IsTrue(File.Exists("secure.config"));
@@ -90,7 +91,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(settings.HasError);
             StringAssert.Contains(settings.Error, "Error reading settings configuration : ");
         }
-        
+
         #endregion Exeute
 
         #region HandlesType

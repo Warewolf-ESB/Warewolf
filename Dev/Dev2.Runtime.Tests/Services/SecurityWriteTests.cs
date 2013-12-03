@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using Dev2.Data.Settings.Security;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
@@ -12,7 +12,8 @@ namespace Dev2.Tests.Runtime.Services
 {
     // ReSharper disable InconsistentNaming
 
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class SecurityWriteTests
     {
         static string _testDir;
@@ -39,8 +40,8 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             securityWrite.Execute(new Dictionary<string, string> { { "NoPermisisons", "Something" } }, null);
             //------------Assert Results-------------------------
-        }  
-        
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SecurityWrite_Execute")]
@@ -65,8 +66,8 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             securityWrite.Execute(new Dictionary<string, string> { { "Permissions", "Something" } }, null);
             //------------Assert Results-------------------------
-        } 
- 
+        }
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -87,7 +88,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsFalse(fileData.EndsWith("}"));
             Assert.IsFalse(fileData.Contains("IsServer"));
             File.Delete("secure.config");
-        }  
+        }
 
         #endregion Exeute
 

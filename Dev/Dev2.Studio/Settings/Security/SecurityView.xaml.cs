@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Dev2.Data.Settings.Security;
+using Dev2.Services.Security;
 
 namespace Dev2.Settings.Security
 {

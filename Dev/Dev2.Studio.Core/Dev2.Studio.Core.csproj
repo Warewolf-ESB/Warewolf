@@ -583,6 +583,7 @@
     <Folder Include="AppResources\UserInterfaceBuilder\" />
     <Folder Include="Core\" />
     <Folder Include="Network\Channels\" />
+    <Folder Include="Security\" />
     <Folder Include="Studio\Core\AppResources\Converters\" />
     <Folder Include="ViewModels\DataListShowMissing\" />
     <Folder Include="ViewModels\DataMapping\" />

@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
-using Dev2.Data.Settings.Security;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Services.Security;
 
 namespace Dev2.Runtime.WebServer.Security
 {
-    public class AuthorizationProvider : IAuthorizationProvider
+    public class AuthorizationService : IAuthorizationService
     {
         readonly ISecurityConfigProvider _securityConfigProvider;
         static readonly string[] EmptyRoles = new string[0];
@@ -17,10 +17,10 @@ namespace Dev2.Runtime.WebServer.Security
         readonly ConcurrentDictionary<Tuple<string, string>, bool> _cachedRequests = new ConcurrentDictionary<Tuple<string, string>, bool>();
 
         // Singleton instance - lazy initialization is used to ensure that the creation is threadsafe
-        static readonly Lazy<AuthorizationProvider> TheInstance = new Lazy<AuthorizationProvider>(() => new AuthorizationProvider(new SecurityConfigProvider()));
-        public static AuthorizationProvider Instance { get { return TheInstance.Value; } }
+        static readonly Lazy<AuthorizationService> TheInstance = new Lazy<AuthorizationService>(() => new AuthorizationService(new SecurityConfigProvider()));
+        public static AuthorizationService Instance { get { return TheInstance.Value; } }
 
-        protected AuthorizationProvider(ISecurityConfigProvider securityConfigProvider)
+        protected AuthorizationService(ISecurityConfigProvider securityConfigProvider)
         {
             VerifyArgument.IsNotNull("securityConfigProvider", securityConfigProvider);
             _securityConfigProvider = securityConfigProvider;

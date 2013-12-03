@@ -27,7 +27,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             var attribute = new AuthorizeWebAttribute();
 
             //------------Assert Results-------------------------
-            Assert.AreSame(AuthorizationProvider.Instance, attribute.Provider);
+            Assert.AreSame(AuthorizationService.Instance, attribute.Service);
         }
 
         [TestMethod]
@@ -51,7 +51,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         public void AuthorizeWebAttribute_OnAuthorization_ActionContextIsNull_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
-            var provider = new Mock<IAuthorizationProvider>();
+            var provider = new Mock<IAuthorizationService>();
             var attribute = new AuthorizeWebAttribute(provider.Object);
 
             //------------Execute Test---------------------------
@@ -87,7 +87,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         static void Verify_OnAuthorization_Response(bool isAuthenticated, string actionName, bool isAuthorized, HttpStatusCode expectedStatusCode, string expectedMessage)
         {
             //------------Setup for test--------------------------
-            var authorizationProvider = new Mock<IAuthorizationProvider>();
+            var authorizationProvider = new Mock<IAuthorizationService>();
             authorizationProvider.Setup(p => p.IsAuthorized(It.IsAny<IAuthorizationRequest>())).Returns(isAuthorized);
 
             var attribute = new AuthorizeWebAttribute(authorizationProvider.Object);
