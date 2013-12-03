@@ -1,12 +1,12 @@
 REM == START ENV ==
 
-REM rmdir /S /Q C:\CodedUI\Merge
-REM mkdir C:\CodedUI\Merge
-REM xcopy /Q /E /Y "\\RSAKLFSVRTFSBLD\Automated Builds\DevMergeStaging" "C:\CodedUI\Merge"
+rmdir /S /Q C:\CodedUI\Merge
+mkdir C:\CodedUI\Merge
+xcopy /Q /E /Y "\\RSAKLFSVRTFSBLD\Automated Builds\DevMergeStaging" "C:\CodedUI\Merge"
 
 REM Copy the CodedUI configuration over
 
-REM copy /Y "UI-Warewolf Server.exe.config" "C:\CodedUI\Merge\Warewolf Server.exe.config"
+copy /Y "UI-Warewolf Server.exe.config" "C:\CodedUI\Merge\Warewolf Server.exe.config"
 
 REM Start things up
 
