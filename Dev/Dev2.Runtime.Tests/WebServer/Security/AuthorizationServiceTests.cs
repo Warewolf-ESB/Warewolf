@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
@@ -49,7 +47,8 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         public void AuthorizationService_Constructor_SecurityConfigProviderChangedEvent_ClearsCachedRequests()
         {
             //------------Setup for test--------------------------
-            var securityConfigProvider = new Mock<ISecurityConfigProvider>();
+            var securityConfigProvider = new Mock<ISecurityConfigService>();
+            securityConfigProvider.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
 
             var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
 
@@ -63,7 +62,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Assert.AreEqual(1, authorizationService.CachedRequestCount);
 
             //------------Execute Test---------------------------
-            securityConfigProvider.Raise(m => m.Changed += null, new FileSystemEventArgs(WatcherChangeTypes.All, "temp", null));
+            securityConfigProvider.Raise(m => m.Changed += null, EventArgs.Empty);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, authorizationService.CachedRequestCount);
@@ -76,7 +75,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         public void AuthorizationService_IsAuthorized_RequestIsNull_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
-            var securityConfigProvider = new Mock<ISecurityConfigProvider>();
+            var securityConfigProvider = new Mock<ISecurityConfigService>();
 
             var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
 
@@ -92,7 +91,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         public void AuthorizationService_IsAuthorized_RequestIsFirstTime_AuthorizationCalculatedAndCached()
         {
             //------------Setup for test--------------------------
-            var securityConfigProvider = new Mock<ISecurityConfigProvider>();
+            var securityConfigProvider = new Mock<ISecurityConfigService>();
             securityConfigProvider.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
 
             var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
@@ -119,7 +118,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         public void AuthorizationService_IsAuthorized_RequestIsSecondTime_CachedAuthorizationUsed()
         {
             //------------Setup for test--------------------------
-            var securityConfigProvider = new Mock<ISecurityConfigProvider>();
+            var securityConfigProvider = new Mock<ISecurityConfigService>();
             securityConfigProvider.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
             var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
 
@@ -156,15 +155,15 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             const string UrlFormat = "http://localhost:1234/wwwroot/{0}?wid={1}&rid={2}";
             var requests = new[]
             {
-                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/dbservice", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
-                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Help/GetDictionary", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
-                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Resources/PathsAndNames", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
-                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Resources/Sources", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
-                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/DbSources/Search", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
-                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/DbSources/Get", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
-                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Services/Get?", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
-                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "sservices/Service/DbSources/Get", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
-                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Services/Save", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/dbservice", workspaceID, resourceID), queryString.Object, resource: resourceID.ToString()),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Help/GetDictionary", workspaceID, resourceID), queryString.Object, resource: resourceID.ToString()),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Resources/PathsAndNames", workspaceID, resourceID), queryString.Object, resource: resourceID.ToString()),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Resources/Sources", workspaceID, resourceID), queryString.Object, resource: resourceID.ToString()),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/DbSources/Search", workspaceID, resourceID), queryString.Object, resource: resourceID.ToString()),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/DbSources/Get", workspaceID, resourceID), queryString.Object, resource: resourceID.ToString()),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Services/Get?", workspaceID, resourceID), queryString.Object, resource: resourceID.ToString()),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "sservices/Service/DbSources/Get", workspaceID, resourceID), queryString.Object, resource: resourceID.ToString()),
+                new TestAuthorizationRequest(AuthorizationContext.Contribute, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Services/Save", workspaceID, resourceID), queryString.Object, resource: resourceID.ToString()),
             };
 
             Verify_IsAuthorized(requests);
@@ -180,11 +179,11 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             const string UrlFormat = "http://localhost:1234/wwwroot/{0}";
             var requests = new[]
             {
-                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebGet, string.Format(UrlFormat, "services/Scripts/warewolf-ko.js"), queryString.Object),
-                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebGetContent, string.Format(UrlFormat, "content/Site.css"), queryString.Object),
-                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebGetImage, string.Format(UrlFormat, "images/clear-filter.png"), queryString.Object),
-                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebGetScript, string.Format(UrlFormat, "scripts/fx/jquery-1.9.1.min.js"), queryString.Object),
-                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.View, WebServerRequestType.WebGetView, string.Format(UrlFormat, "views/services/dbservice.htm"), queryString.Object),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebGet, string.Format(UrlFormat, "services/Scripts/warewolf-ko.js"), queryString.Object),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebGetContent, string.Format(UrlFormat, "content/Site.css"), queryString.Object),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebGetImage, string.Format(UrlFormat, "images/clear-filter.png"), queryString.Object),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebGetScript, string.Format(UrlFormat, "scripts/fx/jquery-1.9.1.min.js"), queryString.Object),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebGetView, string.Format(UrlFormat, "views/services/dbservice.htm"), queryString.Object),
             };
 
             Verify_IsAuthorized(requests);
@@ -202,8 +201,8 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             const string UrlFormat = "http://localhost:1234/services/{0}{1}";
             var requests = new[]
             {
-                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.Execute, WebServerRequestType.WebBookmarkWorkflow, string.Format(UrlFormat, ResourceName, "/instances/id/bookmark/bmk"), queryString.Object, ResourceName),
-                new TestAuthorizationRequest(Permissions.Administrator | Permissions.Contribute | Permissions.Execute, WebServerRequestType.WebExecuteWorkflow, string.Format(UrlFormat, ResourceName, ""), queryString.Object, ResourceName),
+                new TestAuthorizationRequest(AuthorizationContext.Execute, WebServerRequestType.WebBookmarkWorkflow, string.Format(UrlFormat, ResourceName, "/instances/id/bookmark/bmk"), queryString.Object, resource: ResourceName),
+                new TestAuthorizationRequest(AuthorizationContext.Execute, WebServerRequestType.WebExecuteWorkflow, string.Format(UrlFormat, ResourceName, ""), queryString.Object, resource: ResourceName),
             };
 
             Verify_IsAuthorized(requests);
@@ -259,7 +258,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         {
             //------------Setup for test--------------------------           
 
-            var securityConfigProvider = new Mock<ISecurityConfigProvider>();
+            var securityConfigProvider = new Mock<ISecurityConfigService>();
             securityConfigProvider.SetupGet(p => p.Permissions).Returns(new[] { configPermissions });
             var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
 
@@ -267,11 +266,11 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             var authorized = authorizationService.IsAuthorized(authorizationRequest);
 
             //------------Assert Results-------------------------
-            var expected = authorizationRequest.UserIsInRole &&
-                (configPermissions.Permissions & authorizationRequest.AllowedPermissions) != 0;
+            var allowedPermissions = AuthorizationServiceBase.GetPermissions(authorizationRequest.AuthorizationContext);
+            var expected = authorizationRequest.UserIsInRole && (configPermissions.Permissions & allowedPermissions) != 0;
 
             Assert.AreEqual(expected, authorized, string.Format("\nUserIsInRole: {0}\nAllowed: {1}\nConfig: {2}\nIsServer: {3}\nURL: {4}",
-                authorizationRequest.UserIsInRole, authorizationRequest.AllowedPermissions, configPermissions.Permissions, configPermissions.IsServer, authorizationRequest.Url));
+                authorizationRequest.UserIsInRole, allowedPermissions, configPermissions.Permissions, configPermissions.IsServer, authorizationRequest.Url));
         }
     }
 }

@@ -1,30 +1,22 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Web;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Services.Security;
 
 namespace Dev2.Runtime.WebServer.Security
 {
-    public class AuthorizationService : IAuthorizationService
+    public class AuthorizationService : AuthorizationServiceBase, IAuthorizationService
     {
-        readonly ISecurityConfigProvider _securityConfigProvider;
-        static readonly string[] EmptyRoles = new string[0];
-
         readonly ConcurrentDictionary<Tuple<string, string>, bool> _cachedRequests = new ConcurrentDictionary<Tuple<string, string>, bool>();
 
         // Singleton instance - lazy initialization is used to ensure that the creation is threadsafe
-        static readonly Lazy<AuthorizationService> TheInstance = new Lazy<AuthorizationService>(() => new AuthorizationService(new SecurityConfigProvider()));
+        static readonly Lazy<AuthorizationService> TheInstance = new Lazy<AuthorizationService>(() => new AuthorizationService(new SecurityConfigService()));
         public static AuthorizationService Instance { get { return TheInstance.Value; } }
 
-        protected AuthorizationService(ISecurityConfigProvider securityConfigProvider)
+        protected AuthorizationService(ISecurityConfigService securityConfigService)
+            : base(securityConfigService)
         {
-            VerifyArgument.IsNotNull("securityConfigProvider", securityConfigProvider);
-            _securityConfigProvider = securityConfigProvider;
-            _securityConfigProvider.Changed += OnSecurityConfigProviderChanged;
         }
 
         public int CachedRequestCount { get { return _cachedRequests.Count; } }
@@ -35,19 +27,44 @@ namespace Dev2.Runtime.WebServer.Security
             bool authorized;
             if(!_cachedRequests.TryGetValue(request.Key, out authorized))
             {
-                var roles = GetRoles(request);
-                authorized = roles.Any(request.User.IsInRole);
+                authorized = IsAuthorized(request.User, GetContext(request), GetResource(request));
                 _cachedRequests.TryAdd(request.Key, authorized);
             }
             return authorized;
         }
 
-        void OnSecurityConfigProviderChanged(object sender, FileSystemEventArgs fileSystemEventArgs)
+        static AuthorizationContext GetContext(IAuthorizationRequest request)
         {
-            _cachedRequests.Clear();
+            switch(request.RequestType)
+            {
+                case WebServerRequestType.WebGet:
+                case WebServerRequestType.WebGetContent:
+                case WebServerRequestType.WebGetImage:
+                case WebServerRequestType.WebGetScript:
+                case WebServerRequestType.WebGetView:
+                    return AuthorizationContext.View;
+
+                case WebServerRequestType.WebInvokeService:
+                    return IsWebInvokeServiceSave(request.Url.AbsolutePath)
+                        ? AuthorizationContext.Contribute
+                        : AuthorizationContext.View;
+
+                case WebServerRequestType.WebExecuteWorkflow:
+                case WebServerRequestType.WebBookmarkWorkflow:
+                    return AuthorizationContext.Execute;
+
+                case WebServerRequestType.HubConnect:
+                case WebServerRequestType.EsbSendMemo:
+                case WebServerRequestType.ResourcesSend:
+                case WebServerRequestType.ResourcesSendMemo:
+                case WebServerRequestType.ResourcesSave:
+                    // TODO: Fix hub permissions
+                    return AuthorizationContext.Contribute;
+            }
+            return AuthorizationContext.None;
         }
 
-        IEnumerable<string> GetRoles(IAuthorizationRequest request)
+        static string GetResource(IAuthorizationRequest request)
         {
             var resource = request.QueryString["rid"];
             if(string.IsNullOrEmpty(resource))
@@ -63,61 +80,12 @@ namespace Dev2.Runtime.WebServer.Security
                         break;
                 }
             }
-
-            switch(request.RequestType)
-            {
-                case WebServerRequestType.WebGet:
-                case WebServerRequestType.WebGetContent:
-                case WebServerRequestType.WebGetImage:
-                case WebServerRequestType.WebGetScript:
-                case WebServerRequestType.WebGetView:
-                    return _securityConfigProvider.Permissions.Where(p => (p.Administrator || p.View || p.Contribute)).Select(p => p.WindowsGroup);
-
-                case WebServerRequestType.WebInvokeService:
-                    return IsWebInvokeServiceSave(request.Url.AbsolutePath) 
-                        ? _securityConfigProvider.Permissions.Where(p => (p.Administrator || p.Contribute) && Matches(p, resource)).Select(p => p.WindowsGroup) 
-                        : _securityConfigProvider.Permissions.Where(p => (p.Administrator || p.View || p.Contribute) && Matches(p, resource)).Select(p => p.WindowsGroup);
-
-                case WebServerRequestType.WebExecuteWorkflow:
-                case WebServerRequestType.WebBookmarkWorkflow:
-                    return _securityConfigProvider.Permissions.Where(p => (p.Administrator || p.Contribute || p.Execute) && Matches(p, resource)).Select(p => p.WindowsGroup);
-
-                case WebServerRequestType.HubConnect:
-                case WebServerRequestType.EsbSendMemo:
-                case WebServerRequestType.ResourcesSend:
-                case WebServerRequestType.ResourcesSendMemo:
-                case WebServerRequestType.ResourcesSave:
-                    // TODO: Fix hub permissions
-                    return new List<string>
-                    {
-                        WindowsGroupPermission.BuiltInAdministratorsText
-                    };
-            }
-            return EmptyRoles;
-
-
+            return string.IsNullOrEmpty(resource) ? null : resource;
         }
 
-        static bool Matches(WindowsGroupPermission permission, string resource)
+        protected override void OnSecurityConfigServiceChanged(object sender, EventArgs args)
         {
-            if(permission.IsServer)
-            {
-                return true;
-            }
-
-            if(string.IsNullOrEmpty(resource))
-            {
-                return false;
-            }
-
-            Guid resourceID;
-            if(Guid.TryParse(resource, out resourceID))
-            {
-                return permission.ResourceID == resourceID;
-            }
-
-            // ResourceName is in the format: {categoryName}\{resourceName}
-            return permission.ResourceName.EndsWith("\\" + resource);
+            _cachedRequests.Clear();
         }
 
         static string GetWebExecuteName(string absolutePath)

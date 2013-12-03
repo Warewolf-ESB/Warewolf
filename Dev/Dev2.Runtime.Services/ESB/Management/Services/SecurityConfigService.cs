@@ -7,25 +7,19 @@ using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public interface ISecurityConfigProvider : IDisposable
-    {
-        event FileSystemEventHandler Changed;
-        IReadOnlyList<WindowsGroupPermission> Permissions { get; }
-    }
-
-    public class SecurityConfigProvider : DisposableObject, ISecurityConfigProvider
+    public class SecurityConfigService : DisposableObject, ISecurityConfigService
     {
         public const string FileName = "secure.config";
 
         FileSystemWatcher _configWatcher = new FileSystemWatcher();
 
-        public SecurityConfigProvider()
+        public SecurityConfigService()
         {
             InitializeConfigWatcher();
             InitializePermissions();
         }
 
-        public event FileSystemEventHandler Changed;
+        public event EventHandler Changed;
 
         void InitializePermissions()
         {
@@ -58,20 +52,20 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         void OnChanged(object sender, FileSystemEventArgs e)
         {
-            RaiseChanged(e);
+            RaiseChanged();
         }
 
         void OnRenamed(object sender, RenamedEventArgs e)
         {
-            RaiseChanged(e);
+            RaiseChanged();
         }
 
-        void RaiseChanged(FileSystemEventArgs args)
+        void RaiseChanged()
         {
             InitializePermissions();
             if(Changed != null)
             {
-                Changed(this, args);
+                Changed(this, EventArgs.Empty);
             }
         }
 

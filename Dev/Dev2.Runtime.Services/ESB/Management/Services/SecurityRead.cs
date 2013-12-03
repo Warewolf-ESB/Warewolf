@@ -25,9 +25,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
-            if(File.Exists(SecurityConfigProvider.FileName))
+            if(File.Exists(SecurityConfigService.FileName))
             {
-                var encryptedData = File.ReadAllText(SecurityConfigProvider.FileName);
+                var encryptedData = File.ReadAllText(SecurityConfigService.FileName);
                 var decryptData = SecurityEncryption.Decrypt(encryptedData);
                 return decryptData;
             }

@@ -72,12 +72,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             var byteConverter = new ASCIIEncoding();
             var encryptedData = SecurityEncryption.Encrypt(permissions);
             byte[] dataToEncrypt = byteConverter.GetBytes(encryptedData);
-            File.WriteAllBytes(SecurityConfigProvider.FileName, dataToEncrypt);
+            File.WriteAllBytes(SecurityConfigService.FileName, dataToEncrypt);
         }
 
         static FileInfo DenyAccessToSecurityFileToEveryone()
         {
-            var fileInfo = new FileInfo(SecurityConfigProvider.FileName);
+            var fileInfo = new FileInfo(SecurityConfigService.FileName);
             // Get a DirectorySecurity object that represents the current security settings.
             var accessControl = fileInfo.GetAccessControl();
             //remove any inherited access

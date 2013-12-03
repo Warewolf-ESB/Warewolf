@@ -2,8 +2,11 @@ namespace Dev2.Services.Security
 {
     public enum AuthorizationContext
     {
-        Save,
-        Debug,
-        ViewInBrowser
+        None,
+        View,
+        Execute,
+        Contribute,
+        DeployTo,
+        DeployFrom
     }
 }

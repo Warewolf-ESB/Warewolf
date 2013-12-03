@@ -19,10 +19,10 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         {
         }
 
-        public TestAuthorizationRequest(Permissions allowedPermissions, WebServerRequestType requestType, string url, INameValueCollection queryString, string resource = null)
+        public TestAuthorizationRequest(AuthorizationContext authorizationContext, WebServerRequestType requestType, string url, INameValueCollection queryString, string resource = null)
         {
             UserIsInRole = false;
-            AllowedPermissions = allowedPermissions;
+            AuthorizationContext = authorizationContext;
             Resource = resource;
             RequestType = requestType;
             Url = new Uri(url);
@@ -38,7 +38,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
 
         public string Resource { get; set; }
 
-        public Permissions AllowedPermissions { get; set; }
+        public AuthorizationContext AuthorizationContext { get; set; }
         public string[] UserRoles { get; private set; }
         public bool UserIsInRole
         {
