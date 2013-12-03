@@ -13,5 +13,3 @@ REM Start things up
 start "" /B "C:\CodedUI\Merge\Warewolf Server.exe"
 timeout 10
 start "" /B "C:\CodedUI\Merge\Warewolf Studio.exe"
-REM timeout 60
-REM ping -n 10000 127.0.0.1
