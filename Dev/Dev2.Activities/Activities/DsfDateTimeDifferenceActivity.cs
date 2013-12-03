@@ -106,12 +106,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                 IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
-                IBinaryDataListEntry Input1Entry = compiler.Evaluate(executionId, enActionType.User, Input1, false, out errors);
+                IBinaryDataListEntry Input1Entry = compiler.Evaluate(executionId, enActionType.User, string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1, false, out errors);
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator input1Itr = Dev2ValueObjectFactory.CreateEvaluateIterator(Input1Entry);
                 colItr.AddIterator(input1Itr);
 
-                IBinaryDataListEntry Input2Entry = compiler.Evaluate(executionId, enActionType.User, Input2, false, out errors);
+                IBinaryDataListEntry Input2Entry = compiler.Evaluate(executionId, enActionType.User,string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2 , false, out errors);
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator input2Itr = Dev2ValueObjectFactory.CreateEvaluateIterator(Input2Entry);
                 colItr.AddIterator(input2Itr);
@@ -123,8 +123,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
-                    AddDebugInputItem(Input1, "Start Date", Input1Entry, executionId);
-                    AddDebugInputItem(Input2, "End Date", Input2Entry, executionId);
+                    AddDebugInputItem(string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1, "Start Date", Input1Entry, executionId);
+                    AddDebugInputItem(string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2, "End Date", Input2Entry, executionId);
                     AddDebugInputItem(InputFormat, "Input Format", InputFormatEntry, executionId);
                 }
 

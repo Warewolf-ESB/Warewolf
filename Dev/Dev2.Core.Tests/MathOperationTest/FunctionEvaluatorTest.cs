@@ -180,14 +180,14 @@ namespace Unlimited.UnitTest.Framework.MathOperationTest {
             DateTime date = new DateTime(2012,2,2);
             string expression = @"Date(2012,2,2)";
             string actual = string.Empty;
-            string expected = date.ToShortDateString() + " " + date.ToLongTimeString();
+            string expected = date.ToShortDateString();           
             string error = string.Empty;
 
             bool hasSucceeded = _eval.TryEvaluateFunction(expression, out actual, out error);
 
             if (hasSucceeded)
             {
-                Assert.AreEqual(expected, actual);
+                Assert.IsTrue(actual.StartsWith(expected));
             }
             else
             {

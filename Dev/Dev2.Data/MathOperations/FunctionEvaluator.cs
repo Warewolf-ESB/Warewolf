@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using Infragistics.Calculations.Engine;
 using Infragistics.Calculations.CalcManager;
@@ -327,11 +328,27 @@ namespace Dev2.MathOperations {
                 try {
                     CalculationValue value = _manager.CalculateFormula(expression);
                     if (value.IsError) {
-                        error = value.ToErrorValue().Message;
-                        evaluationState = false;
-                    } else {
-                        evaluation = value.GetResolvedValue().ToString();
-                        evaluationState = true;
+                        error = value.ToErrorValue().Message;                        
+                    } 
+                    else 
+                    {
+                        if(value.IsDateTime)
+                        {
+                            DateTime dateTime = value.ToDateTime();
+                            string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+                            string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+                            string finalPattern = shortPattern + " " + longPattern;
+                            if(finalPattern.Contains("ss"))
+                            {
+                                finalPattern = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
+                            }
+                            evaluation = dateTime.ToString(finalPattern);
+                        }
+                        else
+                        {
+                            evaluation = value.GetResolvedValue().ToString();
+                        }
+                        evaluationState = true; 
                     }
                 } catch (Exception ex) {
                     error = ex.Message;

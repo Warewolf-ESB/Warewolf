@@ -868,7 +868,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
             else {
                 Assert.Fail("Incorrect object returned");
             }
-        }
+        }        
 
         #endregion 12h Tests
 
@@ -935,7 +935,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
             else {
                 Assert.Fail("Incorrect object returned");
             }
-        }
+        }        
 
         #endregion sp Tests
 
@@ -1614,7 +1614,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out error);
             Assert.IsTrue(string.IsNullOrEmpty(error));
-            Assert.AreEqual(inputFormat, "f', 'ff', 'fff', 'ffff', 'ffffff', 'fffffff','");
+            Assert.AreEqual(inputFormat, "f', 'ff', 'sp', 'ffff', 'ffffff', 'fffffff','");
         }
 
         [TestMethod]

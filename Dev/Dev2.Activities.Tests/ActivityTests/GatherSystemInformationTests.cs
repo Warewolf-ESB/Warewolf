@@ -3,6 +3,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common;
@@ -113,14 +114,19 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void GatherSystemInformationWhereGetFullDateTimeInformationExpectDateTimeInformation()
         {
             //------------Setup for test--------------------------
-            var mock = new Mock<IGetSystemInformation>();
-            const string expectedValue = "the date and time";
-            mock.Setup(information => information.GetFullDateTimeInformation()).Returns(expectedValue);
-            var activity = DsfGatherSystemInformationActivity(mock);
+            var activity = DsfGatherSystemInformationActivity(null);
             //------------Execute Test---------------------------
             var dateTimeInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.FullDateTime);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue,dateTimeInformation);
+            DateTime result = DateTime.Parse(dateTimeInformation);
+            if(result.Millisecond == 0)
+            {
+                Thread.Sleep(10);
+                dateTimeInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.FullDateTime);
+                result = DateTime.Parse(dateTimeInformation);
+                Assert.IsTrue(result.Millisecond > 0);
+            }
+            Assert.IsTrue(result.Millisecond > 0);
         } 
         
         [TestMethod]
@@ -689,9 +695,19 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         static DsfGatherSystemInformationActivity DsfGatherSystemInformationActivity(Mock<IGetSystemInformation> mock)
         {
-            var getSystemInformation = mock.Object;
-            var activity = GetGatherSystemInformationActivity();
-            activity.GetSystemInformation = getSystemInformation;
+            DsfGatherSystemInformationActivity activity;
+
+            if(mock!=null)
+            {
+                var getSystemInformation = mock.Object;
+                activity = GetGatherSystemInformationActivity();
+                activity.GetSystemInformation = getSystemInformation;
+            }
+            else
+            {
+                activity = GetGatherSystemInformationActivity();                
+            }            
+            
             return activity;
         }
 

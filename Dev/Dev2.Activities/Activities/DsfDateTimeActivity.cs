@@ -119,7 +119,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                 IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
-                IDev2DataListEvaluateIterator dtItr = CreateDataListEvaluateIterator(DateTime, executionId, compiler, colItr, allErrors);
+                IDev2DataListEvaluateIterator dtItr = CreateDataListEvaluateIterator(string.IsNullOrEmpty(DateTime) ? GlobalConstants.CalcExpressionNow:DateTime, executionId, compiler, colItr, allErrors);
                 colItr.AddIterator(dtItr);
                 IDev2DataListEvaluateIterator ifItr = CreateDataListEvaluateIterator(InputFormat, executionId, compiler, colItr, allErrors);
                 colItr.AddIterator(ifItr);
@@ -130,7 +130,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
-                    AddDebugInputItem(DateTime, "Start Date", dtItr.FetchEntry(), executionId);
+                    AddDebugInputItem(string.IsNullOrEmpty(DateTime) ? GlobalConstants.CalcExpressionNow : DateTime, "Start Date", dtItr.FetchEntry(), executionId);
                     AddDebugInputItem(InputFormat, "Input Format", ifItr.FetchEntry(), executionId);
                     AddDebugInputItem(TimeModifierAmountDisplay, "Add", tmaItr.FetchEntry(), executionId);
                     AddDebugInputItem(OutputFormat, "Output Format", ofItr.FetchEntry(), executionId);

@@ -181,7 +181,9 @@ namespace Dev2.Common
         public static readonly string RemoteServerInvoke = "RemoteWarewolfServer";
 
         // Date Time
-        public static readonly string Dev2DotNetDefaultDateTimeFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+        public static readonly string LongTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+        public static readonly string ShortTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+        public static readonly string Dev2DotNetDefaultDateTimeFormat = ShortTimePattern + " " + LongTimePattern;
         public static readonly string Dev2CustomDefaultDateTimeFormat = "d MM yyyy 24h:min.ss sp";
 
         // Query Network Computer Names
@@ -200,6 +202,9 @@ namespace Dev2.Common
         public static string SerializableResourceSingleQuote = "__SQUOTE__";
 
         public static int MemoryItemCountCompactLevel = 500;
+
+        //Calculate expressions
+        public static string CalcExpressionNow = "!~calculation~!now()!~~calculation~!";
 
         public static string NotEqualsUnicodeChar = "≠";
         public static string GreaterThenOrEqualToUnicodeChar = "≥";

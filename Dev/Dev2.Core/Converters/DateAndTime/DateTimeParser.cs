@@ -105,7 +105,7 @@ namespace Dev2.Converters.DateAndTime
             dotNetFormatParts = ReplaceToken(dotNetFormatParts, "tt", "am or pm");
             dotNetFormatParts = ReplaceToken(dotNetFormatParts, "ddd", "Day of Week text abbreviated");
             dotNetFormatParts = ReplaceToken(dotNetFormatParts, "dddd", "Day of Week in full");
-
+            dotNetFormatParts = ReplaceToken(dotNetFormatParts, "fff", "Split Seconds: 987");
             //
             // Get input format string for the dotnet parts
             //
@@ -323,7 +323,7 @@ namespace Dev2.Converters.DateAndTime
 
             //2013.05.03: Ashley Lewis - Bug 9300 try invariant culture
             var culturesTried = 0;
-            const int MaxAttempts = 7;
+            const int MaxAttempts = 8;
             if (string.IsNullOrWhiteSpace(data))
             {
                 //2013.07.24: Ashley Lewis for PBI 10028 - null to default
@@ -399,6 +399,16 @@ namespace Dev2.Converters.DateAndTime
                                 case 5: inputFormat = TranslateDotNetToDev2Format(new CultureInfo("en-US").DateTimeFormat.FullDateTimePattern, out error);
                                     break;
                                 case 6: inputFormat = TranslateDotNetToDev2Format(new CultureInfo("en-US").DateTimeFormat.ShortDatePattern + " " + new CultureInfo("en-US").DateTimeFormat.LongTimePattern, out error);
+                                    break;
+                                case 7:
+                                    string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+                                    string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+                                    string finalPattern = shortPattern + " " + longPattern;
+                                    if(finalPattern.Contains("ss"))
+                                    {
+                                        finalPattern = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal)+2,".fff");
+                                    }
+                                    inputFormat = TranslateDotNetToDev2Format(finalPattern, out error);
                                     break;
                             }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Threading;
 using Dev2;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
@@ -101,6 +102,33 @@ namespace ActivityUnitTests.ActivityTests
 
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        [TestCategory("DateTimeDifferenceUnitTest")]
+        [Owner("Massimo Guerrera")]
+        // ReSharper disable InconsistentNaming
+        public void DateTimeDifference_DateTimeDifferenceUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
+        // ReSharper restore InconsistentNaming
+        {
+            DateTime now = DateTime.Now;
+
+            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
+            SetupArguments(currDL
+                         , currDL
+                         , ""
+                         ,""
+                         , ""
+                         , "Seconds"                       
+                         , "[[MyTestResult]]");
+
+            IDSFDataObject result = ExecuteProcess();
+
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);           
+
+            Assert.AreEqual("0",actual);
+        }       
 
         #endregion Positive Test Cases
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
 using ActivityUnitTests;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,6 +22,40 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DsfCalculateActivity_OnExecute")]
+        public void DsfCalculateActivity_OnExecute_GetCurrentDateTime_ResultContainsMilliseconds()
+        {
+            TestStartNode = new FlowStep
+            {
+                Action = new DsfCalculateActivity { Expression = @"now()", Result = "[[result]]" }
+            };
+
+            CurrentDl = "<ADL><result></result></ADL>";
+            TestData = "<root><ADL><result></result></ADL></root>";
+            IDSFDataObject result = ExecuteProcess();
+            string error;
+            string entry;
+
+            GetScalarValueFromDataList(result.DataListID, "result", out entry, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            DateTime res = DateTime.Parse(entry);
+
+            if(res.Millisecond == 0)
+            {
+                Thread.Sleep(10);
+                result = ExecuteProcess();
+                GetScalarValueFromDataList(result.DataListID, "result", out entry, out error);
+                res = DateTime.Parse(entry);
+                Assert.IsTrue(res.Millisecond != 0);
+            }
+            Assert.IsTrue(res.Millisecond != 0);
+        }
 
         [TestMethod]
         public void CalculateActivity_ValidFunction_Expected_EvalPerformed()

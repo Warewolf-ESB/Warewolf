@@ -70,7 +70,12 @@ namespace Dev2.Activities
 
         public string GetFullDateTimeInformation()
         {
-            var dateTimeString = DateTime.Now.ToString(CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern);
+            string fullPattern = CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern;
+            if(fullPattern.Contains("ss"))
+            {
+                fullPattern = fullPattern.Insert(fullPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");    
+            }            
+            var dateTimeString = DateTime.Now.ToString(fullPattern);
             return dateTimeString;
         }
 
