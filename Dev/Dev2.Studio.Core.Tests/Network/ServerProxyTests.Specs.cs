@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Dev2.Communication;
-using Dev2.Network;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -22,7 +21,7 @@ namespace Dev2.Core.Tests.Network
             //------------Setup for test--------------------------
             var mockHubProxy = new Mock<IHubProxy>();
             const string ExpectedResult = "YaY";
-            mockHubProxy.Setup(proxy => proxy.Invoke<string>("ExecuteCommand", It.IsAny<Envelope>(),It.IsAny<bool>(), It.IsAny<Guid>(), It.IsAny<Guid>(),It.IsAny<Guid>())).Returns(new Task<string>(() => ExpectedResult));
+            mockHubProxy.Setup(proxy => proxy.Invoke<string>("ExecuteCommand", It.IsAny<Envelope>(), It.IsAny<bool>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new Task<string>(() => ExpectedResult));
             var serverProxy = new TestServerProxy();
             serverProxy.SetEsbProxy(mockHubProxy.Object);
             //------------Execute Test---------------------------
@@ -42,31 +41,13 @@ namespace Dev2.Core.Tests.Network
         {
             //------------Setup for test--------------------------
             var mockHubProxy = new Mock<IHubProxy>();
-            mockHubProxy.Setup(proxy => proxy.Invoke("AddDebugWriter", It.IsAny<Guid>())).Returns(new Task(() => {}));
+            mockHubProxy.Setup(proxy => proxy.Invoke("AddDebugWriter", It.IsAny<Guid>())).Returns(new Task(() => { }));
             var serverProxy = new TestServerProxy();
             serverProxy.SetEsbProxy(mockHubProxy.Object);
             //------------Execute Test---------------------------
             serverProxy.AddDebugWriter(Guid.NewGuid());
             //------------Assert Results-------------------------
             mockHubProxy.VerifyAll();
-        }
-
-        //Given a ServerProxy
-        //When the Connection State Changes to Connected
-        //Then the IsConnected is True
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ServerProxy_IsConnected")]
-        public void ServerProxy_IsConnected_WhenConnectionStateConnected_ReturnsTrue()
-        {
-            //------------Setup for test--------------------------
-            var testHubConnection = new TestHubConnection("");
-            var serverProxy = new ServerProxy(testHubConnection);
-            //------------Preconditions--------------------------
-            Assert.IsFalse(serverProxy.IsConnected);
-            //------------Execute Test---------------------------
-            testHubConnection.SetStateChange(ConnectionState.Connected);
-            //------------Assert Results-------------------------
         }
     }
 }

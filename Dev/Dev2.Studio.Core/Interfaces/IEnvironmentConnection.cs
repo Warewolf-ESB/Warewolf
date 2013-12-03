@@ -7,6 +7,7 @@ using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Network.Messaging;
 using Dev2.Providers.Events;
+using Dev2.Services.Security;
 using Dev2.Studio.Core.Network;
 
 namespace Dev2.Studio.Core.Interfaces
@@ -41,5 +42,7 @@ namespace Dev2.Studio.Core.Interfaces
 
         // BUG 10106 - 2013.08.13 - TWR - added
         void StartAutoConnect();
+
+        IAuthorizationService AuthorizationService { get; }
     }
 }

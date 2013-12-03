@@ -47,7 +47,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         public void AuthorizationService_Constructor_SecurityConfigProviderChangedEvent_ClearsCachedRequests()
         {
             //------------Setup for test--------------------------
-            var securityConfigProvider = new Mock<ISecurityConfigService>();
+            var securityConfigProvider = new Mock<ISecurityService>();
             securityConfigProvider.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
 
             var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
@@ -75,7 +75,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         public void AuthorizationService_IsAuthorized_RequestIsNull_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
-            var securityConfigProvider = new Mock<ISecurityConfigService>();
+            var securityConfigProvider = new Mock<ISecurityService>();
 
             var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
 
@@ -91,7 +91,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         public void AuthorizationService_IsAuthorized_RequestIsFirstTime_AuthorizationCalculatedAndCached()
         {
             //------------Setup for test--------------------------
-            var securityConfigProvider = new Mock<ISecurityConfigService>();
+            var securityConfigProvider = new Mock<ISecurityService>();
             securityConfigProvider.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
 
             var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
@@ -118,7 +118,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         public void AuthorizationService_IsAuthorized_RequestIsSecondTime_CachedAuthorizationUsed()
         {
             //------------Setup for test--------------------------
-            var securityConfigProvider = new Mock<ISecurityConfigService>();
+            var securityConfigProvider = new Mock<ISecurityService>();
             securityConfigProvider.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
             var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
 
@@ -258,7 +258,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         {
             //------------Setup for test--------------------------           
 
-            var securityConfigProvider = new Mock<ISecurityConfigService>();
+            var securityConfigProvider = new Mock<ISecurityService>();
             securityConfigProvider.SetupGet(p => p.Permissions).Returns(new[] { configPermissions });
             var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
 

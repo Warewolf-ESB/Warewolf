@@ -7,13 +7,13 @@ using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class SecurityConfigService : DisposableObject, ISecurityConfigService
+    public class SecurityService : DisposableObject, ISecurityService
     {
         public const string FileName = "secure.config";
 
         FileSystemWatcher _configWatcher = new FileSystemWatcher();
 
-        public SecurityConfigService()
+        public SecurityService()
         {
             InitializeConfigWatcher();
             InitializePermissions();

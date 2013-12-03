@@ -64,6 +64,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         ICommand _editResourceCommand;
         bool _hasMappingChange;
         IEnvironmentModel _environmentModel;
+        string _canSaveReason;
+        string _canDebugReason;
+        string _canExecuteReason;
 
         #endregion private fields
 
@@ -168,14 +171,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if(designValidationMemo.Errors.Find(info => info.FixType == FixType.ReloadMapping) != null)
             {
                 _hasMappingChange = true;
-            }
-        }
-
-        public bool CanExecute
-        {
-            get
-            {
-                return ContextualResourceModel != null && IsEnvironmentConnected() && !DebugOutputViewModel.IsProcessing;
             }
         }
 
@@ -354,18 +349,91 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         #region public methods
 
+        public string CanSaveReason
+        {
+            get { return _canSaveReason; }
+            set
+            {
+                if(value == _canSaveReason)
+                {
+                    return;
+                }
+                _canSaveReason = value;
+                NotifyOfPropertyChange(() => CanSaveReason);
+            }
+        }
+
+        public string CanDebugReason
+        {
+            get { return _canDebugReason; }
+            set
+            {
+                if(value == _canDebugReason)
+                {
+                    return;
+                }
+                _canDebugReason = value;
+                NotifyOfPropertyChange(() => CanDebugReason);
+            }
+        }
+
+        public string CanExecuteReason
+        {
+            get { return _canExecuteReason; }
+            set
+            {
+                if(value == _canExecuteReason)
+                {
+                    return;
+                }
+                _canExecuteReason = value;
+                NotifyOfPropertyChange(() => CanExecuteReason);
+            }
+        }
+
         bool CanSave()
         {
-            //var permissionsService = new AuthorizationServiceBase(new WindowsGroupPermission[] { });
-            //return CanDebug() && permissionsService.IsAuthorized(AuthorizationContext.Save, ContextualResourceModel.ID.ToString());
-            return CanDebug();
+            var enabled = IsEnvironmentConnected() && !DebugOutputViewModel.IsStopping && !DebugOutputViewModel.IsConfiguring;
+            if(enabled)
+            {
+                const AuthorizationContext AuthorizationContext = AuthorizationContext.Contribute;
+                enabled = IsAuthorized(AuthorizationContext);
+                CanExecuteReason = AuthorizationContext.GetReason(enabled);
+            }
+            return enabled;
         }
 
         bool CanDebug()
         {
-            return IsEnvironmentConnected()
-                && !DebugOutputViewModel.IsStopping
-                && !DebugOutputViewModel.IsConfiguring;
+            var enabled = IsEnvironmentConnected() && !DebugOutputViewModel.IsStopping && !DebugOutputViewModel.IsConfiguring;
+            if(enabled)
+            {
+                const AuthorizationContext AuthorizationContext = AuthorizationContext.Execute;
+                enabled = IsAuthorized(AuthorizationContext);
+                CanExecuteReason = AuthorizationContext.GetReason(enabled);
+            }
+            return enabled;
+        }
+
+        public bool CanExecute
+        {
+            get
+            {
+                var enabled = ContextualResourceModel != null && IsEnvironmentConnected() && !DebugOutputViewModel.IsProcessing;
+                if(enabled)
+                {
+                    const AuthorizationContext AuthorizationContext = AuthorizationContext.Execute;
+                    enabled = IsAuthorized(AuthorizationContext);
+                    CanExecuteReason = AuthorizationContext.GetReason(enabled);
+                }
+                return enabled;
+            }
+        }
+
+        bool IsAuthorized(AuthorizationContext authorizationContext)
+        {
+            var authorized = Environment.Connection.AuthorizationService.IsAuthorized(authorizationContext, ContextualResourceModel.ID.ToString());
+            return authorized;
         }
 
         public void SetDebugStatus(DebugStatus debugStatus)

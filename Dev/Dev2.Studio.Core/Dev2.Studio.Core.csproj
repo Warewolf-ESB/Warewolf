@@ -420,6 +420,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Security\ClientAuthorizationService.cs" />
+    <Compile Include="Security\ClientSecurityService.cs" />
     <Compile Include="Services\Communication\MailToEmailCommService.cs" />
     <Compile Include="Services\Communication\EmailCommMessage.cs" />
     <Compile Include="Services\Communication\IAsynCommService.cs" />
@@ -583,7 +585,6 @@
     <Folder Include="AppResources\UserInterfaceBuilder\" />
     <Folder Include="Core\" />
     <Folder Include="Network\Channels\" />
-    <Folder Include="Security\" />
     <Folder Include="Studio\Core\AppResources\Converters\" />
     <Folder Include="ViewModels\DataListShowMissing\" />
     <Folder Include="ViewModels\DataMapping\" />

@@ -11,11 +11,11 @@ namespace Dev2.Runtime.WebServer.Security
         readonly ConcurrentDictionary<Tuple<string, string>, bool> _cachedRequests = new ConcurrentDictionary<Tuple<string, string>, bool>();
 
         // Singleton instance - lazy initialization is used to ensure that the creation is threadsafe
-        static readonly Lazy<AuthorizationService> TheInstance = new Lazy<AuthorizationService>(() => new AuthorizationService(new SecurityConfigService()));
+        static readonly Lazy<AuthorizationService> TheInstance = new Lazy<AuthorizationService>(() => new AuthorizationService(new SecurityService()));
         public static AuthorizationService Instance { get { return TheInstance.Value; } }
 
-        protected AuthorizationService(ISecurityConfigService securityConfigService)
-            : base(securityConfigService)
+        protected AuthorizationService(ISecurityService securityService)
+            : base(securityService)
         {
         }
 
@@ -83,9 +83,14 @@ namespace Dev2.Runtime.WebServer.Security
             return string.IsNullOrEmpty(resource) ? null : resource;
         }
 
-        protected override void OnSecurityConfigServiceChanged(object sender, EventArgs args)
+        protected override void OnSecurityServiceChanged(object sender, EventArgs args)
         {
             _cachedRequests.Clear();
+        }
+
+        public override bool IsAuthorized(AuthorizationContext context, string resource)
+        {
+            return false;
         }
 
         static string GetWebExecuteName(string absolutePath)

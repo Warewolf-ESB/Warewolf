@@ -332,7 +332,8 @@
                                         </Grid>
                                     </Button>
                                     <Button Command="{Binding SaveCommand}"
-                                            Style="{DynamicResource ButtonStyleRibbon}">
+                                            Style="{DynamicResource ButtonStyleRibbon}"
+                                            ToolTip="{Binding CanSaveReason}">
                                         <Grid>
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource Save-32}"
@@ -435,7 +436,8 @@
                                 </Border>
                                 <StackPanel Orientation="Horizontal">
                                     <Button Command="{Binding ViewInBrowserCommand}"
-                                            Style="{DynamicResource ButtonStyleRibbon}">
+                                            Style="{DynamicResource ButtonStyleRibbon}"
+                                            ToolTip="{Binding CanViewInBrowserReason}">
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto" />
@@ -448,7 +450,8 @@
                                         </Grid>
                                     </Button>
                                     <Button Command="{Binding DebugCommand}"
-                                            Style="{DynamicResource ButtonStyleRibbon}">
+                                            Style="{DynamicResource ButtonStyleRibbon}"
+                                            ToolTip="{Binding CanDebugReason}">
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto" />

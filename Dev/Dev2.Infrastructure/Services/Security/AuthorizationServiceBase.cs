@@ -4,23 +4,25 @@ using System.Security.Principal;
 
 namespace Dev2.Services.Security
 {
-    public abstract class AuthorizationServiceBase
+    public abstract class AuthorizationServiceBase : IAuthorizationService
     {
-        readonly ISecurityConfigService _securityConfigService;
+        readonly ISecurityService _securityService;
 
-        protected AuthorizationServiceBase(ISecurityConfigService securityConfigService)
+        protected AuthorizationServiceBase(ISecurityService securityService)
         {
-            VerifyArgument.IsNotNull("securityConfigService", securityConfigService);
-            _securityConfigService = securityConfigService;
-            _securityConfigService.Changed += OnSecurityConfigServiceChanged;
+            VerifyArgument.IsNotNull("SecurityService", securityService);
+            _securityService = securityService;
+            _securityService.Changed += OnSecurityServiceChanged;
         }
 
-        protected abstract void OnSecurityConfigServiceChanged(object sender, EventArgs args);
+        protected abstract void OnSecurityServiceChanged(object sender, EventArgs args);
 
-        public bool IsAuthorized(IPrincipal principal, AuthorizationContext context, string resource)
+        public abstract bool IsAuthorized(AuthorizationContext context, string resource);
+
+        protected bool IsAuthorized(IPrincipal principal, AuthorizationContext context, string resource)
         {
             var permissions = GetPermissions(context);
-            return _securityConfigService.Permissions
+            return _securityService.Permissions
                 .Where(p => principal.IsInRole(p.WindowsGroup) && Matches(p, resource))
                 .Any(groupPermission => (groupPermission.Permissions & permissions) != 0);
         }

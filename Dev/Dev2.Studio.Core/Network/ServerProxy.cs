@@ -1,62 +1,69 @@
 ﻿using System;
 using System.IO;
-using System.Management.Instrumentation;
 using System.Net;
 using System.Network;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using Dev2.Common;
 using Dev2.Communication;
-using Dev2.DataList.Contract.Network;
 using Dev2.Diagnostics;
 using Dev2.ExtMethods;
-using Dev2.Network.Execution;
-using Dev2.Network.Messaging;
-using Dev2.Network.Messaging.Messages;
 using Dev2.Providers.Events;
 using Dev2.Providers.Logs;
+using Dev2.Security;
 using Dev2.Services.Events;
+using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
 using Microsoft.AspNet.SignalR.Client;
-using Newtonsoft.Json;
 using Timer = System.Timers.Timer;
 
 namespace Dev2.Network
 {
-    public class ServerProxy :IDisposable, IEnvironmentConnection
+    public class ServerProxy : IDisposable, IEnvironmentConnection
     {
         Timer _reconnectHeartbeat;
-        const int MAX_SIZE_FOR_STRING = 1 << 12; // = 4K
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
-        public ServerProxy():this(new HubConnection("http://localhost:8080"))
+        const int MAX_SIZE_FOR_STRING = 1 << 12; // = 4K      
+
+        public ServerProxy(Uri serverUri)
+            : this(serverUri.ToString())
         {
-            
-        } 
-        
-        public ServerProxy(Uri serverUri):this(new HubConnection(serverUri.ToString()))
-        {
-            AppServerUri = serverUri;
-            WebServerUri = new Uri(serverUri.ToString().Replace("/dsf",""));
         }
-        
-        public ServerProxy(HubConnection hubConnection)
+
+        public ServerProxy(string serverUri)
         {
+            VerifyArgument.IsNotNull("serverUri", serverUri);
             ServerEvents = EventPublishers.Studio;
-            HubConnection = hubConnection;
+
+            AppServerUri = new Uri(serverUri);
+            WebServerUri = new Uri(serverUri.Replace("/dsf", ""));
+
+            HubConnection = new HubConnection(serverUri);
             HubConnection.Credentials = CredentialCache.DefaultNetworkCredentials;
-//            HubConnection.TraceLevel = TraceLevels.All;
-//            HubConnection.TraceWriter = Console.Out;
+            //            HubConnection.TraceLevel = TraceLevels.All;
+            //            HubConnection.TraceWriter = Console.Out;
             HubConnection.Error += OnHubConnectionError;
-            HubConnection.Closed+=HubConnectionOnClosed;
+            HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
+
+            InitializeEsbProxy();
+        }
+
+        protected void InitializeEsbProxy()
+        {
             EsbProxy = HubConnection.CreateHubProxy("esb");
-            InitializeProxy();
+            EsbProxy.On<DesignValidationMemo>("SendMemo", OnMemoReceived);
+            EsbProxy.On<DebugState>("SendDebugState", OnDebugStateReceived);
+            EsbProxy.On<Guid>("SendWorkspaceID", OnWorkspaceIDReceived);
+        }
+
+        protected void InitializeAuthorizationService()
+        {
+            var configService = new ClientSecurityService(this);
+            AuthorizationService = new ClientAuthorizationService(configService);
+            //configService.Read();
         }
 
         void HubConnectionOnClosed()
@@ -66,13 +73,6 @@ namespace Dev2.Network
             OnLoginStateChanged(new LoginStateEventArgs(AuthenticationResponse.Logout, false, false, "Logged Out"));
             OnServerStateChanged(new ServerStateEventArgs(ServerState.Offline));
             OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
-        }
-
-        protected void InitializeProxy()
-        {
-            EsbProxy.On<DesignValidationMemo>("SendMemo", OnMemoReceived);
-            EsbProxy.On<DebugState>("SendDebugState", OnDebugStateReceived);
-            EsbProxy.On<Guid>("SendWorkspaceID", OnWorkspaceIDReceived);
         }
 
         void OnWorkspaceIDReceived(Guid obj)
@@ -92,27 +92,28 @@ namespace Dev2.Network
             {
                 case ConnectionState.Connected:
                     IsConnected = true;
-                    OnLoginStateChanged(new LoginStateEventArgs(AuthenticationResponse.Success, true,false,"Logged In"));
+                    OnLoginStateChanged(new LoginStateEventArgs(AuthenticationResponse.Success, true, false, "Logged In"));
                     OnServerStateChanged(new ServerStateEventArgs(ServerState.Online));
-                    OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Offline,NetworkState.Online));
-                    break; 
+                    OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Online));
+                    InitializeAuthorizationService();
+                    break;
                 case ConnectionState.Connecting:
                 case ConnectionState.Reconnecting:
                     IsConnected = false;
-                    OnLoginStateChanged(new LoginStateEventArgs(AuthenticationResponse.Success, true,false,"Logged In"));
+                    OnLoginStateChanged(new LoginStateEventArgs(AuthenticationResponse.Success, true, false, "Logged In"));
                     OnServerStateChanged(new ServerStateEventArgs(ServerState.Offline));
-                    OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Offline,NetworkState.Connecting));
+                    OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Connecting));
                     break;
                 case ConnectionState.Disconnected:
                     IsConnected = false;
                     StartReconnectTimer();
-                    OnLoginStateChanged(new LoginStateEventArgs(AuthenticationResponse.Logout,false,false,"Logged Out"));
+                    OnLoginStateChanged(new LoginStateEventArgs(AuthenticationResponse.Logout, false, false, "Logged Out"));
                     OnServerStateChanged(new ServerStateEventArgs(ServerState.Offline));
-                    OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online,NetworkState.Offline));
+                    OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
                     break;
             }
 
-            
+
         }
 
         public bool IsConnected { get; set; }
@@ -172,7 +173,7 @@ namespace Dev2.Network
         {
             HubConnection.Stop();
         }
-        
+
         public void Verify(Action<ConnectResult> callback)
         {
             if(IsConnected)
@@ -198,6 +199,8 @@ namespace Dev2.Network
             }
             StartReconnectTimer();
         }
+
+        public IAuthorizationService AuthorizationService { get; private set; }
 
         public IEventPublisher ServerEvents { get; set; }
 
@@ -266,13 +269,13 @@ namespace Dev2.Network
             }
             var memoryStream = new MemoryStream();
             var bytes = Encoding.UTF8.GetBytes(payload);
-            memoryStream.Write(bytes,0,bytes.Length);
+            memoryStream.Write(bytes, 0, bytes.Length);
             memoryStream.Flush();
             memoryStream.Position = 0;
             var result = "";
             var envelope = new Envelope();
             envelope.Type = typeof(Envelope);
-            using(var reader = new StreamReader(memoryStream,Encoding.UTF8,false,MAX_SIZE_FOR_STRING))
+            using(var reader = new StreamReader(memoryStream, Encoding.UTF8, false, MAX_SIZE_FOR_STRING))
             {
                 var messageID = Guid.NewGuid();
                 while(!reader.EndOfStream)
@@ -283,7 +286,7 @@ namespace Dev2.Network
                         b = new char[MAX_SIZE_FOR_STRING];
                     }
                     int read = reader.Read(b, 0, b.Length);
-                    var readToEndAsync = new string(b,0,read);
+                    var readToEndAsync = new string(b, 0, read);
                     envelope.Content = readToEndAsync;
                     Task<string> invoke = EsbProxy.Invoke<string>("ExecuteCommand", envelope, reader.EndOfStream, workspaceID, dataListID, messageID);
                     result = Wait(invoke);
@@ -321,16 +324,16 @@ namespace Dev2.Network
             }
             return default(T);
         }
-        
+
         protected virtual void Wait(Task task)
         {
-           // task.WaitWithPumping(GlobalConstants.NetworkTimeOut);
+            // task.WaitWithPumping(GlobalConstants.NetworkTimeOut);
             task.Wait(100);
         }
 
         public void AddDebugWriter(Guid workspaceID)
         {
-            var t = EsbProxy.Invoke("AddDebugWriter",workspaceID);
+            var t = EsbProxy.Invoke("AddDebugWriter", workspaceID);
             Wait(t);
         }
 

@@ -5,8 +5,8 @@ namespace Dev2.Tests.Runtime.WebServer.Security
 {
     public class TestAuthorizationService : AuthorizationService
     {
-        public TestAuthorizationService(ISecurityConfigService securityConfigService)
-            : base(securityConfigService)
+        public TestAuthorizationService(ISecurityService securityService)
+            : base(securityService)
         {
         }
     }

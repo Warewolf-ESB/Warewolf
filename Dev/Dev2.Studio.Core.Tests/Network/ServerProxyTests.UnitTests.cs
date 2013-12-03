@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using System.Threading.Tasks;
 using Dev2.Network;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Newtonsoft.Json.Linq;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Network
@@ -23,11 +20,11 @@ namespace Dev2.Core.Tests.Network
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var serverProxy = new ServerProxy();
+            var serverProxy = new TestServerProxy();
             //------------Assert Results-------------------------
             Assert.IsNotNull(serverProxy);
             Assert.IsNotNull(serverProxy.HubConnection);
-            Assert.IsNotNull(serverProxy.EsbProxy);            
+            Assert.IsNotNull(serverProxy.EsbProxy);
         }
 
         [TestMethod]
@@ -37,7 +34,7 @@ namespace Dev2.Core.Tests.Network
         public void ServerProxy_ExecuteCommand_WhenNullPayload_ExceptionThrown()
         {
             //------------Setup for test--------------------------
-            var serverProxy = new ServerProxy();
+            var serverProxy = new TestServerProxy();
             //------------Execute Test---------------------------
             serverProxy.ExecuteCommand(null, Guid.NewGuid(), Guid.NewGuid());
             //------------Assert Results-------------------------
@@ -50,7 +47,7 @@ namespace Dev2.Core.Tests.Network
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var serverProxy = new ServerProxy();
+            var serverProxy = new TestServerProxy();
             //------------Assert Results-------------------------
             var subscription = serverProxy.EsbProxy.Subscribe("SendMemo");
             Assert.IsNotNull(subscription);
@@ -63,7 +60,7 @@ namespace Dev2.Core.Tests.Network
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var serverProxy = new ServerProxy();
+            var serverProxy = new TestServerProxy();
             //------------Assert Results-------------------------
             var subscription = serverProxy.EsbProxy.Subscribe("SendDebugState");
             Assert.IsNotNull(subscription);
@@ -72,6 +69,13 @@ namespace Dev2.Core.Tests.Network
 
     internal class TestServerProxy : ServerProxy
     {
+        // TODO: Move this constructor to a test class!!
+        public TestServerProxy()
+            : base("http://localhost:8080")
+        {
+
+        }
+
         public void SetEsbProxy(IHubProxy hubProxy)
         {
             EsbProxy = hubProxy;
@@ -83,8 +87,8 @@ namespace Dev2.Core.Tests.Network
         {
             task.Start();
             return task.Result;
-        } 
-        
+        }
+
         protected override void Wait(Task task)
         {
             task.Start();
@@ -157,8 +161,8 @@ namespace Dev2.Core.Tests.Network
         {
             var classType = this.GetType();
             var eventInfos = classType.GetEvent("StateChanged");
-           // eventInfos.AddMethod
-            
+            // eventInfos.AddMethod
+
         }
     }
 }

@@ -8,9 +8,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
-using Dev2.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.Diagnostics;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Settings;
@@ -21,7 +19,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Helpers;
@@ -131,7 +128,7 @@ namespace Dev2.Studio.ViewModels
 
         public IResourceDependencyService ResourceDependencyService { get; set; }
 
-      
+
 
         #endregion imports
 
@@ -194,6 +191,10 @@ namespace Dev2.Studio.ViewModels
                 return ActiveItem.EditCommand;
             }
         }
+        public string CanSaveReason { get { return ActiveItem == null ? null : ActiveItem.CanSaveReason; } }
+        public string CanDebugReason { get { return ActiveItem == null ? null : ActiveItem.CanDebugReason; } }
+        public string CanViewInBrowserReason { get { return ActiveItem == null ? null : ActiveItem.CanDebugReason; } }
+
         public ICommand SaveCommand
         {
             get
@@ -235,6 +236,7 @@ namespace Dev2.Studio.ViewModels
                        (_notImplementedCommand = new RelayCommand(param => MessageBox.Show("Please implement me!")));
             }
         }
+
 
         public ICommand AddStudioShortcutsPageCommand
         {
@@ -309,7 +311,7 @@ namespace Dev2.Studio.ViewModels
                            Logger.TraceInfo("Publish message of type - " + typeof(ResetLayoutMessage));
                            _eventPublisher.Publish(
                                new ResetLayoutMessage(param as FrameworkElement));
-                       } ,
+                       },
             param => true));
             }
         }
@@ -390,10 +392,10 @@ namespace Dev2.Studio.ViewModels
         {
         }
 
-        public MainViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, 
+        public MainViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository,
             IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null,
-            IResourceDependencyService resourceDependencyService = null,IPopupController popupController = null
-            ,IWindowManager windowManager = null,IWebController webController=null,IFeedbackInvoker feedbackInvoker=null)
+            IResourceDependencyService resourceDependencyService = null, IPopupController popupController = null
+            , IWindowManager windowManager = null, IWebController webController = null, IFeedbackInvoker feedbackInvoker = null)
             : base(eventPublisher)
         {
             if(environmentRepository == null)
@@ -498,11 +500,11 @@ namespace Dev2.Studio.ViewModels
 
             if(message.ShowDependentOnMe)
             {
-                AddReverseDependencyVisualizerWorkSurface(model);    
+                AddReverseDependencyVisualizerWorkSurface(model);
             }
             else
             {
-                AddDependencyVisualizerWorkSurface(model);        
+                AddDependencyVisualizerWorkSurface(model);
             }
         }
 
@@ -572,7 +574,7 @@ namespace Dev2.Studio.ViewModels
 
         public void RefreshActiveEnvironment()
         {
-            if (ActiveItem != null && ActiveItem.Environment != null)
+            if(ActiveItem != null && ActiveItem.Environment != null)
             {
                 Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
                 _eventPublisher.Publish(new SetActiveEnvironmentMessage(ActiveItem.Environment));
@@ -639,12 +641,12 @@ namespace Dev2.Studio.ViewModels
                     {
                         if(workflowVM.EnvironmentModel.ResourceRepository.DoesResourceExistInRepo(model) && workflowVM.ResourceModel.IsNewWorkflow)
                         {
-                            DeleteResources(new List<IContextualResourceModel> { model }, false);                        
+                            DeleteResources(new List<IContextualResourceModel> { model }, false);
                         }
                         else
                         {
                             model.Rollback();
-                    }
+                        }
                     }
                     catch(Exception e)
                     {
@@ -720,27 +722,27 @@ namespace Dev2.Studio.ViewModels
         {
             _asyncWorker.Start(() =>
             {
-            var path = FileHelper.GetAppDataPath(StringResources.Uri_Studio_Homepage);
+                var path = FileHelper.GetAppDataPath(StringResources.Uri_Studio_Homepage);
 
-            // PBI 9512 - 2013.06.07 - TWR: added
-            // PBI 9941 - 2013.07.07 - TWR: modified
+                // PBI 9512 - 2013.06.07 - TWR: added
+                // PBI 9941 - 2013.07.07 - TWR: modified
 
                 using(var getter = new LatestWebGetter())
                 {
                     getter.GetLatest(Version.StartPageUri, path);
                 }
-                
+
             }, () =>
             {
                 var path = FileHelper.GetAppDataPath(StringResources.Uri_Studio_Homepage);
                 var oldPath = FileHelper.GetFullPath(StringResources.Uri_Studio_Homepage);
 
-            // ensure the user sees a home page ;)
-            var invokePath = path;
+                // ensure the user sees a home page ;)
+                var invokePath = path;
                 if(File.Exists(oldPath) && !File.Exists(path))
-            {
-                invokePath = oldPath;
-            }
+                {
+                    invokePath = oldPath;
+                }
                 ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage, new[] { new Tuple<string, object>("Uri", invokePath) });
             });
         }
@@ -888,7 +890,7 @@ namespace Dev2.Studio.ViewModels
                         newItem.DataListViewModel.CreateListsOfIDataListItemModelToBindTo(out errors);
                     }
                 }
-                
+
             }
             base.ChangeActiveItem(newItem, closePrevious);
             RefreshActiveEnvironment();
@@ -940,7 +942,7 @@ namespace Dev2.Studio.ViewModels
                 if(item != null)
                 {
                     //Not sure what this does
-                   // item.Parent = this;
+                    // item.Parent = this;
                     var wfItem = item.WorkSurfaceViewModel as IWorkflowDesignerViewModel;
                     if(wfItem != null)
                     {
@@ -1038,7 +1040,7 @@ namespace Dev2.Studio.ViewModels
 
             foreach(var contextualModel in models)
             {
-                if (contextualModel == null)
+                if(contextualModel == null)
                 {
                     continue;
                 }
@@ -1151,7 +1153,7 @@ namespace Dev2.Studio.ViewModels
                         {
                             resource.IsWorkflowSaved = item.IsWorkflowSaved;
                             resource.OnResourceSaved += model => WorkspaceItemRepository.Instance.UpdateWorkspaceItemIsWorkflowSaved(model);
-                            
+
                             // We need to load the correct version of the service ;)
                             var resourceDef = environment.ResourceRepository.FetchResourceDefinition(environment, environment.Connection.WorkspaceID, resource.ID);
                             resource.WorkflowXaml = resourceDef;
@@ -1187,7 +1189,7 @@ namespace Dev2.Studio.ViewModels
             DeployResource = input as SimpleBaseViewModel;
             if(exist)
             {
-                if (input is IContextualResourceModel)
+                if(input is IContextualResourceModel)
                 {
                     Logger.TraceInfo("Publish message of type - " + typeof(SelectItemInDeployMessage));
                     _eventPublisher.Publish(
@@ -1300,7 +1302,7 @@ namespace Dev2.Studio.ViewModels
             //Activates if exists
             var exists = ActivateWorkSurfaceIfPresent(resourceModel);
 
-            if (exists)
+            if(exists)
             {
                 return;
             }
@@ -1351,7 +1353,7 @@ namespace Dev2.Studio.ViewModels
                 {
                     ctx.Save(true);
                 }
-                if(index == Items.Count-1)
+                if(index == Items.Count - 1)
                 {
                     savingCompleted = true;
                 }
@@ -1386,7 +1388,7 @@ namespace Dev2.Studio.ViewModels
                                 {
                                     if(resource.IsNewWorkflow)
                                     {
-                                        NewWorkflowNames.Instance.Remove(resource.ResourceName); 
+                                        NewWorkflowNames.Instance.Remove(resource.ResourceName);
                                     }
                                     RemoveWorkspaceItem(workflowVM);
                                     Items.Remove(context);
