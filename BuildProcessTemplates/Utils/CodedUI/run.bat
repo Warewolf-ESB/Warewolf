@@ -6,7 +6,7 @@ xcopy /Q /E /Y "\\RSAKLFSVRTFSBLD\Automated Builds\DevMergeStaging" "C:\CodedUI\
 
 REM Copy the CodedUI configuration over
 
-copy /Y "UI-Warewolf Server.exe.config" "C:\CodedUI\Merge\Warewolf Server.exe.config"
+copy /Y "C:\Builds\TestRunWorkspace\Sources\BuildUtils\CodedUI\UI-Warewolf Server.exe.config" "C:\CodedUI\Merge\Warewolf Server.exe.config"
 
 REM Start things up
 
