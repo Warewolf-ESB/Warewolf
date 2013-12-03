@@ -3,6 +3,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Text;
 using ActivityUnitTests;
+using Dev2.Activities.Specs.BaseTypes;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
@@ -11,15 +12,18 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Specs.Toolbox.Data.Assign
 {
     [Binding]
-    public class AssignSteps : BaseActivityUnitTest
+    public class AssignSteps : RecordSetBases
     {
-        private readonly List<Tuple<string, string>> _variableList = new List<Tuple<string, string>>();
+        public AssignSteps(): base (new List<Tuple<string, string>>())
+        {
+            
+        }
         private DsfMultiAssignActivity _multiAssign;
-        private IDSFDataObject _result;
-        private string _recordSetName;
 
         private void BuildDataList()
         {
+            BuildShapeAndTestData();
+
             _multiAssign = new DsfMultiAssignActivity();
 
             TestStartNode = new FlowStep
@@ -27,55 +31,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
                     Action = _multiAssign
                 };
 
-            var shape = new StringBuilder();
-            shape.Append("<ADL>");
-
-            var data = new StringBuilder();
-            data.Append("<ADL>");
-
             int row = 1;
+            
             foreach (var variable in _variableList)
             {
                 _multiAssign.FieldsCollection.Add(new ActivityDTO(variable.Item1, variable.Item2, row, true));
-                
-                string variableName = DataListUtil.RemoveLanguageBrackets(variable.Item1);
-                if (variableName.Contains("(") && variableName.Contains(")"))
-                {
-                    var startIndex  = variableName.IndexOf("(");
-                    var endIndex = variableName.IndexOf(")");
-
-                    int i = (endIndex - startIndex) - 1;
-                    
-                    if (i > 0)
-                    {
-                       variableName = variableName.Remove(startIndex + 1, i);
-                    }
-
-                    variableName = variableName.Replace("(", "").Replace(")", "").Replace("*", "");
-                    var variableNameSplit = variableName.Split(".".ToCharArray());
-                    shape.Append(string.Format("<{0}>", variableNameSplit[0]));
-                    shape.Append(string.Format("<{0}/>", variableNameSplit[1]));
-                    shape.Append(string.Format("</{0}>", variableNameSplit[0]));
-
-                    data.Append(string.Format("<{0}>", variableNameSplit[0]));
-                    data.Append(string.Format("<{0}>{1}</{0}>", variableNameSplit[1], variable.Item2));
-                    data.Append(string.Format("</{0}>", variableNameSplit[0]));
-
-                    _recordSetName = variableNameSplit[0];
-                }
-                else
-                {
-                    shape.Append(string.Format("<{0}/>", variableName));
-                    data.Append(string.Format("<{0}>{1}</{0}>", variableName, variable.Item2));
-                }
                 row++;
             }
-            
-            shape.Append("</ADL>");
-            data.Append("</ADL>");
-
-            CurrentDl = shape.ToString();
-            TestData = data.ToString();
         }
         
         [Given(@"I assign the value (.*) to a variable ""(.*)""")]

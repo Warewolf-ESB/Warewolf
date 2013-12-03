@@ -1,5 +1,4 @@
-﻿using System;
-using System.Activities;
+﻿using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace Dev2.Activities.Specs.Toolbox.LoopConstructs
+namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
 {
     [Binding]
     public class ForEachSteps : BaseActivityUnitTest

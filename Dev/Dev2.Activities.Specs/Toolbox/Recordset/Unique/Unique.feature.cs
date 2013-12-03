@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
+namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
 {
     using TechTalk.SpecFlow;
     
@@ -19,20 +19,20 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
-    public partial class SortFeature
+    public partial class UniqueFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "Sort.feature"
+#line 1 "Unique.feature"
 #line hidden
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Sort", "In order to sort a recordset\r\nAs a Warewolf user\r\nI want a tool I can use to arra" +
-                    "nge records in either ascending or descending order", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Unique", "In order to find unique records in a recordset\r\nAs a Warewolf user\r\nI want tool t" +
+                    "hat will allow me", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -47,9 +47,9 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
         public virtual void TestInitialize()
         {
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
-                        && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Sort")))
+                        && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Unique")))
             {
-                Dev2.Activities.Specs.Toolbox.Recordset.Sort.SortFeature.FeatureSetup(null);
+                Dev2.Activities.Specs.Toolbox.Recordset.Unique.UniqueFeature.FeatureSetup(null);
             }
         }
         
@@ -70,73 +70,53 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Sort a recordset")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Sort")]
-        public virtual void SortARecordset()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find unique records in a  dataset")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unique")]
+        public virtual void FindUniqueRecordsInADataset()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sort a recordset", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find unique records in a  dataset", ((string[])(null)));
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
-                        "value"});
+                        "val"});
             table1.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "1"});
             table1.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "2"});
             table1.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "2"});
             table1.AddRow(new string[] {
                         "rs().row",
-                        "best"});
-            table1.AddRow(new string[] {
-                        "rs().row",
-                        "Warewolf"});
-            table1.AddRow(new string[] {
-                        "rs().row",
-                        "user"});
-            table1.AddRow(new string[] {
-                        "rs().row",
-                        "so far"});
+                        "3"});
 #line 7
- testRunner.Given("I have the following recordset to sort", ((string)(null)), table1, "Given ");
-#line 16
- testRunner.And("I sort a record \"[[rs(*).row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 17
- testRunner.And("my sort order is \"Forward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 18
- testRunner.When("the sort records tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I have the following duplicated recordset", ((string)(null)), table1, "Given ");
+#line 13
+ testRunner.And("I want to find unique in field \"[[rs().row]]\" with the return field \"[[rs().row]]" +
+                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 14
+ testRunner.And("The result variable is \"[[result().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 15
+ testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
-                        "value"});
+                        "val"});
             table2.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "1"});
             table2.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "2"});
             table2.AddRow(new string[] {
                         "rs().row",
-                        "so far"});
-            table2.AddRow(new string[] {
-                        "rs().row",
-                        "the"});
-            table2.AddRow(new string[] {
-                        "rs().row",
-                        "user"});
-            table2.AddRow(new string[] {
-                        "rs().row",
-                        "Warewolf"});
-            table2.AddRow(new string[] {
-                        "rs().row",
-                        "You"});
-#line 19
- testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table2, "Then ");
+                        "3"});
+#line 16
+ testRunner.Then("the unique result will be", ((string)(null)), table2, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

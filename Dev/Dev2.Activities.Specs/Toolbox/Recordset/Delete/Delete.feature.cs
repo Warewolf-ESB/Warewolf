@@ -109,7 +109,7 @@ this.ScenarioSetup(scenarioInfo);
                         "rs().row",
                         "2"});
 #line 15
- testRunner.And("the recordset \"rs\" will be as follows", ((string)(null)), table2, "And ");
+ testRunner.And("the recordset \"[[rs().row]]\" will be as follows", ((string)(null)), table2, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -157,7 +157,7 @@ this.ScenarioSetup(scenarioInfo);
                         "rs().row",
                         "3"});
 #line 29
- testRunner.And("the recordset \"rs\" will be as follows", ((string)(null)), table4, "And ");
+ testRunner.And("the recordset \"[[rs().row]]\" will be as follows", ((string)(null)), table4, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

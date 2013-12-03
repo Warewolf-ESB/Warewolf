@@ -2,8 +2,7 @@
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using ActivityUnitTests;
+using Dev2.Activities.Specs.BaseTypes;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
@@ -12,96 +11,46 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
 {
     [Binding]
-    public class FindRecordIndexSteps : BaseActivityUnitTest
+    public class FindRecordIndexSteps : RecordSetBases
     {
-        private DsfFindRecordsActivity _findRecordsIndex;
-        private readonly List<Tuple<string, string>> _variableList = new List<Tuple<string, string>>();
         private const string ResultVariable = "[[result]]";
-        private IDSFDataObject _result;
-        private string _recordSetName;
-        private string _searchType;
         private string _criteria;
+        private DsfFindRecordsActivity _findRecordsIndex;
+        private string _searchType;
 
+        public FindRecordIndexSteps()
+            : base(new List<Tuple<string, string>>())
+        {
+        }
 
         private void BuildDataList()
         {
-            var shape = new StringBuilder();
-            shape.Append("<ADL>");
-
-            var data = new StringBuilder();
-            data.Append("<ADL>");
-
-            int row = 1;
-            foreach (var variable in _variableList)
-            {
-                string variableName = DataListUtil.RemoveLanguageBrackets(variable.Item1);
-                if (variableName.Contains("(") && variableName.Contains(")"))
-                {
-                    var startIndex = variableName.IndexOf("(");
-                    var endIndex = variableName.IndexOf(")");
-
-                    int i = (endIndex - startIndex) - 1;
-
-                    if (i > 0)
-                    {
-                        variableName = variableName.Remove(startIndex + 1, i);
-                    }
-
-                    variableName = variableName.Replace("(", "").Replace(")", "").Replace("*", "");
-                    var variableNameSplit = variableName.Split(".".ToCharArray());
-                    shape.Append(string.Format("<{0}>", variableNameSplit[0]));
-                    shape.Append(string.Format("<{0}/>", variableNameSplit[1]));
-                    shape.Append(string.Format("</{0}>", variableNameSplit[0]));
-
-                    data.Append(string.Format("<{0}>", variableNameSplit[0]));
-                    data.Append(string.Format("<{0}>{1}</{0}>", variableNameSplit[1], variable.Item2));
-                    data.Append(string.Format("</{0}>", variableNameSplit[0]));
-
-                    _recordSetName = variableNameSplit[0];
-                }
-                else
-                {
-                    shape.Append(string.Format("<{0}/>", variableName));
-                    data.Append(string.Format("<{0}>{1}</{0}>", variableName, variable.Item2));
-                }
-                row++;
-            }
-
-            shape.Append(string.Format("<{0}></{0}>", DataListUtil.RemoveLanguageBrackets(ResultVariable)));
-            data.Append(string.Format("<{0}></{0}>", DataListUtil.RemoveLanguageBrackets(ResultVariable)));
-
-            shape.Append("</ADL>");
-            data.Append("</ADL>");
-
+            BuildShapeAndTestData(new Tuple<string, string>(ResultVariable, ""));
             _findRecordsIndex = new DsfFindRecordsActivity
-            {
-                FieldsToSearch = _recordSetName + "()",
-                Result = ResultVariable,
-                SearchCriteria = _criteria,
-                SearchType =  _searchType,
-                RequireAllFieldsToMatch = false
-            };
+                {
+                    FieldsToSearch = _recordSetName + "()",
+                    Result = ResultVariable,
+                    SearchCriteria = _criteria,
+                    SearchType = _searchType,
+                    RequireAllFieldsToMatch = false
+                };
 
             TestStartNode = new FlowStep
-            {
-                Action = _findRecordsIndex
-            };
-
-            CurrentDl = shape.ToString();
-            TestData = data.ToString();
+                {
+                    Action = _findRecordsIndex
+                };
         }
-
 
         [Given(@"I have the following recordset to search")]
         public void GivenIHaveTheFollowingRecordsetToSearch(Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
-            foreach (var t in tableRows)
+            foreach (TableRow t in tableRows)
             {
                 _variableList.Add(new Tuple<string, string>(t[0], t[1]));
             }
         }
-        
+
         [Given(@"search type is ""(.*)"" and criteria is ""(.*)""")]
         public void GivenSearchTypeIsAndCriteriaIs(string searchType, string criteria)
         {
@@ -109,14 +58,14 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
             _criteria = criteria;
         }
 
-        
+
         [When(@"the find records index tool is executed")]
         public void WhenTheFindRecordsIndexToolIsExecuted()
         {
             BuildDataList();
             _result = ExecuteProcess();
         }
-        
+
         [Then(@"the index result should be (.*)")]
         public void ThenTheIndexResultShouldBe(string result)
         {
@@ -126,6 +75,5 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
                                        out actualValue, out error);
             Assert.AreEqual(result, actualValue);
         }
-
     }
 }

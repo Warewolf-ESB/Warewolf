@@ -2,8 +2,7 @@
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using ActivityUnitTests;
+using Dev2.Activities.Specs.BaseTypes;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
@@ -12,77 +11,39 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
 {
     [Binding]
-    public class CountSteps : BaseActivityUnitTest
+    public class CountSteps : RecordSetBases
     {
-        private DsfCountRecordsetActivity _count;
-        private readonly List<string> _variableList = new List<string>();
         private const string ResultVariable = "[[result]]";
-        private IDSFDataObject _result;
-        private string _recordSetName;
-        
+        private DsfCountRecordsetActivity _count;
+
+        public CountSteps()
+            : base(new List<Tuple<string, string>>())
+        {
+        }
+
         private void BuildDataList()
         {
-            var data = new StringBuilder();
-            data.Append("<root>");
-
-            int row = 1;
-            foreach (var variable in _variableList)
-            {
-                //_dataSplit.ResultsCollection.Add(new DataSplitDTO(variable.Item1, variable.Item2, variable.Item3, row));
-
-                string variableName = DataListUtil.RemoveLanguageBrackets(variable);
-                if (variableName.Contains("(") && variableName.Contains(")"))
-                {
-                    var startIndex = variableName.IndexOf("(");
-                    var endIndex = variableName.IndexOf(")");
-
-                    int i = (endIndex - startIndex) - 1;
-
-                    if (i > 0)
-                    {
-                        variableName = variableName.Remove(startIndex + 1, i);
-                    }
-
-                    variableName = variableName.Replace("(", "").Replace(")", "").Replace("*", "");
-                    var variableNameSplit = variableName.Split(".".ToCharArray());
-                    data.Append(string.Format("<{0}>", variableNameSplit[0]));
-                    data.Append(string.Format("<{0}/>", variableNameSplit[1]));
-                    data.Append(string.Format("</{0}>", variableNameSplit[0]));
-                    _recordSetName = variableNameSplit[0];
-                   // _fieldName = variableNameSplit[1];
-                }
-                else
-                {
-                    data.Append(string.Format("<{0}/>", variableName));
-                }
-                row++;
-            }
-
-            data.Append(string.Format("<{0}></{0}>", DataListUtil.RemoveLanguageBrackets(ResultVariable)));
-            data.Append("</root>");
+            BuildShapeAndTestData(new Tuple<string, string>(ResultVariable, ""));
 
             _count = new DsfCountRecordsetActivity
-            {
-                RecordsetName = _recordSetName + "()",
-                CountNumber = ResultVariable
-            };
+                {
+                    RecordsetName = _recordSetName + "()",
+                    CountNumber = ResultVariable
+                };
 
             TestStartNode = new FlowStep
-            {
-                Action = _count
-            };
-           
-            CurrentDl = data.ToString();
-            TestData = data.ToString();
+                {
+                    Action = _count
+                };
         }
 
         [Given(@"I have a recordset with this shape")]
         public void GivenIHaveARecordsetWithThisShape(Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
-            foreach (var t in tableRows)
+            foreach (TableRow t in tableRows)
             {
-                _variableList.Add(t[0]);
+                _variableList.Add(new Tuple<string, string>(t[0], ""));
             }
         }
 
@@ -92,7 +53,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
             BuildDataList();
             _result = ExecuteProcess();
         }
-        
+
         [Then(@"the result count should be (.*)")]
         public void ThenTheResultCountShouldBe(string result)
         {

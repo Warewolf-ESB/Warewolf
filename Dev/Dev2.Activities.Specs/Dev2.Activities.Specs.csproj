@@ -67,6 +67,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BaseTypes\RecordSetBase.cs" />
     <Compile Include="Toolbox\Data\Assign\Assign.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -109,12 +110,6 @@
       <DependentUpon>Replace.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Data\Replace\ReplaceSteps.cs" />
-    <Compile Include="Toolbox\LoopConstructs\ForEach.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ForEach.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\LoopConstructs\ForEachSteps.cs" />
     <Compile Include="Toolbox\Recordset\Count\Count.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -146,6 +141,12 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsertSteps.cs" />
+    <Compile Include="Toolbox\Recordset\Unique\Unique.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Unique.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Recordset\Unique\UniqueSteps.cs" />
     <Compile Include="Toolbox\Scripting\Script\Script.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -226,10 +227,6 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Replace.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\LoopConstructs\ForEach.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ForEach.feature.cs</LastGenOutput>
-    </None>
     <None Include="Toolbox\Recordset\Count\Count.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Count.feature.cs</LastGenOutput>
@@ -249,6 +246,10 @@
     <None Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsert.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SqlBulkInsert.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\Unique\Unique.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Unique.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Scripting\Script\Script.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -319,6 +320,7 @@
   <ItemGroup>
     <Folder Include="Toolbox\ControlFlow\" />
     <Folder Include="Toolbox\FileAndFolder\" />
+    <Folder Include="Toolbox\LoopConstructs\ForEach\" />
     <Folder Include="Toolbox\Resources\" />
   </ItemGroup>
   <Choose>

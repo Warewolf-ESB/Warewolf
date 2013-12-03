@@ -2,8 +2,7 @@
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using ActivityUnitTests;
+using Dev2.Activities.Specs.BaseTypes;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
@@ -12,92 +11,42 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
 {
     [Binding]
-    public class DeleteSteps : BaseActivityUnitTest
+    public class DeleteSteps : RecordSetBases
     {
+        public DeleteSteps()
+            : base(new List<Tuple<string, string>>())
+        {
+        }
+
         private DsfDeleteRecordActivity _delete;
-        private readonly List<Tuple<string ,string>>  _variableList = new List<Tuple<string ,string>>();
-        private const string ResultVariable = "[[result]]";
-        private IDSFDataObject _result;
-        private string _recordset;
-        private string _recordsetField;
-       
 
         private void BuildDataList()
         {
-            var shape = new StringBuilder();
-            shape.Append("<root>");
-
-            var data = new StringBuilder();
-            data.Append("<root>");
-            
-            int row = 1;
-            foreach (var variable in _variableList)
-            {
-                string variableName = DataListUtil.RemoveLanguageBrackets(variable.Item1);
-                if (variableName.Contains("(") && variableName.Contains(")"))
-                {
-                    var startIndex = variableName.IndexOf("(");
-                    var endIndex = variableName.IndexOf(")");
-
-                    int i = (endIndex - startIndex) - 1;
-
-                    if (i > 0)
-                    {
-                        variableName = variableName.Remove(startIndex + 1, i);
-                    }
-
-                    variableName = variableName.Replace("(", "").Replace(")", "").Replace("*", "");
-                    var variableNameSplit = variableName.Split(".".ToCharArray());
-                    shape.Append(string.Format("<{0}>", variableNameSplit[0]));
-                    shape.Append(string.Format("<{0}/>", variableNameSplit[1]));
-                    shape.Append(string.Format("</{0}>", variableNameSplit[0]));
-
-                    data.Append(string.Format("<{0}>", variableNameSplit[0]));
-                    data.Append(string.Format("<{0}>{1}</{0}>", variableNameSplit[1], variable.Item2));
-                    data.Append(string.Format("</{0}>", variableNameSplit[0]));
-
-                    _recordsetField = variableNameSplit[1];
-                }
-                else
-                {
-                    shape.Append(string.Format("<{0}/>", variableName));
-                    data.Append(string.Format("<{0}>{1}</{0}>", variableName, variable.Item2));
-                }
-                row++;
-            }
-
-
-            shape.Append(string.Format("<{0}></{0}>", DataListUtil.RemoveLanguageBrackets(ResultVariable)));
-            data.Append(string.Format("<{0}></{0}>", DataListUtil.RemoveLanguageBrackets(ResultVariable)));
-
-            shape.Append("</root>");
-            data.Append("</root>");
+            BuildShapeAndTestData(new Tuple<string, string>(ResultVariable, ""));
 
             _delete = new DsfDeleteRecordActivity
-            {
-                RecordsetName = DataListUtil.RemoveLanguageBrackets(_recordset),
-                Result = ResultVariable
-            };
+                {
+                    RecordsetName = DataListUtil.RemoveLanguageBrackets(_recordset),
+                    Result = ResultVariable
+                };
 
             TestStartNode = new FlowStep
-            {
-                Action = _delete
-            };
-
-            CurrentDl = shape.ToString();
-            TestData = data.ToString();
+                {
+                    Action = _delete
+                };
         }
-        
+
+
         [Given(@"I have the following recordset")]
         public void GivenIHaveTheFollowingRecordset(Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
-            foreach (var t in tableRows)
+            foreach (TableRow t in tableRows)
             {
-                _variableList.Add(new Tuple<string ,string>(t[0], t[1]));
+                _variableList.Add(new Tuple<string, string>(t[0], t[1]));
             }
         }
-        
+
         [When(@"the delete tool is executed")]
         public void WhenTheDeleteToolIsExecuted()
         {
@@ -120,8 +69,8 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         {
             List<TableRow> tableRows = table.Rows.ToList();
             string error;
-
-            var recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, recordset, _recordsetField, out error);
+            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, _recordSetName,
+                                                                           _fieldName, out error);
 
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
 

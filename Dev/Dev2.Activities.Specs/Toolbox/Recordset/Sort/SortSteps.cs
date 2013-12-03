@@ -2,8 +2,7 @@
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using ActivityUnitTests;
+using Dev2.Activities.Specs.BaseTypes;
 using Dev2.DataList.Contract;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -12,62 +11,20 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
 {
     [Binding]
-    public class SortSteps : BaseActivityUnitTest
+    public class SortSteps : RecordSetBases
     {
+          public SortSteps()
+            : base(new List<Tuple<string, string>>())
+        {
+            
+        }
+
         private DsfSortRecordsActivity _sortRecords;
-        private readonly List<Tuple<string, string>> _variableList = new List<Tuple<string, string>>();
-        private IDSFDataObject _result;
         private string _sortOrder;
-        private string _recordsetField;
-        private string _recordset;
-
-
+        
         private void BuildDataList()
         {
-            var shape = new StringBuilder();
-            shape.Append("<root>");
-
-            var data = new StringBuilder();
-            data.Append("<root>");
-
-            int row = 1;
-            foreach (var variable in _variableList)
-            {
-                string variableName = DataListUtil.RemoveLanguageBrackets(variable.Item1);
-                if (variableName.Contains("(") && variableName.Contains(")"))
-                {
-                    var startIndex = variableName.IndexOf("(");
-                    var endIndex = variableName.IndexOf(")");
-
-                    int i = (endIndex - startIndex) - 1;
-
-                    if (i > 0)
-                    {
-                        variableName = variableName.Remove(startIndex + 1, i);
-                    }
-
-                    variableName = variableName.Replace("(", "").Replace(")", "").Replace("*", "");
-                    var variableNameSplit = variableName.Split(".".ToCharArray());
-                    shape.Append(string.Format("<{0}>", variableNameSplit[0]));
-                    shape.Append(string.Format("<{0}/>", variableNameSplit[1]));
-                    shape.Append(string.Format("</{0}>", variableNameSplit[0]));
-
-                    data.Append(string.Format("<{0}>", variableNameSplit[0]));
-                    data.Append(string.Format("<{0}>{1}</{0}>", variableNameSplit[1], variable.Item2));
-                    data.Append(string.Format("</{0}>", variableNameSplit[0]));
-
-                    _recordsetField = variableNameSplit[1];
-                }
-                else
-                {
-                    shape.Append(string.Format("<{0}/>", variableName));
-                    data.Append(string.Format("<{0}>{1}</{0}>", variableName, variable.Item2));
-                }
-                row++;
-            }
-            
-            shape.Append("</root>");
-            data.Append("</root>");
+            BuildShapeAndTestData();
 
             _sortRecords = new DsfSortRecordsActivity
             {
@@ -79,9 +36,6 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
             {
                 Action = _sortRecords
             };
-
-            CurrentDl = shape.ToString();
-            TestData = data.ToString();
         }
 
         [Given(@"I have the following recordset to sort")]
@@ -114,15 +68,17 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
         }
         
         [Then(@"the sorted recordset ""(.*)""  will be")]
-        public void ThenTheSortedRecordsetWillBe(string recordset, Table table)
+        public void ThenTheSortedRecordsetWillBe(string variable, Table table)
         {
-            List<TableRow> tableRows = table.Rows.ToList();
+            var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable);
+            var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
+
             string error;
+            var recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, recordset, column, out error);
+            recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
 
-            var recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, recordset, _recordsetField, out error);
-
+            List<TableRow> tableRows = table.Rows.ToList();
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
-
             for (int i = 0; i < tableRows.Count; i++)
             {
                 Assert.AreEqual(tableRows[i][1], recordSetValues[i]);

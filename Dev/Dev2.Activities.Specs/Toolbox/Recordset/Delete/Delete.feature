@@ -12,7 +12,7 @@ Scenario: Delete last record in a recordset
 	And I delete a record "[[rs()]]"
 	When the delete tool is executed
 	Then the delete result should be "Success"
-	And the recordset "rs" will be as follows
+	And the recordset "[[rs().row]]" will be as follows
 	| rs       | val |
 	| rs().row | 1   |
 	| rs().row | 2   |
@@ -26,7 +26,7 @@ Scenario: Delete a recordset that does not exist
 	And I delete a record "[[rd()]]"
 	When the delete tool is executed
 	Then the delete result should be "Failure"
-	And the recordset "rs" will be as follows
+	And the recordset "[[rs().row]]" will be as follows
 	| rs       | val |
 	| rs().row | 1   |
 	| rs().row | 2   |

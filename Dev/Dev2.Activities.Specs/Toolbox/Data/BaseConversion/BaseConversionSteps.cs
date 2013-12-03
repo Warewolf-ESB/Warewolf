@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Text;
-using ActivityUnitTests;
-using Dev2.DataList.Contract;
+using Dev2.Activities.Specs.BaseTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -11,58 +9,48 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
 {
     [Binding]
-    public class BaseConversionSteps : BaseActivityUnitTest
+    public class BaseConversionSteps : RecordSetBases
     {
         private DsfBaseConvertActivity _baseConvert;
-        private readonly List<Tuple<string,string,string, string>> _variableList = new List<Tuple<string,string,string, string>>();
-        private IDSFDataObject _result;
+
+        public BaseConversionSteps()
+            : base(new List<Tuple<string, string, string, string>>())
+        {
+        }
 
         private void BuildDataList()
         {
+            BuildShapeAndTestData();
+
             _baseConvert = new DsfBaseConvertActivity();
 
             TestStartNode = new FlowStep
-            {
-                Action = _baseConvert
-            };
-
-            var shape = new StringBuilder();
-            shape.Append("<ADL>");
-
-            var data = new StringBuilder();
-            data.Append("<root>");
+                {
+                    Action = _baseConvert
+                };
 
             int row = 1;
-            foreach (var variable in _variableList)
+            foreach (dynamic variable in _variableList)
             {
-                string variableName = DataListUtil.RemoveLanguageBrackets(variable.Item1);
-                shape.Append(string.Format("<{0}/>", variableName));
-                _baseConvert.ConvertCollection.Add(new BaseConvertTO(variable.Item1, variable.Item2, variable.Item3,
+                _baseConvert.ConvertCollection.Add(new BaseConvertTO(variable.Item1, variable.Item3, variable.Item4,
                                                                      variable.Item1, row));
-
-                data.Append(string.Format("<{0}>{1}</{0}>", variableName, variable.Item4));
                 row++;
             }
-            shape.Append("</ADL>");
-            data.Append("</root>");
-
-            CurrentDl = shape.ToString();
-            TestData = data.ToString();
         }
-        
+
         [Given(@"I convert value ""(.*)"" from type ""(.*)"" to type ""(.*)""")]
         public void GivenIConvertValueFromTypeToType(string value, string fromType, string toType)
         {
-            _variableList.Add(new Tuple<string, string, string, string>("[[var]]", fromType, toType, value));
+            _variableList.Add(new Tuple<string, string, string, string>("[[var]]", value, fromType, toType));
         }
-        
+
         [When(@"the base conversion tool is executed")]
         public void WhenTheBaseConversionToolIsExecuted()
         {
             BuildDataList();
             _result = ExecuteProcess();
         }
-        
+
         [Then(@"the result is ""(.*)""")]
         public void ThenTheResultIs(string value)
         {
@@ -71,6 +59,5 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
             GetScalarValueFromDataList(_result.DataListID, "var", out actualValue, out error);
             Assert.AreEqual(value, actualValue);
         }
-
     }
 }

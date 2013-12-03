@@ -16,11 +16,12 @@ Scenario: Sort a recordset
 	And I sort a record "[[rs(*).row]]"
 	And my sort order is "Forward"
 	When the sort records tool is executed
-	Then the sorted recordset "rs"  will be 
+	Then the sorted recordset "[[rs().row]]"  will be 
 	| rs       | value    |
-	| rs().row | You      |
 	| rs().row | are      |
-	| rs().row | the      |
 	| rs().row | best     |
-	| rs().row | Warewolf |
+	| rs().row | so far   |
+	| rs().row | the      |
 	| rs().row | user     |
+	| rs().row | Warewolf |
+	| rs().row | You      |
