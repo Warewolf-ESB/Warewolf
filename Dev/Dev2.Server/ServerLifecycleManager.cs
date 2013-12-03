@@ -1329,7 +1329,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                     var httpEndpoint = new IPEndPoint(IPAddress.Any, realPort);
                     var httpUrl = string.Format("http://*:{0}/", webServerPort);
                     endpoints.Add(new Dev2Endpoint(httpEndpoint, httpUrl));
-
+                    HostSecurityProvider.Instance.EnsureAccessToPort(httpEndpoint);
                     // start SSL traffic if it is enabled ;)
                     if(!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
                     {
@@ -1834,7 +1834,14 @@ namespace Unlimited.Applications.DynamicServicesHost
                     //                    StartNetworkServer(endpoints);
                     //                    // END TODO
 
-                    _owinServer = WebServerStartup.Start(_endpoints);
+                    try
+                    {
+                        _owinServer = WebServerStartup.Start(_endpoints);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
                     EnvironmentVariables.IsServerOnline = true; // flag server as active
                     WriteLine("\r\nWeb Server Started");
                     foreach(var endpoint in _endpoints)

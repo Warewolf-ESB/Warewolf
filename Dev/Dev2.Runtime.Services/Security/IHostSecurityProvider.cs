@@ -34,5 +34,7 @@ namespace Dev2.Runtime.Security
         /// <param name="certPath">The cert path.</param>
         /// <returns></returns>
         bool EnsureSSL(string certPath, IPEndPoint endPoint);
+
+        void EnsureAccessToPort(IPEndPoint endPoint);
     }
 }
