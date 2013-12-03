@@ -42,10 +42,13 @@ namespace Dev2.Studio.UI.Tests
             const string oldResourceName = "OldResourceName";
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(oldResourceName);
+            Playback.Wait(7000);
             ExplorerUIMap.RightClickRenameProject("localhost", "WORKFLOWS", "Unassigned", oldResourceName);
+            Playback.Wait(2000);
             SendKeys.SendWait("New-Test-Resource-With-Dashes{ENTER}");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
+            Playback.Wait(3000);
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes);
             
         }

@@ -97,6 +97,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
         /// </summary>
         public void ClickSave()
         {
+            Playback.Wait(3500);
             SendKeys.SendWait("{TAB}{TAB}{TAB}{ENTER}");
         }
         

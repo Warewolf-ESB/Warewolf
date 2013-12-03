@@ -11,13 +11,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// </summary>
         public void WaitForWizard(int timeOut = DefaultTimeOut, bool throwIfNotFound = true)
         {
-            Playback.Wait(3500);
+            Playback.Wait(10000);
         }
 
 
         public bool TryWaitForWizard(int timeOut)
         {
-            Playback.Wait(2500);
+            Playback.Wait(10000);
             var tryGetDialog = StudioWindow.GetChildren()[0].GetChildren()[0];
             var type = tryGetDialog.GetType();
             return type == typeof(WpfImage);

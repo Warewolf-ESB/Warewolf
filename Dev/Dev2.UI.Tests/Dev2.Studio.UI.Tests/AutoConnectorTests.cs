@@ -184,7 +184,7 @@ namespace Dev2.Studio.UI.Tests
                 throw new Exception("MultiAssignDesigner not found on active tab");
             }
 
-            Playback.Wait(4000);
+            Playback.Wait(3500);
     
             DecisionWizardUIMap.ClickCancel();
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
@@ -202,7 +202,7 @@ namespace Dev2.Studio.UI.Tests
             Point point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
             //Drag a control to the design surface
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
-            Playback.Wait(4000);
+            Playback.Wait(3500);
             DecisionWizardUIMap.ClickCancel();
             //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
             Point newPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();

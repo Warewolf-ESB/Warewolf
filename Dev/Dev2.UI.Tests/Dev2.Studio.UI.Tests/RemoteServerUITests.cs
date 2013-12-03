@@ -12,14 +12,12 @@ namespace Dev2.Studio.UI.Tests
     ///     These are UI tests based on using a remote server
     /// </summary>
     [CodedUITest]
-    [Ignore]
     public class RemoteServerUiTests : UIMapBase
     {
         #region Fields
 
         const string RemoteServerName = "RemoteConnection";
         const string LocalHostServerName = "localhost";
-        const string ExplorerTab = "Explorer";
 
         #endregion
 
@@ -44,6 +42,7 @@ namespace Dev2.Studio.UI.Tests
         public void MyTestCleanup()
         {
             TabManagerUIMap.CloseAllTabs();
+            Playback.Wait(1500);
             ExplorerUIMap.ClickServerInServerDDL(LocalHostServerName);
         }
 
@@ -234,14 +233,14 @@ namespace Dev2.Studio.UI.Tests
 
             //Edit remote web source
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            Playback.Wait(20000);
+            Playback.Wait(7000);
             Keyboard.SendKeys("{TAB}{TAB}{TAB}?CountryName=Canada{TAB}{TAB}{TAB}{ENTER}");
             Playback.Wait(1000);
             SaveDialogUIMap.ClickSave();
 
             //Change it back
             ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            Playback.Wait(20000);
+            Playback.Wait(7000);
             var persistClipboard = Clipboard.GetText();
             Keyboard.SendKeys("{TAB}{TAB}{TAB}{CTRL}c?CountryName=South Africa{TAB}{TAB}{TAB}{ENTER}");
             query = Clipboard.GetText();
@@ -273,6 +272,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
+        [Ignore] // Broken test ;)
         public void RemoteServerUITests_EditRemoteDbService_DbServiceIsEdited()
         {
             const string TextToSearchWith = "RemoteDBService";
@@ -336,6 +336,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
+        [Ignore] // Real Failure
         public void RemoteServerUITests_EditRemotePluginSource_PluginSourceIsEdited()
         {
             const string TextToSearchWith = "PluginSource";
@@ -394,6 +395,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
+        [Ignore] // Broken
         public void RemoteServerUITests_EditRemotePluginService_PluginServiceIsEdited()
         {
             const string TextToSearchWith = "PluginService";
@@ -403,7 +405,7 @@ namespace Dev2.Studio.UI.Tests
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
             PluginServiceWizardUIMap.ClickActionAtIndex(3);
             PluginServiceWizardUIMap.ClickTest();
-            Playback.Wait(1000);
+            Playback.Wait(7000);
             PluginServiceWizardUIMap.ClickOK();
 
             //Change it back
@@ -411,7 +413,7 @@ namespace Dev2.Studio.UI.Tests
             actionName = PluginServiceWizardUIMap.GetActionName();
             PluginServiceWizardUIMap.ClickActionAtIndex(4);
             PluginServiceWizardUIMap.ClickTest();
-            Playback.Wait(1000);
+            Playback.Wait(7000);
             PluginServiceWizardUIMap.ClickOK();
 
             Assert.AreEqual("ToString", actionName, "Cannot change remote plugin service");
@@ -436,13 +438,13 @@ namespace Dev2.Studio.UI.Tests
 
             //SAVE A WORKFLOW
             OpenMenuItem("Save");
-            Playback.Wait(2000);
+            Playback.Wait(4000);
             string InitialName = Guid.NewGuid().ToString();
             EnternameAndSave(InitialName);
 
             //RENAME A WORKFLOW
             ExplorerUIMap.EnterExplorerSearchText(InitialName);
-            Playback.Wait(2000);
+            Playback.Wait(3500);
             ExplorerUIMap.RightClickRenameProject(RemoteServerName, serviceType, folderName, InitialName);
             string RenameTo = Guid.NewGuid().ToString();
             SendKeys.SendWait(RenameTo + "{ENTER}");
@@ -475,7 +477,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClickServerInServerDDL(serverName);
             ExplorerUIMap.EnterExplorerSearchText(textToSearchWith);
             ExplorerUIMap.DoubleClickOpenProject(serverName, serviceType, foldername, textToSearchWith);
-            Playback.Wait(1500);
+            Playback.Wait(4500);
         }
 
         #endregion

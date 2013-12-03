@@ -82,6 +82,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
 
             if (relativeToWizard != default(Point) )
             {
+                Playback.Wait(1000);
                 // nasty fixed sizing, but no other real choice to test what  I need to ;(
                 Mouse.Click(new Point(wizard.Left + relativeToWizard.X, wizard.Top + relativeToWizard.Y));
             }

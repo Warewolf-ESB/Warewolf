@@ -245,6 +245,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="UI-Warewolf Server.exe.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Warewolf Server.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

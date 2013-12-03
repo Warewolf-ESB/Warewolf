@@ -95,7 +95,7 @@ namespace Dev2.Studio.UI.Tests
             var theTab = TabManagerUIMap.GetActiveTab();
 
             //wait for resource tree to load
-            Playback.Wait(2500);
+            Playback.Wait(10000);
 
             // Assert All Service Types Visible
             var sourceResources = DeployUIMap.GetSourceNavigationTree();

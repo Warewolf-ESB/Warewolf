@@ -286,11 +286,11 @@ namespace Dev2.Studio.UI.Tests
             RibbonUIMap.ClickRibbonMenuItem("Save");
             WizardsUIMap.WaitForWizard();
             SaveDialogUIMap.ClickAndTypeInNameTextbox(firstName);
-            Playback.Wait(3000);
+            Playback.Wait(3500);
 
             // Create second workflow
             RibbonUIMap.CreateNewWorkflow();
-            Playback.Wait(1000);
+            Playback.Wait(3500);
             theTab = TabManagerUIMap.GetActiveTab();
             theStartNode = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "StartSymbol");
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign",
@@ -299,7 +299,7 @@ namespace Dev2.Studio.UI.Tests
             RibbonUIMap.ClickRibbonMenuItem("Save");
             WizardsUIMap.WaitForWizard();
             SaveDialogUIMap.ClickAndTypeInNameTextbox(secondName);
-            Playback.Wait(3000);
+            Playback.Wait(3500);
 
             // Switch between tabs ensuring the star is never added to their name
             UITestControl tryGetTab = null;

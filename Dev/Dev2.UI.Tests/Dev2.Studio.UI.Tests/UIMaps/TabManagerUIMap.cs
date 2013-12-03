@@ -136,6 +136,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         public void CloseAllTabs()
         {
 
+            // first try closing wizards ;)
             Playback.Wait(150);
             SendKeys.SendWait("{ESC}");
 

@@ -7,7 +7,6 @@ using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
-
 namespace Dev2.Studio.UI.Tests
 {
     /// <summary>
@@ -47,7 +46,6 @@ namespace Dev2.Studio.UI.Tests
         [Owner("Ashley")]
         public void StudioTooling_StudioToolingUITest_CanToolsDisplay_IconIsVisible()
         {
-
             ExplorerUIMap.EnterExplorerSearchText("AllTools");
 
             // Open the Workflow
@@ -58,50 +56,66 @@ namespace Dev2.Studio.UI.Tests
             var designer = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
             var allTools = designer.GetChildren();
 
-            HashSet<UITestControl> controls = new HashSet<UITestControl>();
+            #region Scroll All Items Into View
 
-            foreach(var child in allTools)
+            var cnt = allTools.Count;
+            var scrolledTop = false;
+            var scolledBottom = false;
+
+            for (int i = 0; i < cnt; i++)
             {
-                if(child.ControlType == "Custom" &&
+                var child = allTools[i];
+                //Some of the tools on the design surface are out of view, look for them...
+                if(child.BoundingRectangle.Y > 800)
+                {
+                    //might already be scrolled
+                    var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
+                    WpfControl getTop = scrollBar as WpfControl;
+                    if(getTop.Top < 200 && !scrolledTop)
+                    {
+                        //Look low
+                        Mouse.StartDragging(scrollBar);
+                        Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
+                        scrolledTop = true;
+                    }
+                }
+                else
+                {
+                    //might already be scrolled
+                    var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
+                    WpfControl getTop = scrollBar as WpfControl;
+                    if(getTop.Top > 200 && !scolledBottom)
+                    {
+                        //Look high
+                        Mouse.StartDragging(scrollBar);
+                        Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollUp(theTab));
+                        scolledBottom = true;
+                    }
+                }
+            }
+
+            #endregion
+
+            // Assert all the icons are visible
+            designer = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
+            var toolCollection = designer.GetChildren();
+            HashSet<string> controls = new HashSet<string>();
+
+            foreach(var child in toolCollection)
+            {
+                if (child.ControlType == "Custom" &&
                     child.ClassName != "Uia.ConnectorWithoutStartDot" &&
                     child.ClassName != "Uia.StartSymbol" &&
                     child.ClassName != "Uia.UserControl" &&
                     child.ClassName != "Uia.DsfWebPageActivityDesigner")
                 {
-                    //Some of the tools on the design surface are out of view, look for them...
-                    if(child.BoundingRectangle.Y > 800)
-                    {
-                        //might already be scrolled
-                        var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
-                        WpfControl getTop = scrollBar as WpfControl;
-                        if(getTop.Top < 200)
-                        {
-                            //Look low
-                            Mouse.StartDragging(scrollBar);
-                            Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
-                        }
-                    }
-                    else
-                    {
-                        //might already be scrolled
-                        var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
-                        WpfControl getTop = scrollBar as WpfControl;
-                        if(getTop.Top > 200)
-                        {
-                            //Look high
-                            Mouse.StartDragging(scrollBar);
-                            Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollUp(theTab));
-                        }
-                    }
-                    Assert.IsTrue(WorkflowDesignerUIMap.IsActivityIconVisible(child), child.FriendlyName + " is missing its icon on the design surface");
-                    controls.Add(child);
+                    Assert.IsTrue(WorkflowDesignerUIMap.IsActivityIconVisible(child),
+                                  child.FriendlyName + " is missing its icon on the design surface");
+                    controls.Add(child.ClassName);
                 }
             }
 
-            Assert.AreEqual(25, controls.Count, "Not all tools on the alls tools text workflow can be checked for icons");
-
-            Assert.IsTrue(true, "Studio was terminated or hung while opening and closing the all tools workflow");
-
+            Assert.AreEqual(27, controls.Count, "Not all tools on the alls tools text workflow can be checked for icons");
         }
 
         [TestMethod]
@@ -149,20 +163,21 @@ namespace Dev2.Studio.UI.Tests
                 WorkflowDesignerUIMap.ScrollControlIntoView(theTab, child);
 
                 Mouse.Move(child, new Point(15, 15));
-                Playback.Wait(1000);
+                Playback.Wait(2500);
 
                 var toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Open Large View") as WpfToggleButton;
                 if (toggleButton == null)
                 {
-                    Assert.Fail("Could not find open large view button");
+                    Assert.Fail("Could not find open large view button [ " + child.ClassName + " ]");
                 }
 
                 Mouse.Click(toggleButton);
+                Playback.Wait(2500);
 
                 toggleButton =  WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Close Large View") as WpfToggleButton;
                 if (toggleButton == null)
                 {
-                    Assert.Fail("Could not find close large view button");
+                    Assert.Fail("Could not find close large view button for [ " + child.ClassName + " ]");
                 }
 
                 Mouse.Click(toggleButton);

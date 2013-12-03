@@ -128,11 +128,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// News the database service shortcut key expected database service opens.
         /// </summary>
         [TestMethod]
-        [Ignore]
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
-            StudioWindow.WaitForControlReady(1000);
-            Keyboard.SendKeys(StudioWindow,"{CTRL}{SHIFT}D");
+            //StudioWindow.WaitForControlReady();
+            SendKeys.SendWait("{CTRL}{SHIFT}D");
+            //Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}D");
             WizardsUIMap.WaitForWizard();
             DatabaseServiceWizardUIMap.ClickCancel();
         }
@@ -203,8 +203,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", pt);
             WizardsUIMap.WaitForWizard();
-            Playback.Wait(2500);
             _decisionWizardUiMap.SendTabs(4);
+            Playback.Wait(500);
             _decisionWizardUiMap.SelectMenuItem(11); // select between ;)
 
             _decisionWizardUiMap.SendTabs(11);
@@ -364,7 +364,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             // Cancel Decision Wizard
             if(WizardsUIMap.TryWaitForWizard(3000))
             {
-                Playback.Wait(2000);
+                Playback.Wait(200);
 
                 SendKeys.SendWait("{TAB}{TAB}{ENTER}");
                 Playback.Wait(100);
@@ -387,7 +387,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             //Drag on two decisions
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
             WizardsUIMap.WaitForWizard();
-            Playback.Wait(2000);
 
             _decisionWizardUiMap.HitDoneWithKeyboard();
             var newPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);

@@ -201,7 +201,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
             // Click it to expand it
             Mouse.Click(ddlBase, new Point(10, 10));
-            Playback.Wait(200);
+            Playback.Wait(500);
 
             VisualTreeWalker vsw = new VisualTreeWalker();
             var item = vsw.GetChildByAutomationIDPath(ddlBase, "U_UI_ExplorerServerCbx_AutoID_" + serverName);

@@ -43,15 +43,15 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.EnterExplorerSearchText("ServiceExecutionTest");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "ServiceExecutionTest");
             
-            Playback.Wait(2000);
+            Playback.Wait(5000);
             SendKeys.SendWait("{F5}");
             PopupDialogUIMap.WaitForDialog();
             SendKeys.SendWait("{F5}");
-            Playback.Wait(1000);
+            Playback.Wait(5000);
 
             var uiControl = RibbonUIMap.GetControlByName("Save");
 
-            Playback.Wait(500);
+            Playback.Wait(2500);
 
             Assert.IsTrue(uiControl.Enabled);
         }

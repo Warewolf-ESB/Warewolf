@@ -136,7 +136,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             SendKeys.SendWait(serverAndSourceName);
             Playback.Wait(10);
             SendKeys.SendWait("{ENTER}");
-            Playback.Wait(4000);
+            Playback.Wait(2500);
             //DbService
             ClickFirstAction();
             ClickTestAction();

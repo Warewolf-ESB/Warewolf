@@ -9,7 +9,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// </summary>
         public void WaitForDialog()
         {
-            Playback.Wait(2000);
+            Playback.Wait(2500);
         }
     }
 }
